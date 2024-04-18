@@ -18,16 +18,22 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb));
+  background: #fff;
+
 }
 
 @layer utilities {
   .text-balance {
-    text-wrap: balance;
+
   }
 }
+
+.text-story{
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow : hidden;
+  max-width: 294px;
+}
+

@@ -9,5 +9,7 @@
   "semi": true,
   "printWidth": 80,
   "proseWrap": "never",
-  "endOfLine": "auto"
+  "endOfLine": "auto",
+  "tailwindConfig": "./tailwind.config.js",
+  "plugins": ["prettier-plugin-tailwindcss"]
 }
