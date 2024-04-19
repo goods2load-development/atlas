@@ -36,4 +36,6 @@ body {
   overflow : hidden;
   max-width: 294px;
 }
-
+pre{
+  font-family: Poppins, sans-serif!important;
+}

@@ -24,7 +24,7 @@ export const storyBlock = [
   },
   {
     icon: icon4,
-    time: "February 2022",
+    time: "2024",
     info: "The company's expansion is fueled by the extensive intercontinental connections it has established, enabling it to make international trade efficient and accessible to numerous SMEs worldwide. With a focus on enhancing logistics partnerships, the company aims to solidify its position as a leader in optimizing shipping services prioritizing factors such as time, cost, and environmental impact across sea, air, and road cargo.",
     more: true
   },

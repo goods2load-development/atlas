@@ -1,16 +1,19 @@
 import React from 'react';
 import { leaderships } from '@/app/_components/Company/CompanyLeadership/CompanyLidershipData';
 import CompanyLeader from '@/app/_components/Company/CompanyLeadership/CompanyLeader';
+import Image from 'next/image';
+import line from '@/assets/line.svg';
 
 export interface ILeader {
   img: String,
   name: string,
-  position: string
+  position: string,
+  info: string
 }
 
 const CompanyLeadership = () => {
   return (
-    <section className='max-w-[1440px] w-full flex flex-row gap-[80px] py-[104px]'>
+    <section className='max-w-[1440px] w-full flex flex-row gap-[80px] py-[104px] relative overflow-hidden'>
       <div className='w-1/4 flex flex-col gap-[16px]'>
         <h1 className='bg-[#FEF1DF] text-[48px]/[57.6px] font-light text-black w-fit rounded-md'>Leadership</h1>
         <p className='text-black font-normal text-[18px]/[23.4px]'>A group of talented professionals who combine their
@@ -20,7 +23,7 @@ const CompanyLeadership = () => {
       <div className='w-3/4 flex flex-row gap-[80px]'>
         {leaderships.map(item => <CompanyLeader key={item.name} item={item} />)}
       </div>
-
+      <Image className='absolute bottom-0 left-[-15%]' src={line} alt={'line'} />
     </section>
   );
 };

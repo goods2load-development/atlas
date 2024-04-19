@@ -1,6 +1,8 @@
 'use client';
 import { type FC, memo, useState } from 'react';
 import CompanyContainer from '@/app/_components/Company/CompanyContainer/CompanyContainer';
+import TrustContainer from '@/app/_components/Trust/TrustContainer/TrustContainer';
+import MediaContainer from '@/app/_components/MediaContainer/MediaContainer';
 
 type Navigation = 'company' | 'trust' | 'media';
 const AboutUsContainer: FC = () => {
@@ -46,6 +48,8 @@ const AboutUsContainer: FC = () => {
         </div>
       </div>
       {currentScreen === 'company' && <CompanyContainer />}
+      {currentScreen === 'trust' && <TrustContainer />}
+      {currentScreen === 'media' && <MediaContainer />}
     </>
 
   );
