@@ -5,7 +5,8 @@ import MediaContainerItem from '@/app/_components/MediaContainer/MediaContainerI
 export interface IMedia {
   img: String,
   title: string,
-  date: string
+  date: string,
+  link: string
 }
 
 const MediaContainer = () => {
