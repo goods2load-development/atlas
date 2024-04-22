@@ -17,7 +17,11 @@ import {
 
 export default function Header(props: any) {
   return (
-    <div className="bg-bgMainPrimary bg-cover bg-center px-16 text-white">
+    <div
+      className={`${
+        !!props.children ? "bg-bgMainPrimary pb-48" : "bg-orangePrimary"
+      } bg-cover bg-center px-16 text-white`}
+    >
       <header className="flex justify-between min-h-[75px]">
         <Logo width={236} height={28} />
         <NavigationMenu>
@@ -29,10 +33,13 @@ export default function Header(props: any) {
               <Link href="/help">Log in</Link>
             </NavigationMenuItem>
             <NavigationMenuItem className="bg-transparent hover:bg-transparent active:bg-transparent">
-              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent active:bg-transparent bg-opacity-0">
+              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent active:bg-transparent bg-opacity-0 border-0">
                 Sign up
               </NavigationMenuTrigger>
-              <NavigationMenuContent>items needed</NavigationMenuContent>
+              <NavigationMenuContent className="p-[10px]">
+                <Link href="/provider-registration">I provide services</Link>
+                <Link href="/user-registration">I order a services</Link>
+              </NavigationMenuContent>
             </NavigationMenuItem>
             <NavigationMenuItem>{/* <Localization /> */}</NavigationMenuItem>
           </NavigationMenuList>

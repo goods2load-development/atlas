@@ -98,7 +98,7 @@ export default function SearchMain() {
                   </Label>
                 </div>
               </RadioGroup>
-              <div className="flex search-form bg-[#ffede4] mt-[10px] mr-[5px] p-[24px] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720]">
+              <div className="flex bg-[#ffede4] mt-[10px] mr-[5px] p-[24px] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720]">
                 <FormItem className="mr-[1px]">
                   <FormLabel>From</FormLabel>
                   <FormControl>
