@@ -10,6 +10,36 @@ const config = {
   ],
   prefix: "",
   theme: {
+    screens: {
+      laptop: "1440px",
+    },
+    fontFamily: {
+      poppins: ["Poppins"],
+    },
+    colors: {
+      white: "#fff",
+      lightOrange: "#FFEDE4",
+      primaryOrange: "#FF6720",
+      customWhite: "#FFFFFF",
+      black: "#29292A",
+      customGrey: "#A8A8A84D",
+    },
+    backgroundImage: {
+      "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+      "gradient-conic":
+        "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      "hero-pattern": "url('../assets/hero-pattern.svg')",
+      "divide-pattern": "url('../assets/divide-pattern.svg')",
+    },
+    animation: {
+      "infinite-scroll": "infinite-scroll 25s linear infinite",
+    },
+    keyframes: {
+      "infinite-scroll": {
+        from: { transform: "translateX(0)" },
+        to: { transform: "translateX(-100%)" },
+      },
+    },
     container: {
       center: true,
       padding: "2rem",
@@ -52,11 +82,6 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
-        orangePrimary: "#FF6720",
-        orangeSecondary: "#ffede4",
-        grayCustom: "rgba(255, 255, 255, 0.7)",
-        gradFrom: "#F9B21C",
-        gradTo: "#F85808",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -76,13 +101,6 @@ const config = {
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
-      },
-      backgroundImage: {
-        bgMainPrimary: "url('../public/bgmain.png')",
-        bgFooter: "url(../public/footerbg.png)",
-        bgOptimize: "url(../public/optimizebg.jpg)",
-        bgLogistics: "url(../public/logisticbg.png)",
-        bgQuestions: "url(../public/accordionbg.png)",
       },
     },
   },

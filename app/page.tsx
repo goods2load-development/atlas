@@ -13,7 +13,7 @@ import CompanyContainer from "./_components/Company/CompanyContainer/CompanyCont
 
 export default function Home() {
   return (
-    <>
+    <><>
       <Header>
         <h1 className="pt-16 pb-5 text-[64px]/[60px] font-light">
           Unlock countless <i>high-quality</i> shipping options with{" "}
@@ -33,9 +33,8 @@ export default function Home() {
         <QuestionsAndAnswers />
       </main>
       <Footer />
-    </>
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <CompanyContainer />
-    </main>
+    </><main className="flex min-h-screen flex-col items-center justify-between p-24">
+        <CompanyContainer />
+      </main></>
   );
 }
