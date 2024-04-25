@@ -1,0 +1,13 @@
+[
+  {
+    "code": "de",
+    "name": "Deutsche",
+    "icon": "./",
+    "data": {
+      "header": {},
+      "hello": "Hallo",
+      "goodbye": "Auf Wiedersehen",
+      "thank_you": "Danke schön"
+    }
+  }
+]
