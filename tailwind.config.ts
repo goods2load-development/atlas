@@ -18,13 +18,6 @@ const config = {
         laptop: "1440px",
       },
     },
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
       colors: {
         primaryOrange: "#FF6720",
@@ -99,9 +92,6 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
-
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
 
