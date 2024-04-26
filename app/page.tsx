@@ -1,4 +1,12 @@
-import Image from "next/image";
+import React from "react";
+
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import SearchMain from "@/components/SearchMain";
+import SubHeaderMain from "@/components/SubHeaderMain";
+import LogisticInsights from "@/components/LogisticInsights";
+import SliderMain from "@/components/SliderMain";
+import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 
 export default function Home() {
   return (

@@ -18,6 +18,13 @@ const config = {
         laptop: "1440px",
       },
     },
+    container: {
+      center: true,
+      padding: "2rem",
+      screens: {
+        "2xl": "1400px",
+      },
+    },
     extend: {
       colors: {
         primaryOrange: "#FF6720",
@@ -63,9 +70,11 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       backgroundImage: {
-        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
-        "gradient-conic":
-          "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+        bgMainPrimary: "url('../public/bgmain.png')",
+        bgFooter: "url(../public/footerbg.png)",
+        bgOptimize: "url(../public/optimizebg.jpg)",
+        bgLogistics: "url(../public/logisticbg.png)",
+        bgQuestions: "url(../public/accordionbg.png)",
         "hero-pattern": "url('../assets/hero-pattern.svg')",
         "divide-pattern": "url('../assets/divide-pattern.svg')",
       },
@@ -90,6 +99,9 @@ const config = {
       },
     },
   },
+  plugins: [require("tailwindcss-animate")],
+} satisfies Config;
+
   plugins: [require("tailwindcss-animate")],
 } satisfies Config;
 
