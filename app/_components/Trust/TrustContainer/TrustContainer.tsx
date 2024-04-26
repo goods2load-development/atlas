@@ -5,10 +5,10 @@ import TrustMap from '@/app/_components/Trust/TrustMap/TrustMap';
 
 const TrustContainer = () => {
   return (
-    <div className='w-full flex flex-col items-center'>
-      <TrustArticle/>
-      <TrustReputation/>
-      <TrustMap/>
+    <div className="w-full flex flex-col items-center  absolute top-[600px] inset-0">
+      <TrustArticle />
+      <TrustReputation />
+      <TrustMap />
     </div>
   );
 };

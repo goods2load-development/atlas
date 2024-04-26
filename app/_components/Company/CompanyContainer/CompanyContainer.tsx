@@ -8,13 +8,13 @@ import CompanyLocation from '@/app/_components/Company/CompanyLocation/CompanyLo
 
 const CompanyContainer = () => {
   return (
-    <div className='w-full flex flex-col items-center'>
-      <CompanyMainInfo/>
-      <CompanyStory/>
-      <CompanyArticle/>
-      <CompanyLeadership/>
-      <CompanyOurStory/>
-      <CompanyLocation/>
+    <div className="w-full absolute top-[600px] inset-0 flex flex-col items-center mt-80px">
+      <CompanyMainInfo />
+      <CompanyStory />
+      <CompanyArticle />
+      <CompanyLeadership />
+      <CompanyOurStory />
+      <CompanyLocation />
     </div>
   );
 };

@@ -8,12 +8,26 @@ type TMedia = {
 
 const MediaContainerItem: FC<TMedia> = ({ item }) => {
   return (
-    <div className='w-full'>
-      <Image src={item.img} alt={item.title} />
-      <div className='flex flex-row justify-between items-center text-black'>
+    <div
+      key={item.date}
+      className="w-[500px] h-[400px] rounded-lg flex-shrink-0"
+    >
+      <Image
+        src={item.img}
+        alt={item.title}
+        width={500}
+        height={200}
+        className="rounded-t-lg"
+      />
+      <div className="flex flex-row justify-between items-center text-black">
         <a
-          className='text-[28px]/[33.6px] font-medium underline underline-offset-2 decoration-[1.5px] hover:cursor-pointer' href={item.link} target="_blank">{item.title}</a>
-        <h4 className='text-[20px]/[26px] font-normal'>{item.date}</h4>
+          className="text-[28px]/[33.6px] font-medium underline underline-offset-2 decoration-[1.5px] hover:cursor-pointer"
+          href={item.link}
+          target="_blank"
+        >
+          {item.title}
+        </a>
+        <h4 className="text-[20px]/[26px] font-normal">{item.date}</h4>
       </div>
     </div>
   );
