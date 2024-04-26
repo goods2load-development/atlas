@@ -14,7 +14,7 @@ import CompanyContainer from "./_components/Company/CompanyContainer/CompanyCont
 export default function Home() {
   return (
     <><>
-      <Header>
+      {/* <Header>
         <h1 className="pt-16 pb-5 text-[64px]/[60px] font-light">
           Unlock countless <i>high-quality</i> shipping options with{" "}
           <i>just one click</i>
@@ -22,7 +22,7 @@ export default function Home() {
         <span className="font-light text-[24px]/[28px]">
           Doing business is never been so easy.
         </span>
-      </Header>
+      </Header> */}
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
         <div className="px-16 mt-[-120px] mb-20">
           <SearchMain />

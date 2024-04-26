@@ -19,7 +19,7 @@ export default function Header(props: any) {
   return (
     <div
       className={`${
-        !!props.children ? "bg-bgMainPrimary pb-48" : "bg-orangePrimary"
+        !!props.children ? "bg-primaryOrange pb-48" : "bg-primaryOrange"
       } bg-cover bg-center px-16 text-white`}
     >
       <header className="flex justify-between min-h-[75px]">

@@ -227,3 +227,9 @@ select {
   -moz-appearance: none;
   -webkit-user-select: none;
 }
+
+
+.allDecorationUnderLink{
+background: rgb(255,103,32);
+background: radial-gradient(circle, rgba(255,103,32,1) 0%, rgba(241,241,241,1) 100%);
+}

@@ -34,3 +34,20 @@ export interface CompanyLeaderShipCard {
 export interface CompanyLeader {
   item: Leadership;
 }
+export interface ModalCareer {
+  pesonalInfo: SalesChallenge;
+  key: number;
+}
+export interface SalesChallenge {
+  modalName: string;
+  challengeName: string;
+  workingName: string;
+  tittle: string;
+  description: string;
+  options: ChallengeOption[];
+}
+interface ChallengeOption {
+  optionName: string;
+  optionText: string;
+  additionText: string;
+}

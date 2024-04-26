@@ -17,12 +17,14 @@ const config = {
       poppins: ["Poppins"],
     },
     colors: {
+      originalBlack: "#000",
       white: "#fff",
       lightOrange: "#FFEDE4",
       primaryOrange: "#FF6720",
       customWhite: "#FFFFFF",
       black: "#29292A",
       customGrey: "#A8A8A84D",
+      careerModalGrey: "#00000099",
     },
     backgroundImage: {
       "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

@@ -5,7 +5,6 @@ import CompanyArticle from "@/app/_components/Company/CompanyArticle/CompanyArti
 import CompanyLeadership from "@/app/_components/Company/CompanyLeadership/CompanyLeadership";
 import CompanyOurStory from "@/app/_components/Company/CompanyOurStory/CompanyOurStory";
 import CompanyLocation from "@/app/_components/Company/CompanyLocation/CompanyLocation";
-import Career from "../../Career/Career";
 
 const CompanyContainer = () => {
   return (

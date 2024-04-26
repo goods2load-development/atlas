@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import Image from "next/image";
 
 import { createPortal } from "react-dom";
@@ -18,6 +18,16 @@ const CompanyLeader: FC<CompanyLeader> = ({ item }) => {
   function openModal() {
     setShowModal(!showModal);
   }
+  useEffect(() => {
+    if (showModal) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "scroll";
+    }
+
+    return () => {
+    };
+  }, [showModal]);
   return (
     <div className="w-full">
       <div className="w-full relative w-fit h-fit mb-[18px]">

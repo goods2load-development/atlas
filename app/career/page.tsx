@@ -29,13 +29,7 @@ const Career: React.FC = () => {
         <div className="flex gap-[40px]">
           {careerData?.map((item, i) => (
             // eslint-disable-next-line react/jsx-key
-            <CareerCard
-              key={i}
-              pesonalInfo={{
-                challengeName: item.challengeName,
-                workingName: item.workingName,
-              }}
-            />
+            <CareerCard key={i} pesonalInfo={item} />
           ))}
         </div>
         <CareerForm />
