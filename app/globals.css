@@ -84,6 +84,10 @@
   border-radius: 50%;
 }
 
+input[type="checkbox"]:checked + label > span > img {
+  display: block;
+}
+
 a:hover {
   text-decoration: underline;
 }
