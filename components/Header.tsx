@@ -25,21 +25,15 @@ export default function Header(props: any) {
       <header className="flex justify-between min-h-[75px]">
         <Logo width={236} height={28} />
         <NavigationMenu>
-          <NavigationMenuList>
-            <NavigationMenuItem className="mx-[20px]">
+          <NavigationMenuList className="space-x-5">
+            <NavigationMenuItem>
               <Link href="/help">Help</Link>
             </NavigationMenuItem>
-            <NavigationMenuItem className="mx-[20px]">
-              <Link href="/help">Log in</Link>
+            <NavigationMenuItem>
+              <Link href="/sign-in">Log in</Link>
             </NavigationMenuItem>
-            <NavigationMenuItem className="bg-transparent hover:bg-transparent active:bg-transparent">
-              <NavigationMenuTrigger className="bg-transparent hover:bg-transparent active:bg-transparent bg-opacity-0 border-0">
-                Sign up
-              </NavigationMenuTrigger>
-              <NavigationMenuContent className="p-[10px]">
-                <Link href="/provider-registration">I provide services</Link>
-                <Link href="/user-registration">I order a services</Link>
-              </NavigationMenuContent>
+            <NavigationMenuItem>
+              <Link href="/registration">Sign up</Link>
             </NavigationMenuItem>
             <NavigationMenuItem>{/* <Localization /> */}</NavigationMenuItem>
           </NavigationMenuList>
