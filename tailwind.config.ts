@@ -7,6 +7,7 @@ const config = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./@/**/*.{ts,tsx}",
   ],
   prefix: "",
   theme: {
@@ -14,11 +15,14 @@ const config = {
       center: true,
       padding: "2rem",
       screens: {
-        "2xl": "1400px",
+        laptop: "1440px",
       },
     },
     extend: {
       colors: {
+        primaryOrange: "#FF6720",
+        customWhite: "#FFFFFF",
+        black: "#29292A",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -64,7 +68,25 @@ const config = {
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
       },
+      backgroundImage: {
+        bgMainPrimary: "url('../public/bgmain.png')",
+        bgFooter: "url(../public/footerbg.png)",
+        bgOptimize: "url(../public/optimizebg.jpg)",
+        bgLogistics: "url(../public/logisticbg.png)",
+        bgQuestions: "url(../public/accordionbg.png)",
+        "hero-pattern": "url('../assets/hero-pattern.svg')",
+        "divide-pattern": "url('../assets/divide-pattern.svg')",
+      },
+      animation: {
+        "infinite-scroll": "infinite-scroll 25s linear infinite",
+        "accordion-down": "accordion-down 0.2s ease-out",
+        "accordion-up": "accordion-up 0.2s ease-out",
+      },
       keyframes: {
+        "infinite-scroll": {
+          from: { transform: "translateX(0)" },
+          to: { transform: "translateX(-100%)" },
+        },
         "accordion-down": {
           from: { height: "0" },
           to: { height: "var(--radix-accordion-content-height)" },
@@ -73,17 +95,6 @@ const config = {
           from: { height: "var(--radix-accordion-content-height)" },
           to: { height: "0" },
         },
-      },
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
-      backgroundImage: {
-        bgMainPrimary: "url('../public/bgmain.png')",
-        bgFooter: "url(../public/footerbg.png)",
-        bgOptimize: "url(../public/optimizebg.jpg)",
-        bgLogistics: "url(../public/logisticbg.png)",
-        bgQuestions: "url(../public/accordionbg.png)",
       },
     },
   },

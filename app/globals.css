@@ -4,27 +4,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
@@ -32,7 +13,7 @@
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
 
-    --radius: 0.5rem;
+    --radius:28px;
   }
 
   .dark {
@@ -66,22 +47,64 @@
   }
 }
 
-@layer base {
-  * {
-    @apply border-border;
+body {
+  color: rgb(var(--foreground-rgb));
+  background: #fff;
+
+}
+
+@layer utilities {
+  .text-balance {
+
   }
-  body {
-    @apply bg-background text-foreground;
-  }
+}
+
+.text-story{
+  display: -webkit-box;
+  -webkit-line-clamp: 7;
+  -webkit-box-orient: vertical;
+  text-overflow: ellipsis;
+  overflow : hidden;
+  max-width: 294px;
+}
+pre{
+  font-family: Poppins, sans-serif!important;
+}
+.hero-pattern{
+  background-image:  url('../assets/hero-pattern.svg');
+  background-size: 100% 100%;
+  height: 100vh;
 }
 .custom-radio input:checked + label {
   background-color: white;
   border-radius: 50%;
 }
-.custom-radio input:checked + label img {
-  filter: invert(46%) sepia(98%) saturate(1895%) hue-rotate(345deg)
-    brightness(100%) contrast(102%);
-  border-radius: 50%;
+.decorative-link {
+  position: relative;
+}
+
+.decorative-link::before,
+.decorative-link::after {
+  content: '';
+  position: absolute;
+  bottom: -1px;
+  width: 100%;
+  height: 1px;
+background: rgb(241,241,241);
+background: radial-gradient(circle, rgba(241,241,241,1) 0%, rgba(255,103,32,1) 100%);
+  transition: width 0.3s;
+}
+
+.decorative-link::before {
+  left: 0;
+}
+.decorative-link::after {
+  right: 0;
+}
+
+.decorative-link:hover::before,
+.decorative-link:hover::after {
+  width: 50%;
 }
 
 input[type="checkbox"]:checked + label > span > img {
@@ -90,4 +113,7 @@ input[type="checkbox"]:checked + label > span > img {
 
 a:hover {
   text-decoration: underline;
+}
+.lucide{
+  display: none !important;
 }

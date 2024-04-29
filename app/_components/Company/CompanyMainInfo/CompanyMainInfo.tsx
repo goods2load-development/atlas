@@ -1,0 +1,23 @@
+import React from 'react';
+
+const CompanyMainInfo = () => {
+  return (
+    <section className='max-w-[1440px] w-full flex flex-row gap-[56px] pt-[104px]'>
+      <div className='w-6/12 '>
+        <video className='w-full rounded-lg' src={'./companyVideo.mp4'} autoPlay muted />
+      </div>
+      <div className='w-6/12 flex flex-col justify-center gap-[16px]'>
+        <p className='text-black font-normal text-[18px]/[25px]'>Founded in 2022, GOODS2LOAD embarked on a mission to revolutionize the global logistics landscape through a
+          digital-first paradigm. Catering to over 311 SMEs across Europe and now extending our reach worldwide, we
+          stand at the forefront of innovation. </p>
+        <p className='text-black font-normal text-[18px]/[25px]'>Our cutting-edge platform, goods2load, streamlines logistics operations, providing pre-negotiated quotes to
+          optimize both time and cost efficiency. Committed to sustainability, we champion eco-friendly solutions while
+          leveraging the strengths of our diverse team to exceed customer expectations. Through relentless innovation,
+          we conquer intricate logistics challenges, ensuring unparalleled service delivery.</p>
+
+      </div>
+    </section>
+  );
+};
+
+export default CompanyMainInfo;
