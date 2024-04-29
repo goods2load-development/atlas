@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 import axios from "axios";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "api/";
+axios.defaults.withCredentials = true;
 
 axios.interceptors.response.use(
   function (response) {
@@ -19,16 +20,20 @@ axios.interceptors.response.use(
   }
 );
 
-export const get = (params: any) => {
-  return axios.get(params.url, {
-    params: {
-      // TODO add specific params if needed
-      // ...params
-    },
-  });
-};
+export function get(params: any) {
+  return axios
+    .get(params.url)
+    .then(function (response: any) {
+      console.log("response", response);
+      return response.data;
+    })
+    .catch(function (error: any) {
+      console.log(error);
+      // TODO add toast messages
+    });
+}
 
-export const post = (params: any) => {
+export function post(params: any) {
   return axios
     .post(params.url, params.data, {
       ...params,
@@ -41,4 +46,4 @@ export const post = (params: any) => {
       console.log(error);
       // TODO add toast messages
     });
-};
+}

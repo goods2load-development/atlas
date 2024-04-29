@@ -51,14 +51,30 @@ export const useRegistrationStore = create((set) => ({
   },
 }));
 
+interface LoginProps {
+  email: string;
+  password: string;
+}
+
 export const useUserStore = create((set) => ({
   user: {},
-  postLoginData: async (data: any) => {
+  postLoginData: async (data: LoginProps) => {
     post({
       url: "auth/login",
       data,
-    }).then(() => {
-      set((state: any) => ({ user: data }));
+    }).then((userData: any) => {
+      console.log("user data", userData);
+      localStorage.setItem("id", userData.data.id);
+      set(() => ({ user: userData.data }));
+    });
+  },
+  getUser: async () => {
+    const id = localStorage.getItem("id");
+    await get({
+      url: `/users/${id}`,
+    }).then((userData: any) => {
+      console.log("user data", userData);
+      set(() => ({ user: userData.data }));
     });
   },
 }));
