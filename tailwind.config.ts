@@ -29,7 +29,7 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "hsl(var(--primary))",
+          DEFAULT: "#FF6720",
           foreground: "hsl(var(--primary-foreground))",
         },
         secondary: {
@@ -56,6 +56,12 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        orangePrimary: "#FF6720",
+        orangeSecondary: "#ffede4",
+        grayCustom: "rgba(255, 255, 255, 0.7)",
+        "gray-2": "#F5F5F5",
+        gradFrom: "#F9B21C",
+        gradTo: "#F85808",
       },
       borderRadius: {
         lg: "var(--radius)",
