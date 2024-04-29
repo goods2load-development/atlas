@@ -1,12 +1,12 @@
 import React from 'react';
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
 
 import { storyBlock } from './CompanyStoryData';
 import CompanyStoryBlock from '@/app/_components/Company/CompanyStory/CompanyStoryBlock';
 import line from "@/assets/line-dashed.svg";
 
 export interface IBlock {
-  icon: String,
+  icon: string|StaticImageData,
   time: string,
   info: string,
   more: boolean
