@@ -70,9 +70,7 @@ const Popup: FC<IPopup> = ({ onClose, leader }) => {
     <div className="w-full fixed inset-0 bg-[rgba(0,0,0,0.2)] flex flex-col justify-center items-center pb-[50px] pt-[40px]">
       <div className="max-w-[1000px] max-h-[800px] w-fit p-10 flex flex-col rounded-[32px] bg-white relative ">
         <h1 className="text-primaryOrange font-light   items-center gap-[8px] mb-[10px]">
-          <span className="font-normal text-[28px]">
-            {leader.modalName}
-          </span>{" "}
+          <span className="font-normal text-[28px]">{leader.modalName}</span>{" "}
         </h1>
         <p className="mb-[20px]">{leader.description}</p>
         <div className="w-fit max-w-[800px] justify-center">

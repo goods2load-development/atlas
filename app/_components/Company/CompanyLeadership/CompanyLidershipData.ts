@@ -1,4 +1,4 @@
-import { Leadership } from "@/app/interfaces/leaderShip/interface";
+import { Leadership } from "@/app/interface/leaderShip";
 import leadership1 from "@/assets/CompanyLeadership/Leadership1.png";
 import leadership2 from "@/assets/CompanyLeadership/Leadership2.png";
 import leadership3 from "@/assets/CompanyLeadership/Leadership3.png";

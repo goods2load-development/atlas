@@ -1,15 +1,15 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+import Image, { StaticImageData } from 'next/image';
 
 import { storyBlock } from "./CompanyStoryData";
 import CompanyStoryBlock from "@/app/_components/Company/CompanyStory/CompanyStoryBlock";
 import CompanyAnimationLine from "../CompanyAnimation/CompanyAnimation";
 
 export interface IBlock {
-  icon: String;
-  time: string;
-  info: string;
-  more: boolean;
+  icon: string|StaticImageData,
+  time: string,
+  info: string,
+  more: boolean
 }
 
 const CompanyStory = () => {

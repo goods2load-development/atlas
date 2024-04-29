@@ -34,7 +34,7 @@ export default function Home() {
       </main>
       <Footer />
     </><main className="flex min-h-screen flex-col items-center justify-between p-24">
-        <CompanyContainer />
+        {/* <CompanyContainer /> */}
       </main></>
   );
 }

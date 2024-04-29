@@ -1,13 +1,20 @@
-import React from "react";
-import { leaderships } from "@/app/_components/Company/CompanyLeadership/CompanyLidershipData";
-import CompanyLeader from "@/app/_components/Company/CompanyLeadership/CompanyLeader";
-import Image from "next/image";
-import line from "@/assets/line.svg";
-import { Leadership } from "@/app/interfaces/leaderShip/interface";
+import React from 'react';
+import { leaderships } from '@/app/_components/Company/CompanyLeadership/CompanyLidershipData';
+import CompanyLeader from '@/app/_components/Company/CompanyLeadership/CompanyLeader';
+import Image from 'next/image';
+import line from '@/assets/line.svg';
+import { Leadership } from '@/app/interface/leaderShip';
+
+export interface ILeader {
+  img: string;
+  name: string;
+  position: string;
+  info: string;
+}
 
 const CompanyLeadership = () => {
   return (
-    <section className="max-w-[1440px] w-full flex flex-row gap-[80px] py-[104px] relative overflow-hidden">
+    <section className="max-w-[1440px] w-full flex flex-row gap-[80px] py-[104px] relative">
       <div className="w-1/4 flex flex-col gap-[16px]">
         <h1 className="bg-[#FEF1DF] text-[48px]/[57.6px] font-light text-black w-fit rounded-md">
           Leadership
@@ -17,7 +24,7 @@ const CompanyLeadership = () => {
           experience to achieve common goals and meet the needs of our clients
         </p>
       </div>
-      <div className="w-3/4 flex flex-row gap-[80px]">
+      <div className="w-3/4 flex flex-row gap-[80px] justyfe">
         {leaderships.map((item: Leadership) => (
           <CompanyLeader key={item.name} item={item} />
         ))}

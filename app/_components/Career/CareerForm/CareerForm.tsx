@@ -19,7 +19,7 @@ import {
 import { useForm } from "react-hook-form";
 import AttachSvg from "../../Svg/CareerSvg/Attach/AttachSvg";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { Label } from "@radix-ui/react-label";
 
 const MAX_FILE_SIZE = 2000000;
@@ -136,15 +136,14 @@ const CareerForm: React.FC = () => {
                 <FormField
                   control={form.control}
                   name="currentFile"
-                  render={({ field }) => {
+                  render={() => {
                     return (
                       <FormItem>
                         <FormControl>
                           <Label className="rounded-md text-black cursor-pointer">
                             Choose your file
                             <Input
-                              {...field}
-                              type="text"
+                              type="file"
                               className="hidden"
                               {...fileRef}
                             />
