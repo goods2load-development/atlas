@@ -118,7 +118,7 @@ export default function UserRegistration() {
     if (!countriesList.length) getCountriesList();
   });
   const [userRegistration, setUserRegistration] = useState(true);
-  const [license, setLicense] = useState(null);
+  const [license, setLicense] = useState<File | null>(null);
   function nextStep() {
     trigger([
       "firstName",
@@ -443,8 +443,8 @@ export default function UserRegistration() {
                           accept="application/pdf"
                           {...field}
                           onChange={(e) => {
-                            console.log("file", e.target.files[0]);
-                            setLicense(e.target.files[0]);
+                            if (e.target.files?.length)
+                              setLicense(e.target.files[0]);
                             return field.onChange(e);
                           }}
                         />
