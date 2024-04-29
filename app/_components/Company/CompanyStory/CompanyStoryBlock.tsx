@@ -1,6 +1,5 @@
 "use client";
 import React, { FC, useState } from "react";
-import { IBlock } from "@/app/components/Company/CompanyStory/CompanyStory";
 import Image from "next/image";
 import { ILeaders } from "@/app/interfaces/leaderShip/interface";
 
