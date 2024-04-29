@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import close from "@/assets/close.svg";
-import { Leadership } from "@/app/interface/leaderShip";
+import { Leadership } from '@/app/interface/leaderShip';
 
 type TItem = {
   item: Leadership;
@@ -61,15 +61,9 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
               </pre>
             </div>
           </DialogHeader>
-          <div className="flex items-center space-x-2">
-            <div className="grid flex-1 gap-2"></div>
-            <Button type="submit" size="sm" className="px-3">
-              <span className="sr-only">Copy</span>
-            </Button>
-          </div>
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
-              <Button type="button" className="top-[5%] absolute right-[3%]">
+              <Button type="button" className="top-[5%] absolute right-[3%] bg-white">
                 <Image
                   className="right-10 hover:cursor-pointer"
                   src={close}

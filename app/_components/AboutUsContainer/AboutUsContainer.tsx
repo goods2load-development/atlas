@@ -1,16 +1,12 @@
 "use client";
-import { type FC, memo, useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { type FC, memo, useState } from "react";
 
 import CompanyContainer from "@/app/_components/Company/CompanyContainer/CompanyContainer";
 import TrustContainer from "@/app/_components/Trust/TrustContainer/TrustContainer";
 import MediaContainer from "@/app/_components/MediaContainer/MediaContainer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-type Navigation = "company" | "trust" | "media";
 const AboutUsContainer: FC = () => {
-  const [currentScreen, setCurrentScreen] = useState<Navigation>("company");
-  const [currentIndex, setCurrentIndex] = useState(0);
   const [tab, setTab] = useState("company");
 
   const onTabChange = (value: string) => {
