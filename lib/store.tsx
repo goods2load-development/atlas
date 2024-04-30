@@ -63,9 +63,9 @@ export const useUserStore = create((set) => ({
       url: "auth/login",
       data,
     }).then((userData: any) => {
-      console.log("user data", userData);
+      // TODO add redirect
       localStorage.setItem("id", userData.data.id);
-      set(() => ({ user: userData.data }));
+      set(() => ({ user: userData?.data }));
     });
   },
   getUser: async () => {
@@ -73,8 +73,28 @@ export const useUserStore = create((set) => ({
     await get({
       url: `/users/${id}`,
     }).then((userData: any) => {
-      console.log("user data", userData);
-      set(() => ({ user: userData.data }));
+      set(() => ({ user: userData?.data }));
+    });
+  },
+}));
+
+export const useForgotPasswordStore = create((set) => ({
+  user: {},
+  postForgotPasswordData: async (data: any) => {
+    post({
+      url: "auth/forgot",
+      data,
+    }).then((userData: any) => {
+      // TODO add redirect or pop-up
+    });
+  },
+  postResetPasswordData: async (data: any, id: string) => {
+    delete data.confirmPassword;
+    post({
+      url: `auth/reset/${id}`,
+      data,
+    }).then((userData: any) => {
+      // TODO add redirect
     });
   },
 }));

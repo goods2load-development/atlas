@@ -73,7 +73,7 @@ export default function Login() {
               </FormItem>
             )}
           />
-          <Link href="/registration" className="text-[12px]/[16px]">
+          <Link href="/forgot-password" className="text-[12px]/[16px]">
             Forgot your password?
           </Link>
           <Button
