@@ -51,14 +51,50 @@ export const useRegistrationStore = create((set) => ({
   },
 }));
 
+interface LoginProps {
+  email: string;
+  password: string;
+}
+
 export const useUserStore = create((set) => ({
   user: {},
-  postLoginData: async (data: any) => {
+  postLoginData: async (data: LoginProps) => {
     post({
       url: "auth/login",
       data,
-    }).then(() => {
-      set((state: any) => ({ user: data }));
+    }).then((userData: any) => {
+      // TODO add redirect
+      localStorage.setItem("id", userData.data.id);
+      set(() => ({ user: userData?.data }));
+    });
+  },
+  getUser: async () => {
+    const id = localStorage.getItem("id");
+    await get({
+      url: `/users/${id}`,
+    }).then((userData: any) => {
+      set(() => ({ user: userData?.data }));
+    });
+  },
+}));
+
+export const useForgotPasswordStore = create((set) => ({
+  user: {},
+  postForgotPasswordData: async (data: any) => {
+    post({
+      url: "auth/forgot",
+      data,
+    }).then((userData: any) => {
+      // TODO add redirect or pop-up
+    });
+  },
+  postResetPasswordData: async (data: any, id: string) => {
+    delete data.confirmPassword;
+    post({
+      url: `auth/reset/${id}`,
+      data,
+    }).then((userData: any) => {
+      // TODO add redirect
     });
   },
 }));
