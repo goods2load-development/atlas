@@ -10,12 +10,12 @@ const PartnersStartingFrom: React.FC = () => {
       </div>
       <div className="w-full flex justify-center">
         <div className="">
-          <h1 className="text-black w-[620px] leading-[57px] font-light  mb-[30px] text-[40px]/[48px] text-left">
+          <div className="text-black w-[620px] leading-[57px] font-light  mb-[30px] text-[40px]/[48px] text-left">
             <span className="w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               Starting from 0
             </span>
             never been easy but we will never forget how it feels
-          </h1>
+          </div>
           <p className="text-[18px] text-black w-full max-w-[650px]">
             Consistency, coupled with the right strategies, paves the way for
             significant achievements. Building and nurturing relationships as we

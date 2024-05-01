@@ -12,12 +12,12 @@ import { sliderData } from "@/app/_components/Partners/PartnersOurPartners/slide
 const PartnersOurPartners: React.FC = () => {
   return (
     <section className="w-full max-w-[1440px] items-center">
-      <h1 className="text-black text-center font-light text-[40px]/[48px] flex">
+      <div className="text-black text-center font-light text-[40px]/[48px] flex">
         Our
         <div className="font-normal italic bg-[#FEF1DF] rounded-[6px] h-[49px] px-[8px] ml-2 flex justify-center items-center">
           partners
         </div>
-      </h1>
+      </div>
       <div className="flex w-full">
         <div className="w-full flex flex-row justify-evenly">
           <Carousel className="w-full">

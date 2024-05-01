@@ -14,9 +14,9 @@ const PartnersAmplify: React.FC = () => {
         <Image src={macBookImage} alt="" />
       </div>
       <div className="flex flex-col z-40">
-        <h1 className="text-[48px] max-w-[500px] leading-[57px] font-light mb-2 pt-[120px] mb-[20px] max-w-[1000px] text-left">
+        <div className="text-[48px] max-w-[500px] leading-[57px] font-light mb-2 pt-[120px] mb-[20px] max-w-[1000px] text-left">
           Amplify your voice to reach those who matter most
-        </h1>
+        </div>
         <h2 className="w-full text-[17px]/[28px] max-w-[484px] font-light text-left leading-[28px] mb-[30px]">
           We’ve developed our platform to swiftly skim and <br />
           analyze real-time company search data.,

@@ -9,13 +9,13 @@ const PartnersVisibility: React.FC = () => {
   return (
     <div className=" w-[1440px] items-center justify-center pt-[47px]  text-white text-center mb-[100px]">
       <div className="mb-[40px]">
-        <h1 className="text-black text-[40px] font-semibold italic">
+        <div className="text-black text-[40px] font-semibold italic">
           “Nice{" "}
           <span className="text-40 leading-48 font-normal text-[40px]">
             and
           </span>{" "}
           easy”
-        </h1>
+        </div>
         <div className="text-black">is our motto</div>
       </div>
       <div className="flex mb-[100px]">
