@@ -21,12 +21,12 @@ const PartnersVisibility: React.FC = () => {
       <div className="flex mb-[100px]">
         <div className="w-full flex justify-center">
           <div className="">
-            <h1 className="text-black w-[560px] leading-[57px] font-light  mb-[10px] text-[40px]/[48px] text-left">
+            <h2 className="text-black w-[560px] leading-[57px] font-light  mb-[10px] text-[40px]/[48px] text-left">
               <span className="w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
                 Visibility
               </span>{" "}
               in search results can truly set you apart
-            </h1>
+            </h2>
             <p className="text-[18px] text-black w-full max-w-[570px] text-left">
               Position your company on relevant research result pages and link
               directly to your website’s booking page.
