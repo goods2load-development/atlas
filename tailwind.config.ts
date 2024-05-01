@@ -71,6 +71,10 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       backgroundImage: {
+        bgPartnersAmplifyShadow:
+          "linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)",
+        bgPartnersAmplify:
+          "url('../assets/PartnersImage/PartnersAmplify/partnersAmplifyBg.png')",
         bgMainPrimary: "url('../public/bgmain.png')",
         bgFooter: "url(../public/footerbg.png)",
         bgOptimize: "url(../public/optimizebg.jpg)",

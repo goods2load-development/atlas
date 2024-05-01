@@ -34,7 +34,7 @@ const CareerCard: React.FC<ModalCareer> = ({ pesonalInfo }) => {
             </button>
           </DialogTrigger>
         </div>
-        <Popup leader={{ ...pesonalInfo }} />,
+        <Popup leader={{ ...pesonalInfo }} />
       </div>
     </Dialog>
   );

@@ -15,12 +15,10 @@ import google from "@/assets/google.svg";
 
 const TrustReputation = () => {
   return (
-    <section className="w-full max-w-[1440px] flex flex-col items-center gap-[16px]">
-      <h1 className="text-black text-center font-light text-[40px]/[48px] flex">
-        Our
-        <div className="font-normal italic bg-[#FEF1DF] rounded-md h-[49px] px-[8px] ml-2 flex justify-center items-center">
-          reputation
-        </div>
+    <section className='w-full max-w-[1440px] flex flex-col items-center gap-[16px]'>
+      <h1 className='text-black text-center font-light text-[40px]/[48px] flex'>Our
+        <div
+          className='font-normal italic bg-[#FEF1DF] rounded-[6px] h-[49px] px-[8px] ml-2 flex justify-center items-center'>reputation</div>
         speaks for itself
       </h1>
 

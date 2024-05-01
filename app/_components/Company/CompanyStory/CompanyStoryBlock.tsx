@@ -1,13 +1,14 @@
 "use client";
+
 import React, { FC, useState } from "react";
+import { IBlock } from "@/app/_components/Company/CompanyStory/CompanyStory";
 import Image from "next/image";
-import { ILeaders } from "@/app/interfaces/leaderShip/interface";
 
 type TItem = {
-  item: ILeaders;
+  item: IBlock;
 };
 
-const CompanyStoryBlock: FC<any> = ({ item }) => {
+const CompanyStoryBlock: FC<TItem> = ({ item }) => {
   const [showMore, setShowMore] = useState<boolean>(false);
 
   return (
@@ -17,14 +18,16 @@ const CompanyStoryBlock: FC<any> = ({ item }) => {
       </div>
 
       <div className="flex flex-col text-black">
-        <h2 className="font-normal text-[26px]/[22px] italic pb-[16px]">
+        <h2 className="font-normal text-[26px]/[22px] italic pb-[16px] text-left">
           {item.time}
         </h2>
         {!item.more ? (
-          <p className="font-normal text-[16px]/[22.4px]">{item.info}</p>
+          <p className="font-normal text-[16px]/[22.4px] text-left">
+            {item.info}
+          </p>
         ) : (
           <p
-            className={`font-normal text-[16px]/[22.4px] ${!showMore && "max-h-[156px] text-story w-full"}`}
+            className={`font-normal text-[16px]/[22.4px] text-left ${!showMore && "max-h-[156px] text-story w-full"}`}
           >
             {item.info}
           </p>

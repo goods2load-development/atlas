@@ -10,14 +10,14 @@ const MediaContainerItem: FC<any> = ({ item }) => {
   return (
     <div
       key={item.date}
-      className="w-[500px] h-[400px] rounded-lg flex-shrink-0"
+      className="w-[500px] h-[400px] rounded-lg flex-shrink-0 mt-[30px]"
     >
       <Image
         src={item.img}
         alt={item.title}
         width={500}
         height={200}
-        className="rounded-t-lg"
+        className="rounded-t-lg mb-[30px]"
       />
       <div className="flex flex-row justify-between items-center text-black">
         <a
