@@ -7,7 +7,7 @@ import { careerData } from "../_components/Career/careerData";
 
 const Career: React.FC = () => {
   return (
-    <section className="max-w-[1440px] w-full flex justify-center items-center gap-[40px] py-[104px]">
+    <section className="max-w-[1440px] w-full flex justify-center items-center gap-[40px] py-[104px] m-auto">
       <div className="">
         <div className="flex flex-col gap-[16px] justify-center text-center text-black mb-[20px]">
           <h1 className="font-normal text-[48px]/[57.6px] italic text-center flex flex-row justify-center gap-[12px]">

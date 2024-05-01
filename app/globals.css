@@ -150,6 +150,19 @@ background: radial-gradient(circle, rgba(241,241,241,1) 0%, rgba(255,103,32,1) 1
   width: 50%;
 }
 }
-.lucide{
+/* .lucide{
   display: none !important;
+} */
+.custom-radio input:checked + label {
+  background-color: white;
+  border-radius: 50%;
+}
+.custom-radio input:checked + label img {
+  filter: invert(46%) sepia(98%) saturate(1895%) hue-rotate(345deg)
+    brightness(100%) contrast(102%);
+  border-radius: 50%;
+}
+
+a:hover {
+  text-decoration: underline;
 }
