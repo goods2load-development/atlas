@@ -1,16 +1,15 @@
-"use client"
+"use client";
 
-import React, { FC, useState } from 'react';
-import { IBlock } from '@/app/_components/Company/CompanyStory/CompanyStory';
-import Image from 'next/image';
+import React, { FC, useState } from "react";
+import { IBlock } from "@/app/_components/Company/CompanyStory/CompanyStory";
+import Image from "next/image";
 
 type TItem = {
-  item: IBlock
-}
+  item: IBlock;
+};
 
-const CompanyStoryBlock: FC<TItem> = ({item}) => {
-
-  const [showMore, setShowMore] = useState<boolean>(false)
+const CompanyStoryBlock: FC<TItem> = ({ item }) => {
+  const [showMore, setShowMore] = useState<boolean>(false);
 
   return (
     <div className="w-3/12 flex flex-col gap-[24px]">

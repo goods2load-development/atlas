@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 // localization routing not finished
@@ -14,13 +14,8 @@ import {
   NavigationMenuTrigger,
   NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
-import { useUserStore } from "@/lib/store";
 
 export default function Header(props: any) {
-  const { user, getUser } = useUserStore((state: any) => state);
-  useEffect(() => {
-    getUser();
-  }, [user.id]);
   return (
     <div
       className={`${

@@ -20,6 +20,7 @@ const config = {
     },
     extend: {
       colors: {
+        customGrey: "#A8A8A84D",
         primaryOrange: "#FF6720",
         customWhite: "#FFFFFF",
         black: "#29292A",
@@ -56,6 +57,7 @@ const config = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        lightOrange: "#FFEDE4",
         orangePrimary: "#FF6720",
         orangeSecondary: "#ffede4",
         grayCustom: "rgba(255, 255, 255, 0.7)",
@@ -78,6 +80,7 @@ const config = {
         bgOptimize: "url(../public/optimizebg.jpg)",
         bgLogistics: "url(../public/logisticbg.png)",
         bgQuestions: "url(../public/accordionbg.png)",
+        bgCareer: "url(../assets/careerBg.png)",
         "hero-pattern": "url('../assets/hero-pattern.svg')",
         "divide-pattern": "url('../assets/divide-pattern.svg')",
       },
