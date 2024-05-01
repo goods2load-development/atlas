@@ -15,7 +15,7 @@ const AboutUsContainer: FC = () => {
 
   return (
     <>
-      <div className="flex flex-col w-[1440px] items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center ">
+      <div className="flex flex-col w-full items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center ">
         <h1 className="text-[64px] leading-[70px] font-light mb-2 pt-[120px]">
           About <span className="italic font-normal">us</span>
         </h1>
