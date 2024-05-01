@@ -76,6 +76,7 @@ const config = {
         bgOptimize: "url(../public/optimizebg.jpg)",
         bgLogistics: "url(../public/logisticbg.png)",
         bgQuestions: "url(../public/accordionbg.png)",
+        bgCareer: "url(../assets/careerBg.png)",
         "hero-pattern": "url('../assets/hero-pattern.svg')",
         "divide-pattern": "url('../assets/divide-pattern.svg')",
       },

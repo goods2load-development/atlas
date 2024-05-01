@@ -64,7 +64,7 @@ const CareerForm: React.FC = () => {
   ];
 
   return (
-    <section className="max-w-[1440px] flex flex-col w-full items-center py-[104px] career pb-[50px] pt-[68px] pb-[100px]">
+    <section className="max-w-[1440px] flex flex-col w-full items-center py-[104px] career bg-bgCareer pb-[50px] pt-[68px] pb-[100px]">
       <div className="text-[48px] text-white text-center mb-[30px] font-poppins italic">
         WORK WITH US
       </div>
