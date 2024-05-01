@@ -27,14 +27,16 @@ const AboutUsContainer: FC = () => {
           <Tabs value={tab} onValueChange={onTabChange}>
             <TabsList>
               <TabsTrigger
-                className={`w-[260px] text-center italic text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${tab === "company" ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
+                className={`w-[260px] text-center italic bg-black text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${tab === "company" ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
                 value="company"
+                style={{ backgroundColor: "transparent", color: "white" }}
               >
                 Company
               </TabsTrigger>
               <TabsTrigger
                 className={`w-[260px] text-center italic text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${tab === "trust" ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
                 value="trust"
+                style={{ backgroundColor: "transparent", color: "white" }}
               >
                 Trust
               </TabsTrigger>
@@ -42,6 +44,7 @@ const AboutUsContainer: FC = () => {
               <TabsTrigger
                 className={`w-[260px] text-center italic text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${tab === "media" ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
                 value="media"
+                style={{ backgroundColor: "transparent", color: "white" }}
               >
                 Media
               </TabsTrigger>
