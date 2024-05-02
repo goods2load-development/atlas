@@ -20,6 +20,7 @@ const config = {
     },
     extend: {
       colors: {
+        allTittleColor: "#FEF1DF",
         customGrey: "#A8A8A84D",
         primaryOrange: "#FF6720",
         customWhite: "#FFFFFF",
