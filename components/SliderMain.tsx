@@ -49,10 +49,13 @@ const DotButton = (props: any) => {
 };
 
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay"
 import Link from "next/link";
 
 export default function SliderMain() {
-  const [emblaRef, emblaApi] = useEmblaCarousel();
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
+    Autoplay({ playOnInit: true, delay: 3000 })
+  ]);
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
 
@@ -60,7 +63,7 @@ export default function SliderMain() {
     <div className="embla overflow-hidden" ref={emblaRef}>
       <div className="embla__container flex">
         <div className="embla__slide flex-[0_0_100%] relative">
-          <img src="/slide1.png" />
+          <img src="/slide1.png" className="w-full" />
           <div className="absolute top-0 left-0 w-6/12 mw-[100%] h-[100%] px-16 flex flex-wrap content-center">
             <div>
               <div className="italic text-[40px]/[48px]">
@@ -81,7 +84,7 @@ export default function SliderMain() {
           </div>
         </div>
         <div className="embla__slide flex-[0_0_100%] relative">
-          <img src="/slide2.png" />
+          <img src="/slide2.png" className="w-full" />
           <div className="absolute top-0 left-0 w-6/12 mw-[100%] h-[100%] px-16 flex flex-wrap content-center">
             <div>
               <div className="italic text-[40px]/[48px]">
@@ -102,7 +105,7 @@ export default function SliderMain() {
           </div>
         </div>
         <div className="embla__slide flex-[0_0_100%] relative">
-          <img src="/slide3.png" />
+          <img src="/slide3.png" className="w-full" />
           <div className="absolute top-0 left-0 w-6/12 mw-[100%] h-[100%] px-16 flex flex-wrap content-center">
             <div>
               <div className="italic text-[40px]/[48px]">

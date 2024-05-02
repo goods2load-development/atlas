@@ -16,21 +16,21 @@ const lItems: lItemProps[] = [
     imageSrc: "/temp1.png",
     date: "February 2024",
     text: "With 30% of global container trade transiting through the Suez Canal, the Red Sea shipping crisis is upending supply chains.",
-    link: "",
+    link: "https://www.jpmorgan.com/insights/global-research/supply-chain/red-sea-shipping",
   },
   {
-    title: "JP MORGAN",
+    title: "Kuehne & Nagel International",
     imageSrc: "/temp1.png",
     date: "February 2024",
-    text: "With 30% of global container trade transiting through the Suez Canal, the Red Sea shipping crisis is upending supply chains.",
-    link: "/",
+    text: "Kühne + Nagel International AG engages in the provision of logistic services. It operates through the following segments: Sea Freight, Airfreight, Overland, and Contract Logistics.",
+    link: "https://www.forbes.com/companies/kuehne-nagel-international/?sh=4263844f5141",
   },
   {
-    title: "JP MORGAN",
+    title: "CNBC",
     imageSrc: "/temp1.png",
     date: "February 2024",
-    text: "With 30% of global container trade transiting through the Suez Canal, the Red Sea shipping crisis is upending supply chains.",
-    link: "/",
+    text: "Ocean freight rates from Asia to the U.S. have begun to de- cline, providing some relief for U.S. shippers. But cargo shipping costs are still massively up since Decem",
+    link: "https://www.cnbc.com/2024/02/15/red-sea-attack-fueled-ocean-freight-inflation-is-starting-to-reverse.html#:~:text=State%20of%20Freight-,Red%20Sea%20attack%2Dfueled%20ocean%20freight%20inflation%20is%20starting%20to,on%20key%20global%20trade%20routes&text=Ocean%20freight%20rates%20from%20Asia,the%20Red%20Sea%20crisis%20began.",
   },
 ];
 
@@ -47,6 +47,7 @@ function LogisticsItem({ item }: { item: lItemProps }) {
       <div className="text-[16px]/[22px] mb-[10px]">{item.text}</div>
       <Link href={item.link} className="text-orangePrimary text-[18px]/[22px]">
         Read more
+        <img src="/arrowlong.png" className="inline-block ml-3" />
       </Link>
     </div>
   );
