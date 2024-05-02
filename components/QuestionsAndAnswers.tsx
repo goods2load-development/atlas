@@ -48,7 +48,7 @@ const questionsContent = [
 
 function QuestionItem(props: any) {
   return (
-    <AccordionItem value={`item-${props.number}`}>
+    <AccordionItem value={`item-${props.number}`} className="py-4">
       <AccordionTrigger className="text-orangePrimary hover:no-underline">
         <div className="text-[18px]/[28px] font-normal text-left">
           <i className="text-[24px]/[28px] inline-block w-20 pr-10">
@@ -66,8 +66,8 @@ function QuestionItem(props: any) {
 
 export default function QuestionsAndAnswers() {
   return (
-    <div className="px-16 py-10 flex flex-col bg-bgQuestions bg-cover bg-center">
-      <div className="text-center text-[48px]/[48px] mb-16">
+    <div className="px-16 py-24 flex flex-col bg-bgQuestions bg-cover bg-center">
+      <div className="text-center text-[48px]/[48px] mb-12">
         <i className="bg-orangeSecondary px-[5px]">Answers</i>
         <span>to Your Burning</span>
         <i className="bg-orangeSecondary px-[5px]">Questions</i>

@@ -55,14 +55,14 @@ function LogisticsItem({ item }: { item: lItemProps }) {
 
 export default function LogisticInsights() {
   return (
-    <div className="px-16 py-[60px] bg-bgLogistics bg-cover bg-center">
+    <div className="px-16 py-24 bg-bgLogistics bg-cover bg-center">
       <h2 className="font-light text-[40px]/[48px]">
         <i className="bg-orangeSecondary">Logistics</i> insights:
       </h2>
-      <div className="font-light text-[18px]/[22px] py-[20px]">
+      <div className="font-light text-[18px]/[22px] py-3">
         stay ahead with our blog.
       </div>
-      <div className="flex space-between">
+      <div className="flex space-between mt-5">
         {lItems.map((item, index) => (
           <LogisticsItem item={item} key={`${item.title}-${index}`} />
         ))}
