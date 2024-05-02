@@ -13,7 +13,7 @@ export default function Logo(props: LogoProps) {
       <Image
         src="/logo.svg"
         alt="Goods2load Logo"
-        className="dark:invert"
+        className="dark:invert z-40"
         width={props.width}
         height={props.height}
         priority

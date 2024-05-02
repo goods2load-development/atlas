@@ -15,15 +15,18 @@ const AboutUsContainer: FC = () => {
 
   return (
     <>
-      <div className="flex flex-col w-full items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center ">
-        <h1 className="text-[64px] leading-[70px] font-light mb-2 pt-[120px]">
-          About <span className="italic font-normal">us</span>
-        </h1>
-        <h2 className="mb-[68px] text-[17px]/[28px] font-light">
-          We help reduce costs, increase efficiency and offer improved customer
-          service
-        </h2>
-        <div className="flex w-fit pb-[190px]">
+      <div className="flex relative flex-col w-full items-center justify-center pt-[47px]  bg-cover bg-center text-white text-center ">
+        <div className="absolute top-[-100px] flex flex-col w-full items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center pb-[300px]">
+          <h1 className="text-[64px] leading-[70px] font-light mb-2 pt-[120px]">
+            About <span className="italic font-normal">us</span>
+          </h1>
+          <h2 className="mb-[68px] text-[17px]/[28px] font-light">
+            We help reduce costs, increase efficiency and offer improved
+            customer service
+          </h2>
+        </div>
+
+        <div className="flex w-fit pb-[190px] pt-[200px]">
           <Tabs value={tab} onValueChange={onTabChange}>
             <TabsList>
               <TabsTrigger
@@ -49,13 +52,13 @@ const AboutUsContainer: FC = () => {
                 Media
               </TabsTrigger>
             </TabsList>
-            <TabsContent value="company">
+            <TabsContent value="company" className="mt-[250px]">
               <CompanyContainer />
             </TabsContent>
-            <TabsContent value="trust">
+            <TabsContent value="trust" className="mt-[200px]">
               <TrustContainer />
             </TabsContent>
-            <TabsContent className="relative" value="media">
+            <TabsContent className="mt-[320px]" value="media">
               <MediaContainer />
             </TabsContent>
           </Tabs>
