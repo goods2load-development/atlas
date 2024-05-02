@@ -22,7 +22,7 @@ axios.interceptors.response.use(
 
 export function get(params: any) {
   return axios
-    .get(params.url)
+    .get(params.url, { ...params })
     .then(function (response: any) {
       console.log("response", response);
       return response.data;
@@ -38,6 +38,19 @@ export function post(params: any) {
     .post(params.url, params.data, {
       ...params,
     })
+    .then(function (response: any) {
+      console.log("response", response);
+      return response.data;
+    })
+    .catch(function (error: any) {
+      console.log(error);
+      // TODO add toast messages
+    });
+}
+
+export function patch(params: any) {
+  return axios
+    .patch(params.url, params.data)
     .then(function (response: any) {
       console.log("response", response);
       return response.data;
