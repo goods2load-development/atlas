@@ -25,7 +25,7 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
     setcurrentHelpData((cur) =>
       cur.map(
         (
-          it: { question: string; description: string; open: boolean },
+          it: { question: string; description: string | JSX.Element; open: boolean },
           i: number
         ) => (i === index ? { ...it, open: !it.open } : it)
       )

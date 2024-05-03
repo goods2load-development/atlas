@@ -1,5 +1,4 @@
 import { HelpData } from "@/app/interface/helpData";
-import data from "./data.json"
 
 export const helpData: HelpData = {
   ship: [
@@ -7,7 +6,7 @@ export const helpData: HelpData = {
       question:
         "What is the reason for specifying the Incoterm details in my shipping request?",
       description: <span>Specifying Incoterms details in your shipping request is essential for clarity, risk management, cost calculation, legal compliance, and efficient logistics planning.  
-        <br/><br/><b>EXPORT (I’M SELLING):</b><br/> - CFR (Cost and Freight): The seller delivers the goods on board the vessel, contracting for and paying the costs and freight necessary to bring the goods to the named port of destination. - CIF (Cost, Insurance and Freight): Similar to CFR, but the seller must also obtain minimum insurance cover against the buyer's risk of loss or damage to the goods during carriage. - CPT (Carriage Paid To): The seller pays for the carriage of goods up to the named place of destination. - CIP ( Carriage and Insurance Paid): The seller pays for the carriage of the goods up to the named place of destination, with the exception that the seller is required to obtain minimum insurance for the goods while in transit.
+        <br/><br/><b>EXPORT (I’M SELLING):</b><br/> - CFR (Cost and Freight): The seller delivers the goods on board the vessel, contracting for and paying the costs and freight necessary to bring the goods to the named port of destination. - CIF (Cost, Insurance and Freight): Similar to CFR, but the seller must also obtain minimum insurance cover against the buyer&apos;s risk of loss or damage to the goods during carriage. - CPT (Carriage Paid To): The seller pays for the carriage of goods up to the named place of destination. - CIP ( Carriage and Insurance Paid): The seller pays for the carriage of the goods up to the named place of destination, with the exception that the seller is required to obtain minimum insurance for the goods while in transit.
         <br/><br/><b>IMPORT (I AM BUYING):</b><br/> - FOB (Free on Board): The seller delivers the goods on board the vessel nominated by the buyer at the named port of shipment. - FCA (Free Carrier): The seller delivers the goods, cleared for export, at a named place, which can be their own premises or another designated location.</span>,
       open: false,
     },
@@ -15,7 +14,7 @@ export const helpData: HelpData = {
       question:
         "HOW DOES THE PROCESS OF CARGO LOADING AND UNLOADING WORK AT PORTS FOR SEA SHIPMENTS?",
       description:
-        "The process of cargo loading and unloading at ports involves specialized equipment such as cranes to move containers onto and off ships. Cargo is organized and stored in designated areas within the port until it's ready to be loaded onto the ship or transported away from the port.",
+        "The process of cargo loading and unloading at ports involves specialized equipment such as cranes to move containers onto and off ships. Cargo is organized and stored in designated areas within the port until it&apos;s ready to be loaded onto the ship or transported away from the port.",
       open: false,
     },
     {
@@ -67,7 +66,7 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         Specifying Incoterms details in your shipping request is essential for clarity, risk management, cost calculation, legal compliance, and efficient logistics planning.
         <br/><br/>
         <b>PREPAID:</b>
-        <br/>- DDP (Delivered Duty Paid): The seller bears all costs and risks until the goods' arrival at the named place of destination, including all taxes and customs formalities, without unloading. 
+        <br/>- DDP (Delivered Duty Paid): The seller bears all costs and risks until the goods&apos; arrival at the named place of destination, including all taxes and customs formalities, without unloading. 
         <br/>- DPU (Delivered at Place Unloaded): The seller bears all risks and costs involved in bringing the goods to and unloading them at the named place of destination. 
         <br/>- DAP (Delivered At Place): The seller bears all costs and risks until arrival at the designated destination, excluding discharge. 
         <br/>- DDU (Delivered Duty Unpaid): The seller bears all costs and risks up to the named place, excluding discharge. 
@@ -114,9 +113,9 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
     {
       question: "HOW ARE CUSTOMS PROCEDURES MANAGED FOR AIR CARGO SHIPMENTS,ESPECIALLY FOR INTERNATIONAL ROUTES?",
       description: <span>
-        Customs procedures for air cargo shipments, particularly for international routes, involve several key steps to ensure compliance with import and export regulations. Here's an overview of how customs procedures are managed for air cargo shipments:
+        Customs procedures for air cargo shipments, particularly for international routes, involve several key steps to ensure compliance with import and export regulations. Here&apos;s an overview of how customs procedures are managed for air cargo shipments:
         <br/>1. Documentation Submission: Shippers are required to provide accurate and complete documentation for their air cargo shipments, including commercial invoices, packing lists, air waybills, and any required permits or certificates. This documentation is submitted to customs authorities electronically or through designated customs agents.
-        <br/>2. Customs Declaration: Upon arrival at the destination country's airport, air cargo shipments undergo customs declaration, where customs officials review the submitted documentation to verify the contents of the shipment and assess any applicable duties, taxes, or tariffs.
+        <br/>2. Customs Declaration: Upon arrival at the destination country&apos;s airport, air cargo shipments undergo customs declaration, where customs officials review the submitted documentation to verify the contents of the shipment and assess any applicable duties, taxes, or tariffs.
         <br/>3. Cargo Inspection: Customs authorities may conduct physical inspections of air cargo shipments to ensure compliance with import/export regulations, as well as to detect any prohibited or restricted items. These inspections may involve the use of X-ray scanners, sniffer dogs, or manual inspections.
         <br/>4. Duty Assessment: Customs officials assess the value of the imported goods and determine the applicable duties, taxes, or tariffs based on the declared value, classification, and origin of the goods. Shippers are responsible for paying any applicable duties or taxes before the cargo can be released for delivery.
         <br/>5. Clearance and Release: Once customs clearance procedures are completed and any duties or taxes are paid, the air cargo shipment is released by customs authorities for final delivery to the consignee. Customs clearance may involve electronic release procedures or physical release of cargo after inspection.
@@ -131,7 +130,7 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         The transportation of chemical or raw material cargo is subject to specific regulations and safety protocols to prevent accidents and environmental hazards. These may include proper packaging, labeling, handling procedures, and adherence to international standards such as the International Maritime Dangerous Goods (IMDG) Code or the International Air Transport Association (IATA) Dangerous Goods Regulations (DGR). Here are some key aspects:
         <br/>1. **Classification and Labeling**: Chemicals and raw materials must be classified and labeled according to international standards, such as the Globally Harmonized System of Classification and Labelling of Chemicals (GHS). Proper labeling ensures that hazards associated with the cargo are clearly communicated to handlers and emergency responders.
         <br/>2. **Packaging Requirements**: Chemicals and raw materials must be packaged in containers that meet regulatory standards for strength, durability, and compatibility with the cargo. Packaging materials should be resistant to leakage, breakage, and contamination to prevent spills or exposure during transit.
-        <br/>3. **Documentation**: Shippers are required to provide accurate and comprehensive documentation for chemical or raw material cargo, including safety data sheets (SDS), shipping manifests, and transport documentation. These documents contain vital information about the cargo's composition, hazards, handling instructions, and emergency response procedures.
+        <br/>3. **Documentation**: Shippers are required to provide accurate and comprehensive documentation for chemical or raw material cargo, including safety data sheets (SDS), shipping manifests, and transport documentation. These documents contain vital information about the cargo&apos;s composition, hazards, handling instructions, and emergency response procedures.
         <br/>4. **Transportation Modes**: Depending on the nature of the cargo and regulatory requirements, chemical or raw material cargo may be transported by various modes, including road, rail, sea, or air. Each mode of transportation has specific regulations and safety measures governing the handling and carriage of hazardous materials.
         <br/>5. **Security Measures**: Chemical or raw material cargo may be subject to additional security measures to prevent theft, tampering, or unauthorized access. These measures may include security seals, surveillance systems, and secure storage facilities to safeguard the cargo throughout the transportation process.
         <br/>6. **Emergency Response Planning**: Shippers and transporters of chemical or raw material cargo must have comprehensive emergency response plans in place to address potential incidents or accidents during transit. This includes training personnel in proper handling procedures, spill containment, and evacuation protocols to minimize risks to human health and the environment.
@@ -159,8 +158,8 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         Declaring your goods for shipping is crucial for these reasons:
         <br/>Compliance: Avoid penalties and delays by providing accurate information. Identifying the right vehicle of transport to move your goods is our priority!
         <br/>Safety and security: Prevent transportation of hazardous or prohibited items. Not all the states has the same regulations and we are here to help you to not get in trouble!
-        <br/>Documentation accuracy: Since one of our 'Plus service' includes RemoteCash&Carry, we want to help you have the broadest understanding of what you are buying and understanding which product in question is essential.
-        <br/>Risk management: Finding the right insurance for your property is really important. Yes, it's a choice, but sometimes can provide you peace of mind and financial protection.
+        <br/>Documentation accuracy: Since one of our &apos;Plus service&apos; includes RemoteCash&Carry, we want to help you have the broadest understanding of what you are buying and understanding which product in question is essential.
+        <br/>Risk management: Finding the right insurance for your property is really important. Yes, it&apos;s a choice, but sometimes can provide you peace of mind and financial protection.
         <br/>Efficient logistics: Help logistics companies plan and allocate resources effectively.
         <br/> In summary, declaring your goods ensures compliance, safety, efficient logistics, and smooth processes.
       </span>,
@@ -170,19 +169,19 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
       question: "WHY SOMETIMES I CAN'T GET A QUOTE FOR MY TRANSPORT?",
       description: <span>
         There can be several reasons why you may not be able to get a quote for your transport but in any of these case, contact us through Whatsapp linked: 
-        <br/><br/>Insufficient Information: If you haven't provided enough details about your transport requirements, such as the origin and destination, dimensions, weight, type of goods, or any specific handling requirements, it may be challenging for the service provider to generate an accurate quote. Ensure you provide comprehensive information to receive an accurate estimate.
+        <br/><br/>Insufficient Information: If you haven&apos;t provided enough details about your transport requirements, such as the origin and destination, dimensions, weight, type of goods, or any specific handling requirements, it may be challenging for the service provider to generate an accurate quote. Ensure you provide comprehensive information to receive an accurate estimate.
         <br/>Complex or Specialized Requirements: Certain transport requests involve unique or specialized circumstances that may require additional information or assessment. For example, transporting hazardous materials, oversized cargo, or fragile items may require specialized handling or permits, making it more challenging to provide an instant quote.
         <br/>Unavailable Service or Route: The specific service or route you are requesting may not be offered by the transport provider. It could be due to geographical limitations, lack of availability, or other operational constraints. In such cases, they may not be able to provide a quote for that particular request.
         <br/>Dynamic Pricing: Some transport services have dynamic pricing based on factors such as market demand, fuel costs, seasonality, or other variables. As a result, quotes for certain transports may fluctuate and may not be immediately available. In such cases, you may need to reach out to the service provider directly for an updated quote.
         <br/>Technical or System Limitations: There could be instances where technical issues or limitations within the quoting system prevent the immediate generation of a quote. It could be due to system maintenance, connectivity problems, or other technical issues. Trying again later or contacting the service provider directly may help resolve this. 
-        <br/><br/>It's important to remember that each transport request is unique, and various factors can impact the ability to provide an instant quote. If you're unable to receive a quote online or through automated systems, reaching out to the transport provider directly or providing more detailed information about your requirements can often help in obtaining an accurate quote.
+        <br/><br/>It&apos;s important to remember that each transport request is unique, and various factors can impact the ability to provide an instant quote. If you&apos;re unable to receive a quote online or through automated systems, reaching out to the transport provider directly or providing more detailed information about your requirements can often help in obtaining an accurate quote.
       </span>,
       open: false,
     },
     {
       question: "WHY IT TAKES SO LONG TO HAVE A QUOTATION OF TRANSPORTATION?",
       description: <span>
-        Obtaining a transport quotation can take time due to factors such as the complexity of your request, the need for customized solutions, external influences, and the coordination required between multiple parties. Each transport request is unique and may require careful assessment and consideration before an accurate quotation can be provided. We provided a 'bell' notification in case you want to refreshand be kept informed of any developments.
+        Obtaining a transport quotation can take time due to factors such as the complexity of your request, the need for customized solutions, external influences, and the coordination required between multiple parties. Each transport request is unique and may require careful assessment and consideration before an accurate quotation can be provided. We provided a &apos;bell&apos; notification in case you want to refreshand be kept informed of any developments.
       </span>,
       open: false,
     },
