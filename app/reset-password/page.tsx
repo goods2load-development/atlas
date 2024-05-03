@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { useForgotPasswordStore } from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LoginWrapper from "@/components/LoginWrapper";
 
-export default function ResetPassword() {
+function ResetPasswordComponent() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
   const token = searchParams.get("token");
@@ -99,4 +99,12 @@ export default function ResetPassword() {
       </Form>
     </LoginWrapper>
   );
+}
+
+export default function ResetPassword() {
+  return (
+    <Suspense>
+      <ResetPasswordComponent />
+    </Suspense>
+  )
 }
