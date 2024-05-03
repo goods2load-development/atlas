@@ -12,7 +12,7 @@ export interface IMedia {
 
 const MediaContainer = () => {
   return (
-    <div className="w-full flex flex-col justify-center gap-8 absolute top-[300px]">
+    <div className="w-full flex flex-col justify-center gap-8  top-[300px]">
       <div className="flex justify-center gap-8">
         {media.slice(0, 2).map((item: any) => (
           <MediaContainerItem key={item.date} item={item} />
