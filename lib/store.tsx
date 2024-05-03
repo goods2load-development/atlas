@@ -1,11 +1,14 @@
 import { create } from "zustand";
-import { get, post } from "./utils";
+import { get, post, patch } from "./utils";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
   getCountriesList: async () => {
     const list = await get({
       url: "https://countriesnow.space/api/v0.1/countries",
+      headers: {
+        withCredentials: false,
+      },
     });
     set(() => ({ countriesList: list.data.data }));
   },
@@ -76,22 +79,30 @@ export const useUserStore = create((set) => ({
       set(() => ({ user: userData?.data }));
     });
   },
+  updateUser: async (data: any) => {
+    const id = localStorage.getItem("id");
+    await patch({
+      url: `/users/${id}`,
+      data: data,
+    }).then((userData: any) => {
+      set(() => ({ user: userData?.data }));
+    });
+  },
 }));
 
 export const useForgotPasswordStore = create((set) => ({
   user: {},
   postForgotPasswordData: async (data: any) => {
     post({
-      url: "auth/forgot",
+      url: "auth/forgot-password",
       data,
     }).then((userData: any) => {
       // TODO add redirect or pop-up
     });
   },
-  postResetPasswordData: async (data: any, id: string) => {
-    delete data.confirmPassword;
+  postResetPasswordData: async (data: any) => {
     post({
-      url: `auth/reset/${id}`,
+      url: "auth/reset-password",
       data,
     }).then((userData: any) => {
       // TODO add redirect
