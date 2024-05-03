@@ -13,7 +13,7 @@ interface HelpContainer {
 
 const HelpContainer: React.FC<HelpContainer> = ({ answearCondition }) => {
   return (
-    <div className="w-full absolute top-[700px] inset-0 flex flex-col items-center mt-80px">
+    <div className="w-full inset-0 flex flex-col items-center mt-80px">
       <div className="w-full relative top-[700px] inset-0 flex flex-col items-center mt-80px">
         <div className="absolute left-0 bottom-[-100px]">
           <Image src={mainDecore} alt="decore-1"></Image>

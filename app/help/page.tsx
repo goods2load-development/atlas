@@ -7,6 +7,7 @@ import HelpPlaneSvg from "@/components/ui/Svg/HelpSvg/HelpPlaneSvg";
 import HelpTruckSvg from "@/components/ui/Svg/HelpSvg/HelpTruckSvg";
 
 import HelpContainer from "../_components/Help/HelpContainer/HelpContainer";
+import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
 
 const AboutUsContainer: FC = () => {
   const [currentTabValue, setCurrentTabValue] = useState("plane");
@@ -16,17 +17,20 @@ const AboutUsContainer: FC = () => {
   };
 
   return (
-    <div className="flex flex-col w-full items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center ">
-      <h1 className="text-[64px] leading-[70px] font-light mb-2 pt-[120px]">
-        How can we <span className="italic">help</span>{" "}
-        <span className="italic">you</span> <span className="italic">?</span>
-      </h1>
-      <h2 className="mb-[68px] text-[17px]/[28px] font-light font-[300px] leading-[28px]">
-        Doing business is never been so easy.
-      </h2>
-      <div className="flex w-fit pb-[190px]">
-        <Tabs value={currentTabValue} onValueChange={onTabChange}>
-          <TabsList>
+    <LoyaltAllWrapper>
+      <div className="flex flex-col w-full items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center mt-[-75px]">
+        <h1 className="text-[64px] leading-[70px] font-light mb-2 pt-[120px]">
+          How can we <span className="italic">help</span>{" "}
+          <span className="italic">you</span> <span className="italic">?</span>
+        </h1>
+        <h2 className="mb-[68px] text-[17px]/[28px] font-light font-[300px] leading-[28px]">
+          Doing business is never been so easy.
+        </h2>
+        <div className="flex w-fit pb-[190px]">
+        </div>
+      </div>
+        <Tabs value={currentTabValue} onValueChange={onTabChange} className="mt-[-200px] w-full">
+          <TabsList className="flex justify-center mt-54">
             <TabsTrigger
               className={`relative w-[260px] text-center italic bg-black text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${currentTabValue === "plane" ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
               value="plane"
@@ -69,8 +73,8 @@ const AboutUsContainer: FC = () => {
             <HelpContainer answearCondition={currentTabValue} />
           </TabsContent>
         </Tabs>
-      </div>
-    </div>
+      
+    </LoyaltAllWrapper>
   );
 };
 

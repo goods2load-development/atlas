@@ -33,7 +33,7 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
   }
 
   return (
-    <div className="w-full px-16 py-10 flex flex-col  flex justify-center items-center">
+    <div className="w-full px-16 py-10 flex flex-col  flex justify-center items-center mt-52">
       <div className="w-full max-w-[1440px] flex justify-center items-center flex-col">
         <div className="text-center text-black text-[48px]/[48px] mb-[40px]">
           <i className="bg-allTittleColor px-[5px]">Answers</i>
