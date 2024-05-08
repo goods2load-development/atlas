@@ -13,12 +13,12 @@ const questionsContent = [
     title: "HOW DOES GOODS2LOAD WORK?",
     content: (
       <span>
-        Goods2Load is a platform designed to connect logistics companies with small and medium-sized enterprises, facilitating the transportation of goods. Here's how it works:
+        Goods2Load is a platform designed to connect logistics companies with small and medium-sized enterprises, facilitating the transportation of goods. Here&apos;s how it works:
         <br/>
         <ol>
           <li>&#x2022;Registration: Small and medium-sized enterprises register on the Goods2Load platform, providing necessary information about their business and transportation needs.<br/><br/></li>
           <li>&#x2022;Load Posting: Companies input details of their loads, including pickup and delivery locations, type of cargo, and other relevant information.</li>
-          <li>&#x2022;Load Search: Small and medium-sized enterprises can browse available loads on the platform, provided by Goods2Load's logistics partner companies. They can filter results based on criteria such as pickup location, destination, type of cargo, speed, cost, and CO2 emissions.<br/><br/></li>
+          <li>&#x2022;Load Search: Small and medium-sized enterprises can browse available loads on the platform, provided by Goods2Load&apos;s logistics partner companies. They can filter results based on criteria such as pickup location, destination, type of cargo, speed, cost, and CO2 emissions.<br/><br/></li>
           <li>&#x2022;Negotiation: Small and medium-sized enterprises are redirected to the platform or original contact to negotiate terms such as price, delivery timeline, and other details.<br/><br/></li>
           <li>&#x2022;Contracting: Once terms are agreed upon, companies finalize the contract through their official platform.<br/><br/></li>
         </ol>
