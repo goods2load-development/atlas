@@ -19,8 +19,8 @@ import RegionalSettingsForm from "@/components/RegionalSettingsForm";
 function RenderUserData({ data }: any) {
   return (
     <>
-      {data.map((item: any) => (
-        <div>
+      {data.map((item: any, index: number) => (
+        <div key={index}>
           <p className="font-normal text-[16px]/[24px] text-[#A8A8A8]">{item.title}</p>
           {item.value}
         </div>

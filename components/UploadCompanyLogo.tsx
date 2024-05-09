@@ -14,7 +14,8 @@ export default function UploadCompanyLogo() {
         type="file"
         accept="image/png, image/gif, image/jpeg"
         onChange={(e) => {
-            uploadLogo(e.target?.files[0]);
+          if (e.target?.files?.length)
+            uploadLogo(e.target.files[0]);
         }}
       />
       {user?.companyPhoto ? <div className="w-[68px] h-[68px] rounded-full bg-cover bg-center" style={{backgroundImage: `url(${user.companyPhoto})`}} /> : <img src="/defaultlogo.png" />}
