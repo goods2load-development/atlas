@@ -4,13 +4,10 @@ import { get, post, patch } from "./utils";
 export const useCountriesStore = create((set) => ({
   countriesList: [],
   getCountriesList: async () => {
-    const list = await get({
-      url: "https://countriesnow.space/api/v0.1/countries",
-      headers: {
-        withCredentials: false,
-      },
+    const countriesList = await get({
+      url: "https://restcountries.com/v3.1/all",
     });
-    set(() => ({ countriesList: list.data.data }));
+    set(() => ({ countriesList }));
   },
 }));
 
@@ -35,7 +32,7 @@ export const useRegistrationStore = create((set) => ({
     delete data.provider;
     post({
       url: "auth/register",
-      data: { ...data, postalCode: parseInt(data.postalCode) },
+      data,
     }).then((response) => {
       if (isProvider) {
         post({
@@ -85,7 +82,18 @@ export const useUserStore = create((set) => ({
       url: `/users/${id}`,
       data: data,
     }).then((userData: any) => {
-      set(() => ({ user: userData?.data }));
+      set((state: any) => ({ user: {...state.user, ...userData?.data} }));
+    });
+  },
+  uploadLogo: async (data: any) => {
+    const id = localStorage.getItem("id");
+    const formData = new FormData();
+    formData.append("file", data);
+    await post({
+      url: `/users/${id}/upload/file`,
+      data: formData,
+    }).then((userData: any) => {
+      set((state: any) => ({ user: {...state.user, ...userData?.data} }));
     });
   },
 }));
