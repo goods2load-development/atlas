@@ -145,7 +145,7 @@ const data: ILegacyDataBlock[] = [
             id: "1",
             type: ILegacyDataBlockBodyType.PARAGRAPH,
             content: [
-              "For example, you will provide us with personal data when you log in identifying the user, create an account, sign up to marketing emails or price alerts, <a href='/contact-us'>contact us</a> for customer support or otherwise communicate with us.",
+              "For example, you will provide us with personal data when you log in identifying the user, create an account, sign up to marketing emails or price alerts, <a href='TODO'>contact us</a> for customer support or otherwise communicate with us.",
               "It's always up to you whether you choose to give us these types of personal data, but if you decide not to provide certain categories of personal data then aspects of our Platforms and other services won't work (for example, you cannot sign-up to marketing or price alerts without providing us with your contact details).",
             ],
           },
@@ -580,7 +580,7 @@ const data: ILegacyDataBlock[] = [
         id: "8",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "For these purposes, we might make automated decisions about you which may result in us or the relevant Transportation Provider blocking your booking. If you are affected in this way and wish to discuss or appeal an automated decision then please <a href='/contact-us'>contact us</a>.",
+          "For these purposes, we might make automated decisions about you which may result in us or the relevant Transportation Provider blocking your booking. If you are affected in this way and wish to discuss or appeal an automated decision then please <a href='TODO'>contact us</a>.",
         ],
       },
       {
@@ -817,7 +817,7 @@ const data: ILegacyDataBlock[] = [
         id: "5",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "If you have a question about the steps we take to safeguard your personal data, please <a href='/contact-us'>contact us</a>.",
+          "If you have a question about the steps we take to safeguard your personal data, please <a href='TODO'>contact us</a>.",
         ],
       },
     ],

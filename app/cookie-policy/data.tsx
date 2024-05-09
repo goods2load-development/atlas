@@ -729,7 +729,7 @@ const data: ILegacyDataBlock[] = [
         id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "If you have any questions regarding this Policy or would like more information about the cookies  used on our Website or App, please <a href='/contact-us'>contact us</a>.",
+          "If you have any questions regarding this Policy or would like more information about the cookies  used on our Website or App, please <a href='TODO'>contact us</a>.",
         ],
       },
     ],
