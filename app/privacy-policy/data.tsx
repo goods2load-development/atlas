@@ -4,6 +4,7 @@ import {
   ILegacyDataBlockBodyType,
 } from "@/components/Legacy/types";
 import bg from "@/assets/LegacyImages/privacyPolicy.png";
+import { generateBlockId } from "@/lib/utils";
 
 const data: ILegacyDataBlock[] = [
   {
@@ -144,7 +145,7 @@ const data: ILegacyDataBlock[] = [
             id: "1",
             type: ILegacyDataBlockBodyType.PARAGRAPH,
             content: [
-              "For example, you will provide us with personal data when you log in identifying the user, create an account, sign up to marketing emails or price alerts, <a href='/TODO'>contact us</a> for customer support or otherwise communicate with us.",
+              "For example, you will provide us with personal data when you log in identifying the user, create an account, sign up to marketing emails or price alerts, <a href='/contact-us'>contact us</a> for customer support or otherwise communicate with us.",
               "It's always up to you whether you choose to give us these types of personal data, but if you decide not to provide certain categories of personal data then aspects of our Platforms and other services won't work (for example, you cannot sign-up to marketing or price alerts without providing us with your contact details).",
             ],
           },
@@ -537,7 +538,7 @@ const data: ILegacyDataBlock[] = [
             content: [
               "We show you information or travel options that we believe are most relevant to you; ",
               "We use your business location to predict which airport you are likely to want to your goods depart from or arrive back to;",
-              "We tailor marketing communications (if you've asked us to send these to you) and adverts to reflect what we believe will be of interest to you. See <a href='TODO'>'How is personal data used for advertising?'</a> for more information.",
+              `We tailor marketing communications (if you've asked us to send these to you) and adverts to reflect what we believe will be of interest to you. See <a href='/privacy-policy#${generateBlockId("How is personal data used for advertising?")}'>'How is personal data used for advertising?'</a> for more information.`,
             ],
           },
         ],
@@ -579,7 +580,7 @@ const data: ILegacyDataBlock[] = [
         id: "8",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "For these purposes, we might make automated decisions about you which may result in us or the relevant Transportation Provider blocking your booking. If you are affected in this way and wish to discuss or appeal an automated decision then please <a href='TODO'>contact us</a>.",
+          "For these purposes, we might make automated decisions about you which may result in us or the relevant Transportation Provider blocking your booking. If you are affected in this way and wish to discuss or appeal an automated decision then please <a href='/contact-us'>contact us</a>.",
         ],
       },
       {
@@ -738,14 +739,14 @@ const data: ILegacyDataBlock[] = [
         ],
       },
       {
-        id: "4",
+        id: "5",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "The types of Third-Party Processors we may share your personal data with include:",
         ],
       },
       {
-        id: "5",
+        id: "6",
         type: ILegacyDataBlockBodyType.OLIST,
         content: [
           "<b>Providers of email management and distribution tools.</b> For example, if you sign up to receive Goods2load newsletters or other marketing messages we will send these to you using a third-party email distribution tool;",
@@ -759,14 +760,14 @@ const data: ILegacyDataBlock[] = [
         ],
       },
       {
-        id: "6",
+        id: "7",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "Sharing your information with third parties, or allowing them to collect it, for their own purposes Unlike Third-Party Processors, certain trusted companies will process your personal data as a separate controller, which means that they determine how and why your personal data is used rather than Goods2load:",
         ],
       },
       {
-        id: "7",
+        id: "8",
         type: ILegacyDataBlockBodyType.ULIST,
         content: [
           "<b>Transportation Providers.</b> If you make a booking or purchase with a Transportation Provider on one of our Platforms, personal data you submit as part of your booking, in addition and olnly required with the business data, will be shared with the relevant Transportation Provider (or third parties providing services on their behalf) so that your booking or purchase can be processed. If you agree to receive marketing communications from the Transportation Provider or join their loyalty program, we will also share personal data for these purposes. We may also disclose personal data to Transportation Providers where necessary to assist you with business queries or issues you raise with our customer services team. You'll be able to review the Transportation Provider's privacy policy and terms and conditions first to understand how the Transportation Provider will use your information in advance of making your booking or purchase.",
@@ -794,7 +795,7 @@ const data: ILegacyDataBlock[] = [
         id: "2",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Your personal data is processed in the United Arab Emirates, where Goods2load is headquartered. Your personal data may also be processed by other Goods2load entities (see <a href='TODO'>When is personal data shared with or collected by third parties?</a> for further information).",
+          `Your personal data is processed in the United Arab Emirates, where Goods2load is headquartered. Your personal data may also be processed by other Goods2load entities (see <a href='/privacy-policy#${generateBlockId("When is personal data shared with or collected by third parties?")}'>When is personal data shared with or collected by third parties?</a> for further information).`,
           "We store personal data on secure servers in various locations, depending on where you are in the world when you access our Platforms.",
         ],
       },
@@ -816,7 +817,7 @@ const data: ILegacyDataBlock[] = [
         id: "5",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "If you have a question about the steps we take to safeguard your personal data, please <a href='TODO'>contact us</a>.",
+          "If you have a question about the steps we take to safeguard your personal data, please <a href='/contact-us'>contact us</a>.",
         ],
       },
     ],
@@ -837,7 +838,7 @@ const data: ILegacyDataBlock[] = [
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "Adverts you might see while using Goods2load Platforms",
-          "Goods2load partners with affiliate network and marketing services providers such as Facebook (<a href='TODO'>“Third-Party Ad Solutions”</a>) to market and advertise our services on third-party websites and applications and measure the effectiveness of the advertising campaigns. Such activities include:",
+          `Goods2load partners with affiliate network and marketing services providers such as Facebook (<a href='/cookie-policy#${generateBlockId("Purpose of personalised adverts (including third-party ad solutions) cookies or similar technologies")}'>“Third-Party Ad Solutions”</a>) to market and advertise our services on third-party websites and applications and measure the effectiveness of the advertising campaigns. Such activities include:`,
         ],
       },
       {
@@ -892,7 +893,7 @@ const data: ILegacyDataBlock[] = [
         id: "2",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "You can ask us to delete your personal data in certain circumstances. Find out more about how you can manage your personal data in <a href='TODO'>What are your choices and rights?</a>",
+          `You can ask us to delete your personal data in certain circumstances. Find out more about how you can manage your personal data in <a href='/privacy-policy#${generateBlockId("What are your choices and rights?")}'>What are your choices and rights?</a>`,
         ],
       },
     ],
@@ -984,7 +985,7 @@ const data: ILegacyDataBlock[] = [
         id: "3",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "You can contact us electronically via our <a href='TODO'>Help Centre</a> or by writing to Goods2load FZ- LLC LICENCE NO 47010212 BIZ00921 Compass Building, Al Shohada Road, AL Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab Emirates.",
+          "You can contact us electronically via our <a href='/help-centre'>Help Centre</a> or by writing to Goods2load FZ- LLC LICENCE NO 47010212 BIZ00921 Compass Building, Al Shohada Road, AL Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab Emirates.",
         ],
       },
     ],
