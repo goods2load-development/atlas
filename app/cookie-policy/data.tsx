@@ -7,10 +7,8 @@ import bg from "@/assets/LegacyImages/cookiePolicy.jpg";
 
 const data: ILegacyDataBlock[] = [
   {
-    id: "1",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "This cookie policy does not apply in the United States of America. The US privacy policy is available at <a href='/privacy-policy'>Privacy policy</a>.",
@@ -19,11 +17,9 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "2",
     title: "Our cookie promise",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "We'll only ever use cookies and similar technologies, such as tags and pixels for the purposes set out in this Cookie Policy (“Policy”) and will never use them to inflate or alter the prices you see when searching on Goods2load or to manipulate demand.",
@@ -32,11 +28,9 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "3",
     title: "About this policy",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "Along with our <a href='/terms-of-service'>Terms of Service</a> and <a href='/privacy-policy'>Privacy Policy</a>, this Policy provides you with information about the cookies and other similar technologies that are used by all of our websites, mobile apps and other services. We'll review this policy from time to time to make sure it's up-to-date. If we make changes, we'll post the latest version here. When we make significant changes, we'll let you know when you next access our services, or by other communications.",
@@ -45,11 +39,9 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "4",
     title: "How do we use cookies and similar technologies?",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "We use cookies and similar technologies when you use our services, including the mobile app (“App”) and the Goods2load website (such as goods2load.com) (<b>“Website”</b>) (together, our <b>“Platforms”</b>). These are controlled either by us or directly by third parties acting on our behalf or independently.",
@@ -58,46 +50,39 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "5",
     title: "What are cookies and similar technologies?",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "A cookie is a small text file which is placed on your device (e.g., computer or smartphone), via your web browser, at the request of the websites you visit or applications you use and which stores information on your device for a limited period of time. Cookies allow Goods2Load to recognize you and your device each time you visit Goods2Load.",
         ],
       },
       {
-        id: "2",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "Some of the cookies we use are removed as soon as you leave our Website or App because we don't need to store this information between visits. By contrast, 'persistent' cookies enable our services or tags to recognize you when you make return visits to us and automatically expire when they reach a specified expiry date unless you delete them earlier. Persistent cookies placed on your device by Goods2Load will never be stored for longer than 2 years from the date of your last visit. There are tools available to check the expiry date on cookies, and this functionality may be provided by your browser.",
         ],
       },
       {
-        id: "3",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "We may also use similar technologies referred to as 'tags', 'tracking pixels', 'code snippets', 'tracking URLs', 'local storage', and 'scripts' as well as 'software development kits' (“SDKs”) and 'device identifiers' in our apps. These technologies are implemented on our services and may be used together with text cookies to enable information to be stored on, or transmitted to and from, the device you use to access Goods2Load.",
         ],
       },
       {
-        id: "4",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "In this policy, we collectively refer to all of these app and web technologies as “cookies and similar technologies”.",
         ],
       },
       {
-        id: "5",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "We may from time to time add, remove or update the cookies and web technologies we use across our services.",
         ],
       },
       {
-        id: "6",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "You can view the main cookies and similar technologies we use at the date of this Policy in the What cookies and similar technologies do we use and how can you opt out of them? section of this Policy.",
@@ -106,18 +91,15 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "6",
     title: "Purpose of essential cookies or similar technologies",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "These cookies and similar technologies collect essential data in order to ensure that the Website and App function properly. You cannot opt out of these Cookies because without them Goods2Load wouldn't work. Goods2Load uses these for the following purposes:",
         ],
         additionalContent: [
           {
-            id: "1",
             type: ILegacyDataBlockBodyType.ULIST,
             content: [
               "Recognize whether you are a first-time visitor or a return visitor to our Website and to tailor the presentation of our services, such as by recalling your language and currency preferences or your most recent searches;",
@@ -132,7 +114,6 @@ const data: ILegacyDataBlock[] = [
         ],
       },
       {
-        id: "2",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "Some of these essential cookies and similar technologies will be provided by a third-party. For more information on these essential technologies maintained by Goods2Load and third-parties please see the 'Goods2Load Essential Cookies and Similar Technologies' and 'Third-Party Essential Cookies and Similar Technologies' section of this Policy.",
@@ -141,19 +122,16 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "7",
     title:
       "Purpose of personalised adverts (including third-party ad solutions) cookies or similar technologies",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "When you are opted-in to ads or offers personalization, we may also use information we collect via cookies and similar technologies to show you personalized ads, marketing, offers, and promotions on Goods2Load, or to send you electronic direct marketing communications where you have opted in to receive these. For example, where you book an air freight service using our Website or App or redirect from our Website or App to make a booking with a Transportation Provider, we may use the information we collect via cookies and similar technologies to personalize the ads we show you or to send you personalized marketing communications relevant to your booking based on information like your destination, the time you are requesting the transportation, the services you've selected or which transportation supplier you are using. We may also use this information to provide you with relevant information about the destination you are willing to transport your products to, such as destination information, up-to-date weather information, or to request reviews and recommendations about the places you have clicked.",
         ],
       },
       {
-        id: "2",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "These cookies and similar technologies help Goods2Load and our marketing service providers to improve and measure the success of some advertising campaigns to ensure that you are only shown ads which are relevant to you and to avoid showing you ads you have already seen.",
@@ -161,7 +139,6 @@ const data: ILegacyDataBlock[] = [
         ],
       },
       {
-        id: "3",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "You can find out more about the advertising on Goods2Load in the How is your information used for advertising? section of the Policy.",
@@ -169,42 +146,36 @@ const data: ILegacyDataBlock[] = [
         ],
       },
       {
-        id: "4",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "When we transfer information to Third Party Ad Solution providers like Facebook, Google, and TikTok we do so using the tools they provide. They may in addition use that information to personalize features and content (including advertisements and recommendations) you see on their networks, to optimize delivery of advertisements, and for research and development purposes in accordance with their policies (see for example the Facebook Privacy Policy, and TikTok Privacy Policy).",
         ],
       },
       {
-        id: "5",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "The majority of these adverts will be personalized to make them relevant to you and will fall into two different categories. Firstly, adverts that are personalized for you based on information collected by us or by Third Party Ad Solutions whilst you use our services, such as your general location (by city or country) and your Goods2Load searches or booking history (“Goods2Load-related Information”). So, for example, if you've booked a road service in Dubai, you'll see adverts about truck in Dubai, rather than road service in Ryad. Goods2Load-related Information will never include your name, contact details, or other information that would enable you to be identified in the offline world. Secondly, adverts that are personalized for you based on information that we have no visibility or control over, and which is instead collected from you by non-Goods2Load Platforms when you have been using other non-Goods2Load websites or platforms. (“non-Goods2Load Platforms”). Collectively, we refer to these as “interest-based” advertisements.",
         ],
       },
       {
-        id: "6",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "The information required to deliver these interest-based advertisements will be stored by non-Goods2Load Platforms alongside your IP address and/or a cookie ID so that you can be served the adverts without the non-Goods2Load Platforms needing to store any information that would enable you to be identified in the offline world, like your company name or address.",
         ],
       },
       {
-        id: "7",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "When you are opted-in to ads personalization, we may also use information we collect via cookies and similar technologies to show you personalized ads, marketing, and promotions on Goods2Load, or to send you communications where you have opted in to receive these. For example, where you book an air service using Goods2Load or redirect from Goods2Load to make a booking on one of our partner sites, we may use the information we collect via cookies and similar technologies to personalize the ads we show you or to send you personalized marketing communications relevant to your booking based on information you added.",
         ],
       },
       {
-        id: "8",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "You can opt-out of your information being used for ads personalization by non-Goods2Load Platforms by following the steps set out in the How can I withdraw my consent to the use of cookies and similar technologies? section of this Policy below.",
         ],
       },
       {
-        id: "9",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "When you opt out of ads personalization, this will stop your information being used for advertising purposes by any of the Third Party Ad Solutions we use. You will not receive personalized advertisements from those non-Goods2Load Platforms on the Goods2Load Website or App, or elsewhere as you move around the web. You will still receive advertisements, which will not be customized to your interests. Please note that any such opt-out of interest-based adverts will take some time to reflect within your browsing sessions, as Goods2Load will need to facilitate such a request.",
@@ -213,11 +184,9 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "8",
     title: "Who controls these cookies and similar technologies?",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "The cookies and similar technologies on our services are controlled either by us directly or by third parties acting on our behalf. There are also some cookies and similar technologies which we've implemented for advertising purposes that are controlled by independent third parties. You can find out more about these third parties and how to opt-out of their cookies in the What Cookies and similar technologies do we use and how can you opt out of them? section of this Policy.",
@@ -226,18 +195,15 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "9",
     title: "Adverts you might see while using non-Goods2Load Platforms",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "You might see personalized adverts for Goods2Load or selected Goods2Load partners once you've left the Goods2Load Website or App and are using non-Goods2Load platforms. These adverts may be personalized and served to you based on the information Goods2Load and non-Goods2Load Platforms have collected about you. For example, if you have searched for an air service from Italy to the United Arab Emirates on Goods2Load or another non-Goods2Load Platform, and we have asked non-Goods2Load Platforms to show our advert to individuals that have expressed an interest in having air service to the United Arab Emirates, the non-Goods2Load Platforms may categorize you within that group and serve you our advert. Sometimes business data like your email address or phone number is shared with non-Goods2Load Platforms to enable your data to be linked with other information they collect, to create custom audiences or deliver targeted ads.",
         ],
       },
       {
-        id: "2",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "You can opt-out of your information being used for ads personalization on non-Goods2Load Platforms by following the steps set out in the How can I withdraw my consent to the use of cookies and similar technologies? section of this Policy below.",
@@ -246,25 +212,21 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "10",
     title: "Learn more about cookies and similar technologies",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "What cookies and similar technologies do we use and how can you opt out of them?",
         ],
       },
       {
-        id: "2",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "Goods2load uses cookies and similar technologies to help provide services to you, learn more about them and your rights in relation to them.",
         ],
       },
       {
-        id: "3",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "Essential cookies and similar technologies:",
@@ -272,7 +234,6 @@ const data: ILegacyDataBlock[] = [
         ],
       },
       {
-        id: "4",
         type: ILegacyDataBlockBodyType.TABLE,
         tableContent: {
           columns: ["Cookie Name", "Description", "Platform"],
@@ -364,11 +325,9 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "11",
     title: "Third party essential cookies and tracking technologies",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.TABLE,
         tableContent: {
           columns: [
@@ -469,18 +428,15 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "12",
     title: "Improved experience (analytics) cookies and similar technologies",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "The following table sets out the cookies used at the date of this Policy to improve your experience and allow Goods2load to compile reports on Website and App usage. The cookies used will vary depending on the device and/or platform you are using. Where available, we have included a link to opt-out of the use of third-party cookies on an individual level. You can do that by visiting the link in the table on each device you use to access Goods2load.",
         ],
       },
       {
-        id: "2",
         type: ILegacyDataBlockBodyType.TABLE,
         tableContent: {
           columns: [
@@ -530,18 +486,15 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "13",
     title: "Personalised Advertising cookies and similar technologies",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "These are the cookies and similar technologies used at the date of this Policy to personalise your ads. Where available, we have also included a link to opt-out of the use of third-party cookies and  similar technology on an individual level. You can do that by visiting the link in the table on each  device you use to access Goods2load Goods2load may also collaborate with other selected brands to understand more about our sme's interests, for example, by identifying which Goods2load sme’s engage with particular third-party  brands.",
         ],
       },
       {
-        id: "2",
         type: ILegacyDataBlockBodyType.TABLE,
         tableContent: {
           columns: [
@@ -679,12 +632,10 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "14",
     title:
       "How can I withdraw my consent to the use of cookies and similar technologies?",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "When you access our services for the first time on your device, we ask you to agree to us using  cookies and similar technologies in line with this policy. If you don't agree to our use of these  technologies, or you change your mind at a later date, you can withdraw your consent using the  methods set out in this Policy or alternatively, stop using our services.",
@@ -693,11 +644,9 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "15",
     title: "Opt-out via Goods2load privacy setting in app or on web",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "The most effective way to manage Cookies and similar technologies on Goods2load is to use the  privacy controls we provide in our product. You can control the non-essential Cookies and similar technologies that are used on your device  by visiting our privacy setting on web or via the Privacy Settings menu in the Goods2load  platform. These settings enable you to opt-out or opt-in to our use of the non-essential Cookies  and similar technologies we use to improve your experience or to those that we use to  personalize the offers or the advertisements you see.",
@@ -706,11 +655,9 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "16",
     title: "Browser or device settings",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "Another way to opt out of Cookies and similar technologies is via the settings of the browser or device you are using to access our services. Internet browsers such as Chrome, Safari, Firefox, Opera, and Edge have settings that allow you to control the way your information is collected and shared. Typically, these browsers allow you to view all the Cookies they are storing on your device, delete your cache of cookies, and adjust your preferences for future collection. Guides on how to access and use such functionality are available at <a href='https://www.aboutcookies.org.'>https://www.aboutcookies.org</a>.",
@@ -722,11 +669,9 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    id: "17",
     title: "More information",
     body: [
       {
-        id: "1",
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           "If you have any questions regarding this Policy or would like more information about the cookies  used on our Website or App, please <a href='TODO'>contact us</a>.",

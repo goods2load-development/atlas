@@ -13,7 +13,6 @@ export interface ILegacyDataTableContentBody {
 }
 
 export interface ILegacyDataBlockBody {
-  id: string;
   type: ILegacyDataBlockBodyType;
   content?: string[];
   tableContent?: ILegacyDataTableContentBody;
@@ -21,7 +20,6 @@ export interface ILegacyDataBlockBody {
 }
 
 export interface ILegacyDataBlock {
-  id: string;
   title?: string;
   body: ILegacyDataBlockBody[];
 }

@@ -26,8 +26,8 @@ export default function LegacyTable({ tableContent }: ILegacyDataBlockBody) {
       <TableBody>
         {tableContent.rows.map((row, index) => (
           <TableRow key={index}>
-            {row.map((__html) => (
-              <TableCell key={__html} dangerouslySetInnerHTML={{ __html }} />
+            {row.map((__html, index) => (
+              <TableCell key={index} dangerouslySetInnerHTML={{ __html }} />
             ))}
           </TableRow>
         ))}
