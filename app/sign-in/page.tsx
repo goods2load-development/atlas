@@ -16,8 +16,18 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LoginWrapper from "@/components/LoginWrapper";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
+import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
+import Divider from "@/components/Divider";
 
-export default function Login() {
+interface Props {
+  searchParams: {
+    callbackUrl?: string;
+    error?: string;
+  };
+}
+
+export default function Login({ searchParams: { callbackUrl, error } }: Props) {
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string(),
@@ -34,8 +44,29 @@ export default function Login() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     postLoginData(values);
   }
+
+  const signInWithGoogle = () => {
+    signIn("google", { callbackUrl, redirect: true });
+  };
+
   return (
     <LoginWrapper>
+      <Button
+        variant="outline"
+        onClick={signInWithGoogle}
+        className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
+      >
+        <GoogleIcon />
+        <span>Sign in with Google </span>
+      </Button>
+      {error ? (
+        <p className="my-2 text-sm text-center font-medium text-destructive">
+          Something went wrong, please try again
+        </p>
+      ) : (
+        <></>
+      )}
+      <Divider />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
