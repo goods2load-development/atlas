@@ -29,13 +29,13 @@ export default function Footer() {
               About us
             </AccordionTrigger>
             <AccordionContent>
-              <Link href="/about-us" className="block pb-3 font-light">
+              <Link href="/about-us?company" className="block pb-3 font-light">
                 Company
               </Link>
-              <Link href="/about-us" className="block pb-3 font-light">
+              <Link href="/about-us?trust" className="block pb-3 font-light">
                 Trust
               </Link>
-              <Link href="/about-us" className="block pb-3 font-light">
+              <Link href="/about-us?media" className="block pb-3 font-light">
                 Media
               </Link>
             </AccordionContent>
@@ -65,7 +65,7 @@ export default function Footer() {
           </AccordionItem>
         </Accordion>
         <div>
-          <Link href="/" className="block pb-4">
+          <Link href="/help" className="block pb-4">
             Help centre
           </Link>
           <Link href="/" className="block pb-4">

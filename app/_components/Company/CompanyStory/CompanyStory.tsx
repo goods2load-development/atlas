@@ -1,8 +1,8 @@
 import React from "react";
 import Image, { StaticImageData } from "next/image";
 
-import { storyBlock } from './CompanyStoryData';
-import CompanyStoryBlock from '@/app/_components/Company/CompanyStory/CompanyStoryBlock';
+import { storyBlock } from "./CompanyStoryData";
+import CompanyStoryBlock from "@/app/_components/Company/CompanyStory/CompanyStoryBlock";
 import line from "@/assets/line-dashed.svg";
 
 export interface IBlock {
@@ -14,7 +14,7 @@ export interface IBlock {
 
 const CompanyStory = () => {
   return (
-    <section className="max-w-[1440px] w-full flex flex-col gap-[40px] py-[104px]">
+    <section className="max-w-[1440px] w-full flex flex-col gap-[40px] py-[104px] px-[72px]">
       <div className="flex flex-col gap-[16px] text-start text-black">
         <h1 className="font-normal text-[48px]/[57.6px] italic flex flex-row gap-[12px]">
           Our{" "}

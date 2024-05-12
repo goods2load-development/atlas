@@ -1,8 +1,8 @@
-import React from 'react';
+import React from "react";
 
 const CompanyOurStory = () => {
   return (
-    <section className="w-full flex flex-col items-center gap-[16px] py-[104px] bg-divide-pattern bg-cover bg-center ">
+    <section className="w-full flex flex-col items-center gap-[16px] py-[104px] bg-divide-pattern bg-cover bg-center">
       <h1 className="text-center font-normal text-[48px]/[57.6px] italic">
         Our <span className="font-light not-italic">story</span>
       </h1>

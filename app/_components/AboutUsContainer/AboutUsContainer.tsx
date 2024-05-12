@@ -1,16 +1,29 @@
 "use client";
-import { type FC, memo, useState } from "react";
+import { type FC, memo, useState, useEffect } from "react";
 
-import CompanyContainer from "@/app/_components/Company/CompanyContainer/CompanyContainer";
-import TrustContainer from "@/app/_components/Trust/TrustContainer/TrustContainer";
+import { useRouter, useSearchParams } from "next/navigation";
 import MediaContainer from "@/app/_components/MediaContainer/MediaContainer";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import TrustContainer from "@/app/_components/Trust/TrustContainer/TrustContainer";
+import CompanyContainer from "@/app/_components/Company/CompanyContainer/CompanyContainer";
 
 const AboutUsContainer: FC = () => {
-  const [tab, setTab] = useState("company");
+  const searchParams = useSearchParams();
+  const router = useRouter();
+
+  const tabs = ["Company", "Trust", "Media"];
+  const thisTab =
+    searchParams.toString().replace("=", "") || tabs[0].toLowerCase();
+
+  const [activeTab, setActiveTab] = useState(thisTab);
+
+  useEffect(() => {
+    thisTab !== activeTab && setActiveTab(thisTab);
+  }, [thisTab]);
 
   const onTabChange = (value: string) => {
-    setTab(value);
+    router.push(`/about-us?${value}`);
+    setActiveTab(value);
   };
 
   return (
@@ -26,31 +39,19 @@ const AboutUsContainer: FC = () => {
           </h2>
         </div>
 
-        <div className="flex w-fit pb-[190px] pt-[200px]">
-          <Tabs value={tab} onValueChange={onTabChange}>
+        <div className="flex w-fit pt-[200px]">
+          <Tabs value={activeTab} onValueChange={onTabChange}>
             <TabsList>
-              <TabsTrigger
-                className={`w-[260px] text-center italic bg-black text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${tab === "company" ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
-                value="company"
-                style={{ backgroundColor: "transparent", color: "white" }}
-              >
-                Company
-              </TabsTrigger>
-              <TabsTrigger
-                className={`w-[260px] text-center italic text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${tab === "trust" ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
-                value="trust"
-                style={{ backgroundColor: "transparent", color: "white" }}
-              >
-                Trust
-              </TabsTrigger>
-
-              <TabsTrigger
-                className={`w-[260px] text-center italic text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${tab === "media" ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
-                value="media"
-                style={{ backgroundColor: "transparent", color: "white" }}
-              >
-                Media
-              </TabsTrigger>
+              {tabs.map((tabText) => (
+                <TabsTrigger
+                  key={tabText}
+                  className={`w-[260px] text-center italic text-[24px]/[31px] font-light h-[57px] relative hover:cursor-pointer ${activeTab === tabText.toLowerCase() ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
+                  value={tabText.toLowerCase()}
+                  style={{ backgroundColor: "transparent", color: "white" }}
+                >
+                  {tabText}
+                </TabsTrigger>
+              ))}
             </TabsList>
             <TabsContent value="company" className="mt-[250px]">
               <CompanyContainer />
