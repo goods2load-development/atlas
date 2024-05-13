@@ -1,0 +1,205 @@
+"use client";
+import React, { useState } from "react";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import UIButton from "@/components/common/Button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { useUserStore } from "@/lib/store";
+import PersonalInformationForm from "@/components/PersonalInformationForm";
+import AddressForm from "@/components/AddressForm";
+import UploadCompanyLogo from "@/components/UploadCompanyLogo";
+import RegionalSettingsForm from "@/components/RegionalSettingsForm";
+
+function RenderUserData({ data }: any) {
+  return (
+    <>
+      {data.map((item: any, index: number) => (
+        <div key={index}>
+          <p className="font-normal text-[16px]/[24px] text-[#A8A8A8]">{item.title}</p>
+          {item.value}
+        </div>
+      ))}
+    </>
+  )
+}
+
+export default function Account() {
+  const { user } = useUserStore((state: any) => state);
+  const [edit, setEdit] = useState<"info" | "address" | "regional" | null>(null);
+  const info = [
+    {
+      title: "First name",
+      value: user?.firstName,
+    },
+    {
+      title: "Last name",
+      value: user?.lastName,
+    },
+    {
+      title: "Email address",
+      value: user?.email,
+    },
+    {
+      title: "Phone",
+      value: user?.phoneNumber,
+    },
+  ];
+  const address = [
+    {
+      title: "Country",
+      value: user?.country,
+    },
+    {
+      title: "City",
+      value: user?.city,
+    },
+    {
+      title: "Company name",
+      value: user?.companyName,
+    },
+    {
+      title: "Postal / ZIP Code",
+      value: user?.postalCode,
+    },
+    {
+      title: "Street Address / Number",
+      value: user?.address,
+    },
+  ];
+  const region = [
+    {
+      title: "Language",
+      value: user?.language,
+    },
+    {
+      title: "Currency",
+      value: user?.currency,
+    },
+    {
+      title: "Country / Region",
+      value: user?.country,
+    },
+  ];
+  return (
+    <>
+      <Header />
+      <main className="flex min-h-screen flex-col p-16 justify-between colored-main">
+        <div className="flex justify-between mb-10">
+          <i className="flex text-[48px]/[52px]">
+            <img src="/user.svg" className="mr-3" />
+            Account
+          </i>
+          <div>
+            <UIButton secondary className="mr-5 min-w-52">
+              <img src="/ring.svg" />
+              Price alerts
+            </UIButton>
+            <UIButton secondary className="text-[#666666] border-[#666666] hover:bg-[#666666] min-w-52">
+              <img src="/trash.svg" />
+              Delete account
+            </UIButton>
+          </div>
+        </div>
+        <Card className="mb-10">
+          <CardHeader>
+            <CardTitle className="font-medium text-[18px]/[22px]">
+              {user?.firstName} {user?.lastName}
+            </CardTitle>
+            <CardDescription>{user?.companyName}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <p>{user?.country}</p>
+          </CardContent>
+        </Card>
+        <Card className="mb-10">
+          <CardHeader>
+            <CardTitle className="font-medium text-[18px]/[22px] flex justify-between">
+              <span>Personal information</span>
+              <UIButton
+                onClick={() => setEdit("info")}
+                secondary
+                className={`${
+                  edit === "info" && "hidden"
+                } rounded-full`}
+              >
+                Edit
+                <img src="/edit.svg" />
+              </UIButton>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-between">
+            {edit === "info" ? (
+              <PersonalInformationForm {...user} onCancel={() => setEdit(null)} />
+            ) : (
+              <RenderUserData data={info} />
+            )}
+          </CardContent>
+        </Card>
+        <Card className="mb-10">
+          <CardHeader>
+            <CardTitle className="font-medium text-[18px]/[22px] flex justify-between">
+              <span>Address</span>
+              <UIButton
+                onClick={() => setEdit("address")}
+                secondary
+                className={`${
+                  edit === "address" && "hidden"
+                } rounded-full`}
+              >
+                Edit
+                <img src="/edit.svg" />
+              </UIButton>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-between">
+            {edit === "address" ? (
+              <AddressForm {...user} onCancel={() => setEdit(null)} />
+            ) : (
+              <RenderUserData data={address} />
+            )}
+          </CardContent>
+        </Card>
+        <div className="flex justify-between mb-10">
+          <span className="flex text-[48px]/[52px]">
+            <img src="/settings.svg" />
+            Regional settings
+          </span>
+        </div>
+        <Card className="mb-10">
+          <CardHeader>
+            <CardTitle className="flex justify-between">
+              <div className="flex justify-center content-center">
+                <UploadCompanyLogo />
+                <span className="pl-5 text-[26px]/[68px] font-normal">{user?.companyName}</span>
+              </div>
+              <UIButton
+                onClick={() => setEdit("regional")}
+                secondary
+                className={`${
+                  edit === "regional" && "hidden"
+                } rounded-full`}
+              >
+                Edit
+                <img src="/edit.svg" />
+              </UIButton>
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="flex justify-between">
+          {edit === "regional" ? (
+              <RegionalSettingsForm {...user} onCancel={() => setEdit(null)} />
+            ) : (
+              <RenderUserData data={region} />
+            )}
+          </CardContent>
+        </Card>
+      </main>
+      <Footer />
+    </>
+  );
+}

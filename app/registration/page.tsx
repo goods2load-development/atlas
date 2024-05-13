@@ -72,7 +72,7 @@ export default function UserRegistration() {
       email: z.string().email(),
       companyName: z.string(),
       address: z.string(),
-      postalCode: z.string().length(6),
+      postalCode: z.string().length(6).regex(new RegExp("^[0-9]*$")),
       city: z.string(),
       country: z.string(),
       provider: z.boolean().optional(),
@@ -324,8 +324,8 @@ export default function UserRegistration() {
                         {countriesList &&
                           countriesList.length &&
                           countriesList.map((item: any) => (
-                            <SelectItem key={item.iso3} value={item.iso3}>
-                              {item.country}
+                            <SelectItem key={item.cca3} value={item.cca3}>
+                              {item.name.official}
                             </SelectItem>
                           ))}
                       </SelectContent>
