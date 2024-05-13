@@ -2,7 +2,7 @@ import React from "react";
 
 const CompanyMainInfo = () => {
   return (
-    <section className="max-w-[1440px] w-full flex flex-row gap-[56px] pt-[104px] px-[72px]">
+    <section className="w-full flex flex-row gap-[56px] pt-[104px] px-[72px]">
       <div className="w-1/2 ">
         <video
           muted
@@ -11,7 +11,7 @@ const CompanyMainInfo = () => {
           className="w-full rounded-lg"
         />
       </div>
-      <div className="w-1/2 flex flex-col justify-center gap-[16px]">
+      <div className="w-1/2 flex flex-col justify-start gap-[16px]">
         <p className="text-black font-normal text-[18px]/[25px] text-left">
           Founded in 2022, GOODS2LOAD embarked on a mission to revolutionize the
           global logistics landscape through a digital-first paradigm. Catering
