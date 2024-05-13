@@ -12,9 +12,9 @@ export default function Home() {
   return (
     <>
       <Header>
-        <h1 className="pt-16 pb-5 text-[64px]/[60px] font-light">
-          Unlock countless <i>high-quality</i> shipping options with{" "}
-          <i>just one click</i>
+        <h1 className="pt-16 pb-5 text-[64px]/[68px] font-light max-w-[1115px]">
+          Unlock countless <i className="font-normal">high-quality</i> shipping options with{" "}
+          <i className="font-normal">just one click</i>
         </h1>
         <span className="font-light text-[24px]/[28px]">
           Doing business is never been so easy.

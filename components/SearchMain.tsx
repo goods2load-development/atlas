@@ -61,9 +61,10 @@ export default function SearchMain() {
                   <Label htmlFor="option-one">
                     <Image
                       src="/filtericon1.svg"
-                      alt="Goods2load Logo"
+                      alt="plane"
                       width={58}
                       height={58}
+                      className="transition-all duration-500"
                     />
                   </Label>
                 </div>
@@ -76,7 +77,7 @@ export default function SearchMain() {
                   <Label htmlFor="option-two">
                     <Image
                       src="/filtericon2.svg"
-                      alt="Goods2load Logo"
+                      alt="ship"
                       width={58}
                       height={58}
                     />
@@ -91,7 +92,7 @@ export default function SearchMain() {
                   <Label htmlFor="option-three">
                     <Image
                       src="/filtericon3.svg"
-                      alt="Goods2load Logo"
+                      alt="truck"
                       width={58}
                       height={58}
                     />

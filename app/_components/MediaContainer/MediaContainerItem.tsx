@@ -6,17 +6,14 @@ type TMedia = {
   item: IMedia;
 };
 
-const MediaContainerItem: FC<any> = ({ item }) => {
+const MediaContainerItem: FC<any> = ({ item }: TMedia) => {
   return (
-    <div
-      key={item.date}
-      className="w-[500px] h-[400px] rounded-lg flex-shrink-0 mt-[30px]"
-    >
+    <div key={item.date} className="w-full rounded-lg flex-shrink-0 mt-[30px]">
       <Image
-        src={item.img}
+        src={item.img.src}
         alt={item.title}
-        width={500}
-        height={200}
+        width={item.img.width}
+        height={item.img.height}
         className="rounded-t-lg mb-[30px]"
       />
       <div className="flex flex-row justify-between items-center text-black">
