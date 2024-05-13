@@ -7,9 +7,7 @@ export default function AboutUsPage() {
   return (
     <LoyaltAllWrapper>
       <Suspense>
-        <div className="w-full">
-          <AboutUs />
-        </div>
+        <AboutUs />
       </Suspense>
     </LoyaltAllWrapper>
   );

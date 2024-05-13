@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const CompanyLocation = () => {
   return (
-    <section className="max-w-[1440px] w-full flex flex-row gap-[56px] py-[104px] px-[72px]">
+    <section className="w-full flex flex-row gap-[56px] py-[104px] px-[72px]">
       <div className="w-1/2 rounded-lg overflow-hidden grid items-center">
         <Image className="w-full rounded-lg" src={location} alt={"location"} />
       </div>
