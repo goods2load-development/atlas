@@ -1,28 +1,43 @@
-import { HelpData } from "@/app/interface/helpData";
+import { HelpData, TabName } from "@/app/interface/helpData";
+import HelpShipSvg from "@/components/ui/Svg/HelpSvg/HelpShipSvg";
+import HelpPlaneSvg from "@/components/ui/Svg/HelpSvg/HelpPlaneSvg";
+import HelpTruckSvg from "@/components/ui/Svg/HelpSvg/HelpTruckSvg";
+
+export const tabs = [
+  {
+    name: TabName.PLANE,
+    icon: <HelpPlaneSvg />,
+  },
+  {
+    name: TabName.SHIP,
+    icon: <HelpShipSvg />,
+  },
+  {
+    name: TabName.TRUCK,
+    icon: <HelpTruckSvg />,
+  },
+];
 
 export const helpData: HelpData = {
-  ship: [
+  [TabName.SHIP]: [
     {
       question:
         "What is the reason for specifying the Incoterm details in my shipping request?",
       description: <span>Specifying Incoterms details in your shipping request is essential for clarity, risk management, cost calculation, legal compliance, and efficient logistics planning.  
         <br/><br/><b>EXPORT (I’M SELLING):</b><br/> - CFR (Cost and Freight): The seller delivers the goods on board the vessel, contracting for and paying the costs and freight necessary to bring the goods to the named port of destination. - CIF (Cost, Insurance and Freight): Similar to CFR, but the seller must also obtain minimum insurance cover against the buyer&apos;s risk of loss or damage to the goods during carriage. - CPT (Carriage Paid To): The seller pays for the carriage of goods up to the named place of destination. - CIP ( Carriage and Insurance Paid): The seller pays for the carriage of the goods up to the named place of destination, with the exception that the seller is required to obtain minimum insurance for the goods while in transit.
         <br/><br/><b>IMPORT (I AM BUYING):</b><br/> - FOB (Free on Board): The seller delivers the goods on board the vessel nominated by the buyer at the named port of shipment. - FCA (Free Carrier): The seller delivers the goods, cleared for export, at a named place, which can be their own premises or another designated location.</span>,
-      open: false,
     },
     {
       question:
         "HOW DOES THE PROCESS OF CARGO LOADING AND UNLOADING WORK AT PORTS FOR SEA SHIPMENTS?",
       description:
         "The process of cargo loading and unloading at ports involves specialized equipment such as cranes to move containers onto and off ships. Cargo is organized and stored in designated areas within the port until it&apos;s ready to be loaded onto the ship or transported away from the port.",
-      open: false,
     },
     {
       question:
         "WHAT ARE THE MAIN FACTORS INFLUENCING TRANSIT TIMES FOR SEA CARGO SHIPMENTS?",
       description:
         "Transit times for sea cargo shipments are influenced by factors such as the distance between ports, shipping routes, vessel speed, port congestion, geopolitical tension, customs clearance procedures, and weather conditions.",
-      open: false,
     },
     {
       question:
@@ -36,14 +51,12 @@ known as TEUs (Twenty-foot Equivalent Units) or FEUs (Forty-foot Equivalent Unit
 • Roll-on/Roll-off (Ro-Ro) Vessels: Ro-Ro vessels are designed to transport wheeled cargo, such as cars, trucks, trailers, and heavy machinery, that can be driven on and off the ship via ramps. These vessels are commonly used for transporting vehicles between continents or across large bodies of water. They offer efficient and cost-effective transportation for a wide range of wheeled cargo. 
 Each type of vessel has its own capabilities and is suitable for transporting specific types of cargo.
       </span>,
-      open: false,
     },
     {
       question:
         "CAN YOU EXPLAIN THE DIFFERENT TYPES OF VESSELS USED FOR SEA CARGO TRANSPORTATION AND THEIR RESPECTIVE CAPABILITIES?",
       description:
         "Customs procedures for sea cargo shipments, especially for international routes, involve thorough documentation checks, cargo inspections, and compliance with import/export regulations. Customs authorities verify the accuracy of documents such as the commercial invoice and packing list, conduct physical inspections when necessary, and ensure compliance with regulations on prohibited goods, customs duties, and tariffs. Risk assessments are performed to identify high-risk shipments, which may undergo enhanced scrutiny to mitigate potential risks such as smuggling or fraud. Compliance with customs procedures is essential to facilitate smooth clearance and avoid delays or penalties.",
-      open: false,
     },
     {
       question:
@@ -55,10 +68,9 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         • Implementation of Emergency Response Plans: Vessels are equipped with comprehensive emergency response plans that outline procedures for responding to emergencies such as severe weather events, mechanical failures, or accidents at sea. Crew members undergo regular training drills to ensure they are prepared to handle various emergency scenarios effectively.
         • Advanced Navigation and Communication Systems: Modern vessels are equipped with advanced navigation and communication systems, including GPS navigation, radar systems, satellite communication, and automated distress alert systems (such as EPIRBs), to enhance safety and facilitate real-time communication with shore-based authorities and rescue teams in case of emergencies. 
         By implementing these measures and adopting a proactive approach to risk management, stakeholders in the maritime industry can mitigate the impact of adverse weather conditions and unforeseen events on sea cargo transportation, thereby ensuring the safety of crew members, vessels, and cargo.</span>,
-      open: false,
     },
   ],
-  plane: [
+  [TabName.PLANE]: [
     {
       question:
         "What is the reason for specifying the Incoterm details in my shipping  request?",
@@ -76,12 +88,10 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         <br/>- EXW (Ex Works): The seller only makes the goods available to the buyer at their own premises.
         <br/>- FCA (Free Carrier): The seller delivers the goods to a carrier nominated by the buyer.
       </span>,
-      open: false,
     },
     {
       question: "HOW DOES THE PROCESS OF CARGO HANDLING WORK AT AIRPORTS FOR AIR CARGO SHIPMENTS?",
       description: "The process of cargo handling at airports for air cargo shipments involves several steps to ensure efficient and timely movement of goods. Upon arrival at the airport, cargo is unloaded from arriving aircraft and transported to the cargo terminal or warehouse. Here, the cargo undergoes documentation checks, including verification of shipping manifests and customs clearance procedures. Next, cargo is sorted based on destination and type, and then loaded onto outbound aircraft for departure. Specialized equipment such as conveyor belts, forklifts, and pallet loaders are used to handle and transport cargo within the cargo terminal. Throughout the process, strict security measures are enforced to safeguard the integrity of the cargo. Finally, once loaded onto the aircraft, the cargo is secured in the cargo hold or on pallets to ensure safe transportation during flight.",
-      open: false,
     },
     {
       question: "WHAT FACTORS INFLUENCE THE TRANSIT TIMES FOR AIR CARGO SHIPMENT?",
@@ -95,7 +105,6 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         <br/>6. Aircraft Capacity: The type and capacity of the aircraft used for transporting cargo also influence transit times. Larger aircraft with greater cargo capacity may be able to accommodate more shipments and reduce transit times.
         <br/>Overall, efficient planning, effective logistics management, and collaboration between all stakeholders involved in the air cargo supply chain are essential for minimizing transit times and ensuring timely delivery of shipments.
       </span>,
-      open: false,
     },
     {
       question: "CAN YOU EXPLAIN THE DIFFERENT TYPES OF AIRCRAFT USED FOR AIR CARGO TRANSPORTATION AND THEIR RESPECTIVE CAPACITIES?",
@@ -108,7 +117,6 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         <br/>5. Air Freighters: Some airlines operate converted passenger aircraft or combi aircraft that have been modified to carry cargo in addition to passengers. These aircraft offer a combination of passenger and cargo capacity, allowing airlines to optimize their fleet utilization and meet varying demand for both passengers and cargo.
         <br/>Each type of aircraft has its own unique capabilities and capacities, allowing for flexible and efficient air cargo transportation to meet the diverse needs of shippers and logistics providers.
       </span>,
-      open: false,
     },
     {
       question: "HOW ARE CUSTOMS PROCEDURES MANAGED FOR AIR CARGO SHIPMENTS,ESPECIALLY FOR INTERNATIONAL ROUTES?",
@@ -122,7 +130,6 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         <br/>6. Regulatory Compliance: Customs procedures for air cargo shipments also include compliance with various regulatory requirements, such as security screening, export controls, and trade sanctions. Shippers must ensure that their shipments comply with all relevant regulations to avoid delays or penalties.
         <br/>Effective management of customs procedures for air cargo shipments is essential to facilitate smooth and efficient international trade, while also ensuring compliance with import and export regulations imposed by customs authorities.
       </span>,
-      open: false,
     },
     {
       question: "WHAT ARE THE SPECIFIC REGULATIONS AND SAFETY PROTOCOLS INVOLVED IN TRANSPORTING CHEMICAL OR RAW MATERIAL CARGO?",
@@ -136,10 +143,9 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         <br/>6. **Emergency Response Planning**: Shippers and transporters of chemical or raw material cargo must have comprehensive emergency response plans in place to address potential incidents or accidents during transit. This includes training personnel in proper handling procedures, spill containment, and evacuation protocols to minimize risks to human health and the environment.
         <br/>Compliance with specific regulations and safety protocols is essential to ensure the safe and secure transportation of chemical or raw material cargo while minimizing potential hazards to personnel, communities, and the environment along the supply chain.
       </span>,
-      open: false,
     },
   ],
-  truck: [
+  [TabName.TRUCK]: [
     {
       question: "WHY PROPER MEASURE AND WEIGHT ARE FUNDAMENTAL FOR YOUR SHIPPING?",
       description: <span>
@@ -150,7 +156,6 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         <br/>Smart Choices: Knowing accurate measurements helps select the right carrier and shipping method. You save money, We save time!
         <br/>Smooth Documentation: Precise data speeds up paperwork and customs processes.
       </span>,
-      open: false,
     },
     {
       question: "WHY DO I HAVE TO DECLARE THE GOODS I WANT TO SHIP?",
@@ -163,7 +168,6 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         <br/>Efficient logistics: Help logistics companies plan and allocate resources effectively.
         <br/> In summary, declaring your goods ensures compliance, safety, efficient logistics, and smooth processes.
       </span>,
-      open: false,
     },
     {
       question: "WHY SOMETIMES I CAN'T GET A QUOTE FOR MY TRANSPORT?",
@@ -176,24 +180,20 @@ Each type of vessel has its own capabilities and is suitable for transporting sp
         <br/>Technical or System Limitations: There could be instances where technical issues or limitations within the quoting system prevent the immediate generation of a quote. It could be due to system maintenance, connectivity problems, or other technical issues. Trying again later or contacting the service provider directly may help resolve this. 
         <br/><br/>It&apos;s important to remember that each transport request is unique, and various factors can impact the ability to provide an instant quote. If you&apos;re unable to receive a quote online or through automated systems, reaching out to the transport provider directly or providing more detailed information about your requirements can often help in obtaining an accurate quote.
       </span>,
-      open: false,
     },
     {
       question: "WHY IT TAKES SO LONG TO HAVE A QUOTATION OF TRANSPORTATION?",
       description: <span>
         Obtaining a transport quotation can take time due to factors such as the complexity of your request, the need for customized solutions, external influences, and the coordination required between multiple parties. Each transport request is unique and may require careful assessment and consideration before an accurate quotation can be provided. We provided a &apos;bell&apos; notification in case you want to refreshand be kept informed of any developments.
       </span>,
-      open: false,
     },
     {
       question: "ARE ALL INTERNATIONAL AND NATIONAL SHIPPING ALREADY INSURED?",
       description: "Not all shipments are covered by insurance, so please bear in mind that you will not be covered for damage, loss or theft for shipments that contain prohibited or restricted items. The shipping insurance does not apply for high-value items, fragile, dangerous, illegal, perishable goods or goods which are not appropriately packed according to the logistic provider's guidelines, which you will find on their website or receive upon booking.",
-      open: false,
     },
     {
       question: "HOW DO I TRACE MY GOODS AFTER I SHIP THEM?",
       description: "All shipments will be meticulously regulated in accordance with the logistic provider's robust platform system, ensuring smooth and efficient handling from start to finish.",
-      open: false,
     },
   ],
 };

@@ -1,12 +1,12 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 
 import shipImg from "@/assets/AboutUsImg/ship.png";
 import thereIsNotImg from "@/assets/AboutUsImg/thereIsNot.png";
 
 const CompanyArticle = () => {
   return (
-    <section className="max-w-[1440px] w-full flex flex-col gap-[64px] ">
+    <section className="max-w-[1440px] w-full flex flex-col gap-[64px] px-[72px]">
       <div className="w-full flex flex-row gap-[56px] h-[382px]">
         <div className="w-6/12 h-[382px] rounded-lg overflow-hidden">
           <Image
