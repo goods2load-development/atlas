@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { PropsWithChildren, useEffect } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 // localization routing not finished
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/navigation-menu";
 import { useUserStore } from "@/lib/store";
 
-export default function Header(props: any) {
+export default function Header({ children }: PropsWithChildren) {
   const { user, getUser } = useUserStore((state: any) => state);
   useEffect(() => {
     if (!!!user?.id) getUser();
@@ -24,7 +24,7 @@ export default function Header(props: any) {
   return (
     <div
       className={`${
-        !!props.children ? "bg-bgMainPrimary pb-48" : "bg-orangePrimary"
+        !!children ? "bg-bgMainPrimary pb-48" : "bg-orangePrimary"
       } bg-cover bg-center px-16 text-white`}
     >
       <header className="flex justify-between min-h-[75px]">
@@ -44,7 +44,7 @@ export default function Header(props: any) {
           </NavigationMenuList>
         </NavigationMenu>
       </header>
-      {props.children}
+      {children}
     </div>
   );
 }

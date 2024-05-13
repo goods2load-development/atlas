@@ -64,14 +64,14 @@ const CareerForm: React.FC = () => {
   ];
 
   return (
-    <section className="max-w-[1440px] flex flex-col w-full items-center py-[104px] career bg-bgCareer pb-[50px] pt-[68px] pb-[100px]">
-      <div className="text-[48px] text-white text-center mb-[30px] font-poppins italic">
+    <section className="max-w-[1440px] flex gap-[40px] flex-col w-full items-center career bg-bgCareer pt-[56px] pb-[88px]">
+      <div className="text-[48px] text-white text-center font-poppins italic">
         WORK WITH US
       </div>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
-          <div className="image-name flex flex-col items-center gap-[20px]  relative mb-[40px]">
+          <div className="image-name flex flex-col items-center gap-[20px] relative mb-[40px]">
             {data.map((it: any, i: number) => {
               return (
                 <FormField
