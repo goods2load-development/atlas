@@ -60,3 +60,15 @@ export function patch(params: any) {
       // TODO add toast messages
     });
 }
+
+export function deleteRequest(params: any) {
+  return axios
+    .delete(params.url, params.data)
+    .then(function (response: any) {
+      return response.data;
+    })
+    .catch(function (error: any) {
+      console.log(error);
+      // TODO add toast messages
+    });
+}
