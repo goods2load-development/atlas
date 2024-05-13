@@ -95,7 +95,6 @@ const TableCell = React.forwardRef<
       "p-5 align-middle [&:has([role=checkbox])]:pr-0 text-[16px] font-poppins border border-[#0000001A]",
       className
     )}
-    style={{ wordWrap: "break-word" }}
     {...props}
   />
 ));
