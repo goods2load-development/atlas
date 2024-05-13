@@ -61,6 +61,12 @@ export function patch(params: any) {
     });
 }
 
+export const generateBlockId = (title?: string) =>
+  title
+    ?.replace(/ /g, "-")
+    .replace(/[\s’?*()]/g, "")
+    .toLowerCase() || "";
+
 export function deleteRequest(params: any) {
   return axios
     .delete(params.url, params.data)
