@@ -71,13 +71,13 @@ export default function Footer() {
           <Link href="/help" className="block pb-4">
             Help centre
           </Link>
-          <Link href="/" className="block pb-4">
+          <Link href="/terms-of-service" className="block pb-4">
             Terms and Conditions
           </Link>
-          <Link href="/" className="block pb-4">
+          <Link href="/privacy-policy" className="block pb-4">
             Privacy Policy
           </Link>
-          <Link href="/" className="block pb-4">
+          <Link href="/cookie-policy" className="block pb-4">
             Cookie Policy
           </Link>
         </div>

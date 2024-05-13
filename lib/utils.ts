@@ -60,3 +60,9 @@ export function patch(params: any) {
       // TODO add toast messages
     });
 }
+
+export const generateBlockId = (title?: string) =>
+  title
+    ?.replace(/ /g, "-")
+    .replace(/[\s’?*()]/g, "")
+    .toLowerCase() || "";
