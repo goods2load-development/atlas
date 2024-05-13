@@ -29,7 +29,7 @@ const TrustReputation = () => {
         <Carousel
           className="w-full"
           opts={{ loop: true }}
-          plugins={[Autoplay({ delay: 5000 })]}
+          plugins={[Autoplay({ delay: 3000 })]}
         >
           <CarouselContent className="-ml-1 w-full max-w-full">
             {sliderData.map((it, index) => (

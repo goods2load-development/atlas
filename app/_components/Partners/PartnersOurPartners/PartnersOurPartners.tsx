@@ -13,7 +13,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 const PartnersOurPartners: React.FC = () => {
   return (
-    <section className="w-full max-w-[1440px] items-center">
+    <section id="our-partners" className="w-full max-w-[1440px] items-center">
       <div className="text-black text-center font-light text-[40px]/[48px] flex px-[72px]">
         Our
         <div className="font-normal italic bg-[#FEF1DF] rounded-[6px] h-[49px] px-[8px] ml-2 flex justify-center items-center">
@@ -25,7 +25,7 @@ const PartnersOurPartners: React.FC = () => {
           <Carousel
             className="w-full"
             opts={{ loop: true }}
-            plugins={[Autoplay({ delay: 5000 })]}
+            plugins={[Autoplay({ delay: 3000 })]}
           >
             <CarouselContent className="-ml-1 w-full max-w-[1000px] ">
               {sliderData.map((it, index) => (

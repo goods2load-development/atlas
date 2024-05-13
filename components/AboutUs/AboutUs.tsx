@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import TrustContainer from "@/app/_components/Trust/TrustContainer/TrustContainer";
 import CompanyContainer from "@/app/_components/Company/CompanyContainer/CompanyContainer";
 
-const AboutUsContainer: FC = () => {
+const AboutUs: FC = () => {
   const searchParams = useSearchParams();
   const router = useRouter();
 
@@ -69,4 +69,4 @@ const AboutUsContainer: FC = () => {
   );
 };
 
-export default memo(AboutUsContainer);
+export default memo(AboutUs);

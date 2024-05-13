@@ -55,7 +55,10 @@ export default function Footer() {
               <Link href="/partners" className="block pb-3 font-light">
                 Partner with us
               </Link>
-              <Link href="/partners" className="block pb-3 font-light">
+              <Link
+                href="/partners#our-partners"
+                className="block pb-3 font-light"
+              >
                 Our partners
               </Link>
               <Link href="/career" className="block pb-3 font-light">

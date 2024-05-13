@@ -1,13 +1,16 @@
 "use client";
-import AboutUsContainer from "@/app/_components/AboutUsContainer";
+import { Suspense } from "react";
 import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import AboutUs from "@/components/AboutUs/AboutUs";
 
-export default function AboutUs() {
+export default function AboutUsPage() {
   return (
     <LoyaltAllWrapper>
-      <div className="w-full">
-        <AboutUsContainer />
-      </div>
+      <Suspense>
+        <div className="w-full">
+          <AboutUs />
+        </div>
+      </Suspense>
     </LoyaltAllWrapper>
   );
 }
