@@ -5,7 +5,7 @@ import { PartnerBoostingTravel } from "@/app/interface/partnerBoostingTravel";
 
 const PartnersBoostingTravel: React.FC = () => {
   return (
-    <div className="flex w-[1440px] justify-center pt-[47px]  text-white text-center mb-[100px]">
+    <div className="flex w-[1440px] justify-center pt-[47px] text-white text-center mb-[100px]">
       <div className="w-full flex justify-center">
         <div className="">
           <div className="text-black w-[510px] leading-[57px] font-light  mb-[30px] text-[40px]/[48px] text-left">
