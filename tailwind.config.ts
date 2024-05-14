@@ -27,7 +27,7 @@ const config = {
         black: "#29292A",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        ring: "none",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
