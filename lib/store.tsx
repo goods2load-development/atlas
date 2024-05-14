@@ -1,16 +1,21 @@
 import { create } from "zustand";
-import { get, post, patch } from "./utils";
+import { get, post, patch, deleteRequest } from "./utils";
+import path from "path";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
+  citiesList: [],
   getCountriesList: async () => {
-    const list = await get({
+    const data = await get({
       url: "https://countriesnow.space/api/v0.1/countries",
-      headers: {
-        withCredentials: false,
-      },
+      withCredentials: false,
     });
-    set(() => ({ countriesList: list.data.data }));
+    const countriesList: string[] = [];
+    const citiesList: string[] = [];
+    data.data.forEach((country: any) => {
+      countriesList.push(country.country);
+    });
+    set(() => ({ countriesList, citiesList }));
   },
 }));
 
@@ -35,7 +40,7 @@ export const useRegistrationStore = create((set) => ({
     delete data.provider;
     post({
       url: "auth/register",
-      data: { ...data, postalCode: parseInt(data.postalCode) },
+      data,
     }).then((response) => {
       if (isProvider) {
         post({
@@ -85,7 +90,28 @@ export const useUserStore = create((set) => ({
       url: `/users/${id}`,
       data: data,
     }).then((userData: any) => {
-      set(() => ({ user: userData?.data }));
+      set((state: any) => ({ user: {...state.user, ...userData?.data} }));
+    });
+  },
+  uploadLogo: async (data: any) => {
+    const id = localStorage.getItem("id");
+    const formData = new FormData();
+    formData.append("file", data);
+    await post({
+      url: `/users/${id}/upload/file`,
+      data: formData,
+    }).then((userData: any) => {
+      set((state: any) => ({ user: {...state.user, ...userData?.data} }));
+    });
+  },
+  deleteUser: async (callback: () => void) => {
+    const id = localStorage.getItem("id");
+    await deleteRequest({
+      url: `/users/${id}`,
+    }).then(() => {
+      set(() => ({ user: {} }));
+      localStorage.removeItem("id");
+      callback();
     });
   },
 }));

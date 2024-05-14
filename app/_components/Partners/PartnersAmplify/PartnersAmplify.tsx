@@ -8,7 +8,7 @@ import { OpportunitiesData } from "@/app/interface/PartnersAmplify";
 
 const PartnersAmplify: React.FC = () => {
   return (
-    <div className="flex relative flex-col w-full items-end justify-center pt-[47px] bg-bgPartnersAmplify bg-cover bg-center text-white text-center pb-[100px] pt-[150px] mb-[230px] pr-[100px]">
+    <section className="flex relative flex-col w-full items-end justify-center pt-[47px] bg-bgPartnersAmplify bg-cover bg-center text-white text-center pb-[100px] pt-[150px] mb-[230px] pr-[100px]">
       <div className="absolute top-0 right-0 w-[1540px] h-full bg-bgPartnersAmplifyShadow bg-cover bg-center text-white text-center pb-[100px] pt-[150px] mb-[110px]" />
       <div className="absolute bottom-0 transform translate-y-[115px] left-20">
         <Image src={macBookImage} alt="" />
@@ -40,7 +40,7 @@ const PartnersAmplify: React.FC = () => {
           )
         )}
       </div>
-    </div>
+    </section>
   );
 };
 export default PartnersAmplify;
