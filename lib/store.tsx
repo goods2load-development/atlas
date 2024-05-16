@@ -17,6 +17,14 @@ export const useCountriesStore = create((set) => ({
     });
     set(() => ({ countriesList, citiesList }));
   },
+  getCitiesList: async (country: string) => {
+    const data = await post({
+      url: "https://countriesnow.space/api/v0.1/countries/cities",
+      data: { country },
+      withCredentials: false,
+    });
+    set(() => ({ citiesList: data }));
+  },
 }));
 
 export const useRegistrationStore = create((set) => ({
