@@ -66,3 +66,15 @@ export const generateBlockId = (title?: string) =>
     ?.replace(/ /g, "-")
     .replace(/[\s’?*()]/g, "")
     .toLowerCase() || "";
+
+export function deleteRequest(params: any) {
+  return axios
+    .delete(params.url, params.data)
+    .then(function (response: any) {
+      return response.data;
+    })
+    .catch(function (error: any) {
+      console.log(error);
+      // TODO add toast messages
+    });
+}

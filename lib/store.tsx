@@ -1,13 +1,21 @@
 import { create } from "zustand";
-import { get, post, patch } from "./utils";
+import { get, post, patch, deleteRequest } from "./utils";
+import path from "path";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
+  citiesList: [],
   getCountriesList: async () => {
-    const countriesList = await get({
-      url: "https://restcountries.com/v3.1/all",
+    const data = await get({
+      url: "https://countriesnow.space/api/v0.1/countries",
+      withCredentials: false,
     });
-    set(() => ({ countriesList }));
+    const countriesList: string[] = [];
+    const citiesList: string[] = [];
+    data.data.forEach((country: any) => {
+      countriesList.push(country.country);
+    });
+    set(() => ({ countriesList, citiesList }));
   },
 }));
 
@@ -94,6 +102,16 @@ export const useUserStore = create((set) => ({
       data: formData,
     }).then((userData: any) => {
       set((state: any) => ({ user: {...state.user, ...userData?.data} }));
+    });
+  },
+  deleteUser: async (callback: () => void) => {
+    const id = localStorage.getItem("id");
+    await deleteRequest({
+      url: `/users/${id}`,
+    }).then(() => {
+      set(() => ({ user: {} }));
+      localStorage.removeItem("id");
+      callback();
     });
   },
 }));

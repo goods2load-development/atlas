@@ -321,13 +321,11 @@ export default function UserRegistration() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {countriesList &&
-                          countriesList.length &&
-                          countriesList.map((item: any) => (
-                            <SelectItem key={item.cca3} value={item.cca3}>
-                              {item.name.official}
-                            </SelectItem>
-                          ))}
+                        {countriesList.map((item: string) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>

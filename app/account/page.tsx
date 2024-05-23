@@ -11,6 +11,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useUserStore } from "@/lib/store";
+import DeleteAccount from "@/components/DeleteAccount";
 import PersonalInformationForm from "@/components/PersonalInformationForm";
 import AddressForm from "@/components/AddressForm";
 import UploadCompanyLogo from "@/components/UploadCompanyLogo";
@@ -100,10 +101,7 @@ export default function Account() {
               <img src="/ring.svg" />
               Price alerts
             </UIButton>
-            <UIButton secondary className="text-[#666666] border-[#666666] hover:bg-[#666666] min-w-52">
-              <img src="/trash.svg" />
-              Delete account
-            </UIButton>
+            <DeleteAccount />
           </div>
         </div>
         <Card className="mb-10">
