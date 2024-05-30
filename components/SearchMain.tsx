@@ -1,19 +1,10 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useMemo } from "react";
+import debouce from "lodash.debounce";
+
 import Image from "next/image";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Calendar } from "@/components/ui/calendar";
 import { format } from "date-fns";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
 import {
   Command,
   CommandEmpty,
@@ -30,341 +21,383 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useCountriesStore } from "@/lib/store";
+import { useCountriesStore, useGoodsStore } from "@/lib/store";
+import { useFilterStore } from "@/lib/filterStore";
 import { useRouter, redirect, useSearchParams } from "next/navigation";
 
-function CustomRadioGroupItem({ value, imageNumber }: any) {
+function CustomRadioGroupItem({ value, imageNumber, main }: any) {
   return (
     <>
-      <RadioGroupItem
-        value={value}
-        id={value}
-        className="hidden"
-      />
+      <RadioGroupItem value={value} id={value} className="hidden" />
       <Label htmlFor={value}>
         <Image
           src={`/filtericon${imageNumber}.png`}
           alt="plane"
           width={58}
           height={58}
-          className="cursor-pointer"
+          className={main ? "cursor-pointer" : "cursor-pointer"}
         />
       </Label>
     </>
   );
-};
-
-function GetValuesFromQuery(searchParams) {
-  const defaults = {
-    deliveryBy: "plane",
-    from: "",
-    to: "",
-    departure: "",
-    arrival: "",
-    typeOfGoods: "",
-    totalKg: "",
-    pallets: "",
-    measurements: "",
-    type: "",
-  };
 }
 
 export default function SearchMain({ main }: any) {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const { citiesList, getCountriesList } = useCountriesStore(
-    (state: any) => state
-  );
+  const {
+    countriesList,
+    citiesList,
+    citiesListTo,
+    getCountriesList,
+    getCitiesList,
+  } = useCountriesStore((state: any) => state);
+  const handleChange = (e: any) => {
+    getGoodsList(e.target.value);
+  };
+  const debouncedResults = useMemo(() => {
+    return debouce(handleChange, 500);
+  }, []);
+
   useEffect(() => {
-    // if (!citiesList.length) getCountriesList();
-    console.log("search", searchParams);
-  }, [searchParams]);
-  const formSchema = z.object({
-    deliveryBy: z.string(),
-    from: z.string().optional(),
-    to: z.string().optional(),
-    departure: z.date({
-      required_error: "A date is required.",
-    }).optional(),
-    arrival: z.date({
-      required_error: "A date is required.",
-    }).optional(),
-    typeOfGoods: z.string().optional(),
-    totalKg: z.string().optional(),
-    pallets: z.number().optional(),
-    measurements: z.string().optional(),
-    type: z.string().optional(),
-  });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("values", values);
-    if (main) {
-      // return redirect("/account");
-      router.push("/account?");
-    }
-  }
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      deliveryBy: "plane",
-    },
+    return () => {
+      debouncedResults.cancel();
+    };
   });
 
+  const {
+    setFilter,
+    deliveryBy,
+    fromCountry,
+    from,
+    toCountry,
+    to,
+    departure,
+    arrival,
+    typeOfGoods,
+  } = useFilterStore((state: any) => state);
+  const { goodsList, getGoodsList } = useGoodsStore((state: any) => state);
+  useEffect(() => {
+    if (!countriesList.length) getCountriesList();
+  });
+  function switchLocations() {
+    const values = {
+      fromCountry: fromCountry,
+      from: from,
+      toCountry: toCountry,
+      to: to,
+    };
+    setFilter({ fromCountry: values.toCountry });
+    setFilter({ from: values.to });
+    setFilter({ toCountry: values.fromCountry });
+    setFilter({ to: values.from });
+  }
+  function onSubmit() {
+    router.push("/catalogue");
+  }
+
   return (
-    <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
-        <FormField
-          control={form.control}
-          name="deliveryBy"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex custom-radio"
-                >
-                  <FormItem className="flex items-center space-x-2">
-                    <FormControl>
-                      <CustomRadioGroupItem value="plane" imageNumber={1} />
-                    </FormControl>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-2">
-                    <FormControl>
-                      <CustomRadioGroupItem value="ship" imageNumber={2} />
-                    </FormControl>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-2">
-                    <FormControl>
-                      <CustomRadioGroupItem value="truck" imageNumber={3} />
-                    </FormControl>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
-            </FormItem>
-          )}
-        />
-        <div className="flex bg-[#ffede4] mt-[10px] mr-[5px] p-[24px] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720]">
-          <FormField
-            control={form.control}
-            name="from"
-            render={({ field }) => (
-              <FormItem className="mr-1 max-w-32">
-                <FormLabel>From</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className="rounded-l-xl rounded-r-none border-none font-normal text-black"
-                      >
-                        {field.value
-                          ? citiesList.find(
-                              (city: string) => city === field.value
-                            )
-                          : "Select"}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput placeholder="Search..." />
-                      <CommandEmpty>Not found.</CommandEmpty>
-                      <CommandGroup>
-                        {/* {citiesList.map((city: string) => (
-                          <CommandItem
-                            value={city}
-                            key={city}
-                            onSelect={() => {
-                              form.setValue("from", city);
-                            }}
-                          >
-                            {city}
-                          </CommandItem>
-                        ))} */}
-                      </CommandGroup>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                {/* <FormControl>
-                  <Input
-                    className="rounded-l-xl rounded-r-none border-none font-normal text-black"
-                    {...field}
-                  />
-                </FormControl> */}
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Button type="button" className="p-0 rounded-full border-0 bg-transparent w-[34px] h-[34px] mt-8 mx-[-13px] relative z-10 hover:bg-none">
-            <Image width={34} height={34} alt="turn" src="/turn.png"/>
-          </Button>
-          <FormField
-            control={form.control}
-            name="to"
-            render={({ field }) => (
-              <FormItem className="mr-1 max-w-32">
-                <FormLabel>To</FormLabel>
-                <FormControl>
-                  <Input
-                    className="rounded-none border-none font-normal text-black"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="departure"
-            render={({ field }) => (
-              <FormItem className=" max-w-32 mr-[1px]">
-                <FormLabel>Departure</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        type="button"
-                        className="text-black font-normal rounded-none hover:bg-white border-0 w-full"
-                      >
-                        {field.value ? (
-                          format(field.value, "mm/dd/yyyy")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="arrival"
-            render={({ field }) => (
-              <FormItem className="mr-[1px] max-w-32">
-                <FormLabel>Arrival</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant={"outline"}
-                        type="button"
-                        className="text-black font-normal rounded-none hover:bg-white border-0 w-full"
-                      >
-                        {field.value ? (
-                          format(field.value, "mm/dd/yyyy")
-                        ) : (
-                          <span>Pick a date</span>
-                        )}
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-auto p-0" align="start">
-                    <Calendar
-                      mode="single"
-                      selected={field.value}
-                      onSelect={field.onChange}
-                      disabled={(date) =>
-                        date > new Date() || date < new Date("1900-01-01")
-                      }
-                      initialFocus
-                    />
-                  </PopoverContent>
-                </Popover>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
+    <form onSubmit={onSubmit} className={!main ? "flex items-center" : ""}>
+      <RadioGroup
+        onValueChange={(e) => {
+          setFilter({ deliveryBy: e });
+        }}
+        defaultValue={deliveryBy}
+        className={`flex custom-radio ${!main && "catalogue"}`}
+      >
+        <div className="flex items-center space-x-2">
+          <CustomRadioGroupItem value="plane" imageNumber={1} />
+        </div>
+        <div className="flex items-center space-x-2">
+          <CustomRadioGroupItem value="ship" imageNumber={2} />
+        </div>
+        <div className="flex items-center space-x-2">
+          <CustomRadioGroupItem value="truck" imageNumber={3} />
+        </div>
+      </RadioGroup>
+      <div
+        className={`flex bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] ${main ? "p-[24px] mt-[10px] mr-[5px] items-end" : "items-center ml-[8px]"}`}
+      >
+        <div className="mr-1 max-w-32">
+          {main && <label>From</label>}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="rounded-l-xl rounded-r-none border-none font-normal text-black w-full"
+              >
+                {fromCountry || "Select country"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0">
+              <Command>
+                <CommandInput placeholder="Search..." />
+                <CommandEmpty>Not found.</CommandEmpty>
+                <CommandGroup>
+                  {countriesList.map((country: any, index: number) => (
+                    <CommandItem
+                      value={`${country.value}`}
+                      key={index}
+                      onSelect={() => {
+                        setFilter("fromCountry", country.value);
+                        getCitiesList(country.value);
+                      }}
+                    >
+                      {country.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="mr-1 max-w-32">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="rounded-none border-none font-normal text-black"
+              >
+                {from || "Select city"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0">
+              <Command>
+                <CommandInput placeholder="Search..." />
+                <CommandEmpty>Not found.</CommandEmpty>
+                <CommandGroup>
+                  {citiesList.map((item: any, index: number) => (
+                    <CommandItem
+                      value={`${item.value}`}
+                      key={index}
+                      onSelect={() => {
+                        setFilter("from", item.label);
+                      }}
+                    >
+                      {item.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+        <Button
+          type="button"
+          onClick={switchLocations}
+          className="p-0 rounded-full border-0 bg-transparent w-[34px] h-[34px] mt-8 mx-[-13px] relative z-10 hover:bg-transparent"
+        >
+          <Image width={34} height={34} alt="turn" src="/turn.png" />
+        </Button>
+        <div className="mr-1 max-w-32">
+          {main && <label>To</label>}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="rounded-l-xl rounded-r-none border-none font-normal text-black w-full"
+              >
+                {toCountry || "Select country"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0">
+              <Command>
+                <CommandInput placeholder="Search..." />
+                <CommandEmpty>Not found.</CommandEmpty>
+                <CommandGroup>
+                  {countriesList.map((item: any, index: number) => (
+                    <CommandItem
+                      value={`${item.value}`}
+                      key={index}
+                      onSelect={() => {
+                        setFilter({ toCountry: item.value });
+                        getCitiesList(item.value, true);
+                      }}
+                    >
+                      {item.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="mr-1 max-w-32">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="rounded-none border-none font-normal text-black"
+              >
+                {to || "Select city"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0">
+              <Command>
+                <CommandInput placeholder="Search..." />
+                <CommandEmpty>Not found.</CommandEmpty>
+                <CommandGroup>
+                  {citiesListTo.map((item: any, index: number) => (
+                    <CommandItem
+                      value={`${item.value}`}
+                      key={index}
+                      onSelect={() => {
+                        setFilter({ to: item.label });
+                      }}
+                    >
+                      {item.label}
+                    </CommandItem>
+                  ))}
+                </CommandGroup>
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className=" max-w-32 mr-[1px]">
+          {main && <label>Departure</label>}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                type="button"
+                className="text-black font-normal rounded-none hover:bg-white border-0 w-full"
+              >
+                {departure ? (
+                  format(departure, "mm/dd/yyyy")
+                ) : (
+                  <span>Pick a date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={departure}
+                onSelect={(e) => setFilter({ departure: e })}
+                disabled={(date) =>
+                  date > new Date() || date < new Date("1900-01-01")
+                }
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="mr-[1px] max-w-32">
+          {main && <label>Arrival</label>}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant={"outline"}
+                type="button"
+                className="text-black font-normal rounded-none hover:bg-white border-0 w-full"
+              >
+                {arrival ? (
+                  format(arrival, "mm/dd/yyyy")
+                ) : (
+                  <span>Pick a date</span>
+                )}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-auto p-0" align="start">
+              <Calendar
+                mode="single"
+                selected={arrival}
+                onSelect={(e) => setFilter({ arrival: e })}
+                // disabled={(date) =>
+                //   date > new Date() || date < new Date("1900-01-01")
+                // }
+                initialFocus
+              />
+            </PopoverContent>
+          </Popover>
+        </div>
+        {/* <FormField
             control={form.control}
             name="typeOfGoods"
             render={({ field }) => (
-              <FormItem className="mr-[1px]">
-                <FormLabel>Type of goods</FormLabel>
-                <FormControl>
-                  <Input
-                    className="rounded-none border-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
+              <div className="mr-[1px]">
+                <label>Type of goods</label>
+                
+                  <Input className="rounded-none border-none" {...field} />
+                
+                
+              </div>
             )}
-          />
-          <FormField
-            control={form.control}
-            name="totalKg"
-            render={({ field }) => (
-              <FormItem className="mr-[1px] max-w-24">
-                <FormLabel>Total KG</FormLabel>
-                <FormControl>
-                  <Input
-                    className="rounded-none border-none font-normal text-black"
-                    type="number"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="pallets"
-            render={({ field }) => (
-              <FormItem className="mr-[1px] max-w-24">
-                <FormLabel>Pallets</FormLabel>
-                <FormControl>
-                  <Input
-                    className="rounded-none border-none"
-                    type="number"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="measurements"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>L*W*H</FormLabel>
-                <FormControl>
-                  <Input
-                    className="rounded-l-none rounded-r-xl border-none"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+          /> */}
+        <div className="mr-1 max-w-32">
+          {main && <label>Type of goods</label>}
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                role="combobox"
+                className="rounded-none border-none font-normal text-black truncate w-32"
+              >
+                {typeOfGoods || "Select type of goods"}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent className="w-[200px] p-0">
+              <Command>
+                <CommandInput
+                  onChangeCapture={debouncedResults}
+                  placeholder="Search..."
+                />
+                <CommandEmpty>Not found.</CommandEmpty>
+                {goodsList.length && (
+                  <CommandGroup>
+                    {goodsList.map((item: any, index: number) => (
+                      <CommandItem
+                        value={`${item.value}`}
+                        key={index}
+                        onSelect={() => {
+                          setFilter({ typeOfGoods: item.label });
+                        }}
+                      >
+                        {item.label}
+                      </CommandItem>
+                    ))}
+                  </CommandGroup>
+                )}
+              </Command>
+            </PopoverContent>
+          </Popover>
+        </div>
+        <div className="mr-[1px] max-w-24">
+          {main && <label>Total KG</label>}
+          <Input
+            className="rounded-none border-none font-normal text-black"
+            type="number"
+            onChange={(e) => setFilter({ totalKg: e })}
           />
         </div>
+        <div className="mr-[1px] max-w-24">
+          {main && <label>Pallets</label>}
+          <Input
+            className="rounded-none border-none"
+            type="number"
+            onChange={(e) => setFilter({ pallets: e })}
+          />
+        </div>
+        <div>
+          {main && <label>L*W*H</label>}
+          <Input
+            className="rounded-l-none rounded-r-xl border-none"
+            onChange={(e) => setFilter({ measurements: e })}
+          />
+        </div>
+      </div>
+      {main && (
         <Button
-          type="submit"
+          type="button"
+          // onClick
           className="self-end mb-[10px] rounded-full bg-orangePrimary w-[98px] h-[98px] border-2 border-white font-medium text-[20px]/[24px]"
         >
           Explore
         </Button>
-      </form>
-    </Form>
+      )}
+    </form>
   );
 }

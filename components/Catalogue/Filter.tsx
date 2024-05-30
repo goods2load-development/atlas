@@ -1,9 +1,5 @@
 "use client";
-import React, { PropsWithChildren, useCallback, useEffect } from "react";
-import { useRouter, redirect, useSearchParams, usePathname } from "next/navigation";
-import Image, { StaticImageData } from "next/image";
-
-import { useUserStore } from "@/lib/store";
+import React, { useEffect } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -15,89 +11,140 @@ import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
 import { useFilterStore } from "@/lib/filterStore";
 
-const partners = [
-  {
-    name: "Some",
-    priceFrom: "40$",
-    id: "1",
-    selected: false,
-  },
-  {
-    name: "Some",
-    priceFrom: "40$",
-    id: "2",
-    selected: false,
-  },
-  {
-    name: "Some",
-    priceFrom: "40$",
-    id: "3",
-    selected: false,
-  },
-  {
-    name: "Some",
-    priceFrom: "40$",
-    id: "4",
-    selected: false,
-  }
-];
-let partnersMap = {};
-partners.forEach((item: any) => {
-  partnersMap = {
-    ...partnersMap,
-    [item.id]: item,
-  }
-})
+function GroupSelection({ selectAll, clearAll }: any) {
+  return (
+    <div className="mb-5 space-x-2">
+      <span className="cursor-pointer hover:opacity-70" onClick={selectAll}>
+        Select all
+      </span>
+      <span className="cursor-pointer hover:opacity-70" onClick={clearAll}>
+        Clear all
+      </span>
+    </div>
+  );
+}
+function FilterItem({ id, checked, onChange, label, price }: any) {
+  return (
+    <div className="flex items-top space-x-2 mb-3">
+      <Checkbox
+        id={id}
+        checked={checked}
+        onCheckedChange={(e: boolean) => {
+          onChange(id, e);
+        }}
+      />
+      <div className="grid gap-1.5 leading-none">
+        <label
+          htmlFor={id}
+          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+        >
+          {label}
+        </label>
+        <p className="text-sm text-muted-foreground">{price}</p>
+      </div>
+    </div>
+  );
+}
+interface FilterItemsListProps {
+  items: any[];
+  checkedList: string[];
+  onChange: (id: string, value: boolean, props: any) => void;
+  label?: string;
+  price?: string;
+}
+function FilterItemList({
+  items,
+  checkedList,
+  onChange,
+  label,
+  price,
+}: FilterItemsListProps) {
+  return items.map((item: any) => {
+    return (
+      <div className="flex items-top space-x-2 mb-3" key={item.id}>
+        <Checkbox
+          id={item.id}
+          checked={checkedList.includes(item.id)}
+          onCheckedChange={(e: boolean) => {
+            onChange(item.id, e, checkedList);
+          }}
+        />
+        <div className="grid gap-1.5 leading-none">
+          <label
+            htmlFor={item.id}
+            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          >
+            {item.label || item[label as keyof object]}
+          </label>
+          <p className="text-sm text-muted-foreground">
+            {item.priceFrom || item[price as keyof object]}
+          </p>
+        </div>
+      </div>
+    );
+  });
+}
 
-// for main
-// router.push(pathname + '?' + createQueryString('sort', 'asc'))
+const orderList: any[] = [
+  { id: "cheapest", label: "Cheapest" },
+  { id: "fastest", label: "Fastest" },
+  { id: "goGreen", label: "GoGreen" },
+];
 
 export default function Filter() {
-  const router = useRouter()
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const params = new URLSearchParams(searchParams.toString());
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams.toString())
-      params.set(name, value)
- 
-      return params.toString()
-    },
-    [searchParams]
-  )
-
   const min = React.createRef<HTMLInputElement>();
   const max = React.createRef<HTMLInputElement>();
 
-  const { filter, setFilter, portsDeparture, portsArrival, getPortsList } = useFilterStore((state: any) => state);
+  const {
+    deliveryBy,
+    from,
+    to,
+    cheapest,
+    fastest,
+    goGreen,
+    partners,
+    partnersSelected,
+    portsDeparture,
+    portsDepartureSelected,
+    portsArrival,
+    portsArrivalSelected,
+    setFilter,
+    getPortsList,
+    getPartners,
+  } = useFilterStore((state: any) => state);
   useEffect(() => {
-    getPortsList("airport", "genoa italy", true);
-  }, [filter.from]);
-  function onCheckboxChange(id: string, e: any, type?: string) {
-    console.log("e", id, e);
-    if (type === "partners") {
-      const partnersSelected = filter.partnersSelected;
-      if (e) {
-        partnersSelected.push(id);
-      } else {
-        partnersSelected.splice(partnersSelected.indexOf(id), 1);
-      }
-      setFilter({ partnersSelected });
+    getPartners();
+  }, []);
+  useEffect(() => {
+    getPortsList(true);
+  }, [from]);
+  useEffect(() => {
+    getPortsList();
+  }, [to]);
+  function onOrderChange(id: string, e: any, selectedArray: string[]) {
+    setFilter({ [id]: e });
+    return e;
+  }
+  function onCheckboxChange(id: string, e: any, selectedArray: string[]) {
+    const tempArray: string[] = selectedArray;
+    if (e) {
+      tempArray.push(id);
+    } else {
+      tempArray.splice(selectedArray.indexOf(id), 1);
     }
+    setFilter({ selectedArray: tempArray });
     return e;
   }
   function setMinMax() {
-    setFilter({ priceMin: min.current?.value , priceMax: max.current?.value });
+    setFilter({ priceMin: min.current?.value, priceMax: max.current?.value });
   }
-  function selectAllPartners() {
-    const partnersSelected = partners.map((item: any) => item.id);
-    setFilter({ partnersSelected });
-  };
-  function clearAllPartners() {
-    setFilter({ partnersSelected: [] });
-  };
-  console.log("search", filter, portsDeparture);
+  function selectAllPartners(arrayName: string) {
+    const tempArray = [arrayName].map((item: any) => item.id);
+    setFilter({ [arrayName]: tempArray });
+  }
+  function clearAllPartners(arrayName: string) {
+    setFilter({ [arrayName]: [] });
+  }
   return (
     <>
       {/* TODO change to alerts component */}
@@ -106,53 +153,29 @@ export default function Filter() {
         <AccordionItem value="item-1">
           <AccordionTrigger>Order</AccordionTrigger>
           <AccordionContent>
-            <div className="flex items-top space-x-2 mb-3">
-              <Checkbox id="cheapest" onChange={(e) => {
-                onCheckboxChange("cheapest", e);
-              }} />
-              <div className="grid gap-1.5 leading-none">
-                <label
-                  htmlFor="cheapest"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Cheapest
-                </label>
-                <p className="text-sm text-muted-foreground">(from $ 680)</p>
-              </div>
-            </div>
-            <div className="flex items-top space-x-2 mb-3">
-              <Checkbox id="fastest" onCheckedChange={(e) => {
-                onCheckboxChange("fastest", e);
-              }} />
-              <div className="grid gap-1.5 leading-none">
-                <label
-                  htmlFor="fastest"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Fastest
-                </label>
-                <p className="text-sm text-muted-foreground">(from $ 1080)</p>
-              </div>
-            </div>
-            <div className="flex items-top space-x-2 mb-3">
-              <Checkbox id="goGreen" onCheckedChange={(e) => {
-                onCheckboxChange("goGreen", e);
-              }} />
-              <div className="grid gap-1.5 leading-none">
-                <label
-                  htmlFor="goGreen"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  GoGreen
-                </label>
-                <p className="text-sm text-muted-foreground">(from $ 2080)</p>
-              </div>
-            </div>
+            <FilterItem
+              id="cheapest"
+              checked={cheapest}
+              onChange={onOrderChange}
+              label="Cheapest"
+            />
+            <FilterItem
+              id="fastest"
+              checked={fastest}
+              onChange={onOrderChange}
+              label="Fastest"
+            />
+            <FilterItem
+              id="goGreen"
+              checked={goGreen}
+              onChange={onOrderChange}
+              label="GoGreen"
+            />
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="price">
           <AccordionTrigger>Price</AccordionTrigger>
-          <AccordionContent className="flex">
+          <AccordionContent className="flex space-x-2">
             <Input ref={min} placeholder="min" />
             <Input ref={max} placeholder="max" />
             <Button onClick={setMinMax}>OK</Button>
@@ -161,84 +184,45 @@ export default function Filter() {
         <AccordionItem value="partners">
           <AccordionTrigger>Logistic partner</AccordionTrigger>
           <AccordionContent>
-            <div className="mb-3">
-              <span onClick={selectAllPartners}>Select all</span>
-              <span onClick={clearAllPartners}>Clear all</span>
-            </div>
-            {partners.map((item: any) => {
-              return (
-                <div className="flex items-top space-x-2 mb-3" key={item.id}>
-                  <Checkbox id={item.id} onCheckedChange={(e) => {
-                    onCheckboxChange(item.id, e, "partners");
-                  }} />
-                  <div className="grid gap-1.5 leading-none">
-                    <label
-                      htmlFor={item.id}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {item.name}
-                    </label>
-                    <p className="text-sm text-muted-foreground">{item.priceFrom}</p>
-                  </div>
-                </div>
-              );
-            })}
+            <GroupSelection
+              selectAll={selectAllPartners}
+              clearAll={clearAllPartners}
+            />
+            <FilterItemList
+              items={partners}
+              checkedList={partnersSelected}
+              onChange={onCheckboxChange}
+              label="name"
+            />
           </AccordionContent>
         </AccordionItem>
-        <AccordionItem value="portsDeparture">
-          <AccordionTrigger>Port Departure</AccordionTrigger>
-          <AccordionContent>
-            <div className="mb-3">
-              <span onClick={selectAllPartners}>Select all</span>
-              <span onClick={clearAllPartners}>Clear all</span>
-            </div>
-            {portsDeparture.map((item: any) => {
-              return (
-                <div className="flex items-top space-x-2 mb-3" key={item}>
-                  <Checkbox id={item} onCheckedChange={(e) => {
-                    onCheckboxChange(item, e, "portsDeparture");
-                  }} />
-                  <div className="grid gap-1.5 leading-none">
-                    <label
-                      htmlFor={item}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {item}
-                    </label>
-                    <p className="text-sm text-muted-foreground">from 500$</p>
-                  </div>
-                </div>
-              );
-            })}
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="portsArrival">
-          <AccordionTrigger>Port Arrival</AccordionTrigger>
-          <AccordionContent>
-            <div className="mb-3">
-              <span onClick={selectAllPartners}>Select all</span>
-              <span onClick={clearAllPartners}>Clear all</span>
-            </div>
-            {portsArrival.map((item: any) => {
-              return (
-                <div className="flex items-top space-x-2 mb-3" key={item}>
-                  <Checkbox id={item} onCheckedChange={(e) => {
-                    onCheckboxChange(item, e, "portsDeparture");
-                  }} />
-                  <div className="grid gap-1.5 leading-none">
-                    <label
-                      htmlFor={item}
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      {item}
-                    </label>
-                    <p className="text-sm text-muted-foreground">from 500$</p>
-                  </div>
-                </div>
-              );
-            })}
-          </AccordionContent>
-        </AccordionItem>
+        {deliveryBy !== "truck" && (
+          <>
+            <AccordionItem value="portsDeparture">
+              <AccordionTrigger>Port Departure</AccordionTrigger>
+              <AccordionContent>
+                <GroupSelection selectAll={() => {}} clearAll={() => {}} />
+                <FilterItemList
+                  items={portsDeparture}
+                  checkedList={portsDepartureSelected}
+                  onChange={onCheckboxChange}
+                />
+                {/* "portsDeparture" */}
+              </AccordionContent>
+            </AccordionItem>
+            <AccordionItem value="portsArrival">
+              <AccordionTrigger>Port Arrival</AccordionTrigger>
+              <AccordionContent>
+                <GroupSelection selectAll={() => {}} clearAll={() => {}} />
+                <FilterItemList
+                  items={portsArrival}
+                  checkedList={portsArrivalSelected}
+                  onChange={onCheckboxChange}
+                />
+              </AccordionContent>
+            </AccordionItem>
+          </>
+        )}
       </Accordion>
     </>
   );

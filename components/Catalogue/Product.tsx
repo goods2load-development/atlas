@@ -121,7 +121,7 @@ function CellImage({
       className="max-w-[104px]"
     />
   ) : (
-    <></>
+    <>{name}</>
   );
 }
 

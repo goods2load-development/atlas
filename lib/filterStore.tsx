@@ -1,39 +1,153 @@
 import { create } from "zustand";
-import { get, post, patch, deleteRequest } from "./utils";
-interface FilterProps {
-  partnersSelected: string[];
-  priceMin: string;
-  priceMax: string;
-}
+import { format } from "date-fns";
+import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
+
 interface FilterStoreProps {
-  filter: FilterProps;
-  setFilter: (data: FilterProps) => void;
+  partnersSelected: string[];
+  priceMin: number;
+  priceMax: number;
+  deliveryBy: "plane" | "ship" | "truck";
+  fromCountry: string;
+  from: string;
+  toCountry: string;
+  to: string;
+  departure: string | null;
+  arrival: string | null;
+  typeOfGoods: string;
+  totalKg: string | null;
+  pallets: string | null;
+  sortBy: null | any;
+  cheapest: boolean;
+  fastest: boolean;
+  goGreen: boolean;
+  partners: any[];
+  portsDepartureSelected: string[];
+  portsArrivalSelected: string[];
+  products: any[];
+  setFilter: (data: FilterStoreProps) => void;
+  portsDeparture: string[];
+  portsArrival: string[];
 }
-export const useFilterStore = create((set) => ({
-  filter: {
-    from: "",
-    to: "",
-    departure: "",
-    arrival: "",
-    typeOfGoods: "",
-    totalKg: "",
-    pallets: "",
-    partnersSelected: [],
-    priceMin: null,
-    priceMax: null,
-    sortBy: null,
-  },
-  setFilter: (newFilter: FilterProps) => set((state: FilterStoreProps) => ({ filter: {...state.filter, ...newFilter} })),
+export const useFilterStore = create<FilterStoreProps>((set, get) => ({
+  // search options
+  deliveryBy: "plane",
+  fromCountry: "",
+  from: "",
+  toCountry: "",
+  to: "",
+  departure: null,
+  arrival: null,
+  typeOfGoods: "",
+  totalKg: null,
+  pallets: null,
+  // filter options
+  cheapest: false,
+  fastest: false,
+  goGreen: false,
+  priceMin: 0,
+  priceMax: 0,
+  partners: [],
+  partnersSelected: [],
   portsDeparture: [],
+  portsDepartureSelected: [],
   portsArrival: [],
-  getPortsList: async (type: string, city: string, departure: boolean) => {
-    const data = await get({
+  portsArrivalSelected: [],
+
+  sortBy: null,
+
+  products: [],
+  setFilter: (newFilter: FilterStoreProps) =>
+    set((state: FilterStoreProps) => ({
+      ...state,
+      ...newFilter,
+    })),
+  getPartners: async () => {
+    const data = await getRequest({
+      url: "orders/partners",
+    });
+    set(() => ({
+      partners: data.data,
+    }));
+  },
+  getPortsList: async (departure: boolean = false) => {
+    const { deliveryBy, fromCountry, from, toCountry, to } = get();
+    const type = deliveryBy === "plane" ? "airport" : "seaport";
+    const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
+    const data = await getRequest({
       url: `https://port-api.com/${type}/search/${city}`,
       withCredentials: false,
     });
-    console.log("ports", data);
-    const portsList = { [departure ? "portsDeparture" : "portsArrival"]: data.features.map((item: any) => (item.properties.name))};
-    set(() => (portsList));
+    if (departure) {
+      set(() => ({
+        portsDeparture: data.features.map((item: any) => ({
+          id: item.properties.name,
+          label: item.properties.name,
+        })),
+      }));
+    } else {
+      set(() => ({
+        portsArrival: data.features.map((item: any) => ({
+          id: item.properties.name,
+          label: item.properties.name,
+        })),
+      }));
+    }
   },
-  
+  getProducts: async () => {
+    const {
+      deliveryBy,
+      fromCountry,
+      from,
+      toCountry,
+      to,
+      departure,
+      arrival,
+      partnersSelected,
+      portsDepartureSelected,
+      portsArrivalSelected,
+      totalKg,
+      pallets,
+    } = get();
+
+    postRequest({
+      url: "orders/search",
+      data: {
+        transportation: deliveryBy,
+        // from: from ? `${fromCountry} ${from}` : undefined,
+        // to: to ? `${toCountry} ${to}` : undefined,
+
+        // departure: departure,
+        // arrival: arrival,
+
+        // logisticPartner: partnersSelected,
+        // portDeparture: portsDepartureSelected,
+        // portArrival: portsArrivalSelected,
+
+        // goods: "",
+
+        // kilogram: totalKg,
+        // pallets: pallets,
+        order: {
+          cheapest: false,
+          fastest: false,
+          goGreen: false,
+        },
+        provider: {},
+        // price: 0,
+        // size: "",
+      },
+    }).then((data: any) => {
+      const products = data.data.map((item: any) => ({
+        estimatedTransit: "",
+        company: {
+          name: item.companyName,
+        },
+        withdrow: format(item.withdrow, "mm/dd/yyyy"),
+        delivery: format(item.delivery, "mm/dd/yyyy"),
+        orderCost: item.price,
+      }));
+      console.log("products", products);
+      set(() => ({ products }));
+    });
+  },
 }));

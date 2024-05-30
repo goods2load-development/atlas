@@ -1,29 +1,73 @@
 import { create } from "zustand";
-import { get, post, patch, deleteRequest } from "./utils";
+import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 import path from "path";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
   citiesList: [],
+  citiesListTo: [],
   getCountriesList: async () => {
-    const data = await get({
+    const data = await getRequest({
       url: "https://countriesnow.space/api/v0.1/countries",
       withCredentials: false,
     });
-    const countriesList: string[] = [];
-    const citiesList: string[] = [];
+    const countriesList: any[] = [];
+    const citiesList: any[] = [];
     data.data.forEach((country: any) => {
-      countriesList.push(country.country);
+      countriesList.push({ label: country.country, value: country.country });
     });
     set(() => ({ countriesList, citiesList }));
   },
-  getCitiesList: async (country: string) => {
-    const data = await post({
+  getCitiesList: async (country: string, to?: boolean) => {
+    const data = await postRequest({
       url: "https://countriesnow.space/api/v0.1/countries/cities",
       data: { country },
       withCredentials: false,
     });
-    set(() => ({ citiesList: data }));
+    const citiesList: any[] = [];
+    data.data.forEach((city: any) => {
+      citiesList.push({ label: city, value: city });
+    });
+    if (to) {
+      set(() => ({ citiesListTo: citiesList }));
+    } else {
+      set(() => ({ citiesList }));
+    }
+  },
+}));
+
+export const useGoodsStore = create((set) => ({
+  goodsList: [],
+  getGoodsList: async (term: string) => {
+    console.log("term", term);
+    const base = "https://hs-code-harmonized-system.p.rapidapi.com/";
+    const byCode = !!parseInt(term);
+    const url = base + (byCode ? "code" : "search");
+    const data = await getRequest({
+      url,
+      params: { term },
+      withCredentials: false,
+      headers: {
+        "X-RapidAPI-Key": "02c03ec749msh5ca6829a28a3028p1e6f11jsn835391f49eab",
+        "X-RapidAPI-Host": "hs-code-harmonized-system.p.rapidapi.com",
+      },
+    });
+    const goodsList: any[] = [];
+    if (byCode) {
+      goodsList.push({
+        label: `${data.result?.code} ${data.result?.description}`,
+        value: data.result?.code,
+      });
+    } else {
+      data.result?.forEach((item: any) => {
+        goodsList.push({
+          label: `${item.code} ${item.description}`,
+          value: item.code,
+        });
+      });
+    }
+
+    set(() => ({ goodsList }));
   },
 }));
 
@@ -46,12 +90,12 @@ export const useRegistrationStore = create((set) => ({
     delete data.truck;
     delete data.license;
     delete data.provider;
-    post({
+    postRequest({
       url: "auth/register",
       data,
     }).then((response) => {
       if (isProvider) {
-        post({
+        postRequest({
           url: `providers/upload/users/${response.data.id}`,
           data: formData,
           headers: { "Content-Type": "multipart/form-data" },
@@ -75,7 +119,7 @@ interface LoginProps {
 export const useUserStore = create((set) => ({
   user: {},
   postLoginData: async (data: LoginProps) => {
-    post({
+    postRequest({
       url: "auth/login",
       data,
     }).then((userData: any) => {
@@ -86,7 +130,7 @@ export const useUserStore = create((set) => ({
   },
   getUser: async () => {
     const id = localStorage.getItem("id");
-    await get({
+    await getRequest({
       url: `/users/${id}`,
     }).then((userData: any) => {
       set(() => ({ user: userData?.data }));
@@ -94,22 +138,22 @@ export const useUserStore = create((set) => ({
   },
   updateUser: async (data: any) => {
     const id = localStorage.getItem("id");
-    await patch({
+    await patchRequest({
       url: `/users/${id}`,
       data: data,
     }).then((userData: any) => {
-      set((state: any) => ({ user: {...state.user, ...userData?.data} }));
+      set((state: any) => ({ user: { ...state.user, ...userData?.data } }));
     });
   },
   uploadLogo: async (data: any) => {
     const id = localStorage.getItem("id");
     const formData = new FormData();
     formData.append("file", data);
-    await post({
+    await postRequest({
       url: `/users/${id}/upload/file`,
       data: formData,
     }).then((userData: any) => {
-      set((state: any) => ({ user: {...state.user, ...userData?.data} }));
+      set((state: any) => ({ user: { ...state.user, ...userData?.data } }));
     });
   },
   deleteUser: async (callback: () => void) => {
@@ -127,7 +171,7 @@ export const useUserStore = create((set) => ({
 export const useForgotPasswordStore = create((set) => ({
   user: {},
   postForgotPasswordData: async (data: any) => {
-    post({
+    postRequest({
       url: "auth/forgot-password",
       data,
     }).then((userData: any) => {
@@ -135,7 +179,7 @@ export const useForgotPasswordStore = create((set) => ({
     });
   },
   postResetPasswordData: async (data: any) => {
-    post({
+    postRequest({
       url: "auth/reset-password",
       data,
     }).then((userData: any) => {
