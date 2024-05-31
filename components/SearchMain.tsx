@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState, useMemo } from "react";
-import debouce from "lodash.debounce";
+// import debouce from "lodash.debounce";
 
 import Image from "next/image";
 import { Calendar } from "@/components/ui/calendar";
@@ -54,15 +54,15 @@ export default function SearchMain({ main }: any) {
   const handleChange = (e: any) => {
     getGoodsList(e.target.value);
   };
-  const debouncedResults = useMemo(() => {
-    return debouce(handleChange, 500);
-  }, []);
+  // const debouncedResults = useMemo(() => {
+  //   return debouce(handleChange, 500);
+  // }, []);
 
-  useEffect(() => {
-    return () => {
-      debouncedResults.cancel();
-    };
-  });
+  // useEffect(() => {
+  //   return () => {
+  //     debouncedResults.cancel();
+  //   };
+  // });
 
   const {
     setFilter,
@@ -342,7 +342,8 @@ export default function SearchMain({ main }: any) {
             <PopoverContent className="w-[200px] p-0">
               <Command>
                 <CommandInput
-                  onChangeCapture={debouncedResults}
+                  // onChangeCapture={debouncedResults}
+                  onChangeCapture={handleChange}
                   placeholder="Search..."
                 />
                 <CommandEmpty>Not found.</CommandEmpty>
