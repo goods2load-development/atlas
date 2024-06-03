@@ -7,10 +7,11 @@ export const useCountriesStore = create((set) => ({
     const list = await get({
       url: "https://countriesnow.space/api/v0.1/countries",
       headers: {
-        withCredentials: false,
+        'Content-Type': 'application/json',
       },
-    });
-    set(() => ({ countriesList: list.data.data }));
+      withCredentials: false,
+    });    
+    set(() => ({ countriesList: list.data }));
   },
 }));
 

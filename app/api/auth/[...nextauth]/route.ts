@@ -10,7 +10,12 @@ const {
 
 const authOptions = {
   secret,
-  providers: [GoogleProvider({ clientId, clientSecret })],
+  providers: [
+    GoogleProvider({
+      clientId,
+      clientSecret,
+    }),
+  ],
   pages: { signIn: "/sign-in" },
   callbacks: {
     async redirect({ url, baseUrl }: any) {
@@ -19,7 +24,6 @@ const authOptions = {
     },
 
     async jwt({ token, user, account, profile, isNewUser }: any) {
-      // console.log({ token, user, account, profile, isNewUser });
       if (account && profile) {
         token.accessToken = account.access_token;
         token.tokenType = account.token_type;
@@ -28,6 +32,11 @@ const authOptions = {
           id: profile.sub,
           name: profile.name,
           email: profile.email,
+          given_name: profile.given_name,
+          family_name: profile.family_name,
+          locale: profile.locale,
+          phone: profile.phone_number,
+          company: profile.organization,
         };
       }
 

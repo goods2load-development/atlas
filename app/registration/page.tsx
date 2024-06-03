@@ -34,6 +34,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
+import Divider from "@/components/Divider";
+import { getSession, signIn } from "next-auth/react";
+import { getCookie } from "react-use-cookie";
 
 interface CountriesProps {
   value: string;
@@ -134,11 +138,45 @@ export default function UserRegistration() {
     if (!Object.keys(errors).length) setFirstStep(false);
   }
 
+  async function fillFieldsWithGoogle(event: any) {
+    event.preventDefault()
+    const result = await signIn("google", { redirect: false });
+    const token = getCookie("accessToken");
+    const decodedToken = await getSession({
+      req: { headers: { cookie: `accessToken=${token}` } },
+    });
+    if (decodedToken) {
+      const { user }: any = decodedToken;
+      form.setValue("firstName", user?.given_name);
+      form.setValue("lastName", user?.family_name);
+      form.setValue("email", user?.email);
+      form.setValue("phoneNumber", user?.phone);
+      form.setValue("companyName", user?.company);
+      form.setValue("address", user?.address);
+    }
+  }
+
   return (
     <RegistrationWrapperFirst
       userRegistration={userRegistration}
       firstStep={firstStep}
     >
+      <Button
+        variant="outline"
+        onClick={(event) => fillFieldsWithGoogle(event)}
+        className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
+      >
+        <GoogleIcon />
+        <span>Fill with Google </span>
+      </Button>
+      {/* {errors ? (
+        <p className="my-2 text-sm text-center font-medium text-destructive">
+          Something went wrong, please try again
+        </p>
+      ) : (
+        <></>
+      )} */}
+      <Divider />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className={`${!firstStep && "hidden"}`}>
