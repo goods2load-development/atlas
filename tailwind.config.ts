@@ -27,7 +27,7 @@ const config = {
         black: "#29292A",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
+        ring: "none",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
@@ -84,6 +84,9 @@ const config = {
         bgCareer: "url(../assets/careerBg.png)",
         "hero-pattern": "url('../assets/hero-pattern.svg')",
         "divide-pattern": "url('../assets/divide-pattern.svg')",
+      },
+      backgroundSize: {
+        "100%": "100%",
       },
       animation: {
         "infinite-scroll": "infinite-scroll 25s linear infinite",

@@ -17,7 +17,10 @@ export default function Socials() {
           priority
         />
       </Link>
-      <Link href="/help" className="mr-3 hover:opacity-80">
+      <Link
+        href="https://www.linkedin.com/company/goods2load/"
+        className="mr-3 hover:opacity-80"
+      >
         <Image
           src="/linkedinicon.svg"
           alt="Linkedin"
@@ -27,7 +30,10 @@ export default function Socials() {
           priority
         />
       </Link>
-      <Link href="/help" className="hover:opacity-80">
+      <Link
+        href="https://www.facebook.com/GOODS2LOAD?ref=xav_pl_fb_external_guaranteed_control_ios&_rdr"
+        className="hover:opacity-80"
+      >
         <Image
           src="/facebookicon.svg"
           alt="facebook"

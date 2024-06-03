@@ -49,7 +49,7 @@ const DotButton = (props: any) => {
 };
 
 import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay"
+import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
 
 export default function SliderMain() {
@@ -60,70 +60,35 @@ export default function SliderMain() {
     useDotButton(emblaApi);
 
   return (
-    <div className="embla overflow-hidden" ref={emblaRef}>
+    <div className="embla overflow-hidden relative" ref={emblaRef}>
       <div className="embla__container flex">
-        <div className="embla__slide flex-[0_0_100%] relative">
+        <div className={`embla__slide flex-[0_0_100%] ${selectedIndex === 0 && "is-selected"}`}>
           <img src="/slide1.png" className="w-full" />
-          <div className="absolute top-0 left-0 w-6/12 mw-[100%] h-[100%] px-16 flex flex-wrap content-center">
-            <div>
-              <div className="italic text-[40px]/[48px]">
-                Expand Your Reach:
-              </div>
-              <div className="italic text-[40px]/[48px] font-light mb-[20px]">
-                Partner with G2L
-              </div>
-              <div className="text-[16px]/[22px] mb-[5px]">
-                Tap into millions of businesses seeking better shipping
-                solutions to grow. Join us to streamline your delivery process
-                and boost your business effortlessly.
-              </div>
-              <Link className="text-orangePrimary font-semibold" href="/">
-                Learn more
-              </Link>
-            </div>
-          </div>
         </div>
-        <div className="embla__slide flex-[0_0_100%] relative">
+        <div className={`embla__slide flex-[0_0_100%] ${selectedIndex === 1 && "is-selected"}`}>
           <img src="/slide2.png" className="w-full" />
-          <div className="absolute top-0 left-0 w-6/12 mw-[100%] h-[100%] px-16 flex flex-wrap content-center">
-            <div>
-              <div className="italic text-[40px]/[48px]">
-                Expand Your Reach:
-              </div>
-              <div className="italic text-[40px]/[48px] font-light mb-[20px]">
-                Partner with G2L
-              </div>
-              <div className="text-[16px]/[22px] mb-[5px]">
-                Tap into millions of businesses seeking better shipping
-                solutions to grow. Join us to streamline your delivery process
-                and boost your business effortlessly.
-              </div>
-              <Link className="text-orangePrimary font-semibold" href="/">
-                Learn more
-              </Link>
-            </div>
-          </div>
         </div>
-        <div className="embla__slide flex-[0_0_100%] relative">
+        <div className={`embla__slide flex-[0_0_100%] ${selectedIndex === 2 && "is-selected"}`}>
           <img src="/slide3.png" className="w-full" />
-          <div className="absolute top-0 left-0 w-6/12 mw-[100%] h-[100%] px-16 flex flex-wrap content-center">
-            <div>
-              <div className="italic text-[40px]/[48px]">
-                Expand Your Reach:
-              </div>
-              <div className="italic text-[40px]/[48px] font-light mb-[20px]">
-                Partner with G2L
-              </div>
-              <div className="text-[16px]/[22px] mb-[5px]">
-                Tap into millions of businesses seeking better shipping
-                solutions to grow. Join us to streamline your delivery process
-                and boost your business effortlessly.
-              </div>
-              <Link className="text-orangePrimary font-semibold" href="/">
-                Learn more
-              </Link>
-            </div>
+        </div>
+      </div>
+      <img src="/slide1.png" className="w-full relative z-0" />
+      <div className="absolute top-0 left-0 z-10 w-6/12 mw-[100%] h-[100%] px-16 flex flex-wrap content-center">
+        <div>
+          <div className="italic text-[40px]/[48px]">
+            Expand Your Reach:
           </div>
+          <div className="italic text-[40px]/[48px] font-light mb-[20px]">
+            Partner with G2L
+          </div>
+          <div className="text-[16px]/[22px] mb-[5px]">
+            Tap into millions of businesses seeking better shipping
+            solutions to grow. Join us to streamline your delivery process
+            and boost your business effortlessly.
+          </div>
+          <Link className="text-orangePrimary font-semibold" href="/">
+            Learn more
+          </Link>
         </div>
       </div>
       <div className="embla__controls relative bottom-[60px] z-10 flex flex-col">
@@ -132,10 +97,10 @@ export default function SliderMain() {
             <DotButton
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] bg-orangePrimary border-2 border-orangePrimary".concat(
+              className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
                 index === selectedIndex
-                  ? " embla__dot--selected bg-transparent"
-                  : ""
+                  ? " bg-orangePrimary"
+                  : " bg-transparent"
               )}
             />
           ))}

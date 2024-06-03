@@ -1,5 +1,6 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
+import { useRouter, redirect } from "next/navigation";
 import { useUserStore } from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -40,7 +41,7 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
       password: "",
     },
   });
-  const { postLoginData } = useUserStore((state: any) => state);
+  const { user, postLoginData } = useUserStore((state: any) => state);
   function onSubmit(values: z.infer<typeof formSchema>) {
     postLoginData(values);
   }
@@ -49,6 +50,9 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
     signIn("google", { callbackUrl, redirect: true });
   };
 
+  useEffect(() => {
+    if (!!user?.id) redirect("/account");
+  }, [user?.id]);
   return (
     <LoginWrapper>
       <Button
