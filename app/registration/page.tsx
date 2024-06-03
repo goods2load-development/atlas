@@ -25,7 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
 import { Checkbox } from "@/components/ui/checkbox";
 
-import RegistrationWrapperFirst from "@/components/RegistrationWrapper";
+import RegistrationWrapper from "@/components/RegistrationWrapper";
 
 import {
   Select,
@@ -130,12 +130,13 @@ export default function UserRegistration() {
       "postalCode",
       "city",
       "country",
-    ]);
-    if (!Object.keys(errors).length) setFirstStep(false);
+    ]).then((e) => {
+      if (e) setFirstStep(false);
+    });
   }
 
   return (
-    <RegistrationWrapperFirst
+    <RegistrationWrapper
       userRegistration={userRegistration}
       firstStep={firstStep}
     >
@@ -321,9 +322,9 @@ export default function UserRegistration() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent>
-                        {countriesList.map((item: string) => (
-                          <SelectItem key={item} value={item}>
-                            {item}
+                        {countriesList.map((item: any) => (
+                          <SelectItem key={item.value} value={item.label}>
+                            {item.label}
                           </SelectItem>
                         ))}
                       </SelectContent>
@@ -526,26 +527,17 @@ export default function UserRegistration() {
               control={form.control}
               name="privacy"
               render={({ field }) => (
-                <FormItem className="mb-1">
+                <FormItem className="mb-1 flex space-x-3">
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     id="privacy"
-                    className="hidden"
+                    className="mt-2"
                   />
                   <FormLabel
                     htmlFor="privacy"
-                    className="flex items-center space-x-2 text-[12px]/[16px] font-normal"
+                    className="text-[12px]/[16px] font-normal"
                   >
-                    <span className="border border-orangePrimary rounded-sm inline-block w-[18px] h-[18px] mr-4">
-                      <Image
-                        src="/check.png"
-                        alt="check"
-                        width={16}
-                        height={16}
-                        className="hidden"
-                      />
-                    </span>
                     I have read and agree to the Privacy Terms and Terms of use
                     of the website.
                   </FormLabel>
@@ -556,26 +548,17 @@ export default function UserRegistration() {
               control={form.control}
               name="comunication"
               render={({ field }) => (
-                <FormItem className="mb-5">
+                <FormItem className="mb-5 flex space-x-3">
                   <Checkbox
                     checked={field.value}
                     onCheckedChange={field.onChange}
                     id="comunication"
-                    className="hidden"
+                    className="mt-2"
                   />
                   <FormLabel
                     htmlFor="comunication"
-                    className="flex items-center space-x-2 text-[12px]/[16px] font-normal"
+                    className="text-[12px]/[16px] font-normal"
                   >
-                    <span className="border border-orangePrimary rounded-sm inline-block w-[18px] h-[18px] mr-4">
-                      <Image
-                        src="/check.png"
-                        width={16}
-                        height={16}
-                        alt="check"
-                        className="hidden"
-                      />
-                    </span>
                     Yes, I would like to receive communication from GOODS2LOAD
                   </FormLabel>
                 </FormItem>
@@ -616,6 +599,6 @@ export default function UserRegistration() {
           Cancel
         </Button>
       </div>
-    </RegistrationWrapperFirst>
+    </RegistrationWrapper>
   );
 }

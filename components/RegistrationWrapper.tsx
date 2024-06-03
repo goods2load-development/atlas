@@ -4,7 +4,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
 interface RegistrationWrapperProps {
-  children: string | JSX.Element | JSX.Element[];
+  children: any;
   userRegistration?: boolean;
   firstStep?: boolean;
 }
