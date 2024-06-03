@@ -22,7 +22,7 @@ export default function Home() {
       </Header>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
         <div className="px-16 mt-[-120px] mb-20">
-          <SearchMain />
+          <SearchMain main />
         </div>
         <SubHeaderMain />
         <LogisticInsights />

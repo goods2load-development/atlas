@@ -20,43 +20,37 @@ axios.interceptors.response.use(
   }
 );
 
-export function get(params: any) {
+export function getRequest(params: any) {
   return axios
     .get(params.url, { ...params })
     .then(function (response: any) {
-      console.log("response", response);
       return response.data;
     })
     .catch(function (error: any) {
-      console.log(error);
       // TODO add toast messages
     });
 }
 
-export function post(params: any) {
+export function postRequest(params: any) {
   return axios
     .post(params.url, params.data, {
       ...params,
     })
     .then(function (response: any) {
-      console.log("response", response);
       return response.data;
     })
     .catch(function (error: any) {
-      console.log(error);
       // TODO add toast messages
     });
 }
 
-export function patch(params: any) {
+export function patchRequest(params: any) {
   return axios
     .patch(params.url, params.data)
     .then(function (response: any) {
-      console.log("response", response);
       return response.data;
     })
     .catch(function (error: any) {
-      console.log(error);
       // TODO add toast messages
     });
 }
@@ -74,7 +68,6 @@ export function deleteRequest(params: any) {
       return response.data;
     })
     .catch(function (error: any) {
-      console.log(error);
       // TODO add toast messages
     });
 }
