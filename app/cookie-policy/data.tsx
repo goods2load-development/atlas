@@ -460,7 +460,7 @@ const data: ILegacyDataBlock[] = [
               "Firebase Analytics",
               "Used to collect  crash analytics  and adoption",
               "Google",
-              "<a href='www.google.com/privacy.html'>www.google.com/privacy.html</a>",
+              "<a href='https://www.google.com/privacy.html'>www.google.com/privacy.html</a>",
               "Privacy Settings",
               "iOS app and Android app",
             ],
