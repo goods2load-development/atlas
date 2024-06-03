@@ -85,6 +85,9 @@ const config = {
         "hero-pattern": "url('../assets/hero-pattern.svg')",
         "divide-pattern": "url('../assets/divide-pattern.svg')",
       },
+      backgroundSize: {
+        "100%": "100%",
+      },
       animation: {
         "infinite-scroll": "infinite-scroll 25s linear infinite",
         "accordion-down": "accordion-down 0.2s ease-out",

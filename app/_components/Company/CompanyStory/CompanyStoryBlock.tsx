@@ -34,7 +34,7 @@ const CompanyStoryBlock: FC<TItem> = ({ item }) => {
         )}
         {item.more && (
           <p
-            className="text-[#FF6720] text-[15px]/[18px] font-medium underline underline-offset-1 decoration-[1.5px] pt-[4px] hover:cursor-pointer"
+            className="text-[#FF6720] text-[15px]/[18px] text-left font-medium underline underline-offset-1 decoration-[1.5px] pt-[4px] hover:cursor-pointer"
             onClick={() => {
               setShowMore(!showMore);
             }}
