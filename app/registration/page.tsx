@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 import { useRouter } from "next/navigation";
 import { useCountriesStore } from "@/lib/store";
@@ -63,6 +64,35 @@ const userRoles = [
 
 export default function UserRegistration() {
   const router = useRouter();
+  const [cookies] = useCookies(["accessToken"]);
+  const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
+  const [formState, setFormState] = useState(() => {
+    const savedFormState = localStorage.getItem("registrationForm");
+    if (savedFormState) {
+      return JSON.parse(savedFormState);
+    }
+    return {
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      email: "",
+      companyName: "",
+      address: "",
+      postalCode: "",
+      city: "",
+    };
+  });
+
+  const handleChange = (event: any) => {
+    setFormState({
+      ...formState,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  useEffect(() => {
+    localStorage.setItem("registrationForm", JSON.stringify(formState));
+  }, [formState]);
 
   // TODO finalize validation schema
   const formSchema = z
@@ -98,13 +128,15 @@ export default function UserRegistration() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      ferry: false,
-      truck: false,
-      plane: false,
-    },
+    defaultValues: formState
+      ? formState
+      : {
+          firstName: "",
+          lastName: "",
+          ferry: false,
+          truck: false,
+          plane: false,
+        },
   });
   const {
     trigger,
@@ -139,21 +171,39 @@ export default function UserRegistration() {
     });
   }
 
-  async function fillFieldsWithGoogle(event: any) {
-    event.preventDefault()
-    const result = await signIn("google", { redirect: false });
+  async function fillFieldsWithGoogle() {
+    signIn("google", { redirect: true });
+  }
+
+  useEffect(() => {
+    if (cookies.accessToken) {
+      fillFields();
+    }
+  }, [cookies.accessToken]);
+
+  async function fillFields() {
     const token = getCookie("accessToken");
     const decodedToken = await getSession({
       req: { headers: { cookie: `accessToken=${token}` } },
     });
     if (decodedToken) {
       const { user }: any = decodedToken;
-      form.setValue("firstName", user?.given_name);
-      form.setValue("lastName", user?.family_name);
-      form.setValue("email", user?.email);
-      form.setValue("phoneNumber", user?.phone);
-      form.setValue("companyName", user?.company);
-      form.setValue("address", user?.address);
+      const formattedUser = {
+        firstName: user?.given_name,
+        lastName: user?.family_name,
+        phoneNumber: user?.phone,
+        email: user?.email,
+        companyName: user?.company,
+        address: user?.address,
+      }
+      localStorage.setItem(
+        "registrationForm",
+        JSON.stringify(formattedUser)
+      );
+      // refresh default values for form
+      form.reset(formattedUser);
+      setIsRegisteredWithGoogle(true);
+      router.refresh();
     }
   }
 
@@ -164,7 +214,7 @@ export default function UserRegistration() {
     >
       <Button
         variant="outline"
-        onClick={(event) => fillFieldsWithGoogle(event)}
+        onClick={fillFieldsWithGoogle}
         className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
       >
         <GoogleIcon />
@@ -218,6 +268,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -235,6 +286,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -254,6 +306,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -271,6 +324,8 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
+                        disabled={isRegisteredWithGoogle}
                       />
                     </FormControl>
                     <FormMessage />
@@ -289,6 +344,7 @@ export default function UserRegistration() {
                       className="bg-gray-2 border-0"
                       placeholder=""
                       {...field}
+                      onBlur={handleChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -307,6 +363,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -324,6 +381,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder="XXX XXX"
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -342,6 +400,7 @@ export default function UserRegistration() {
                       className="bg-gray-2 border-0"
                       placeholder=""
                       {...field}
+                      onBlur={handleChange}
                     />
                   </FormControl>
                   <FormMessage />
