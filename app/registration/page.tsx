@@ -1,4 +1,5 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 
@@ -67,7 +68,11 @@ export default function UserRegistration() {
   const [cookies] = useCookies(["accessToken"]);
   const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
   const [formState, setFormState] = useState(() => {
-    const savedFormState = localStorage.getItem("registrationForm");
+    const savedFormState =
+      typeof window !== "undefined"
+        ? localStorage.getItem("registrationForm")
+        : null;
+
     if (savedFormState) {
       return JSON.parse(savedFormState);
     }
@@ -195,11 +200,8 @@ export default function UserRegistration() {
         email: user?.email,
         companyName: user?.company,
         address: user?.address,
-      }
-      localStorage.setItem(
-        "registrationForm",
-        JSON.stringify(formattedUser)
-      );
+      };
+      localStorage.setItem("registrationForm", JSON.stringify(formattedUser));
       // refresh default values for form
       form.reset(formattedUser);
       setIsRegisteredWithGoogle(true);
