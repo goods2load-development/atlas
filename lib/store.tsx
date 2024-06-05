@@ -1,12 +1,15 @@
 import { create } from "zustand";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
-import path from "path";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
+  countriesListLoading: false,
   citiesList: [],
+  citiesListLoading: false,
   citiesListTo: [],
+  citiesListToLoading: false,
   getCountriesList: async () => {
+    // set(() => ({ countriesListLoading: true }));
     const data = await getRequest({
       url: "https://countriesnow.space/api/v0.1/countries",
       withCredentials: false,
@@ -16,9 +19,15 @@ export const useCountriesStore = create((set) => ({
     data.data.forEach((country: any) => {
       countriesList.push({ label: country.country, value: country.country });
     });
-    set(() => ({ countriesList, citiesList }));
+    set(() => ({ countriesList, citiesList, countriesListLoading: false }));
   },
   getCitiesList: async (country: string, to?: boolean) => {
+    if (to) {
+      set(() => ({ citiesListToLoading: true }));
+    } else {
+      set(() => ({ citiesListLoading: true }));
+    }
+    set(() => ({ citiesListLoading: true }));
     const data = await postRequest({
       url: "https://countriesnow.space/api/v0.1/countries/cities",
       data: { country },
@@ -29,17 +38,19 @@ export const useCountriesStore = create((set) => ({
       citiesList.push({ label: city, value: city });
     });
     if (to) {
-      set(() => ({ citiesListTo: citiesList }));
+      set(() => ({ citiesListTo: citiesList, citiesListToLoading: false }));
     } else {
-      set(() => ({ citiesList }));
+      set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
 }));
 
 export const useGoodsStore = create((set) => ({
   goodsList: [],
+  goodsListLoading: false,
   getGoodsList: async (term: string) => {
-    console.log("term", term);
+    set(() => ({ goodsListLoading: true }));
+    // console.log("term", term);
     const base = "https://hs-code-harmonized-system.p.rapidapi.com/";
     const byCode = !!parseInt(term);
     const url = base + (byCode ? "code" : "search");
@@ -67,7 +78,7 @@ export const useGoodsStore = create((set) => ({
       });
     }
 
-    set(() => ({ goodsList }));
+    set(() => ({ goodsList, goodsListLoading: false }));
   },
 }));
 

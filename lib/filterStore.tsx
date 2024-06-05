@@ -4,8 +4,8 @@ import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 
 interface FilterStoreProps {
   partnersSelected: string[];
-  priceMin: number;
-  priceMax: number;
+  priceMin: string | null;
+  priceMax: string | null;
   deliveryBy: "plane" | "ship" | "truck";
   fromCountry: string;
   from: string;
@@ -44,8 +44,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
   cheapest: false,
   fastest: false,
   goGreen: false,
-  priceMin: 0,
-  priceMax: 0,
+  priceMin: null,
+  priceMax: null,
   partners: [],
   partnersSelected: [],
   portsDeparture: [],
@@ -102,6 +102,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       to,
       departure,
       arrival,
+      cheapest,
+      fastest,
+      goGreen,
+      priceMin,
+      priceMax,
       partnersSelected,
       portsDepartureSelected,
       portsArrivalSelected,
@@ -113,27 +118,34 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       url: "orders/search",
       data: {
         transportation: deliveryBy,
-        // from: from ? `${fromCountry} ${from}` : undefined,
-        // to: to ? `${toCountry} ${to}` : undefined,
+        from: from ? `${fromCountry} ${from}` : undefined,
+        to: to ? `${toCountry} ${to}` : undefined,
 
-        // departure: departure,
-        // arrival: arrival,
+        departure: departure ? departure : undefined,
+        arrival: arrival ? arrival : undefined,
 
-        // logisticPartner: partnersSelected,
-        // portDeparture: portsDepartureSelected,
-        // portArrival: portsArrivalSelected,
+        logisticPartner: partnersSelected.length ? partnersSelected : undefined,
+        portDeparture: portsDepartureSelected.length
+          ? portsDepartureSelected
+          : undefined,
+        portArrival: portsArrivalSelected.length
+          ? portsArrivalSelected
+          : undefined,
 
         // goods: "",
 
-        // kilogram: totalKg,
-        // pallets: pallets,
+        kilogram: totalKg ? totalKg : undefined,
+        pallets: pallets ? pallets : undefined,
         order: {
-          cheapest: false,
-          fastest: false,
-          goGreen: false,
+          cheapest: cheapest,
+          fastest: fastest,
+          goGreen: goGreen,
         },
         provider: {},
-        // price: 0,
+        price: {
+          min: priceMin ? parseInt(priceMin) : undefined,
+          max: priceMax ? parseInt(priceMax) : undefined,
+        },
         // size: "",
       },
     }).then((data: any) => {

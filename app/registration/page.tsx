@@ -337,31 +337,22 @@ export default function UserRegistration() {
             {!userRegistration && (
               <>
                 <FormLabel>I provide logistic services by:</FormLabel>
-                <div className="flex mb-5">
+                <div className="flex mb-5 space-x-8">
                   <FormField
                     control={form.control}
                     name="ferry"
                     render={({ field }) => (
-                      <FormItem className="mr-8">
+                      <FormItem className="flex space-x-3">
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           id="ferry"
-                          className="hidden"
+                          className="mt-2"
                         />
                         <FormLabel
                           htmlFor="ferry"
-                          className="flex items-center space-x-2 text-sm font-medium"
+                          className="text-sm font-medium"
                         >
-                          <span className="border border-orangePrimary rounded-sm inline-block w-[18px] h-[18px] mr-4">
-                            <Image
-                              src="/check.png"
-                              alt="check"
-                              width={16}
-                              height={16}
-                              className="hidden"
-                            />
-                          </span>
                           Ferry
                         </FormLabel>
                       </FormItem>
@@ -371,26 +362,17 @@ export default function UserRegistration() {
                     control={form.control}
                     name="plane"
                     render={({ field }) => (
-                      <FormItem className="mr-8">
+                      <FormItem className="flex space-x-3">
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           id="plane"
-                          className="hidden"
+                          className="mt-2"
                         />
                         <FormLabel
                           htmlFor="plane"
-                          className="flex items-center space-x-2 text-sm font-medium"
+                          className="text-sm font-medium"
                         >
-                          <span className="border border-orangePrimary rounded-sm inline-block w-[18px] h-[18px] mr-4">
-                            <Image
-                              src="/check.png"
-                              alt="check"
-                              width={16}
-                              height={16}
-                              className="hidden"
-                            />
-                          </span>
                           Plane
                         </FormLabel>
                       </FormItem>
@@ -400,26 +382,17 @@ export default function UserRegistration() {
                     control={form.control}
                     name="truck"
                     render={({ field }) => (
-                      <FormItem className="mr-8">
+                      <FormItem className="flex space-x-3">
                         <Checkbox
                           checked={field.value}
                           onCheckedChange={field.onChange}
                           id="truck"
-                          className="hidden"
+                          className="mt-2"
                         />
                         <FormLabel
                           htmlFor="truck"
-                          className="flex items-center space-x-2 text-sm font-medium"
+                          className="text-sm font-medium"
                         >
-                          <span className="border border-orangePrimary rounded-sm inline-block w-[18px] h-[18px] mr-4">
-                            <Image
-                              src="/check.png"
-                              alt="check"
-                              width={16}
-                              height={16}
-                              className="hidden"
-                            />
-                          </span>
                           Truck
                         </FormLabel>
                       </FormItem>

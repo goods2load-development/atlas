@@ -4,6 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 
 import Image from "next/image";
 import { Calendar } from "@/components/ui/calendar";
+import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
 import {
   Command,
@@ -24,6 +25,16 @@ import { Button } from "@/components/ui/button";
 import { useCountriesStore, useGoodsStore } from "@/lib/store";
 import { useFilterStore } from "@/lib/filterStore";
 import { useRouter, redirect, useSearchParams } from "next/navigation";
+
+function Loader() {
+  return (
+    <div className="p-2">
+      <Skeleton className="h-3 w-full bg-gray-300" />
+      <Skeleton className="h-3 w-[85%] bg-gray-300 my-1" />
+      <Skeleton className="h-3 w-[95%] bg-gray-300" />
+    </div>
+  );
+}
 
 function CustomRadioGroupItem({ value, imageNumber, main }: any) {
   return (
@@ -46,8 +57,11 @@ export default function SearchMain({ main }: any) {
   const router = useRouter();
   const {
     countriesList,
+    countriesListLoading,
     citiesList,
+    citiesListLoading,
     citiesListTo,
+    citiesListToLoading,
     getCountriesList,
     getCitiesList,
   } = useCountriesStore((state: any) => state);
@@ -75,7 +89,9 @@ export default function SearchMain({ main }: any) {
     arrival,
     typeOfGoods,
   } = useFilterStore((state: any) => state);
-  const { goodsList, getGoodsList } = useGoodsStore((state: any) => state);
+  const { goodsList, goodsListLoading, getGoodsList } = useGoodsStore(
+    (state: any) => state
+  );
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
@@ -91,7 +107,8 @@ export default function SearchMain({ main }: any) {
     setFilter({ toCountry: values.fromCountry });
     setFilter({ to: values.from });
   }
-  function onSubmit() {
+  function onSubmit(e: any) {
+    e.preventDefault();
     router.push("/catalogue");
   }
 
@@ -104,28 +121,22 @@ export default function SearchMain({ main }: any) {
         defaultValue={deliveryBy}
         className={`flex custom-radio ${!main && "catalogue"}`}
       >
-        <div className="flex items-center space-x-2">
-          <CustomRadioGroupItem value="plane" imageNumber={1} />
-        </div>
-        <div className="flex items-center space-x-2">
-          <CustomRadioGroupItem value="ship" imageNumber={2} />
-        </div>
-        <div className="flex items-center space-x-2">
-          <CustomRadioGroupItem value="truck" imageNumber={3} />
-        </div>
+        <CustomRadioGroupItem value="plane" imageNumber={1} />
+        <CustomRadioGroupItem value="ship" imageNumber={2} />
+        <CustomRadioGroupItem value="truck" imageNumber={3} />
       </RadioGroup>
       <div className="flex">
         <div
-          className={`flex w-full justify-stretch bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] ${main ? "p-[24px] mt-[10px] mr-[5px] items-end" : "items-center ml-[8px]"}`}
+          className={`flex justify-stretch bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] items-end ${main ? "p-[24px] mt-[10px] mr-[5px]" : "ml-[8px]"}`}
         >
-          <div className="mr-1 max-w-32">
+          <div className="mr-[1px] max-w-32">
             {main && <label>From</label>}
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="rounded-l-xl rounded-r-none border-none font-normal text-black w-full"
+                  className="h-[60px] rounded-l-xl rounded-r-none border-none font-normal text-black w-full justify-start"
                 >
                   {fromCountry || "Select country"}
                 </Button>
@@ -134,31 +145,35 @@ export default function SearchMain({ main }: any) {
                 <Command>
                   <CommandInput placeholder="Search..." />
                   <CommandEmpty>Not found.</CommandEmpty>
-                  <CommandGroup>
-                    {countriesList.map((country: any, index: number) => (
-                      <CommandItem
-                        value={`${country.value}`}
-                        key={index}
-                        onSelect={() => {
-                          setFilter("fromCountry", country.value);
-                          getCitiesList(country.value);
-                        }}
-                      >
-                        {country.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
+                  {countriesListLoading ? (
+                    <Loader />
+                  ) : (
+                    <CommandGroup>
+                      {countriesList.map((country: any, index: number) => (
+                        <CommandItem
+                          value={`${country.value}`}
+                          key={index}
+                          onSelect={() => {
+                            setFilter({ fromCountry: country.value });
+                            getCitiesList(country.value);
+                          }}
+                        >
+                          {country.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  )}
                 </Command>
               </PopoverContent>
             </Popover>
           </div>
-          <div className="mr-1 max-w-32">
+          <div className="max-w-32">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="rounded-none border-none font-normal text-black"
+                  className="h-[60px] rounded-none border-none font-normal text-black justify-start"
                 >
                   {from || "Select city"}
                 </Button>
@@ -167,19 +182,23 @@ export default function SearchMain({ main }: any) {
                 <Command>
                   <CommandInput placeholder="Search..." />
                   <CommandEmpty>Not found.</CommandEmpty>
-                  <CommandGroup>
-                    {citiesList.map((item: any, index: number) => (
-                      <CommandItem
-                        value={`${item.value}`}
-                        key={index}
-                        onSelect={() => {
-                          setFilter("from", item.label);
-                        }}
-                      >
-                        {item.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
+                  {citiesListLoading ? (
+                    <Loader />
+                  ) : (
+                    <CommandGroup>
+                      {citiesList.map((item: any, index: number) => (
+                        <CommandItem
+                          value={`${item.value}`}
+                          key={index}
+                          onSelect={() => {
+                            setFilter({ from: item.label });
+                          }}
+                        >
+                          {item.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  )}
                 </Command>
               </PopoverContent>
             </Popover>
@@ -187,18 +206,24 @@ export default function SearchMain({ main }: any) {
           <Button
             type="button"
             onClick={switchLocations}
-            className="p-0 rounded-full border-0 bg-transparent w-[34px] h-[34px] mt-8 mx-[-13px] relative z-10 hover:bg-transparent"
+            className="p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] mx-[-16px] mb-[13px] relative z-10 hover:bg-transparent"
           >
-            <Image width={34} height={34} alt="turn" src="/turn.png" />
+            <Image
+              className="min-w-[34px] min-h-[34px]"
+              width={34}
+              height={34}
+              alt="turn"
+              src="/turn.png"
+            />
           </Button>
-          <div className="mr-1 max-w-32">
+          <div className="mr-[1px] max-w-32">
             {main && <label>To</label>}
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="rounded-l-xl rounded-r-none border-none font-normal text-black w-full"
+                  className="h-[60px] rounded-none border-none font-normal text-black w-full justify-start"
                 >
                   {toCountry || "Select country"}
                 </Button>
@@ -207,31 +232,35 @@ export default function SearchMain({ main }: any) {
                 <Command>
                   <CommandInput placeholder="Search..." />
                   <CommandEmpty>Not found.</CommandEmpty>
-                  <CommandGroup>
-                    {countriesList.map((item: any, index: number) => (
-                      <CommandItem
-                        value={`${item.value}`}
-                        key={index}
-                        onSelect={() => {
-                          setFilter({ toCountry: item.value });
-                          getCitiesList(item.value, true);
-                        }}
-                      >
-                        {item.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
+                  {countriesListLoading ? (
+                    <Loader />
+                  ) : (
+                    <CommandGroup>
+                      {countriesList.map((item: any, index: number) => (
+                        <CommandItem
+                          value={`${item.value}`}
+                          key={index}
+                          onSelect={() => {
+                            setFilter({ toCountry: item.value });
+                            getCitiesList(item.value, true);
+                          }}
+                        >
+                          {item.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  )}
                 </Command>
               </PopoverContent>
             </Popover>
           </div>
-          <div className="mr-1 max-w-32">
+          <div className="mr-[1px] max-w-32">
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="rounded-none border-none font-normal text-black"
+                  className="h-[60px] rounded-none border-none font-normal text-black justify-start"
                 >
                   {to || "Select city"}
                 </Button>
@@ -240,31 +269,35 @@ export default function SearchMain({ main }: any) {
                 <Command>
                   <CommandInput placeholder="Search..." />
                   <CommandEmpty>Not found.</CommandEmpty>
-                  <CommandGroup>
-                    {citiesListTo.map((item: any, index: number) => (
-                      <CommandItem
-                        value={`${item.value}`}
-                        key={index}
-                        onSelect={() => {
-                          setFilter({ to: item.label });
-                        }}
-                      >
-                        {item.label}
-                      </CommandItem>
-                    ))}
-                  </CommandGroup>
+                  {citiesListToLoading ? (
+                    <Loader />
+                  ) : (
+                    <CommandGroup>
+                      {citiesListTo.map((item: any, index: number) => (
+                        <CommandItem
+                          value={`${item.value}`}
+                          key={index}
+                          onSelect={() => {
+                            setFilter({ to: item.label });
+                          }}
+                        >
+                          {item.label}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  )}
                 </Command>
               </PopoverContent>
             </Popover>
           </div>
-          <div className=" max-w-32 mr-[1px]">
+          <div className="mr-[1px] max-w-32">
             {main && <label>Departure</label>}
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant={"outline"}
                   type="button"
-                  className="text-black font-normal rounded-none hover:bg-white border-0 w-full"
+                  className="h-[60px] text-black font-normal rounded-none hover:bg-white border-0 w-full"
                 >
                   {departure ? (
                     format(departure, "mm/dd/yyyy")
@@ -293,7 +326,7 @@ export default function SearchMain({ main }: any) {
                 <Button
                   variant={"outline"}
                   type="button"
-                  className="text-black font-normal rounded-none hover:bg-white border-0 w-full"
+                  className="h-[60px] text-black font-normal rounded-none hover:bg-white border-0 w-full"
                 >
                   {arrival ? (
                     format(arrival, "mm/dd/yyyy")
@@ -315,29 +348,18 @@ export default function SearchMain({ main }: any) {
               </PopoverContent>
             </Popover>
           </div>
-          {/* <FormField
-            control={form.control}
-            name="typeOfGoods"
-            render={({ field }) => (
-              <div className="mr-[1px]">
-                <label>Type of goods</label>
-                
-                  <Input className="rounded-none border-none" {...field} />
-                
-                
-              </div>
-            )}
-          /> */}
-          <div className="mr-1 max-w-32">
+          <div className="mr-[1px] max-w-40">
             {main && <label>Type of goods</label>}
             <Popover>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"
                   role="combobox"
-                  className="rounded-none border-none font-normal text-black truncate w-32"
+                  className="h-[60px] rounded-none border-none font-normal text-black truncate w-full"
                 >
-                  {typeOfGoods || "Select type of goods"}
+                  <span className="text-ellipsis whitespace-no-wrap overflow-hidden block w-full">
+                    {typeOfGoods || "Select type of goods"}
+                  </span>
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-[200px] p-0">
@@ -347,8 +369,9 @@ export default function SearchMain({ main }: any) {
                     onChangeCapture={handleChange}
                     placeholder="Search..."
                   />
-                  <CommandEmpty>Not found.</CommandEmpty>
-                  {goodsList.length && (
+                  {goodsListLoading ? (
+                    <Loader />
+                  ) : goodsList.length ? (
                     <CommandGroup>
                       {goodsList.map((item: any, index: number) => (
                         <CommandItem
@@ -362,6 +385,8 @@ export default function SearchMain({ main }: any) {
                         </CommandItem>
                       ))}
                     </CommandGroup>
+                  ) : (
+                    <CommandEmpty>Not found.</CommandEmpty>
                   )}
                 </Command>
               </PopoverContent>
@@ -370,7 +395,7 @@ export default function SearchMain({ main }: any) {
           <div className="mr-[1px] max-w-24">
             {main && <label>Total KG</label>}
             <Input
-              className="rounded-none border-none font-normal text-black"
+              className="h-[60px] rounded-none border-none font-normal text-black"
               type="number"
               onChange={(e) => setFilter({ totalKg: e })}
             />
@@ -378,22 +403,34 @@ export default function SearchMain({ main }: any) {
           <div className="mr-[1px] max-w-24">
             {main && <label>Pallets</label>}
             <Input
-              className="rounded-none border-none"
+              className="h-[60px] rounded-none border-none"
               type="number"
               onChange={(e) => setFilter({ pallets: e })}
             />
           </div>
-          <div className="mr-[1px] max-w-24">
+          <div className="mr-[1px] max-w-20">
             {main && <label>L*W*H</label>}
             <Input
-              className="rounded-l-none rounded-r-xl border-none"
+              className="h-[60px] rounded-none border-none"
+              onChange={(e) => setFilter({ measurements: e })}
+            />
+          </div>
+          <div className="mr-[1px] max-w-20">
+            <Input
+              className="h-[60px] rounded-none border-none"
+              onChange={(e) => setFilter({ measurements: e })}
+            />
+          </div>
+          <div className="max-w-20">
+            <Input
+              className="h-[60px] rounded-l-none rounded-r-xl border-none"
               onChange={(e) => setFilter({ measurements: e })}
             />
           </div>
         </div>
         {main && (
           <Button
-            type="button"
+            type="submit"
             // onClick
             className="self-end mb-[10px] rounded-full bg-orangePrimary w-[98px] h-[98px] border-2 border-white font-medium text-[20px]/[24px]"
           >
