@@ -1,4 +1,4 @@
-export interface TrustReputationSlider{
-    sliderImg: string,
-    alt:string
+export interface TrustReputationSlider {
+  sliderImg: any;
+  alt: string;
 }
