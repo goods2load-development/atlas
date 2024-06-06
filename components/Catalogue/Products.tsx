@@ -8,7 +8,7 @@ export default function Products() {
   console.log("P", products);
   useEffect(() => {
     getProducts();
-  });
+  }, []);
   return products.length ? (
     <div className="bg-blue-000 grid gap-6">
       {products.map((product: any, index: number) => {
