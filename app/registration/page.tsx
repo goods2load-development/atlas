@@ -1,5 +1,7 @@
 "use client";
+
 import React, { useEffect, useState } from "react";
+import { useCookies } from "react-cookie";
 
 import { useRouter } from "next/navigation";
 import { useCountriesStore } from "@/lib/store";
@@ -34,6 +36,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
+import Divider from "@/components/Divider";
+import { getSession, signIn } from "next-auth/react";
+import { getCookie } from "react-use-cookie";
 
 interface CountriesProps {
   value: string;
@@ -59,6 +65,39 @@ const userRoles = [
 
 export default function UserRegistration() {
   const router = useRouter();
+  const [cookies] = useCookies(["accessToken"]);
+  const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
+  const [formState, setFormState] = useState(() => {
+    const savedFormState =
+      typeof window !== "undefined"
+        ? localStorage.getItem("registrationForm")
+        : null;
+
+    if (savedFormState) {
+      return JSON.parse(savedFormState);
+    }
+    return {
+      firstName: "",
+      lastName: "",
+      phoneNumber: "",
+      email: "",
+      companyName: "",
+      address: "",
+      postalCode: "",
+      city: "",
+    };
+  });
+
+  const handleChange = (event: any) => {
+    setFormState({
+      ...formState,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  useEffect(() => {
+    localStorage.setItem("registrationForm", JSON.stringify(formState));
+  }, [formState]);
 
   // TODO finalize validation schema
   const formSchema = z
@@ -94,13 +133,15 @@ export default function UserRegistration() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      firstName: "",
-      lastName: "",
-      ferry: false,
-      truck: false,
-      plane: false,
-    },
+    defaultValues: formState
+      ? formState
+      : {
+          firstName: "",
+          lastName: "",
+          ferry: false,
+          truck: false,
+          plane: false,
+        },
   });
   const {
     trigger,
@@ -135,11 +176,53 @@ export default function UserRegistration() {
     });
   }
 
+  async function fillFieldsWithGoogle() {
+    signIn("google", { redirect: true });
+  }
+
+  useEffect(() => {
+    if (cookies.accessToken) {
+      fillFields();
+    }
+  }, [cookies.accessToken]);
+
+  async function fillFields() {
+    const token = getCookie("accessToken");
+    const decodedToken = await getSession({
+      req: { headers: { cookie: `accessToken=${token}` } },
+    });
+    if (decodedToken) {
+      const { user }: any = decodedToken;
+      const formattedUser = {
+        firstName: user?.given_name,
+        lastName: user?.family_name,
+        phoneNumber: user?.phone,
+        email: user?.email,
+        companyName: user?.company,
+        address: user?.address,
+      };
+      localStorage.setItem("registrationForm", JSON.stringify(formattedUser));
+      // refresh default values for form
+      form.reset(formattedUser);
+      setIsRegisteredWithGoogle(true);
+      router.refresh();
+    }
+  }
+
   return (
     <RegistrationWrapper
       userRegistration={userRegistration}
       firstStep={firstStep}
     >
+      <Button
+        variant="outline"
+        onClick={fillFieldsWithGoogle}
+        className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
+      >
+        <GoogleIcon />
+        <span>Sign in with Google </span>
+      </Button>
+      <Divider />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
           <div className={`${!firstStep && "hidden"}`}>
@@ -180,6 +263,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -197,6 +281,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -216,6 +301,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -233,6 +319,8 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
+                        disabled={isRegisteredWithGoogle}
                       />
                     </FormControl>
                     <FormMessage />
@@ -251,6 +339,7 @@ export default function UserRegistration() {
                       className="bg-gray-2 border-0"
                       placeholder=""
                       {...field}
+                      onBlur={handleChange}
                     />
                   </FormControl>
                   <FormMessage />
@@ -269,6 +358,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder=""
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -286,6 +376,7 @@ export default function UserRegistration() {
                         className="bg-gray-2 border-0"
                         placeholder="XXX XXX"
                         {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
                     <FormMessage />
@@ -304,6 +395,7 @@ export default function UserRegistration() {
                       className="bg-gray-2 border-0"
                       placeholder=""
                       {...field}
+                      onBlur={handleChange}
                     />
                   </FormControl>
                   <FormMessage />

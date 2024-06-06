@@ -59,6 +59,7 @@ export const useGoodsStore = create((set) => ({
       params: { term },
       withCredentials: false,
       headers: {
+
         "X-RapidAPI-Key": "02c03ec749msh5ca6829a28a3028p1e6f11jsn835391f49eab",
         "X-RapidAPI-Host": "hs-code-harmonized-system.p.rapidapi.com",
       },
@@ -144,6 +145,15 @@ export const useUserStore = create((set) => ({
     await getRequest({
       url: `/users/${id}`,
     }).then((userData: any) => {
+      set(() => ({ user: userData?.data }));
+    });
+  },
+  authenticateUser: async (data: any) => {    
+    await postRequest({
+      url: `/oauth/authenticate`,
+      params: { access_token: data },
+    }).then((userData: any) => {
+      localStorage.setItem("id", userData.data.id);
       set(() => ({ user: userData?.data }));
     });
   },
