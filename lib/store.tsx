@@ -137,6 +137,15 @@ export const useUserStore = create((set) => ({
       set(() => ({ user: userData?.data }));
     });
   },
+  authenticateUser: async (data: any) => {    
+    await postRequest({
+      url: `/oauth/authenticate`,
+      params: { access_token: data },
+    }).then((userData: any) => {
+      localStorage.setItem("id", userData.data.id);
+      set(() => ({ user: userData?.data }));
+    });
+  },
   updateUser: async (data: any) => {
     const id = localStorage.getItem("id");
     await patchRequest({

@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
+import { useCookies } from "react-cookie";
 import { useRouter, redirect } from "next/navigation";
 import { useUserStore } from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -17,9 +18,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LoginWrapper from "@/components/LoginWrapper";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { getSession, signIn } from "next-auth/react";
 import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
 import Divider from "@/components/Divider";
+import { getCookie } from "react-use-cookie";
 
 interface Props {
   searchParams: {
@@ -29,6 +31,7 @@ interface Props {
 }
 
 export default function Login({ searchParams: { callbackUrl, error } }: Props) {
+  const [cookies] = useCookies(["accessToken"]);
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string(),
@@ -41,7 +44,7 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
       password: "",
     },
   });
-  const { user, postLoginData } = useUserStore((state: any) => state);
+  const { user, postLoginData, authenticateUser } = useUserStore((state: any) => state);
   function onSubmit(values: z.infer<typeof formSchema>) {
     postLoginData(values);
   }
@@ -49,6 +52,23 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
   const signInWithGoogle = () => {
     signIn("google", { callbackUrl, redirect: true });
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (cookies.accessToken) {
+        const token = getCookie("accessToken");
+        const decodedToken = await getSession({
+          req: { headers: { cookie: `accessToken=${token}` } },
+        });
+        if (decodedToken) {
+          const { idToken }: any = decodedToken;
+          authenticateUser(idToken)
+        }
+      }
+    };
+
+    fetchData();
+  }, [cookies.accessToken]);
 
   useEffect(() => {
     if (!!user?.id) redirect("/account");
