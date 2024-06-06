@@ -154,8 +154,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
         company: {
           name: item.companyName,
         },
-        withdrow: format(item.withdrow, "mm/dd/yyyy"),
-        delivery: format(item.delivery, "mm/dd/yyyy"),
+        // withdrow: format(item.withdrow, "mm/dd/yyyy"),
+        withdrow: item.withdrow,
+        delivery: item.delivery,
         orderCost: item.price,
       }));
       console.log("products", products);
