@@ -1,4 +1,6 @@
+import { StaticImageData } from "next/image";
+
 export interface TrustReputationSlider {
-  sliderImg: any;
+  sliderImg: string | StaticImageData;
   alt: string;
 }
