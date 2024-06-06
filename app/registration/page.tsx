@@ -220,15 +220,8 @@ export default function UserRegistration() {
         className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
       >
         <GoogleIcon />
-        <span>Fill with Google </span>
+        <span>Sign in with Google </span>
       </Button>
-      {/* {errors ? (
-        <p className="my-2 text-sm text-center font-medium text-destructive">
-          Something went wrong, please try again
-        </p>
-      ) : (
-        <></>
-      )} */}
       <Divider />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
