@@ -28,8 +28,8 @@ const TrustReputation = () => {
       <div className="w-full flex flex-row justify-evenly pt-8 pb-5">
         <Carousel
           className="w-full"
-          opts={{ loop: true }}
-          plugins={[Autoplay({ delay: 3000 })]}
+          opts={{ loop: true, duration: 3000 }}
+          plugins={[Autoplay({ delay: 0 })]}
         >
           <CarouselContent className="-ml-1 w-full max-w-full">
             {sliderData.map((it, index) => (
