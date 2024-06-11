@@ -10,6 +10,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
 import { useFilterStore } from "@/lib/filterStore";
+import PriceAlerts from "@/components/PriceAlerts";
 
 function GroupSelection({ selectAll, clearAll }: any) {
   return (
@@ -147,8 +148,7 @@ export default function Filter() {
   }
   return (
     <>
-      {/* TODO change to alerts component */}
-      <Button>Get price alerts</Button>
+      <PriceAlerts />
       <Accordion type="multiple" className="w-full">
         <AccordionItem value="item-1">
           <AccordionTrigger>Order</AccordionTrigger>

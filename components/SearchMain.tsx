@@ -4,7 +4,7 @@ import React, { useEffect, useState, useMemo } from "react";
 
 import Image from "next/image";
 import { Calendar } from "@/components/ui/calendar";
-import { Skeleton } from "@/components/ui/skeleton";
+import Loader from "@/components/common/Loader";
 import { format } from "date-fns";
 import {
   Command,
@@ -25,16 +25,6 @@ import { Button } from "@/components/ui/button";
 import { useCountriesStore, useGoodsStore } from "@/lib/store";
 import { useFilterStore } from "@/lib/filterStore";
 import { useRouter, redirect, useSearchParams } from "next/navigation";
-
-function Loader() {
-  return (
-    <div className="p-2">
-      <Skeleton className="h-3 w-full bg-gray-300" />
-      <Skeleton className="h-3 w-[85%] bg-gray-300 my-1" />
-      <Skeleton className="h-3 w-[95%] bg-gray-300" />
-    </div>
-  );
-}
 
 function CustomRadioGroupItem({ value, imageNumber, main }: any) {
   return (
