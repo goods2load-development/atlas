@@ -105,7 +105,7 @@ const CareerForm: React.FC = () => {
                 return (
                   <FormItem>
                     <Select onValueChange={field.onChange}>
-                      <FormControl className="w-[526px] h-[60px] bg-white border-none rounded-[8px] bg-white pl-[20px] text-black pr-[20px]">
+                      <FormControl className="w-[526px] h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
                         <SelectTrigger>
                           <SelectValue placeholder="Vacancy" />
                         </SelectTrigger>

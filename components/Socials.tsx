@@ -1,9 +1,11 @@
 import Link from "next/link";
 import Image from "next/image";
+import { cn } from "@/lib/utils";
 
-export default function Socials() {
+export default function Socials({ container }: { container?: string }) {
+  
   return (
-    <div className="flex py-14">
+    <div className={cn("flex mb-20", container)}>
       <Link
         href="https://www.instagram.com/goods2load/"
         className="mr-3 hover:opacity-80"
