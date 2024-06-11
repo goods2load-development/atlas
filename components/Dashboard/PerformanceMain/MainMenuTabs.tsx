@@ -12,8 +12,9 @@ const MainMenuTabs: React.FC<MainMenuTabsProps> = ({
 }) => {
   return (
     <ul className="flex items-center gap-2 mb-10">
-      {tabs.map((tab) => (
+      {tabs.map((tab, index) => (
         <li
+          key={index}
           onClick={() => handleTabClick(tab.label)}
           className={cn(
             "text-md leading-6 opacity-60 relative flex  justify-center cursor-pointer mb-10",

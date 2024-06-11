@@ -3,10 +3,10 @@ import PerformanceMain from "@/components/Dashboard/PerformanceMain/PerformanceM
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
 
-export default function Performance({ route }: { route: string }) {
+export default function Performance({ params }: { params: { route: string } }) {
   const pathname = usePathname();
 
-  const colorClass = pathname === route ? "text-black" : "text-blue";
+  const colorClass = pathname === params.route ? "text-black" : "text-blue";
 
   return (
     <div className="grid grid-cols-[auto_1fr]">
