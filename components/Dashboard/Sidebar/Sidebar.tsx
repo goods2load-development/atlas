@@ -14,7 +14,7 @@ const Sidebar: React.FC = () => {
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
-      href: "/dashboard/perfomance",
+      href: "/dashboard/performance",
       active: true,
     },
     {
@@ -28,7 +28,7 @@ const Sidebar: React.FC = () => {
     const slug = pathname.split("/").pop();
     setSidebar(
       sideBar.map((it) => {
-        if (it.href.split('/').pop() === slug) {
+        if (it.href.split("/").pop() === slug) {
           return { ...it, active: true };
         }
         return { ...it, active: false };
