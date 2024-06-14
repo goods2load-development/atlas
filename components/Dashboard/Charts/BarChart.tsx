@@ -39,7 +39,15 @@ const data = [
   },
 ];
 
-const BarChartGraph = ({ data }: { data: BarChartData[] }) => {
+const BarChartGraph = ({
+  data,
+  grid = true,
+  values = true,
+}: {
+  data: BarChartData[];
+  grid?: boolean;
+  values?: boolean;
+}) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
@@ -53,8 +61,8 @@ const BarChartGraph = ({ data }: { data: BarChartData[] }) => {
           bottom: 5,
         }}
       >
-        <CartesianGrid stroke="#ccc" vertical={false} />
-        <XAxis dataKey="name" />
+        {grid && <CartesianGrid stroke="#ccc" vertical={false} />}
+        {values && <XAxis dataKey="name" />}
         <YAxis />
         <Tooltip />
         <Bar dataKey="value" className="flex justify-center" barSize={40}>

@@ -17,36 +17,57 @@ import TabJourneyDuration, {
   JourneyDurationData,
 } from "../components/TabJourneyDuration";
 
-import TabMap, { MarkerType } from "../components/TabMap";
+import TabMap, { MarkersCoordinates } from "../components/TabMap";
 import TabMapDetails from "../components/TabMapDetails";
+import TabUnderSurvedRoutes from "../components/TabUnderservedRoutes";
 
-const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: MarkerType[] } =
-  {
-    data: [
-      { name: "DUBAI-INDIA", value: 54, color: "#FF6720" },
-      { name: "DUBAI-VIETNAM", value: 26, color: "#834629" },
-      { name: "DUBAI-SAUDI ARABIA", value: 20, color: "#FDA074" },
-    ],
-    title: "Most frequent rout",
-    markers: [
-      { markerOffset: -5, name: "India", coordinates: [76.4737, 27.2304] },
-      {
-        markerOffset: -5,
-        name: "Dubai, UAE",
-        coordinates: [53.4737, 30.2304],
+const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: any } = {
+  data: [
+    { name: "DUBAI-INDIA", value: 54, color: "#FF6720" },
+    { name: "DUBAI-VIETNAM", value: 26, color: "#834629" },
+    { name: "DUBAI-SAUDI ARABIA", value: 20, color: "#FDA074" },
+  ],
+  title: "Most frequent route",
+  markers: [
+    {
+      from: {
+        name: "India",
+        coordinates: [76.4737, 27.2304],
       },
-      {
-        markerOffset: -5,
-        name: "Saudi Arabia",
-        coordinates: [40.4737, 25.2304],
-      },
-      {
-        markerOffset: -5,
+      to: {
         name: "Vietnam",
         coordinates: [104.4737, 16.2304],
       },
-    ],
-  };
+    },
+    {
+      from: {
+        name: "Dubai, UAE",
+        coordinates: [53.4737, 25.2304],
+      },
+      to: {
+        name: "India",
+        coordinates: [76.4737, 27.2304],
+      },
+    },
+    {
+      from: {
+        name: "Saudi Arabia",
+        coordinates: [40.4737, 25.2004],
+      },
+      to: {
+        name: "Dubai, UAE",
+        coordinates: [53.4737, 25.2304],
+      },
+    },
+    {
+      from: {
+        name: "Vietnam",
+        coordinates: [104.4737, 16.2304],
+      },
+      to: null,
+    },
+  ],
+};
 
 const tab2Data: MarketTrendsTabData<PieData[]> = {
   data: [
@@ -158,30 +179,44 @@ const tab4Data: MarketTrendsTabData<BarChartData[]> & JourneyDurationData = {
   ],
 };
 
-const tab5Data: MarketTrendsTabData<[]> & { markers: MarkerType[] } = {
+const tab5Data: MarketTrendsTabData<[]> & { markers: MarkersCoordinates[] } = {
   data: [],
   title: "Top departure point",
   markers: [
-    { markerOffset: -5, name: "Genoa, Italy", coordinates: [10.4737, 45.2304] },
     {
-      markerOffset: -5,
-      name: "Port Said, Egypt",
-      coordinates: [25.4737, 35.2304],
+      from: {
+        name: "Genoa, Italy",
+        coordinates: [10.4737, 45.2304],
+      },
+      to: null,
     },
     {
-      markerOffset: -5,
-      name: "Port of Durban, South Africa",
-      coordinates: [30.4737, -25.2304],
+      from: {
+        name: "Port Said, Egypt",
+        coordinates: [30.4737, -25.2304],
+      },
+      to: null,
     },
     {
-      markerOffset: -5,
-      name: "Port of Jebel Ali, UAE",
-      coordinates: [50.4737, 27.2304],
+      from: {
+        name: "Port of Durban, South Africa",
+        coordinates: [25.4737, 35.2304],
+      },
+      to: null,
     },
     {
-      markerOffset: -5,
-      name: "Shanghai port, China",
-      coordinates: [117.4737, 35.2304],
+      from: {
+        name: "Port of Jebel Ali, UAE",
+        coordinates: [50.4737, 27.2304],
+      },
+      to: null,
+    },
+    {
+      from: {
+        name: "Shanghai port, China",
+        coordinates: [117.4737, 35.2304],
+      },
+      to: null,
     },
   ],
 };
@@ -252,10 +287,22 @@ const tab10Data: MarketTrendsTabData<PieData[]> = {
   description: "changes in demand for services depending on the time of year",
 };
 
+const tab11Data: MarketTrendsTabData<BarChartData[]> = {
+  data: [
+    { name: "Underserved routes", value: 160, color: "#FF6720" },
+    { name: "Emerging trends", value: 195, color: "#BB4E1B" },
+    {
+      name: "Customer Segmentation",
+      value: 60,
+      color: "#FFEDE4",
+    },
+  ],
+};
+
 export const tabsMocks: Tab[] = [
   {
     id: 1,
-    text: "Most frequent rout",
+    text: "Most frequent route",
     element: (
       <>
         <MarketTrendsTab title={tab1Data.title}>
@@ -371,6 +418,19 @@ export const tabsMocks: Tab[] = [
       >
         <TabPieInfo data={tab10Data.data} />
       </MarketTrendsTab>
+    ),
+  },
+  {
+    id: 11,
+    text: "Underserved routes",
+    element: (
+      <>
+        <MarketTrendsTab>
+          <TabMap data={tab1Data.markers} />
+        </MarketTrendsTab>
+
+        <TabUnderSurvedRoutes data={tab11Data.data} />
+      </>
     ),
   },
 ];

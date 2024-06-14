@@ -27,8 +27,6 @@
     "clsx": "^2.1.1",
     "cmdk": "^0.2.1",
     "currency-list": "^1.0.8",
-    "d3-geo": "^3.1.1",
-    "d3-scale": "^4.0.2",
     "date-fns": "^3.6.0",
     "embla-carousel-autoplay": "^8.0.2",
     "embla-carousel-react": "^8.0.2",
