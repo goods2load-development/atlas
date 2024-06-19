@@ -1,4 +1,3 @@
-import { ReactNode } from "react";
 import {
   MarketTrendsTab,
   MarketTrendsTabData,
@@ -6,20 +5,18 @@ import {
 
 import { type Tab } from "../MarketTrendsMain";
 
-import TabPieInfo from "../components/TabPieInfo";
-import TabBarChart from "../components/TabBarChart";
+import TabPieInfo from "../Tabs/TabPieInfo";
 
 import { PieData } from "../../Charts/PieChart";
-import { BarChartData } from "../../Charts/BarChart";
-import { MapDetails } from "../components/TabMapDetails";
+import BarChartGraph, { BarChartData } from "../../Charts/BarChart";
+import { MapDetails } from "../Tabs/TabMapDetails";
 
 import TabJourneyDuration, {
   JourneyDurationData,
-} from "../components/TabJourneyDuration";
+} from "../Tabs/TabJourneyDuration";
 
-import TabMap, { MarkersCoordinates } from "../components/TabMap";
-import TabMapDetails from "../components/TabMapDetails";
-import TabUnderSurvedRoutes from "../components/TabUnderservedRoutes";
+import Map, { MarkersCoordinates } from "../../Map/Map";
+import TabMapDetails from "../Tabs/TabMapDetails";
 
 const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: any } = {
   data: [
@@ -79,8 +76,8 @@ const tab2Data: MarketTrendsTabData<PieData[]> = {
       color: "#FB5304",
     },
     { name: "Cars parts and cars", value: 24, color: "#FF6720" },
-    { name: "Clothes", value: 5, color: "#FF9F40" },
     { name: "Other", value: 2, color: "#692607" },
+    { name: "Clothes", value: 5, color: "#FF9F40" },
   ],
   title: "Top transported goods",
   description: "the most popular goods transported by your company",
@@ -287,18 +284,6 @@ const tab10Data: MarketTrendsTabData<PieData[]> = {
   description: "changes in demand for services depending on the time of year",
 };
 
-const tab11Data: MarketTrendsTabData<BarChartData[]> = {
-  data: [
-    { name: "Underserved routes", value: 160, color: "#FF6720" },
-    { name: "Emerging trends", value: 195, color: "#BB4E1B" },
-    {
-      name: "Customer Segmentation",
-      value: 60,
-      color: "#FFEDE4",
-    },
-  ],
-};
-
 export const tabsMocks: Tab[] = [
   {
     id: 1,
@@ -306,7 +291,7 @@ export const tabsMocks: Tab[] = [
     element: (
       <>
         <MarketTrendsTab title={tab1Data.title}>
-          <TabMap data={tab1Data.markers} />
+          <Map data={tab1Data.markers} />
         </MarketTrendsTab>
         <MarketTrendsTab>
           <TabMapDetails data={tab1Data.data} />
@@ -334,7 +319,9 @@ export const tabsMocks: Tab[] = [
         title={tab3Data.title}
         description={tab3Data.description}
       >
-        <TabBarChart data={tab3Data.data} />
+        <div className="h-[300px] lg:h-[500px] w-full">
+          <BarChartGraph data={tab3Data.data} />
+        </div>
       </MarketTrendsTab>
     ),
   },
@@ -359,7 +346,7 @@ export const tabsMocks: Tab[] = [
     text: "Top departure point",
     element: (
       <MarketTrendsTab title={tab5Data.title}>
-        <TabMap data={tab5Data.markers} />
+        <Map data={tab5Data.markers} />
       </MarketTrendsTab>
     ),
   },
@@ -392,7 +379,7 @@ export const tabsMocks: Tab[] = [
     text: "Geographical trends",
     element: (
       <MarketTrendsTab title={tab1Data.title}>
-        <TabMap data={tab1Data.markers} />
+        <Map data={tab1Data.markers} />
       </MarketTrendsTab>
     ),
   },
@@ -418,19 +405,6 @@ export const tabsMocks: Tab[] = [
       >
         <TabPieInfo data={tab10Data.data} />
       </MarketTrendsTab>
-    ),
-  },
-  {
-    id: 11,
-    text: "Underserved routes",
-    element: (
-      <>
-        <MarketTrendsTab>
-          <TabMap data={tab1Data.markers} />
-        </MarketTrendsTab>
-
-        <TabUnderSurvedRoutes data={tab11Data.data} />
-      </>
     ),
   },
 ];

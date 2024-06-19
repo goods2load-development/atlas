@@ -18,9 +18,9 @@ export const MarketTrendsTab = ({
   children,
 }: MarketTrendsTabProps) => {
   return (
-    <div className="py-8 px-6 bg-white rounded-md h-full">
+    <div className="py-8 px-2 lg:px-6 bg-white rounded-md h-full">
       {title ? (
-        <h3 className="text-center text-[22px] font-[500]">{title}</h3>
+        <h3 className="text-center text-[22px] font-[500] up">{title}</h3>
       ) : null}
       {description ? (
         <p className="mb-8 text-center max-w-[661px] text-sm mx-auto text-halfBlack">

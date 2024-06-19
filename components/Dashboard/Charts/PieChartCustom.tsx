@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { MapDetails } from "../MarketTrends/components/TabMapDetails";
+import { MapDetails } from "../MarketTrends/Tabs/TabMapDetails";
 
 const PieChartCustom = ({ data }: { data: MapDetails[] }) => {
-  const maxValue = data.reduce(
+  const sortedData = [...data].sort((a, b) => a.value - b.value);
+  const maxValue = sortedData.reduce(
     (max, item) => (item.value > max ? item.value : max),
     0
   );
@@ -13,7 +14,7 @@ const PieChartCustom = ({ data }: { data: MapDetails[] }) => {
       <PieChart>
         <Tooltip />
         <Pie
-          data={data}
+          data={sortedData}
           cx="50%"
           cy="50%"
           startAngle={180}
@@ -24,16 +25,14 @@ const PieChartCustom = ({ data }: { data: MapDetails[] }) => {
           isAnimationActive={false}
           className="outline-none"
         >
-          {data
-            .sort((a, b) => a.value - b.value)
-            .map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={entry.color}
-                stroke={entry.color}
-                strokeWidth={entry.value === maxValue ? 12 : 0}
-              />
-            ))}
+          {sortedData.map((entry, index) => (
+            <Cell
+              key={`cell-${index}`}
+              fill={entry.color}
+              stroke={entry.color}
+              strokeWidth={entry.value === maxValue ? 12 : 0}
+            />
+          ))}
         </Pie>
       </PieChart>
     </ResponsiveContainer>

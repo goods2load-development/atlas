@@ -1,9 +1,6 @@
 import { type ReactNode, useState } from "react";
 import MarketTrendsTabs from "./MarketTrendsTabs";
 import { tabsMocks } from "./mocks/tabs";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import Image from "next/image";
 
 export interface Tab {
   id: number;
@@ -23,47 +20,16 @@ const MarketTrendsMain = () => {
     }
   };
 
-  function CustomRadioGroupItem({ value, imageNumber }: any) {
-    return (
-      <>
-        <RadioGroupItem value={value} id={value} className="hidden" />
-        <Label htmlFor={value}>
-          <Image
-            src={`/filtericon${imageNumber}.png`}
-            alt="plane"
-            width={58}
-            height={58}
-            className={"cursor-pointer text-black"}
-          />
-        </Label>
-      </>
-    );
-  }
-
   return (
-    <>
-      <form className="mt-6 mb-8">
-        <div className="flex items-center gap-3 test-radio">
-          <RadioGroup
-            defaultValue={"plane"}
-            className={`flex custom-radio catalogue`}
-          >
-            <CustomRadioGroupItem value="plane" imageNumber={1} />
-            <CustomRadioGroupItem value="ship" imageNumber={2} />
-            <CustomRadioGroupItem value="truck" imageNumber={3} />
-          </RadioGroup>
-        </div>
-      </form>
-      <div className="flex gap-5">
-        <MarketTrendsTabs
-          tabs={tabs}
-          activeTab={activeTab}
-          onChangeTab={onChangeTab}
-        />
+    <div className="md:flex md:gap-6 lg:items-stretch items-start">
+      <MarketTrendsTabs
+        tabs={tabs}
+        activeTab={activeTab}
+        onChangeTab={onChangeTab}
+      />
 
-        <div className="flex flex-col flex-grow gap-6">{activeTab.element}</div>
-      </div>
-    </>
+      <div className="flex flex-col gap-6 w-full">{activeTab.element}</div>
+    </div>
   );
 };
 

@@ -1,12 +1,12 @@
 "use client";
 
-import AdaptiveSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
-import MarketTrendsMain from "@/components/Dashboard/MarketTrends/MarketTrendsMain";
-import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
+import OpportunitiesMain from "@/components/Dashboard/OpportunitiesMain/OpportunitiesMain";
+import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
+import AdaptiveSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
 
-export default function MarketTrends({
+export default function OpportunitiesPage({
   params,
 }: {
   params: { route: string };
@@ -19,18 +19,19 @@ export default function MarketTrends({
     <div className="grid sm:grid-cols-[auto_1fr]">
       <Sidebar />
       <AdaptiveSidebar />
+
       <div className={`${colorClass} p-2 md:p-10 bg-[#f5f4f3] pt-20 md:pt-0`}>
         <div className="flex gap-4 flex-col font-poppins">
           <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
-            Company’s insight
+            Opportunities
           </h1>
           <h2 className="text-[#FF6720] text-[18px] leading-[26px] text-center md:text-left">
-            Market trends
+            Unserved Routes
           </h2>
           <RadioGroupItems />
         </div>
 
-        <MarketTrendsMain />
+        <OpportunitiesMain />
       </div>
     </div>
   );

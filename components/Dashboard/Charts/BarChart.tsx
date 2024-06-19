@@ -62,7 +62,7 @@ const BarChartGraph = ({
         }}
       >
         {grid && <CartesianGrid stroke="#ccc" vertical={false} />}
-        {values && <XAxis dataKey="name" />}
+        {values && <XAxis dataKey="name" className="hidden lg:block" />}
         <YAxis />
         <Tooltip />
         <Bar dataKey="value" className="flex justify-center" barSize={40}>

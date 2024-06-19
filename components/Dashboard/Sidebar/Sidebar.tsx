@@ -37,7 +37,7 @@ const Sidebar: React.FC = () => {
   }, [pathname]);
 
   return (
-    <aside className="flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
+    <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div>
           <Image
@@ -80,7 +80,12 @@ const Sidebar: React.FC = () => {
             ))}
           </div>
 
-          <p className="font-semibold mb-8">OPPORTUNITY</p>
+          <Link
+            href={"/dashboard/opportunities"}
+            className="font-semibold mb-8 hover:no-underline"
+          >
+            OPPORTUNITY
+          </Link>
           <button className="flex  font-light pl-[12px]">
             <LogOut className="mr-[8px]" />
             Logout Account
