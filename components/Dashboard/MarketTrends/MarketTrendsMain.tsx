@@ -1,6 +1,6 @@
 import { type ReactNode, useState } from "react";
 import MarketTrendsTabs from "./MarketTrendsTabs";
-import { tabsMocks } from "./mocks/tabs";
+import { Tabs } from "./mocks/tabs";
 
 export interface Tab {
   id: number;
@@ -9,8 +9,8 @@ export interface Tab {
 }
 
 const MarketTrendsMain = () => {
-  const [activeTab, setActiveTab] = useState<Tab>(tabsMocks[0]);
-  const [tabs, setTabs] = useState<Tab[]>(tabsMocks);
+  const [activeTab, setActiveTab] = useState<Tab>(Tabs[0]);
+  const [tabs, setTabs] = useState<Tab[]>(Tabs);
 
   const onChangeTab = (id: number) => {
     const tab = tabs.find((elem: Tab) => elem.id === id);
@@ -21,7 +21,7 @@ const MarketTrendsMain = () => {
   };
 
   return (
-    <div className="md:flex md:gap-6 lg:items-stretch items-start">
+    <div className="md:flex md:gap-6 lg:items-stretch items-start mt-6">
       <MarketTrendsTabs
         tabs={tabs}
         activeTab={activeTab}

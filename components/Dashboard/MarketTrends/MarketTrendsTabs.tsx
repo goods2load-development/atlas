@@ -17,7 +17,7 @@ const MarketTrendsTabs = ({
 }: MarketTrendsTabs) => {
   return (
     <>
-      <div className="py-8 px-6 rounded-md bg-white md:block hidden">
+      <div className="py-8 px-6 rounded-md bg-white md:block hidden max-w-[305px]">
         {
           <ol className="flex flex-col gap-4">
             {tabs.map(({ id, text }, idx) => {
@@ -33,7 +33,7 @@ const MarketTrendsTabs = ({
                   onClick={() => onChangeTab(id)}
                 >
                   <span>{idx + 1}</span>
-                  <span>{text}</span>
+                  <span className="overflow-hidden">{text}</span>
                 </li>
               );
             })}

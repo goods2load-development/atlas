@@ -1,10 +1,11 @@
 "use client";
 
-import AdaptiveSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
+import MobileSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
 import MarketTrendsMain from "@/components/Dashboard/MarketTrends/MarketTrendsMain";
 import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
+import MobileFooter from "@/components/Dashboard/MobileFooter/MobileFooter";
 
 export default function MarketTrends({
   params,
@@ -12,15 +13,14 @@ export default function MarketTrends({
   params: { route: string };
 }) {
   const pathname = usePathname();
-
   const colorClass = pathname === params.route ? "text-black" : "text-blue";
 
   return (
     <div className="grid sm:grid-cols-[auto_1fr]">
       <Sidebar />
-      <AdaptiveSidebar />
-      <div className={`${colorClass} p-2 md:p-10 bg-[#f5f4f3] pt-20 md:pt-0`}>
-        <div className="flex gap-4 flex-col font-poppins">
+      <MobileSidebar />
+      <div className={`${colorClass} p-4 lg:p-10 bg-[#f5f4f3] pt-20`}>
+        <div className="flex gap-2 flex-col font-poppins">
           <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
             Company’s insight
           </h1>
@@ -32,6 +32,7 @@ export default function MarketTrends({
 
         <MarketTrendsMain />
       </div>
+      <MobileFooter />
     </div>
   );
 }

@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
 const Sidebar: React.FC = () => {

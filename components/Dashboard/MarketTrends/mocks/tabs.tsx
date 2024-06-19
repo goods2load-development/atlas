@@ -284,7 +284,7 @@ const tab10Data: MarketTrendsTabData<PieData[]> = {
   description: "changes in demand for services depending on the time of year",
 };
 
-export const tabsMocks: Tab[] = [
+export const Tabs: Tab[] = [
   {
     id: 1,
     text: "Most frequent route",

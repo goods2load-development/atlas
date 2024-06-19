@@ -1,9 +1,11 @@
 "use client";
 
-import AdaptiveSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
+import MobileSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
 import PerformanceMain from "@/components/Dashboard/PerformanceMain/PerformanceMain";
+import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
+import MobileFooter from "@/components/Dashboard/MobileFooter/MobileFooter";
 
 export default function Performance({ params }: { params: { route: string } }) {
   const pathname = usePathname();
@@ -13,17 +15,22 @@ export default function Performance({ params }: { params: { route: string } }) {
   return (
     <div className="grid grid-cols-[auto_1fr]">
       <Sidebar />
-      <AdaptiveSidebar />
-      <div className={`${colorClass} p-10 bg-[#f5f4f3] pt-20 md:pt-0`}>
-        <div className="flex gap-4 flex-col font-poppins">
-          <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px]">
-            Company’s insight
-          </h1>
-          <h2 className="text-[#FF6720] text-[18px] leading-[26px]">
-            Performance
-          </h2>
+      <MobileSidebar />
+      <div>
+        <div className={`${colorClass} lg:p-10 p-4 bg-[#f5f4f3] pt-20`}>
+          <div className="flex gap-2 flex-col font-poppins">
+            <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
+              Company’s insight
+            </h1>
+            <h2 className="text-[#FF6720] text-[18px] leading-[26px] text-center md:text-left">
+              Performance
+            </h2>
+            <RadioGroupItems />
+          </div>
+          <PerformanceMain />
         </div>
-        <PerformanceMain />
+
+        <MobileFooter />
       </div>
     </div>
   );

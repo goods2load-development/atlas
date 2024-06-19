@@ -54,7 +54,7 @@ const MockMarkers: MarkersCoordinates[] = [
 const OpportunitiesMain = () => {
   return (
     <>
-      <div className="py-4 px-3 bg-white rounded-md mb-6 max-h-[775px] mt-6">
+      <div className="lg:py-4 lg:px-3 px-0 bg-white rounded-md mb-6 max-h-[775px] mt-6">
         <Map data={MockMarkers} />
       </div>
       <div className="flex flex-col lg:flex-row gap-6">
@@ -63,7 +63,7 @@ const OpportunitiesMain = () => {
             return (
               <div
                 key={index}
-                className="flex items-center gap-2 px-2 py-1 bg-gray-50 w-[200px] sm:w-[241px] rounded-lg"
+                className="flex items-center gap-2 px-2 py-1 bg-gray-50 w-full sm:w-[241px] rounded-lg"
               >
                 <div
                   className="min-w-[16px] min-h-[16px] rounded-full"

@@ -54,8 +54,8 @@ const MobileSidebar: React.FC = () => {
   return (
     <aside
       className={cn(
-        "sm:hidden fixed w-full bg-primaryOrange top-0 z-10 px-4 py-2 transition-all",
-        expanded ? "h-[100%] overflow-scroll" : "h-[56px] overflow-hidden"
+        "sm:hidden fixed w-full bg-primaryOrange top-0 z-10 px-4 py-2 pb-4",
+        expanded ? "h-[auto] overflow-scroll" : "h-[56px] overflow-hidden"
       )}
       style={{}}
     >
@@ -67,7 +67,10 @@ const MobileSidebar: React.FC = () => {
           src={mobileLogo}
         />
 
-        <Button onClick={() => setExpanded((expanded) => !expanded)}>
+        <Button
+          onClick={() => setExpanded((expanded) => !expanded)}
+          className="p-0"
+        >
           {!expanded ? (
             <Image alt="menu" width={32} height={32} src="/menu.svg" />
           ) : (
