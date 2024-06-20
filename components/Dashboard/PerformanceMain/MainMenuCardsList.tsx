@@ -11,7 +11,7 @@ const MainMenuCardsList: React.FC<MainMenuCardsListProps> = ({
   handleSelectCard,
 }) => {
   return (
-    <ul className="flex items-center flex-wrap">
+    <ul className="flex items-center flex-wrap gap-8 lg:gap-14 xl:gap-0">
       {cards.map((card) => (
         <MainMenuCard
           handleSelectCard={handleSelectCard}

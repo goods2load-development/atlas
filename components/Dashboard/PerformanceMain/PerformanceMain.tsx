@@ -1,14 +1,10 @@
-'use client'
+"use client";
 import { useState } from "react";
 import MainMenuTabs from "./MainMenuTabs";
 import { IMainMenuCard, IMainMenuItemTab } from "@/app/interface/dashboard";
 import MainMenuCardsList from "./MainMenuCardsList";
 import { PerformanceTabName, TabName } from "@/app/interface/helpData";
 import PerformanceChart from "../Charts/PerformanceChart";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import Image from "next/image";
-
 
 const PerformanceMain = () => {
   const [tabs, setTabs] = useState<IMainMenuItemTab[]>([
@@ -25,6 +21,7 @@ const PerformanceMain = () => {
       active: false,
     },
   ]);
+
   const [cards, setCards] = useState<IMainMenuCard[]>([
     {
       title: "Average fare per transport",
@@ -60,7 +57,6 @@ const PerformanceMain = () => {
       lastPrice: "2%",
     },
   ]);
-  
 
   const handleTabClick = (name: string) => {
     setTabs(
@@ -84,42 +80,10 @@ const PerformanceMain = () => {
     );
   };
 
-  function CustomRadioGroupItem({ value, imageNumber }: any) {
-    return (
-      <>
-        <RadioGroupItem value={value} id={value} className="hidden" />
-        <Label htmlFor={value}>
-          <Image
-            src={`/filtericon${imageNumber}.png`}
-            alt="plane"
-            width={58}
-            height={58}
-            className={"cursor-pointer text-black"}
-          />
-        </Label>
-      </>
-    );
-  }
-
   return (
-    <div className="flex flex-col justify-center mt-6">
-      <form>
-        <div className="flex items-center gap-3 test-radio">
-          <RadioGroup
-            defaultValue={"plane"}
-            className={`flex custom-radio catalogue`}
-          >
-            <CustomRadioGroupItem value="plane" imageNumber={1} />
-            <CustomRadioGroupItem value="ship" imageNumber={2} />
-            <CustomRadioGroupItem value="truck" imageNumber={3} />
-          </RadioGroup>
-        </div>
-      </form>
+    <div className="flex flex-col justify-center mt-4">
       <MainMenuTabs handleTabClick={handleTabClick} tabs={tabs} />
-      <MainMenuCardsList
-        handleSelectCard={handleSelectCard}
-        cards={cards}
-      />
+      <MainMenuCardsList handleSelectCard={handleSelectCard} cards={cards} />
       <PerformanceChart />
     </div>
   );
