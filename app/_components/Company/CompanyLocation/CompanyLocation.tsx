@@ -4,11 +4,11 @@ import Image from "next/image";
 
 const CompanyLocation = () => {
   return (
-    <section className="w-full flex flex-row gap-[56px] py-[104px] px-[72px]">
-      <div className="w-1/2 rounded-lg overflow-hidden grid items-center">
+    <section className="w-full sm:flex flex-row gap-[56px] py-[104px] px-5 sm:px-[72px]">
+      <div className="sm:w-1/2 rounded-lg overflow-hidden grid items-center">
         <Image className="w-full rounded-lg" src={location} alt={"location"} />
       </div>
-      <div className="w-1/2 flex flex-col justify-center">
+      <div className="sm:w-1/2 flex flex-col justify-center">
         <h1 className="font-normal text-[48px]/[57.6px] text-black flex flex-row gap-[12px] mb-[24px]">
           Our{" "}
           <div className="font-light italic bg-[#FEF1DF] rounded-[6px] h-[49px] px-[4px] flex justify-center items-center relative bottom-[-5px]">

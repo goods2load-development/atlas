@@ -64,7 +64,7 @@ const CareerForm: React.FC = () => {
   ];
 
   return (
-    <section className="max-w-[1440px] flex gap-[40px] flex-col w-full items-center career bg-bgCareer pt-[56px] pb-[88px]">
+    <section className="max-w-[1440px] flex gap-[40px] flex-col w-full items-center career bg-bgCareer pt-[56px] pb-[88px] px-5">
       <div className="text-[48px] text-white text-center font-poppins italic">
         WORK WITH US
       </div>
@@ -80,13 +80,13 @@ const CareerForm: React.FC = () => {
                   name={it.name}
                   render={({ field }) => {
                     return (
-                      <FormItem>
+                      <FormItem className="w-full">
                         <FormControl>
                           <Input
                             placeholder={it.placeHolder}
                             type={it.type}
                             {...field}
-                            className="w-[526px] h-[60px] border-none rounded-[8px]  bg-white pl-[20px] text-black placeholder-originalBlack"
+                            className="max-w-[526px] w-full h-[60px] border-none rounded-[8px]  bg-white pl-[20px] text-black placeholder-originalBlack"
                           />
                         </FormControl>
                         <FormMessage />
@@ -105,7 +105,7 @@ const CareerForm: React.FC = () => {
                 return (
                   <FormItem>
                     <Select onValueChange={field.onChange}>
-                      <FormControl className="w-[526px] h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
+                      <FormControl className="max-w-[526px] w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
                         <SelectTrigger>
                           <SelectValue placeholder="Vacancy" />
                         </SelectTrigger>
@@ -121,11 +121,11 @@ const CareerForm: React.FC = () => {
               }}
             />
           </div>
-          <p className="text-[16px] text-white max-w-[526px] mb-[15px]">
+          <p className="text-[16px] text-white max-w-[526px] w-full mb-[15px]">
             CV / Resume (please provide your CV in pdf, word or rtf document
             format)
           </p>
-          <div className="bg-white rounded-[16px] w-[526px] h-full max-h-[150px] flex justify-center items-center flex-col pb-[31px]  pt-[30px] mb-[30px]">
+          <div className="bg-white rounded-[16px] max-w-[526px] w-full h-full max-h-[150px] flex justify-center items-center flex-col pb-[31px]  pt-[30px] mb-[30px]">
             <p className="text-black text-center mb-[18px]">
               Drop your files here
             </p>

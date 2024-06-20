@@ -4,8 +4,8 @@ import menWithBox from "@/assets/PartnersImage/PartnersStartingFrom/menWithBox.p
 
 const PartnersStartingFrom: React.FC = () => {
   return (
-    <section className="flex w-full flex-row gap-[56px] pt-[104px] px-[72px] items-center">
-      <div className="w-1/2">
+    <section className="sm:flex w-full flex-row gap-[56px] pt-[104px] px-5 sm:px-[72px] items-center">
+      <div className="sm:w-1/2">
         <Image
           className="w-full"
           alt="menWithBox"
@@ -14,7 +14,7 @@ const PartnersStartingFrom: React.FC = () => {
           height={menWithBox.height}
         />
       </div>
-      <div className="w-1/2">
+      <div className="sm:w-1/2">
         <div className="text-black w-max-[620px] leading-[57px] font-light  mb-[30px] text-[40px]/[48px] text-left">
           <span className="w-max-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] items-center">
             Starting from 0

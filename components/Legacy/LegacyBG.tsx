@@ -8,7 +8,7 @@ export default function LegacyBG({ src, width, height }: StaticImageData) {
       width={width}
       height={height}
       alt="Legacy page bg"
-      className="w-screen"
+      className="w-screen min-h-[216px] object-cover"
     />
   );
 }

@@ -54,32 +54,34 @@ export const useGoodsStore = create((set) => ({
     const base = "https://hs-code-harmonized-system.p.rapidapi.com/";
     const byCode = !!parseInt(term);
     const url = base + (byCode ? "code" : "search");
-    const data = await getRequest({
+    getRequest({
       url,
       params: { term },
       withCredentials: false,
       headers: {
-
         "X-RapidAPI-Key": "02c03ec749msh5ca6829a28a3028p1e6f11jsn835391f49eab",
         "X-RapidAPI-Host": "hs-code-harmonized-system.p.rapidapi.com",
       },
-    });
-    const goodsList: any[] = [];
-    if (byCode) {
-      goodsList.push({
-        label: `${data.result?.code} ${data.result?.description}`,
-        value: data.result?.code,
-      });
-    } else {
-      data.result?.forEach((item: any) => {
-        goodsList.push({
-          label: `${item.code} ${item.description}`,
-          value: item.code,
-        });
-      });
-    }
+    })
+      .then((data) => {
+        const goodsList: any[] = [];
+        if (byCode) {
+          goodsList.push({
+            label: `${data.result?.code} ${data.result?.description}`,
+            value: data.result?.code,
+          });
+        } else {
+          data.result?.forEach((item: any) => {
+            goodsList.push({
+              label: `${item.code} ${item.description}`,
+              value: item.code,
+            });
+          });
+        }
 
-    set(() => ({ goodsList, goodsListLoading: false }));
+        set(() => ({ goodsList }));
+      })
+      .finally(() => set(() => ({ goodsListLoading: false })));
   },
 }));
 
@@ -148,7 +150,7 @@ export const useUserStore = create((set) => ({
       set(() => ({ user: userData?.data }));
     });
   },
-  authenticateUser: async (data: any) => {    
+  authenticateUser: async (data: any) => {
     await postRequest({
       url: `/oauth/authenticate`,
       params: { access_token: data },

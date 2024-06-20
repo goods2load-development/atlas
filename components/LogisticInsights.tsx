@@ -36,7 +36,7 @@ const lItems: lItemProps[] = [
 
 function LogisticsItem({ item }: { item: lItemProps }) {
   return (
-    <div className="w-4/12 pr-[20px]">
+    <div className="sm:w-4/12 mb-5 pr-[20px]">
       <div className="bg-gradient-to-br from-gradFrom to-gradTo px-[30px] py-[20px] rounded-sm mb-[30px]">
         <img src={item.imageSrc} alt={item.title} className="shadow-lg" />
       </div>
@@ -55,14 +55,15 @@ function LogisticsItem({ item }: { item: lItemProps }) {
 
 export default function LogisticInsights() {
   return (
-    <div className="px-16 py-24 bg-bgLogistics bg-cover bg-center">
-      <h2 className="font-light text-[40px]/[48px]">
-        <i className="bg-orangeSecondary rounded-sm px-2">Logistics</i> insights:
+    <div className="px-5 sm:px-16 py-[80px] bg-bgLogistics bg-cover bg-center">
+      <h2 className="font-light text-[30px]/[34px] sm:text-[40px]/[48px] text-center sm:text-left">
+        <i className="bg-orangeSecondary rounded-sm px-2">Logistics</i>{" "}
+        insights:
       </h2>
-      <div className="font-light text-[18px]/[22px] py-3">
+      <div className="font-light text-[16px]/[20px] sm:text-[18px]/[22px] py-3 text-center sm:text-left">
         stay ahead with our blog.
       </div>
-      <div className="flex space-between mt-5">
+      <div className="sm:flex space-between mt-5">
         {lItems.map((item, index) => (
           <LogisticsItem item={item} key={`${item.title}-${index}`} />
         ))}

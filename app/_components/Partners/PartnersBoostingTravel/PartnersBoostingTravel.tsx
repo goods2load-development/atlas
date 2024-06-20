@@ -5,10 +5,10 @@ import { PartnerBoostingTravel } from "@/app/interface/partnerBoostingTravel";
 
 const PartnersBoostingTravel: React.FC = () => {
   return (
-    <section className="flex gap-[56px] w-full justify-between pt-[47px] text-white text-center mb-[100px] px-[72px]">
+    <section className="sm:flex gap-[56px] w-full justify-between pt-[47px] text-white text-center mb-[100px] px-5 sm:px-[72px]">
       <div className="w-full">
         <div className="">
-          <div className="text-black w-[510px] leading-[57px] font-light  mb-[30px] text-[40px]/[48px] text-left">
+          <div className="text-black max-w-[510px] leading-[57px] font-light  mb-[30px] text-[40px]/[48px] text-left">
             <span className="w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               Boosting Travel:
             </span>
