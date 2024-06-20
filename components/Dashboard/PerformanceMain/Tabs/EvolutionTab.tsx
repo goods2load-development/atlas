@@ -20,26 +20,18 @@ import {
 } from "recharts";
 import Image from "next/image";
 
-const data = [
-  { name: "January", uv: 50, pv: 120, amt: 200 },
-  { name: "February", uv: 30, pv: 180, amt: 221 },
-  { name: "March", uv: 70, pv: 90, amt: 290 },
-  { name: "April", uv: 100, pv: 150, amt: 200 },
-  { name: "May", uv: 80, pv: 160, amt: 181 },
-  { name: "June", uv: 110, pv: 130, amt: 250 },
-  { name: "July", uv: 90, pv: 140, amt: 210 },
-  { name: "August", uv: 60, pv: 100, amt: 210 },
-  { name: "September", uv: 40, pv: 170, amt: 220 },
-  { name: "October", uv: 120, pv: 110, amt: 180 },
-  { name: "November", uv: 130, pv: 190, amt: 240 },
-  { name: "December", uv: 150, pv: 130, amt: 230 },
-];
+export interface IPerformanceChart {
+  name: string;
+  uv: number;
+  pv: number;
+  amt: number;
+}
 
 const formSchema = z.object({
   selectValue: z.string().min(3),
 });
 
-const PerformanceChart: React.FC = () => {
+const PerformanceEvolutionChart = ({ data }: any) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,7 +40,7 @@ const PerformanceChart: React.FC = () => {
   });
 
   return (
-    <div className="mt-6 bg-[#FFF] lg:p-9 p-4 rounded-[9px] max-w-[1150px]">
+    <div className="mt-6 bg-[#FFF] lg:p-9 p-4 rounded-[9px] max-w-[1150px] ">
       <div className="flex gap-2 items-center sm:mb-14 mb-8 sm:justify-between justify-center flex-wrap xl:flex-nowrap">
         <span className="font-[500] md:text-[20px] leading-[22px] text-[#29292A] w-full lg:w-auto mb-2 sm:mb-3 text-center lg:text-left">
           Average demand versus last year
@@ -105,7 +97,7 @@ const PerformanceChart: React.FC = () => {
             src="/average-demand.svg"
           />
         </div>
-        <div className="ml-auto flex-1 min-w-[800px] sm:min-w-full sm:-w-full h-[200px] lg:h-[400px]">
+        <div className="ml-auto flex-1 min-w-[800px] h-[200px] lg:h-[400px] sm:min-w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="none" />
@@ -132,4 +124,4 @@ const PerformanceChart: React.FC = () => {
   );
 };
 
-export default PerformanceChart;
+export default PerformanceEvolutionChart;
