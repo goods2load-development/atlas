@@ -2,6 +2,8 @@ import "./globals.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import NextAuthProvider from "@/components/NextAuthProvider";
+import Script from "next/script";
+import { WeglotProvider } from "./weglot/WeglotProvider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -21,6 +23,9 @@ export default function RootLayout({
   return (
     <NextAuthProvider>
       <html lang="en">
+        <head>
+          <WeglotProvider />
+        </head>
         <body className={poppins.className}>{children}</body>
       </html>
     </NextAuthProvider>

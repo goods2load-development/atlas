@@ -1,5 +1,6 @@
 "use client";
 
+import LangSwitcher from "@/components/LangSwicher";
 import Logo from "@/components/Logo";
 import Socials from "@/components/Socials";
 import { cn } from "@/lib/utils";
@@ -90,6 +91,8 @@ const Sidebar: React.FC = () => {
             <LogOut className="mr-[8px]" />
             Logout Account
           </button>
+
+          <LangSwitcher />
         </div>
       </div>
       <div>
