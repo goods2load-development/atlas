@@ -2,6 +2,11 @@ import { create } from "zustand";
 import { format } from "date-fns";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 
+export enum ContainerLoad {
+  FCL = "FCL",
+  LCL = "LCL",
+}
+
 interface FilterStoreProps {
   partnersSelected: string[];
   priceMin: string | null;
@@ -15,7 +20,12 @@ interface FilterStoreProps {
   arrival: string | null;
   typeOfGoods: string;
   totalKg: string | null;
+  placementOfGoods: string | null;
   pallets: string | null;
+  length: string | null;
+  width: string | null;
+  height: string | null;
+  containerLoad: ContainerLoad;
   sortBy: null | any;
   cheapest: boolean;
   fastest: boolean;
@@ -29,7 +39,6 @@ interface FilterStoreProps {
   portsArrival: string[];
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => ({
-  // search options
   deliveryBy: "plane",
   fromCountry: "",
   from: "",
@@ -39,7 +48,12 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
   arrival: null,
   typeOfGoods: "",
   totalKg: null,
+  placementOfGoods: null,
   pallets: null,
+  length: null,
+  width: null,
+  height: null,
+  containerLoad: ContainerLoad.FCL,
   // filter options
   cheapest: false,
   fastest: false,
@@ -112,6 +126,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       portsArrivalSelected,
       totalKg,
       pallets,
+      placementOfGoods,
+      length,
+      width,
+      height,
+      containerLoad,
     } = get();
 
     postRequest({
@@ -132,10 +151,12 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
           ? portsArrivalSelected
           : undefined,
 
-        // goods: "",
-
         kilogram: totalKg ? totalKg : undefined,
         pallets: pallets ? pallets : undefined,
+        placementOfGoods: placementOfGoods ? placementOfGoods : undefined,
+        size: { length: length ? length : undefined, width, height },
+
+        containerLoad,
         order: {
           cheapest: cheapest,
           fastest: fastest,

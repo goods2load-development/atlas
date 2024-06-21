@@ -17,7 +17,7 @@ export default function Catalogue() {
   return (
     <div className="relative sm:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] px-5 sm:p-[40px_72px] gap-8">
       <div
-        className={`absolute left-0 top-[220px] sm:static  sm:p-4 col-span-2 bg-[#FFEDE4] rounded-2xl overflow-hidden ${searchOpened ? "h-auto p-4" : "h-0"} sm:h-auto`}
+        className={`absolute left-0 top-[220px] sm:static col-span-2 rounded-2xl overflow-hidden ${searchOpened ? "h-auto p-4" : "h-0"} sm:h-auto`}
       >
         <SearchMain />
       </div>
