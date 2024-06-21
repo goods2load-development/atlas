@@ -8,6 +8,7 @@ import Link from "next/link";
 import { cn } from "@/lib/utils";
 import closeSvg from "@/assets/close.svg";
 import mobileLogo from "@/assets/mobile-logo.svg";
+import mockLogo from "@/assets/mock-logo.svg";
 import { LogOut } from "lucide-react";
 
 const MobileSidebar: React.FC = () => {
@@ -60,12 +61,7 @@ const MobileSidebar: React.FC = () => {
       style={{}}
     >
       <div className="flex items-center justify-between gap-2">
-        <Image
-          alt="logo-performance"
-          width={153}
-          height={16}
-          src={mobileLogo}
-        />
+        <Image alt="logo-performance" width={30} height={10} src={mockLogo} />
 
         <Button
           onClick={() => setExpanded((expanded) => !expanded)}

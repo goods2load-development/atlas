@@ -16,38 +16,19 @@ export interface BarChartData {
   color: string;
 }
 
-const data = [
-  {
-    name: "Dubai",
-    value: 43,
-    color: "#FFBD18",
-  },
-  {
-    name: "India",
-    value: 125,
-    color: "#FF9F40",
-  },
-  {
-    name: "Vietnam",
-    value: 13,
-    color: "#FF6720",
-  },
-  {
-    name: "Saudi Arabia",
-    value: 50,
-    color: "#FB5304",
-  },
-];
+interface BarChartGraphProps {
+  data: BarChartData[];
+  grid?: boolean;
+  values?: boolean;
+  barWidth?: number;
+}
 
 const BarChartGraph = ({
   data,
   grid = true,
   values = true,
-}: {
-  data: BarChartData[];
-  grid?: boolean;
-  values?: boolean;
-}) => {
+  barWidth,
+}: BarChartGraphProps) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <BarChart
@@ -65,8 +46,13 @@ const BarChartGraph = ({
         {values && <XAxis dataKey="name" className="hidden lg:block" />}
         <YAxis />
         <Tooltip />
-        <Bar dataKey="value" className="flex justify-center" barSize={40}>
-          {data.map((entry, index) => (
+
+        <Bar
+          dataKey="value"
+          className="flex justify-center"
+          barSize={barWidth || 40}
+        >
+          {data.map((entry: any, index: number) => (
             <Cell key={`cell-${index}`} fill={entry.color} />
           ))}
         </Bar>

@@ -13,7 +13,6 @@ export default function OpportunitiesPage({
   params: { route: string };
 }) {
   const pathname = usePathname();
-
   const colorClass = pathname === params.route ? "text-black" : "text-blue";
 
   return (

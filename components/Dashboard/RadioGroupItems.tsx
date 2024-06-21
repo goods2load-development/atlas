@@ -1,8 +1,15 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
+import { TabName } from "@/app/interface/helpData";
 
-export default function RadioGroupItems() {
+export interface RadioGroupItemsProps {
+  onChageValue?: (value: TabName) => void;
+}
+
+export default function RadioGroupItems({
+  onChageValue,
+}: RadioGroupItemsProps) {
   function CustomRadioGroupItem({ value, imageNumber }: any) {
     return (
       <>
@@ -23,6 +30,7 @@ export default function RadioGroupItems() {
     <form className="my-2 mb-4 lg:mb-10">
       <div className="flex items-center gap-3 test-radio justify-center md:justify-start">
         <RadioGroup
+          onValueChange={onChageValue}
           defaultValue={"plane"}
           className={`flex custom-radio catalogue`}
         >
