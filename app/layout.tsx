@@ -26,7 +26,6 @@ export default function RootLayout({
         <head>
           <WeglotProvider />
         </head>
-        <body className={poppins.className}>{children}</body>
         <body className={poppins.className}>
           <a
             href="https://wa.me/+971505574291"
