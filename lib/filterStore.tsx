@@ -150,13 +150,13 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       },
     }).then((data: any) => {
       const products = data.data.map((item: any) => ({
-        estimatedTransit: "",
+        estimatedTransit: item.transit,
         company: {
           name: item.companyName,
         },
         // withdrow: format(item.withdrow, "mm/dd/yyyy"),
-        withdrow: item.withdrow,
-        delivery: item.delivery,
+        withdrow: format(new Date(item.withdraw).toDateString(), "MM/dd/yyyy"),
+        delivery: format(new Date(item.delivery).toDateString(), "MM/dd/yyyy"),
         orderCost: item.price,
       }));
       console.log("products", products);

@@ -21,18 +21,22 @@ function RenderUserData({ data }: any) {
   return (
     <>
       {data.map((item: any, index: number) => (
-        <div key={index}>
-          <p className="font-normal text-[16px]/[24px] text-[#A8A8A8]">{item.title}</p>
+        <div key={index} className="mb-5">
+          <p className="font-normal text-[16px]/[24px] text-[#A8A8A8]">
+            {item.title}
+          </p>
           {item.value}
         </div>
       ))}
     </>
-  )
+  );
 }
 
 export default function Account() {
   const { user } = useUserStore((state: any) => state);
-  const [edit, setEdit] = useState<"info" | "address" | "regional" | null>(null);
+  const [edit, setEdit] = useState<"info" | "address" | "regional" | null>(
+    null
+  );
   const info = [
     {
       title: "First name",
@@ -90,14 +94,14 @@ export default function Account() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen flex-col p-16 justify-between colored-main">
-        <div className="flex justify-between mb-10">
-          <i className="flex text-[48px]/[52px]">
+      <main className="flex min-h-screen flex-col p-5 sm:p-16 justify-between colored-main">
+        <div className="sm:flex justify-between mb-10">
+          <i className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">
             <img src="/user.svg" className="mr-3" />
             Account
           </i>
-          <div>
-            <UIButton secondary className="mr-5 min-w-52">
+          <div className="mt-5 sm:mt-0 space-y-5">
+            <UIButton secondary className="mr-5 sm:w-52 w-full">
               <img src="/ring.svg" />
               Price alerts
             </UIButton>
@@ -122,18 +126,19 @@ export default function Account() {
               <UIButton
                 onClick={() => setEdit("info")}
                 secondary
-                className={`${
-                  edit === "info" && "hidden"
-                } rounded-full`}
+                className={`${edit === "info" && "hidden"} rounded-full`}
               >
                 Edit
                 <img src="/edit.svg" />
               </UIButton>
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-between">
+          <CardContent className="sm:flex justify-between">
             {edit === "info" ? (
-              <PersonalInformationForm {...user} onCancel={() => setEdit(null)} />
+              <PersonalInformationForm
+                {...user}
+                onCancel={() => setEdit(null)}
+              />
             ) : (
               <RenderUserData data={info} />
             )}
@@ -146,16 +151,14 @@ export default function Account() {
               <UIButton
                 onClick={() => setEdit("address")}
                 secondary
-                className={`${
-                  edit === "address" && "hidden"
-                } rounded-full`}
+                className={`${edit === "address" && "hidden"} rounded-full`}
               >
                 Edit
                 <img src="/edit.svg" />
               </UIButton>
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-between">
+          <CardContent className="sm:flex justify-between">
             {edit === "address" ? (
               <AddressForm {...user} onCancel={() => setEdit(null)} />
             ) : (
@@ -164,7 +167,7 @@ export default function Account() {
           </CardContent>
         </Card>
         <div className="flex justify-between mb-10">
-          <span className="flex text-[48px]/[52px]">
+          <span className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">
             <img src="/settings.svg" />
             Regional settings
           </span>
@@ -174,22 +177,22 @@ export default function Account() {
             <CardTitle className="flex justify-between">
               <div className="flex justify-center content-center">
                 <UploadCompanyLogo />
-                <span className="pl-5 text-[26px]/[68px] font-normal">{user?.companyName}</span>
+                <span className="pl-5 text-[26px]/[68px] font-normal">
+                  {user?.companyName}
+                </span>
               </div>
               <UIButton
                 onClick={() => setEdit("regional")}
                 secondary
-                className={`${
-                  edit === "regional" && "hidden"
-                } rounded-full`}
+                className={`${edit === "regional" && "hidden"} rounded-full`}
               >
                 Edit
                 <img src="/edit.svg" />
               </UIButton>
             </CardTitle>
           </CardHeader>
-          <CardContent className="flex justify-between">
-          {edit === "regional" ? (
+          <CardContent className="sm:flex justify-between">
+            {edit === "regional" ? (
               <RegionalSettingsForm {...user} onCancel={() => setEdit(null)} />
             ) : (
               <RenderUserData data={region} />

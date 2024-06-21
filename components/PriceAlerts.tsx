@@ -108,17 +108,17 @@ export default function PriceAlerts() {
   return (
     <Dialog onOpenChange={() => setStep(0)}>
       <DialogTrigger asChild>
-        <UIButton className="w-full">
-          <img src="/ring.svg" />
-          Price alerts
+        <UIButton className="w-[44px] h-[44px] sm:w-full sm:h-auto px-1">
+          <img src="/ringwhite.svg" />
+          <span className="hidden sm:inline">Price alerts</span>
         </UIButton>
       </DialogTrigger>
       <DialogContent
-        className={
+        className={`max-w-[365px] pt-[48px] px-1 sm:px-[66px] overflow-auto max-h-screen ${
           step === 3
-            ? "max-w-[632px] px-[66px] pt-[48px] pb-[32px] overflow-y-scroll max-h-screen"
-            : "max-w-[768px] p-[32px] pt-[48px]"
-        }
+            ? "sm:max-w-[632px] pb-[32px] "
+            : "sm:max-w-[768px] p-[32px]"
+        }`}
       >
         <Form {...form}>
           <form
@@ -127,7 +127,7 @@ export default function PriceAlerts() {
           >
             <div>
               <DialogHeader
-                className={`min-h-[500px] ${step !== 0 && "hidden"}`}
+                className={`sm:min-h-[500px] ${step !== 0 && "hidden"}`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light">
                   <Image
@@ -146,7 +146,7 @@ export default function PriceAlerts() {
                   are interested in.
                 </DialogDescription>
               </DialogHeader>
-              <div className={step === 1 ? "min-h-[572px]" : "hidden"}>
+              <div className={step === 1 ? "sm:min-h-[572px]" : "hidden"}>
                 <DialogTitle className="text-center text-[40px]/[48px] font-light">
                   Desired <i className="font-normal">routes</i>
                 </DialogTitle>
@@ -154,14 +154,14 @@ export default function PriceAlerts() {
                   You can select up to 10 routes that interest you and set price
                   alerts for them.
                 </DialogDescription>
-                <div className="flex text-[12px]/[18px] opacity-50 mt-[40px] mb-[4px]">
+                <div className="flex flex-wrap text-[12px]/[18px] opacity-50 mt-[40px] mb-[4px]">
                   <div className="ml-[32px] w-[180px]">FROM</div>
                   <div className="ml-[54px] w-[180px]">TO</div>
                   <div className="ml-[10px]">PRICE ($)</div>
                 </div>
                 {fields.map((item, index) => (
                   <div
-                    className="flex items-center mb-[8px] w-full"
+                    className="flex flex-wrap items-center mb-[8px] w-full"
                     key={index}
                   >
                     <div className="w-[22px]">
@@ -366,7 +366,7 @@ export default function PriceAlerts() {
                   Add a route ({fields.length}/10)
                 </div>
               </div>
-              <div className={step === 2 ? "min-h-[572px]" : "hidden"}>
+              <div className={step === 2 ? "sm:min-h-[572px]" : "hidden"}>
                 <DialogTitle className="text-center text-[40px]/[48px] font-light">
                   <Image src={""} alt="" width={20} height={20} />
                   Contact <i className="font-normal">information</i>
@@ -433,15 +433,8 @@ export default function PriceAlerts() {
               </div>
             </div>
             {step !== 3 && (
-              <div className="flex justify-between items-center">
-                <UIButton
-                  secondary
-                  onClick={() => setStep(step - 1)}
-                  className={`w-40 ${step === 0 ? "invisible" : ""}`}
-                >
-                  Previous step
-                </UIButton>
-                <div className="flex space-x-1">
+              <div className="sm:flex justify-between items-center pt-5 space-y-5">
+                <div className="flex space-x-1 order-2 justify-center w-full">
                   <div
                     className={`shadow-2xl rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 0 ? "opacity-100" : "opacity-50"}`}
                   />
@@ -453,7 +446,14 @@ export default function PriceAlerts() {
                   />
                 </div>
                 <UIButton
-                  className="w-40"
+                  secondary
+                  onClick={() => setStep(step - 1)}
+                  className={`w-full sm:max-w-40 ${step === 0 ? "hidden sm:block invisible" : ""}`}
+                >
+                  Previous step
+                </UIButton>
+                <UIButton
+                  className="w-full sm:max-w-40 order-3"
                   type="submit"
                   onClick={(e: any) => {
                     console.log("submit");

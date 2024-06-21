@@ -23,7 +23,7 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
   );
 
   return (
-    <div className="w-full py-10 pb-[104px] px-[278px] flex flex-col justify-center items-center mt-52">
+    <div className="w-full py-10 pb-[104px] px-5 max-w-[884px] flex flex-col justify-center items-center mt-52">
       <div className="w-full max-w-[1440px] flex justify-center items-center flex-col">
         <div className="text-center text-black text-[48px]/[76px] mb-[40px]">
           <i className="bg-allTittleColor px-[5px]">Answers</i>
@@ -56,13 +56,13 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
                       }
                     >
                       <div className="text-[18px]/[28px] font-normal flex relative">
-                        <i className="text-[24px]/[28px] pr-[40px]">
+                        <i className="text-[24px]/[28px] pr-2 sm:pr-[40px]">
                           0{index + 1}
                         </i>
-                        <span className="text-black text-left mb-[30px]">
+                        <span className="text-black text-left mb-[30px] pr-5">
                           {question.toUpperCase()}
                           <div
-                            className={`absolute right-[50px] top-2 transform translate-x-[30px] transition duration-300 ${open ? "-scale-y-100" : ""}`}
+                            className={`absolute right-8 sm:right-[50px] top-2 transform translate-x-[30px] transition duration-300 ${open ? "-scale-y-100" : ""}`}
                           >
                             <HelpArrowAccordionSvg />
                           </div>

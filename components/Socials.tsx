@@ -3,7 +3,6 @@ import Image from "next/image";
 import { cn } from "@/lib/utils";
 
 export default function Socials({ container }: { container?: string }) {
-  
   return (
     <div className={cn("flex mb-20", container)}>
       <Link

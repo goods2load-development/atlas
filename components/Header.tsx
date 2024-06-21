@@ -1,24 +1,20 @@
 "use client";
-import React, { PropsWithChildren, useEffect } from "react";
+import React, { PropsWithChildren, useEffect, useState } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
 // localization routing not finished
 // import Localization from "@/components/Localization";
 import {
   NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuIndicator,
   NavigationMenuItem,
-  NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
-  NavigationMenuViewport,
 } from "@/components/ui/navigation-menu";
 import { useUserStore } from "@/lib/store";
 import LangSwitcher from "./LangSwicher";
 
 export default function Header({ children }: PropsWithChildren) {
   const { user, getUser } = useUserStore((state: any) => state);
+  const [open, setOpen] = useState(false);
   useEffect(() => {
     if (!!!user?.id) getUser();
   }, [user?.id]);
@@ -26,12 +22,33 @@ export default function Header({ children }: PropsWithChildren) {
     <div
       className={`${
         !!children ? "bg-bgMainPrimary pb-48" : "bg-orangePrimary"
-      } bg-cover bg-center px-16 text-white`}
+      } bg-cover bg-center text-white`}
     >
-      <header className="flex justify-between min-h-[75px]">
+      <header
+        className={`flex items-center justify-between min-h-[75px] px-5 sm:px-16 ${open && "bg-orangePrimary"}`}
+      >
         <Logo width={236} height={28} />
-        <NavigationMenu>
-          <NavigationMenuList className="space-x-5">
+        <div
+          className="w-[32px] h-[24px] sm:hidden flex flex-col justify-between items-center relative"
+          onClick={() => setOpen(!open)}
+        >
+          {open ? (
+            <>
+              <i className="bg-white w-full h-[2px] transform rotate-45 absolute top-1/2" />
+              <i className="bg-white w-full h-[2px] transform -rotate-45 absolute top-1/2" />
+            </>
+          ) : (
+            <>
+              <i className="bg-white w-full h-[2px]" />
+              <i className="bg-white w-[24px] h-[2px]" />
+              <i className="bg-white w-full h-[2px]" />
+            </>
+          )}
+        </div>
+        <NavigationMenu
+          className={`${!open && "hidden"} sm:block absolute sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm p-5 bg-orangePrimary sm:bg-transparent text-white`}
+        >
+          <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
             <NavigationMenuItem>
               <Link href="/help">Help</Link>
             </NavigationMenuItem>

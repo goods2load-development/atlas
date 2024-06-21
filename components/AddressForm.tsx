@@ -66,8 +66,8 @@ export default function AddressForm(props: AddressFormProps) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     const data = {
       ...values,
-      postalCode: parseInt(values.postalCode)
-    }
+      postalCode: parseInt(values.postalCode),
+    };
     updateUser(data);
     props.onCancel();
   }
@@ -78,12 +78,12 @@ export default function AddressForm(props: AddressFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="flex flex-row items-stretch mb-5">
+        <div className="sm:flex flex-row items-stretch mb-5">
           <FormField
             control={form.control}
             name="country"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>Country</FormLabel>
                 <FormControl>
                   <Select
@@ -94,9 +94,9 @@ export default function AddressForm(props: AddressFormProps) {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {countriesList.map((item: string) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
+                      {countriesList.map((item: any) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -110,13 +110,10 @@ export default function AddressForm(props: AddressFormProps) {
             control={form.control}
             name="city"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>City</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
+                  <Input className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -126,13 +123,10 @@ export default function AddressForm(props: AddressFormProps) {
             control={form.control}
             name="companyName"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>Company name</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
+                  <Input className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -142,7 +136,7 @@ export default function AddressForm(props: AddressFormProps) {
             control={form.control}
             name="postalCode"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>Postal / ZIP code</FormLabel>
                 <FormControl>
                   <Input
@@ -162,10 +156,7 @@ export default function AddressForm(props: AddressFormProps) {
               <FormItem className="w-full">
                 <FormLabel>Address</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
+                  <Input className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -173,16 +164,10 @@ export default function AddressForm(props: AddressFormProps) {
           />
         </div>
         <div className="flex justify-end">
-          <UIButton
-            type="submit"
-            className="mr-3"
-          >
+          <UIButton type="submit" className="mr-3">
             Save
           </UIButton>
-          <UIButton
-            onClick={props.onCancel}
-            secondary
-          >
+          <UIButton onClick={props.onCancel} secondary>
             Cancel
           </UIButton>
         </div>
