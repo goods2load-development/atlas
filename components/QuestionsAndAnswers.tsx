@@ -90,16 +90,16 @@ const questionsContent = [
 
 function QuestionItem(props: any) {
   return (
-    <AccordionItem value={`item-${props.number}`} className="py-4">
+    <AccordionItem value={`item-${props.number}`} className="sm:py-4">
       <AccordionTrigger className="text-orangePrimary hover:no-underline">
         <div className="text-[18px]/[28px] font-normal text-left">
-          <i className="text-[24px]/[28px] inline-block w-20 pr-10">
+          <i className="text-[24px]/[28px] inline-block w-10 sm:w-20 sm:pr-10">
             {props.number}
           </i>
           <span className="text-black">{props.title}</span>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="pl-20 text-[18px]/[24px] font-light">
+      <AccordionContent className="pl-5 sm:pl-20 text-[18px]/[24px] font-light">
         {props.content}
       </AccordionContent>
     </AccordionItem>
@@ -108,8 +108,8 @@ function QuestionItem(props: any) {
 
 export default function QuestionsAndAnswers() {
   return (
-    <div className="px-16 py-24 flex flex-col bg-bgQuestions bg-top bg-100% bg-no-repeat">
-      <div className="text-center text-[48px]/[48px] mb-12 font-light">
+    <div className="px-5 sm:px-16 py-24 flex flex-col bg-bgQuestions bg-top bg-100% bg-no-repeat">
+      <div className="text-center text-[34px]/[38px] text-[48px]/[62px] mb-12 font-light">
         <i className="bg-orangeSecondary px-2 rounded-sm font-normal">
           Answers
         </i>{" "}
@@ -118,7 +118,11 @@ export default function QuestionsAndAnswers() {
           Questions
         </i>
       </div>
-      <Accordion type="single" collapsible className="w-8/12 self-center">
+      <Accordion
+        type="single"
+        collapsible
+        className="max-w-[884px] self-center"
+      >
         {questionsContent.map((item) => (
           <QuestionItem {...item} key={item.number} />
         ))}

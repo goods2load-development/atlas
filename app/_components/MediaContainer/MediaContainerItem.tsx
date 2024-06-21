@@ -16,7 +16,7 @@ const MediaContainerItem: FC<any> = ({ item }: TMedia) => {
         height={item.img.height}
         className="rounded-t-lg mb-[30px]"
       />
-      <div className="flex flex-row justify-between items-center text-black">
+      <div className="sm:flex flex-row justify-between items-center text-black">
         <a
           className="text-[28px]/[33.6px] font-medium underline underline-offset-2 decoration-[1.5px] hover:cursor-pointer"
           href={item.link}

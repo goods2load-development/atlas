@@ -10,7 +10,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
 import { useFilterStore } from "@/lib/filterStore";
-import PriceAlerts from "@/components/PriceAlerts";
 
 function GroupSelection({ selectAll, clearAll }: any) {
   return (
@@ -146,84 +145,88 @@ export default function Filter() {
   function clearAllPartners(arrayName: string) {
     setFilter({ [arrayName]: [] });
   }
+  const trigerClasses = "";
+  const contentClasses = "";
   return (
-    <>
-      <PriceAlerts />
-      <Accordion type="multiple" className="w-full">
-        <AccordionItem value="item-1">
-          <AccordionTrigger>Order</AccordionTrigger>
-          <AccordionContent>
-            <FilterItem
-              id="cheapest"
-              checked={cheapest}
-              onChange={onOrderChange}
-              label="Cheapest"
-            />
-            <FilterItem
-              id="fastest"
-              checked={fastest}
-              onChange={onOrderChange}
-              label="Fastest"
-            />
-            <FilterItem
-              id="goGreen"
-              checked={goGreen}
-              onChange={onOrderChange}
-              label="GoGreen"
-            />
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="price">
-          <AccordionTrigger>Price</AccordionTrigger>
-          <AccordionContent className="flex space-x-2">
-            <Input ref={min} placeholder="min" />
-            <Input ref={max} placeholder="max" />
-            <Button onClick={setMinMax}>OK</Button>
-          </AccordionContent>
-        </AccordionItem>
-        <AccordionItem value="partners">
-          <AccordionTrigger>Logistic partner</AccordionTrigger>
-          <AccordionContent>
-            <GroupSelection
-              selectAll={selectAllPartners}
-              clearAll={clearAllPartners}
-            />
-            <FilterItemList
-              items={partners}
-              checkedList={partnersSelected}
-              onChange={onCheckboxChange}
-              label="name"
-            />
-          </AccordionContent>
-        </AccordionItem>
-        {deliveryBy !== "truck" && (
-          <>
-            <AccordionItem value="portsDeparture">
-              <AccordionTrigger>Port Departure</AccordionTrigger>
-              <AccordionContent>
-                <GroupSelection selectAll={() => {}} clearAll={() => {}} />
-                <FilterItemList
-                  items={portsDeparture}
-                  checkedList={portsDepartureSelected}
-                  onChange={onCheckboxChange}
-                />
-                {/* "portsDeparture" */}
-              </AccordionContent>
-            </AccordionItem>
-            <AccordionItem value="portsArrival">
-              <AccordionTrigger>Port Arrival</AccordionTrigger>
-              <AccordionContent>
-                <GroupSelection selectAll={() => {}} clearAll={() => {}} />
-                <FilterItemList
-                  items={portsArrival}
-                  checkedList={portsArrivalSelected}
-                  onChange={onCheckboxChange}
-                />
-              </AccordionContent>
-            </AccordionItem>
-          </>
-        )}
-      </Accordion>
-    </>
+    <Accordion
+      type="multiple"
+      className="w-full grid grid-cols-2 justify-stretch sm:block overflow-x-auto space-x-[6px]"
+    >
+      <AccordionItem value="item-1" className="relative">
+        <AccordionTrigger className="border-[1px] border-[#FFEDE4] p-3 rounded-lg">
+          Order
+        </AccordionTrigger>
+        <AccordionContent className="absolute top-[42px] sm:static w-full border-[1px] border-t-0 p-3 border-[#FFEDE4] bg-white">
+          <FilterItem
+            id="cheapest"
+            checked={cheapest}
+            onChange={onOrderChange}
+            label="Cheapest"
+          />
+          <FilterItem
+            id="fastest"
+            checked={fastest}
+            onChange={onOrderChange}
+            label="Fastest"
+          />
+          <FilterItem
+            id="goGreen"
+            checked={goGreen}
+            onChange={onOrderChange}
+            label="GoGreen"
+          />
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="price" className="min-w-148px">
+        <AccordionTrigger>Goods value</AccordionTrigger>
+        <AccordionContent className="flex space-x-2">
+          <Input ref={min} placeholder="min" onChange={setMinMax} />
+          <Input ref={max} placeholder="max" onChange={setMinMax} />
+          {/* <Button onClick={setMinMax}>OK</Button> */}
+        </AccordionContent>
+      </AccordionItem>
+      <AccordionItem value="partners">
+        <AccordionTrigger>Logistic partner</AccordionTrigger>
+        <AccordionContent>
+          <GroupSelection
+            selectAll={selectAllPartners}
+            clearAll={clearAllPartners}
+          />
+          <FilterItemList
+            items={partners}
+            checkedList={partnersSelected}
+            onChange={onCheckboxChange}
+            label="name"
+          />
+        </AccordionContent>
+      </AccordionItem>
+      {deliveryBy !== "truck" && (
+        <>
+          <AccordionItem value="portsDeparture">
+            <AccordionTrigger className="">Port Departure</AccordionTrigger>
+            <AccordionContent>
+              <GroupSelection selectAll={() => {}} clearAll={() => {}} />
+              <FilterItemList
+                items={portsDeparture}
+                checkedList={portsDepartureSelected}
+                onChange={onCheckboxChange}
+              />
+              {/* "portsDeparture" */}
+            </AccordionContent>
+          </AccordionItem>
+          <AccordionItem value="portsArrival">
+            <AccordionTrigger>Port Arrival</AccordionTrigger>
+            <AccordionContent>
+              <GroupSelection selectAll={() => {}} clearAll={() => {}} />
+              <FilterItemList
+                items={portsArrival}
+                checkedList={portsArrivalSelected}
+                onChange={onCheckboxChange}
+              />
+            </AccordionContent>
+          </AccordionItem>
+        </>
+      )}
+    </Accordion>
   );
 }

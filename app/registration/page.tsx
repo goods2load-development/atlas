@@ -251,12 +251,12 @@ export default function UserRegistration() {
                 )}
               />
             </div>
-            <div className="flex mb-5">
+            <div className="sm:flex mb-5">
               <FormField
                 control={form.control}
                 name="firstName"
                 render={({ field }) => (
-                  <FormItem className="w-6/12 mr-3">
+                  <FormItem className="sm:w-6/12 sm:mr-3">
                     <FormLabel>First name</FormLabel>
                     <FormControl>
                       <Input
@@ -274,7 +274,7 @@ export default function UserRegistration() {
                 control={form.control}
                 name="lastName"
                 render={({ field }) => (
-                  <FormItem className="w-6/12">
+                  <FormItem className="sm:w-6/12">
                     <FormLabel>Last name</FormLabel>
                     <FormControl>
                       <Input
@@ -289,12 +289,12 @@ export default function UserRegistration() {
                 )}
               />
             </div>
-            <div className="flex mb-5">
+            <div className="sm:flex mb-5">
               <FormField
                 control={form.control}
                 name="phoneNumber"
                 render={({ field }) => (
-                  <FormItem className="w-6/12 mr-3">
+                  <FormItem className="sm:w-6/12 sm:mr-3">
                     <FormLabel>Phone number</FormLabel>
                     <FormControl>
                       <Input
@@ -312,7 +312,7 @@ export default function UserRegistration() {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem className="w-6/12">
+                  <FormItem className="sm:w-6/12">
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
@@ -346,12 +346,12 @@ export default function UserRegistration() {
                 </FormItem>
               )}
             />
-            <div className="flex mb-5">
+            <div className="sm:flex mb-5">
               <FormField
                 control={form.control}
                 name="address"
                 render={({ field }) => (
-                  <FormItem className="w-8/12 mr-3">
+                  <FormItem className="sm:w-8/12 sm:mr-3">
                     <FormLabel>Address</FormLabel>
                     <FormControl>
                       <Input
@@ -369,7 +369,7 @@ export default function UserRegistration() {
                 control={form.control}
                 name="postalCode"
                 render={({ field }) => (
-                  <FormItem className="w-4/12">
+                  <FormItem className="sm:w-4/12">
                     <FormLabel>Postal / ZIP code</FormLabel>
                     <FormControl>
                       <Input

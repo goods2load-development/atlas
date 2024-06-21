@@ -7,7 +7,7 @@ import tabImage from "@/assets/PartnersImage/PartnersVisibility/tab.png";
 
 const PartnersVisibility: React.FC = () => {
   return (
-    <section className="w-full items-center justify-center pt-[47px] px-[72px] text-white text-center mb-[100px]">
+    <section className="w-full items-center justify-center pt-[47px] px-5 sm:px-[72px] text-white text-center mb-[100px]">
       <div className="mb-[40px]">
         <div className="text-black text-[40px] font-semibold italic">
           “Nice
@@ -19,10 +19,10 @@ const PartnersVisibility: React.FC = () => {
         </div>
         <div className="text-black">is our motto</div>
       </div>
-      <div className="grid grid-cols-2 mb-[100px]">
+      <div className="grid sm:grid-cols-2 mb-[100px]">
         <div className="self-center">
-          <h2 className="text-black w-[560px] leading-[57px] font-light  mb-[10px] text-[40px]/[48px] text-left">
-            <span className="w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
+          <h2 className="text-black max-w-[560px] leading-[57px] font-light  mb-[10px] text-[40px]/[48px] text-left">
+            <span className="max-w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               Visibility
             </span>{" "}
             in search results can truly set you apart
@@ -33,7 +33,7 @@ const PartnersVisibility: React.FC = () => {
           </p>
         </div>
         <div className="relative">
-          <div className="absolute left-0  bottom-0 transform translate-x-[-190px] translate-y-[45px] translate-x-[-150px]">
+          <div className="absolute left-0  bottom-0 transform translate-x-[-72px] sm:translate-x-[-190px] translate-y-[45px] translate-x-[-150px]">
             <Image
               alt="phone"
               src={phoneImage.src}
@@ -50,7 +50,7 @@ const PartnersVisibility: React.FC = () => {
           />
         </div>
       </div>
-      <div className="flex items-center">
+      <div className="flex flex-col-reverse sm:flex-row items-center">
         <div className="w-full flex justify-center relative">
           <Image
             src={tabImage.src}

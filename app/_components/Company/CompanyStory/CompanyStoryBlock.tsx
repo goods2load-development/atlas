@@ -12,7 +12,7 @@ const CompanyStoryBlock: FC<TItem> = ({ item }) => {
   const [showMore, setShowMore] = useState<boolean>(false);
 
   return (
-    <div className="w-3/12 flex flex-col gap-[24px]">
+    <div className="max-w-[294px] flex flex-col gap-[24px]">
       <div className="bg-primaryOrange w-[96px] h-[96px] flex justify-center items-center rounded-full border-2 border-white border-solid	outline-2	outline-[#FF6720]	outline">
         <Image src={item.icon} alt={"icon"} width={50} height={50} />
       </div>
