@@ -1,9 +1,9 @@
-import { ReactNode, useState } from "react";
-import { Button } from "./ui/button";
+import { useState } from "react";
 import Image from "next/image";
 import frFlag from "@/assets/fr-flag.svg";
 import deFlag from "@/assets/de-flag.svg";
 import enFlag from "@/assets/en-flag.svg";
+import esFlag from "@/assets/es-flag.svg";
 import { ChevronDown } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
@@ -11,6 +11,7 @@ enum Langs {
   EN = "en",
   FR = "fr",
   DE = "de",
+  ES = "es",
 }
 
 interface ILang {
@@ -31,6 +32,10 @@ const langs: ILang[] = [
     label: Langs.FR,
     icon: frFlag,
   },
+  {
+    label: Langs.ES,
+    icon: esFlag,
+  },
 ];
 
 const LangSwitcher = () => {
@@ -42,9 +47,9 @@ const LangSwitcher = () => {
   };
 
   return (
-    <div>
+    <div key={activeLang.label}>
       <DropdownMenu.Root>
-        <DropdownMenu.Trigger className="">
+        <DropdownMenu.Trigger className="outline-none">
           <div className="flex gap-2 items-center">
             <Image
               alt="franch-flag"
@@ -56,7 +61,7 @@ const LangSwitcher = () => {
             <ChevronDown />
           </div>
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content className="">
+        <DropdownMenu.Content className="border-2 border-white rounded p-1 mt-1">
           {langs.map((elem, idx) => {
             if (elem === activeLang) {
               return;
@@ -64,7 +69,7 @@ const LangSwitcher = () => {
 
             return (
               <DropdownMenu.Item
-                className={`flex gap-2 items-center outline-none p-4`}
+                className={`flex gap-2 items-center justify-between outline-none py-1 px-3 hover:opacity-80 cursor-pointer rounded`}
                 key={idx}
                 onSelect={() => onChangeLang(elem)}
               >
@@ -85,14 +90,3 @@ const LangSwitcher = () => {
 };
 
 export default LangSwitcher;
-
-{
-  /* <Button
-  onClick={() => Weglot.switchTo("fr")}
-  className="flex gap-2 items-center"
->
-  <Image alt="franch-flag" width={16} height={12} src={frFlag} />
-  <span>FR</span>
-  <ChevronDown className="" />
-</Button>; */
-}
