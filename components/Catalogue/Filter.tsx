@@ -153,10 +153,8 @@ export default function Filter() {
       className="w-full grid grid-cols-2 justify-stretch sm:block overflow-x-auto space-x-[6px]"
     >
       <AccordionItem value="item-1" className="relative">
-        <AccordionTrigger className="border-[1px] border-[#FFEDE4] p-3 rounded-lg">
-          Order
-        </AccordionTrigger>
-        <AccordionContent className="absolute top-[42px] sm:static w-full border-[1px] border-t-0 p-3 border-[#FFEDE4] bg-white">
+        <AccordionTrigger>Order</AccordionTrigger>
+        <AccordionContent>
           <FilterItem
             id="cheapest"
             checked={cheapest}
