@@ -61,7 +61,7 @@ const LangSwitcher = () => {
             <ChevronDown />
           </div>
         </DropdownMenu.Trigger>
-        <DropdownMenu.Content className="border-2 border-white rounded p-1 mt-1">
+        <DropdownMenu.Content className="bg-white rounded p-1 mt-1">
           {langs.map((elem, idx) => {
             if (elem === activeLang) {
               return;
@@ -69,7 +69,7 @@ const LangSwitcher = () => {
 
             return (
               <DropdownMenu.Item
-                className={`flex gap-2 items-center justify-between outline-none py-1 px-3 hover:opacity-80 cursor-pointer rounded`}
+                className={`group flex gap-2 items-center justify-between outline-none py-1 px-3 cursor-pointer rounded hover:bg-primaryOrange`}
                 key={idx}
                 onSelect={() => onChangeLang(elem)}
               >
@@ -79,7 +79,7 @@ const LangSwitcher = () => {
                   height={12}
                   src={elem.icon}
                 />
-                <span className="uppercase">{elem.label}</span>
+                <span className="uppercase text-black">{elem.label}</span>
               </DropdownMenu.Item>
             );
           })}
