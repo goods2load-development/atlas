@@ -7,9 +7,13 @@ export default function LegacyTitle({
 }) {
   return (
     <div>
-      <h1 className="text-[48px] text-center font-poppins italic">{title}</h1>
+      <h1 className="text-[34px]/[38px] sm:text-[48px] text-center font-poppins italic">
+        {title}
+      </h1>
       {subTitle && (
-        <p className="text-[32px] text-center font-poppins">{subTitle}</p>
+        <p className="text-[20px] sm:text-[32px] pt-[16px] font-light text-center font-poppins">
+          {subTitle}
+        </p>
       )}
     </div>
   );

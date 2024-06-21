@@ -14,8 +14,8 @@ export interface ILeader {
 
 const CompanyLeadership = () => {
   return (
-    <section className="w-full flex flex-row gap-[80px] py-[104px] px-[72px] relative">
-      <div className="w-1/4 flex flex-col gap-[16px]">
+    <section className="w-full sm:flex flex-row gap-[80px] py-[104px] px-5 sm:px-[72px] relative">
+      <div className="sm:w-1/4 flex flex-col gap-[16px]">
         <h1 className="bg-[#FEF1DF] text-[48px]/[57.6px] font-light text-black w-fit rounded-[6px]">
           Leadership
         </h1>
@@ -24,7 +24,7 @@ const CompanyLeadership = () => {
           experience to achieve common goals and meet the needs of our clients
         </p>
       </div>
-      <div className="w-3/4 flex flex-row gap-[80px] justyfe">
+      <div className="sm:w-3/4 sm:flex flex-row gap-[80px] justyfe">
         {leaderships.map((item: Leadership) => (
           <CompanyLeader key={item.name} item={item} />
         ))}

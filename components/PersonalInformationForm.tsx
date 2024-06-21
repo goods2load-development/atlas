@@ -44,22 +44,16 @@ export default function PersonalInformationForm(props: any) {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full"
-      >
-        <div className="flex flex-row items-stretch mb-5">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
+        <div className="sm:flex flex-row items-stretch mb-5">
           <FormField
             control={form.control}
             name="firstName"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>First name</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
+                  <Input className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -69,13 +63,10 @@ export default function PersonalInformationForm(props: any) {
             control={form.control}
             name="lastName"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>Last name</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
+                  <Input className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -85,13 +76,10 @@ export default function PersonalInformationForm(props: any) {
             control={form.control}
             name="phoneNumber"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>Phone number</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
+                  <Input className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -104,10 +92,7 @@ export default function PersonalInformationForm(props: any) {
               <FormItem className="w-full">
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
+                  <Input className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -115,16 +100,10 @@ export default function PersonalInformationForm(props: any) {
           />
         </div>
         <div className="flex justify-end">
-          <UIButton
-            type="submit"
-            className="mr-3"
-          >
+          <UIButton type="submit" className="mr-3">
             Save
           </UIButton>
-          <UIButton
-            onClick={props.onCancel}
-            secondary
-          >
+          <UIButton onClick={props.onCancel} secondary>
             Cancel
           </UIButton>
         </div>

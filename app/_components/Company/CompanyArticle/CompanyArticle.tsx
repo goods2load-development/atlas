@@ -6,16 +6,16 @@ import thereIsNotImg from "@/assets/AboutUsImg/thereIsNot.png";
 
 const CompanyArticle = () => {
   return (
-    <section className="w-full flex flex-col gap-[64px] px-[72px]">
-      <div className="w-full flex flex-row gap-[56px]">
-        <div className="w-1/2 rounded-lg overflow-hidden">
+    <section className="w-full sm:flex flex-col gap-[64px] px-5 sm:px-[72px]">
+      <div className="w-full sm:flex flex-row gap-[56px]">
+        <div className="sm:w-1/2 rounded-lg overflow-hidden">
           <Image
             className="w-full rounded-lg translate-y-[-10%]"
             src={shipImg}
             alt={"img1"}
           />
         </div>
-        <div className="w-1/2 flex flex-col justify-start gap-[16px]">
+        <div className="sm:w-1/2 flex flex-col justify-start gap-[16px]">
           <p className="text-black font-normal text-[18px]/[25px] text-left">
             At GOODS2LOAD, we have developed a proprietary algorithm that offers
             a deep understanding of the logistics landscape. Our automated
@@ -32,8 +32,8 @@ const CompanyArticle = () => {
           </p>
         </div>
       </div>
-      <div className="w-full flex flex-row gap-[56px]">
-        <div className="w-1/2 flex flex-col justify-start gap-[16px]">
+      <div className="w-full sm:flex flex-row gap-[56px]">
+        <div className="sm:w-1/2 flex flex-col justify-start gap-[16px]">
           <p className="text-black font-normal text-[18px]/[25px] text-left">
             Understanding the Earth’s limited resources, logistics forwarders
             now place a premium on CO2 emission management. GOODS2LOAD is
@@ -43,7 +43,7 @@ const CompanyArticle = () => {
           </p>
         </div>
 
-        <div className="w-1/2 rounded-lg overflow-hidden">
+        <div className="sm:w-1/2 rounded-lg overflow-hidden">
           <Image
             className="w-full rounded-lg translate-y-[-10%]"
             src={thereIsNotImg}
