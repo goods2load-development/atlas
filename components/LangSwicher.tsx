@@ -43,7 +43,7 @@ const LangSwitcher = () => {
 
   const onChangeLang = (elem: ILang) => {
     setActiveLang(elem);
-    Weglot.switchTo(elem.label);
+    Weglot?.switchTo(elem.label);
   };
 
   return (
