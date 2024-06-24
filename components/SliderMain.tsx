@@ -95,7 +95,7 @@ export default function SliderMain() {
             grow. Join us to streamline your delivery process and boost your
             business effortlessly.
           </div>
-          <Link className="text-orangePrimary font-semibold" href="/">
+          <Link className="text-orangePrimary font-medium" href="/">
             Learn more
           </Link>
         </div>

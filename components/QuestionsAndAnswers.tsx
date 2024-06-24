@@ -93,7 +93,7 @@ function QuestionItem(props: any) {
     <AccordionItem value={`item-${props.number}`} className="sm:py-4">
       <AccordionTrigger className="text-orangePrimary hover:no-underline">
         <div className="text-[18px]/[28px] font-normal text-left">
-          <i className="text-[24px]/[28px] inline-block w-10 sm:w-20 sm:pr-10">
+          <i className="text-[20px]/[24px] font-light sm:font-normal sm:text-[24px]/[28px] inline-block w-8 sm:w-20 sm:pr-10">
             {props.number}
           </i>
           <span className="text-black">{props.title}</span>
@@ -108,8 +108,8 @@ function QuestionItem(props: any) {
 
 export default function QuestionsAndAnswers() {
   return (
-    <div className="px-5 sm:px-16 py-24 flex flex-col bg-bgQuestions bg-top bg-100% bg-no-repeat">
-      <div className="text-center text-[34px]/[38px] text-[48px]/[62px] mb-12 font-light">
+    <div className="px-5 sm:px-16 sm:py-24 py-12 flex flex-col bg-bgQuestions bg-top bg-100% bg-no-repeat">
+      <div className="text-center text-[34px]/[38px] sm:text-[48px]/[62px] mb-12 font-light">
         <i className="bg-orangeSecondary px-2 rounded-sm font-normal">
           Answers
         </i>{" "}

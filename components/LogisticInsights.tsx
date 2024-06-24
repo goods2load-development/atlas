@@ -36,15 +36,19 @@ const lItems: lItemProps[] = [
 
 function LogisticsItem({ item }: { item: lItemProps }) {
   return (
-    <div className="sm:w-4/12 mb-5 pr-[20px]">
+    <div className="sm:w-4/12 mb-5 sm:pr-[20px]">
       <div className="bg-gradient-to-br from-gradFrom to-gradTo px-[30px] py-[20px] rounded-sm mb-[30px]">
         <img src={item.imageSrc} alt={item.title} className="shadow-lg" />
       </div>
       <div className="text-[24px]/[28px] font-medium mb-[10px]">
         {item.title}
       </div>
-      <div className="text-[16px]/[20px] font-light mb-[10px]">{item.date}</div>
-      <div className="text-[16px]/[22px] mb-[10px]">{item.text}</div>
+      <div className="text-[16px]/[20px] font-light sm:mb-[10px] mb-[16px]">
+        {item.date}
+      </div>
+      <div className="text-[16px]/[22px] mb-[10px] font-normal">
+        {item.text}
+      </div>
       <Link href={item.link} className="text-orangePrimary text-[18px]/[22px]">
         Read more
         <img src="/arrowlong.png" className="inline-block ml-3" />
@@ -57,7 +61,9 @@ export default function LogisticInsights() {
   return (
     <div className="px-5 sm:px-16 py-[80px] bg-bgLogistics bg-cover bg-center">
       <h2 className="font-light text-[30px]/[34px] sm:text-[40px]/[48px] text-center sm:text-left">
-        <i className="bg-orangeSecondary rounded-sm px-2">Logistics</i>{" "}
+        <i className="bg-orangeSecondary rounded-sm px-2 font-normal">
+          Logistics
+        </i>{" "}
         insights:
       </h2>
       <div className="font-light text-[16px]/[20px] sm:text-[18px]/[22px] py-3 text-center sm:text-left">
