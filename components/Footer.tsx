@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import Socials from "@/components/Socials";
+import LangSwitcher from "./LangSwicher";
 
 export default function Footer() {
   return (
@@ -107,6 +108,10 @@ export default function Footer() {
           <Link href="/cookie-policy" className="block pb-4">
             Cookie Policy
           </Link>
+        </div>
+
+        <div>
+          <LangSwitcher />
         </div>
         <div className="flex sm:hidden justify-center pt-[40px]">
           <Socials />

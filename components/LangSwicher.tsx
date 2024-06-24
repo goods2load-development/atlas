@@ -7,6 +7,8 @@ import esFlag from "@/assets/es-flag.svg";
 import { ChevronDown } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 
+const LOCAL_STORAGE_KEY_LANG = "lang";
+
 enum Langs {
   EN = "en",
   FR = "fr",
@@ -40,21 +42,25 @@ const langs: ILang[] = [
 
 const LangSwitcher = () => {
   const [activeLang, setActiveLang] = useState<ILang>(langs[0]);
-  const [weglotReady, setWeglotReady] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (typeof Weglot !== "undefined") {
-      setWeglotReady(true);
-    }
-  }, []);
 
   const onChangeLang = (elem: ILang) => {
     setActiveLang(elem);
-
-    if (weglotReady) {
-      Weglot.switchTo(elem.label);
-    }
+    localStorage.setItem(LOCAL_STORAGE_KEY_LANG, elem.label);
   };
+
+  useEffect(() => {
+    if (localStorage.getItem(LOCAL_STORAGE_KEY_LANG)) {
+      const lang = langs.filter(
+        (elem) => elem.label === localStorage.getItem(LOCAL_STORAGE_KEY_LANG)
+      )[0];
+
+      setActiveLang(lang);
+    }
+  }, []);
+
+  useEffect(() => {
+    Weglot?.switchTo(activeLang.label);
+  }, [activeLang]);
 
   return (
     <div key={activeLang.label}>
