@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import frFlag from "@/assets/fr-flag.svg";
 import deFlag from "@/assets/de-flag.svg";
@@ -40,10 +40,19 @@ const langs: ILang[] = [
 
 const LangSwitcher = () => {
   const [activeLang, setActiveLang] = useState<ILang>(langs[0]);
+  const [weglotReady, setWeglotReady] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (typeof Weglot !== "undefined") {
+      setWeglotReady(true);
+    }
+  }, []);
 
   const onChangeLang = (elem: ILang) => {
     setActiveLang(elem);
-    Weglot?.switchTo(elem.label);
+    if (weglotReady) {
+      Weglot.switchTo(elem.label);
+    }
   };
 
   return (
