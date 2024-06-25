@@ -110,7 +110,7 @@ export default function Footer() {
           </Link>
         </div>
 
-        <div>
+        <div className="text-center">
           <LangSwitcher />
         </div>
         <div className="flex sm:hidden justify-center pt-[40px]">
