@@ -17,7 +17,7 @@ const PartnersAmplify: React.FC = () => {
         <div className="text-[28px]/[32px] sm:text-[48px]/[57px] font-light sm:pt-[120px] mb-[20px] max-w-[268px] sm:max-w-[483px] text-center sm:text-left  mx-auto sm:mx-0">
           Amplify your voice to reach those who matter most
         </div>
-        <h2 className="w-full text-[17px]/[28px] max-w-[484px] font-light sm:text-left leading-[28px] mb-[30px] px-5 sm:px-0">
+        <h2 className="w-full sm:text-[17px]/[28px] max-w-[484px] font-light sm:text-left leading-[28px] mb-[30px] px-5 sm:px-0">
           We’ve developed our platform to swiftly skim and analyze real-time
           company search data., empowering you to pinpoint high-demand routes
           and launch ad campaigns swiftly.

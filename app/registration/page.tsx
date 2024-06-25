@@ -257,7 +257,9 @@ export default function UserRegistration() {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem className="sm:w-6/12 sm:mr-3">
-                    <FormLabel>First name</FormLabel>
+                    <FormLabel className="font-light sm:font-normal">
+                      First name
+                    </FormLabel>
                     <FormControl>
                       <Input
                         className="bg-gray-2 border-0"
@@ -275,7 +277,9 @@ export default function UserRegistration() {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem className="sm:w-6/12">
-                    <FormLabel>Last name</FormLabel>
+                    <FormLabel className="font-light sm:font-normal">
+                      Last name
+                    </FormLabel>
                     <FormControl>
                       <Input
                         className="bg-gray-2 border-0"
@@ -295,7 +299,9 @@ export default function UserRegistration() {
                 name="phoneNumber"
                 render={({ field }) => (
                   <FormItem className="sm:w-6/12 sm:mr-3">
-                    <FormLabel>Phone number</FormLabel>
+                    <FormLabel className="font-light sm:font-normal">
+                      Phone number
+                    </FormLabel>
                     <FormControl>
                       <Input
                         className="bg-gray-2 border-0"
@@ -312,8 +318,10 @@ export default function UserRegistration() {
                 control={form.control}
                 name="email"
                 render={({ field }) => (
-                  <FormItem className="sm:w-6/12">
-                    <FormLabel>Email</FormLabel>
+                  <FormItem className="sm:w-6/12 mt-3 sm:mt-0">
+                    <FormLabel className="font-light sm:font-normal">
+                      Email
+                    </FormLabel>
                     <FormControl>
                       <Input
                         className="bg-gray-2 border-0"
@@ -333,7 +341,9 @@ export default function UserRegistration() {
               name="companyName"
               render={({ field }) => (
                 <FormItem className="w-full mb-5">
-                  <FormLabel>Company name</FormLabel>
+                  <FormLabel className="font-light sm:font-normal">
+                    Company name
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
@@ -352,7 +362,9 @@ export default function UserRegistration() {
                 name="address"
                 render={({ field }) => (
                   <FormItem className="sm:w-8/12 sm:mr-3">
-                    <FormLabel>Address</FormLabel>
+                    <FormLabel className="font-light sm:font-normal">
+                      Address
+                    </FormLabel>
                     <FormControl>
                       <Input
                         className="bg-gray-2 border-0"
@@ -370,7 +382,9 @@ export default function UserRegistration() {
                 name="postalCode"
                 render={({ field }) => (
                   <FormItem className="sm:w-4/12">
-                    <FormLabel>Postal / ZIP code</FormLabel>
+                    <FormLabel className="font-light sm:font-normal">
+                      Postal / ZIP code
+                    </FormLabel>
                     <FormControl>
                       <Input
                         className="bg-gray-2 border-0"
@@ -389,7 +403,9 @@ export default function UserRegistration() {
               name="city"
               render={({ field }) => (
                 <FormItem className="w-full mb-5">
-                  <FormLabel>City</FormLabel>
+                  <FormLabel className="font-light sm:font-normal">
+                    City
+                  </FormLabel>
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
@@ -407,7 +423,9 @@ export default function UserRegistration() {
               name="country"
               render={({ field }) => (
                 <FormItem className="w-full mb-5">
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel className="font-light sm:font-normal">
+                    Country
+                  </FormLabel>
                   <FormControl>
                     <Select onValueChange={field.onChange}>
                       <SelectTrigger className="bg-gray-2 border-transparent outline-none">
@@ -428,7 +446,9 @@ export default function UserRegistration() {
             />
             {!userRegistration && (
               <>
-                <FormLabel>I provide logistic services by:</FormLabel>
+                <FormLabel className="font-light sm:font-normal">
+                  I provide logistic services by:
+                </FormLabel>
                 <div className="flex mb-5 space-x-8">
                   <FormField
                     control={form.control}

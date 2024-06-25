@@ -19,7 +19,7 @@ const Career: React.FC = () => {
           </h1>
         </div>
         <div className="flex justify-center mb-[40px]">
-          <p className="max-w-[800px] text-center font-normal text-black text-[18px]/[25px]">
+          <p className="max-w-[800px] text-center font-normal text-black sm:text-[18px]/[25px]">
             Do you have what it takes to challenge the logistics industry with
             us?
             <br />
