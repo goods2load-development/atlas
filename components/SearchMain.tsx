@@ -150,12 +150,12 @@ export default function SearchMain({ main }: any) {
         <CustomRadioGroupItem value="truck" imageNumber={3} />
       </RadioGroup>
       <div
-        className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] items-end p-[24px] mt-[10px]`}
+        className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] items-end p-[24px] mt-[10px] `}
       >
-        <div className="sm:flex justify-stretch items-end w-full mb-[48px]">
+        <div className="sm:flex justify-stretch items-end w-full mb-[24px] sm:mb-[48px]">
           <div className="flex sm:w-[26%] items-end">
             <div className="mr-[1px] w-1/2">
-              <label>From</label>
+              <label className="mb-2 block">From</label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
@@ -198,7 +198,7 @@ export default function SearchMain({ main }: any) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] rounded-none border-none font-normal text-black justify-start w-full"
+                    className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
                   >
                     {from || "Select city"}
                   </Button>
@@ -244,13 +244,13 @@ export default function SearchMain({ main }: any) {
           </Button>
           <div className="flex sm:w-[26%] items-end mb-5 sm:mb-0">
             <div className="mr-[1px] w-1/2">
-              <label>To</label>
+              <label className="mb-2 block">To</label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] rounded-none border-none font-normal text-black w-full justify-start"
+                    className="h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
                   >
                     {toCountry || "Select country"}
                   </Button>
@@ -287,7 +287,7 @@ export default function SearchMain({ main }: any) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] w-full rounded-none border-none font-normal text-black justify-start"
+                    className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
                   >
                     {to || "Select city"}
                   </Button>
@@ -320,13 +320,13 @@ export default function SearchMain({ main }: any) {
           </div>
           <div className="flex sm:w-[24%]">
             <div className="mr-[1px] mb-5 sm:mb-0 w-1/2">
-              <label>Departure</label>
+              <label className="mb-2 block">Departure</label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
                     type="button"
-                    className="justify-start h-[60px] text-black font-normal rounded-none hover:bg-white border-0 w-full"
+                    className="justify-start h-[60px] text-black font-normal sm:rounded-none rounded-l-[16px] rounded-r-none hover:bg-white border-0 w-full"
                   >
                     {departure ? (
                       format(departure, "mm/dd/yyyy")
@@ -349,13 +349,13 @@ export default function SearchMain({ main }: any) {
               </Popover>
             </div>
             <div className="mr-[1px] mb-5 sm:mb-0 w-1/2">
-              <label>Arrival</label>
+              <label className="mb-2 block">Arrival</label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={"outline"}
                     type="button"
-                    className="justify-start h-[60px] text-black font-normal sm:rounded-none hover:bg-white border-0 w-full"
+                    className="justify-start h-[60px] text-black font-normal sm:rounded-none hover:bg-white border-0 w-full rounded-r-[16px] rounded-l-none"
                   >
                     {arrival ? (
                       format(arrival, "mm/dd/yyyy")
@@ -379,7 +379,7 @@ export default function SearchMain({ main }: any) {
             </div>
           </div>
           <div className="mr-[1px] sm:w-[24%] mb-5 sm:mb-0">
-            <label>Type of goods</label>
+            <label className="mb-2 block">Type of goods</label>
             <Popover open={open}>
               <PopoverTrigger className="w-full">
                 <Input
@@ -423,7 +423,7 @@ export default function SearchMain({ main }: any) {
         </div>
         <div className="sm:flex justify-stretch items-end w-full">
           <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[12%]">
-            <label>Total KG</label>
+            <label className="mb-2 block">Total KG</label>
             <Input
               className="h-[60px] sm:rounded-r-none sm:rounded-l-[16px] border-none font-normal text-black"
               type="number"
@@ -432,7 +432,7 @@ export default function SearchMain({ main }: any) {
             />
           </div>
           <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[20%]">
-            <label>Placement of goods</label>
+            <label className="mb-2 block">Placement of goods</label>
             <Select defaultValue="Pallets">
               <SelectTrigger className="h-[60px] sm:rounded-none border-none font-normal text-black">
                 <SelectValue placeholder="Placement of goods" />
@@ -449,7 +449,7 @@ export default function SearchMain({ main }: any) {
             </Select>
           </div>
           <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[20%]">
-            <label>Quantity of placement</label>
+            <label className="mb-2 block">Quantity of placement</label>
             <Input
               className="h-[60px] sm:rounded-none border-none font-normal text-black"
               type="number"
@@ -459,33 +459,39 @@ export default function SearchMain({ main }: any) {
           </div>
           <div className="flex sm:w-[27%] mb-5 sm:mb-0">
             <div className="mr-[1px] sm:w-1/3">
-              <label>Length</label>
+              <label className="mb-2 block text-center sm:text-left">
+                Length
+              </label>
               <Input
-                className="h-[60px] sm:rounded-none border-none font-normal text-black"
+                className="h-[60px] sm:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
                 placeholder="Length"
                 type="number"
                 onChange={(e) => setFilter({ length: e })}
               />
             </div>
-            <div className="mr-[1px] sm:w-1/3">
-              <label>Width</label>
+            <div className="mr-[1px] sm:w-1/3 ">
+              <label className="mb-2 block text-center sm:text-left">
+                Width
+              </label>
               <Input
-                className="h-[60px] sm:rounded-none border-none font-normal text-black"
+                className="h-[60px] rounded-none border-none font-normal text-black"
                 placeholder="Width"
                 onChange={(e) => setFilter({ width: e })}
               />
             </div>
             <div className="mr-[1px] sm:w-1/3">
-              <label>Height</label>
+              <label className="mb-2 block text-center sm:text-left">
+                Height
+              </label>
               <Input
-                className="h-[60px] sm:rounded-none border-none font-normal text-black"
+                className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
                 placeholder="Height"
                 type="number"
                 onChange={(e) => setFilter({ height: e })}
               />
             </div>
           </div>
-          <div className="mr-[1px] sm:w-[12%] mb-5 sm:mb-0 flex bg-white rounded-r-[16px]">
+          <div className="mr-[1px] sm:w-[12%] mb-5 sm:mb-0 flex bg-white sm:rounded-r-[16px] rounded">
             <Select
               defaultValue="FCL"
               onValueChange={(e) => setFilter({ containerLoad: e })}

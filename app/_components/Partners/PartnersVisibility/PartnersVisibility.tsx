@@ -7,11 +7,11 @@ import tabImage from "@/assets/PartnersImage/PartnersVisibility/tab.png";
 
 const PartnersVisibility: React.FC = () => {
   return (
-    <section className="w-full items-center justify-center pt-[47px] px-5 sm:px-[72px] text-white text-center mb-[100px]">
+    <section className="w-full items-center justify-center pt-[47px] px-5 sm:px-[72px] text-white text-center  mb-[50px] sm:mb-[100px]">
       <div className="mb-[40px]">
-        <div className="text-black text-[40px] font-semibold italic">
+        <div className="text-black text-[30px]/[34px] sm:text-[40px] font-normal sm:font-semibold italic">
           “Nice
-          <span className="text-40 leading-48 font-normal text-[40px]">
+          <span className="text-[30px]/[34px] sm:text-[40px] sm:leading-48 sm:font-normal font-light">
             {" "}
             and{" "}
           </span>
@@ -21,13 +21,13 @@ const PartnersVisibility: React.FC = () => {
       </div>
       <div className="grid sm:grid-cols-2 mb-[100px]">
         <div className="self-center">
-          <h2 className="text-black max-w-[560px] leading-[57px] font-light  mb-[10px] text-[40px]/[48px] text-left">
+          <h2 className="text-black max-w-[560px] sm:leading-[57px] font-light  mb-[10px] text-[34px]/[38px] sm:text-[40px]/[48px] text-center sm:text-left">
             <span className="max-w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               Visibility
             </span>{" "}
             in search results can truly set you apart
           </h2>
-          <p className="text-[18px] text-black w-full max-w-[570px] text-left">
+          <p className="sm:text-[18px] text-black w-full max-w-[570px] text-center sm:text-left mb-6 sm:mb-0">
             Position your company on relevant research result pages and link
             directly to your website’s booking page.
           </p>
@@ -61,12 +61,12 @@ const PartnersVisibility: React.FC = () => {
           />
         </div>
         <div className="w-full">
-          <div className="w-full max-w-[570px] text-black text-[18px] text-left mb-[30px]">
+          <div className="w-full max-w-[570px] text-black sm:text-[18px] text-center sm:text-left mb-[30px]">
             Engage your audience, enhance business growth, fortify brand
             recognition, and drive significant traffic with <br /> our dynamic
             static display ads
           </div>
-          <div className="w-full max-w-[580px] text-black text-[18px] text-left">
+          <div className="w-full max-w-[580px] text-black tsm:text-[18px] text-center sm:text-left">
             Display banners enable showcasing business imagery
             <br /> and pricing plans, grabbing attention and illustrating the
             cost-effectiveness of logistic services on product impact.

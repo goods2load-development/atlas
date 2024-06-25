@@ -27,10 +27,10 @@ export default function SubHeaderMain() {
           alt={"line"}
         />
       </div>
-      <h2 className="text-[30px]/[34px] sm:text-[40px]/[48px] text-white text-center mb-3">
+      <h2 className="text-[30px]/[34px] sm:text-[40px]/[48px] text-white text-center mb-3 sm:font-normal font-light">
         Optimize <i>efficiency</i> and <i>savings</i>
       </h2>
-      <div className="text-[16px]/[24px] sm:text-[18px]/[22px] text-white text-center mb-10">
+      <div className="text-[16px]/[24px] sm:text-[18px]/[22px] text-white text-center mb-10 sm:font-normal font-light">
         through our matchmaker platform, reducing both time
         <br /> and costs for businesses.
       </div>
