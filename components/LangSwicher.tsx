@@ -6,22 +6,23 @@ import enFlag from "@/assets/en-flag.svg";
 import esFlag from "@/assets/es-flag.svg";
 import { ChevronDown } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { useLangStore } from "@/lib/store";
 
-const LOCAL_STORAGE_KEY_LANG = "lang";
+export const LOCAL_STORAGE_KEY_LANG = "lang";
 
-enum Langs {
+export enum Langs {
   EN = "en",
   FR = "fr",
   DE = "de",
   ES = "es",
 }
 
-interface ILang {
+export interface ILang {
   label: Langs;
   icon: string;
 }
 
-const langs: ILang[] = [
+export const langs: ILang[] = [
   {
     label: Langs.EN,
     icon: enFlag,
@@ -41,45 +42,33 @@ const langs: ILang[] = [
 ];
 
 const LangSwitcher = () => {
-  const [activeLang, setActiveLang] = useState<ILang>(langs[0]);
+  const { lang, setLang, initializeLang } = useLangStore();
 
   const onChangeLang = (elem: ILang) => {
-    setActiveLang(elem);
-    localStorage.setItem(LOCAL_STORAGE_KEY_LANG, elem.label);
+    setLang(elem);
   };
 
   useEffect(() => {
-    if (localStorage.getItem(LOCAL_STORAGE_KEY_LANG)) {
-      const lang = langs.filter(
-        (elem) => elem.label === localStorage.getItem(LOCAL_STORAGE_KEY_LANG)
-      )[0];
-
-      setActiveLang(lang);
-    }
+    initializeLang();
   }, []);
 
   useEffect(() => {
-    Weglot?.switchTo(activeLang.label);
-  }, [activeLang]);
+    Weglot?.switchTo(lang.label);
+  }, [lang]);
 
   return (
-    <div key={activeLang.label}>
+    <div key={lang.label}>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger className="outline-none">
           <div className="flex gap-2 items-center">
-            <Image
-              alt="franch-flag"
-              width={16}
-              height={12}
-              src={activeLang.icon}
-            />
-            <span className="uppercase">{activeLang.label}</span>
+            <Image alt="franch-flag" width={16} height={12} src={lang.icon} />
+            <span className="uppercase">{lang.label}</span>
             <ChevronDown />
           </div>
         </DropdownMenu.Trigger>
         <DropdownMenu.Content className="bg-white rounded p-1 mt-1">
           {langs.map((elem, idx) => {
-            if (elem === activeLang) {
+            if (elem === lang) {
               return;
             }
 

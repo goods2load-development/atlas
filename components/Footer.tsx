@@ -110,9 +110,9 @@ export default function Footer() {
           </Link>
         </div>
 
-        {/* <div>
+        <div>
           <LangSwitcher />
-        </div> */}
+        </div>
         <div className="flex sm:hidden justify-center pt-[40px]">
           <Socials />
         </div>

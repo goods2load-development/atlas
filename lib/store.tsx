@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
+import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -208,5 +209,26 @@ export const useForgotPasswordStore = create((set) => ({
     }).then((userData: any) => {
       // TODO add redirect
     });
+  },
+}));
+
+interface ILangStore {
+  lang: ILang;
+  setLang: (lang: ILang) => void;
+  initializeLang: () => void;
+}
+
+export const useLangStore = create<ILangStore>((set) => ({
+  lang: langs[0],
+  setLang: (lang: ILang) => {
+    set({ lang });
+    localStorage.setItem(LOCAL_STORAGE_KEY_LANG, lang.label);
+  },
+  initializeLang: () => {
+    const savedLang = localStorage.getItem(LOCAL_STORAGE_KEY_LANG) || langs[0];
+
+    const lang = langs.find((elem) => elem.label === savedLang);
+
+    if (lang) set({ lang });
   },
 }));
