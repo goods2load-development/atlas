@@ -1,7 +1,7 @@
 export enum TabName {
-  PLANE = "Plane",
-  SHIP = "Ship",
-  TRUCK = "Truck",
+  PLANE = "plane",
+  SHIP = "ship",
+  TRUCK = "truck",
 }
 
 export enum PerformanceTabName {
