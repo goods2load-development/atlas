@@ -17,7 +17,7 @@ import Autoplay from "embla-carousel-autoplay";
 const TrustReputation = () => {
   return (
     <section className="w-full">
-      <h1 className="text-black text-center font-light text-[40px]/[48px]">
+      <h1 className="text-black text-center font-light sm:text-[40px]/[48px] text-[34px]/[38px]">
         Our{" "}
         <i className="font-normal bg-[#FEF1DF] rounded-[6px] px-[8px]">
           reputation

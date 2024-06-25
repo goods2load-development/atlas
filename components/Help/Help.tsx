@@ -15,8 +15,8 @@ export default function Help() {
 
   return (
     <>
-      <div className="flex flex-col w-full items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center mt-[-75px]">
-        <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-2 pt-[120px]">
+      <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center mt-[-75px]">
+        <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-4 sm:mb-2 sm:pt-[120px] pt-28">
           How can we <span className="italic">help</span>
           <span className="italic"> you</span>
           <span className="italic">?</span>

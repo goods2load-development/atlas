@@ -28,17 +28,17 @@ const AboutUs: FC = () => {
 
   return (
     <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px]">
-      <div className="flex flex-col w-full items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center pb-[300px]">
-        <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-2 pt-[120px]">
+      <div className="flex flex-col w-full items-center justify-center pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[300px] pb-[150px]">
+        <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-2 sm:pt-[120px]">
           About <span className="italic font-normal">us</span>
         </h1>
-        <h2 className="mb-[68px] text-[17px]/[28px] font-light">
+        <h2 className="sm:mb-[68px] text-[17px]/[25px] font-light max-w-[323px] sm:max-w-[100%]">
           We help reduce costs, increase efficiency and offer improved customer
           service
         </h2>
       </div>
 
-      <div className="flex mt-[-250px]">
+      <div className="flex sm:mt-[-250px] mt-[-120px]">
         <Tabs value={activeTab} onValueChange={onTabChange}>
           <TabsList>
             {tabs.map((tabText) => (
@@ -52,13 +52,13 @@ const AboutUs: FC = () => {
               </TabsTrigger>
             ))}
           </TabsList>
-          <TabsContent value="company" className="mt-[250px]">
+          <TabsContent value="company" className="sm:mt-[250px]">
             <CompanyContainer />
           </TabsContent>
-          <TabsContent value="trust" className="mt-[200px]">
+          <TabsContent value="trust" className="sm:mt-[200px]">
             <TrustContainer />
           </TabsContent>
-          <TabsContent className="mt-[320px]" value="media">
+          <TabsContent className="mt-[80px] sm:mt-[320px]" value="media">
             <MediaContainer />
           </TabsContent>
         </Tabs>

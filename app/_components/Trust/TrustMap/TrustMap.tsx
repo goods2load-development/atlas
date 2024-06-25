@@ -6,14 +6,14 @@ import map from "@/assets/map.svg";
 const TrustMap = () => {
   return (
     <section className="w-full flex flex-col items-center gap-[40px] py-[104px] px-5 sm:px-[72px]">
-      <h1 className="text-black text-center font-light text-[40px]/[48px]">
+      <h1 className="text-black text-center font-light sm:text-[40px]/[48px] text-[34px]/[38px]">
         The best route.{" "}
         <i className="font-normal bg-[#FEF1DF] rounded-[6px] px-[8px]">
           Always
         </i>
       </h1>
       <Image className="w-full" src={map} alt={"map"} />
-      <p className="text-black text-center px-5 sm:px-[180px] font-normal text-[18px]/[25px]">
+      <p className="text-black text-center px-5 sm:px-[180px] font-normal sm:text-[18px]/[25px] text-[15px]/[22px]">
         {`With GOODS2LOAD, the world is your oyster. Our commitment to providing
         comprehensive coverage across global routes means that your ideas are
         never constrained by geographic limitations. Whether you're envisioning

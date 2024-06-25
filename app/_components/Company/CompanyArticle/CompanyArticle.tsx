@@ -16,7 +16,7 @@ const CompanyArticle = () => {
           />
         </div>
         <div className="sm:w-1/2 flex flex-col justify-start gap-[16px]">
-          <p className="text-black font-normal text-[18px]/[25px] text-left">
+          <p className="text-black font-normal sm:text-[18px]/[25px] text-left">
             At GOODS2LOAD, we have developed a proprietary algorithm that offers
             a deep understanding of the logistics landscape. Our automated
             platform swiftly compares thousands of quotes and services from
@@ -24,7 +24,7 @@ const CompanyArticle = () => {
             presenting our clients with the most efficient and effective option
             for their desired route and preferred service type.{" "}
           </p>
-          <p className="text-black font-normal text-[18px]/[25px] text-left">
+          <p className="text-black font-normal sm:text-[18px]/[25px] text-left">
             Moreover, we take pride in our prenegotiated quotes, meaning that we
             have already undertaken the arduous task of securing the best rates
             for our clients. Our digital booking system streamlines the entire
@@ -34,7 +34,7 @@ const CompanyArticle = () => {
       </div>
       <div className="w-full sm:flex flex-row gap-[56px]">
         <div className="sm:w-1/2 flex flex-col justify-start gap-[16px]">
-          <p className="text-black font-normal text-[18px]/[25px] text-left">
+          <p className="text-black font-normal sm:text-[18px]/[25px] text-left mb-8 sm:mb-0">
             Understanding the Earth’s limited resources, logistics forwarders
             now place a premium on CO2 emission management. GOODS2LOAD is
             steadfast in charting a sustainable course for future businesses,

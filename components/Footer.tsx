@@ -117,7 +117,7 @@ export default function Footer() {
           <Socials />
         </div>
       </div>
-      <div className="color-white text-center py-[13px] font-[16px]/[24px] bg-[#ff6720]">
+      <div className="color-white text-center py-[13px] font-[16px]/[24px] bg-[#ff6720] font-light">
         GOODS2LOAD 2024 | All Rights Reserved
       </div>
     </footer>
