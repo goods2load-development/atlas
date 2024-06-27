@@ -35,6 +35,7 @@ import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
 import Divider from "@/components/Divider";
 import { getSession, signIn } from "next-auth/react";
 import { getCookie } from "react-use-cookie";
+import InputPassword from "@/components/common/InputPassword";
 interface CountriesProps {
   value: string;
   label: string;
@@ -586,12 +587,7 @@ export default function UserRegistration() {
                   <IsRequired />
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    placeholder=""
-                    type="password"
-                    {...field}
-                  />
+                  <InputPassword className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -607,12 +603,7 @@ export default function UserRegistration() {
                   <IsRequired />
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    placeholder=""
-                    type="password"
-                    {...field}
-                  />
+                  <InputPassword className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -680,7 +671,7 @@ export default function UserRegistration() {
           />
           <Button
             type="submit"
-            className="bg-orangePrimary border-2 border-orangePrimary font-medium text-[16px]/[22px] w-full"
+            className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
           >
             Continue
           </Button>
