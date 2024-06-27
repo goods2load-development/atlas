@@ -28,7 +28,7 @@ export default function LoginWrapper(props: LoginWrapperProps) {
           </div>
           <div className="min-h-[320px] sm:w-6/12">
             <img
-              className="w-full object-cover"
+              className="w-full h-full object-cover"
               src="/providerregistrationimg.png"
             />
           </div>
