@@ -86,18 +86,22 @@ export const useGoodsStore = create((set) => ({
 }));
 
 export const useRegistrationStore = create((set) => ({
-  firstStep: true,
-  setFirstStep: (value: boolean) => set(() => ({ firstStep: value })),
   registered: false,
-  postUserRegistrationData: async (data: any, license: File) => {
+  postUserRegistrationData: async (data: any) => {
     const isProvider = data.provider;
     const formData = new FormData();
-    formData.append("file", license);
+    formData.append("insuranceStatement", data.insuranceStatement);
+    formData.append("issuingAuthority", data.issuingAuthority);
+    formData.append("tradeLicenseNumber", data.tradeLicenseNumber);
     formData.append("ferry", `${!!data.ferry}`);
     formData.append("truck", `${!!data.truck}`);
     formData.append("plane", `${!!data.plane}`);
     delete data.confirmPassword;
     delete data.privacy;
+
+    delete data.insuranceStatement;
+    delete data.issuingAuthority;
+    delete data.tradeLicenseNumber;
 
     delete data.ferry;
     delete data.plane;
