@@ -31,7 +31,7 @@ const PartnersOurPartners: React.FC = () => {
               {sliderData.map((it, index) => (
                 <CarouselItem
                   key={index}
-                  className="pl-1 md:basis-1/2 lg:basis-1/4 grid items-center"
+                  className="pl-1 basis-1/4 md:basis-1/2 lg:basis-1/4 grid items-center"
                 >
                   <CardContent className="flex items-center justify-center">
                     <Image src={it.sliderImg} alt={it.alt} />

@@ -4,7 +4,7 @@ import menWithBox from "@/assets/PartnersImage/PartnersStartingFrom/menWithBox.p
 
 const PartnersStartingFrom: React.FC = () => {
   return (
-    <section className="flex w-full flex-col sm:flex-row gap-[56px] sm:pt-[104px] pt-[60px]  px-5 sm:px-[72px] items-center">
+    <section className="flex w-full flex-col sm:flex-row gap-4 sm:gap-[56px] sm:pt-[104px]  px-5 sm:px-[72px] items-center">
       <div className="sm:w-1/2 order-2 sm:oreder-1">
         <Image
           className="w-full"

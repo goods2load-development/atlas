@@ -53,7 +53,7 @@ export default function Footer() {
           className="w-32 f-accordion hidden sm:block"
         >
           <AccordionItem value="item-1" className="border-transparent">
-            <AccordionTrigger className="pt-0 pb-3 font-normal">
+            <AccordionTrigger className="pt-0 pb-8 font-normal">
               Partners
             </AccordionTrigger>
             <AccordionContent>
@@ -72,7 +72,7 @@ export default function Footer() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-        <div className="text-center sm:hidden pb-3">
+        <div className="text-center sm:hidden pb-8">
           <p className="font-medium pb-3">About us</p>
           <Link href="/about-us?company" className="block pb-3 font-light">
             Company
@@ -90,21 +90,30 @@ export default function Footer() {
           <Link href="/partners#our-partners" className="block pb-3 font-light">
             Our partners
           </Link>
-          <Link href="/career" className="block pb-3 font-light">
-            Career
-          </Link>
         </div>
         <div className="text-center sm:text-left">
-          <Link href="/help" className="block pb-4">
+          <Link href="/career" className="block pb-4 font-medium text-[17px]">
+            Career
+          </Link>
+          <Link href="/help" className="block pb-4 font-medium">
             Help centre
           </Link>
-          <Link href="/terms-of-service" className="block pb-4">
+          <Link
+            href="/terms-of-service"
+            className="block pb-4 font-medium text-[17px]"
+          >
             Terms and Conditions
           </Link>
-          <Link href="/privacy-policy" className="block pb-4">
+          <Link
+            href="/privacy-policy"
+            className="block pb-4 font-medium text-[17px]"
+          >
             Privacy Policy
           </Link>
-          <Link href="/cookie-policy" className="block pb-4">
+          <Link
+            href="/cookie-policy"
+            className="block pb-4 font-medium text-[17px]"
+          >
             Cookie Policy
           </Link>
         </div>

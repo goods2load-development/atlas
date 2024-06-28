@@ -9,7 +9,7 @@ const PartnersAudience: React.FC = () => {
       {/* <div className="flex w-full px-[72px] gap-[56px] items-center justify-center pt-[47px]  text-white text-center mb-[100px]"> */}
       <div className="sm:w-1/2">
         <div>
-          <div className="italic text-[16px] text-center sm:text-left text-black">
+          <div className="italic text-[14px] sm:text-[16px] font-light sm:font-normal text-center sm:text-left text-black">
             The power of connection
           </div>
           <div className="text-black sm:leading-[57px] font-light  mb-[30px] text-[34px]/[38px] sm:text-[40px]/[48px] text-center sm:text-left">

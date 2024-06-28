@@ -8,16 +8,16 @@ import { OpportunitiesData } from "@/app/interface/PartnersAmplify";
 
 const PartnersAmplify: React.FC = () => {
   return (
-    <section className="flex relative flex-col w-full items-end justify-center pt-[47px] bg-bgPartnersAmplify bg-cover bg-center text-white text-center pb-[100px] pt-[150px] mb-[230px] sm:pr-[100px]">
+    <section className="flex relative flex-col w-full items-end justify-center pt-[40PX] sm:pt-[47px] bg-bgPartnersAmplify bg-cover bg-center text-white text-center pb-[100px] mb-[230px] sm:pr-[100px]">
       <div className="absolute top-0 right-0 w-[1540px] h-full bg-bgPartnersAmplifyShadow bg-cover bg-center text-white text-center pb-[100px] pt-[150px] mb-[110px]" />
       <div className="absolute bottom-0 transform translate-y-[135px] sm:translate-y-[115px] sm:left-20">
         <Image src={macBookImage} alt="" />
       </div>
       <div className="sm:flex flex-col z-40">
-        <div className="text-[28px]/[32px] sm:text-[48px]/[57px] font-light sm:pt-[120px] mb-[20px] max-w-[268px] sm:max-w-[483px] text-center sm:text-left  mx-auto sm:mx-0">
+        <div className="text-[28px]/[32px] sm:text-[48px]/[57px] font-medium sm:pt-[120px] mb-[20px] max-w-[268px] sm:max-w-[483px] text-center sm:text-left  mx-auto sm:mx-0">
           Amplify your voice to reach those who matter most
         </div>
-        <h2 className="w-full sm:text-[17px]/[28px] max-w-[484px] font-light sm:text-left leading-[28px] mb-[30px] px-5 sm:px-0">
+        <h2 className="w-full sm:text-[17px]/[28px] max-w-[484px] sm:text-left leading-[28px] mb-[30px] px-5 sm:px-0">
           We’ve developed our platform to swiftly skim and analyze real-time
           company search data., empowering you to pinpoint high-demand routes
           and launch ad campaigns swiftly.

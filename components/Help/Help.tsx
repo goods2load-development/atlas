@@ -15,20 +15,21 @@ export default function Help() {
 
   return (
     <>
-      <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] bg-hero-pattern bg-cover bg-center text-white text-center mt-[-75px]">
+      <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] bg-orangePrimary sm:bg-transparent bg-partners-mobile sm:bg-hero-pattern bg-cover bg-top sm:bg-center text-white text-center mt-[-75px]">
         <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-4 sm:mb-2 sm:pt-[120px] pt-28">
           How can we <span className="italic">help</span>
           <span className="italic"> you</span>
           <span className="italic">?</span>
         </h1>
-        <h2 className="mb-[68px] text-[17px]/[28px] font-light leading-[28px]">
+        <h2 className="sm:mb-[68px] text-[17px]/[28px] font-light leading-[28px]">
           Doing business is never been so easy.
         </h2>
-        <div className="flex w-fit pb-[190px]"></div>
+        <div className="flex w-fit sm:pb-[190px] pb-[130px]"></div>
       </div>
+      <div className="w-full bg-gradient-to-b from-primaryOrange to-white relative h-[50px] sm:hidden "></div>
       <Tabs
         value={currentTab.name}
-        className="mt-[-200px] w-full"
+        className="mt-[-130px] sm:mt-[-200px] w-full"
         onValueChange={(e) => {
           const newTab = tabs.find(({ name }) => name === e);
           newTab && setCurrentTab(newTab);
@@ -41,7 +42,7 @@ export default function Help() {
               key={name}
               value={name}
               style={{ backgroundColor: "transparent", color: "white" }}
-              className={`flex items-center w-[260px] text-center italic text-[18px]/[22px] sm:text-[24px]/[31px] font-light h-[57px] hover:cursor-pointer ${currentTab.name === name ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
+              className={`flex items-center w-[260px] text-center italic capitalize text-[18px]/[22px] sm:text-[24px]/[31px] font-light h-[57px] hover:cursor-pointer ${currentTab.name === name ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
             >
               <img
                 src={icon}

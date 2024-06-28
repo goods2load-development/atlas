@@ -5,7 +5,7 @@ import { PartnerBoostingTravel } from "@/app/interface/partnerBoostingTravel";
 
 const PartnersBoostingTravel: React.FC = () => {
   return (
-    <section className="sm:flex gap-[56px] w-full justify-between pt-[47px] text-white text-center mb-[100px] px-5 sm:px-[72px]">
+    <section className="sm:flex gap-[56px] w-full justify-between pt-8 sm:pt-[47px] text-white text-center mb-[100px] px-5 sm:px-[72px]">
       <div className="w-full">
         <div className="">
           <div className="text-black max-w-[510px] sm:leading-[57px] font-light  mb-[30px] text-[34px]/[38px] sm:text-[40px]/[48px] text-center sm:text-left">
@@ -33,14 +33,18 @@ const PartnersBoostingTravel: React.FC = () => {
               key={i}
               className="sm:w-full flex sm:gap-[30px] gap-2 justify-center relative w-[45%]"
             >
-              <div className="text-primaryOrange sm:text-[28px] font-normal pt-[5px] sm:pt-0">
-                {`0${i + 1}`}
+              <div className="hidden sm:block text-primaryOrange sm:text-[28px] font-normal pt-[5px] sm:pt-0">
+                {`0${i + 1}.`}
               </div>
-              <div className="flex flex-col sgap-40px">
-                <div className="text-black sm:text-[20px] font-selium-bold mb-[20px] text-left pt-[5px]">
-                  {mainData}
+              <div className="flex flex-col gap-2 sm:gap-40px">
+                <div className="text-black text-[18px] sm:text-[20px] font-selium-bold mb-1 text-left pt-[5px]">
+                  <span className="mr-1 text-primaryOrange sm:hidden">
+                    {" "}
+                    {`0${i + 1}.`}
+                  </span>
+                  <span className="sm:text-[22px]/[28px]">{mainData}</span>
                 </div>
-                <div className="text-black  text-[14px] sm:text-[16px] text-left">
+                <div className="text-black  text-[14px] sm:text-[16px] text-left w-full">
                   {descriptionMainData}
                 </div>
               </div>

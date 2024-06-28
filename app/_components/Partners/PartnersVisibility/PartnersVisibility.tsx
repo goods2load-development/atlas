@@ -7,7 +7,7 @@ import tabImage from "@/assets/PartnersImage/PartnersVisibility/tab.png";
 
 const PartnersVisibility: React.FC = () => {
   return (
-    <section className="w-full items-center justify-center pt-[47px] px-5 sm:px-[72px] text-white text-center  mb-[50px] sm:mb-[100px]">
+    <section className="w-full items-center justify-center sm:pt-[47px] px-5 sm:px-[72px] text-white text-center  mb-[50px] sm:mb-[100px]">
       <div className="mb-[40px]">
         <div className="text-black text-[30px]/[34px] sm:text-[40px] font-normal sm:font-semibold italic">
           “Nice
@@ -17,7 +17,7 @@ const PartnersVisibility: React.FC = () => {
           </span>
           easy”
         </div>
-        <div className="text-black">is our motto</div>
+        <div className="text-black mb-6 sm:mb-0">is our motto</div>
       </div>
       <div className="grid sm:grid-cols-2 mb-[100px]">
         <div className="self-center">
