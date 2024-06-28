@@ -2,10 +2,15 @@ import { create } from "zustand";
 import { format } from "date-fns";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 
+export enum ContainerLoad {
+  FCL = "FCL",
+  LCL = "LCL",
+}
+
 interface FilterStoreProps {
   partnersSelected: string[];
-  priceMin: number;
-  priceMax: number;
+  priceMin: string | null;
+  priceMax: string | null;
   deliveryBy: "plane" | "ship" | "truck";
   fromCountry: string;
   from: string;
@@ -15,7 +20,12 @@ interface FilterStoreProps {
   arrival: string | null;
   typeOfGoods: string;
   totalKg: string | null;
+  placementOfGoods: string | null;
   pallets: string | null;
+  length: string | null;
+  width: string | null;
+  height: string | null;
+  containerLoad: ContainerLoad;
   sortBy: null | any;
   cheapest: boolean;
   fastest: boolean;
@@ -29,7 +39,6 @@ interface FilterStoreProps {
   portsArrival: string[];
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => ({
-  // search options
   deliveryBy: "plane",
   fromCountry: "",
   from: "",
@@ -39,13 +48,18 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
   arrival: null,
   typeOfGoods: "",
   totalKg: null,
+  placementOfGoods: null,
   pallets: null,
+  length: null,
+  width: null,
+  height: null,
+  containerLoad: ContainerLoad.FCL,
   // filter options
   cheapest: false,
   fastest: false,
   goGreen: false,
-  priceMin: 0,
-  priceMax: 0,
+  priceMin: null,
+  priceMax: null,
   partners: [],
   partnersSelected: [],
   portsDeparture: [],
@@ -102,48 +116,68 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       to,
       departure,
       arrival,
+      cheapest,
+      fastest,
+      goGreen,
+      priceMin,
+      priceMax,
       partnersSelected,
       portsDepartureSelected,
       portsArrivalSelected,
       totalKg,
       pallets,
+      placementOfGoods,
+      length,
+      width,
+      height,
+      containerLoad,
     } = get();
 
     postRequest({
       url: "orders/search",
       data: {
         transportation: deliveryBy,
-        // from: from ? `${fromCountry} ${from}` : undefined,
-        // to: to ? `${toCountry} ${to}` : undefined,
+        from: from ? `${fromCountry} ${from}` : undefined,
+        to: to ? `${toCountry} ${to}` : undefined,
 
-        // departure: departure,
-        // arrival: arrival,
+        departure: departure ? departure : undefined,
+        arrival: arrival ? arrival : undefined,
 
-        // logisticPartner: partnersSelected,
-        // portDeparture: portsDepartureSelected,
-        // portArrival: portsArrivalSelected,
+        logisticPartner: partnersSelected.length ? partnersSelected : undefined,
+        portDeparture: portsDepartureSelected.length
+          ? portsDepartureSelected
+          : undefined,
+        portArrival: portsArrivalSelected.length
+          ? portsArrivalSelected
+          : undefined,
 
-        // goods: "",
+        kilogram: totalKg ? totalKg : undefined,
+        pallets: pallets ? pallets : undefined,
+        placementOfGoods: placementOfGoods ? placementOfGoods : undefined,
+        size: { length: length ? length : undefined, width, height },
 
-        // kilogram: totalKg,
-        // pallets: pallets,
+        containerLoad,
         order: {
-          cheapest: false,
-          fastest: false,
-          goGreen: false,
+          cheapest: cheapest,
+          fastest: fastest,
+          goGreen: goGreen,
         },
         provider: {},
-        // price: 0,
+        price: {
+          min: priceMin ? parseInt(priceMin) : undefined,
+          max: priceMax ? parseInt(priceMax) : undefined,
+        },
         // size: "",
       },
     }).then((data: any) => {
       const products = data.data.map((item: any) => ({
-        estimatedTransit: "",
+        estimatedTransit: item.transit,
         company: {
           name: item.companyName,
         },
-        withdrow: format(item.withdrow, "mm/dd/yyyy"),
-        delivery: format(item.delivery, "mm/dd/yyyy"),
+        // withdrow: format(item.withdrow, "mm/dd/yyyy"),
+        withdrow: format(new Date(item.withdraw).toDateString(), "MM/dd/yyyy"),
+        delivery: format(new Date(item.delivery).toDateString(), "MM/dd/yyyy"),
         orderCost: item.price,
       }));
       console.log("products", products);

@@ -16,20 +16,20 @@ import Autoplay from "embla-carousel-autoplay";
 
 const TrustReputation = () => {
   return (
-    <section className="w-full flex flex-col items-center gap-[16px]">
-      <h1 className="text-black text-center font-light text-[40px]/[48px] flex">
-        Our
-        <div className="font-normal italic bg-[#FEF1DF] rounded-[6px] h-[49px] px-[8px] ml-2 flex justify-center items-center">
+    <section className="w-full">
+      <h1 className="text-black text-center font-light sm:text-[40px]/[48px] text-[34px]/[38px]">
+        Our{" "}
+        <i className="font-normal bg-[#FEF1DF] rounded-[6px] px-[8px]">
           reputation
-        </div>
+        </i>{" "}
         speaks for itself
       </h1>
 
-      <div className="w-full flex flex-row justify-evenly pt-8 pb-5">
+      <div className="w-full pt-8 pb-5">
         <Carousel
           className="w-full"
-          opts={{ loop: true }}
-          plugins={[Autoplay({ delay: 3000 })]}
+          opts={{ loop: true, duration: 3000 }}
+          plugins={[Autoplay({ delay: 0 })]}
         >
           <CarouselContent className="-ml-1 w-full max-w-full">
             {sliderData.map((it, index) => (
@@ -48,12 +48,12 @@ const TrustReputation = () => {
         </Carousel>
       </div>
 
-      <div className="w-fit text-black text-[17px]/[23px] flex flex-row gap-[10px] font-medium pb-4">
+      <div className="text-black text-[17px]/[23px] flex flex-row gap-[10px] font-medium pb-4 justify-center">
         <div>1,000+</div>
         <Image className="relative top-[-3px]" src={stars} alt={"stars"} />
         <div>reviews</div>
       </div>
-      <div className="w-fit flex flex-row gap-4 ">
+      <div className="flex flex-row gap-4 justify-center">
         <Image
           className="relative top-[-3px]"
           src={trustpilot}

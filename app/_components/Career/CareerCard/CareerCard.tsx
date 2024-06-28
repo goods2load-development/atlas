@@ -20,12 +20,12 @@ import {
 const CareerCard: React.FC<ModalCareer> = ({ pesonalInfo }) => {
   return (
     <Dialog>
-      <div className="card w-full max-w-[405px] flex flex-col justify-center items-center h-[229px] bg-lightOrange pt-[40px] rounded-[16px] pr-[40px] pl-[40px] pb-[40px] text-center mb-[50px]">
+      <div className="card w-full max-w-[405px] flex flex-col justify-center items-center h-[229px] bg-lightOrange sm:p-10 p-6 rounded-[16px] text-center sm:mb-[50px]">
         <div className="flex flex-col h-full">
-          <h2 className="text-primaryOrange text-[26px]  w-[350px] leading-[31.2px]">
+          <h2 className="text-primaryOrange  text-[24px] sm:text-[26px]  w-[350px] leading-[31.2px]">
             {pesonalInfo.challengeName}
           </h2>
-          <p className="text-black text-[18px] leading-[31.2px] mb-[30px]">
+          <p className="text-black sm:text-[18px] leading-[31.2px] mb-[30px]">
             {pesonalInfo.workingName}
           </p>
           <DialogTrigger asChild>

@@ -13,10 +13,10 @@ export default function LoginWrapper(props: LoginWrapperProps) {
     <>
       <Header />
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
-        <div className="flex">
-          <div className="w-6/12 p-16">
+        <div className="sm:flex">
+          <div className="sm:w-6/12 p-5 sm:p-16">
             <div className="text-center mb-10">
-              <span className="text-[40px]/[60px] italic font-normal">
+              <span className="sm:text-[38px]/[42px] text-[40px]/[60px] italic font-normal">
                 Welcome back!
               </span>
               <br />
@@ -26,8 +26,11 @@ export default function LoginWrapper(props: LoginWrapperProps) {
             </div>
             {children}
           </div>
-          <div className="w-6/12">
-            <img className="w-full" src="/providerregistrationimg.png" />
+          <div className="min-h-[320px] sm:w-6/12">
+            <img
+              className="w-full h-full object-cover"
+              src="/providerregistrationimg.png"
+            />
           </div>
         </div>
       </main>

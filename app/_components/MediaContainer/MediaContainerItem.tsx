@@ -16,15 +16,17 @@ const MediaContainerItem: FC<any> = ({ item }: TMedia) => {
         height={item.img.height}
         className="rounded-t-lg mb-[30px]"
       />
-      <div className="flex flex-row justify-between items-center text-black">
+      <div className="sm:flex flex-row justify-between items-center text-black">
         <a
-          className="text-[28px]/[33.6px] font-medium underline underline-offset-2 decoration-[1.5px] hover:cursor-pointer"
+          className="sm:text-[28px]/[33.6px] text-[24px]/[28px] font-medium underline underline-offset-2 decoration-[1.5px] hover:cursor-pointer"
           href={item.link}
           target="_blank"
         >
           {item.title}
         </a>
-        <h4 className="text-[20px]/[26px] font-normal">{item.date}</h4>
+        <h4 className="sm:text-[20px]/[26px] font-normal mt-2 sm:mt-0">
+          {item.date}
+        </h4>
       </div>
     </div>
   );

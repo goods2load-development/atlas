@@ -1,7 +1,13 @@
 export enum TabName {
-  PLANE = "Plane",
-  SHIP = "Ship",
-  TRUCK = "Truck",
+  PLANE = "plane",
+  SHIP = "ship",
+  TRUCK = "truck",
+}
+
+export enum PerformanceTabName {
+  EVOLUTION = "Evolution",
+  COMPETITIVENESS = "Competitiveness",
+  COMPETITIVE_PRESSURE = "Competitive pressure",
 }
 
 interface Tab {
@@ -9,4 +15,4 @@ interface Tab {
   description: string | JSX.Element;
 }
 
-export type HelpData = Record<TabName, Tab[]>
+export type HelpData = Record<TabName, Tab[]>;
