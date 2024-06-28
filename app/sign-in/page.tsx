@@ -22,6 +22,7 @@ import { getSession, signIn } from "next-auth/react";
 import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
 import Divider from "@/components/Divider";
 import { getCookie } from "react-use-cookie";
+import InputPassword from "@/components/common/InputPassword";
 
 interface Props {
   searchParams: {
@@ -44,7 +45,9 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
       password: "",
     },
   });
-  const { user, postLoginData, authenticateUser } = useUserStore((state: any) => state);
+  const { user, postLoginData, authenticateUser } = useUserStore(
+    (state: any) => state
+  );
   function onSubmit(values: z.infer<typeof formSchema>) {
     postLoginData(values);
   }
@@ -62,7 +65,7 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
         });
         if (decodedToken) {
           const { idToken }: any = decodedToken;
-          authenticateUser(idToken)
+          authenticateUser(idToken);
         }
       }
     };
@@ -117,12 +120,7 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
               <FormItem className="w-full mb-1">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    placeholder=""
-                    type="password"
-                    {...field}
-                  />
+                  <InputPassword className="bg-gray-2 border-0" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
