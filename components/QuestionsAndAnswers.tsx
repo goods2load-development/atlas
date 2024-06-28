@@ -108,7 +108,12 @@ function QuestionItem(props: any) {
 
 export default function QuestionsAndAnswers() {
   return (
-    <div className="px-5 sm:px-16 sm:py-24 py-12 flex flex-col bg-bgQuestions bg-top bg-100% bg-no-repeat">
+    <div className="px-5 sm:px-16 sm:py-24 py-12 flex flex-col md:bg-bgQuestions bg-top bg-100% bg-no-repeat relative">
+      <img
+        src="/faqmobile1.png"
+        className="absolute left-0 bottom-0 md:hidden"
+      />
+      <img src="/faqmobile2.png" className="absolute top-0 right-0 md:hidden" />
       <div className="text-center text-[34px]/[38px] sm:text-[48px]/[62px] mb-12 font-light">
         <i className="bg-orangeSecondary px-2 rounded-sm font-normal">
           Answers
