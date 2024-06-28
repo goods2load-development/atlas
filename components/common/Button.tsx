@@ -7,13 +7,15 @@ interface ButtonProps {
   children: ReactNode;
   className?: string;
   type?: "submit" | "reset";
-  onClick?: () => void;
+  onClick?: (e: any) => void;
   secondary?: boolean;
 }
 
 export default function UIButton(props: ButtonProps) {
-  const primary = "bg-orangePrimary text-white hover:bg-white hover:text-orangePrimary";
-  const secondary = "bg-white text-orangePrimary hover:bg-orangePrimary hover:text-white";
+  const primary =
+    "bg-orangePrimary text-white hover:bg-white hover:text-orangePrimary";
+  const secondary =
+    "bg-white text-orangePrimary hover:bg-orangePrimary hover:text-white";
 
   return (
     <Button

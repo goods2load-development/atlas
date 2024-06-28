@@ -1,12 +1,15 @@
 import { create } from "zustand";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
-import path from "path";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
+  countriesListLoading: false,
   citiesList: [],
+  citiesListLoading: false,
   citiesListTo: [],
+  citiesListToLoading: false,
   getCountriesList: async () => {
+    // set(() => ({ countriesListLoading: true }));
     const data = await getRequest({
       url: "https://countriesnow.space/api/v0.1/countries",
       withCredentials: false,
@@ -16,9 +19,15 @@ export const useCountriesStore = create((set) => ({
     data.data.forEach((country: any) => {
       countriesList.push({ label: country.country, value: country.country });
     });
-    set(() => ({ countriesList, citiesList }));
+    set(() => ({ countriesList, citiesList, countriesListLoading: false }));
   },
   getCitiesList: async (country: string, to?: boolean) => {
+    if (to) {
+      set(() => ({ citiesListToLoading: true }));
+    } else {
+      set(() => ({ citiesListLoading: true }));
+    }
+    set(() => ({ citiesListLoading: true }));
     const data = await postRequest({
       url: "https://countriesnow.space/api/v0.1/countries/cities",
       data: { country },
@@ -29,21 +38,23 @@ export const useCountriesStore = create((set) => ({
       citiesList.push({ label: city, value: city });
     });
     if (to) {
-      set(() => ({ citiesListTo: citiesList }));
+      set(() => ({ citiesListTo: citiesList, citiesListToLoading: false }));
     } else {
-      set(() => ({ citiesList }));
+      set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
 }));
 
 export const useGoodsStore = create((set) => ({
   goodsList: [],
+  goodsListLoading: false,
   getGoodsList: async (term: string) => {
-    console.log("term", term);
+    set(() => ({ goodsListLoading: true }));
+    // console.log("term", term);
     const base = "https://hs-code-harmonized-system.p.rapidapi.com/";
     const byCode = !!parseInt(term);
     const url = base + (byCode ? "code" : "search");
-    const data = await getRequest({
+    getRequest({
       url,
       params: { term },
       withCredentials: false,
@@ -51,39 +62,46 @@ export const useGoodsStore = create((set) => ({
         "X-RapidAPI-Key": "02c03ec749msh5ca6829a28a3028p1e6f11jsn835391f49eab",
         "X-RapidAPI-Host": "hs-code-harmonized-system.p.rapidapi.com",
       },
-    });
-    const goodsList: any[] = [];
-    if (byCode) {
-      goodsList.push({
-        label: `${data.result?.code} ${data.result?.description}`,
-        value: data.result?.code,
-      });
-    } else {
-      data.result?.forEach((item: any) => {
-        goodsList.push({
-          label: `${item.code} ${item.description}`,
-          value: item.code,
-        });
-      });
-    }
+    })
+      .then((data) => {
+        const goodsList: any[] = [];
+        if (byCode) {
+          goodsList.push({
+            label: `${data.result?.code} ${data.result?.description}`,
+            value: data.result?.code,
+          });
+        } else {
+          data.result?.forEach((item: any) => {
+            goodsList.push({
+              label: `${item.code} ${item.description}`,
+              value: item.code,
+            });
+          });
+        }
 
-    set(() => ({ goodsList }));
+        set(() => ({ goodsList }));
+      })
+      .finally(() => set(() => ({ goodsListLoading: false })));
   },
 }));
 
 export const useRegistrationStore = create((set) => ({
-  firstStep: true,
-  setFirstStep: (value: boolean) => set(() => ({ firstStep: value })),
   registered: false,
-  postUserRegistrationData: async (data: any, license: File) => {
+  postUserRegistrationData: async (data: any) => {
     const isProvider = data.provider;
     const formData = new FormData();
-    formData.append("file", license);
+    formData.append("insuranceStatement", data.insuranceStatement);
+    formData.append("issuingAuthority", data.issuingAuthority);
+    formData.append("tradeLicenseNumber", data.tradeLicenseNumber);
     formData.append("ferry", `${!!data.ferry}`);
     formData.append("truck", `${!!data.truck}`);
     formData.append("plane", `${!!data.plane}`);
     delete data.confirmPassword;
     delete data.privacy;
+
+    delete data.insuranceStatement;
+    delete data.issuingAuthority;
+    delete data.tradeLicenseNumber;
 
     delete data.ferry;
     delete data.plane;
@@ -133,6 +151,15 @@ export const useUserStore = create((set) => ({
     await getRequest({
       url: `/users/${id}`,
     }).then((userData: any) => {
+      set(() => ({ user: userData?.data }));
+    });
+  },
+  authenticateUser: async (data: any) => {
+    await postRequest({
+      url: `/oauth/authenticate`,
+      params: { access_token: data },
+    }).then((userData: any) => {
+      localStorage.setItem("id", userData.data.id);
       set(() => ({ user: userData?.data }));
     });
   },

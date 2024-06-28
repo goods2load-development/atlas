@@ -8,7 +8,9 @@ export default function LegacyData({ data }: { data: ILegacyDataBlock[] }) {
       {data.map(({ title, body }, index) => (
         <div key={index} id={generateBlockId(title)} className="grid gap-4">
           {title && (
-            <h2 className="text-[28px] font-medium font-poppins">{title}</h2>
+            <h2 className="text-[24px] sm:text-[28px] font-medium font-poppins">
+              {title}
+            </h2>
           )}
           <LegacyBlock content={body} />
         </div>

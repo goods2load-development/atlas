@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import CurrencyList from 'currency-list';
+import CurrencyList from "currency-list";
 import { useCountriesStore } from "@/lib/store";
 import { useUserStore } from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -61,7 +61,7 @@ const localization = [
 ];
 
 export default function RegionalSettingsForm(props: AddressFormProps) {
-  const currencies = CurrencyList.getAll('en_US');
+  const currencies = CurrencyList.getAll("en_US");
   const formSchema = z.object({
     language: z.string(),
     currency: z.string(),
@@ -94,12 +94,12 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
-        <div className="flex flex-row items-stretch mb-5">
+        <div className="sm:flex flex-row items-stretch mb-5">
           <FormField
             control={form.control}
             name="language"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>Language</FormLabel>
                 <FormControl>
                   <Select
@@ -126,7 +126,7 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
             control={form.control}
             name="currency"
             render={({ field }) => (
-              <FormItem className="mr-3 w-full">
+              <FormItem className="mr-3 w-full mb-5">
                 <FormLabel>Currency</FormLabel>
                 <FormControl>
                   <Select
@@ -138,10 +138,14 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
                     </SelectTrigger>
                     <SelectContent>
                       {Object.keys(currencies).map((key: any) => (
-                          <SelectItem key={`code_${currencies[key].code}`} value={(currencies[key].code as string)}>
-                            {(currencies[key].name as string)} {(currencies[key].symbol as string)}
-                          </SelectItem>
-                        ))}
+                        <SelectItem
+                          key={`code_${currencies[key].code}`}
+                          value={currencies[key].code as string}
+                        >
+                          {currencies[key].name as string}{" "}
+                          {currencies[key].symbol as string}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>
@@ -164,9 +168,9 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {countriesList.map((item: string) => (
-                        <SelectItem key={item} value={item}>
-                          {item}
+                      {countriesList.map((item: any) => (
+                        <SelectItem key={item.value} value={item.value}>
+                          {item.label}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -178,16 +182,10 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
           />
         </div>
         <div className="flex justify-end">
-          <UIButton
-            type="submit"
-            className="mr-3"
-          >
+          <UIButton type="submit" className="mr-3">
             Save
           </UIButton>
-          <UIButton
-            onClick={props.onCancel}
-            secondary
-          >
+          <UIButton onClick={props.onCancel} secondary>
             Cancel
           </UIButton>
         </div>
