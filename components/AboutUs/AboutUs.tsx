@@ -28,7 +28,7 @@ const AboutUs: FC = () => {
 
   return (
     <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px]">
-      <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[300px] pb-[150px] realtive">
+      <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[300px] pb-[150px] realtive">
         <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-2 sm:pt-[120px]">
           About <span className="italic font-normal">us</span>
         </h1>

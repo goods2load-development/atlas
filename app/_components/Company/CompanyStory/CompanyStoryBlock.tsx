@@ -13,11 +13,11 @@ const CompanyStoryBlock: FC<TItem> = ({ item }) => {
 
   return (
     <div className="max-w-[294px] flex flex-col gap-[24px] mx-auto sm:mx-0 sm:py-0">
-      <div className="bg-primaryOrange w-[96px] h-[96px] flex justify-center items-center rounded-full border-2 border-white border-solid	outline-2	outline-[#FF6720] outline mx-auto sm:ml-0">
+      <div className="bg-primaryOrange w-[96px] h-[96px] flex justify-center items-center rounded-full border-2 border-white border-solid	outline-2	outline-[#FF6720] outline mx-auto md:ml-0">
         <Image src={item.icon} alt={"icon"} width={50} height={50} />
       </div>
 
-      <div className="flex flex-col text-black">
+      <div className="flex flex-col items-center md:items-start text-black">
         <h2 className="font-normal text-[26px]/[22px] italic pb-[16px] sm:text-left text-center">
           {item.time}
         </h2>

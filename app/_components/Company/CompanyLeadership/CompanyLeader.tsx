@@ -23,12 +23,12 @@ type TItem = {
 
 const CompanyLeader: FC<TItem> = ({ item }) => {
   return (
-    <div className="sm:w-full mt-8 sm:mt-0">
+    <div className="lg:w-[243px] mt-8 sm:mt-0">
       <Dialog>
-        <div className="sm:w-full relative w-[163px] h-[163px] sm:h-fit max-h-[280px] mx-auto mb-[18px] sm:mb-0">
+        <div className="lg:w-full relative w-[163px] h-[163px] sm:h-fit lg:max-h-[280px] max-h-[200px] mx-auto mb-[18px] sm:mb-0">
           <Image src={item.img} alt={item.name} className="rounded-full" />
           <DialogTrigger asChild className="relative">
-            <Button className="flex bg-primaryOrange sm:w-[64px] sm:h-[64px] w-[56px] h-[56px] justify-center items-center rounded-full right-0 hover:cursor-pointer transform translate-x-[110px] translate-y-[-55px] sm:translate-x-[190px] sm:translate-y-[-100px]">
+            <Button className="flex bg-primaryOrange sm:w-[64px] sm:h-[64px] w-[56px] h-[56px] justify-center items-center rounded-full right-0 hover:cursor-pointer transform translate-x-[110px] translate-y-[-55px] lg:translate-x-[190px] lg:translate-y-[-100px]">
               <Image src={arrow} alt={"arrow"} />
             </Button>
           </DialogTrigger>
@@ -45,11 +45,11 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
         <DialogContent className="max-w-[360px] sm:max-w-[800px] w-full sm:w-fit bg-white">
           <DialogHeader className="rounded-[32px]">
             <div className="max-w-[360px] sm:max-w-[800px] w-fit flex flex-col rounded-[32px] bg-white modal">
-              <h1 className="text-black font-light sm:text-[48px]/[57.6px] flex flex-row items-center gap-[8px] text-center">
+              <h1 className="text-black font-light sm:text-[30px]/[34px] lg:text-[48px]/[57.6px] flex flex-row items-center gap-[8px] text-center">
                 {" "}
                 <Image src={linkedin} alt={"linkedin"} />
                 {item.name.split(" ")[0]}{" "}
-                <span className="font-normal sm:text-[48px]/[57.6px] italic">
+                <span className="font-normal sm:text-[30px]/[34px] lg:text-[48px]/[57.6px] italic">
                   {item.name.split(" ")[1]}
                 </span>{" "}
               </h1>
@@ -62,7 +62,7 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
             </div>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
-            <DialogClose asChild className="sm:block hidden">
+            <DialogClose asChild className="hidden">
               <Button
                 type="button"
                 className="top-[5%] absolute right-[3%] bg-white"

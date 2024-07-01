@@ -20,8 +20,8 @@ const PartnersVisibility: React.FC = () => {
         <div className="text-black mb-6 sm:mb-0">is our motto</div>
       </div>
       <div className="grid sm:grid-cols-2 mb-[100px]">
-        <div className="self-center">
-          <h2 className="text-black max-w-[560px] sm:leading-[57px] font-light  mb-[10px] text-[34px]/[38px] sm:text-[40px]/[48px] text-center sm:text-left">
+        <div className="self-center relative z-10">
+          <h2 className="text-black max-w-[560px] sm:max-w-[400px] lg:max-w-[560px] sm:leading-[57px] font-light  mb-[10px] text-[34px]/[38px] sm:text-[40px]/[48px] text-center sm:text-left">
             <span className="max-w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               Visibility
             </span>{" "}

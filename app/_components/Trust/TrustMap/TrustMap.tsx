@@ -13,7 +13,7 @@ const TrustMap = () => {
         </i>
       </h1>
       <Image className="w-full" src={map} alt={"map"} />
-      <p className="text-black text-center px-5 sm:px-[180px] font-normal sm:text-[18px]/[25px] text-[15px]/[22px]">
+      <p className="text-black text-center px-5 lg:px-[180px] font-normal sm:text-[18px]/[25px] text-[15px]/[22px]">
         {`With GOODS2LOAD, the world is your oyster. Our commitment to providing
         comprehensive coverage across global routes means that your ideas are
         never constrained by geographic limitations. Whether you're envisioning

@@ -8,10 +8,14 @@ import { OpportunitiesData } from "@/app/interface/PartnersAmplify";
 
 const PartnersAmplify: React.FC = () => {
   return (
-    <section className="flex relative flex-col w-full items-end justify-center pt-[40PX] sm:pt-[47px] bg-bgPartnersAmplify bg-cover bg-center text-white text-center pb-[100px] mb-[230px] sm:pr-[100px]">
+    <section className="flex relative flex-col w-full items-end justify-center pt-[40px] sm:pt-[47px] bg-bgPartnersAmplify bg-cover bg-center text-white text-center pb-[100px]  sm:pb-[270px] lg:pb-[100px] mb-[230px] sm:pr-[100px]">
       <div className="absolute top-0 right-0 w-[1540px] h-full bg-bgPartnersAmplifyShadow bg-cover bg-center text-white text-center pb-[100px] pt-[150px] mb-[110px]" />
-      <div className="absolute bottom-0 transform translate-y-[135px] sm:translate-y-[115px] sm:left-20">
-        <Image src={macBookImage} alt="" />
+      <div className="absolute bottom-0 transform translate-y-[135px] md:translate-y-[115px] sm:left-20">
+        <Image
+          className="w-[389px] h-[230px] sm:w-[489px] sm:h-[330px] md:w-[533px] md:h-[330px]  lg:w-[733px] lg:h-[430px]"
+          src={macBookImage}
+          alt=""
+        />
       </div>
       <div className="sm:flex flex-col z-40">
         <div className="text-[28px]/[32px] sm:text-[48px]/[57px] font-medium sm:pt-[120px] mb-[20px] max-w-[268px] sm:max-w-[483px] text-center sm:text-left  mx-auto sm:mx-0">

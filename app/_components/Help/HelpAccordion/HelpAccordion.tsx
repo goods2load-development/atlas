@@ -59,7 +59,7 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
                         <i className="text-[20px]/[24px] sm:text-[24px]/[28px] font-light sm:font-normal pr-4 pb-8 sm:pr-[40px] sm:pb-[30px] sm:p-0">
                           0{index + 1}
                         </i>
-                        <span className="text-black text-left pb-6 sm:pb-[30px] pr-5 max-w-[285px] sm:max-w-[100%]">
+                        <span className="text-black text-left pb-6 sm:pb-[30px] pr-5 max-w-[285px] sm:max-w-[90%]">
                           {question.toUpperCase()}
                           <div
                             className={`absolute right-8 sm:right-[50px] top-2 transform translate-x-[30px] transition duration-300 ${open ? "-scale-y-100" : ""}`}
