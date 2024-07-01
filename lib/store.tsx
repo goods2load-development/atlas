@@ -213,13 +213,13 @@ export const useForgotPasswordStore = create((set) => ({
 }));
 
 interface ILangStore {
-  lang: ILang;
+  lang: null | ILang;
   setLang: (lang: ILang) => void;
   initializeLang: () => void;
 }
 
 export const useLangStore = create<ILangStore>((set) => ({
-  lang: langs[0],
+  lang: null,
   setLang: (lang: ILang) => {
     set({ lang });
     localStorage.setItem(LOCAL_STORAGE_KEY_LANG, lang.label);

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import frFlag from "@/assets/fr-flag.svg";
 import deFlag from "@/assets/de-flag.svg";
@@ -43,18 +43,33 @@ export const langs: ILang[] = [
 
 const LangSwitcher = () => {
   const { lang, setLang, initializeLang } = useLangStore();
+  let reloadTimer = useRef<ReturnType<typeof setTimeout>>();
 
   const onChangeLang = (elem: ILang) => {
     setLang(elem);
+
+    reloadTimer.current = setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   useEffect(() => {
     initializeLang();
+
+    return () => {
+      clearTimeout(reloadTimer.current);
+    };
   }, []);
 
   useEffect(() => {
-    Weglot?.switchTo(lang.label);
+    if (lang) {
+      Weglot?.switchTo(lang.label);
+    }
   }, [lang]);
+
+  if (!lang) {
+    return;
+  }
 
   return (
     <div key={lang.label}>
