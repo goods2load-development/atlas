@@ -20,7 +20,9 @@ export default function Header({ children }: PropsWithChildren) {
   return (
     <div
       className={`${
-        !!children ? "bg-bgMainPrimary pb-48" : "bg-orangePrimary"
+        !!children
+          ? "bg-orangePrimary bg-bgMainPrimaryMobile sm:bg-bgMainPrimary pb-48 h-[640px] sm:h-auto"
+          : "bg-orangePrimary"
       } bg-cover bg-center text-white`}
     >
       <header
