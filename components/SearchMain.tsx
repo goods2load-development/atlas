@@ -31,13 +31,14 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import UIButton from "@/components/common/Button";
 import { useCountriesStore, useGoodsStore } from "@/lib/store";
-import { useFilterStore } from "@/lib/filterStore";
+import { useFilterStore, useCurrenciesStore } from "@/lib/filterStore";
 import { useRouter, redirect, useSearchParams } from "next/navigation";
 
 const placementOfGoods = [
@@ -93,6 +94,9 @@ export default function SearchMain({ main }: any) {
     getProducts,
   } = useFilterStore((state: any) => state);
   const { goodsList, goodsListLoading, getGoodsList } = useGoodsStore(
+    (state: any) => state
+  );
+  const { selectedCurrency, getCurrencies, setCurrency } = useCurrenciesStore(
     (state: any) => state
   );
   useEffect(() => {
@@ -166,27 +170,29 @@ export default function SearchMain({ main }: any) {
                     {fromCountry || "Select country"}
                   </Button>
                 </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
+                <PopoverContent side="bottom" className="w-[200px] p-0">
                   <Command>
                     <CommandInput placeholder="Search..." />
                     <CommandEmpty>Not found.</CommandEmpty>
                     {countriesListLoading ? (
                       <Loader />
                     ) : (
-                      <CommandGroup>
-                        {countriesList.map((country: any, index: number) => (
-                          <CommandItem
-                            value={`${country.value}`}
-                            key={index}
-                            onSelect={() => {
-                              setFilter({ fromCountry: country.value });
-                              getCitiesList(country.value);
-                            }}
-                          >
-                            {country.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <ScrollArea className="h-72 w-full">
+                        <CommandGroup>
+                          {countriesList.map((country: any, index: number) => (
+                            <CommandItem
+                              value={`${country.value}`}
+                              key={index}
+                              onSelect={() => {
+                                setFilter({ fromCountry: country.value });
+                                getCitiesList(country.value);
+                              }}
+                            >
+                              {country.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </ScrollArea>
                     )}
                   </Command>
                 </PopoverContent>
@@ -340,9 +346,6 @@ export default function SearchMain({ main }: any) {
                     mode="single"
                     selected={departure}
                     onSelect={(e) => setFilter({ departure: e })}
-                    disabled={(date) =>
-                      date > new Date() || date < new Date("1900-01-01")
-                    }
                     initialFocus
                   />
                 </PopoverContent>
@@ -432,10 +435,10 @@ export default function SearchMain({ main }: any) {
             />
           </div>
           <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[20%]">
-            <label className="mb-2 block">Placement of goods</label>
+            <label className="mb-2 block">Placement</label>
             <Select defaultValue="Pallets">
               <SelectTrigger className="h-[60px] sm:rounded-none border-none font-normal text-black">
-                <SelectValue placeholder="Placement of goods" />
+                <SelectValue placeholder="Placement" />
               </SelectTrigger>
               <SelectContent>
                 <SelectGroup>
@@ -449,11 +452,11 @@ export default function SearchMain({ main }: any) {
             </Select>
           </div>
           <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[20%]">
-            <label className="mb-2 block">Quantity of placement</label>
+            <label className="mb-2 block">Quantity</label>
             <Input
               className="h-[60px] sm:rounded-none border-none font-normal text-black"
               type="number"
-              placeholder="Quantity of placement"
+              placeholder="Quantity"
               onChange={(e) => setFilter({ pallets: e })}
             />
           </div>
@@ -488,6 +491,20 @@ export default function SearchMain({ main }: any) {
                 placeholder="Height"
                 type="number"
                 onChange={(e) => setFilter({ height: e })}
+              />
+            </div>
+          </div>
+          <div className="mr-[1px]">
+            <label className="mb-2 block text-center sm:text-left">
+              Goods Value
+            </label>
+            <div className="flex text-black items-center bg-white font-normal pl-[16px]">
+              {selectedCurrency.symbol}
+              <Input
+                className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
+                placeholder="Goods Value"
+                type="number"
+                onChange={(e) => setFilter({ goodsValue: e })}
               />
             </div>
           </div>
