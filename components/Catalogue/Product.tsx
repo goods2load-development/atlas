@@ -4,6 +4,7 @@ import { Button } from "../ui/button";
 import { ShipIcon } from "lucide-react";
 import LeafIcon from "@/assets/Product/LeafIcon";
 import { HTMLAttributes, PropsWithChildren } from "react";
+import SelectionPopup from "./SelectionPopup";
 
 interface Props extends IProduct {
   onBuy: () => void;
@@ -43,7 +44,7 @@ export default function Product(props: Props) {
               Withdraw
             </div>
             <div className="text-[12px]/[18px]">
-              <div className="text-[14px]/[21px]">{props.withdrow}</div>
+              <div className="text-[14px]/[21px]">{props.withdraw}</div>
               Estimated date
             </div>
           </div>
@@ -76,12 +77,11 @@ export default function Product(props: Props) {
             </div>
           )}
         </div>
-        <Button
-          onClick={props.onBuy}
-          className="rounded-none w-full sm:w-[200px]"
-        >
-          Buy now
-        </Button>
+        <SelectionPopup
+          company={props.company.name}
+          withdraw={props.withdraw}
+          delivery={props.delivery}
+        />
       </div>
     </div>
   );
