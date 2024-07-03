@@ -159,7 +159,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
         placementOfGoods: placementOfGoods ? placementOfGoods : undefined,
         // size: { length: length ? length : undefined, width, height },
 
-        // goodsValue,
+        goodsValue,
         containerLoad,
         order: {
           cheapest: cheapest,
@@ -179,8 +179,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
         company: {
           name: item.companyName,
         },
-        // withdrow: format(item.withdrow, "mm/dd/yyyy"),
-        withdrow: format(new Date(item.withdraw).toDateString(), "MM/dd/yyyy"),
+        withdraw: format(new Date(item.withdraw).toDateString(), "MM/dd/yyyy"),
         delivery: format(new Date(item.delivery).toDateString(), "MM/dd/yyyy"),
         orderCost: item.price,
       }));
@@ -208,10 +207,26 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
       url: "https://www.wixapis.com/currency_converter/v1/currencies",
       withCredentials: false,
     }).then((data) => {
-      console.log("data", data);
+      const currenciesSorted = data.currencies.sort((a: any, b: any) => {
+        if (a.code < b.code) {
+          return -1;
+        } else if (b.code > a.code) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      const currencies = currenciesSorted.filter(
+        (i: any) => i.code === "USD" || i.code === "EUR" || i.code === "GBP"
+      );
       set(() => ({
-        currencies: data.currencies,
-        selectedCurrency: data.currencies.find(
+        currencies: currencies.concat(
+          currenciesSorted.filter(
+            (i: any) =>
+              !(i.code === "USD" || i.code === "EUR" || i.code === "GBP")
+          )
+        ),
+        selectedCurrency: currenciesSorted.find(
           (item: any) => item.code === "USD"
         ),
       }));

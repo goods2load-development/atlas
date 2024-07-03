@@ -26,7 +26,7 @@ export default function Currencies() {
   }, []);
   return (
     <Select
-      defaultValue={user?.id ? user.currency : selectedCurrency.code}
+      value={user?.id ? user.currency : selectedCurrency.code}
       onValueChange={onChange}
     >
       <SelectTrigger className="h-[26px] px-[15px] border-none bg-white bg-opacity-10 rounded-[10px]">
@@ -34,10 +34,18 @@ export default function Currencies() {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          {currencies?.map((item: any) => (
-            <SelectItem key={item.code} value={item.code}>
-              {item.symbol} {item.code}
-            </SelectItem>
+          <span className="text-[12px] text-gray-500">Popular</span>
+          {currencies?.map((item: any, index: number) => (
+            <>
+              <SelectItem key={item.code} value={item.code}>
+                {item.code} - {item.symbol}
+              </SelectItem>
+              {index === 2 && (
+                <span className="block w-full border-t-2 text-[12px] text-gray-500">
+                  Others
+                </span>
+              )}
+            </>
           ))}
         </SelectGroup>
       </SelectContent>
