@@ -36,9 +36,13 @@ const lItems: lItemProps[] = [
 
 function LogisticsItem({ item }: { item: lItemProps }) {
   return (
-    <div className="sm:w-4/12 mb-5 sm:pr-[20px]">
+    <div className="sm:w-4/12 mb-5 sm:pr-[20px] sm:min-w-[400px]">
       <div className="bg-gradient-to-br from-gradFrom to-gradTo px-[30px] py-[20px] rounded-sm mb-[30px]">
-        <img src={item.imageSrc} alt={item.title} className="shadow-lg" />
+        <img
+          src={item.imageSrc}
+          alt={item.title}
+          className="shadow-lg w-full"
+        />
       </div>
       <div className="text-[24px]/[28px] font-medium mb-[10px]">
         {item.title}
@@ -69,7 +73,7 @@ export default function LogisticInsights() {
       <div className="font-light text-[16px]/[20px] sm:text-[18px]/[22px] py-3 text-center sm:text-left">
         stay ahead with our blog.
       </div>
-      <div className="sm:flex space-between mt-5">
+      <div className="sm:flex flex-wrap justify-center space-between mt-5">
         {lItems.map((item, index) => (
           <LogisticsItem item={item} key={`${item.title}-${index}`} />
         ))}

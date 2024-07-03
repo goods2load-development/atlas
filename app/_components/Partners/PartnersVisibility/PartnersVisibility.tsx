@@ -7,7 +7,7 @@ import tabImage from "@/assets/PartnersImage/PartnersVisibility/tab.png";
 
 const PartnersVisibility: React.FC = () => {
   return (
-    <section className="w-full items-center justify-center pt-[47px] px-5 sm:px-[72px] text-white text-center  mb-[50px] sm:mb-[100px]">
+    <section className="w-full items-center justify-center sm:pt-[47px] px-5 sm:px-[72px] text-white text-center  mb-[50px] sm:mb-[100px]">
       <div className="mb-[40px]">
         <div className="text-black text-[30px]/[34px] sm:text-[40px] font-normal sm:font-semibold italic">
           “Nice
@@ -17,11 +17,11 @@ const PartnersVisibility: React.FC = () => {
           </span>
           easy”
         </div>
-        <div className="text-black">is our motto</div>
+        <div className="text-black mb-6 sm:mb-0">is our motto</div>
       </div>
       <div className="grid sm:grid-cols-2 mb-[100px]">
-        <div className="self-center">
-          <h2 className="text-black max-w-[560px] sm:leading-[57px] font-light  mb-[10px] text-[34px]/[38px] sm:text-[40px]/[48px] text-center sm:text-left">
+        <div className="self-center relative z-10">
+          <h2 className="text-black max-w-[560px] md:max-w-[400px] lg:max-w-[560px] md:leading-[57px] font-light  mb-[10px] text-[34px]/[38px] md:text-[40px]/[48px] text-center sm:text-left">
             <span className="max-w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               Visibility
             </span>{" "}

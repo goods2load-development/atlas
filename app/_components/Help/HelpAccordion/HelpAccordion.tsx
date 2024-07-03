@@ -23,7 +23,7 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
   );
 
   return (
-    <div className="w-full py-10 pb-[104px] px-5 max-w-[884px] flex flex-col justify-center items-center sm:mt-52 mt-40">
+    <div className="w-full sm:py-10 pb-[104px] px-5 max-w-[884px] flex flex-col justify-center items-center sm:mt-52 mt-40">
       <div className="w-full max-w-[1440px] flex justify-center items-center flex-col">
         <div className="text-center text-black text-[34px]/[38px] sm:text-[48px]/[76px] mb-[40px]">
           <i className="bg-allTittleColor px-[5px]">Answers</i>
@@ -56,10 +56,10 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
                       }
                     >
                       <div className="sm:text-[18px]/[28px] font-normal flex relative items-center">
-                        <i className="sm:text-[24px]/[28px] pr-4 sm:pr-[40px] pb-[30px] sm:p-0">
+                        <i className="text-[20px]/[24px] sm:text-[24px]/[28px] font-light sm:font-normal pr-4 pb-8 sm:pr-[40px] sm:pb-[30px] sm:p-0">
                           0{index + 1}
                         </i>
-                        <span className="text-black text-left pb-[30px]  pr-5 max-w-[285px] sm:max-w-[100%]">
+                        <span className="text-black text-left pb-6 sm:pb-[30px] pr-5 max-w-[285px] sm:max-w-[90%]">
                           {question.toUpperCase()}
                           <div
                             className={`absolute right-8 sm:right-[50px] top-2 transform translate-x-[30px] transition duration-300 ${open ? "-scale-y-100" : ""}`}
@@ -69,7 +69,7 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
                         </span>
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="text-black text-left pl-[60px]">
+                    <AccordionContent className="text-black text-left sm:pl-[60px] pl-8 text-[15px]/[22px] font-light sm:text-[16px]/[24px]">
                       {description}
                     </AccordionContent>
                   </AccordionItem>

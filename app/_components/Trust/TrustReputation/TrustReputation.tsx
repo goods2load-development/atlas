@@ -16,7 +16,7 @@ import Autoplay from "embla-carousel-autoplay";
 
 const TrustReputation = () => {
   return (
-    <section className="w-full">
+    <section className="w-full lg:mt-[84px]">
       <h1 className="text-black text-center font-light sm:text-[40px]/[48px] text-[34px]/[38px]">
         Our{" "}
         <i className="font-normal bg-[#FEF1DF] rounded-[6px] px-[8px]">
@@ -35,11 +35,15 @@ const TrustReputation = () => {
             {sliderData.map((it, index) => (
               <CarouselItem
                 key={index}
-                className="pl-1 md:basis-1/2 lg:basis-1/4 grid items-center"
+                className="pl-1 basis-1/3 md:basis-1/2 lg:basis-1/4 grid items-center"
               >
                 <div className="p-1">
-                  <CardContent className="flex items-center justify-center p-6">
-                    <Image src={it.sliderImg} alt={it.alt} />
+                  <CardContent className="flex items-center justify-center sm:p-6 h-10">
+                    <Image
+                      src={it.sliderImg}
+                      alt={it.alt}
+                      className="scale-[1.2]"
+                    />
                   </CardContent>
                 </div>
               </CarouselItem>

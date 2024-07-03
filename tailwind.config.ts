@@ -80,13 +80,18 @@ const config = {
         bgPartnersAmplify:
           "url('../assets/PartnersImage/PartnersAmplify/partnersAmplifyBg.png')",
         bgMainPrimary: "url('../public/bgmain.png')",
+        bgMainPrimaryMobile: "url('../public/homebgmobile.png')",
         bgFooter: "url(../public/footerbg.png)",
         bgOptimize: "url(../public/optimizebg.jpg)",
         bgLogistics: "url(../public/logisticbg.png)",
         bgQuestions: "url(../public/accordionbg.png)",
         bgCareer: "url(../assets/careerBg.png)",
+        "career-mobile": "url(../assets/careerBg-mobile.jpg)",
         "hero-pattern": "url('../assets/hero-pattern.svg')",
         "divide-pattern": "url('../assets/divide-pattern.svg')",
+        "divide-pattern-mobile": "url('../assets/divide-pattern.jpg')",
+        "hero-pattern-mobile": "url('../assets/hero-pattern-mobile.png')",
+        "partners-mobile": "url('../assets/bg-partners-mobile.png')",
       },
       backgroundSize: {
         "100%": "100%",

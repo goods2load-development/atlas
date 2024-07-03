@@ -4,7 +4,7 @@ import Image from "next/image";
 
 const CompanyLocation = () => {
   return (
-    <section className="w-full sm:flex flex-row gap-[56px] py-[104px] px-5 sm:px-[72px]">
+    <section className="w-full flex flex-col sm:flex-row gap-[56px] py-20 sm:py-[104px] px-5 sm:px-[72px] ">
       <div className="sm:w-1/2 rounded-lg overflow-hidden grid items-center order-2">
         <Image className="w-full rounded-lg" src={location} alt={"location"} />
       </div>
@@ -18,7 +18,7 @@ const CompanyLocation = () => {
         <p className="text-[20px]/[28px] font-bold uppercase text-black sm:text-left text-center">
           Goods2load FZ-LLC
         </p>
-        <p className="sm:max-w-[72%] text-black font-normal sm:text-[18px]/[25px] mt-[8px] text-center sm:text-left mx-auto sm:ml-0">
+        <p className="sm:max-w-[72%] text-black font-normal lg:text-[18px]/[25px] mt-[8px] text-center sm:text-left mx-auto sm:ml-0">
           LICENCE NO 47010212 ADDRESS BIZ00921 Compass Buil- ding, Al Shohada
           Road, AL Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab
           Emirates
