@@ -21,7 +21,7 @@ const CareerCard: React.FC<ModalCareer> = ({ pesonalInfo }) => {
   return (
     <Dialog>
       <div className="card w-full max-w-[405px] flex flex-col justify-center items-center h-[229px] bg-lightOrange sm:p-10 p-6 rounded-[16px] text-center sm:mb-[50px]">
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col sm:h-full">
           <h2 className="text-primaryOrange  text-[24px] sm:text-[26px]  w-[350px] leading-[31.2px]">
             {pesonalInfo.challengeName}
           </h2>
@@ -53,11 +53,13 @@ const Popup: FC<IPopup> = ({ leader }) => {
   }
 
   return (
-    <DialogContent className="max-w-[1025px]">
-      <div className="w-full fixed inset-0 bg-[rgba(0,0,0,0.2)] flex flex-col justify-center items-center pb-[50px] pt-[40px]">
-        <div className="max-w-[1000px] max-h-[800px] w-fit p-10 flex flex-col rounded-[32px] bg-white relative ">
-          <h1 className="text-primaryOrange font-light   items-center gap-[8px] mb-[10px]">
-            <span className="font-normal text-[28px]">{leader.modalName}</span>{" "}
+    <DialogContent className="max-w-[1025px] sm:h-[620px] h-[100%] text-transparent">
+      <div className="w-full fixed h-full inset-0 bg-[rgba(0,0,0,0.2)] flex flex-col justify-center items-center rounded-[32px]">
+        <div className="z-10 max-w-[1035px] h-[100%] sm:h-[750px] overflow-y-scroll sm:max-h-[800px] w-fit p-10 flex flex-col sm:rounded-[32px] bg-white relative text-black">
+          <h1 className="text-primaryOrange font-light  items-center gap-[8px] mb-[10px]">
+            <span className="font-normal text-[20px] sm:text-[28px]">
+              {leader.modalName}
+            </span>{" "}
           </h1>
           <p className="mb-[20px]">{leader.description}</p>
           <div className="w-fit max-w-[800px] justify-center">

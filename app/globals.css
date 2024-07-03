@@ -185,6 +185,14 @@ body {
     width: 50%;
   }
 }
+
+@media (max-width: 640px) {
+  .decorative-link:hover::before,
+  .decorative-link:hover::after {
+    width: 100%;
+  }
+}
+
 /* .lucide{
   display: none !important;
 } */
@@ -258,4 +266,3 @@ a:hover {
   z-index: 1;
   transition: opacity 0.9s;
 }
-
