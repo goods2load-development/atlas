@@ -10,6 +10,7 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { useUserStore } from "@/lib/store";
+import LangSwitcher from "./LangSwicher";
 
 export default function Header({ children }: PropsWithChildren) {
   const { user, getUser } = useUserStore((state: any) => state);
@@ -20,7 +21,9 @@ export default function Header({ children }: PropsWithChildren) {
   return (
     <div
       className={`${
-        !!children ? "bg-bgMainPrimary pb-48" : "bg-orangePrimary"
+        !!children
+          ? "bg-orangePrimary bg-bgMainPrimaryMobile sm:bg-bgMainPrimary pb-48 h-[640px] sm:h-auto"
+          : "bg-orangePrimary"
       } bg-cover bg-center text-white`}
     >
       <header
@@ -57,7 +60,10 @@ export default function Header({ children }: PropsWithChildren) {
             <NavigationMenuItem>
               <Link href="/registration">Sign up</Link>
             </NavigationMenuItem>
-            <NavigationMenuItem>{/* <Localization /> */}</NavigationMenuItem>
+
+            <NavigationMenuItem>
+              <LangSwitcher />
+            </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
       </header>

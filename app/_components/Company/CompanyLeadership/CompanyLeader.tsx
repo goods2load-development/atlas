@@ -42,7 +42,7 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
           </p>
         </div>
 
-        <DialogContent className="max-w-[360px] sm:max-w-[800px] w-full sm:w-fit bg-white">
+        <DialogContent className="max-w-[800px] w-fit bg-white text-transparent">
           <DialogHeader className="rounded-[32px]">
             <div className="max-w-[360px] sm:max-w-[800px] w-fit flex flex-col rounded-[32px] bg-white modal">
               <h1 className="text-black font-light sm:text-[30px]/[34px] lg:text-[48px]/[57.6px] flex flex-row items-center gap-[8px] text-center">
@@ -56,9 +56,9 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
               <p className="text-primaryOrange sm:text-[18px]/[23.4px] font-normal pb-6">
                 {item.position}
               </p>
-              <p className="text-black text-[14px]/[16px] sm:text-[18px]/[24px] font-normal max-w-[320px] sm:max-w-full">
+              <div className="text-black text-[18px]/[24px] font-normal max-w-[961px]">
                 {item.info}
-              </p>
+              </div>
             </div>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">

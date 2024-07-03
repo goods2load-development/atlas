@@ -80,6 +80,7 @@ const config = {
         bgPartnersAmplify:
           "url('../assets/PartnersImage/PartnersAmplify/partnersAmplifyBg.png')",
         bgMainPrimary: "url('../public/bgmain.png')",
+        bgMainPrimaryMobile: "url('../public/homebgmobile.png')",
         bgFooter: "url(../public/footerbg.png)",
         bgOptimize: "url(../public/optimizebg.jpg)",
         bgLogistics: "url(../public/logisticbg.png)",

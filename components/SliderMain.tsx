@@ -82,7 +82,7 @@ export default function SliderMain() {
         </div>
       </div>
       <img src="/slide1.png" className="w-full relative z-0" />
-      <div className="absolute top-0 left-0 z-10 sm:w-6/12 min-w-[100%] h-[100%] px-5 sm:px-16 flex flex-wrap content-center">
+      <div className="absolute top-0 left-0 z-10 w-full lg:w-6/12 h-[100%] px-5 sm:px-16 flex flex-wrap content-center">
         <div>
           <div className="italic text-[30px]/[34px] sm:text-[40px]/[48px]">
             Expand Your Reach:
@@ -100,7 +100,7 @@ export default function SliderMain() {
           </Link>
         </div>
       </div>
-      <div className="embla__controls relative bottom-[-240px] sm:bottom-[60px] z-10 flex flex-col">
+      <div className="embla__controls absolute bottom-[60px] left-[50%] translate-x-[-50%] z-10 flex flex-col">
         <div className="embla__dots self-center">
           {scrollSnaps.map((_, index) => (
             <DotButton
