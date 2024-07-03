@@ -12,24 +12,6 @@ import Socials from "@/components/Socials";
 import LangSwitcher from "./LangSwicher";
 
 export default function Footer() {
-  useEffect(() => {
-    fetchData().then((data) => console.log(data));
-  }, []);
-
-  const fetchData = async () => {
-    try {
-      const response = await fetch("http://34.118.123.231:8000/api/careers");
-
-      if (!response.ok) {
-        throw new Error("123");
-      }
-
-      console.log(response);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <footer className="text-white min-h-[244px] pt-[56px] bg-bgFooter bg-cover bg-center">
       <div className="lg:flex justify-between px-16 block max-w-[1296px] mx-auto">
