@@ -5,12 +5,14 @@ import CompanyArticle from "@/app/_components/Company/CompanyArticle/CompanyArti
 import CompanyLeadership from "@/app/_components/Company/CompanyLeadership/CompanyLeadership";
 import CompanyOurStory from "@/app/_components/Company/CompanyOurStory/CompanyOurStory";
 import CompanyLocation from "@/app/_components/Company/CompanyLocation/CompanyLocation";
+import CompanyStoryMobileSlider from "../CompanyStory/MobileSlider/CompanyStoryMobileSlider";
 
 const CompanyContainer = () => {
   return (
     <div className="w-full top-[600px] inset-0 flex flex-col items-center mt-80px">
       <CompanyMainInfo />
       <CompanyStory />
+      <CompanyStoryMobileSlider />
       <CompanyArticle />
       <CompanyLeadership />
       <CompanyOurStory />
