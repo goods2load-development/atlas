@@ -12,6 +12,9 @@ import {
 import { useUserStore } from "@/lib/store";
 import LangSwitcher from "./LangSwicher";
 
+import UserHeader from "./Header/UserHeader";
+import Currencies from "./Currencies";
+
 export default function Header({ children }: PropsWithChildren) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [open, setOpen] = useState(false);
@@ -50,21 +53,27 @@ export default function Header({ children }: PropsWithChildren) {
         <NavigationMenu
           className={`${!open && "hidden"} sm:block absolute sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm p-5 bg-orangePrimary sm:bg-transparent text-white`}
         >
-          <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
-            <NavigationMenuItem>
-              <Link href="/help">Help</Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/sign-in">Log in</Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Link href="/registration">Sign up</Link>
-            </NavigationMenuItem>
-
-            <NavigationMenuItem>
-              <LangSwitcher />
-            </NavigationMenuItem>
-          </NavigationMenuList>
+          {user?.id ? (
+            <UserHeader />
+          ) : (
+            <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
+              <NavigationMenuItem>
+                <Link href="/help">Help</Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Currencies />
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link href="/sign-in">Log in</Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <Link href="/registration">Sign up</Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <LangSwitcher />
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          )}
         </NavigationMenu>
       </header>
       {children}

@@ -25,6 +25,7 @@ interface FilterStoreProps {
   length: string | null;
   width: string | null;
   height: string | null;
+  goodsValue: string | null;
   containerLoad: ContainerLoad;
   sortBy: null | any;
   cheapest: boolean;
@@ -53,6 +54,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
   length: null,
   width: null,
   height: null,
+  goodsValue: null,
   containerLoad: ContainerLoad.FCL,
   // filter options
   cheapest: false,
@@ -130,6 +132,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       length,
       width,
       height,
+      goodsValue,
       containerLoad,
     } = get();
 
@@ -154,8 +157,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
         kilogram: totalKg ? totalKg : undefined,
         pallets: pallets ? pallets : undefined,
         placementOfGoods: placementOfGoods ? placementOfGoods : undefined,
-        size: { length: length ? length : undefined, width, height },
+        // size: { length: length ? length : undefined, width, height },
 
+        goodsValue,
         containerLoad,
         order: {
           cheapest: cheapest,
@@ -170,18 +174,62 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
         // size: "",
       },
     }).then((data: any) => {
-      const products = data.data.map((item: any) => ({
+      const products = data.partners.data.map((item: any) => ({
         estimatedTransit: item.transit,
         company: {
           name: item.companyName,
         },
-        // withdrow: format(item.withdrow, "mm/dd/yyyy"),
-        withdrow: format(new Date(item.withdraw).toDateString(), "MM/dd/yyyy"),
+        withdraw: format(new Date(item.withdraw).toDateString(), "MM/dd/yyyy"),
         delivery: format(new Date(item.delivery).toDateString(), "MM/dd/yyyy"),
         orderCost: item.price,
       }));
       console.log("products", products);
       set(() => ({ products }));
+    });
+  },
+}));
+
+interface CurrenciesStoreProps {
+  selectedCurrency: Object;
+  currencies: any[];
+  getCurrencies: () => void;
+}
+
+export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
+  selectedCurrency: {},
+  currencies: [],
+  setCurrency: (selectedCurrency: string) =>
+    set(() => ({
+      selectedCurrency,
+    })),
+  getCurrencies: async () => {
+    await getRequest({
+      url: "https://www.wixapis.com/currency_converter/v1/currencies",
+      withCredentials: false,
+    }).then((data) => {
+      const currenciesSorted = data.currencies.sort((a: any, b: any) => {
+        if (a.code < b.code) {
+          return -1;
+        } else if (b.code > a.code) {
+          return 1;
+        } else {
+          return 0;
+        }
+      });
+      const currencies = currenciesSorted.filter(
+        (i: any) => i.code === "USD" || i.code === "EUR" || i.code === "GBP"
+      );
+      set(() => ({
+        currencies: currencies.concat(
+          currenciesSorted.filter(
+            (i: any) =>
+              !(i.code === "USD" || i.code === "EUR" || i.code === "GBP")
+          )
+        ),
+        selectedCurrency: currenciesSorted.find(
+          (item: any) => item.code === "USD"
+        ),
+      }));
     });
   },
 }));
