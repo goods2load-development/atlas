@@ -56,7 +56,7 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
               <p className="text-primaryOrange sm:text-[18px]/[23.4px] font-normal pb-6">
                 {item.position}
               </p>
-              <p className="text-black text-[14px]/[16px] sm:text-[18px]/[24px] font-normal max-w-[320px] sm:max-w-[auto]">
+              <p className="text-black text-[14px]/[16px] sm:text-[18px]/[24px] font-normal max-w-[320px] sm:max-w-full">
                 {item.info}
               </p>
             </div>

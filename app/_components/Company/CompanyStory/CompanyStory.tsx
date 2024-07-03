@@ -5,6 +5,14 @@ import { storyBlock } from "./CompanyStoryData";
 import CompanyStoryBlock from "@/app/_components/Company/CompanyStory/CompanyStoryBlock";
 import line from "@/assets/line-dashed.svg";
 
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+
+import Autoplay from "embla-carousel-autoplay";
+
 export interface IBlock {
   icon: string | StaticImageData;
   time: string;
@@ -22,24 +30,31 @@ const CompanyStory = () => {
             story
           </div>
         </h1>
-        <p className="max-w-[830px] font-normal sm:text-[18px]/[25px] sm:text-left text-center">
+        <p className="max-w-[830px] font-normal lg:text-[18px]/[25px] sm:text-left text-center">
           Thanks to constant growth and development, we are rapidly expanding
           our market presence and providing our customers with the highest
           quality service
         </p>
       </div>
-      <div className="hidden sm:flex flex-row flex-wrap gap-[40px] justify-center relative px-5 md:px-[72px]">
-        <div className="sm:block absolute inset-0 top-[47px] h-fit z-[-1] ml-[-5%] overflow-hidden flex flex-row gap-1 right-0 left-0">
-          <Image
-            className="w-full animate-infinite-scroll"
-            src={line}
-            alt={"line"}
-          />
-          <Image
-            className="w-full animate-infinite-scroll"
-            src={line}
-            alt={"line"}
-          />
+      <div className="hidden xl:flex flex-row flex-wrap gap-[40px] justify-center relative px-5 md:px-[72px] overflow-x-hidden">
+        <div className="sm:block absolute inset-0 top-[53px] h-fit z-[-1] scale-[1.5] overflow-hidden flex flex-row gap-1 right-0 left-0 w-full">
+          <Carousel
+            className="w-full flex items-center overflow-hidden"
+            opts={{ loop: true, duration: 10000 }}
+            plugins={[Autoplay({ delay: 0 })]}
+          >
+            <CarouselContent className="-pl-1 flex items-center">
+              <CarouselItem className="pl-1 basis-1/2 lg:basis-1/2 grid items-center ">
+                <Image height={200} src={line} alt={"line"} />
+              </CarouselItem>
+              <CarouselItem className="pl-1 basis-1/2 lg:basis-1/2 grid items-center">
+                <Image className="" src={line} alt={"line"} />
+              </CarouselItem>
+              <CarouselItem className="pl-1 basis-1/2 lg:basis-1/2 grid items-center">
+                <Image className="" src={line} alt={"line"} />
+              </CarouselItem>
+            </CarouselContent>
+          </Carousel>
         </div>
         {storyBlock.map((item: IBlock) => (
           <CompanyStoryBlock key={item.time} item={item} />

@@ -18,7 +18,7 @@ const CompanyLocation = () => {
         <p className="text-[20px]/[28px] font-bold uppercase text-black sm:text-left text-center">
           Goods2load FZ-LLC
         </p>
-        <p className="sm:max-w-[72%] text-black font-normal sm:text-[18px]/[25px] mt-[8px] text-center sm:text-left mx-auto sm:ml-0">
+        <p className="sm:max-w-[72%] text-black font-normal lg:text-[18px]/[25px] mt-[8px] text-center sm:text-left mx-auto sm:ml-0">
           LICENCE NO 47010212 ADDRESS BIZ00921 Compass Buil- ding, Al Shohada
           Road, AL Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab
           Emirates

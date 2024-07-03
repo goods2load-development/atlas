@@ -19,7 +19,7 @@ const CompanyLeadership = () => {
         <h1 className="bg-[#FEF1DF] sm:text-[48px]/[57.6px] text-[34px]/[38px]  font-light text-black w-fit rounded-[6px] md:text-left text-center mx-auto sm:ml-0">
           Leadership
         </h1>
-        <p className="text-black font-normal text-[17px] sm:text-[18px]/[23.4px] sm:text-left text-center">
+        <p className="text-black font-normal text-[17px] lg:text-[18px]/[23.4px] sm:text-left text-center">
           A group of talented professionals who combine their knowledge and
           experience to achieve common goals and meet the needs of our clients
         </p>

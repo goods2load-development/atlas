@@ -17,12 +17,16 @@ const useDotButton = (emblaApi: any, countItems: number) => {
   const onNextItem = () => {
     if (countItems > selectedIndex) {
       setSelectedIndex(selectedIndex + 1);
+    } else {
+      setSelectedIndex(0);
     }
   };
 
   const onPrevItem = () => {
     if (selectedIndex > 0) {
       setSelectedIndex(selectedIndex - 1);
+    } else {
+      setSelectedIndex(countItems);
     }
   };
 
@@ -58,7 +62,9 @@ import { storyBlock } from "../CompanyStoryData";
 import CompanyStoryBlock from "../CompanyStoryBlock";
 
 export default function CompanyStoryMobileSlider() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({});
+  const [emblaRef, emblaApi] = useEmblaCarousel({
+    loop: true,
+  });
   const {
     selectedIndex,
     scrollSnaps,

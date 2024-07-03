@@ -6,7 +6,7 @@ const CompanyOurStory = () => {
       <h1 className="text-center font-normal text-[34px]/[38px] sm:text-[48px]/[57.6px] italic">
         Our <span className="font-light not-italic">story</span>
       </h1>
-      <p className="text-center font-normal text-[17px]/[25px] sm:text-[18px]/[25px] sm:max-w-[774px]">
+      <p className="text-center font-normal text-[17px]/[25px] lg:text-[18px]/[25px] sm:max-w-[774px]">
         Our vision is a future where businesses flourish through seamless
         collaboration, innovative solutions, and a united community. With our
         commitment to excellence, cutting-edge technology, and trusted
