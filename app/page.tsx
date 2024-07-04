@@ -12,7 +12,7 @@ export default function Home() {
   return (
     <>
       <Header>
-        <h1 className="pt-[32px] sm:pt-16 pb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1115px] text-center sm:text-left px-5 sm:px-16">
+        <h1 className="pt-[32px] sm:pt-16 pb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1265px] text-center sm:text-left px-5 sm:px-16">
           Unlock countless <i className="font-normal">high-quality</i> shipping
           options with <i className="font-normal">just one click</i>
         </h1>
