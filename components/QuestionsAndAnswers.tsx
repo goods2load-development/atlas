@@ -99,7 +99,7 @@ function QuestionItem(props: any) {
           <span className="text-black">{props.title}</span>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="pl-5 sm:pl-20 text-[18px]/[24px] font-light">
+      <AccordionContent className="pl-5 sm:pl-20 text-[18px]/[24px] font-light max-w-[720px]">
         {props.content}
       </AccordionContent>
     </AccordionItem>
