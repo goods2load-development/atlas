@@ -9,6 +9,7 @@ interface ButtonProps {
   type?: "submit" | "reset";
   onClick?: (e: any) => void;
   secondary?: boolean;
+  disabled?: boolean;
 }
 
 export default function UIButton(props: ButtonProps) {
@@ -22,6 +23,7 @@ export default function UIButton(props: ButtonProps) {
       type={props.type || "button"}
       className={`text-[16px]/[22px] font-medium border border-orangePrimary ${props.secondary ? secondary : primary} ${props.className}`}
       onClick={props.onClick}
+      disabled={props.disabled}
     >
       {props.children}
     </Button>

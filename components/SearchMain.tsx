@@ -21,7 +21,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -38,8 +37,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import UIButton from "@/components/common/Button";
 import { useCountriesStore, useGoodsStore } from "@/lib/store";
-import { useFilterStore, useCurrenciesStore } from "@/lib/filterStore";
-import { useRouter, redirect, useSearchParams } from "next/navigation";
+import {
+  useFilterStore,
+  useCurrenciesStore,
+  DeliveryBy,
+} from "@/lib/filterStore";
+import { useRouter } from "next/navigation";
 
 const placementOfGoods = [
   "Pallets",
@@ -52,24 +55,106 @@ const placementOfGoods = [
   "Other",
 ];
 
-function CustomRadioGroupItem({ value, imageNumber, main }: any) {
+interface IncotermsItem {
+  name: string;
+  description: string;
+}
+
+type Incoterms = {
+  [key in DeliveryBy]: IncotermsItem[];
+};
+
+const incotermsList: Incoterms = {
+  plane: [
+    { name: "DDP", description: "Delivered Duty Paid" },
+    { name: "DPU", description: "Delivered at Place Unloaded" },
+    { name: "DAP", description: "Delivered At Place" },
+    { name: "DDU", description: "Delivered Duty Unpaid" },
+    { name: "CPT", description: "Carriage Paid To" },
+    { name: "CIP", description: "Carriage and Insurance Paid to" },
+    { name: "EXW", description: "Ex Works" },
+    { name: "FCA", description: "Free Carrier" },
+  ],
+  ferry: [
+    { name: "CFR", description: "Cost and Freight" },
+    { name: "CIF", description: "Cost, Insurance and Freight" },
+    { name: "CPT", description: "Carriage Paid To" },
+    { name: "CIP", description: "Carriage and Insurance Paid" },
+    { name: "FOB", description: "Free on Board" },
+    { name: "FCA", description: "Free Carrier" },
+  ],
+  truck: [
+    { name: "FCL", description: "Full Container Load" },
+    { name: "LCL", description: "Less Than Container Load" },
+  ],
+};
+
+function CustomRadioGroupItem({
+  value,
+  imageNumber,
+}: {
+  value: DeliveryBy;
+  imageNumber: number;
+}) {
   return (
     <>
       <RadioGroupItem value={value} id={value} className="hidden" />
       <Label htmlFor={value}>
         <Image
           src={`/filtericon${imageNumber}.png`}
-          alt="plane"
+          alt={value}
           width={58}
           height={58}
-          className={main ? "cursor-pointer" : "cursor-pointer"}
+          className="cursor-pointer"
         />
       </Label>
     </>
   );
 }
 
-export default function SearchMain({ main }: any) {
+function ToolTipComponent({
+  text,
+  children,
+}: {
+  text: string;
+  children?: any;
+}) {
+  return (
+    <TooltipProvider>
+      <Tooltip>
+        <TooltipTrigger>
+          {children ? (
+            children
+          ) : (
+            <p className="rounded-full border-[1px] w-[20px] h-[20px] border-[#FFC1A2] text-[#FFC1A2] mr-[10px]">
+              i
+            </p>
+          )}
+        </TooltipTrigger>
+        <TooltipContent
+          side={!!children ? "top" : "right"}
+          className="text-[14px]/[18px] font-normal bg-[#FEF1DF] rounded-[16px] p-[16px_24px] overflow-visible relative"
+        >
+          {!children && (
+            <div
+              className="absolute top-[50%] right-[100%] mt-[-10px]"
+              style={{
+                width: 0,
+                height: 0,
+                borderTop: "10px solid transparent",
+                borderBottom: "10px solid transparent",
+                borderRight: "10px solid #FEF1DF  ",
+              }}
+            />
+          )}
+          {text}
+        </TooltipContent>
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
+export default function SearchMain({ main }: { main?: boolean }) {
   const router = useRouter();
   const {
     countriesList,
@@ -91,14 +176,14 @@ export default function SearchMain({ main }: any) {
     departure,
     arrival,
     typeOfGoods,
+    incoterms,
     getProducts,
+    valid,
   } = useFilterStore((state: any) => state);
   const { goodsList, goodsListLoading, getGoodsList } = useGoodsStore(
     (state: any) => state
   );
-  const { selectedCurrency, getCurrencies, setCurrency } = useCurrenciesStore(
-    (state: any) => state
-  );
+  const { selectedCurrency } = useCurrenciesStore((state: any) => state);
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
@@ -110,10 +195,12 @@ export default function SearchMain({ main }: any) {
       toCountry: toCountry,
       to: to,
     };
-    setFilter({ fromCountry: values.toCountry });
-    setFilter({ from: values.to });
-    setFilter({ toCountry: values.fromCountry });
-    setFilter({ to: values.from });
+    setFilter({
+      fromCountry: values.toCountry,
+      from: values.to,
+      toCountry: values.fromCountry,
+      to: values.from,
+    });
   }
   const debounce = useRef();
   const [open, setOpen] = useState(false);
@@ -122,7 +209,6 @@ export default function SearchMain({ main }: any) {
     setFilter({ typeOfGoods: value });
   };
   const handleFocus = () => {
-    console.log("focus");
     setOpen(true);
   };
   useEffect(() => {
@@ -136,22 +222,27 @@ export default function SearchMain({ main }: any) {
   }, [typeOfGoods]);
   function onSubmit(e: any) {
     e.preventDefault();
-    getProducts();
-    if (main) router.push("/catalogue");
+    if (valid) {
+      getProducts();
+      if (main) router.push("/catalogue");
+    }
   }
 
   return (
     <form onSubmit={onSubmit}>
       <RadioGroup
         onValueChange={(e) => {
-          setFilter({ deliveryBy: e });
+          setFilter({
+            deliveryBy: e,
+            incoterms: incotermsList[e as DeliveryBy][0].name,
+          });
         }}
         defaultValue={deliveryBy}
         className={`flex justify-center sm:justify-start custom-radio ${!main && "catalogue"} pb-5 sm:pb-0`}
       >
-        <CustomRadioGroupItem value="plane" imageNumber={1} />
-        <CustomRadioGroupItem value="ship" imageNumber={2} />
-        <CustomRadioGroupItem value="truck" imageNumber={3} />
+        <CustomRadioGroupItem value={DeliveryBy.plane} imageNumber={1} />
+        <CustomRadioGroupItem value={DeliveryBy.ferry} imageNumber={2} />
+        <CustomRadioGroupItem value={DeliveryBy.truck} imageNumber={3} />
       </RadioGroup>
       <div
         className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] items-end p-[24px] mt-[10px] `}
@@ -165,7 +256,7 @@ export default function SearchMain({ main }: any) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start overflow-x-auto"
                   >
                     {fromCountry || "Select country"}
                   </Button>
@@ -204,7 +295,7 @@ export default function SearchMain({ main }: any) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
+                    className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full overflow-x-auto"
                   >
                     {from || "Select city"}
                   </Button>
@@ -216,19 +307,21 @@ export default function SearchMain({ main }: any) {
                     {citiesListLoading ? (
                       <Loader />
                     ) : (
-                      <CommandGroup>
-                        {citiesList.map((item: any, index: number) => (
-                          <CommandItem
-                            value={`${item.value}`}
-                            key={index}
-                            onSelect={() => {
-                              setFilter({ from: item.label });
-                            }}
-                          >
-                            {item.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <ScrollArea className="h-72 w-full">
+                        <CommandGroup>
+                          {citiesList.map((item: any, index: number) => (
+                            <CommandItem
+                              value={`${item.value}`}
+                              key={index}
+                              onSelect={() => {
+                                setFilter({ from: item.label });
+                              }}
+                            >
+                              {item.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </ScrollArea>
                     )}
                   </Command>
                 </PopoverContent>
@@ -256,7 +349,7 @@ export default function SearchMain({ main }: any) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    className="h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start overflow-x-auto"
                   >
                     {toCountry || "Select country"}
                   </Button>
@@ -268,20 +361,22 @@ export default function SearchMain({ main }: any) {
                     {countriesListLoading ? (
                       <Loader />
                     ) : (
-                      <CommandGroup>
-                        {countriesList.map((item: any, index: number) => (
-                          <CommandItem
-                            value={`${item.value}`}
-                            key={index}
-                            onSelect={() => {
-                              setFilter({ toCountry: item.value });
-                              getCitiesList(item.value, true);
-                            }}
-                          >
-                            {item.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <ScrollArea className="h-72 w-full">
+                        <CommandGroup>
+                          {countriesList.map((item: any, index: number) => (
+                            <CommandItem
+                              value={`${item.value}`}
+                              key={index}
+                              onSelect={() => {
+                                setFilter({ toCountry: item.value });
+                                getCitiesList(item.value, true);
+                              }}
+                            >
+                              {item.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </ScrollArea>
                     )}
                   </Command>
                 </PopoverContent>
@@ -293,7 +388,7 @@ export default function SearchMain({ main }: any) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
+                    className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start overflow-x-auto"
                   >
                     {to || "Select city"}
                   </Button>
@@ -305,19 +400,21 @@ export default function SearchMain({ main }: any) {
                     {citiesListToLoading ? (
                       <Loader />
                     ) : (
-                      <CommandGroup>
-                        {citiesListTo.map((item: any, index: number) => (
-                          <CommandItem
-                            value={`${item.value}`}
-                            key={index}
-                            onSelect={() => {
-                              setFilter({ to: item.label });
-                            }}
-                          >
-                            {item.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
+                      <ScrollArea className="h-72 w-full">
+                        <CommandGroup>
+                          {citiesListTo.map((item: any, index: number) => (
+                            <CommandItem
+                              value={`${item.value}`}
+                              key={index}
+                              onSelect={() => {
+                                setFilter({ to: item.label });
+                              }}
+                            >
+                              {item.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </ScrollArea>
                     )}
                   </Command>
                 </PopoverContent>
@@ -335,7 +432,7 @@ export default function SearchMain({ main }: any) {
                     className="justify-start h-[60px] text-black font-normal sm:rounded-none rounded-l-[16px] rounded-r-none hover:bg-white border-0 w-full"
                   >
                     {departure ? (
-                      format(departure, "mm/dd/yyyy")
+                      format(departure, "MM/dd/yyyy")
                     ) : (
                       <span>Pick a date</span>
                     )}
@@ -361,7 +458,7 @@ export default function SearchMain({ main }: any) {
                     className="justify-start h-[60px] text-black font-normal sm:rounded-none hover:bg-white border-0 w-full rounded-r-[16px] rounded-l-none"
                   >
                     {arrival ? (
-                      format(arrival, "mm/dd/yyyy")
+                      format(arrival, "MM/dd/yyyy")
                     ) : (
                       <span>Pick a date</span>
                     )}
@@ -402,20 +499,22 @@ export default function SearchMain({ main }: any) {
                   {goodsListLoading ? (
                     <Loader />
                   ) : goodsList.length ? (
-                    <CommandGroup>
-                      {goodsList.map((item: any, index: number) => (
-                        <CommandItem
-                          value={`${item.value}`}
-                          key={index}
-                          onSelect={() => {
-                            setFilter({ typeOfGoods: item.label });
-                            setOpen(false);
-                          }}
-                        >
-                          {item.label}
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
+                    <ScrollArea className="h-72 w-full">
+                      <CommandGroup>
+                        {goodsList.map((item: any, index: number) => (
+                          <CommandItem
+                            value={`${item.value}`}
+                            key={index}
+                            onSelect={() => {
+                              setFilter({ typeOfGoods: item.label });
+                              setOpen(false);
+                            }}
+                          >
+                            {item.label}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </ScrollArea>
                   ) : (
                     <CommandEmpty>Not found.</CommandEmpty>
                   )}
@@ -431,12 +530,15 @@ export default function SearchMain({ main }: any) {
               className="h-[60px] sm:rounded-r-none sm:rounded-l-[16px] border-none font-normal text-black"
               type="number"
               placeholder="Total KG"
-              onChange={(e) => setFilter({ totalKg: e })}
+              onChange={(e) => setFilter({ totalKg: e.target.value })}
             />
           </div>
           <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[20%]">
             <label className="mb-2 block">Placement</label>
-            <Select defaultValue="Pallets">
+            <Select
+              defaultValue="Pallets"
+              onValueChange={(e) => setFilter({ placementOfGoods: e })}
+            >
               <SelectTrigger className="h-[60px] sm:rounded-none border-none font-normal text-black">
                 <SelectValue placeholder="Placement" />
               </SelectTrigger>
@@ -457,7 +559,7 @@ export default function SearchMain({ main }: any) {
               className="h-[60px] sm:rounded-none border-none font-normal text-black"
               type="number"
               placeholder="Quantity"
-              onChange={(e) => setFilter({ pallets: e })}
+              onChange={(e) => setFilter({ quantity: e.target.value })}
             />
           </div>
           <div className="flex sm:w-[27%] mb-5 sm:mb-0">
@@ -469,7 +571,7 @@ export default function SearchMain({ main }: any) {
                 className="h-[60px] sm:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
                 placeholder="Length"
                 type="number"
-                onChange={(e) => setFilter({ length: e })}
+                onChange={(e) => setFilter({ length: e.target.value })}
               />
             </div>
             <div className="mr-[1px] sm:w-1/3 ">
@@ -479,7 +581,8 @@ export default function SearchMain({ main }: any) {
               <Input
                 className="h-[60px] rounded-none border-none font-normal text-black"
                 placeholder="Width"
-                onChange={(e) => setFilter({ width: e })}
+                type="number"
+                onChange={(e) => setFilter({ width: e.target.value })}
               />
             </div>
             <div className="mr-[1px] sm:w-1/3">
@@ -490,7 +593,7 @@ export default function SearchMain({ main }: any) {
                 className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
                 placeholder="Height"
                 type="number"
-                onChange={(e) => setFilter({ height: e })}
+                onChange={(e) => setFilter({ height: e.target.value })}
               />
             </div>
           </div>
@@ -504,56 +607,48 @@ export default function SearchMain({ main }: any) {
                 className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
                 placeholder="Goods Value"
                 type="number"
-                onChange={(e) => setFilter({ goodsValue: e })}
+                onChange={(e) => setFilter({ goodsValue: e.target.value })}
               />
             </div>
           </div>
-          <div className="mr-[1px] sm:w-[12%] mb-5 sm:mb-0 flex bg-white sm:rounded-r-[16px] rounded">
-            <Select
-              defaultValue="FCL"
-              onValueChange={(e) => setFilter({ containerLoad: e })}
-            >
-              <SelectTrigger className="h-[60px] sm:rounded-none border-none font-normal text-black">
-                <SelectValue placeholder="Select" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectGroup>
-                  <SelectItem value="FCL">FCL</SelectItem>
-                  <SelectItem value="LCL">LCL</SelectItem>
-                </SelectGroup>
-              </SelectContent>
-            </Select>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <p className="rounded-full border-[1px] w-[20px] h-[20px] border-[#FFC1A2] text-[#FFC1A2] mr-[10px]">
-                    i
-                  </p>
-                </TooltipTrigger>
-                <TooltipContent className="text-[14px]/[18px] font-normal bg-[#FFC1A2] rounded-[16px] p-[16px_24px] overflow-visible relative">
-                  <div
-                    className="absolute top-[100%] left-[50%] ml-[-15px]"
-                    style={{
-                      width: 0,
-                      height: 0,
-                      borderLeft: "10px solid transparent",
-                      borderRight: "10px solid transparent",
-                      borderTop: "20px solid #FFC1A2",
-                    }}
-                  />
-                  FCL (Full Container Load)
-                  <br />
-                  LCL (Less than Container Load)
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+          <div className="mr-[1px] sm:w-[12%] mb-5 sm:mb-0">
+            <label className="mb-2 block">Incoterms*</label>
+            <div className="flex bg-white sm:rounded-r-[16px] rounded">
+              <Select
+                value={incoterms}
+                onValueChange={(e) => {
+                  if (e && e.length) setFilter({ incoterms: e });
+                }}
+              >
+                <SelectTrigger className="h-[60px] sm:rounded-l-none sm:rounded-r-[16px] border-none font-normal text-black">
+                  <SelectValue placeholder="Select" />
+                </SelectTrigger>
+                <SelectContent className="overflow-visible">
+                  <SelectGroup>
+                    {incotermsList[deliveryBy as DeliveryBy].map(
+                      (item: IncotermsItem) => (
+                        <div className="flex" key={item.name}>
+                          <SelectItem value={item.name} key={item.name}>
+                            {item.name}
+                          </SelectItem>
+                          <ToolTipComponent text={item.description} />
+                        </div>
+                      )
+                    )}
+                  </SelectGroup>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
-          <UIButton
-            type="submit"
-            className="mt-5 sm:mt-0 ml-0 sm:ml-[4px] self-end h-[60px] rounded-[16px] w-full sm:w-[9%]"
-          >
-            Explore
-          </UIButton>
+          <ToolTipComponent text="Please fill out all fields">
+            <UIButton
+              type="submit"
+              disabled={!valid}
+              className="mt-5 sm:mt-0 ml-0 sm:ml-[4px] self-end h-[60px] rounded-[16px] w-full"
+            >
+              Explore
+            </UIButton>
+          </ToolTipComponent>
         </div>
       </div>
     </form>
