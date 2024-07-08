@@ -256,7 +256,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start overflow-x-auto"
                   >
                     {fromCountry || "Select country"}
                   </Button>
@@ -295,7 +295,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
+                    className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full overflow-x-auto"
                   >
                     {from || "Select city"}
                   </Button>
@@ -349,7 +349,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    className="h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start overflow-x-auto"
                   >
                     {toCountry || "Select country"}
                   </Button>
@@ -388,7 +388,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
+                    className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start overflow-x-auto"
                   >
                     {to || "Select city"}
                   </Button>
@@ -612,7 +612,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
             </div>
           </div>
           <div className="mr-[1px] sm:w-[12%] mb-5 sm:mb-0">
-            <label>Incoterms*</label>
+            <label className="mb-2 block">Incoterms*</label>
             <div className="flex bg-white sm:rounded-r-[16px] rounded">
               <Select
                 value={incoterms}
