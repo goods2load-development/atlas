@@ -9,6 +9,7 @@ import { useState } from "react";
 import UIButton from "../common/Button";
 
 import { useFilterStore } from "@/lib/filterStore";
+import SelectedSearch from "../SelectedSearch";
 
 export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
@@ -19,7 +20,7 @@ export default function Catalogue() {
       <div
         className={`absolute left-0 top-[220px] sm:static col-span-2 rounded-2xl overflow-hidden ${searchOpened ? "h-auto p-4" : "h-0"} sm:h-auto`}
       >
-        <SearchMain />
+        <SelectedSearch />
       </div>
       <div className={`sm:p-4 sm:bg-[#F9F9F9] rounded-2xl w-full sm:w-[280px]`}>
         <div className="hidden sm:block">
