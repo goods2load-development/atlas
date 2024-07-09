@@ -18,10 +18,10 @@ export default function DeleteAccount() {
 
   return (
     <Dialog>
-      <DialogTrigger className="w-full sm:w-52">
+      <DialogTrigger asChild>
         <UIButton
           secondary
-          className="text-[#666666] border-[#666666] hover:bg-[#666666] w-full"
+          className="text-[#666666] border-[#666666] hover:bg-[#666666] w-full sm:w-[224px]"
         >
           <img src="/trash.svg" />
           Delete account

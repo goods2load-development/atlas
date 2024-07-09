@@ -2,8 +2,6 @@
 import React, { PropsWithChildren, useEffect, useState } from "react";
 import Link from "next/link";
 import Logo from "@/components/Logo";
-// localization routing not finished
-// import Localization from "@/components/Localization";
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -11,8 +9,6 @@ import {
 } from "@/components/ui/navigation-menu";
 import { useUserStore } from "@/lib/store";
 import LangSwitcher from "./LangSwicher";
-
-import UserHeader from "./Header/UserHeader";
 import Currencies from "./Currencies";
 
 export default function Header({ children }: PropsWithChildren) {
@@ -53,27 +49,33 @@ export default function Header({ children }: PropsWithChildren) {
         <NavigationMenu
           className={`${!open && "hidden"} sm:block absolute sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm p-5 bg-orangePrimary sm:bg-transparent text-white`}
         >
-          {user?.id ? (
-            <UserHeader />
-          ) : (
-            <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
+          <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
+            <NavigationMenuItem>
+              <Link href="/help">Help</Link>
+            </NavigationMenuItem>
+            <NavigationMenuItem>
+              <Currencies />
+            </NavigationMenuItem>
+            {user?.id ? (
               <NavigationMenuItem>
-                <Link href="/help">Help</Link>
+                <Link href="/account" className="flex items-center">
+                  <img src="/userwhite.svg" />
+                </Link>
               </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Currencies />
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/sign-in">Log in</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <Link href="/registration">Sign up</Link>
-              </NavigationMenuItem>
-              <NavigationMenuItem>
-                <LangSwitcher />
-              </NavigationMenuItem>
-            </NavigationMenuList>
-          )}
+            ) : (
+              <>
+                <NavigationMenuItem>
+                  <Link href="/sign-in">Log in</Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link href="/registration">Sign up</Link>
+                </NavigationMenuItem>
+              </>
+            )}
+            <NavigationMenuItem>
+              <LangSwitcher />
+            </NavigationMenuItem>
+          </NavigationMenuList>
         </NavigationMenu>
       </header>
       {children}

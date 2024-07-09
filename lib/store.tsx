@@ -108,7 +108,6 @@ export const useRegistrationStore = create((set) => ({
     delete data.plane;
     delete data.truck;
     delete data.license;
-    delete data.provider;
     postRequest({
       url: "auth/register",
       data,
