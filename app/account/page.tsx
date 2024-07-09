@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import UIButton from "@/components/common/Button";
@@ -16,6 +17,7 @@ import PersonalInformationForm from "@/components/PersonalInformationForm";
 import AddressForm from "@/components/AddressForm";
 import UploadCompanyLogo from "@/components/UploadCompanyLogo";
 import RegionalSettingsForm from "@/components/RegionalSettingsForm";
+import PriceAlerts from "@/components/PriceAlerts";
 
 function RenderUserData({ data }: any) {
   return (
@@ -95,16 +97,23 @@ export default function Account() {
     <>
       <Header />
       <main className="flex min-h-screen flex-col p-5 sm:p-16 justify-between colored-main">
-        <div className="sm:flex justify-between mb-10">
+        <div className="sm:flex justify-between mb-10 items-center">
           <i className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">
             <img src="/user.svg" className="mr-3" />
             Account
           </i>
-          <div className="mt-5 sm:mt-0 space-y-5">
-            <UIButton secondary className="mr-5 sm:w-52 w-full">
-              <img src="/ring.svg" />
-              Price alerts
-            </UIButton>
+          <div className="mt-5 sm:mt-0 gap-4 flex items-center">
+            {user?.provider ? (
+              <Link href="/dashboard/performance">
+                <UIButton secondary className="w-full sm:w-[224px]">
+                  <img src="/analytics.svg" className="pr-1" /> Show Analytics
+                </UIButton>
+              </Link>
+            ) : (
+              <div className="w-full sm:w-[224px]">
+                <PriceAlerts />
+              </div>
+            )}
             <DeleteAccount />
           </div>
         </div>

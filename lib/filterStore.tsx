@@ -7,25 +7,33 @@ export enum ContainerLoad {
   LCL = "LCL",
 }
 
+export enum DeliveryBy {
+  plane = "plane",
+  ferry = "ferry",
+  truck = "truck",
+}
+
 interface FilterStoreProps {
+  valid: boolean;
   partnersSelected: string[];
   priceMin: string | null;
   priceMax: string | null;
-  deliveryBy: "plane" | "ship" | "truck";
+  deliveryBy: DeliveryBy;
   fromCountry: string;
   from: string;
   toCountry: string;
   to: string;
-  departure: string | null;
-  arrival: string | null;
+  departure: string;
+  arrival: string;
   typeOfGoods: string;
-  totalKg: string | null;
-  placementOfGoods: string | null;
-  pallets: string | null;
-  length: string | null;
-  width: string | null;
-  height: string | null;
-  goodsValue: string | null;
+  totalKg: string;
+  placementOfGoods: string;
+  quantity: string;
+  length: string;
+  width: string;
+  height: string;
+  goodsValue: string;
+  incoterms: string;
   containerLoad: ContainerLoad;
   sortBy: null | any;
   cheapest: boolean;
@@ -40,21 +48,23 @@ interface FilterStoreProps {
   portsArrival: string[];
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => ({
-  deliveryBy: "plane",
+  valid: false,
+  deliveryBy: DeliveryBy.plane,
   fromCountry: "",
   from: "",
   toCountry: "",
   to: "",
-  departure: null,
-  arrival: null,
+  departure: "",
+  arrival: "",
   typeOfGoods: "",
-  totalKg: null,
-  placementOfGoods: null,
-  pallets: null,
-  length: null,
-  width: null,
-  height: null,
-  goodsValue: null,
+  totalKg: "",
+  placementOfGoods: "Pallets",
+  quantity: "",
+  length: "",
+  width: "",
+  height: "",
+  goodsValue: "0",
+  incoterms: "DDP",
   containerLoad: ContainerLoad.FCL,
   // filter options
   cheapest: false,
@@ -72,11 +82,52 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
   sortBy: null,
 
   products: [],
-  setFilter: (newFilter: FilterStoreProps) =>
+  setFilter: (newFilter: FilterStoreProps) => {
+    const {
+      fromCountry,
+      from,
+      toCountry,
+      to,
+      departure,
+      arrival,
+      typeOfGoods,
+      totalKg,
+      quantity,
+      length,
+      width,
+      height,
+      goodsValue,
+    } = get();
+    const requiredFields: any = Object.assign(
+      {
+        fromCountry,
+        from,
+        toCountry,
+        to,
+        departure,
+        arrival,
+        typeOfGoods,
+        totalKg,
+        quantity,
+        length,
+        width,
+        height,
+        goodsValue,
+      },
+      newFilter
+    );
+    requiredFields;
+    let valid = true;
+    console.log(requiredFields);
+    Object.keys(requiredFields).map((key: any) => {
+      if (!requiredFields[key].toString().length) valid = false;
+    });
     set((state: FilterStoreProps) => ({
       ...state,
       ...newFilter,
-    })),
+      valid,
+    }));
+  },
   getPartners: async () => {
     const data = await getRequest({
       url: "orders/partners",
@@ -118,6 +169,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       to,
       departure,
       arrival,
+      typeOfGoods,
       cheapest,
       fastest,
       goGreen,
@@ -127,12 +179,13 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       portsDepartureSelected,
       portsArrivalSelected,
       totalKg,
-      pallets,
       placementOfGoods,
+      quantity,
       length,
       width,
       height,
       goodsValue,
+      incoterms,
       containerLoad,
     } = get();
 
@@ -140,11 +193,20 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       url: "orders/search",
       data: {
         transportation: deliveryBy,
-        from: from ? `${fromCountry} ${from}` : undefined,
-        to: to ? `${toCountry} ${to}` : undefined,
+        from: `${fromCountry}, ${from}`,
+        to: `${toCountry}, ${to}`,
+        departure,
+        arrival,
+        goods: typeOfGoods.split(" ")[0],
+        kilogram: parseInt(totalKg),
+        placementOfGoods,
+        quantity: parseInt(quantity),
+        length: parseInt(length),
+        width: parseInt(width),
+        height: parseInt(height),
 
-        departure: departure ? departure : undefined,
-        arrival: arrival ? arrival : undefined,
+        [`incoterms${deliveryBy.charAt(0).toUpperCase() + deliveryBy.slice(1)}`]:
+          incoterms,
 
         logisticPartner: partnersSelected.length ? partnersSelected : undefined,
         portDeparture: portsDepartureSelected.length
@@ -154,13 +216,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
           ? portsArrivalSelected
           : undefined,
 
-        kilogram: totalKg ? totalKg : undefined,
-        pallets: pallets ? pallets : undefined,
-        placementOfGoods: placementOfGoods ? placementOfGoods : undefined,
-        // size: { length: length ? length : undefined, width, height },
-
-        goodsValue,
-        containerLoad,
+        goodsValue: parseInt(goodsValue),
         order: {
           cheapest: cheapest,
           fastest: fastest,
@@ -171,7 +227,6 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
           min: priceMin ? parseInt(priceMin) : undefined,
           max: priceMax ? parseInt(priceMax) : undefined,
         },
-        // size: "",
       },
     }).then((data: any) => {
       const products = data.partners.data.map((item: any) => ({
