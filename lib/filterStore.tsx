@@ -58,7 +58,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
   arrival: "",
   typeOfGoods: "",
   totalKg: "",
-  placementOfGoods: "",
+  placementOfGoods: "Pallets",
   quantity: "",
   length: "",
   width: "",
@@ -193,11 +193,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
       url: "orders/search",
       data: {
         transportation: deliveryBy,
-        from: `${fromCountry} ${from}`,
-        to: `${toCountry} ${to}`,
+        from: `${fromCountry}, ${from}`,
+        to: `${toCountry}, ${to}`,
         departure,
         arrival,
-        goods: typeOfGoods,
+        goods: typeOfGoods.split(" ")[0],
         kilogram: parseInt(totalKg),
         placementOfGoods,
         quantity: parseInt(quantity),
@@ -216,8 +216,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
           ? portsArrivalSelected
           : undefined,
 
-        goodsValue,
-        containerLoad,
+        goodsValue: parseInt(goodsValue),
         order: {
           cheapest: cheapest,
           fastest: fastest,
@@ -228,7 +227,6 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => ({
           min: priceMin ? parseInt(priceMin) : undefined,
           max: priceMax ? parseInt(priceMax) : undefined,
         },
-        // size: "",
       },
     }).then((data: any) => {
       const products = data.partners.data.map((item: any) => ({
