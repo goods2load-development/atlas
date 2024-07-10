@@ -59,8 +59,19 @@ export default function UserRegistration() {
         : null;
 
     if (savedFormState) {
-      return JSON.parse(savedFormState);
+      const parsedForm = JSON.parse(savedFormState);
+
+      if (!parsedForm.communication) {
+        parsedForm.communication = false;
+      }
+
+      if (!parsedForm.provider) {
+        parsedForm.provider = false;
+      }
+
+      return parsedForm;
     }
+
     return {
       firstName: "",
       lastName: "",
@@ -70,6 +81,8 @@ export default function UserRegistration() {
       address: "",
       postalCode: "",
       city: "",
+      communication: false,
+      provider: false,
     };
   });
 
@@ -133,21 +146,21 @@ export default function UserRegistration() {
       }),
       confirmPassword: z.string(),
       privacy: z.boolean(),
-      comunication: z.boolean().optional(),
+      communication: z.boolean().optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
       path: ["confirmPassword"],
     })
-    .refine((data) => data.provider && data.insuranceStatement, {
+    .refine((data) => !data.provider || data.insuranceStatement, {
       message: "No file uploaded",
       path: ["insuranceStatement"],
     })
-    .refine((data) => data.provider && data.issuingAuthority, {
+    .refine((data) => !data.provider || data.issuingAuthority, {
       message: "No file uploaded",
       path: ["issuingAuthority"],
     })
-    .refine((data) => data.provider && data.tradeLicenseNumber, {
+    .refine((data) => !data.provider || data.tradeLicenseNumber, {
       message: "No file uploaded",
       path: ["tradeLicenseNumber"],
     });
@@ -645,17 +658,17 @@ export default function UserRegistration() {
           />
           <FormField
             control={form.control}
-            name="comunication"
+            name="communication"
             render={({ field }) => (
               <FormItem className="mb-5 flex space-x-3">
                 <Checkbox
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  id="comunication"
+                  id="communication"
                   className="mt-2"
                 />
                 <FormLabel
-                  htmlFor="comunication"
+                  htmlFor="communication"
                   className="text-[12px]/[16px] font-normal"
                 >
                   Yes, I would like to receive communication from{" "}
