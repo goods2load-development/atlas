@@ -63,7 +63,10 @@ interface FilterStoreProps {
   portsArrival: string[];
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
-  let savedSeachForm: any = localStorage.getItem(LOCAL_STORAGE_SEARCH_FORM_KEY);
+  let savedSeachForm: any =
+    typeof window !== "undefined"
+      ? localStorage.getItem(LOCAL_STORAGE_SEARCH_FORM_KEY)
+      : null;
 
   if (savedSeachForm) {
     savedSeachForm = JSON.parse(savedSeachForm);
