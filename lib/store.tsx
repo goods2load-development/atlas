@@ -88,6 +88,7 @@ export const useGoodsStore = create((set) => ({
 
 export const useRegistrationStore = create((set) => ({
   registered: false,
+  provider: false,
   postUserRegistrationData: async (data: any) => {
     const isProvider = data.provider;
     const formData = new FormData();
@@ -118,15 +119,14 @@ export const useRegistrationStore = create((set) => ({
           data: formData,
           headers: { "Content-Type": "multipart/form-data" },
         }).then(() => {
-          // TODO add redirect
-          // registered true
+          set(() => ({ registered: true, provider: true }));
         });
       } else {
-        // registered true
+        set(() => ({ registered: true }));
       }
     });
-    set((state: any) => ({ registered: true }));
   },
+  setRegistrationDefaults: () => set({ registered: false, provider: false }),
 }));
 
 interface LoginProps {
