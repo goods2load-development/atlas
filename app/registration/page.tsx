@@ -36,6 +36,7 @@ import Divider from "@/components/Divider";
 import { getSession, signIn } from "next-auth/react";
 import { getCookie } from "react-use-cookie";
 import InputPassword from "@/components/common/InputPassword";
+import RegistrationSuccessPopup from "./RegistrationSuccessPopup";
 interface CountriesProps {
   value: string;
   label: string;
@@ -189,7 +190,6 @@ export default function UserRegistration() {
     if (!countriesList.length) getCountriesList();
   });
   const [userRegistration, setUserRegistration] = useState(true);
-  const [license, setLicense] = useState<File | null>(null);
   async function fillFieldsWithGoogle() {
     signIn("google", { redirect: true });
   }
@@ -690,6 +690,7 @@ export default function UserRegistration() {
           </Button>
         </form>
       </Form>
+      <RegistrationSuccessPopup />
     </RegistrationWrapper>
   );
 }
