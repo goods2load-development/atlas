@@ -44,7 +44,7 @@ import {
 } from "@/lib/filterStore";
 import { useRouter } from "next/navigation";
 
-const placementOfGoods = [
+const placementOfGoodsOptions = [
   "Pallets",
   "Tanks",
   "Drums",
@@ -176,6 +176,13 @@ export default function SearchMain({ main }: { main?: boolean }) {
     departure,
     arrival,
     typeOfGoods,
+    totalKg,
+    placementOfGoods,
+    quantity,
+    length,
+    width,
+    height,
+    goodsValue,
     incoterms,
     getProducts,
     valid,
@@ -204,13 +211,16 @@ export default function SearchMain({ main }: { main?: boolean }) {
   }
   const debounce = useRef();
   const [open, setOpen] = useState(false);
+
   const handleChange = (e: any) => {
     const value = e.target.value;
     setFilter({ typeOfGoods: value });
   };
+
   const handleFocus = () => {
     setOpen(true);
   };
+
   useEffect(() => {
     if (typeOfGoods.length >= 2 && open) {
       clearTimeout(debounce.current);
@@ -220,8 +230,10 @@ export default function SearchMain({ main }: { main?: boolean }) {
       }, 1000);
     }
   }, [typeOfGoods]);
+
   function onSubmit(e: any) {
     e.preventDefault();
+
     if (valid) {
       getProducts();
       if (main) router.push("/catalogue");
@@ -535,6 +547,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
               type="number"
               placeholder="Total KG"
               min="1"
+              value={totalKg}
               onChange={(e) => setFilter({ totalKg: e.target.value })}
             />
           </div>
@@ -542,7 +555,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
             <div className="mr-[1px] mb-5 sm:mb-0 w-1/2">
               <label className="mb-2 block">Placement</label>
               <Select
-                defaultValue="Pallets"
+                defaultValue={placementOfGoods}
                 onValueChange={(e) => setFilter({ placementOfGoods: e })}
               >
                 <SelectTrigger className="h-[60px] rounded-l-[16px] rounded-r-none sm:rounded-none border-none font-normal text-black">
@@ -550,7 +563,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectGroup>
-                    {placementOfGoods.map((item) => (
+                    {placementOfGoodsOptions.map((item) => (
                       <SelectItem key={item} value={item}>
                         {item}
                       </SelectItem>
@@ -565,6 +578,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 className="h-[60px] rounded-l-none rounded-r-[16px] sm:rounded-none border-none font-normal text-black"
                 type="number"
                 placeholder="Quantity"
+                value={quantity}
                 onChange={(e) => setFilter({ quantity: e.target.value })}
               />
             </div>
@@ -578,6 +592,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 className="h-[60px] sm:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
                 placeholder="Length"
                 type="number"
+                value={length}
                 onChange={(e) => setFilter({ length: e.target.value })}
               />
             </div>
@@ -586,6 +601,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 Width
               </label>
               <Input
+                value={width}
                 className="h-[60px] rounded-none border-none font-normal text-black"
                 placeholder="Width"
                 type="number"
@@ -600,6 +616,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
                 placeholder="Height"
                 type="number"
+                value={height}
                 onChange={(e) => setFilter({ height: e.target.value })}
               />
             </div>
@@ -615,6 +632,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
                   placeholder="Goods Value"
                   type="number"
+                  value={goodsValue}
                   onChange={(e) => setFilter({ goodsValue: e.target.value })}
                 />
               </div>
