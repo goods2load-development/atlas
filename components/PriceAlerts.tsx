@@ -114,7 +114,7 @@ export default function PriceAlerts() {
         </UIButton>
       </DialogTrigger>
       <DialogContent
-        className={`max-w-[365px] pt-[48px] px-1 sm:px-[66px] overflow-auto max-h-screen ${
+        className={`max-w-[365px] pt-[48px] px-1 sm:px-[50px] overflow-auto max-h-screen ${
           step === 3
             ? "sm:max-w-[632px] pb-[32px] "
             : "sm:max-w-[768px] p-[32px]"
@@ -155,20 +155,20 @@ export default function PriceAlerts() {
                   alerts for them.
                 </DialogDescription>
                 <div className="flex flex-wrap text-[12px]/[18px] opacity-50 mt-[40px] mb-[4px]">
-                  <div className="ml-[32px] w-[180px]">FROM</div>
-                  <div className="ml-[54px] w-[180px]">TO</div>
-                  <div className="ml-[10px]">PRICE ($)</div>
+                  <div className="ml-[26px] w-[240px]">FROM</div>
+                  <div className="ml-[44px] w-[230px]">TO</div>
+                  <div className="ml-[5px]">PRICE ($)</div>
                 </div>
                 {fields.map((item, index) => (
                   <div
                     className="flex flex-wrap items-center mb-[8px] w-full"
                     key={index}
                   >
-                    <div className="w-[22px]">
+                    <div className="w-[20px]">
                       {index < 9 && "0"}
                       {index + 1}
                     </div>
-                    <div className="mx-[10px] w-[240px]">
+                    <div className="mx-[5px] w-[240px]">
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
@@ -197,7 +197,6 @@ export default function PriceAlerts() {
                                           ...item,
                                           fromCountry: country.value,
                                         });
-                                        getCitiesList(country.value);
                                       }}
                                     >
                                       {country.label}
@@ -209,7 +208,9 @@ export default function PriceAlerts() {
                           </Command>
                         </PopoverContent>
                       </Popover>
-                      <Popover>
+                      <Popover
+                        onOpenChange={() => getCitiesList(item.fromCountry)}
+                      >
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
@@ -249,18 +250,36 @@ export default function PriceAlerts() {
                     </div>
                     <Button
                       type="button"
-                      // onClick={switchLocations}
-                      className="p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] relative z-10 hover:bg-transparent"
+                      onClick={() => {
+                        const switched = {
+                          fromCountry: item.toCountry,
+                          from: item.to,
+                          toCountry: item.fromCountry,
+                          to: item.from,
+                        };
+                        update(index, {
+                          ...item,
+                          ...switched,
+                        });
+                      }}
+                      className="p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] relative z-10 hover:bg-transparent group"
                     >
                       <Image
-                        className="min-w-[34px] min-h-[34px]"
+                        className="min-w-[34px] min-h-[34px] group-hover:hidden"
                         width={34}
                         height={34}
                         alt="turn"
-                        src="/turn.png"
+                        src="/turn.svg"
+                      />
+                      <Image
+                        className="min-w-[34px] min-h-[34px] hidden group-hover:block"
+                        width={34}
+                        height={34}
+                        alt="turn"
+                        src="/turnhover.svg"
                       />
                     </Button>
-                    <div className="mx-[10px] w-[240px]">
+                    <div className="mx-[5px] w-[230px]">
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
@@ -280,13 +299,15 @@ export default function PriceAlerts() {
                             ) : (
                               <CommandGroup>
                                 {countriesList.map(
-                                  (country: any, index: number) => (
+                                  (country: any, i: number) => (
                                     <CommandItem
                                       value={`${country.value}`}
-                                      key={index}
+                                      key={i}
                                       onSelect={() => {
-                                        // setFilter({ fromCountry: country.value });
-                                        getCitiesList(country.value);
+                                        update(index, {
+                                          ...item,
+                                          toCountry: country.value,
+                                        });
                                       }}
                                     >
                                       {country.label}
@@ -298,7 +319,9 @@ export default function PriceAlerts() {
                           </Command>
                         </PopoverContent>
                       </Popover>
-                      <Popover>
+                      <Popover
+                        onOpenChange={() => getCitiesList(item.toCountry)}
+                      >
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
@@ -316,15 +339,18 @@ export default function PriceAlerts() {
                               <Loader />
                             ) : (
                               <CommandGroup>
-                                {citiesList.map((item: any, index: number) => (
+                                {citiesList.map((city: any, i: number) => (
                                   <CommandItem
-                                    value={`${item.value}`}
-                                    key={index}
-                                    onSelect={() => {
-                                      // setFilter({ from: item.label });
-                                    }}
+                                    value={`${city.value}`}
+                                    key={i}
+                                    onSelect={() =>
+                                      update(index, {
+                                        ...item,
+                                        to: city.value,
+                                      })
+                                    }
                                   >
-                                    {item.label}
+                                    {city.label}
                                   </CommandItem>
                                 ))}
                               </CommandGroup>
@@ -340,7 +366,7 @@ export default function PriceAlerts() {
                     />
                     <div
                       onClick={() => remove(index)}
-                      className={`ml-[10px] rounded-full border-2 border-orangePrimary text-orangePrimary min-w-[20px] w-[20px] min-h-[20px] h-[20px] text-center text-[18px]/[20px] cursor-pointer ${index === 0 && "hidden"}`}
+                      className={`ml-[5px] rounded-full border-2 border-orangePrimary text-orangePrimary min-w-[20px] w-[20px] min-h-[20px] h-[20px] text-center text-[18px]/[18px] cursor-pointer ${index === 0 && "hidden"}`}
                     >
                       -
                     </div>
@@ -358,7 +384,7 @@ export default function PriceAlerts() {
                           price: "",
                         })
                       }
-                      className="rounded-full border-2 border-orangePrimary text-orangePrimary w-[20px] h-[20px] text-center text-[18px]/[20px] cursor-pointer mr-[8px]"
+                      className="rounded-full border-2 border-orangePrimary text-orangePrimary w-[20px] h-[20px] text-center text-[18px]/[18px] cursor-pointer mr-[8px]"
                     >
                       +
                     </div>

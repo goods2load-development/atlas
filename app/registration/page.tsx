@@ -103,7 +103,8 @@ export default function UserRegistration() {
       phoneNumber: z
         .string()
         .regex(
-          new RegExp("^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$")
+          new RegExp("^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$"),
+          "Invalid format. Please, use +XXXXXXXXXXXX"
         ),
       email: z.string().min(5).email(),
       companyName: z.string().min(2),
@@ -272,7 +273,7 @@ export default function UserRegistration() {
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
-                      placeholder=""
+                      placeholder="+XXXXXXXXXXXX"
                       {...field}
                       onBlur={handleChange}
                     />
