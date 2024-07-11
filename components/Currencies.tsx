@@ -38,7 +38,9 @@ export default function Currencies() {
           {currencies?.map((item: any, index: number) => (
             <>
               <SelectItem key={item.code} value={item.code}>
-                {item.code} - {item.symbol}
+                <span>
+                  {item.code} - {item.symbol}
+                </span>
               </SelectItem>
               {index === 2 && (
                 <span className="block w-full border-t-2 text-[12px] text-gray-500">
