@@ -101,7 +101,7 @@ function CustomRadioGroupItem({
       <RadioGroupItem value={value} id={value} className="hidden" />
       <Label htmlFor={value}>
         <Image
-          src={`/filtericon${imageNumber}.png`}
+          src={`/filtericon${imageNumber}.svg`}
           alt={value}
           width={58}
           height={58}
@@ -394,11 +394,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   >
                     <ToolTipComponent asChild text={toCountry}>
                       {toCountry ? (
-                        <span className="block w-full truncate">
+                        <span className="block w-full truncate pl-2">
                           {toCountry}
                         </span>
                       ) : (
-                        <span className="text-gray-500">Select country</span>
+                        <span className="text-gray-500 pl-2">Select country</span>
                       )}
                     </ToolTipComponent>
                   </Button>
@@ -537,7 +537,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
             <label className="mb-2 block">Type of goods</label>
             <Popover open={open}>
               <PopoverTrigger className="w-full">
-                {/* <ToolTipComponent text={typeOfGoods}> */}
+                 {/*<ToolTipComponent text={typeOfGoods}/>*/}
                 <Input
                   className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none font-normal text-black w-full"
                   onChange={handleChange}
@@ -550,7 +550,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 {/* </ToolTipComponent> */}
               </PopoverTrigger>
               <PopoverContent
-                className="sm:w-[200px] p-0 "
+                className="md:w-[300px] w-[200px]  p-0 "
                 onOpenAutoFocus={(e) => e.preventDefault()}
               >
                 <Command>

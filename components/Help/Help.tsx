@@ -47,7 +47,7 @@ export default function Help() {
               <img
                 src={icon}
                 className="w-[28px] min-w-[28px] h-[28px] min-h-[28px] sm:w-[40px] sm:min-w-[40px] sm:h-[40px] sm:min-h-[40px] mr-[8px] sm:mr-[16px]"
-              />
+               alt={'icon'}/>
               {name}
             </TabsTrigger>
           ))}
