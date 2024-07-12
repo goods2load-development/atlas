@@ -10,18 +10,20 @@ import Link from "next/link";
 import Logo from "@/components/Logo";
 import Socials from "@/components/Socials";
 import LangSwitcher from "./LangSwicher";
+import * as React from "react";
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
     <footer className="text-white min-h-[244px] pt-[56px] bg-bgFooter bg-cover bg-center">
-      <div className="lg:flex justify-between px-16 block max-w-[1296px] mx-auto">
-        <div className="space-y-5 sm:space-y-10 mb-10 mx-auto">
+      <div className="md:flex justify-between align-middle px-16 block max-w-[1440px] mx-auto row gap-10">
+        <div className="space-y-5 sm:space-y-10 mb-10 mx-auto ">
           <Logo width={340} height={42} />
           <div className="hidden sm:block">
             <Socials />
           </div>
         </div>
-        <div className="sm:flex lg:w-1/2 justify-between">
+        <div className="sm:flex lg:w-1/2 justify-between gap-3">
           <Accordion
             type="single"
             collapsible
@@ -32,7 +34,7 @@ export default function Footer() {
               value="item-1"
               className="border-transparent hidden sm:block"
             >
-              <AccordionTrigger className="pt-0 pb-3 font-normal">
+              <AccordionTrigger className="pt-0 pb-3 font-normal" usageContext={'footer'}>
                 About us
               </AccordionTrigger>
               <AccordionContent>
@@ -51,32 +53,35 @@ export default function Footer() {
               </AccordionContent>
             </AccordionItem>
           </Accordion>
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue="item-1"
-            className="w-32 f-accordion hidden sm:block"
-          >
-            <AccordionItem value="item-1" className="border-transparent">
-              <AccordionTrigger className="pt-0 pb-3 font-normal">
-                Partners
-              </AccordionTrigger>
-              <AccordionContent>
-                <Link href="/partners" className="block pb-3 font-light">
-                  Partner with us
-                </Link>
-                <Link
-                  href="/partners#our-partners"
-                  className="block pb-3 font-light"
-                >
-                  Our partners
-                </Link>
-                <Link href="/career" className="block pb-3 font-light">
-                  Career
-                </Link>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
+          <div>
+            <Accordion
+                type="single"
+                collapsible
+                defaultValue="item-1"
+                className="w-32 f-accordion hidden sm:block"
+            >
+              <AccordionItem value="item-1" className="border-transparent">
+                <AccordionTrigger className="pt-0 pb-3 font-normal" usageContext={'footer'}>
+                  Partners
+                </AccordionTrigger>
+                <AccordionContent>
+                  <Link href="/partners" className="block pb-3 font-light">
+                    Partner with us
+                  </Link>
+                  <Link
+                      href="/partners#our-partners"
+                      className="block pb-3 font-light"
+                  >
+                    Our partners
+                  </Link>
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+            <Link href="/career" className="sm:block pb-3 font-light hidden">
+              Career
+            </Link>
+          </div>
+
           <div className="text-center sm:hidden pb-3">
             <p className="font-medium pb-3">About us</p>
             <Link href="/about-us?company" className="block pb-3 font-light">
@@ -104,7 +109,7 @@ export default function Footer() {
           </div>
           <div className="text-center sm:text-left">
             <Link href="/help" className="block pb-4">
-              Help centre
+              FAQs
             </Link>
             <Link href="/terms-of-service" className="block pb-4">
               Terms and Conditions
@@ -117,7 +122,6 @@ export default function Footer() {
             </Link>
           </div>
         </div>
-
         <div className="text-center">
           <LangSwitcher />
         </div>
@@ -126,7 +130,7 @@ export default function Footer() {
         </div>
       </div>
       <div className="color-white text-center py-[13px] font-[16px]/[24px] bg-[#ff6720] font-light">
-        GOODS2LOAD 2024 | All Rights Reserved
+        GOODS2LOAD {currentYear} | All Rights Reserved
       </div>
     </footer>
   );

@@ -19,19 +19,19 @@ const questionsContent = [
         <br />
         <ol>
           <li>
-            &#x2022;Registration: Small and medium-sized enterprises register on
+            &#x2022;  Registration: Small and medium-sized enterprises register on
             the Goods2Load platform, providing necessary information about their
             business and transportation needs.
             <br />
             <br />
           </li>
           <li>
-            &#x2022;Load Posting: Companies input details of their loads,
+            &#x2022;  Load Posting: Companies input details of their loads,
             including pickup and delivery locations, type of cargo, and other
-            relevant information.
+            relevant information.<br/><br/>
           </li>
           <li>
-            &#x2022;Load Search: Small and medium-sized enterprises can browse
+            &#x2022;  Load Search: Small and medium-sized enterprises can browse
             available loads on the platform, provided by Goods2Load&apos;s
             logistics partner companies. They can filter results based on
             criteria such as pickup location, destination, type of cargo, speed,
@@ -40,14 +40,14 @@ const questionsContent = [
             <br />
           </li>
           <li>
-            &#x2022;Negotiation: Small and medium-sized enterprises are
+            &#x2022;  Negotiation: Small and medium-sized enterprises are
             redirected to the platform or original contact to negotiate terms
             such as price, delivery timeline, and other details.
             <br />
             <br />
           </li>
           <li>
-            &#x2022;Contracting: Once terms are agreed upon, companies finalize
+            &#x2022;  Contracting: Once terms are agreed upon, companies finalize
             the contract through their official platform.
             <br />
             <br />
@@ -91,15 +91,15 @@ const questionsContent = [
 function QuestionItem(props: any) {
   return (
     <AccordionItem value={`item-${props.number}`} className="sm:py-4">
-      <AccordionTrigger className="text-orangePrimary hover:no-underline">
-        <div className="text-[18px]/[28px] font-normal text-left">
-          <i className="text-[20px]/[24px] font-light sm:font-normal sm:text-[24px]/[28px] inline-block w-8 sm:w-20 sm:pr-10">
+      <AccordionTrigger  className="text-orangePrimary font-light hover:no-underline md:ml-4 ml-0">
+        <div className="text-[18px]/[22px] font-normal text-left">
+          <i className="text-[20px]/[24px] font-light sm:text-[24px]/[28px] inline-block w-8 sm:w-20 pr-10">
             {props.number}
           </i>
-          <span className="text-black">{props.title}</span>
+          <span className="text-blackTertiary">{props.title}</span>
         </div>
       </AccordionTrigger>
-      <AccordionContent className="pl-5 sm:pl-20 text-[18px]/[24px] font-light max-w-[720px]">
+      <AccordionContent className="pl-5 sm:pl-20 text-[16px]/[24px] font-light max-w-[760px] text-blackTertiary">
         {props.content}
       </AccordionContent>
     </AccordionItem>
@@ -112,14 +112,15 @@ export default function QuestionsAndAnswers() {
       <img
         src="/faqmobile1.png"
         className="absolute left-0 bottom-0 md:hidden"
+        alt={"faqmobile1"}
       />
-      <img src="/faqmobile2.png" className="absolute top-0 right-0 md:hidden" />
-      <div className="text-center text-[34px]/[38px] sm:text-[48px]/[62px] mb-12 font-light">
-        <i className="bg-orangeSecondary px-2 rounded-sm font-normal">
+      <img src="/faqmobile2.png" className="absolute top-0 right-0 md:hidden" alt={'faqmobile2'} />
+      <div className="text-center text-[34px] sm:text-[48px] mb-12 font-light">
+        <i className="bg-allTittleColor px-2 rounded-md font-normal">
           Answers
-        </i>{" "}
-        <span>to Your Burning</span>{" "}
-        <i className="bg-orangeSecondary px-2 rounded-sm font-normal">
+        </i>
+        <span> to Your Burning </span>
+        <i className="bg-allTittleColor px-2 rounded-md font-normal">
           Questions
         </i>
       </div>
