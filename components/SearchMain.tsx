@@ -390,15 +390,15 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="pl-[20px] h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    className="pl-[26px] h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
                   >
                     <ToolTipComponent asChild text={toCountry}>
                       {toCountry ? (
-                        <span className="block w-full truncate pl-2">
+                        <span className="block w-full truncate">
                           {toCountry}
                         </span>
                       ) : (
-                        <span className="text-gray-500 pl-2">Select country</span>
+                        <span className="text-gray-500">Select country</span>
                       )}
                     </ToolTipComponent>
                   </Button>
