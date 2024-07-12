@@ -26,6 +26,7 @@ const config = {
         customWhite: "#FFFFFF",
         black: "#29292A",
         blackSecondary: "#111827",
+        blackTertiary: "#1B1B1B",
         halfBlack: "rgba(0,0,0, 0.5)",
         extraHalfBlack: "rgba(0,0,0, 0.38)",
         border: "hsl(var(--border))",

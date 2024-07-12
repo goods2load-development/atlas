@@ -1,11 +1,5 @@
 import React from "react";
-import Image from "next/image";
-
 import HelpAccordion from "../HelpAccordion/HelpAccordion";
-
-import mainDecore from "@/assets/HelpImage/decore1.png";
-
-import secondDecore from "@/assets/HelpImage/decore2.png";
 import { TabName } from "@/app/interface/helpData";
 
 interface HelpContainer {

@@ -21,7 +21,7 @@ export default function Home() {
         </span>
       </Header>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main max-w-full">
-        <div className="px-2 mt-[-270px] sm:mt-[-160px] sm:mt-[-120px] mb-20 w-full max-w-full lg:max-w-[1190px] mx-auto">
+        <div className="px-2 mt-[-270px] sm:mt-[-120px] mb-20 w-full max-w-full lg:max-w-[1320px] mx-auto">
           <SearchMain main />
         </div>
         <SubHeaderMain />
