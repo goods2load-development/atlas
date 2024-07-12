@@ -7,7 +7,7 @@ import Image from "next/image";
 export const tabs = [
   {
     name: TabName.PLANE,
-    icon: "/plane.png",
+    icon: "/plane.svg",
   },
   {
     name: TabName.SHIP,

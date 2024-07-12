@@ -33,11 +33,11 @@ const PartnersVisibility: React.FC = () => {
           </p>
         </div>
         <div className="relative">
-          <div className="absolute left-0  bottom-0 transform translate-x-[-72px] sm:translate-x-[-190px] translate-y-[45px] translate-x-[-150px]">
+          <div className="absolute md:left-0 md:bottom-0 md:translate-y-[85px] md:translate-x-[-220px] left-[-140px] bottom-25 w-full">
             <Image
               alt="phone"
               src={phoneImage.src}
-              width={phoneImage.width}
+              width={phoneImage.width * .6}
               height={phoneImage.height}
             />
           </div>
