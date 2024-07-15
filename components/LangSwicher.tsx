@@ -6,7 +6,7 @@ import inFlag from "@/assets/in-flag.svg";
 import enFlag from "@/assets/en-flag.svg";
 import { ChevronDown } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useLangStore } from "@/lib/store";
+import { useLangStore, useUserStore } from "@/lib/store";
 
 export const LOCAL_STORAGE_KEY_LANG = "lang";
 
@@ -44,9 +44,15 @@ export const langs: ILang[] = [
 const LangSwitcher = () => {
   const { lang, setLang, initializeLang } = useLangStore();
   let reloadTimer = useRef<ReturnType<typeof setTimeout>>();
+  const { user, updateUser }: any = useUserStore();
 
-  const onChangeLang = (elem: ILang) => {
+  const onChangeLang = async (elem: ILang) => {
     setLang(elem);
+
+    await updateUser({
+      ...user,
+      language: elem.label,
+    });
 
     reloadTimer.current = setTimeout(() => {
       window.location.reload();
@@ -64,6 +70,12 @@ const LangSwitcher = () => {
   useEffect(() => {
     Weglot?.switchTo(lang.label);
   }, [lang]);
+
+  useEffect(() => {
+    if (user?.id) {
+      setLang(langs.filter((elem) => elem.label === user.language)[0]);
+    }
+  }, [user]);
 
   if (!lang) {
     return;
