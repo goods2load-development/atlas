@@ -17,9 +17,9 @@ const MarketTrendsTabs = ({
 }: MarketTrendsTabs) => {
   return (
     <>
-      <div className="py-8 px-6 rounded-md bg-white md:block hidden max-w-[305px]">
+      <div className="py-8 px-6 rounded-md bg-white md:block hidden">
         {
-          <ol className="flex flex-col gap-4">
+          <ol className="flex flex-col gap-4 w-[310px]">
             {tabs.map(({ id, text }, idx) => {
               return (
                 <li
