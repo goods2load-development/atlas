@@ -16,7 +16,7 @@ export default function RadioGroupItems({
         <RadioGroupItem value={value} id={value} className="hidden" />
         <Label htmlFor={value}>
           <Image
-            src={`/filtericon${imageNumber}.png`}
+            src={`/filtericon${imageNumber}.svg`}
             alt="plane"
             width={58}
             height={58}

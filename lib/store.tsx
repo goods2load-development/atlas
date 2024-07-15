@@ -193,6 +193,16 @@ export const useUserStore = create((set) => ({
       callback();
     });
   },
+  logoutUser: async () => {
+    await postRequest({
+      url: "/auth/logout",
+    }).then(() => {
+      localStorage.removeItem("id");
+      set(() => ({
+        user: {},
+      }));
+    });
+  },
 }));
 
 export const useForgotPasswordStore = create((set) => ({

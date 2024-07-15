@@ -15,7 +15,7 @@ export default function Header({ children }: PropsWithChildren) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [open, setOpen] = useState(false);
   useEffect(() => {
-    if (!!!user?.id) getUser();
+    if (!user?.id) getUser();
   }, [user?.id]);
   return (
     <div

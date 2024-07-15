@@ -23,7 +23,7 @@ export const MarketTrendsTab = ({
         <h3 className="text-center text-[22px] font-[500] up">{title}</h3>
       ) : null}
       {description ? (
-        <p className="mb-8 text-center max-w-[661px] text-sm mx-auto text-halfBlack">
+        <p className="mb-8 text-center max-w-[661px] text-sm mx-auto text-halfBlack h-[60px]">
           {description}
         </p>
       ) : null}

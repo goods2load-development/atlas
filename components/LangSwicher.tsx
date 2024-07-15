@@ -1,9 +1,9 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import frFlag from "@/assets/fr-flag.svg";
-import deFlag from "@/assets/de-flag.svg";
+import arFlag from "@/assets/ar-flag.svg";
+import cnFlag from "@/assets/cn-flag.svg";
+import inFlag from "@/assets/in-flag.svg";
 import enFlag from "@/assets/en-flag.svg";
-import esFlag from "@/assets/es-flag.svg";
 import { ChevronDown } from "lucide-react";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { useLangStore } from "@/lib/store";
@@ -12,9 +12,9 @@ export const LOCAL_STORAGE_KEY_LANG = "lang";
 
 export enum Langs {
   EN = "en",
-  FR = "fr",
-  DE = "de",
-  ES = "es",
+  AR = "ar",
+  IN = "hi",
+  CN = "zh",
 }
 
 export interface ILang {
@@ -28,16 +28,16 @@ export const langs: ILang[] = [
     icon: enFlag,
   },
   {
-    label: Langs.DE,
-    icon: deFlag,
+    label: Langs.AR,
+    icon: arFlag,
   },
   {
-    label: Langs.FR,
-    icon: frFlag,
+    label: Langs.CN,
+    icon: cnFlag,
   },
   {
-    label: Langs.ES,
-    icon: esFlag,
+    label: Langs.IN,
+    icon: inFlag,
   },
 ];
 
@@ -62,9 +62,7 @@ const LangSwitcher = () => {
   }, []);
 
   useEffect(() => {
-    if (lang) {
-      Weglot?.switchTo(lang.label);
-    }
+    Weglot?.switchTo(lang.label);
   }, [lang]);
 
   if (!lang) {

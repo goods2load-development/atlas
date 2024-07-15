@@ -28,7 +28,12 @@ const MarketTrendsMain = () => {
         onChangeTab={onChangeTab}
       />
 
-      <div className="flex flex-col gap-6 w-full">{activeTab.element}</div>
+      <div
+        key={activeTab.id}
+        className="flex flex-col gap-6 w-full max-w-[733px]"
+      >
+        {activeTab.element}
+      </div>
     </div>
   );
 };

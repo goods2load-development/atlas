@@ -18,10 +18,6 @@ import UIButton from "@/components/common/Button";
 export default function PersonalInformationForm(props: any) {
   // TODO finalize validation schema
   const formSchema = z.object({
-    firstName: z.string().min(2, {
-      message: "First name must be at least 2 characters.",
-    }),
-    lastName: z.string(),
     phoneNumber: z.string(),
     email: z.string().email(),
   });
@@ -29,8 +25,6 @@ export default function PersonalInformationForm(props: any) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      firstName: props.firstName,
-      lastName: props.lastName,
       email: props.email,
       phoneNumber: props.phoneNumber,
     },
@@ -46,32 +40,6 @@ export default function PersonalInformationForm(props: any) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full">
         <div className="sm:flex flex-row items-stretch mb-5">
-          <FormField
-            control={form.control}
-            name="firstName"
-            render={({ field }) => (
-              <FormItem className="mr-3 w-full mb-5">
-                <FormLabel>First name</FormLabel>
-                <FormControl>
-                  <Input className="bg-gray-2 border-0" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="lastName"
-            render={({ field }) => (
-              <FormItem className="mr-3 w-full mb-5">
-                <FormLabel>Last name</FormLabel>
-                <FormControl>
-                  <Input className="bg-gray-2 border-0" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
           <FormField
             control={form.control}
             name="phoneNumber"

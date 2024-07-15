@@ -63,7 +63,7 @@ function LogisticsItem({ item }: { item: lItemProps }) {
 
 export default function LogisticInsights() {
   return (
-    <div className="px-5 sm:px-16 py-[80px] lg:bg-bgLogistics bg-cover bg-center">
+    <div className="px-5 sm:px-16 py-[80px] lg:bg-bgLogistics bg-no-repeat bg-cover">
       <h2 className="font-light text-[30px]/[34px] sm:text-[40px]/[48px] text-center sm:text-left">
         <i className="bg-allTittleColor rounded-md px-2 font-normal">
           Logistics

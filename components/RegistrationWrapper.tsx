@@ -2,6 +2,7 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Image from "next/image";
 
 interface RegistrationWrapperProps {
   children: any;
@@ -30,11 +31,13 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
           <div className="min-h-[320px] sm:w-6/12 max-h-full">
             {userRegistration ? (
               <img
+                alt="User Registration Image"
                 className="w-full h-full object-cover"
                 src="/userregistrationimg.png"
               />
             ) : (
               <img
+                alt="Provider Registration Image"
                 className="w-full h-full object-cover"
                 src="/providerregistrationimg.png"
               />
