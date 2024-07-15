@@ -49,10 +49,12 @@ const LangSwitcher = () => {
   const onChangeLang = async (elem: ILang) => {
     setLang(elem);
 
-    await updateUser({
-      ...user,
-      language: elem.label,
-    });
+    if (user?.id) {
+      await updateUser({
+        ...user,
+        language: elem.label,
+      });
+    }
 
     reloadTimer.current = setTimeout(() => {
       window.location.reload();

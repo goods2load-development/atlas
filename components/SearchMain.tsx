@@ -537,7 +537,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
             <label className="mb-2 block">Type of goods</label>
             <Popover open={open}>
               <PopoverTrigger className="w-full">
-                 {/*<ToolTipComponent text={typeOfGoods}/>*/}
+                {/*<ToolTipComponent text={typeOfGoods}/>*/}
                 <Input
                   className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none font-normal text-black w-full"
                   onChange={handleChange}
