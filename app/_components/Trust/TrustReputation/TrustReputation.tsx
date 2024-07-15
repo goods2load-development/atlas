@@ -16,8 +16,8 @@ import Autoplay from "embla-carousel-autoplay";
 
 const TrustReputation = () => {
   return (
-    <section className="w-full lg:mt-[84px]">
-      <h1 className="text-black text-center font-light sm:text-[40px]/[48px] text-[34px]/[38px]">
+    <section className="w-full">
+      <h1 className="text-black text-center font-light sm:text-[40px]/[48px] text-[34px]/[38px] pb-8">
         Our{" "}
         <i className="font-normal bg-[#FEF1DF] rounded-[6px] px-[8px]">
           reputation
@@ -52,7 +52,7 @@ const TrustReputation = () => {
         </Carousel>
       </div>
 
-      <div className="text-black text-[17px]/[23px] flex flex-row gap-[10px] font-medium pb-4 justify-center">
+      <div className="text-black text-[17px]/[23px] flex flex-row gap-[10px] font-medium py-8 justify-center">
         <div>1,000+</div>
         <Image className="relative top-[-3px]" src={stars} alt={"stars"} />
         <div>reviews</div>

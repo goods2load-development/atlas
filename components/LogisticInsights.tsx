@@ -55,7 +55,7 @@ function LogisticsItem({ item }: { item: lItemProps }) {
       </div>
       <Link href={item.link} className="text-orangePrimary text-[18px]/[22px]">
         Read more
-        <img src="/arrowlong.png" className="inline-block ml-3" />
+        <img src="/arrowlong.png" className="inline-block ml-3"  alt={'arrowlong'}/>
       </Link>
     </div>
   );
@@ -63,12 +63,12 @@ function LogisticsItem({ item }: { item: lItemProps }) {
 
 export default function LogisticInsights() {
   return (
-    <div className="px-5 sm:px-16 py-[80px] bg-bgLogistics bg-cover bg-center">
+    <div className="px-5 sm:px-16 py-[80px] lg:bg-bgLogistics bg-no-repeat bg-cover">
       <h2 className="font-light text-[30px]/[34px] sm:text-[40px]/[48px] text-center sm:text-left">
-        <i className="bg-orangeSecondary rounded-sm px-2 font-normal">
+        <i className="bg-allTittleColor rounded-md px-2 font-normal">
           Logistics
         </i>{" "}
-        insights:
+         insights:
       </h2>
       <div className="font-light text-[16px]/[20px] sm:text-[18px]/[22px] py-3 text-center sm:text-left">
         stay ahead with our blog.

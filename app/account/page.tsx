@@ -41,12 +41,8 @@ export default function Account() {
   );
   const info = [
     {
-      title: "First name",
-      value: user?.firstName,
-    },
-    {
-      title: "Last name",
-      value: user?.lastName,
+      title: "",
+      value: `User ${user?.id}`,
     },
     {
       title: "Email address",
@@ -120,7 +116,7 @@ export default function Account() {
         <Card className="mb-10">
           <CardHeader>
             <CardTitle className="font-medium text-[18px]/[22px]">
-              {user?.firstName} {user?.lastName}
+              User {user?.id}
             </CardTitle>
             <CardDescription>{user?.companyName}</CardDescription>
           </CardHeader>
@@ -131,7 +127,7 @@ export default function Account() {
         <Card className="mb-10">
           <CardHeader>
             <CardTitle className="font-medium text-[18px]/[22px] flex justify-between">
-              <span>Personal information</span>
+              <span>Business information</span>
               <UIButton
                 onClick={() => setEdit("info")}
                 secondary

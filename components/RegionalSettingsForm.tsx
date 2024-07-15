@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
-import CurrencyList from "currency-list";
+import { useCurrenciesStore } from "@/lib/filterStore";
 import { useCountriesStore } from "@/lib/store";
 import { useUserStore } from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,6 +18,7 @@ import UIButton from "@/components/common/Button";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -61,7 +62,9 @@ const localization = [
 ];
 
 export default function RegionalSettingsForm(props: AddressFormProps) {
-  const currencies = CurrencyList.getAll("en_US");
+  const { selectedCurrency, currencies, setCurrency } = useCurrenciesStore(
+    (state: any) => state
+  );
   const formSchema = z.object({
     language: z.string(),
     currency: z.string(),
@@ -78,7 +81,7 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       language: props.language,
-      currency: props.currency,
+      currency: selectedCurrency,
       country: props.country,
     },
   });
@@ -131,21 +134,31 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
                 <FormControl>
                   <Select
                     onValueChange={field.onChange}
-                    defaultValue={user?.country}
+                    defaultValue={user?.currency}
                   >
                     <SelectTrigger className="bg-gray-2 border-transparent outline-none">
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      {Object.keys(currencies).map((key: any) => (
-                        <SelectItem
-                          key={`code_${currencies[key].code}`}
-                          value={currencies[key].code as string}
-                        >
-                          {currencies[key].name as string}{" "}
-                          {currencies[key].symbol as string}
-                        </SelectItem>
-                      ))}
+                      <SelectGroup>
+                        <span className="text-[12px] text-gray-500">
+                          Popular
+                        </span>
+                        {currencies?.map((item: any, index: number) => (
+                          <>
+                            <SelectItem key={item.code} value={item.code}>
+                              <span>
+                                {item.code} - {item.symbol}
+                              </span>
+                            </SelectItem>
+                            {index === 2 && (
+                              <span className="block w-full border-t-2 text-[12px] text-gray-500">
+                                Others
+                              </span>
+                            )}
+                          </>
+                        ))}
+                      </SelectGroup>
                     </SelectContent>
                   </Select>
                 </FormControl>

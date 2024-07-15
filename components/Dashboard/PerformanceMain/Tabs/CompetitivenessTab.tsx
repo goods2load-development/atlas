@@ -10,15 +10,15 @@ const CompetitivenessTab = ({ data }: { data: BarChartData[] }) => {
         </span>
         <div className="flex items-center gap-2 md:gap-8 text-[18px] font-[500] text-[#46474C]">
           <div className="flex items-center gap-1 md:gap-3 text-sm md:text-base">
-            <span>Hapag-Lloyd</span>
+            <span>LP-1</span>
             <div className="bg-[#FFEDE4] w-4 h-4 sm:w-6 sm:h-6 rounded-md"></div>
           </div>
           <div className="flex items-center gap-1 md:gap-3 text-sm md:text-base">
-            <span>Maersk</span>
+            <span>LP-2</span>
             <div className="bg-[#FF6720] w-4 h-4 sm:w-6 sm:h-6 rounded-md"></div>
           </div>
           <div className="flex items-center gap-1 md:gap-3 text-sm md:text-base">
-            <span>DP World</span>
+            <span>LP-3</span>
             <div className="bg-[#BB4E1B] w-4 h-4 sm:w-6 sm:h-6 rounded-md"></div>
           </div>
         </div>

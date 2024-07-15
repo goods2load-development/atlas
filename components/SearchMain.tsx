@@ -101,7 +101,7 @@ function CustomRadioGroupItem({
       <RadioGroupItem value={value} id={value} className="hidden" />
       <Label htmlFor={value}>
         <Image
-          src={`/filtericon${imageNumber}.png`}
+          src={`/filtericon${imageNumber}.svg`}
           alt={value}
           width={58}
           height={58}
@@ -115,40 +115,46 @@ function CustomRadioGroupItem({
 function ToolTipComponent({
   text,
   children,
+  asChild,
 }: {
   text: string;
   children?: any;
+  asChild?: boolean;
 }) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild>
+        <TooltipTrigger asChild={asChild}>
           {children ? (
             children
           ) : (
-            <p className="rounded-full border-[1px] w-[20px] h-[20px] border-[#FFC1A2] text-[#FFC1A2] mr-[10px]">
-              i
-            </p>
+            <div className="flex items-center">
+              <p className="rounded-full border-[1px] w-[20px] h-[20px] border-[#FFC1A2] text-[#FFC1A2] mr-[10px] text-center text-[12px]">
+                i
+              </p>
+            </div>
           )}
         </TooltipTrigger>
-        <TooltipContent
-          side={!!children ? "top" : "right"}
-          className="text-[14px]/[18px] font-normal bg-[#FEF1DF] rounded-[16px] p-[16px_24px] overflow-visible relative"
-        >
-          {!children && (
-            <div
-              className="absolute top-[50%] right-[100%] mt-[-10px]"
-              style={{
-                width: 0,
-                height: 0,
-                borderTop: "10px solid transparent",
-                borderBottom: "10px solid transparent",
-                borderRight: "10px solid #FEF1DF  ",
-              }}
-            />
-          )}
-          {text}
-        </TooltipContent>
+        {!!text.length && (
+          <TooltipContent
+            side={!!children ? "top" : "right"}
+            className="text-[14px]/[18px] font-normal bg-[#FEF1DF] rounded-[16px] p-[16px_24px] overflow-visible relative"
+          >
+            {!children && (
+              <div
+                className="absolute top-[50%] right-[100%] mt-[-10px]"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: "10px solid transparent",
+                  borderBottom: "10px solid transparent",
+                  borderRight: "10px solid #FEF1DF  ",
+                }}
+              />
+            )}
+            {text}
+          </TooltipContent>
+        )}
       </Tooltip>
     </TooltipProvider>
   );
@@ -270,9 +276,17 @@ export default function SearchMain({ main }: { main?: boolean }) {
                     role="combobox"
                     className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
                   >
-                    {fromCountry || (
-                      <span className="text-gray-500">Select country</span>
-                    )}
+                    <ToolTipComponent asChild text={fromCountry}>
+                      {fromCountry ? (
+                        <span className="block w-full truncate">
+                          {fromCountry}
+                        </span>
+                      ) : (
+                        <span className="text-gray-500 block w-full truncate">
+                          Select country
+                        </span>
+                      )}
+                    </ToolTipComponent>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent side="bottom" className="w-[200px] p-0">
@@ -311,7 +325,13 @@ export default function SearchMain({ main }: { main?: boolean }) {
                     role="combobox"
                     className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
                   >
-                    {from || <span className="text-gray-500">Select city</span>}
+                    <ToolTipComponent asChild text={from}>
+                      {from ? (
+                        <span className="block w-full truncate">{from}</span>
+                      ) : (
+                        <span className="text-gray-500">Select city</span>
+                      )}
+                    </ToolTipComponent>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
@@ -345,14 +365,21 @@ export default function SearchMain({ main }: { main?: boolean }) {
           <Button
             type="button"
             onClick={switchLocations}
-            className="mb-[-28px] block p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] mx-auto sm:mx-[-16px] sm:mb-[13px] relative z-10 hover:bg-transparent"
+            className="mb-[-28px] block p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] mx-auto sm:mx-[-16px] sm:mb-[13px] relative z-10 hover:bg-transparent group"
           >
             <Image
-              className="min-w-[34px] min-h-[34px]"
+              className="min-w-[34px] min-h-[34px] group-hover:hidden"
               width={34}
               height={34}
               alt="turn"
-              src="/turn.png"
+              src="/turn.svg"
+            />
+            <Image
+              className="min-w-[34px] min-h-[34px] hidden group-hover:block"
+              width={34}
+              height={34}
+              alt="turn"
+              src="/turnhover.svg"
             />
           </Button>
           <div className="flex sm:w-[26%] items-end mb-5 sm:mb-0">
@@ -363,11 +390,17 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    className="pl-[26px] h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
                   >
-                    {toCountry || (
-                      <span className="text-gray-500">Select country</span>
-                    )}
+                    <ToolTipComponent asChild text={toCountry}>
+                      {toCountry ? (
+                        <span className="block w-full truncate">
+                          {toCountry}
+                        </span>
+                      ) : (
+                        <span className="text-gray-500">Select country</span>
+                      )}
+                    </ToolTipComponent>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
@@ -406,7 +439,13 @@ export default function SearchMain({ main }: { main?: boolean }) {
                     role="combobox"
                     className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
                   >
-                    {to || <span className="text-gray-500">Select city</span>}
+                    <ToolTipComponent asChild text={to}>
+                      {to ? (
+                        <span className="block w-full truncate">{to}</span>
+                      ) : (
+                        <span className="text-gray-500">Select city</span>
+                      )}
+                    </ToolTipComponent>
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
@@ -498,6 +537,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
             <label className="mb-2 block">Type of goods</label>
             <Popover open={open}>
               <PopoverTrigger className="w-full">
+                 {/*<ToolTipComponent text={typeOfGoods}/>*/}
                 <Input
                   className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none font-normal text-black w-full"
                   onChange={handleChange}
@@ -505,10 +545,12 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   onBlur={() => setOpen(false)}
                   value={typeOfGoods}
                   placeholder="Type of goods"
+                  // hint={typeOfGoods}
                 />
+                {/* </ToolTipComponent> */}
               </PopoverTrigger>
               <PopoverContent
-                className="sm:w-[200px] p-0 "
+                className="md:w-[300px] w-[200px]  p-0 "
                 onOpenAutoFocus={(e) => e.preventDefault()}
               >
                 <Command>
@@ -621,15 +663,15 @@ export default function SearchMain({ main }: { main?: boolean }) {
               />
             </div>
           </div>
-          <div className="sm:w-[26%] flex">
+          <div className="sm:w-[30%] flex">
             <div className="mr-[1px] w-1/2">
               <label className="mb-2 block text-center sm:text-left">
                 Goods Value
               </label>
-              <div className="flex text-black items-center bg-white font-normal pl-[16px] sm:rounded-none rounded-l-[16px] rounded-r-none">
+              <div className="flex text-black items-center bg-white font-normal pl-[12px] sm:rounded-none rounded-l-[16px] rounded-r-none">
                 {selectedCurrency.symbol}
                 <Input
-                  className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
+                  className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black pl-[2px]"
                   placeholder="Goods Value"
                   type="number"
                   value={goodsValue}
@@ -665,8 +707,8 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Select>
             </div>
           </div>
-          <ToolTipComponent text="Please fill out all fields">
-            <div className="sm:w-[12%] w-full">
+          <ToolTipComponent asChild text="Please fill out all fields">
+            <div className="sm:w-[10%] w-full">
               <UIButton
                 type="submit"
                 disabled={!valid}

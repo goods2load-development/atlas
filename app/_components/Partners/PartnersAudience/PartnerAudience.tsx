@@ -19,7 +19,7 @@ const PartnersAudience: React.FC = () => {
             </span>{" "}
             where they’re most active
           </div>
-          <p className="md:text-[18px] text-black w-full text-center sm:text-left mb-8 sm:mb-0">
+          <p className="md:text-[18px] text-black w-full text-center sm:text-left mb-8 sm:mb-0 md:pr-12">
             The new generation increasingly conducts research on their small
             screens to find the perfect co-pilot to elevate their business. At
             our platform, we’ve got you covered. Our ads drive a higher number
@@ -29,12 +29,13 @@ const PartnersAudience: React.FC = () => {
         </div>
       </div>
       <div className="md:w-1/2 relative mt-10 md:mt-0">
-        <div className="absolute left-0 bottom-0 transform translate-x-[-90px] sm:translate-x-[-197px] translate-y-[65px]">
+        <div className="absolute left-0 bottom-0 transform translate-x-[-120px] md:translate-x-[-240px] translate-y-[65px]">
           <Image
             src={phone.src}
-            width={phone.width}
-            height={phone.height}
+            width={phone.width/2}
+            height={phone.height/2}
             alt="phone"
+            className={'w-[90%] md:w-full'}
           />
         </div>
         <Image

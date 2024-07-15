@@ -36,7 +36,7 @@ export default function RootLayout({
               <br /> with us!
             </span>
             <img
-              src="/whatsupicon.png"
+              src="/whatsupicon.svg"
               alt="whatsup"
               className="float-right w-[52px] h-[52px]"
             />
