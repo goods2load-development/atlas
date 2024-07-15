@@ -38,8 +38,8 @@ export default function SubHeaderMain() {
         <div className="px-5 flex justify-around text-center text-grayCustom flex-wrap relative max-w-[1000px] mx-auto">
           <div className="px-1 flex flex-col text-[18px]/[22px] mb-10">
             <img
-              src="/optimizeicon1.png"
-              alt="Instagram"
+              src="/optimizeicon1.svg"
+              alt="step-one"
               className="self-center mb-5 block w-[64px] sm:w-[110px] h-[64px] sm:h-[110px]"
             />
             1 step
@@ -49,8 +49,8 @@ export default function SubHeaderMain() {
           </div>
           <div className="px-1 flex flex-col text-[18px]/[22px] mb-10">
             <img
-              src="/optimizeicon2.png"
-              alt="Instagram"
+              src="/optimizeicon2.svg"
+                alt="step-two"
               width={110}
               height={110}
               className="self-center mb-5 block w-[64px] sm:w-[110px] h-[64px] sm:h-[110px]"
@@ -62,8 +62,8 @@ export default function SubHeaderMain() {
           </div>
           <div className="px-1 flex flex-col text-[18px]/[22px] mb-10">
             <img
-              src="/optimizeicon3.png"
-              alt="Instagram"
+              src="/optimizeicon3.svg"
+              alt="step-three"
               width={110}
               height={110}
               className="self-center mb-5 block w-[64px] sm:w-[110px] h-[64px] sm:h-[110px]"
@@ -75,8 +75,8 @@ export default function SubHeaderMain() {
           </div>
           <div className="px-1 flex flex-col text-[18px]/[22px]">
             <img
-              src="/optimizeicon3.png"
-              alt="Instagram"
+              src="/optimizeicon4.svg"
+              alt="step-four"
               width={110}
               height={110}
               className="self-center mb-5 block w-[64px] sm:w-[110px] h-[64px] sm:h-[110px]"

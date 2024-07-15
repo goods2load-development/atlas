@@ -2,6 +2,7 @@
 
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import Image from "next/image";
 
 interface LoginWrapperProps {
   children: string | JSX.Element | JSX.Element[];
@@ -28,8 +29,9 @@ export default function LoginWrapper(props: LoginWrapperProps) {
           </div>
           <div className="min-h-[320px] sm:w-6/12">
             <img
+                alt="Login Image"
               className="w-full h-full object-cover"
-              src="/providerregistrationimg.png"
+              src="/loginImg.png"
             />
           </div>
         </div>

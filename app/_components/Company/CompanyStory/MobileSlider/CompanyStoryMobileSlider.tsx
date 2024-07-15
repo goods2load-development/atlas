@@ -94,7 +94,7 @@ export default function CompanyStoryMobileSlider() {
             return (
               <div
                 key={i}
-                className={`embla__slide flex-[0_0_100%] ${selectedIndex === i && "is-selected"}`}
+                className={`embla__slide flex-[0_0_100%] pt-2 ${selectedIndex === i && "is-selected"}`}
               >
                 <CompanyStoryBlock item={item} />
               </div>

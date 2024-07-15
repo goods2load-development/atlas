@@ -10,9 +10,9 @@ const PartnersAmplify: React.FC = () => {
   return (
     <section className="flex relative flex-col w-full items-end justify-center pt-[40px] sm:pt-[47px] bg-bgPartnersAmplify bg-cover bg-center text-white text-center pb-[100px]  sm:pb-[270px] lg:pb-[100px] mb-[230px] sm:pr-[100px]">
       <div className="absolute top-0 right-0 w-[1540px] h-full bg-bgPartnersAmplifyShadow bg-cover bg-center text-white text-center pb-[100px] pt-[150px] mb-[110px]" />
-      <div className="absolute bottom-0 transform translate-y-[135px] md:translate-y-[115px] sm:left-20">
+      <div className="absolute bottom-0 transform translate-y-[220px] md:translate-y-[115px] sm:left-20">
         <Image
-          className="w-[389px] h-[230px] sm:w-[489px] sm:h-[330px] md:w-[533px] md:h-[330px]  lg:w-[733px] lg:h-[430px]"
+          className="w-full sm:w-[489px] sm:h-[330px] md:w-[533px] md:h-[330px]  lg:w-[733px] lg:h-[430px]"
           src={macBookImage}
           alt=""
         />
