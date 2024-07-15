@@ -153,6 +153,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       });
       set(() => ({
         partners: data.data,
+        partnersSelected: data.data.map((item: any) => item.id),
       }));
     },
     getPortsList: async (departure: boolean = false) => {
@@ -163,19 +164,22 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         url: `https://port-api.com/${type}/search/${city}`,
         withCredentials: false,
       });
+      const ports: any[] = data.features.map((item: any) => ({
+        id: item.properties.name,
+        label: item.properties.name,
+      }));
+      const selected: any[] = data.features.map(
+        (item: any) => item.properties.name
+      );
       if (departure) {
         set(() => ({
-          portsDeparture: data.features.map((item: any) => ({
-            id: item.properties.name,
-            label: item.properties.name,
-          })),
+          portsDeparture: ports,
+          portsDepartureSelected: selected,
         }));
       } else {
         set(() => ({
-          portsArrival: data.features.map((item: any) => ({
-            id: item.properties.name,
-            label: item.properties.name,
-          })),
+          portsArrival: ports,
+          portsArrivalSelected: selected,
         }));
       }
     },
