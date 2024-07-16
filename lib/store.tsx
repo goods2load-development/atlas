@@ -177,10 +177,12 @@ export const useUserStore = create((set) => ({
     const formData = new FormData();
     formData.append("file", data);
     await postRequest({
-      url: `/users/${id}/upload/file`,
+      url: `/users/${id}/upload/logo`,
       data: formData,
     }).then((userData: any) => {
-      set((state: any) => ({ user: { ...state.user, ...userData?.data } }));
+      set((state: any) => ({
+        user: { ...state.user, companyPhoto: userData.data },
+      }));
     });
   },
   deleteUser: async (callback: () => void) => {

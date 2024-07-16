@@ -7,9 +7,8 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "../ui/button";
 import { Input } from "@/components/ui/input";
-import { useFilterStore } from "@/lib/filterStore";
+import { useFilterStore, useCurrenciesStore } from "@/lib/filterStore";
 
 function GroupSelection({ selectAll, clearAll }: any) {
   return (
@@ -85,23 +84,14 @@ function FilterItemList({
   });
 }
 
-const orderList: any[] = [
-  { id: "cheapest", label: "Cheapest" },
-  { id: "fastest", label: "Fastest" },
-  { id: "goGreen", label: "GoGreen" },
-];
-
 export default function Filter() {
-  const min = React.createRef<HTMLInputElement>();
-  const max = React.createRef<HTMLInputElement>();
-
   const {
     deliveryBy,
-    from,
-    to,
     cheapest,
     fastest,
     goGreen,
+    priceMin,
+    priceMax,
     partners,
     partnersSelected,
     portsDeparture,
@@ -111,16 +101,26 @@ export default function Filter() {
     setFilter,
     getPortsList,
     getPartners,
+    getProducts,
   } = useFilterStore((state: any) => state);
+  const { selectedCurrency } = useCurrenciesStore((state: any) => state);
   useEffect(() => {
     getPartners();
+    getPortsList(true);
+    getPortsList();
   }, []);
   useEffect(() => {
-    getPortsList(true);
-  }, [from]);
-  useEffect(() => {
-    getPortsList();
-  }, [to]);
+    getProducts();
+  }, [
+    cheapest,
+    fastest,
+    goGreen,
+    priceMin,
+    priceMax,
+    partnersSelected.length,
+    portsDepartureSelected.length,
+    portsArrivalSelected.length,
+  ]);
   function onOrderChange(id: string, e: any, selectedArray: string[]) {
     setFilter({ [id]: e });
     return e;
@@ -135,24 +135,13 @@ export default function Filter() {
     setFilter({ selectedArray: tempArray });
     return e;
   }
-  function setMinMax() {
-    setFilter({ priceMin: min.current?.value, priceMax: max.current?.value });
+  function selectAll(array: any[], arrayName: string, select?: boolean) {
+    const tempArray = select ? array.map((item: any) => item.id) : [];
+    setFilter({ [`${arrayName}Selected`]: tempArray });
   }
-  function selectAllPartners(arrayName: string) {
-    const tempArray = [arrayName].map((item: any) => item.id);
-    setFilter({ [arrayName]: tempArray });
-  }
-  function clearAllPartners(arrayName: string) {
-    setFilter({ [arrayName]: [] });
-  }
-  const trigerClasses = "";
-  const contentClasses = "";
   return (
-    <Accordion
-      type="multiple"
-      className="w-full grid grid-cols-2 justify-stretch sm:block overflow-x-auto space-x-[6px]"
-    >
-      <AccordionItem value="item-1" className="relative">
+    <Accordion type="multiple" className="w-full">
+      <AccordionItem value="item-1">
         <AccordionTrigger>Order</AccordionTrigger>
         <AccordionContent>
           <FilterItem
@@ -175,20 +164,31 @@ export default function Filter() {
           />
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="price" className="min-w-148px">
+      <AccordionItem value="price">
         <AccordionTrigger>Goods value</AccordionTrigger>
-        <AccordionContent className="flex space-x-2">
-          <Input ref={min} placeholder="min" onChange={setMinMax} />
-          <Input ref={max} placeholder="max" onChange={setMinMax} />
-          {/* <Button onClick={setMinMax}>OK</Button> */}
+        <AccordionContent className="flex items-center">
+          {selectedCurrency?.symbol}
+          <Input
+            className="m-1"
+            placeholder="min"
+            value={priceMin}
+            onChange={(e) => setFilter({ priceMin: e.target.value })}
+          />
+          -
+          <Input
+            className="ml-1"
+            placeholder="max"
+            value={priceMax}
+            onChange={(e) => setFilter({ priceMax: e.target.value })}
+          />
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="partners">
         <AccordionTrigger>Logistic partner</AccordionTrigger>
         <AccordionContent>
           <GroupSelection
-            selectAll={selectAllPartners}
-            clearAll={clearAllPartners}
+            selectAll={() => selectAll(partners, "partners", true)}
+            clearAll={() => selectAll(partners, "partners")}
           />
           <FilterItemList
             items={partners}
@@ -201,21 +201,32 @@ export default function Filter() {
       {deliveryBy !== "truck" && (
         <>
           <AccordionItem value="portsDeparture">
-            <AccordionTrigger className="">Port Departure</AccordionTrigger>
+            <AccordionTrigger>
+              {deliveryBy === "plane" && "Air"}Port Departure
+            </AccordionTrigger>
             <AccordionContent>
-              <GroupSelection selectAll={() => {}} clearAll={() => {}} />
+              <GroupSelection
+                selectAll={() =>
+                  selectAll(portsDeparture, "portsDeparture", true)
+                }
+                clearAll={() => selectAll(portsDeparture, "portsDeparture")}
+              />
               <FilterItemList
                 items={portsDeparture}
                 checkedList={portsDepartureSelected}
                 onChange={onCheckboxChange}
               />
-              {/* "portsDeparture" */}
             </AccordionContent>
           </AccordionItem>
           <AccordionItem value="portsArrival">
-            <AccordionTrigger>Port Arrival</AccordionTrigger>
+            <AccordionTrigger>
+              {deliveryBy === "plane" && "Air"}Port Arrival
+            </AccordionTrigger>
             <AccordionContent>
-              <GroupSelection selectAll={() => {}} clearAll={() => {}} />
+              <GroupSelection
+                selectAll={() => selectAll(portsArrival, "portsArrival", true)}
+                clearAll={() => selectAll(portsArrival, "portsArrival")}
+              />
               <FilterItemList
                 items={portsArrival}
                 checkedList={portsArrivalSelected}
