@@ -112,7 +112,7 @@ function CustomRadioGroupItem({
   );
 }
 
-function ToolTipComponent({
+export function ToolTipComponent({
   text,
   children,
   asChild,

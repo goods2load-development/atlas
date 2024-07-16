@@ -5,6 +5,7 @@ import { useFilterStore } from "@/lib/filterStore";
 import { number } from "zod";
 import { useEffect } from "react";
 import Image from "next/image";
+import { ToolTipComponent } from "./SearchMain";
 
 export default function SelectedSearch() {
   const {
@@ -73,13 +74,18 @@ export default function SelectedSearch() {
           <div className="lg:block hidden mt-4 mr-2">
             {renderIcon(deliveryBy)}
           </div>
+
           {fromCountry && from && (
             <div className="mr-[1px] w-[45%] lg:w-[134px] mb-4 lg:mb-0">
               <label className="mb-2 block text-[15px]/[22px] font-semibold">
                 From
               </label>
-              <div className="h-[60px] rounded-l-[16px] border-none font-normal text-black justify-start bg-white flex items-center whitespace-nowrap px-[16px] text-sm overflow-scroll hide-scrollbar">
-                {fromCountry}, {from}
+              <div className="h-[60px] rounded-l-[16px] border-none font-normal text-black justify-start bg-white flex items-center whitespace-nowrap px-[16px] text-sm">
+                <ToolTipComponent text={`${fromCountry}, ${from}`}>
+                  <div className="block w-full truncate lg:w-[110px] text-left">
+                    {fromCountry}, {from}
+                  </div>
+                </ToolTipComponent>
               </div>
             </div>
           )}
@@ -88,8 +94,12 @@ export default function SelectedSearch() {
               <label className="mb-2 block text-[15px]/[22px] font-semibold">
                 To
               </label>
-              <div className="h-[60px] border-none rounded-r-[16px] lg:rounded-none font-normal text-black justify-start bg-white flex items-center whitespace-nowrap px-[16px] text-sm overflow-scroll hide-scrollbar">
-                {toCountry}, {to}
+              <div className="h-[60px] border-none rounded-r-[16px] lg:rounded-none font-normal text-black justify-start bg-white flex items-center whitespace-nowrap px-[8px] text-sm">
+                <ToolTipComponent text={`${toCountry}, ${to}`}>
+                  <div className="block w-full truncate lg:w-[110px] text-left">
+                    {toCountry}, {to}
+                  </div>
+                </ToolTipComponent>
               </div>
             </div>
           )}
@@ -119,8 +129,12 @@ export default function SelectedSearch() {
                 Goods
               </label>
               <div className="h-[60px] rounded-l-[16px] lg:rounded-l-none border-none font-normal text-black  justify-start bg-white flex items-center whitespace-nowrap px-[16px] text-sm pr-2">
-                <div className="h-full flex items-center overflow-x-scroll hide-scrollbar max-w-[122px] sm:max-w-auto">
-                  {typeOfGoods}
+                <div className="h-full flex items-center max-w-[122px] sm:max-w-auto">
+                  <ToolTipComponent text={`${typeOfGoods}`}>
+                    <div className="block w-full truncate lg:w-[100px] text-left">
+                      {typeOfGoods}
+                    </div>
+                  </ToolTipComponent>
                 </div>
               </div>
             </div>
