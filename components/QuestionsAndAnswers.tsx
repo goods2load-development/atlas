@@ -128,7 +128,11 @@ export default function QuestionsAndAnswers() {
           Questions
         </i>
       </div>
-      <Accordion type="single" collapsible className="w-[884px] self-center">
+      <Accordion
+        type="single"
+        collapsible
+        className="max-w-[884px] self-center"
+      >
         {questionsContent.map((item) => (
           <QuestionItem {...item} key={item.number} />
         ))}

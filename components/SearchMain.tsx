@@ -112,19 +112,21 @@ function CustomRadioGroupItem({
   );
 }
 
-function ToolTipComponent({
+export function ToolTipComponent({
   text,
   children,
   asChild,
+  className,
 }: {
   text: string;
   children?: any;
   asChild?: boolean;
+  className?: string;
 }) {
   return (
     <TooltipProvider>
       <Tooltip>
-        <TooltipTrigger asChild={asChild}>
+        <TooltipTrigger asChild={asChild} className={className}>
           {children ? (
             children
           ) : (
@@ -246,6 +248,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
     }
   }
 
+  const [fromCountryOpen, setFromCountryOpen] = useState(false);
+  const [fromCityOpen, setFromCityOpen] = useState(false);
+  const [toCountryOpen, setToCountryOpen] = useState(false);
+  const [toCityOpen, setToCityOpen] = useState(false);
+
   return (
     <form onSubmit={onSubmit}>
       <RadioGroup
@@ -269,12 +276,13 @@ export default function SearchMain({ main }: { main?: boolean }) {
           <div className="flex sm:w-[26%] items-end">
             <div className="mr-[1px] w-1/2">
               <label className="mb-2 block">From</label>
-              <Popover>
+              <Popover open={fromCountryOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    onClick={() => setFromCountryOpen(true)}
                   >
                     <ToolTipComponent asChild text={fromCountry}>
                       {fromCountry ? (
@@ -282,9 +290,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                           {fromCountry}
                         </span>
                       ) : (
-                        <span className="text-gray-500 block w-full truncate">
-                          Select country
-                        </span>
+                        <span className="text-gray-500">Select country</span>
                       )}
                     </ToolTipComponent>
                   </Button>
@@ -305,6 +311,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               onSelect={() => {
                                 setFilter({ fromCountry: country.value });
                                 getCitiesList(country.value);
+                                setFromCountryOpen(false);
                               }}
                             >
                               {country.label}
@@ -318,12 +325,13 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Popover>
             </div>
             <div className="w-1/2">
-              <Popover>
+              <Popover open={fromCityOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
+                    onClick={() => setFromCityOpen(true)}
                   >
                     <ToolTipComponent asChild text={from}>
                       {from ? (
@@ -349,6 +357,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               key={index}
                               onSelect={() => {
                                 setFilter({ from: item.label });
+                                setFromCityOpen(false);
                               }}
                             >
                               {item.label}
@@ -385,12 +394,13 @@ export default function SearchMain({ main }: { main?: boolean }) {
           <div className="flex sm:w-[26%] items-end mb-5 sm:mb-0">
             <div className="mr-[1px] w-1/2">
               <label className="mb-2 block">To</label>
-              <Popover>
+              <Popover open={toCountryOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="pl-[26px] h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    onClick={() => setToCountryOpen(true)}
                   >
                     <ToolTipComponent asChild text={toCountry}>
                       {toCountry ? (
@@ -419,6 +429,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               onSelect={() => {
                                 setFilter({ toCountry: item.value });
                                 getCitiesList(item.value, true);
+                                setToCountryOpen(false);
                               }}
                             >
                               {item.label}
@@ -432,12 +443,13 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Popover>
             </div>
             <div className="mr-[1px] w-1/2">
-              <Popover>
+              <Popover open={toCityOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
+                    onClick={() => setToCityOpen(true)}
                   >
                     <ToolTipComponent asChild text={to}>
                       {to ? (
@@ -463,6 +475,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               key={index}
                               onSelect={() => {
                                 setFilter({ to: item.label });
+                                setToCityOpen(false);
                               }}
                             >
                               {item.label}
@@ -537,7 +550,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
             <label className="mb-2 block">Type of goods</label>
             <Popover open={open}>
               <PopoverTrigger className="w-full">
-                 {/*<ToolTipComponent text={typeOfGoods}/>*/}
+                {/*<ToolTipComponent text={typeOfGoods}/>*/}
                 <Input
                   className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none font-normal text-black w-full"
                   onChange={handleChange}
@@ -545,7 +558,6 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   onBlur={() => setOpen(false)}
                   value={typeOfGoods}
                   placeholder="Type of goods"
-                  // hint={typeOfGoods}
                 />
                 {/* </ToolTipComponent> */}
               </PopoverTrigger>
