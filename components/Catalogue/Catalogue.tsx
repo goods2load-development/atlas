@@ -31,8 +31,8 @@ export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
   const { deliveryBy } = useFilterStore((state: any) => state);
   return (
-    <div className="relative md:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_8px] md:p-[40px_72px] gap-8 overflow-visible">
-      <div className="md:hidden flex justify-between pb-[18px] px-[8px] items-center">
+    <div className="relative lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_8px] gap-8 overflow-visible">
+      <div className="lg:hidden flex justify-between pb-[18px] px-[8px] items-center">
         {renderIcon(deliveryBy)}
         <div className="flex items-center space-x-[6px]">
           <Sheet>
@@ -57,12 +57,12 @@ export default function Catalogue() {
         </div>
       </div>
       <div
-        className={`col-span-2 rounded-2xl overflow-hidden p-1 md:p-4 ${searchOpened ? "max-h-min" : "max-h-0"} transition-all duration-500 ease md:h-auto`}
+        className={`col-span-2 rounded-2xl overflow-hidden p-1 lg:p-4 ${searchOpened ? "max-h-min" : "max-h-0"} lg:max-h-min transition-all duration-500 ease lg:h-auto`}
       >
         <SelectedSearch />
       </div>
-      <div className="md:bg-[#F9F9F9] rounded-2xl w-full md:w-[280px] hidden md:block">
-        <div className="md:p-4 sticky top-0">
+      <div className="lg:bg-[#F9F9F9] rounded-2xl w-full lg:w-[280px] hidden lg:block">
+        <div className="lg:p-4 sticky top-0">
           <PriceAlerts />
           <Filter />
         </div>
