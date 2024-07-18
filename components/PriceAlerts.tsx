@@ -108,9 +108,9 @@ export default function PriceAlerts() {
   return (
     <Dialog onOpenChange={() => setStep(0)}>
       <DialogTrigger asChild>
-        <UIButton className="w-[44px] h-[44px] sm:w-full sm:h-auto px-1">
+        <UIButton className="w-full px-1">
           <img src="/ringwhite.svg" />
-          <span className="hidden sm:inline">Price alerts</span>
+          Price alerts
         </UIButton>
       </DialogTrigger>
       <DialogContent
