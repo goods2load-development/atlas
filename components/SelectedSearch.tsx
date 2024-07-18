@@ -67,7 +67,7 @@ export default function SelectedSearch() {
 
   return (
     <div
-      className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] sm:p-[24px] p-4 px-1 mt-[10px] relative z-50 max-w-[1296px] xl:mx-auto`}
+      className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] sm:p-[24px] p-4 px-1 mt-[10px] relative z-40 max-w-[1296px] xl:mx-auto`}
     >
       <div className="flex lg:justify-start justify-center xl:justify-center items-center overflow-x-scroll pb-4 hide-scrollbar">
         <div className="flex flex-wrap lg:flex-nowrap items-end justify-center lg:justify-start">

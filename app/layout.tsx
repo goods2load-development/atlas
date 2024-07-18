@@ -29,7 +29,7 @@ export default function RootLayout({
         <body className={poppins.className}>
           <a
             href="https://wa.me/+971505574291"
-            className="sm:pl-[20px] text-[14px]/[16px] bg-white rounded-full flex flex-row border-[1px] shadow-lg border-white fixed z-20 bottom-[16px] sm:bottom-[40px] right-[16px] sm:right-[40px]"
+            className="sm:pl-[20px] text-[14px]/[16px] bg-white rounded-full flex flex-row border-[1px] shadow-lg border-white fixed z-50 bottom-[16px] sm:bottom-[40px] right-[16px] sm:right-[40px]"
           >
             <span className="hidden sm:inline self-center pr-[10px]">
               Chat by WhatsApp
