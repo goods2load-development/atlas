@@ -58,6 +58,7 @@ interface FilterStoreProps {
   portsDepartureSelected: string[];
   portsArrivalSelected: string[];
   products: any[];
+  pagination: any;
   setFilter: (data: FilterStoreProps) => void;
   portsDeparture: string[];
   portsArrival: string[];
@@ -107,6 +108,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     sortBy: null,
 
     products: [],
+    pagination: {},
     setFilter: (newFilter: FilterStoreProps) => {
       const {
         fromCountry,
@@ -183,7 +185,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         }));
       }
     },
-    getProducts: async () => {
+    getProducts: async (page?: number) => {
       const {
         deliveryBy,
         fromCountry,
@@ -235,6 +237,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
 
       postRequest({
         url: "orders/search",
+        params: { page, take: 10 },
         data: {
           transportation: deliveryBy,
           from: `${fromCountry}, ${from}`,
@@ -276,6 +279,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         },
       }).then((data: any) => {
         const products = data.partners.data.map((item: any) => ({
+          deliveryBy: item.transportation,
           estimatedTransit: item.transit,
           company: {
             name: item.companyName,
@@ -289,9 +293,10 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             "MM/dd/yyyy"
           ),
           orderCost: item.price,
+          CO2EmissionControlled: item.goGreen,
         }));
         console.log("products", products);
-        set(() => ({ products }));
+        set(() => ({ products, pagination: data.partners.meta }));
       });
     },
   };

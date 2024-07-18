@@ -165,7 +165,7 @@ export default function Filter() {
         </AccordionContent>
       </AccordionItem>
       <AccordionItem value="price">
-        <AccordionTrigger>Goods value</AccordionTrigger>
+        <AccordionTrigger>Shipping price</AccordionTrigger>
         <AccordionContent className="flex items-center">
           {selectedCurrency?.symbol}
           <Input
