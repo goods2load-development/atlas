@@ -72,7 +72,7 @@ export default function Product(props: Props) {
             </div>
           </div>
         </div>
-        <div className="md:w-[200px] min-h-[104px] text-center flex flex-col justify-center md:border-l-[1px]">
+        <div className="md:w-[200px] min-w-[200px] min-h-[104px] text-center flex flex-col justify-center md:border-l-[1px]">
           <div className="text-[24px]/[28px] font-light [&>span]:font-normal [&>span]:italic">
             Order <span>cost</span>
           </div>

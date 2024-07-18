@@ -31,7 +31,7 @@ export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
   const { deliveryBy } = useFilterStore((state: any) => state);
   return (
-    <div className="relative lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_8px] gap-8 overflow-visible">
+    <div className="lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_8px] gap-8 overflow-visible">
       <div className="lg:hidden flex justify-between pb-[18px] px-[8px] items-center">
         {renderIcon(deliveryBy)}
         <div className="flex items-center space-x-[6px]">
