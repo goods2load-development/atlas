@@ -73,7 +73,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
   return (
     <Dialog onOpenChange={() => setStep(0)}>
       <DialogTrigger asChild>
-        <UIButton className="rounded-none w-full sm:w-[200px]">Select</UIButton>
+        <UIButton className="rounded-none w-full md:w-[200px]">Select</UIButton>
       </DialogTrigger>
       <DialogContent className="max-w-[632px] p-[48px_52px] overflow-auto max-h-screen">
         <Form {...form}>

@@ -13,11 +13,9 @@ export default function Products() {
   }, []);
   return products.length ? (
     <div className="bg-blue-000 space-y-[24px]">
-      {products.map((product: any, index: number) => {
-        return (
-          <Product key={index} onBuy={() => console.log(index)} {...product} />
-        );
-      })}
+      {products.map((product: any, index: number) => (
+        <Product key={index} {...product} />
+      ))}
       {pagination.hasNextPage && (
         <div className="text-center pb-5">
           <UIButton onClick={() => getProducts(pagination.page + 1)} secondary>
