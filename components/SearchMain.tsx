@@ -124,7 +124,7 @@ export function ToolTipComponent({
   className?: string;
 }) {
   return (
-    <TooltipProvider>
+    <TooltipProvider delayDuration={200}>
       <Tooltip>
         <TooltipTrigger asChild={asChild} className={className}>
           {children ? (
@@ -550,16 +550,18 @@ export default function SearchMain({ main }: { main?: boolean }) {
             <label className="mb-2 block">Type of goods</label>
             <Popover open={open}>
               <PopoverTrigger className="w-full">
-                {/*<ToolTipComponent text={typeOfGoods}/>*/}
-                <Input
-                  className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none font-normal text-black w-full"
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={() => setOpen(false)}
-                  value={typeOfGoods}
-                  placeholder="Type of goods"
-                />
-                {/* </ToolTipComponent> */}
+                <ToolTipComponent asChild text={typeOfGoods}>
+                  <div>
+                    <Input
+                      className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none font-normal text-black w-full"
+                      onChange={handleChange}
+                      onFocus={handleFocus}
+                      onBlur={() => setOpen(false)}
+                      value={typeOfGoods}
+                      placeholder="Type of goods"
+                    />
+                  </div>
+                </ToolTipComponent>
               </PopoverTrigger>
               <PopoverContent
                 className="md:w-[300px] w-[200px]  p-0 "
