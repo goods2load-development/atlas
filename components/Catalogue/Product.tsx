@@ -7,15 +7,28 @@ import { HTMLAttributes, PropsWithChildren } from "react";
 import SelectionPopup from "./SelectionPopup";
 
 interface Props extends IProduct {
-  onBuy: () => void;
+  deliveryBy: string;
+}
+
+function Icon(type: string) {
+  switch (type) {
+    case "plane":
+      return "/productplane.svg";
+
+    case "ferry":
+      return "/productferry.svg";
+
+    default:
+      return "/producttruck.svg";
+  }
 }
 
 export default function Product(props: Props) {
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
-      <div className="sm:flex justify-between">
+      <div className="md:flex justify-between">
         <div className="flex border-b-[1px]">
-          <div className="w-1/2 sm:w-[184px] p-[24px] border-r-[1px]">
+          <div className="w-1/2 md:w-[184px] p-[24px] border-r-[1px]">
             <div className="text-[24px]/[28px] font-light [&>i]:font-normal">
               Estimated <i>transit</i>
             </div>
@@ -40,7 +53,7 @@ export default function Product(props: Props) {
         <div className="flex border-b-[1px]">
           <div className="w-1/2 flex flex-col items-center p-[24px]">
             <div className="text-[20px]/[22px] font-medium flex gap-2 items-center">
-              <ShipIcon />
+              <img src={Icon(props.deliveryBy)} />
               Withdraw
             </div>
             <div className="text-[12px]/[18px]">
@@ -50,7 +63,7 @@ export default function Product(props: Props) {
           </div>
           <div className="w-1/2 flex flex-col items-center p-[24px]">
             <div className="text-[20px]/[22px] font-medium flex gap-2 items-center">
-              <ShipIcon />
+              <img src={Icon(props.deliveryBy)} />
               Delivery
             </div>
             <div className="text-[12px]/[18px]">
@@ -59,7 +72,7 @@ export default function Product(props: Props) {
             </div>
           </div>
         </div>
-        <div className="sm:w-[200px] min-h-[104px] text-center flex flex-col justify-center sm:border-l-[1px]">
+        <div className="md:w-[200px] min-h-[104px] text-center flex flex-col justify-center md:border-l-[1px]">
           <div className="text-[24px]/[28px] font-light [&>span]:font-normal [&>span]:italic">
             Order <span>cost</span>
           </div>
@@ -68,8 +81,8 @@ export default function Product(props: Props) {
           </div>
         </div>
       </div>
-      <div className="sm:flex justify-between">
-        <div className="pl-6 grid items-center">
+      <div className="md:flex justify-between">
+        <div className="py-[8px] md:py-0 border-t md:border-none md:pl-6 grid items-center justify-center md:justify-start ">
           {props.CO2EmissionControlled && (
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
               <LeafIcon />

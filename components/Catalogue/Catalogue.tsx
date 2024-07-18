@@ -29,7 +29,6 @@ const renderIcon = (deliveryBy: string) => {
 
 export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
-  const [filterOpened, setFilterOpened] = useState(false);
   const { deliveryBy } = useFilterStore((state: any) => state);
   return (
     <div className="relative md:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_8px] md:p-[40px_72px] gap-8 overflow-visible">
@@ -40,8 +39,8 @@ export default function Catalogue() {
             <SheetTrigger>
               <img src="/filtermobilebutton.svg" />
             </SheetTrigger>
-            <SheetContent side="left" className="md:hidden">
-              <p>Filters</p>
+            <SheetContent side="left" className="pt-[54px] overflow-y-auto">
+              <p className="pb-[32px] text-[18px] font-medium">Filters</p>
               <PriceAlerts />
               <Filter />
             </SheetContent>
@@ -68,7 +67,6 @@ export default function Catalogue() {
           <Filter />
         </div>
       </div>
-
       <Products />
     </div>
   );
