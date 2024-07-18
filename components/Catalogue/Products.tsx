@@ -5,8 +5,9 @@ import { useEffect } from "react";
 import UIButton from "../common/Button";
 
 export default function Products() {
-  const { products, getProducts } = useFilterStore((state: any) => state);
-  console.log("P", products);
+  const { products, pagination, getProducts } = useFilterStore(
+    (state: any) => state
+  );
   useEffect(() => {
     getProducts();
   }, []);
@@ -17,9 +18,13 @@ export default function Products() {
           <Product key={index} onBuy={() => console.log(index)} {...product} />
         );
       })}
-      <div className="text-center pb-5">
-        <UIButton secondary>Show more results</UIButton>
-      </div>
+      {pagination.hasNextPage && (
+        <div className="text-center pb-5">
+          <UIButton onClick={() => getProducts(pagination.page + 1)} secondary>
+            Show more results
+          </UIButton>
+        </div>
+      )}
     </div>
   ) : (
     <div className="text-center grid pap-6 items-center">No data found</div>
