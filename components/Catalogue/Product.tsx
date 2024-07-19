@@ -24,6 +24,7 @@ function Icon(type: string) {
 }
 
 export default function Product(props: Props) {
+  console.log(props, "-----");
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
       <div className="md:flex justify-between">
@@ -94,6 +95,8 @@ export default function Product(props: Props) {
           company={props.company.name}
           withdraw={props.withdraw}
           delivery={props.delivery}
+          portArrival={props.portArrival}
+          portDeparture={props.portDeparture}
         />
       </div>
     </div>

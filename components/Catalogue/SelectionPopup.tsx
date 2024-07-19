@@ -30,6 +30,8 @@ interface SelectionPopupProps {
   company: string;
   withdraw: string;
   delivery: string;
+  portArrival: string;
+  portDeparture: string;
 }
 
 function IsRequired() {
@@ -65,6 +67,8 @@ export default function SelectionPopup(props: SelectionPopupProps) {
         fromCompany: props.company,
         withdraw: props.withdraw,
         delivery: props.delivery,
+        portArrival: props.portArrival,
+        portDeparture: props.portDeparture,
       },
     }).then(() => {
       setStep(1);
