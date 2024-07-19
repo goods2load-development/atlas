@@ -230,7 +230,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
   };
 
   useEffect(() => {
-    if (typeOfGoods.length >= 2 && open) {
+    if (typeOfGoods.length >= 4 && open) {
       clearTimeout(debounce.current);
       // @ts-ignore
       debounce.current = setTimeout<any>(() => {
@@ -246,6 +246,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
       getProducts();
       if (main) router.push("/catalogue");
     }
+  }
+
+  function filter(value: string, search: string) {
+    if (value.includes(search.toLocaleLowerCase())) return 1;
+    else return 0;
   }
 
   const [fromCountryOpen, setFromCountryOpen] = useState(false);
@@ -296,7 +301,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent side="bottom" className="w-[200px] p-0">
-                  <Command>
+                  <Command filter={filter}>
                     <CommandInput placeholder="Search..." />
                     <CommandEmpty>Not found.</CommandEmpty>
                     {countriesListLoading ? (
@@ -343,7 +348,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
-                  <Command>
+                  <Command filter={filter}>
                     <CommandInput placeholder="Search..." />
                     <CommandEmpty>Not found.</CommandEmpty>
                     {citiesListLoading ? (
@@ -414,7 +419,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
-                  <Command>
+                  <Command filter={filter}>
                     <CommandInput placeholder="Search..." />
                     <CommandEmpty>Not found.</CommandEmpty>
                     {countriesListLoading ? (
@@ -461,7 +466,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[200px] p-0">
-                  <Command>
+                  <Command filter={filter}>
                     <CommandInput placeholder="Search..." />
                     <CommandEmpty>Not found.</CommandEmpty>
                     {citiesListToLoading ? (

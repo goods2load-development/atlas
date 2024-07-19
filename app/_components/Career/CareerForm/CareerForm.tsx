@@ -19,8 +19,8 @@ import {
 import { useForm } from "react-hook-form";
 import AttachSvg from "../../Svg/CareerSvg/Attach/AttachSvg";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { Label } from "@radix-ui/react-label";
+import { postRequest } from "@/lib/utils";
 
 const MAX_FILE_SIZE = 2000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -42,7 +42,6 @@ const formSchema = z.object({
 });
 
 const CareerForm: React.FC = () => {
-  const [currentFile, setPhoto] = useState<File | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,8 +53,8 @@ const CareerForm: React.FC = () => {
     },
   });
   const fileRef = form.register("currentFile", { required: true });
-  const handleSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const handleSubmit = (data: z.infer<typeof formSchema>) => {
+    postRequest({ url: "/careers", data });
   };
   const data: any = [
     { placeHolder: "First name", type: "text", name: "firstName" },
@@ -68,57 +67,50 @@ const CareerForm: React.FC = () => {
       <div className="text-[34px] sm:text-[48px] text-white text-center font-poppins italic">
         WORK WITH US
       </div>
-
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)}>
           <div className="image-name flex flex-col items-center gap-[20px] relative mb-[40px]">
-            {data.map((it: any, i: number) => {
-              return (
-                <FormField
-                  key={i}
-                  control={form.control}
-                  name={it.name}
-                  render={({ field }) => {
-                    return (
-                      <FormItem className="w-full">
-                        <FormControl>
-                          <Input
-                            placeholder={it.placeHolder}
-                            type={it.type}
-                            {...field}
-                            className="max-w-[526px] w-full h-[60px] border-none rounded-[8px]  bg-white pl-[20px] text-black placeholder-originalBlack"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                />
-              );
-            })}
+            {data.map((it: any, i: number) => (
+              <FormField
+                key={i}
+                control={form.control}
+                name={it.name}
+                render={({ field }) => (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <Input
+                        placeholder={it.placeHolder}
+                        type={it.type}
+                        {...field}
+                        className="max-w-[526px] w-full h-[60px] border-none rounded-[8px]  bg-white pl-[20px] text-black placeholder-originalBlack"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ))}
           </div>
           <div className="mb-[40px]">
             <FormField
               control={form.control}
               name="selectValue"
-              render={({ field }) => {
-                return (
-                  <FormItem>
-                    <Select onValueChange={field.onChange}>
-                      <FormControl className="max-w-[526px] w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Vacancy" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="personal">Personal</SelectItem>
-                        <SelectItem value="company">Company</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
+              render={({ field }) => (
+                <FormItem>
+                  <Select onValueChange={field.onChange}>
+                    <FormControl className="max-w-[526px] w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Vacancy" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="personal">Personal</SelectItem>
+                      <SelectItem value="company">Company</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
           <p className="text-[16px] text-white max-w-[526px] w-full mb-[15px]">
@@ -132,32 +124,29 @@ const CareerForm: React.FC = () => {
             <div>
               <div className="bg-customGrey w-full w-[218px] rounded-[5px] text-center pt-[20px] pb-[20px] pr-[20px] pl-[20px]  relative flex items-center gap-[10px]">
                 <AttachSvg />
-
                 <FormField
                   control={form.control}
                   name="currentFile"
-                  render={() => {
-                    return (
-                      <FormItem>
-                        <FormControl>
-                          <Label className="rounded-md text-black cursor-pointer">
-                            Choose your file
-                            <Input
-                              type="file"
-                              className="hidden"
-                              {...fileRef}
-                            />
-                          </Label>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
+                  render={() => (
+                    <FormItem>
+                      <FormControl>
+                        <Label className="rounded-md text-black cursor-pointer">
+                          Choose your file
+                          <Input
+                            type="file"
+                            className="hidden"
+                            accept="application/pdf, application/msword, .rtf"
+                            {...fileRef}
+                          />
+                        </Label>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
             </div>
           </div>
-
           <Button
             type="submit"
             className="bg-primaryOrange w-full max-w-[521px] mx-auto rounded-[16px] text-center pt-[30px] pb-[30px] text-white text-[16px] font-medium"
