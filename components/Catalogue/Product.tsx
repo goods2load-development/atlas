@@ -24,7 +24,6 @@ function Icon(type: string) {
 }
 
 export default function Product(props: Props) {
-  console.log(props, "-----");
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
       <div className="md:flex justify-between">
