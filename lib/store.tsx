@@ -95,9 +95,7 @@ export const useRegistrationStore = create((set) => ({
     formData.append("insuranceStatement", data.insuranceStatement);
     formData.append("issuingAuthority", data.issuingAuthority);
     formData.append("tradeLicenseNumber", data.tradeLicenseNumber);
-    formData.append("ferry", `${!!data.ferry}`);
-    formData.append("truck", `${!!data.truck}`);
-    formData.append("plane", `${!!data.plane}`);
+  
     delete data.confirmPassword;
     delete data.privacy;
 
@@ -105,9 +103,6 @@ export const useRegistrationStore = create((set) => ({
     delete data.issuingAuthority;
     delete data.tradeLicenseNumber;
 
-    delete data.ferry;
-    delete data.plane;
-    delete data.truck;
     delete data.license;
     postRequest({
       url: "auth/register",
@@ -115,7 +110,7 @@ export const useRegistrationStore = create((set) => ({
     }).then((response) => {
       if (isProvider) {
         postRequest({
-          url: `providers/upload/users/${response.data.id}`,
+          url: `users/${response.data.id}/upload/file`,
           data: formData,
           headers: { "Content-Type": "multipart/form-data" },
         }).then(() => {
