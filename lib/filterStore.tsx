@@ -294,6 +294,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           ),
           orderCost: item.price,
           CO2EmissionControlled: item.goGreen,
+          portArrival: item.portArrival,
+          portDeparture: item.portDeparture,
         }));
         console.log("products", products);
         set(() => ({ products, pagination: data.partners.meta }));

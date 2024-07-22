@@ -9,6 +9,8 @@ export interface IProduct {
   estimatedTransit: number;
   CO2EmissionControlled: boolean;
   company: { name: string; logo: StaticImageData };
+  portArrival: string;
+  portDeparture: string;
 }
 
 export const products: IProduct[] = [
@@ -19,6 +21,8 @@ export const products: IProduct[] = [
     estimatedTransit: 48,
     CO2EmissionControlled: false,
     company: { name: "DP_World", logo: logoPlaceholder },
+    portArrival: "",
+    portDeparture: "",
   },
   {
     withdraw: "19/04/2024",
@@ -27,5 +31,7 @@ export const products: IProduct[] = [
     estimatedTransit: 53,
     CO2EmissionControlled: true,
     company: { name: "Hapag_Lloyd", logo: logoPlaceholder2 },
+    portArrival: "",
+    portDeparture: "",
   },
 ];
