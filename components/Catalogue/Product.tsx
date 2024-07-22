@@ -94,6 +94,8 @@ export default function Product(props: Props) {
           company={props.company.name}
           withdraw={props.withdraw}
           delivery={props.delivery}
+          portArrival={props.portArrival}
+          portDeparture={props.portDeparture}
         />
       </div>
     </div>
