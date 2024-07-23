@@ -36,7 +36,7 @@ const lItems: lItemProps[] = [
 
 function LogisticsItem({ item }: { item: lItemProps }) {
   return (
-    <div className="sm:w-4/12 mb-5 sm:pr-[20px] sm:min-w-[400px]">
+    <div className="w-full mb-5 max-w-[400px]">
       <div className="bg-gradient-to-br from-gradFrom to-gradTo px-[30px] py-[20px] rounded-sm mb-[30px]">
         <img
           src={item.imageSrc}
@@ -55,7 +55,11 @@ function LogisticsItem({ item }: { item: lItemProps }) {
       </div>
       <Link href={item.link} className="text-orangePrimary text-[18px]/[22px]">
         Read more
-        <img src="/arrowlong.png" className="inline-block ml-3"  alt={'arrowlong'}/>
+        <img
+          src="/arrowlong.png"
+          className="inline-block ml-3"
+          alt={"arrowlong"}
+        />
       </Link>
     </div>
   );
@@ -63,17 +67,17 @@ function LogisticsItem({ item }: { item: lItemProps }) {
 
 export default function LogisticInsights() {
   return (
-    <div className="px-5 sm:px-16 py-[80px] lg:bg-bgLogistics bg-no-repeat bg-cover">
-      <h2 className="font-light text-[30px]/[34px] sm:text-[40px]/[48px] text-center sm:text-left">
+    <div className="px-[16px] max-w-[1328px] mx-auto py-[80px] lg:bg-bgLogistics bg-no-repeat bg-cover">
+      <h2 className="font-light text-[30px]/[34px] md:text-[40px]/[48px] text-center md:text-left">
         <i className="bg-allTittleColor rounded-md px-2 font-normal">
           Logistics
         </i>{" "}
-         insights:
+        insights:
       </h2>
-      <div className="font-light text-[16px]/[20px] sm:text-[18px]/[22px] py-3 text-center sm:text-left">
+      <div className="font-light text-[16px]/[20px] md:text-[18px]/[22px] py-3 text-center md:text-left">
         stay ahead with our blog.
       </div>
-      <div className="sm:flex flex-wrap justify-center space-between mt-5">
+      <div className="sm:flex flex-wrap justify-around mt-5 gap-3">
         {lItems.map((item, index) => (
           <LogisticsItem item={item} key={`${item.title}-${index}`} />
         ))}

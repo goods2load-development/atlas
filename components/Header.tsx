@@ -26,7 +26,7 @@ export default function Header({ children }: PropsWithChildren) {
       } bg-cover bg-center text-white`}
     >
       <header
-        className={`flex items-center justify-between min-h-[75px] px-5 sm:px-16 ${open && "bg-orangePrimary"}`}
+        className={`flex items-center justify-between min-h-[75px] px-[16px] max-w-[1328px] mx-auto ${open && "bg-orangePrimary"}`}
       >
         <Logo width={236} height={28} />
         <div
@@ -47,7 +47,7 @@ export default function Header({ children }: PropsWithChildren) {
           )}
         </div>
         <NavigationMenu
-          className={`${!open && "hidden"} sm:block absolute sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm p-5 bg-orangePrimary sm:bg-transparent text-white`}
+          className={`${!open && "hidden"} sm:block absolute sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm p-5 bg-orangePrimary sm:bg-transparent text-white pr-0`}
         >
           <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
             <NavigationMenuItem>
@@ -59,7 +59,7 @@ export default function Header({ children }: PropsWithChildren) {
             {user?.id ? (
               <NavigationMenuItem>
                 <Link href="/account" className="flex items-center">
-                  <img src="/userwhite.svg" alt={'user-white'}/>
+                  <img src="/userwhite.svg" alt={"user-white"} />
                 </Link>
               </NavigationMenuItem>
             ) : (

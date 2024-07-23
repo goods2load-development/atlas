@@ -84,7 +84,7 @@ export default function CompanyStoryMobileSlider() {
   };
 
   return (
-    <>
+    <div className="px-[16px] max-w-[1328px] mx-auto">
       <div
         className="sm:hidden embla overflow-visible min-h-[352px] w-full relative"
         ref={emblaRef}
@@ -130,6 +130,6 @@ export default function CompanyStoryMobileSlider() {
           <ChevronRight />
         </button>
       </div>
-    </>
+    </div>
   );
 }

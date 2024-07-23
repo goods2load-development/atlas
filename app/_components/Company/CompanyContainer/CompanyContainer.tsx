@@ -9,7 +9,7 @@ import CompanyStoryMobileSlider from "../CompanyStory/MobileSlider/CompanyStoryM
 
 const CompanyContainer = () => {
   return (
-    <div className="w-full top-[600px] inset-0 flex flex-col items-center mt-80px">
+    <div className="w-full inset-0 flex flex-col items-center mt-80px">
       <CompanyMainInfo />
       <CompanyStory />
       <CompanyStoryMobileSlider />
