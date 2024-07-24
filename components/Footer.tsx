@@ -11,6 +11,7 @@ import Logo from "@/components/Logo";
 import Socials from "@/components/Socials";
 import LangSwitcher from "./LangSwicher";
 import * as React from "react";
+import ErrorBoundary from "./ErrorBoundary";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -34,7 +35,10 @@ export default function Footer() {
               value="item-1"
               className="border-transparent hidden sm:block"
             >
-              <AccordionTrigger className="pt-0 pb-3 font-normal" usageContext={'footer'}>
+              <AccordionTrigger
+                className="pt-0 pb-3 font-normal"
+                usageContext={"footer"}
+              >
                 About us
               </AccordionTrigger>
               <AccordionContent>
@@ -55,13 +59,16 @@ export default function Footer() {
           </Accordion>
           <div>
             <Accordion
-                type="single"
-                collapsible
-                defaultValue="item-1"
-                className="w-32 f-accordion hidden sm:block"
+              type="single"
+              collapsible
+              defaultValue="item-1"
+              className="w-32 f-accordion hidden sm:block"
             >
               <AccordionItem value="item-1" className="border-transparent">
-                <AccordionTrigger className="pt-0 pb-3 font-normal" usageContext={'footer'}>
+                <AccordionTrigger
+                  className="pt-0 pb-3 font-normal"
+                  usageContext={"footer"}
+                >
                   Partners
                 </AccordionTrigger>
                 <AccordionContent>
@@ -69,8 +76,8 @@ export default function Footer() {
                     Partner with us
                   </Link>
                   <Link
-                      href="/partners#our-partners"
-                      className="block pb-3 font-light"
+                    href="/partners#our-partners"
+                    className="block pb-3 font-light"
                   >
                     Our partners
                   </Link>
@@ -123,7 +130,9 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-center">
-          <LangSwitcher />
+          <ErrorBoundary>
+            <LangSwitcher />
+          </ErrorBoundary>
         </div>
         <div className="flex sm:hidden justify-center pt-[40px]">
           <Socials />

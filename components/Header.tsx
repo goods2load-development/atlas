@@ -10,6 +10,7 @@ import {
 import { useUserStore } from "@/lib/store";
 import LangSwitcher from "./LangSwicher";
 import Currencies from "./Currencies";
+import ErrorBoundary from "./ErrorBoundary";
 
 export default function Header({ children }: PropsWithChildren) {
   const { user, getUser } = useUserStore((state: any) => state);
@@ -59,7 +60,7 @@ export default function Header({ children }: PropsWithChildren) {
             {user?.id ? (
               <NavigationMenuItem>
                 <Link href="/account" className="flex items-center">
-                  <img src="/userwhite.svg" alt={'user-white'}/>
+                  <img src="/userwhite.svg" alt={"user-white"} />
                 </Link>
               </NavigationMenuItem>
             ) : (
@@ -73,7 +74,9 @@ export default function Header({ children }: PropsWithChildren) {
               </>
             )}
             <NavigationMenuItem>
-              <LangSwitcher />
+              <ErrorBoundary>
+                <LangSwitcher />
+              </ErrorBoundary>
             </NavigationMenuItem>
           </NavigationMenuList>
         </NavigationMenu>
