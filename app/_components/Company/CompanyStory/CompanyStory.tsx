@@ -22,8 +22,8 @@ export interface IBlock {
 
 const CompanyStory = () => {
   return (
-    <section className="w-full flex flex-col gap-[40px] py-14 sm:py-[104px] px-[16px] max-w-[1328px] mx-auto">
-      <div className="flex flex-col gap-[16px] text-start text-black">
+    <section className="w-full flex flex-col gap-[40px] py-14 sm:py-[104px]">
+      <div className="flex flex-col gap-[16px] text-start text-black px-[16px] w-full max-w-[1328px] mx-auto">
         <h2 className="font-normal sm:text-[48px]/[57.6px] text-[34px]/[38px] italic flex flex-row gap-[12px] justify-center sm:justify-start">
           Our{" "}
           <div className="font-light not-italic bg-[#FEF1DF] rounded-[6px] sm:h-[49px] px-[4px] flex justify-center items-center relative sm:bottom-[-5px]">

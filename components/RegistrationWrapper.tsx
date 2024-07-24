@@ -17,7 +17,7 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
         <div className="sm:flex w-full">
           <div className="w-full sm:w-6/12 p-[16px] sm:py-16">
-            <div className="max-w-[528px] mx-auto">
+            <div className="max-w-[600px] mx-auto">
               <div className="text-center mb-10">
                 <span className="text-[40px]/[60px] italic font-normal">
                   Welcome!
