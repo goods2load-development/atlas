@@ -15,7 +15,7 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    // TODO add error handling
+    window.dispatchEvent(new CustomEvent("errorHandler", { detail: error }));
     return error;
   }
 );
@@ -55,12 +55,6 @@ export function patchRequest(params: any) {
     });
 }
 
-export const generateBlockId = (title?: string) =>
-  title
-    ?.replace(/ /g, "-")
-    .replace(/[\s’?*()]/g, "")
-    .toLowerCase() || "";
-
 export function deleteRequest(params: any) {
   return axios
     .delete(params.url, params.data)
@@ -71,3 +65,9 @@ export function deleteRequest(params: any) {
       // TODO add toast messages
     });
 }
+
+export const generateBlockId = (title?: string) =>
+  title
+    ?.replace(/ /g, "-")
+    .replace(/[\s’?*()]/g, "")
+    .toLowerCase() || "";
