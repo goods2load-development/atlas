@@ -108,11 +108,7 @@ export default function SliderMain() {
               to grow. Join us to streamline your delivery process and boost
               your business effortlessly.
             </div>
-            <Link
-              className="text-orangePrimary font-medium"
-              href="/partners"
-              target="_blank"
-            >
+            <Link className="text-orangePrimary font-medium" href="/partners">
               Learn more
             </Link>
           </div>

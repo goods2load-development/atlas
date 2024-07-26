@@ -53,11 +53,7 @@ function LogisticsItem({ item }: { item: lItemProps }) {
       <div className="text-[16px]/[22px] mb-[10px] font-normal">
         {item.text}
       </div>
-      <Link
-        href={item.link}
-        className="text-orangePrimary text-[18px]/[22px]"
-        target="_blank"
-      >
+      <Link href={item.link} className="text-orangePrimary text-[18px]/[22px]">
         Read more
         <img
           src="/arrowlong.png"

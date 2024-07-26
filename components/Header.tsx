@@ -51,34 +51,24 @@ export default function Header({ children }: PropsWithChildren) {
         >
           <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
             <NavigationMenuItem>
-              <Link target="_blank" href="/help">
-                FAQs
-              </Link>
+              <Link href="/help">FAQs</Link>
             </NavigationMenuItem>
             <NavigationMenuItem>
               <Currencies />
             </NavigationMenuItem>
             {user?.id ? (
               <NavigationMenuItem>
-                <Link
-                  target="_blank"
-                  href="/account"
-                  className="flex items-center"
-                >
+                <Link href="/account" className="flex items-center">
                   <img src="/userwhite.svg" alt={"user-white"} />
                 </Link>
               </NavigationMenuItem>
             ) : (
               <>
                 <NavigationMenuItem>
-                  <Link target="_blank" href="/sign-in">
-                    Log in
-                  </Link>
+                  <Link href="/sign-in">Log in</Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link target="_blank" href="/registration">
-                    Sign up
-                  </Link>
+                  <Link href="/registration">Sign up</Link>
                 </NavigationMenuItem>
               </>
             )}

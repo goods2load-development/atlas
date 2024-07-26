@@ -9,7 +9,7 @@ interface LogoProps {
 }
 export default function Logo(props: LogoProps) {
   return (
-    <Link href="/" className="flex" target="_blank">
+    <Link href="/" className="flex">
       <Image
         src="/logo.svg"
         alt="Goods2load Logo"

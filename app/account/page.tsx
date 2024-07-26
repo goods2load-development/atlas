@@ -100,7 +100,7 @@ export default function Account() {
           </i>
           <div className="mt-5 sm:mt-0 gap-4 flex items-center">
             {user?.provider ? (
-              <Link href="/dashboard/performance" target="_blank">
+              <Link href="/dashboard/performance">
                 <UIButton secondary className="w-full sm:w-[224px]">
                   <img src="/analytics.svg" className="pr-1" /> Show Analytics
                 </UIButton>

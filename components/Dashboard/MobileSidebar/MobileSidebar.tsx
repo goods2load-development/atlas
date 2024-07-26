@@ -97,7 +97,6 @@ const MobileSidebar: React.FC = () => {
             key={it.href}
             href={it.href}
             className="ml-3 hover:no-underline relative text-white"
-            target="_blank"
           >
             {it.title}
             <div

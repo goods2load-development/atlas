@@ -17,9 +17,7 @@ export default function UserHeader({ children }: PropsWithChildren) {
   return (
     <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
       <NavigationMenuItem>
-        <Link href="/help" target="_blank">
-          Help
-        </Link>
+        <Link href="/help">Help</Link>
       </NavigationMenuItem>
       <NavigationMenuItem>
         {user?.firstName} {user?.lastName}
