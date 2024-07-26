@@ -44,13 +44,22 @@ export default function Footer() {
                 <Link
                   href="/about-us?company"
                   className="block pb-3 font-light"
+                  target="_blank"
                 >
                   Company
                 </Link>
-                <Link href="/about-us?trust" className="block pb-3 font-light">
+                <Link
+                  href="/about-us?trust"
+                  className="block pb-3 font-light"
+                  target="_blank"
+                >
                   Trust
                 </Link>
-                <Link href="/about-us?media" className="block pb-3 font-light">
+                <Link
+                  href="/about-us?media"
+                  className="block pb-3 font-light"
+                  target="_blank"
+                >
                   Media
                 </Link>
               </AccordionContent>
@@ -71,10 +80,15 @@ export default function Footer() {
                   Partners
                 </AccordionTrigger>
                 <AccordionContent>
-                  <Link href="/partners" className="block pb-3 font-light">
+                  <Link
+                    href="/partners"
+                    className="block pb-3 font-light"
+                    target="_blank"
+                  >
                     Partner with us
                   </Link>
                   <Link
+                    target="_blank"
                     href="/partners#our-partners"
                     className="block pb-3 font-light"
                   >
@@ -83,47 +97,76 @@ export default function Footer() {
                 </AccordionContent>
               </AccordionItem>
             </Accordion>
-            <Link href="/career" className="sm:block pb-3 font-light hidden">
+            <Link
+              href="/career"
+              className="sm:block pb-3 font-light hidden"
+              target="_blank"
+            >
               Career
             </Link>
           </div>
 
           <div className="text-center sm:hidden pb-3">
             <p className="font-medium pb-3">About us</p>
-            <Link href="/about-us?company" className="block pb-3 font-light">
+            <Link
+              href="/about-us?company"
+              className="block pb-3 font-light"
+              target="_blank"
+            >
               Company
             </Link>
-            <Link href="/about-us?trust" className="block pb-3 font-light">
+            <Link
+              href="/about-us?trust"
+              className="block pb-3 font-light"
+              target="_blank"
+            >
               Trust
             </Link>
-            <Link href="/about-us?media" className="block pb-3 font-light">
+            <Link
+              href="/about-us?media"
+              className="block pb-3 font-light"
+              target="_blank"
+            >
               Media
             </Link>
             <p className="font-medium pb-3 pt-5">Partners</p>
-            <Link href="/partners" className="block pb-3 font-light">
+            <Link
+              href="/partners"
+              className="block pb-3 font-light"
+              target="_blank"
+            >
               Partner with us
             </Link>
             <Link
+              target="_blank"
               href="/partners#our-partners"
               className="block pb-3 font-light"
             >
               Our partners
             </Link>
-            <Link href="/career" className="block pb-3 font-light">
+            <Link
+              target="_blank"
+              href="/career"
+              className="block pb-3 font-light"
+            >
               Career
             </Link>
           </div>
           <div className="text-center sm:text-left">
-            <Link href="/help" className="block pb-4">
+            <Link target="_blank" href="/help" className="block pb-4">
               FAQs
             </Link>
-            <Link href="/terms-of-service" className="block pb-4">
+            <Link
+              target="_blank"
+              href="/terms-of-service"
+              className="block pb-4"
+            >
               Terms and Conditions
             </Link>
-            <Link href="/privacy-policy" className="block pb-4">
+            <Link target="_blank" href="/privacy-policy" className="block pb-4">
               Privacy Policy
             </Link>
-            <Link href="/cookie-policy" className="block pb-4">
+            <Link target="_blank" href="/cookie-policy" className="block pb-4">
               Cookie Policy
             </Link>
           </div>

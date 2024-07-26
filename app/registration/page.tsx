@@ -642,6 +642,7 @@ export default function UserRegistration() {
                   <Link
                     href="/privacy-policy"
                     className="underline hover:no-underline"
+                    target="_blank"
                   >
                     Privacy Terms
                   </Link>{" "}
@@ -649,6 +650,7 @@ export default function UserRegistration() {
                   <Link
                     href="/terms-of-service"
                     className="underline hover:no-underline"
+                    target="_blank"
                   >
                     Terms of use
                   </Link>{" "}
@@ -676,6 +678,7 @@ export default function UserRegistration() {
                   <Link
                     href="/terms-of-service"
                     className="underline hover:no-underline"
+                    target="_blank"
                   >
                     GOODS2LOAD
                   </Link>

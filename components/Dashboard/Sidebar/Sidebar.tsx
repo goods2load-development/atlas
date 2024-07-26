@@ -73,6 +73,7 @@ const Sidebar: React.FC = () => {
                 className={cn(
                   "font-light ml-3 mt-[16px] hover:no-underline relative"
                 )}
+                target="_blank"
               >
                 {it.title}
                 <div
@@ -88,6 +89,7 @@ const Sidebar: React.FC = () => {
           <Link
             href={"/dashboard/opportunities"}
             className="font-semibold mb-8 hover:no-underline"
+            target="_blank"
           >
             OPPORTUNITY
           </Link>

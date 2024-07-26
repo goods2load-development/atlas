@@ -126,7 +126,11 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
               </FormItem>
             )}
           />
-          <Link href="/forgot-password" className="text-[12px]/[16px]">
+          <Link
+            href="/forgot-password"
+            className="text-[12px]/[16px]"
+            target="_blank"
+          >
             Forgot your password?
           </Link>
           <Button
@@ -137,7 +141,11 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
           </Button>
           <p className="text-[12px]/[16px] text-center">
             Don&apos;t have an account?{" "}
-            <Link href="/registration" className="text-orangePrimary">
+            <Link
+              href="/registration"
+              className="text-orangePrimary"
+              target="_blank"
+            >
               Sign up for free
             </Link>
           </p>
