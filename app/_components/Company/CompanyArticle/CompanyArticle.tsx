@@ -6,7 +6,7 @@ import thereIsNotImg from "@/assets/AboutUsImg/thereIsNot.png";
 
 const CompanyArticle = () => {
   return (
-    <section className="w-full md:flex flex-col gap-[64px] px-5 sm:px-[72px]">
+    <section className="w-full md:flex flex-col gap-[64px] px-[16px] max-w-[1328px] mx-auto">
       <div className="w-full md:flex flex-row items-center gap-[56px]">
         <div className="md:w-1/2 rounded-lg overflow-hidden">
           <Image

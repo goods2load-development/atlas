@@ -14,7 +14,7 @@ export interface ILeader {
 
 const CompanyLeadership = () => {
   return (
-    <section className="w-full md:flex flex-row gap-[80px] sm:py-[104px] py-20 px-5 md:px-[72px] relative">
+    <section className="w-full md:flex flex-row gap-[80px] sm:py-[104px] py-20 relative px-[16px] max-w-[1328px] mx-auto">
       <div className="md:w-1/4 flex flex-col gap-[16px] mb-10 md:mb-0">
         <h1 className="bg-[#FEF1DF] sm:text-[48px]/[57.6px] text-[34px]/[38px]  font-light text-black w-fit rounded-[6px] md:text-left text-center mx-auto sm:ml-0">
           Leadership

@@ -16,8 +16,8 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
     <footer className="text-white min-h-[244px] pt-[56px] bg-bgFooter bg-cover bg-center">
-      <div className="md:flex justify-between align-middle px-16 block max-w-[1440px] mx-auto row gap-10">
-        <div className="space-y-5 sm:space-y-10 mb-10 mx-auto ">
+      <div className="md:flex justify-between align-middle block px-[16px] max-w-[1328px] mx-auto row gap-10">
+        <div className="space-y-5 sm:space-y-10 mb-10">
           <Logo width={340} height={42} />
           <div className="hidden sm:block">
             <Socials />
@@ -34,7 +34,10 @@ export default function Footer() {
               value="item-1"
               className="border-transparent hidden sm:block"
             >
-              <AccordionTrigger className="pt-0 pb-3 font-normal" usageContext={'footer'}>
+              <AccordionTrigger
+                className="pt-0 pb-3 font-normal"
+                usageContext={"footer"}
+              >
                 About us
               </AccordionTrigger>
               <AccordionContent>
@@ -55,13 +58,16 @@ export default function Footer() {
           </Accordion>
           <div>
             <Accordion
-                type="single"
-                collapsible
-                defaultValue="item-1"
-                className="w-32 f-accordion hidden sm:block"
+              type="single"
+              collapsible
+              defaultValue="item-1"
+              className="w-32 f-accordion hidden sm:block"
             >
               <AccordionItem value="item-1" className="border-transparent">
-                <AccordionTrigger className="pt-0 pb-3 font-normal" usageContext={'footer'}>
+                <AccordionTrigger
+                  className="pt-0 pb-3 font-normal"
+                  usageContext={"footer"}
+                >
                   Partners
                 </AccordionTrigger>
                 <AccordionContent>
@@ -69,8 +75,8 @@ export default function Footer() {
                     Partner with us
                   </Link>
                   <Link
-                      href="/partners#our-partners"
-                      className="block pb-3 font-light"
+                    href="/partners#our-partners"
+                    className="block pb-3 font-light"
                   >
                     Our partners
                   </Link>

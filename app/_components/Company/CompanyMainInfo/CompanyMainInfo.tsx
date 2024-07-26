@@ -2,7 +2,7 @@ import React from "react";
 
 const CompanyMainInfo = () => {
   return (
-    <section className="w-full flex flex-col items-center md:flex-row gap-[56px] lg:pt-5 pt-20 sm:pt-4 px-5 md:px-[72px]">
+    <section className="w-full flex flex-col items-center md:flex-row gap-[56px] lg:pt-5 pt-20 sm:pt-4 px-[16px] max-w-[1328px] mx-auto">
       <div className="md:w-1/2 md:order-1 order-2">
         <video
           muted
