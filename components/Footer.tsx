@@ -11,6 +11,7 @@ import Logo from "@/components/Logo";
 import Socials from "@/components/Socials";
 import LangSwitcher from "./LangSwicher";
 import * as React from "react";
+import ErrorBoundary from "./ErrorBoundary";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -129,7 +130,9 @@ export default function Footer() {
           </div>
         </div>
         <div className="text-center">
-          <LangSwitcher />
+          <ErrorBoundary>
+            <LangSwitcher />
+          </ErrorBoundary>
         </div>
         <div className="flex sm:hidden justify-center pt-[40px]">
           <Socials />

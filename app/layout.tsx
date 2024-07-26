@@ -4,6 +4,8 @@ import { Poppins } from "next/font/google";
 import NextAuthProvider from "@/components/NextAuthProvider";
 import Script from "next/script";
 import { WeglotProvider } from "./weglot/WeglotProvider";
+import { Toaster } from "@/components/ui/toaster";
+import ToasterWrapper from "@/components/Interceptor";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -42,7 +44,8 @@ export default function RootLayout({
               className="float-right w-[52px] h-[52px]"
             />
           </a>
-          {children}
+          <ToasterWrapper>{children}</ToasterWrapper>
+          <Toaster />
         </body>
       </html>
     </NextAuthProvider>
