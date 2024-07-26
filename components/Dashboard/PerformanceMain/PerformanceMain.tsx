@@ -1,65 +1,69 @@
 "use client";
 
-import { useState } from "react";
-import MainMenuTabs from "./MainMenuTabs";
-import { IMainMenuCard, IMainMenuItemTab } from "@/app/interface/dashboard";
-import MainMenuCardsList from "./MainMenuCardsList";
+import { useEffect, useState, useMemo, useCallback } from "react";
+import MainMenuTabs from "./PerformanceTabs";
+import MainMenuCardsList from "./PerformanceCards";
 import EvolutionTab from "./Tabs/EvolutionTab";
 import CompetitivenessTab from "./Tabs/CompetitivenessTab";
+import { usePerformanceStore } from "@/lib/analyticsStore";
+import { IAnalyticsStore } from "@/app/interface/dashboard";
+import { IPerformanceTab, PerformaceTab } from "@/app/interface/dashboard";
 
-export interface PerformanceMainProps {
-  cardsData: IMainMenuCard[];
-  tabsData: any;
-}
+const PerformanceMain = () => {
+  const {
+    transportation,
+    performanceData,
+    getPerformancedData,
+  }: IAnalyticsStore = usePerformanceStore();
+  const [activeTab, setActiveTab] = useState<PerformaceTab>(
+    PerformaceTab.EVOLUTION
+  );
 
-const PerformanceMain = ({ cardsData, tabsData }: PerformanceMainProps) => {
-  const [tabs, setTabs] = useState<IMainMenuItemTab[]>([
-    {
-      label: "Evolution",
-      active: true,
-      element: <EvolutionTab data={tabsData.evolution} />,
+  const tabs = useMemo<IPerformanceTab[]>(
+    () => [
+      {
+        label: PerformaceTab.EVOLUTION,
+        element: <EvolutionTab data={performanceData?.evolution || []} />,
+      },
+      {
+        label: PerformaceTab.COMPETITIVENESS,
+        element: (
+          <CompetitivenessTab data={performanceData?.competitiveness || []} />
+        ),
+      },
+      {
+        label: PerformaceTab.COMPETITIVE_PRESSURE,
+        element: (
+          <CompetitivenessTab
+            data={performanceData?.competitivePressure || []}
+          />
+        ),
+      },
+    ],
+    [performanceData]
+  );
+
+  useEffect(() => {
+    getPerformancedData(transportation);
+  }, []);
+
+  const onChangeTab = useCallback(
+    (label: PerformaceTab) => {
+      const tab = tabs.filter((tab) => tab.label === label)[0];
+      setActiveTab(tab.label);
     },
-    {
-      label: "Competitiveness",
-      active: false,
-      element: <CompetitivenessTab data={tabsData.competitiveness} />,
-    },
-    {
-      label: "Competitive pressure",
-      active: false,
-      element: <CompetitivenessTab data={tabsData.competitivePressure} />,
-    },
-  ]);
-
-  const [cards, setCards] = useState<IMainMenuCard[]>(cardsData);
-
-  const handleTabClick = (name: string) => {
-    setTabs(
-      tabs.map((tab) => {
-        if (name === tab.label) {
-          return { ...tab, active: true };
-        }
-        return { ...tab, active: false };
-      })
-    );
-  };
-
-  const handleSelectCard = (name: string) => {
-    setCards(
-      cards.map((card) => {
-        if (card.title === name) {
-          return { ...card, active: true };
-        }
-        return { ...card, active: false };
-      })
-    );
-  };
+    [tabs]
+  );
 
   return (
     <div className="flex flex-col justify-center mt-4">
-      <MainMenuTabs handleTabClick={handleTabClick} tabs={tabs} />
-      <MainMenuCardsList handleSelectCard={handleSelectCard} cards={cards} />
-      {tabs.filter((elem) => elem.active)[0].element}
+      <MainMenuTabs
+        onChangeTab={onChangeTab}
+        tabs={tabs}
+        activeTab={activeTab}
+      />
+      <MainMenuCardsList data={performanceData} />
+      {tabs.filter((tab) => activeTab === tab.label)[0].element}
     </div>
   );
 };

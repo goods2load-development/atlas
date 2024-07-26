@@ -20,18 +20,11 @@ import {
 } from "recharts";
 import Image from "next/image";
 
-export interface IPerformanceChart {
-  name: string;
-  uv: number;
-  pv: number;
-  amt: number;
-}
-
 const formSchema = z.object({
   selectValue: z.string().min(3),
 });
 
-const PerformanceEvolutionChart = ({ data }: any) => {
+const PerformanceEvolutionChart = ({ data }: { data: any }) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -114,8 +107,8 @@ const PerformanceEvolutionChart = ({ data }: any) => {
                 tick={{ fontSize: 10, fontFamily: "Arial", fill: "#29292A" }}
               />
               <Tooltip />
-              <Bar dataKey="pv" fill="#FF6720" />
-              <Bar dataKey="uv" fill="#FFEDE4" />
+              <Bar dataKey="y1" fill="#FF6720" />
+              <Bar dataKey="y2" fill="#FFEDE4" />
             </BarChart>
           </ResponsiveContainer>
         </div>
