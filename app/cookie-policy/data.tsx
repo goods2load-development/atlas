@@ -674,7 +674,7 @@ const data: ILegacyDataBlock[] = [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "If you have any questions regarding this Policy or would like more information about the cookies  used on our Website or App, please <a href='TODO'>contact us</a>.",
+          "If you have any questions regarding this Policy or would like more information about the cookies  used on our Website or App, please <a href='mailto:jpanigari@goods2load.com'>contact us</a>.",
         ],
       },
     ],
