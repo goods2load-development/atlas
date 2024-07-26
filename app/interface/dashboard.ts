@@ -19,8 +19,8 @@ export interface IPerformanceTab {
 
 export interface IEvolutionChart {
   name: string;
-  y1: number;
-  y2: number;
+  currentYear: number;
+  lastYear: number;
   amt: number;
 }
 

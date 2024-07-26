@@ -107,8 +107,8 @@ const PerformanceEvolutionChart = ({ data }: { data: any }) => {
                 tick={{ fontSize: 10, fontFamily: "Arial", fill: "#29292A" }}
               />
               <Tooltip />
-              <Bar dataKey="y1" fill="#FF6720" />
-              <Bar dataKey="y2" fill="#FFEDE4" />
+              <Bar dataKey="currentYear" fill="#FF6720" />
+              <Bar dataKey="lastYear" fill="#FFEDE4" />
             </BarChart>
           </ResponsiveContainer>
         </div>
