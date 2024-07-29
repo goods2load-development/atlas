@@ -31,6 +31,7 @@
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "cmdk": "^0.2.1",
+    "country-list-with-dial-code-and-flag": "^5.0.4",
     "currency-list": "^1.0.8",
     "date-fns": "^3.6.0",
     "embla-carousel-autoplay": "^8.0.2",
