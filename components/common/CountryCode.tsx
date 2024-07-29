@@ -23,7 +23,9 @@ export default function CountryCode(props: any) {
     else return 0;
   }
   const [open, setOpen] = useState(false);
-  const [selected, setSelected] = useState<any>(undefined);
+  const [selected, setSelected] = useState<any>(
+    CountryList.findByKeyword("Italy")[0]
+  );
   return (
     <Popover open={open}>
       <PopoverTrigger asChild>
