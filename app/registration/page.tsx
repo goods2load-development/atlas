@@ -289,7 +289,7 @@ export default function UserRegistration() {
                           className="bg-gray-2 border-0"
                           {...field}
                           onBlur={handleChange}
-                          placeholder="Company phone number"
+                          placeholder="12345678"
                         />
                       </FormControl>
                       <FormMessage />
@@ -310,7 +310,7 @@ export default function UserRegistration() {
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
-                      placeholder="Email"
+                      placeholder="email@efgh.com"
                       {...field}
                       onBlur={handleChange}
                       disabled={isRegisteredWithGoogle}
@@ -333,7 +333,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder="Company name"
+                    placeholder="EFGH FZ LLC"
                     {...field}
                     onBlur={handleChange}
                   />
@@ -354,7 +354,7 @@ export default function UserRegistration() {
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
-                      placeholder="Address"
+                      placeholder="Name of street, 234"
                       {...field}
                       onBlur={handleChange}
                     />
@@ -374,7 +374,7 @@ export default function UserRegistration() {
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
-                      placeholder="XXX XXX"
+                      placeholder="000 000"
                       {...field}
                       onBlur={handleChange}
                     />
@@ -396,7 +396,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Select onValueChange={field.onChange}>
                     <SelectTrigger className="bg-gray-2 border-transparent outline-none">
-                      <SelectValue placeholder="Country" />
+                      <SelectValue placeholder="UAE" />
                     </SelectTrigger>
                     <SelectContent>
                       {countriesList.map((item: any) => (
@@ -422,7 +422,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder="City"
+                    placeholder="Dubai"
                     {...field}
                     onBlur={handleChange}
                   />
@@ -618,7 +618,7 @@ export default function UserRegistration() {
                 </FormLabel>
                 <FormControl>
                   <InputPassword
-                    placeholder="Password"
+                    placeholder=""
                     className="bg-gray-2 border-0"
                     {...field}
                   />
@@ -638,7 +638,7 @@ export default function UserRegistration() {
                 </FormLabel>
                 <FormControl>
                   <InputPassword
-                    placeholder="Confirm password"
+                    placeholder=""
                     className="bg-gray-2 border-0"
                     {...field}
                   />

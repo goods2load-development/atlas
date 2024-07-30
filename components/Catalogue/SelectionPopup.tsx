@@ -127,7 +127,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                         <FormControl>
                           <Input
                             className="border-none bg-gray-2"
-                            placeholder="Company phone number"
+                            placeholder="0000000"
                             {...field}
                           />
                         </FormControl>
@@ -149,7 +149,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                     <FormControl>
                       <Input
                         className="border-none bg-gray-2"
-                        placeholder="Email"
+                        placeholder="email@abcd.com"
                         {...field}
                       />
                     </FormControl>
@@ -170,7 +170,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                   <FormControl>
                     <Input
                       className="border-none bg-gray-2"
-                      placeholder="Company name"
+                      placeholder="ABCD FZ LLC"
                       {...field}
                     />
                   </FormControl>

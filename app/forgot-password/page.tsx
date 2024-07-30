@@ -46,7 +46,7 @@ export default function Login() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder="Email"
+                    placeholder=""
                     {...field}
                   />
                 </FormControl>
