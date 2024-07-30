@@ -8,6 +8,7 @@ export default function Socials({ container }: { container?: string }) {
       <Link
         href="https://www.instagram.com/goods2load/"
         className="mr-3 hover:opacity-80"
+        target="_blank"
       >
         <Image
           src="/instagramicon.svg"
@@ -21,6 +22,7 @@ export default function Socials({ container }: { container?: string }) {
       <Link
         href="https://www.linkedin.com/company/goods2load/"
         className="mr-3 hover:opacity-80"
+        target="_blank"
       >
         <Image
           src="/linkedinicon.svg"
@@ -34,6 +36,7 @@ export default function Socials({ container }: { container?: string }) {
       <Link
         href="https://www.facebook.com/GOODS2LOAD?ref=xav_pl_fb_external_guaranteed_control_ios&_rdr"
         className="hover:opacity-80"
+        target="_blank"
       >
         <Image
           src="/facebookicon.svg"

@@ -5,7 +5,7 @@ import menWithPc from "@/assets/PartnersImage/PartnersAudience/menWithPc.png";
 
 const PartnersAudience: React.FC = () => {
   return (
-    <section className="w-full md:flex flex-row gap-[56px] py-[104px] px-5 sm:px-[72px] items-center">
+    <section className="w-full md:flex flex-row gap-[56px] py-[104px] items-center px-[16px] max-w-[1328px] mx-auto">
       {/* <div className="flex w-full px-[72px] gap-[56px] items-center justify-center pt-[47px]  text-white text-center mb-[100px]"> */}
       <div className="md:w-1/2">
         <div>
@@ -32,10 +32,10 @@ const PartnersAudience: React.FC = () => {
         <div className="absolute left-0 bottom-0 transform translate-x-[-120px] md:translate-x-[-240px] translate-y-[65px]">
           <Image
             src={phone.src}
-            width={phone.width/2}
-            height={phone.height/2}
+            width={phone.width / 2}
+            height={phone.height / 2}
             alt="phone"
-            className={'w-[90%] md:w-full'}
+            className={"w-[90%] md:w-full"}
           />
         </div>
         <Image
