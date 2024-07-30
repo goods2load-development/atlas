@@ -158,32 +158,36 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         partnersSelected: data.data.map((item: any) => item.id),
       }));
     },
-    getPortsList: async (departure: boolean = false) => {
+    getPortsList: (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === "plane" ? "airport" : "seaport";
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
-      const data = await getRequest({
-        url: `https://port-api.com/${type}/search/${city}`,
-        withCredentials: false,
-      });
-      const ports: any[] = data.features.map((item: any) => ({
-        id: item.properties.name,
-        label: item.properties.name,
-      }));
-      const selected: any[] = data.features.map(
-        (item: any) => item.properties.name
-      );
-      if (departure) {
-        set(() => ({
-          portsDeparture: ports,
-          portsDepartureSelected: selected,
-        }));
-      } else {
-        set(() => ({
-          portsArrival: ports,
-          portsArrivalSelected: selected,
-        }));
-      }
+      if (deliveryBy !== "truck")
+        getRequest({
+          url: `https://port-api.com/${type}/search/${city}`,
+          withCredentials: false,
+        }).then((data: any) => {
+          if (data?.features) {
+            const ports: any[] = data?.features.map((item: any) => ({
+              id: item.properties.name,
+              label: item.properties.name,
+            }));
+            const selected: any[] = data?.features.map(
+              (item: any) => item.properties.name
+            );
+            if (departure) {
+              set(() => ({
+                portsDeparture: ports,
+                portsDepartureSelected: selected,
+              }));
+            } else {
+              set(() => ({
+                portsArrival: ports,
+                portsArrivalSelected: selected,
+              }));
+            }
+          }
+        });
     },
     getProducts: async (page?: number) => {
       const {

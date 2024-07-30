@@ -45,6 +45,7 @@ import { postRequest } from "@/lib/utils";
 import italyFlag from "@/assets/italy-flag.svg";
 import cnFlag from "@/assets/cn-flag.svg";
 import inFlag from "@/assets/in-flag.svg";
+import CountryCode from "./common/CountryCode";
 
 const phonesCode = [
   {
@@ -75,6 +76,7 @@ export default function PriceAlerts() {
         })
       ),
       email: z.string(),
+      countryCode: z.string().optional(),
       sms: z.string(),
     })
     .refine((data) => data.email.length !== 0 || data.sms.length !== 0, {
@@ -138,7 +140,9 @@ export default function PriceAlerts() {
       data: {
         contacts: {
           email: values.email?.length ? values.email : undefined,
-          phoneNumber: values.sms?.length ? values.sms : undefined,
+          phoneNumber: values.sms?.length
+            ? values.countryCode + values.sms
+            : undefined,
         },
         routes: values.routes.map((item) => ({
           fromRoute: `${item.fromCountry}, ${item.from}`,
@@ -230,7 +234,7 @@ export default function PriceAlerts() {
                             {item.fromCountry || "Country"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -271,7 +275,7 @@ export default function PriceAlerts() {
                             {item.from || "City"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -341,7 +345,7 @@ export default function PriceAlerts() {
                             {item.toCountry || "Country"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -382,7 +386,7 @@ export default function PriceAlerts() {
                             {item.to || "City"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -479,48 +483,34 @@ export default function PriceAlerts() {
                       )}
                     />
                   </TabsContent>
-                  <TabsContent value="sms">
+                  <TabsContent
+                    value="sms"
+                    className="flex justify-center gap-2 items-end"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="countryCode"
+                      render={({ field }) => (
+                        <FormItem className="w-1/4">
+                          <FormControl>
+                            <CountryCode
+                              onChange={field.onChange}
+                              className="border-orangePrimary"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField
                       control={form.control}
                       name="sms"
                       render={({ field }) => (
-                        <FormItem className="mr-3 w-full flex justify-center gap-2 items-end">
-                          <DropdownMenu.Root>
-                            <DropdownMenu.Trigger className="outline-none border-primaryOrange border rounded-md w-[80px] py-[7px] px-3">
-                              <div className="flex gap-2 items-center ">
-                                <ChevronDown width={15} height={25} />
-                                <Image
-                                  alt="italy-flag"
-                                  width={16}
-                                  height={12}
-                                  src={phonesCode[0].icon}
-                                />
-                              </div>
-                            </DropdownMenu.Trigger>
-                            <DropdownMenu.Content className="bg-white rounded">
-                              {phonesCode.map((elem, index) => {
-                                if (index === 0) return;
-
-                                return (
-                                  <DropdownMenu.Item
-                                    key={index}
-                                    className={`group flex gap-2 items-center justify-between outline-none px-6 py-2 cursor-pointer rounded hover:bg-primaryOrange`}
-                                  >
-                                    <Image
-                                      alt="franch-flag"
-                                      width={20}
-                                      height={12}
-                                      src={elem.icon}
-                                    />
-                                  </DropdownMenu.Item>
-                                );
-                              })}
-                            </DropdownMenu.Content>
-                          </DropdownMenu.Root>
+                        <FormItem className="w-3/4">
                           <FormControl>
                             <Input
                               placeholder="Enter your phone number"
-                              className="text-center border-orangePrimary md:w-[260px]"
+                              className="text-center border-orangePrimary"
                               {...field}
                             />
                           </FormControl>

@@ -36,8 +36,8 @@ export default function Currencies() {
         <SelectGroup>
           <span className="text-[12px] text-gray-500">Popular</span>
           {currencies?.map((item: any, index: number) => (
-            <>
-              <SelectItem key={item.code} value={item.code}>
+            <div key={item.code}>
+              <SelectItem value={item.code}>
                 <span>
                   {item.code} - {item.symbol}
                 </span>
@@ -47,7 +47,7 @@ export default function Currencies() {
                   Others
                 </span>
               )}
-            </>
+            </div>
           ))}
         </SelectGroup>
       </SelectContent>

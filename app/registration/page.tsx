@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
-
 import { useRouter } from "next/navigation";
 import { useCountriesStore } from "@/lib/store";
 import { useRegistrationStore } from "@/lib/store";
@@ -37,6 +36,7 @@ import { getSession, signIn } from "next-auth/react";
 import { getCookie } from "react-use-cookie";
 import InputPassword from "@/components/common/InputPassword";
 import RegistrationSuccessPopup from "./RegistrationSuccessPopup";
+import CountryCode from "@/components/common/CountryCode";
 interface CountriesProps {
   value: string;
   label: string;
@@ -76,6 +76,7 @@ export default function UserRegistration() {
     return {
       firstName: "",
       lastName: "",
+      countryCode: "",
       phoneNumber: "",
       email: "",
       companyName: "",
@@ -100,12 +101,8 @@ export default function UserRegistration() {
 
   const formSchema = z
     .object({
-      phoneNumber: z
-        .string()
-        .regex(
-          new RegExp("^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$"),
-          "Invalid format. Please, use +XXXXXXXXXXXX"
-        ),
+      countryCode: z.string(),
+      phoneNumber: z.string().regex(new RegExp("^[0-9]{4,10}$")),
       email: z.string().min(5).email(),
       companyName: z.string().min(2),
       address: z.string().optional(),
@@ -261,27 +258,46 @@ export default function UserRegistration() {
             />
           </div>
           <div className="sm:flex mb-5">
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem className="sm:w-6/12 sm:mr-3">
-                  <FormLabel className="font-light sm:font-normal">
-                    Company phone number
-                    <IsRequired />
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-2 border-0"
-                      placeholder="+XXXXXXXXXXXX"
-                      {...field}
-                      onBlur={handleChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="sm:w-6/12 sm:mr-2">
+              <FormLabel className="font-light sm:font-normal">
+                Company phone number
+                <IsRequired />
+              </FormLabel>
+              <div className="flex mt-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="countryCode"
+                  render={({ field }) => (
+                    <FormItem className="sm:w-5/12 sm:mr-2">
+                      <FormControl>
+                        <CountryCode
+                          onChange={field.onChange}
+                          className="bg-gray-2 border-transparent outline-none"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="phoneNumber"
+                  render={({ field }) => (
+                    <FormItem className="sm:w-7/12 w-full">
+                      <FormControl>
+                        <Input
+                          className="bg-gray-2 border-0"
+                          {...field}
+                          onBlur={handleChange}
+                          placeholder="Company phone number"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            </div>
             <FormField
               control={form.control}
               name="email"
@@ -294,7 +310,7 @@ export default function UserRegistration() {
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
-                      placeholder=""
+                      placeholder="Email"
                       {...field}
                       onBlur={handleChange}
                       disabled={isRegisteredWithGoogle}
@@ -317,7 +333,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder=""
+                    placeholder="Company name"
                     {...field}
                     onBlur={handleChange}
                   />
@@ -338,7 +354,7 @@ export default function UserRegistration() {
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
-                      placeholder=""
+                      placeholder="Address"
                       {...field}
                       onBlur={handleChange}
                     />
@@ -380,7 +396,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Select onValueChange={field.onChange}>
                     <SelectTrigger className="bg-gray-2 border-transparent outline-none">
-                      <SelectValue />
+                      <SelectValue placeholder="Country" />
                     </SelectTrigger>
                     <SelectContent>
                       {countriesList.map((item: any) => (
@@ -406,7 +422,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder=""
+                    placeholder="City"
                     {...field}
                     onBlur={handleChange}
                   />
@@ -601,7 +617,11 @@ export default function UserRegistration() {
                   <IsRequired />
                 </FormLabel>
                 <FormControl>
-                  <InputPassword className="bg-gray-2 border-0" {...field} />
+                  <InputPassword
+                    placeholder="Password"
+                    className="bg-gray-2 border-0"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -617,7 +637,11 @@ export default function UserRegistration() {
                   <IsRequired />
                 </FormLabel>
                 <FormControl>
-                  <InputPassword className="bg-gray-2 border-0" {...field} />
+                  <InputPassword
+                    placeholder="Confirm password"
+                    className="bg-gray-2 border-0"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
