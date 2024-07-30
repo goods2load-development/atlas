@@ -105,7 +105,7 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder="Email"
+                    placeholder=""
                     {...field}
                   />
                 </FormControl>
@@ -122,7 +122,7 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
                 <FormControl>
                   <InputPassword
                     className="bg-gray-2 border-0"
-                    placeholder="Password"
+                    placeholder=""
                     {...field}
                   />
                 </FormControl>
