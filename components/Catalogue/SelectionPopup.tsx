@@ -108,7 +108,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                     control={form.control}
                     name="countryCode"
                     render={({ field }) => (
-                      <FormItem className="w-5/12">
+                      <FormItem className="w-4/12">
                         <FormControl>
                           <CountryCode
                             onChange={field.onChange}
@@ -125,7 +125,11 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                     render={({ field }) => (
                       <FormItem className="flex-1">
                         <FormControl>
-                          <Input className="border-none bg-gray-2" {...field} />
+                          <Input
+                            className="border-none bg-gray-2"
+                            placeholder="Company phone number"
+                            {...field}
+                          />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -143,7 +147,11 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                       <IsRequired />
                     </label>
                     <FormControl>
-                      <Input className="border-none bg-gray-2" {...field} />
+                      <Input
+                        className="border-none bg-gray-2"
+                        placeholder="Email"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -160,7 +168,11 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                     <IsRequired />
                   </label>
                   <FormControl>
-                    <Input className="border-none bg-gray-2" {...field} />
+                    <Input
+                      className="border-none bg-gray-2"
+                      placeholder="Company name"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

@@ -263,7 +263,7 @@ export default function UserRegistration() {
                 Company phone number
                 <IsRequired />
               </FormLabel>
-              <div className="flex mt-2">
+              <div className="flex mt-2 w-full">
                 <FormField
                   control={form.control}
                   name="countryCode"
@@ -283,12 +283,13 @@ export default function UserRegistration() {
                   control={form.control}
                   name="phoneNumber"
                   render={({ field }) => (
-                    <FormItem className="sm:w-7/12">
+                    <FormItem className="sm:w-7/12 w-full">
                       <FormControl>
                         <Input
                           className="bg-gray-2 border-0"
                           {...field}
                           onBlur={handleChange}
+                          placeholder="Company phone number"
                         />
                       </FormControl>
                       <FormMessage />
@@ -309,7 +310,7 @@ export default function UserRegistration() {
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
-                      placeholder=""
+                      placeholder="Email"
                       {...field}
                       onBlur={handleChange}
                       disabled={isRegisteredWithGoogle}
@@ -332,7 +333,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder=""
+                    placeholder="Company name"
                     {...field}
                     onBlur={handleChange}
                   />
@@ -353,7 +354,7 @@ export default function UserRegistration() {
                   <FormControl>
                     <Input
                       className="bg-gray-2 border-0"
-                      placeholder=""
+                      placeholder="Address"
                       {...field}
                       onBlur={handleChange}
                     />
@@ -395,7 +396,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Select onValueChange={field.onChange}>
                     <SelectTrigger className="bg-gray-2 border-transparent outline-none">
-                      <SelectValue />
+                      <SelectValue placeholder="Country" />
                     </SelectTrigger>
                     <SelectContent>
                       {countriesList.map((item: any) => (
@@ -421,7 +422,7 @@ export default function UserRegistration() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder=""
+                    placeholder="City"
                     {...field}
                     onBlur={handleChange}
                   />
@@ -616,7 +617,11 @@ export default function UserRegistration() {
                   <IsRequired />
                 </FormLabel>
                 <FormControl>
-                  <InputPassword className="bg-gray-2 border-0" {...field} />
+                  <InputPassword
+                    placeholder="Password"
+                    className="bg-gray-2 border-0"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -632,7 +637,11 @@ export default function UserRegistration() {
                   <IsRequired />
                 </FormLabel>
                 <FormControl>
-                  <InputPassword className="bg-gray-2 border-0" {...field} />
+                  <InputPassword
+                    placeholder="Confirm password"
+                    className="bg-gray-2 border-0"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

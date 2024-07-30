@@ -32,7 +32,7 @@ export default function CountryCode(props: any) {
         <Button
           variant="outline"
           role="combobox"
-          className={props.className + " w-full"}
+          className={props.className + " w-full px-1"}
           onClick={() => setOpen(true)}
         >
           {selected ? (

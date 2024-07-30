@@ -62,7 +62,7 @@ function ResetPasswordComponent() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder=""
+                    placeholder="New password"
                     type="password"
                     {...field}
                   />
@@ -80,7 +80,7 @@ function ResetPasswordComponent() {
                 <FormControl>
                   <Input
                     className="bg-gray-2 border-0"
-                    placeholder=""
+                    placeholder="Confirm new password"
                     type="password"
                     {...field}
                   />
@@ -106,5 +106,5 @@ export default function ResetPassword() {
     <Suspense>
       <ResetPasswordComponent />
     </Suspense>
-  )
+  );
 }
