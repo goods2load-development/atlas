@@ -47,7 +47,7 @@ export default function SelectedSearch() {
         return (
           <Image
             src={`/filtericon-ship.svg`}
-            alt={"plane"}
+            alt={"ferry"}
             width={58}
             height={58}
           />
@@ -57,7 +57,7 @@ export default function SelectedSearch() {
         return (
           <Image
             src={`/filtericon-truck.svg`}
-            alt={"plane"}
+            alt={"truck"}
             width={58}
             height={58}
           />
