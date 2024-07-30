@@ -31,6 +31,8 @@ import {
   DialogFooter,
   DialogClose,
 } from "@/components/ui/dialog";
+import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { ChevronDown } from "lucide-react";
 import {
   Popover,
   PopoverContent,
@@ -40,22 +42,46 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { postRequest } from "@/lib/utils";
+import italyFlag from "@/assets/italy-flag.svg";
+import cnFlag from "@/assets/cn-flag.svg";
+import inFlag from "@/assets/in-flag.svg";
+import CountryCode from "./common/CountryCode";
+
+const phonesCode = [
+  {
+    label: "+39",
+    icon: italyFlag,
+  },
+  {
+    label: "+86",
+    icon: cnFlag,
+  },
+  {
+    label: "+91",
+    icon: inFlag,
+  },
+];
 
 export default function PriceAlerts() {
   const [step, setStep] = useState(0);
-  const formSchema = z.object({
-    routes: z.array(
-      z.object({
-        fromCountry: z.string().optional(),
-        from: z.string().optional(),
-        toCountry: z.string().optional(),
-        to: z.string().optional(),
-        price: z.string().optional(),
-      })
-    ),
-    email: z.string().optional(),
-    sms: z.string().optional(),
-  });
+  const formSchema = z
+    .object({
+      routes: z.array(
+        z.object({
+          fromCountry: z.string().optional(),
+          from: z.string().optional(),
+          toCountry: z.string().optional(),
+          to: z.string().optional(),
+          price: z.string().optional(),
+        })
+      ),
+      email: z.string(),
+      countryCode: z.string().optional(),
+      sms: z.string(),
+    })
+    .refine((data) => data.email.length !== 0 || data.sms.length !== 0, {
+      path: ["email"],
+    });
   const {
     countriesList,
     countriesListLoading,
@@ -69,7 +95,9 @@ export default function PriceAlerts() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      routes: [{ fromCountry: "", from: "", toCountry: "", to: "", price: "" }],
+      routes: [
+        { fromCountry: "", from: "", toCountry: "", to: "", price: "0" },
+      ],
       email: "",
       sms: "",
     },
@@ -83,17 +111,42 @@ export default function PriceAlerts() {
     },
   });
 
+  const onAddRoute = () => {
+    if (isFieldsFilled()) {
+      append({
+        fromCountry: "",
+        from: "",
+        toCountry: "",
+        to: "",
+        price: "0",
+      });
+    }
+  };
+
+  const isFieldsFilled = () => {
+    const currentRoute = fields.slice(-1)[0];
+
+    return (
+      currentRoute?.from &&
+      currentRoute.fromCountry &&
+      currentRoute.to &&
+      currentRoute.toCountry
+    );
+  };
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     postRequest({
       url: "alerts/price",
       data: {
         contacts: {
           email: values.email?.length ? values.email : undefined,
-          phoneNumber: values.sms?.length ? values.sms : undefined,
+          phoneNumber: values.sms?.length
+            ? values.countryCode + values.sms
+            : undefined,
         },
         routes: values.routes.map((item) => ({
-          fromRoute: `${item.fromCountry} ${item.from}`,
-          toRoute: `${item.toCountry} ${item.to}`,
+          fromRoute: `${item.fromCountry}, ${item.from}`,
+          toRoute: `${item.toCountry}, ${item.to}`,
           price: item.price ? parseInt(item.price) : 0,
         })),
       },
@@ -122,7 +175,7 @@ export default function PriceAlerts() {
       >
         <Form {...form}>
           <form
-            className={`flex flex-col justify-between ${step === 3 && "hidden"}`}
+            className={`flex flex-col justify-between ${step === 3 && "hidden"} ${step === 2 ? "h-[594px] md:h-[424px]" : null}`}
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <div>
@@ -132,25 +185,27 @@ export default function PriceAlerts() {
                 <DialogTitle className="text-center text-[40px]/[48px] font-light">
                   <Image
                     src={"/ring.svg"}
-                    className="filter grayscale contrast-200 mx-auto"
+                    className="filter grayscale contrast-200 mx-auto mb-8"
                     alt=""
                     width={54}
                     height={54}
                   />
                   Get price <i className="font-normal">alerts</i>
                 </DialogTitle>
-                <DialogDescription className="text-center text-[18px]/[26px]">
+                <DialogDescription className="text-center text-[18px]/[26px] pt-3">
                   You can opt to receive notifications whenever a specific route
                   becomes available at your desired price point. To enable this
                   feature, simply click the button below to add the routes you
                   are interested in.
                 </DialogDescription>
               </DialogHeader>
-              <div className={step === 1 ? "sm:min-h-[572px]" : "hidden"}>
-                <DialogTitle className="text-center text-[40px]/[48px] font-light">
+              <div
+                className={`${step === 1 ? "sm:min-h-[572px]" : "hidden"} ${step === 2 ? "h-[424px]" : null}`}
+              >
+                <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Desired <i className="font-normal">routes</i>
                 </DialogTitle>
-                <DialogDescription className="text-center text-[18px]/[26px]">
+                <DialogDescription className="text-center text-[18px]/[26px] max-w-[424px] mx-auto">
                   You can select up to 10 routes that interest you and set price
                   alerts for them.
                 </DialogDescription>
@@ -179,7 +234,7 @@ export default function PriceAlerts() {
                             {item.fromCountry || "Country"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -220,7 +275,7 @@ export default function PriceAlerts() {
                             {item.from || "City"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -290,7 +345,7 @@ export default function PriceAlerts() {
                             {item.toCountry || "Country"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -331,7 +386,7 @@ export default function PriceAlerts() {
                             {item.to || "City"}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -375,15 +430,7 @@ export default function PriceAlerts() {
                 <div className="flex mt-[16px]">
                   {fields.length <= 9 && (
                     <div
-                      onClick={() =>
-                        append({
-                          fromCountry: "",
-                          from: "",
-                          toCountry: "",
-                          to: "",
-                          price: "",
-                        })
-                      }
+                      onClick={onAddRoute}
                       className="rounded-full border-2 border-orangePrimary text-orangePrimary w-[20px] h-[20px] text-center text-[18px]/[18px] cursor-pointer mr-[8px]"
                     >
                       +
@@ -392,12 +439,11 @@ export default function PriceAlerts() {
                   Add a route ({fields.length}/10)
                 </div>
               </div>
-              <div className={step === 2 ? "sm:min-h-[572px]" : "hidden"}>
-                <DialogTitle className="text-center text-[40px]/[48px] font-light">
-                  <Image src={""} alt="" width={20} height={20} />
+              <div className={step === 2 ? "" : "hidden"}>
+                <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Contact <i className="font-normal">information</i>
                 </DialogTitle>
-                <DialogDescription className="text-center text-[18px]/[26px]">
+                <DialogDescription className="text-center text-[18px]/[26px] mx-auto max-w-[424px]">
                   Choose how you want to receive notifications (email or SMS)
                   and share your contact information for this.
                 </DialogDescription>
@@ -407,14 +453,14 @@ export default function PriceAlerts() {
                 >
                   <TabsList className="grid w-[290px] grid-cols-2 mx-auto mb-[28px]">
                     <TabsTrigger
-                      className={`data-[state="active"]:bg-[#ffede4] border-b-2 data-[state="active"]:border-orangePrimary rounded-none"}`}
+                      className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
                       value="email"
                     >
                       Email
                     </TabsTrigger>
                     <TabsTrigger
                       value="sms"
-                      className={`data-[state="active"]:bg-[#ffede4] border-b-2 data-[state="active"]:border-orangePrimary rounded-none"}`}
+                      className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
                     >
                       SMS
                     </TabsTrigger>
@@ -437,12 +483,30 @@ export default function PriceAlerts() {
                       )}
                     />
                   </TabsContent>
-                  <TabsContent value="sms">
+                  <TabsContent
+                    value="sms"
+                    className="flex justify-center gap-2 items-end"
+                  >
+                    <FormField
+                      control={form.control}
+                      name="countryCode"
+                      render={({ field }) => (
+                        <FormItem className="w-1/4">
+                          <FormControl>
+                            <CountryCode
+                              onChange={field.onChange}
+                              className="border-orangePrimary"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                     <FormField
                       control={form.control}
                       name="sms"
                       render={({ field }) => (
-                        <FormItem className="mr-3 w-full">
+                        <FormItem className="w-3/4">
                           <FormControl>
                             <Input
                               placeholder="Enter your phone number"
@@ -486,7 +550,12 @@ export default function PriceAlerts() {
                     if (step !== 2) {
                       console.log("step");
                       e.preventDefault();
-                      setStep(step + 1);
+
+                      if (step === 1 && !isFieldsFilled()) {
+                        return;
+                      } else {
+                        setStep(step + 1);
+                      }
                     }
                     return e;
                   }}

@@ -25,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import UIButton from "@/components/common/Button";
 import Loader from "@/components/common/Loader";
+import CountryCode from "../common/CountryCode";
 
 interface SelectionPopupProps {
   company: string;
@@ -41,6 +42,7 @@ function IsRequired() {
 export default function SelectionPopup(props: SelectionPopupProps) {
   const [step, setStep] = useState(0);
   const formSchema = z.object({
+    countryCode: z.string(),
     phone: z
       .string()
       .regex(
@@ -52,6 +54,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      countryCode: "",
       phone: "",
       email: "",
       companyName: "",
@@ -61,7 +64,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
     postRequest({
       url: "orders/select-catalog",
       data: {
-        customerPhone: values.phone,
+        customerPhone: values.countryCode + values.phone,
         customerEmail: values.email,
         company: values.companyName,
         fromCompany: props.company,
@@ -95,22 +98,45 @@ export default function SelectionPopup(props: SelectionPopupProps) {
               </p>
             </DialogHeader>
             <div className="flex gap-2 mt-[32px]">
-              <FormField
-                control={form.control}
-                name="phone"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <label className="text-[14px]">
-                      Company phone number
-                      <IsRequired />
-                    </label>
-                    <FormControl>
-                      <Input className="border-none bg-gray-2" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div>
+                <label className="text-[14px]">
+                  Company phone number
+                  <IsRequired />
+                </label>
+                <div className="flex mt-2 gap-2">
+                  <FormField
+                    control={form.control}
+                    name="countryCode"
+                    render={({ field }) => (
+                      <FormItem className="w-4/12">
+                        <FormControl>
+                          <CountryCode
+                            onChange={field.onChange}
+                            className="border-none bg-gray-2"
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="phone"
+                    render={({ field }) => (
+                      <FormItem className="flex-1">
+                        <FormControl>
+                          <Input
+                            className="border-none bg-gray-2"
+                            placeholder="0000000"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
               <FormField
                 control={form.control}
                 name="email"
@@ -121,7 +147,11 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                       <IsRequired />
                     </label>
                     <FormControl>
-                      <Input className="border-none bg-gray-2" {...field} />
+                      <Input
+                        className="border-none bg-gray-2"
+                        placeholder="email@abcd.com"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -138,7 +168,11 @@ export default function SelectionPopup(props: SelectionPopupProps) {
                     <IsRequired />
                   </label>
                   <FormControl>
-                    <Input className="border-none bg-gray-2" {...field} />
+                    <Input
+                      className="border-none bg-gray-2"
+                      placeholder="ABCD FZ LLC"
+                      {...field}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

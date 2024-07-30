@@ -39,7 +39,7 @@ const AboutUs: FC = () => {
         <div className="sm:hidden absolute w-full h-[337px] bg-primaryOrange bg-hero-pattern-mobile bg-cover -z-10"></div>
       </div>
 
-      <div className="flex sm:mt-[-300px] mt-[-120px]">
+      <div className="sm:mt-[-300px] mt-[-120px] w-full">
         <Tabs value={activeTab} onValueChange={onTabChange}>
           <TabsList className="flex gap-8 sm:gap-32 md:gap-40 lg:gap-52 sm:mt-20">
             {tabs.map((tabText) => (

@@ -120,7 +120,11 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
               <FormItem className="w-full mb-1">
                 <FormLabel>Password</FormLabel>
                 <FormControl>
-                  <InputPassword className="bg-gray-2 border-0" {...field} />
+                  <InputPassword
+                    className="bg-gray-2 border-0"
+                    placeholder=""
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

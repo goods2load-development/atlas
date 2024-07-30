@@ -31,8 +31,8 @@ export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
   const { deliveryBy } = useFilterStore((state: any) => state);
   return (
-    <div className="lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_8px] gap-8 overflow-visible">
-      <div className="lg:hidden flex justify-between pb-[18px] px-[8px] items-center">
+    <div className=" lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_16px] max-w-[1328px] mx-auto gap-8 overflow-visible">
+      <div className="lg:hidden flex justify-between pb-[18px] items-center">
         {renderIcon(deliveryBy)}
         <div className="flex items-center space-x-[6px]">
           <Sheet>
@@ -57,7 +57,7 @@ export default function Catalogue() {
         </div>
       </div>
       <div
-        className={`col-span-2 rounded-2xl overflow-hidden p-1 lg:p-4 ${searchOpened ? "max-h-min" : "max-h-0"} lg:max-h-min transition-all duration-500 ease lg:h-auto`}
+        className={`col-span-2 rounded-2xl overflow-hidden ${searchOpened ? "max-h-min" : "max-h-0"} lg:max-h-min transition-all duration-500 ease lg:h-auto`}
       >
         <SelectedSearch />
       </div>

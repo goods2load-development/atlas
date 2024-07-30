@@ -15,20 +15,15 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    // TODO add error handling
+    window.dispatchEvent(new CustomEvent("errorHandler", { detail: error }));
     return error;
   }
 );
 
 export function getRequest(params: any) {
-  return axios
-    .get(params.url, { ...params })
-    .then(function (response: any) {
-      return response.data;
-    })
-    .catch(function (error: any) {
-      // TODO add toast messages
-    });
+  return axios.get(params.url, { ...params }).then(function (response: any) {
+    return response.data;
+  });
 }
 
 export function postRequest(params: any) {
@@ -38,21 +33,19 @@ export function postRequest(params: any) {
     })
     .then(function (response: any) {
       return response.data;
-    })
-    .catch(function (error: any) {
-      // TODO add toast messages
     });
 }
 
 export function patchRequest(params: any) {
-  return axios
-    .patch(params.url, params.data)
-    .then(function (response: any) {
-      return response.data;
-    })
-    .catch(function (error: any) {
-      // TODO add toast messages
-    });
+  return axios.patch(params.url, params.data).then(function (response: any) {
+    return response.data;
+  });
+}
+
+export function deleteRequest(params: any) {
+  return axios.delete(params.url, params.data).then(function (response: any) {
+    return response.data;
+  });
 }
 
 export const generateBlockId = (title?: string) =>
@@ -60,14 +53,3 @@ export const generateBlockId = (title?: string) =>
     ?.replace(/ /g, "-")
     .replace(/[\s’?*()]/g, "")
     .toLowerCase() || "";
-
-export function deleteRequest(params: any) {
-  return axios
-    .delete(params.url, params.data)
-    .then(function (response: any) {
-      return response.data;
-    })
-    .catch(function (error: any) {
-      // TODO add toast messages
-    });
-}

@@ -11,29 +11,25 @@ export default function SubHeaderMain() {
         <br /> and costs for businesses.
       </div>
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 top-[30px] sm:top-[55px] w-full h-fit z-1 overflow-hidden flex flex-row gap-1">
-          <img
-            className="w-full animate-infinite-scroll"
-            src="/line-dashed-gray.svg"
-            alt={"line"}
-          />
-          <img
-            className="w-full animate-infinite-scroll"
-            src="/line-dashed-gray.svg"
-            alt={"line"}
-          />
+        <div className="absolute inset-0 top-[30px] sm:top-[55px] w-full h-[2px] z-1 overflow-hidden flex flex-row gap-1">
+          <div
+            className="w-full animate-infinite-scroll h-[1px] w-full absolute top-0 left-0"
+            style={{ backgroundImage: "url(/line-dashed-gray.svg)" }}
+          ></div>
+          <div
+            className="w-full animate-infinite-scroll h-[1px] w-full absolute top-0 left-[100%]"
+            style={{ backgroundImage: "url(/line-dashed-gray.svg)" }}
+          ></div>
         </div>
         <div className="absolute inset-0 top-[210px] sm:top-[280px] w-full h-fit z-1 overflow-hidden flex flex-row gap-1">
-          <img
-            className="w-full animate-infinite-scroll"
-            src="/line-dashed-gray.svg"
-            alt={"line"}
-          />
-          <img
-            className="w-full animate-infinite-scroll"
-            src="/line-dashed-gray.svg"
-            alt={"line"}
-          />
+          <div
+            className="w-full animate-infinite-scroll h-[1px] w-full absolute top-0 left-0"
+            style={{ backgroundImage: "url(/line-dashed-gray.svg)" }}
+          ></div>
+          <div
+            className="w-full animate-infinite-scroll h-[1px] w-full absolute top-0 left-[100%]"
+            style={{ backgroundImage: "url(/line-dashed-gray.svg)" }}
+          ></div>
         </div>
         <div className="px-5 flex justify-around text-center text-grayCustom flex-wrap relative max-w-[1000px] mx-auto">
           <div className="px-1 flex flex-col text-[18px]/[22px] mb-10">
@@ -50,7 +46,7 @@ export default function SubHeaderMain() {
           <div className="px-1 flex flex-col text-[18px]/[22px] mb-10">
             <img
               src="/optimizeicon2.svg"
-                alt="step-two"
+              alt="step-two"
               width={110}
               height={110}
               className="self-center mb-5 block w-[64px] sm:w-[110px] h-[64px] sm:h-[110px]"

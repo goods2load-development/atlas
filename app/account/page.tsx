@@ -92,7 +92,7 @@ export default function Account() {
   return (
     <>
       <Header />
-      <main className="flex min-h-screen flex-col p-5 sm:p-16 justify-between colored-main">
+      <main className="flex min-h-screen flex-col py-5 sm:py-16 justify-between colored-main px-[16px] max-w-[1328px] mx-auto">
         <div className="sm:flex justify-between mb-10 items-center">
           <i className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">
             <img src="/user.svg" className="mr-3" />

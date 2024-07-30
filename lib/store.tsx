@@ -95,7 +95,7 @@ export const useRegistrationStore = create((set) => ({
     formData.append("insuranceStatement", data.insuranceStatement);
     formData.append("issuingAuthority", data.issuingAuthority);
     formData.append("tradeLicenseNumber", data.tradeLicenseNumber);
-  
+
     delete data.confirmPassword;
     delete data.privacy;
 
@@ -143,11 +143,13 @@ export const useUserStore = create((set) => ({
   },
   getUser: async () => {
     const id = localStorage.getItem("id");
-    await getRequest({
-      url: `/users/${id}`,
-    }).then((userData: any) => {
-      set(() => ({ user: userData?.data }));
-    });
+    if (id)
+      await getRequest({
+        url: `/users/${id}`,
+      }).then((userData: any) => {
+        if (!userData) localStorage.removeItem("id");
+        set(() => ({ user: userData?.data }));
+      });
   },
   authenticateUser: async (data: any) => {
     await postRequest({
