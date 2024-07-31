@@ -93,6 +93,8 @@ const config = {
         "divide-pattern-mobile": "url('../assets/divide-pattern.jpg')",
         "hero-pattern-mobile": "url('../assets/hero-pattern-mobile.png')",
         "partners-mobile": "url('../assets/bg-partners-mobile.png')",
+        seo: "url(../public/seobg.png)",
+        seomobile: "url(../public/seobgmobile.png)",
       },
       backgroundSize: {
         "100%": "100%",
