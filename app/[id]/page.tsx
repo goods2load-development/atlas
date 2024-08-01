@@ -40,9 +40,9 @@ export default function Page() {
                   className="hidden md:block"
                 />
                 <img
-                  src={item.srcMo}
+                  src={item.srcMobile}
                   alt={item.alt}
-                  className="md:hidden block"
+                  className="md:hidden block mx-auto"
                 />
               </>
             );
