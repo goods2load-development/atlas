@@ -12,9 +12,12 @@ export default function Page() {
   const pathname = usePathname();
   const [data, setData] = useState<any>(undefined);
   // TODO add proper path for JSON files
-  fetch(`${pathname}.json`)
-    .then((response) => response.json())
-    .then((data) => setData(data));
+  useState(() => {
+    fetch(`${pathname}.json`)
+      .then((response) => response.json())
+      .then((data) => setData(data));
+  });
+
   // TODO add redirect to 404
   if (!data) return null;
   return (

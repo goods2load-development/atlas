@@ -68,7 +68,7 @@ export default function SEOPagesTemplate(props: SEOPagesTemplateProps) {
             src={imgSrc}
           />
           <img
-            className="w-full h-[300px] min-h-full object-cover md:hidden"
+            className="w-full h-[216px] min-h-full object-cover md:hidden"
             src={imgSrcMobile ? imgSrcMobile : imgSrc}
           />
         </div>
