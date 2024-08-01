@@ -24,15 +24,33 @@ export default function Page() {
           case "quote":
             return <Quote>{item.text}</Quote>;
           case "subTitle":
-            return <SubTitle>{item.text}</SubTitle>;
+            return <SubTitle colored={item.colored}>{item.text}</SubTitle>;
           case "markedList":
             return <MarkedList items={item.text} />;
           case "image":
-            return <img src={item.text} />;
+            return (
+              <>
+                <img
+                  src={item.src}
+                  alt={item.alt}
+                  className="hidden md:block"
+                />
+                <img
+                  src={item.srcMo}
+                  alt={item.alt}
+                  className="md:hidden block"
+                />
+              </>
+            );
           case "orderedList":
             return <OrderedList items={item.text} />;
           default:
-            return <p>{item.text}</p>;
+            return (
+              <p
+                dangerouslySetInnerHTML={{ __html: item.text }}
+                className="[&>a]:text-orangePrimary"
+              />
+            );
         }
       })}
     </SEOPagesTemplate>

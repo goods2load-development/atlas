@@ -1,7 +1,8 @@
 {
   "name": "air-freight-services",
   "imgSrc": "/air-freight-services.png",
-  "title": "Air Freight Services at GOODS2LOAD",
+  "imgSrcMobile": "/air-freight-services.png",
+  "title": "Air Freight<br/> Services at GOODS2LOAD",
   "content": [
     {
       "type": "quote",
@@ -15,7 +16,7 @@
     {
       "type": "markedList",
       "text": [
-        "Our range of services includes: Global Air Transport: Leverage our extensive network of airline partnerships to reach destinations worldwide.",
+        "<b>Our range of services includes: Global Air Transport: Leverage our extensive network of airline partnerships to reach destinations worldwide.</b>",
         "Express Air Freight: Benefit from expedited transit times for urgent shipments.",
         "Secure Air Cargo Handling: Rest assured knowing that your cargo is handled with the highest level of security and care throughout the journey.",
         "Customized Solutions: Tailored air freight solutions to meet your specific logistics requirements and optimize cost-effectiveness. We support your expansion!",
@@ -23,7 +24,12 @@
         "Efficient Air Freight Logistics: Optimized processes and expert logistics management to minimize transit times and enhance supply chain efficiency."
       ]
     },
-    { "type": "image", "text": "/air-freight-services-content.png" },
+    {
+      "type": "image",
+      "src": "/air-freight-services-content.png",
+      "alt": "plane",
+      "srcMobile": "/air-freight-services-content.png"
+    },
     { "type": "subTitle", "text": "Why Choose Us?" },
     {
       "type": "markedList",
@@ -34,7 +40,7 @@
         "Technology Integration: Utilization of advanced technology for real-time quotations and efficient management of your shipment requirements."
       ]
     },
-    { "type": "subTitle", "text": "Industries We Serve" },
+    { "type": "subTitle", "text": "Industries We Serve", "colored": true },
     {
       "type": "text",
       "text": "Our air freight services cater to a wide range of industries, including manufacturing, automotive, technology, pharmaceuticals, and more. Whether you're importing raw materials or exporting finished products, GOODS2LOAD provides scalable and reliable air cargo solutions to support your business growth. When you win, we win!"
@@ -50,6 +56,10 @@
         "Manufacturing: Ensuring the timely transportation of raw materials and finished products.",
         "Automotive: Providing logistics solutions for automotive parts and vehicles."
       ]
+    },
+    {
+      "type": "text",
+      "text": "text with link <a href='link'>link</a>"
     }
   ]
 }
