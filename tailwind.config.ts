@@ -94,7 +94,7 @@ const config = {
         "hero-pattern-mobile": "url('../assets/hero-pattern-mobile.png')",
         "partners-mobile": "url('../assets/bg-partners-mobile.png')",
         seo: "url(../public/seobg.svg)",
-        seomobile: "url(../public/seobgmobile.png)",
+        seomobile: "url(../public/seobgmobile.svg)",
       },
       backgroundSize: {
         "100%": "100%",
