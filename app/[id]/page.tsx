@@ -18,7 +18,11 @@ export default function Page() {
   // TODO add redirect to 404
   if (!data) return null;
   return (
-    <SEOPagesTemplate imgSrc={data.imgSrc} title={data.title}>
+    <SEOPagesTemplate
+      imgSrc={data.imgSrc}
+      imgSrcMobile={data.imgSrcMobile}
+      title={data.title}
+    >
       {data.content.map((item: any) => {
         switch (item.type) {
           case "quote":
