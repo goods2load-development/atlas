@@ -563,7 +563,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                       onFocus={handleFocus}
                       onBlur={() => setOpen(false)}
                       value={typeOfGoods}
-                      placeholder="Type of goods"
+                      placeholder="e.g. 48025620 - Uncoated A4 paper ..."
                     />
                   </div>
                 </ToolTipComponent>
@@ -606,7 +606,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
             <Input
               className="h-[60px] rounded-[16px] sm:rounded-r-none sm:rounded-l-[16px] border-none font-normal text-black"
               type="number"
-              placeholder="Total KG"
+              placeholder="e.g. 300"
               min="1"
               value={totalKg}
               onChange={(e) => setFilter({ totalKg: e.target.value })}
@@ -638,7 +638,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
               <Input
                 className="h-[60px] rounded-l-none rounded-r-[16px] sm:rounded-none border-none font-normal text-black"
                 type="number"
-                placeholder="Quantity"
+                placeholder="e.g. 5"
                 value={quantity}
                 onChange={(e) => setFilter({ quantity: e.target.value })}
               />
@@ -647,11 +647,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
           <div className="flex sm:w-[30%] mb-5 sm:mb-0">
             <div className="mr-[1px] sm:w-1/3">
               <label className="mb-2 block text-center sm:text-left">
-                Length
+                Length (cm)
               </label>
               <Input
                 className="h-[60px] sm:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
-                placeholder="Length"
+                placeholder="100"
                 type="number"
                 value={length}
                 onChange={(e) => setFilter({ length: e.target.value })}
@@ -659,23 +659,23 @@ export default function SearchMain({ main }: { main?: boolean }) {
             </div>
             <div className="mr-[1px] sm:w-1/3 ">
               <label className="mb-2 block text-center sm:text-left">
-                Width
+                Width (cm)
               </label>
               <Input
                 value={width}
                 className="h-[60px] rounded-none border-none font-normal text-black"
-                placeholder="Width"
+                placeholder="120"
                 type="number"
                 onChange={(e) => setFilter({ width: e.target.value })}
               />
             </div>
             <div className="mr-[1px] sm:w-1/3">
               <label className="mb-2 block text-center sm:text-left">
-                Height
+                Height (cm)
               </label>
               <Input
                 className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
-                placeholder="Height"
+                placeholder="165"
                 type="number"
                 value={height}
                 onChange={(e) => setFilter({ height: e.target.value })}
@@ -691,7 +691,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 {selectedCurrency.symbol}
                 <Input
                   className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black pl-[2px]"
-                  placeholder="Goods Value"
+                  placeholder="11200"
                   type="number"
                   value={goodsValue}
                   onChange={(e) => setFilter({ goodsValue: e.target.value })}
