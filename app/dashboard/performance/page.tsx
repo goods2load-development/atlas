@@ -6,13 +6,14 @@ import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
 import MobileFooter from "@/components/Dashboard/MobileFooter/MobileFooter";
-import { IAnalyticsStore, Transportation } from "@/app/interface/dashboard";
 import { usePerformanceStore } from "@/lib/analyticsStore";
+import { DeliveryBy } from "@/lib/filterStore";
+import { IAnalyticsStore } from "@/lib/analyticsStore";
 
 export default function Performance({ params }: { params: { route: string } }) {
   const pathname = usePathname();
   const colorClass = pathname === params.route ? "text-black" : "text-blue";
-  const { transportation, onChangeTransportation }: IAnalyticsStore =
+  const { deliveryBy, onChangeTransportation }: IAnalyticsStore =
     usePerformanceStore();
 
   return (
@@ -29,12 +30,12 @@ export default function Performance({ params }: { params: { route: string } }) {
               Performance
             </h2>
             <RadioGroupItems
-              onChangeValue={(value: Transportation) => {
+              onChangeValue={(value: DeliveryBy) => {
                 onChangeTransportation(value);
               }}
             />
           </div>
-          <PerformanceMain key={transportation} />
+          <PerformanceMain key={deliveryBy} />
         </div>
 
         <MobileFooter />

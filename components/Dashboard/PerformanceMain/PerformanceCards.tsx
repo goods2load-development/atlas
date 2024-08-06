@@ -1,42 +1,31 @@
-import MainMenuCard from "./PerformanceCard";
-import { useState } from "react";
+import { ICard } from "./PerformanceCard";
+import PerformanceCard from "./PerformanceCard";
 
-export enum CardType {
-  AVARAGE = "averge",
-  SEARCHERS = "searchers",
-  REDIRECTS = "redirects",
-}
+
 
 interface PerformanceCardsProps {
   data: any;
+  activeCard: ICard;
+  onChangeActiveCard: (activeCard: ICard) => void
 }
 
-const PerformanceCards: React.FC<PerformanceCardsProps> = ({ data }) => {
-  const [activeCard, setActiveCard] = useState<CardType>(CardType.AVARAGE);
+const PerformanceCards: React.FC<PerformanceCardsProps> = ({ data, activeCard, onChangeActiveCard }) => {
 
   return (
     <ul className="flex items-center flex-wrap gap-8 lg:gap-14 xl:gap-0">
-      <MainMenuCard
-        title="Average fare per transport"
-        data={data?.fare}
-        type={CardType.AVARAGE}
-        isActive={CardType.AVARAGE === activeCard}
-        onSetActive={() => setActiveCard(CardType.AVARAGE)}
-      />
-      <MainMenuCard
-        title="Searchers"
-        data={data?.searchers}
-        type={CardType.SEARCHERS}
-        isActive={CardType.SEARCHERS === activeCard}
-        onSetActive={() => setActiveCard(CardType.SEARCHERS)}
-      />
-      <MainMenuCard
-        title="Redirects"
-        data={data?.redirects}
-        type={CardType.REDIRECTS}
-        isActive={CardType.REDIRECTS === activeCard}
-        onSetActive={() => setActiveCard(CardType.REDIRECTS)}
-      />
+      {data.map((elem: ICard) => {
+        return (
+            <PerformanceCard
+              key={elem.label}
+              title={elem.label}
+              data={elem.data}
+              type={elem.type}
+              isActive={activeCard.label === elem.label}
+              onChangeActiveCard={() => onChangeActiveCard(elem)}
+          />
+        )
+      })}
+  
     </ul>
   );
 };

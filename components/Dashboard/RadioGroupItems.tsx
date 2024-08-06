@@ -1,26 +1,30 @@
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
-import { Transportation } from "@/app/interface/dashboard";
+import { DeliveryBy } from "@/lib/filterStore";
+import { usePerformanceStore } from "@/lib/analyticsStore";
 
 export interface RadioGroupItemsProps {
-  onChangeValue?: (value: Transportation) => void;
+  onChangeValue?: (value: DeliveryBy) => void;
 }
 
 export default function RadioGroupItems({
   onChangeValue,
 }: RadioGroupItemsProps) {
+
+  const {deliveryBy} = usePerformanceStore();
+
   return (
     <form className="my-2 mb-4 lg:mb-10">
       <div className="flex items-center gap-3 test-radio justify-center md:justify-start">
         <RadioGroup
           onValueChange={onChangeValue}
-          defaultValue={Transportation.PLANE}
+          defaultValue={deliveryBy}
           className={`flex custom-radio catalogue`}
         >
-          <CustomRadioGroupItem value={Transportation.PLANE} imageNumber={1} />
-          <CustomRadioGroupItem value={Transportation.FERRY} imageNumber={2} />
-          <CustomRadioGroupItem value={Transportation.TRUCK} imageNumber={3} />
+          <CustomRadioGroupItem value={DeliveryBy.plane} imageNumber={1} />
+          <CustomRadioGroupItem value={DeliveryBy.ferry} imageNumber={2} />
+          <CustomRadioGroupItem value={DeliveryBy.truck} imageNumber={3} />
         </RadioGroup>
       </div>
     </form>

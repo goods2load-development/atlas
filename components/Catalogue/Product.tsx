@@ -96,6 +96,8 @@ export default function Product(props: Props) {
           delivery={props.delivery}
           portArrival={props.portArrival}
           portDeparture={props.portDeparture}
+          price={props.price}
+          placementOfGoods={props.placementOfGoods}
         />
       </div>
     </div>

@@ -296,6 +296,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           CO2EmissionControlled: item.goGreen,
           portArrival: item.portArrival,
           portDeparture: item.portDeparture,
+          price: item.price, // Added for analytics avarge store when user select this product
+          placementOfGoods: item.placementOfGoods // Added for analytics avarge store when user select this product
         }));
         console.log("products", products);
         set(() => ({ products, pagination: data.partners.meta }));

@@ -1,17 +1,18 @@
 "use client";
 
 import { useEffect, useState, useMemo, useCallback } from "react";
-import MainMenuTabs from "./PerformanceTabs";
-import MainMenuCardsList from "./PerformanceCards";
-import EvolutionTab from "./Tabs/EvolutionTab";
-import CompetitivenessTab from "./Tabs/CompetitivenessTab";
+import PerformanceTabs from "./PerformanceTabs";
+import EvolutionTab from "./Tabs/EvolutionTab/EvolutionTab";
+import CompetitivenessTab from "./Tabs/CompetitivenessTab/CompetitivenessTab";
 import { usePerformanceStore } from "@/lib/analyticsStore";
-import { IAnalyticsStore } from "@/app/interface/dashboard";
-import { IPerformanceTab, PerformaceTab } from "@/app/interface/dashboard";
+import { PerformaceTab, type IPerformanceTab } from "./PerformanceTabs";
+import { type IAnalyticsStore } from "@/lib/analyticsStore";
+import UserSegmentationTab from "./Tabs/UserSegmentationaTab/UserSegmentationTab";
+// import UserSegmentationTab from "./Tabs/UserSegmentationTab";
 
 const PerformanceMain = () => {
   const {
-    transportation,
+    deliveryBy,
     performanceData,
     getPerformancedData,
   }: IAnalyticsStore = usePerformanceStore();
@@ -23,28 +24,22 @@ const PerformanceMain = () => {
     () => [
       {
         label: PerformaceTab.EVOLUTION,
-        element: <EvolutionTab data={performanceData?.evolution || []} />,
+        element: <EvolutionTab data={performanceData || []} />,
       },
       {
         label: PerformaceTab.COMPETITIVENESS,
-        element: (
-          <CompetitivenessTab data={performanceData?.competitiveness || []} />
-        ),
+        element:  <CompetitivenessTab data={performanceData || []} />
       },
       {
-        label: PerformaceTab.COMPETITIVE_PRESSURE,
-        element: (
-          <CompetitivenessTab
-            data={performanceData?.competitivePressure || []}
-          />
-        ),
+        label: PerformaceTab.USER_SEGMENTATION,
+        element: <UserSegmentationTab data={performanceData || []}/>
       },
     ],
     [performanceData]
   );
 
   useEffect(() => {
-    getPerformancedData(transportation);
+    getPerformancedData(deliveryBy);
   }, []);
 
   const onChangeTab = useCallback(
@@ -57,12 +52,11 @@ const PerformanceMain = () => {
 
   return (
     <div className="flex flex-col justify-center mt-4">
-      <MainMenuTabs
+      <PerformanceTabs
         onChangeTab={onChangeTab}
         tabs={tabs}
         activeTab={activeTab}
       />
-      <MainMenuCardsList data={performanceData} />
       {tabs.filter((tab) => activeTab === tab.label)[0].element}
     </div>
   );

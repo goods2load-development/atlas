@@ -1,17 +1,31 @@
 import { subYears } from "date-fns";
 import { cn } from "@/lib/utils";
-import Image from "next/image";
-import { CardType } from "./PerformanceCards";
+
 import { useEffect, useState } from "react";
 import { Triangle } from "lucide-react";
-import { IPerformanceCardData } from "@/app/interface/dashboard";
+
+export interface ICardData {
+  average: string | number
+  lastYear: string | number
+}
+
+export enum CardType {
+  AVARAGE = "avarage",
+  USER_SEGMENTATION = "user_segmentation"
+}
+
+export interface ICard {
+  label: string;
+  type?: CardType;
+  data: ICardData;
+}
 
 interface PerformanceCardProps {
   title: string;
-  data: IPerformanceCardData;
-  type: CardType;
+  type?: CardType;
+  data: ICardData;
   isActive: boolean;
-  onSetActive: (elem: CardType) => void;
+  onChangeActiveCard: () => void;
 }
 
 const PerformanceCard: React.FC<PerformanceCardProps> = ({
@@ -19,8 +33,9 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
   data,
   type,
   isActive,
-  onSetActive,
+  onChangeActiveCard,
 }: PerformanceCardProps) => {
+
   const [isIncreasaIndicators, setIsIncreaseIndicators] = useState(false);
 
   const getPreviousYear = () => {
@@ -50,7 +65,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
 
   return (
     <li
-      onClick={() => onSetActive(type)}
+      onClick={() => onChangeActiveCard()}
       className={cn(
         "bg-[#FFF] lg:w-[351px] lg:h-[180px]  shadow-sm relative rounded-[9px] mt-3 cursor-pointer w-full",
         isActive && "bg-[#FF6720] text-[#FFF]"
@@ -64,13 +79,14 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
               isActive && "text-[#FFF]"
             )}
           >
-            {data?.average}
+            {data?.average || 0}
             {type === CardType.AVARAGE && "$"}
-            {type === CardType.REDIRECTS && "%"}
+            {/* {type === CardType.REDIRECTS && "%"} */}
           </span>
         </div>
 
-        <div className="mr-auto">
+        {
+          type !== CardType.USER_SEGMENTATION && <div className="mr-auto">
           <div className="flex items-center gap-4">
             <span className="font-[500] text-md">
               {countVarianceBetweenIndicators(
@@ -107,13 +123,14 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
             vs {getPreviousYear()}
           </div>
         </div>
+        }
 
         <div className="flex flex-col gap-2 lg:gap-4 lg:w-full w-auto mr-5 lg:mr-0">
           <span>Last year</span>
           <span className={cn("text-[#666666]", isActive && "text-[#FFF]")}>
             {data?.lastYear || 0}
             {type === CardType.AVARAGE && "$"}
-            {type === CardType.REDIRECTS && "%"}
+            {/* {type === CardType.REDIRECTS && "%"} */}
           </span>
         </div>
       </div>

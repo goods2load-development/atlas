@@ -1,7 +1,19 @@
-import { PerformaceTab, IPerformanceTab } from "@/app/interface/dashboard";
+import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ChevronUp } from "lucide-react";
+
+export interface IPerformanceTab {
+  label: PerformaceTab;
+  element: ReactNode;
+}
+
+export enum PerformaceTab {
+  EVOLUTION = "Evolution",
+  COMPETITIVENESS = "Competitiveness",
+  USER_SEGMENTATION = "User segmentation",
+}
+
 
 interface PerformanceTabsProps {
   tabs: IPerformanceTab[];

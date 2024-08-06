@@ -1,12 +1,18 @@
 import Image from "next/image";
-import BarChartGraph, { BarChartData } from "../../Charts/BarChart";
+import BarChartGraph, { BarChartData } from "../../../Charts/BarChart";
 import { ICompetitivenessiteItem } from "@/app/interface/dashboard";
+import { useEffect } from "react";
+
+export interface ICompetitivnessChart {
+  label: string;
+  value: number;
+}
 
 const colors: string[] = ["#FFEDE4", "#FF6720", "#BB4E1B"];
 
-const CompetitivenessTab = ({ data }: { data: ICompetitivenessiteItem[] }) => {
-  const dataWithColor = (data: ICompetitivenessiteItem[]): BarChartData[] => {
-    return data.map((elem: ICompetitivenessiteItem, idx: number) => {
+const CompetitivenessChart = ({ data }: { data: any }) => {
+  const dataWithColor = (data: any): BarChartData[] => {
+    return data.map((elem: any, idx: number) => {
       return {
         ...elem,
         color: colors[idx],
@@ -24,10 +30,10 @@ const CompetitivenessTab = ({ data }: { data: ICompetitivenessiteItem[] }) => {
           {dataWithColor(data).map((elem, idx) => {
             return (
               <div
-                key={elem.name}
+                key={elem.label}
                 className="flex items-center gap-1 md:gap-3 text-sm md:text-base"
               >
-                <span>{elem.name}</span>
+                <span>{elem.label}</span>
                 <div
                   className={`bg-[${elem.color}] w-4 h-4 sm:w-6 sm:h-6 rounded-md`}
                 ></div>
@@ -46,15 +52,17 @@ const CompetitivenessTab = ({ data }: { data: ICompetitivenessiteItem[] }) => {
           />
         </div>
         <div className="ml-auto flex-1 min-w-[800px] h-[200px] lg:h-[400px]">
-          <BarChartGraph
+          {
+            data.length > 0 ? <BarChartGraph
             data={dataWithColor(data)}
             values={false}
             barWidth={100}
-          />
+          /> : <div className=" text-center h-full flex items-center justify-center">Data not found</div>
+          }
         </div>
       </div>
     </div>
   );
 };
 
-export default CompetitivenessTab;
+export default CompetitivenessChart;

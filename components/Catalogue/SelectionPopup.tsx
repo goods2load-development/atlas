@@ -25,6 +25,7 @@ import {
 import { Input } from "@/components/ui/input";
 import UIButton from "@/components/common/Button";
 import Loader from "@/components/common/Loader";
+import { useFilterStore } from "@/lib/filterStore";
 
 interface SelectionPopupProps {
   company: string;
@@ -32,6 +33,8 @@ interface SelectionPopupProps {
   delivery: string;
   portArrival: string;
   portDeparture: string;
+  price: string;
+  placementOfGoods: string;
 }
 
 function IsRequired() {
@@ -39,6 +42,7 @@ function IsRequired() {
 }
 
 export default function SelectionPopup(props: SelectionPopupProps) {
+  const {deliveryBy} = useFilterStore(); // required field for BE
   const [step, setStep] = useState(0);
   const formSchema = z.object({
     phone: z
@@ -58,9 +62,11 @@ export default function SelectionPopup(props: SelectionPopupProps) {
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
+
     postRequest({
       url: "orders/select-catalog",
       data: {
+        transportation: deliveryBy,
         customerPhone: values.phone,
         customerEmail: values.email,
         company: values.companyName,
@@ -69,6 +75,8 @@ export default function SelectionPopup(props: SelectionPopupProps) {
         delivery: props.delivery,
         portArrival: props.portArrival,
         portDeparture: props.portDeparture,
+        price: props.price, // Add for avarge company analytics
+        placementOfGoods: props.placementOfGoods // Add for avarge company analytics
       },
     }).then(() => {
       setStep(1);

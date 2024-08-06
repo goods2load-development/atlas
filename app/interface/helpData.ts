@@ -4,6 +4,7 @@ export enum TabName {
   TRUCK = "truck",
 }
 
+
 interface Tab {
   question: string;
   description: string | JSX.Element;
