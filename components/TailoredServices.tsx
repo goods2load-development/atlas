@@ -32,20 +32,12 @@ export default function TailoredServices() {
           <div
             className={`embla__slide flex-[0_0_100%] ${selectedIndex === 1 && "is-selected"}`}
           >
-            <img
-              src="/slide2.png"
-              className="w-full object-cover min-h-96"
-              alt={"slide2-bg"}
-            />
+            <div className="bg-black h-full rounded-2xl overflow-hidden"></div>
           </div>
           <div
             className={`embla__slide flex-[0_0_100%] ${selectedIndex === 2 && "is-selected"}`}
           >
-            <img
-              src="/slide3.png"
-              className="w-full object-cover min-h-96"
-              alt={"slide3-bg"}
-            />
+            <div className="bg-black h-full rounded-2xl overflow-hidden"></div>
           </div>
         </div>
 

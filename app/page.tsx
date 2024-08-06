@@ -28,7 +28,7 @@ export default function Home() {
           <SearchMain main />
         </div>
         <SubHeaderMain />
-        {/* <LogisticInsights /> */}
+        <LogisticInsights />
         <TailoredServices />
         <SliderMain />
         <QuestionsAndAnswers />
