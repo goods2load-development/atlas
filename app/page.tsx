@@ -7,6 +7,7 @@ import SubHeaderMain from "@/components/SubHeaderMain";
 import LogisticInsights from "@/components/LogisticInsights";
 import SliderMain from "@/components/SliderMain";
 import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
+import TailoredServices from "@/components/TailoredServices";
 
 export default function Home() {
   return (
@@ -27,7 +28,8 @@ export default function Home() {
           <SearchMain main />
         </div>
         <SubHeaderMain />
-        <LogisticInsights />
+        {/* <LogisticInsights /> */}
+        <TailoredServices />
         <SliderMain />
         <QuestionsAndAnswers />
       </main>
