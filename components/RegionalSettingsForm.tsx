@@ -81,7 +81,7 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
     resolver: zodResolver(formSchema),
     defaultValues: {
       language: props.language,
-      currency: selectedCurrency,
+      currency: selectedCurrency.code,
       country: props.country,
     },
   });

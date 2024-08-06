@@ -8,6 +8,7 @@ import SelectionPopup from "./SelectionPopup";
 
 interface Props extends IProduct {
   deliveryBy: string;
+  currency: any;
 }
 
 function Icon(type: string) {
@@ -77,7 +78,8 @@ export default function Product(props: Props) {
             Order <span>cost</span>
           </div>
           <div className="text-[20px]/[22px] font-medium">
-            From ${props.orderCost}
+            From {props.currency.symbol}
+            {Math.round(parseInt(props.orderCost) * props.currency.rate)}
           </div>
         </div>
       </div>

@@ -14,7 +14,7 @@ import Autoplay from "embla-carousel-autoplay";
 const PartnersOurPartners: React.FC = () => {
   return (
     <section id="our-partners" className="w-full  items-center">
-      <div className="text-black text-center font-light md:text-[40px]/[48px] text-[34px]/[38px] flex px-[72px]">
+      <div className="text-black text-center font-light md:text-[40px]/[48px] text-[34px]/[38px] flex px-[16px] max-w-[1328px] mx-auto">
         Our
         <div className="font-normal italic bg-[#FEF1DF] rounded-[6px] md:h-[49px] px-[8px] ml-2 flex justify-center items-center">
           partners

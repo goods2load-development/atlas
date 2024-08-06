@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { useFilterStore } from "@/lib/filterStore";
+import { useFilterStore, useCurrenciesStore } from "@/lib/filterStore";
 import { number } from "zod";
 import { useEffect } from "react";
 import Image from "next/image";
@@ -25,6 +25,7 @@ export default function SelectedSearch() {
     quantity,
     incoterms,
   } = useFilterStore((state: any) => state);
+  const { selectedCurrency } = useCurrenciesStore((state: any) => state);
 
   const countVolume = (width: number, length: number, height: number) => {
     return width * height * length;
@@ -46,7 +47,7 @@ export default function SelectedSearch() {
         return (
           <Image
             src={`/filtericon-ship.svg`}
-            alt={"plane"}
+            alt={"ferry"}
             width={58}
             height={58}
           />
@@ -56,7 +57,7 @@ export default function SelectedSearch() {
         return (
           <Image
             src={`/filtericon-truck.svg`}
-            alt={"plane"}
+            alt={"truck"}
             width={58}
             height={58}
           />
@@ -182,7 +183,8 @@ export default function SelectedSearch() {
               </label>
               <div className="h-[60px]  w-full rounded-r-none border-none font-normal text-black  justify-start bg-white flex items-center whitespace-nowrap px-[16px] text-sm pr-2">
                 <div className="h-full flex items-center overflow-x-scroll hide-scrollbar">
-                  $ {goodsValue}
+                  {selectedCurrency.symbol}{" "}
+                  {Math.round(goodsValue * selectedCurrency.rate)}
                 </div>
               </div>
             </div>

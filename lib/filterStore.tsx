@@ -158,32 +158,36 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         partnersSelected: data.data.map((item: any) => item.id),
       }));
     },
-    getPortsList: async (departure: boolean = false) => {
+    getPortsList: (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === "plane" ? "airport" : "seaport";
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
-      const data = await getRequest({
-        url: `https://port-api.com/${type}/search/${city}`,
-        withCredentials: false,
-      });
-      const ports: any[] = data.features.map((item: any) => ({
-        id: item.properties.name,
-        label: item.properties.name,
-      }));
-      const selected: any[] = data.features.map(
-        (item: any) => item.properties.name
-      );
-      if (departure) {
-        set(() => ({
-          portsDeparture: ports,
-          portsDepartureSelected: selected,
-        }));
-      } else {
-        set(() => ({
-          portsArrival: ports,
-          portsArrivalSelected: selected,
-        }));
-      }
+      if (deliveryBy !== "truck")
+        getRequest({
+          url: `https://port-api.com/${type}/search/${city}`,
+          withCredentials: false,
+        }).then((data: any) => {
+          if (data?.features) {
+            const ports: any[] = data?.features.map((item: any) => ({
+              id: item.properties.name,
+              label: item.properties.name,
+            }));
+            const selected: any[] = data?.features.map(
+              (item: any) => item.properties.name
+            );
+            if (departure) {
+              set(() => ({
+                portsDeparture: ports,
+                portsDepartureSelected: selected,
+              }));
+            } else {
+              set(() => ({
+                portsArrival: ports,
+                portsArrivalSelected: selected,
+              }));
+            }
+          }
+        });
     },
     getProducts: async (page?: number) => {
       const {
@@ -265,7 +269,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             ? portsArrivalSelected
             : undefined,
 
-          goodsValue: parseInt(goodsValue),
+          goodsValue:
+            parseInt(goodsValue) /
+            useCurrenciesStore.getState().selectedCurrency.rate,
           order: {
             cheapest: cheapest,
             fastest: fastest,
@@ -273,8 +279,14 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           },
           provider: {},
           price: {
-            min: priceMin ? parseInt(priceMin) : undefined,
-            max: priceMax ? parseInt(priceMax) : undefined,
+            min: priceMin
+              ? parseInt(priceMin) /
+                useCurrenciesStore.getState().selectedCurrency.rate
+              : undefined,
+            max: priceMax
+              ? parseInt(priceMax) /
+                useCurrenciesStore.getState().selectedCurrency.rate
+              : undefined,
           },
         },
       }).then((data: any) => {
@@ -307,20 +319,33 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
 });
 
 interface CurrenciesStoreProps {
-  selectedCurrency: Object;
+  selectedCurrency: SelectedCurrencyProps;
   currencies: any[];
   getCurrencies: () => void;
 }
 
+interface SelectedCurrencyProps {
+  symbol: string;
+  code: string;
+  rate: number;
+}
+
 export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
-  selectedCurrency: {},
+  selectedCurrency: {
+    symbol: "$",
+    code: "USD",
+    rate: 1,
+  },
   currencies: [],
-  setCurrency: (selectedCurrency: string) =>
+  setCurrency: (selectedCurrency: SelectedCurrencyProps) =>
     set(() => ({
       selectedCurrency,
     })),
   getCurrencies: async () => {
-    await getRequest({
+    const exchangeRates = await getRequest({
+      url: "/currencies",
+    });
+    getRequest({
       url: "https://www.wixapis.com/currency_converter/v1/currencies",
       withCredentials: false,
     }).then((data) => {
@@ -333,19 +358,23 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
           return 0;
         }
       });
-      const currencies = currenciesSorted.filter(
+      const majorCurrencies = currenciesSorted.filter(
         (i: any) => i.code === "USD" || i.code === "EUR" || i.code === "GBP"
       );
       set(() => ({
-        currencies: currencies.concat(
-          currenciesSorted.filter(
-            (i: any) =>
-              !(i.code === "USD" || i.code === "EUR" || i.code === "GBP")
+        currencies: majorCurrencies
+          .concat(
+            currenciesSorted.filter(
+              (i: any) =>
+                !(i.code === "USD" || i.code === "EUR" || i.code === "GBP") &&
+                exchangeRates[i.code]
+            )
           )
-        ),
-        selectedCurrency: currenciesSorted.find(
-          (item: any) => item.code === "USD"
-        ),
+          .map((item: any) => ({ ...item, rate: exchangeRates[item.code] })),
+        selectedCurrency: {
+          ...currenciesSorted.find((item: any) => item.code === "USD"),
+          rate: 1,
+        },
       }));
     });
   },
