@@ -79,6 +79,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
               isActive && "text-[#FFF]"
             )}
           >
+            {type === CardType.USER_SEGMENTATION && <span className="text-[20px]/[24px]">Mostly: </span>}
             {data?.average || 0}
             {type === CardType.AVARAGE && "$"}
             {/* {type === CardType.REDIRECTS && "%"} */}
