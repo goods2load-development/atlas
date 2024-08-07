@@ -244,3 +244,18 @@ export const useLangStore = create<ILangStore>((set) => ({
     if (lang) set({ lang });
   },
 }));
+
+export const useReferralsStore = create((set) => ({
+  referrals: [],
+  isReferralsLoading: false,
+  getAllReferrals: async () => {
+    set({ isReferralsLoading: true });
+    getRequest({
+      url: "referals",
+    })
+      .then((referrals) => {
+        set({ referrals });
+      })
+      .finally(() => set({ isReferralsLoading: false }));
+  },
+}));

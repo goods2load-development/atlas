@@ -1,0 +1,141 @@
+"use client";
+import Image from "next/image";
+import { Button } from "@/components/ui/button";
+import {
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { FormProvider, useForm } from "react-hook-form";
+import * as z from "zod";
+
+const formSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  url: z.string().url("Enter a valid URL"),
+  picture: z
+    .instanceof(FileList)
+    .refine((files) => files.length === 1, "You need to provide a file")
+    .refine(
+      (files) => files[0].size <= 2000000,
+      "The file is too large, it should be less than 2MB"
+    ),
+});
+
+const ReferralFormDialog = ({
+  onSubmitCallback,
+  defaultValues = null,
+}: {
+  onSubmitCallback: (data: any) => void;
+  defaultValues?: any;
+}) => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    mode: "all",
+    shouldUnregister: false,
+    ...(!!defaultValues && {
+      defaultValues,
+    }),
+  });
+
+  const { handleSubmit, control, reset } = form;
+
+  const onSubmit = (data: z.infer<typeof formSchema>) => {
+    onSubmitCallback(data);
+    reset();
+  };
+
+  return (
+    <FormProvider {...form}>
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <div className="flex flex-col gap-4">
+          <FormField
+            control={control}
+            name="title"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="text-[14px]/[24px] font-bold">
+                  Title
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-gray-2 border-0 !mt-0"
+                    placeholder="Banner 1"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="url"
+            render={({ field }) => (
+              <FormItem className="flex items-center gap-2">
+                <FormLabel className="text-[14px]/[24px] font-bold">
+                  Link
+                </FormLabel>
+                <FormControl>
+                  <Input
+                    className="bg-gray-2 border-0 !mt-0"
+                    placeholder="https://****.com"
+                    {...field}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="picture"
+            render={({ field }) => (
+              <FormItem className="w-full mb-5 sm:flex flex-wrap">
+                <div className="sm:w-1/2 sm:pr-2">
+                  <FormLabel className="text-[14px]/[18px] font-normal">
+                    Banner for your referral
+                  </FormLabel>
+                  <FormDescription className="text-[12px]">
+                    *Attachments not bigger than 2MB
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Input
+                    className="hidden"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => field.onChange(e.target.files || null)}
+                  />
+                </FormControl>
+                <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
+                  <Image
+                    width={16}
+                    height={16}
+                    className="mr-[8px]"
+                    src="/upload.svg"
+                    alt="upload"
+                  />
+                  {field.value ? field.value[0]?.name : "Upload banner"}
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <Button
+            type="submit"
+            className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+          >
+            Continue
+          </Button>
+        </div>
+      </form>
+    </FormProvider>
+  );
+};
+
+export default ReferralFormDialog;
