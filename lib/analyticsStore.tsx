@@ -43,7 +43,7 @@ export const usePerformanceStore = create<IAnalyticsStore>((set) => ({
 
   getPerformancedData: async (deliveryBy: DeliveryBy) => {
     postRequest({
-      url: "analytics",
+      url: `analytics?user_id=${localStorage.getItem("id")}`,
       data: { transportation: deliveryBy},
     }).then((data) => {
       set(() => ({
