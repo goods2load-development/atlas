@@ -4,11 +4,6 @@ export enum TabName {
   TRUCK = "truck",
 }
 
-export enum PerformanceTabName {
-  EVOLUTION = "Evolution",
-  COMPETITIVENESS = "Competitiveness",
-  COMPETITIVE_PRESSURE = "Competitive pressure",
-}
 
 interface Tab {
   question: string;
