@@ -83,7 +83,7 @@ const tab2Data: MarketTrendsTabData<PieData[]> = {
   description: "the most popular goods transported by your company",
 };
 
-const tab3Data: MarketTrendsTabData<BarChartData[]> = {
+const tab3Data: MarketTrendsTabData<any> = {
   data: [
     {
       name: "MON",
@@ -126,7 +126,7 @@ const tab3Data: MarketTrendsTabData<BarChartData[]> = {
     "demand for cargo transportation depending on the day of the week",
 };
 
-const tab4Data: MarketTrendsTabData<BarChartData[]> & JourneyDurationData = {
+const tab4Data: MarketTrendsTabData<any> & JourneyDurationData = {
   data: [
     {
       name: "Dubai",

@@ -6,17 +6,15 @@ import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
 import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
 import MobileFooter from "@/components/Dashboard/MobileFooter/MobileFooter";
-import { TabName } from "@/app/interface/helpData";
-import { useState } from "react";
-import { performanceData } from "@/components/Dashboard/PerformanceMain/mocks/data";
+import { usePerformanceStore } from "@/lib/analyticsStore";
+import { DeliveryBy } from "@/lib/filterStore";
+import { IAnalyticsStore } from "@/lib/analyticsStore";
 
 export default function Performance({ params }: { params: { route: string } }) {
   const pathname = usePathname();
   const colorClass = pathname === params.route ? "text-black" : "text-blue";
-
-  const [activeTransport, setActiveTransport] = useState<TabName>(
-    TabName.PLANE
-  );
+  const { deliveryBy, onChangeTransportation }: IAnalyticsStore =
+    usePerformanceStore();
 
   return (
     <div className="grid grid-cols-[auto_1fr]">
@@ -32,14 +30,12 @@ export default function Performance({ params }: { params: { route: string } }) {
               Performance
             </h2>
             <RadioGroupItems
-              onChageValue={(value: TabName) => setActiveTransport(value)}
+              onChangeValue={(value: DeliveryBy) => {
+                onChangeTransportation(value);
+              }}
             />
           </div>
-          <PerformanceMain
-            key={activeTransport}
-            cardsData={performanceData[activeTransport].cards}
-            tabsData={performanceData[activeTransport].tabsData}
-          />
+          <PerformanceMain key={deliveryBy} />
         </div>
 
         <MobileFooter />

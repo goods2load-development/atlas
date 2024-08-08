@@ -11,7 +11,7 @@ import {
 } from "recharts";
 
 export interface BarChartData {
-  name: string;
+  label: string;
   value: number;
   color: string;
 }

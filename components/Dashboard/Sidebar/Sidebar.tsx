@@ -50,7 +50,15 @@ const Sidebar: React.FC = () => {
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div>
-          <Image alt="logo-performance" width={50} height={20} src={mockLogo} />
+          <Link href="/">
+            {" "}
+            <Image
+              alt="logo-performance"
+              width={50}
+              height={20}
+              src={mockLogo}
+            />
+          </Link>
         </div>
         <div className="flex flex-col">
           <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
