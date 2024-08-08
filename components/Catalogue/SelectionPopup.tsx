@@ -27,6 +27,7 @@ import { useFilterStore } from "@/lib/filterStore";
 import CountryCode from "../common/CountryCode";
 
 interface SelectionPopupProps {
+  orderId: string;
   company: string;
   withdraw: string;
   delivery: string;
@@ -67,6 +68,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
     postRequest({
       url: "orders/select-catalog",
       data: {
+        orderId: props.orderId,
         transportation: deliveryBy,
         customerPhone: values.countryCode + values.phone,
         customerEmail: values.email,
@@ -76,8 +78,8 @@ export default function SelectionPopup(props: SelectionPopupProps) {
         delivery: props.delivery,
         portArrival: props.portArrival,
         portDeparture: props.portDeparture,
-        price: props.price, // Add for avarge company analytics
-        placementOfGoods: props.placementOfGoods // Add for avarge company analytics
+        price: props.price, 
+        placementOfGoods: props.placementOfGoods
       },
     }).then(() => {
       setStep(1);
