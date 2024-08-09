@@ -77,7 +77,7 @@ const getRoutes = async () => {
         <div className="mb-[56px] sm:flex flex-wrap justify-between">
           {
             data.blogs.map(({title, href}: any) => {
-              return <div className="w-[35%] md:w-[40%] lg:w-[43%]"><StyledLink href={`${href}`}>{title}</StyledLink></div>
+              return <div key={title} className="w-[35%] md:w-[40%] lg:w-[43%]"><StyledLink href={`${href}`}>{title}</StyledLink></div>
             })
           }
         </div>
@@ -86,7 +86,7 @@ const getRoutes = async () => {
             <SubTitle>About Us</SubTitle>
             {
               data.about.map(({title, href}: any) => {
-                return <StyledLink href={`${href}`}>{title}</StyledLink>
+                return <StyledLink key={title} href={`${href}`}>{title}</StyledLink>
               })
             }
           </div>
@@ -94,7 +94,7 @@ const getRoutes = async () => {
             <SubTitle>FAQ</SubTitle>
             {
               data.faq.map(({title, href}: any) => {
-                return <StyledLink href={`${href}`}>{title}</StyledLink>
+                return <StyledLink key={title} href={`${href}`}>{title}</StyledLink>
               })
             }
           </div>
@@ -108,7 +108,7 @@ const getRoutes = async () => {
             <SubTitle>Sign Up</SubTitle>
             {
               data.signUp.map(({title, href}: any) => {
-                return <StyledLink href={`${href}`}>{title}</StyledLink>
+                return <StyledLink key={title} href={`${href}`}>{title}</StyledLink>
               })
             }
           </div>
@@ -119,7 +119,7 @@ const getRoutes = async () => {
             <SubTitle>Partners</SubTitle>
             {
               data.partners.map(({title, href}: any) => {
-                return <StyledLink href={`${href}`}>{title}</StyledLink>
+                return <StyledLink key={title} href={`${href}`}>{title}</StyledLink>
               })
             }
           </div>
@@ -134,7 +134,7 @@ const getRoutes = async () => {
             <SubTitle>Legacy</SubTitle>
             {
               data.legacy.map(({title, href}: any) => {
-                return <StyledLink href={`${href}`}>{title}</StyledLink>
+                return <StyledLink key={title} href={`${href}`}>{title}</StyledLink>
               })
             }
           </div>
@@ -149,7 +149,7 @@ const getRoutes = async () => {
             <SubTitle>News and Insights</SubTitle>
               {
                 data.newsAndInsights.map(({title, href}: any) => {
-                  return <StyledLink href={`${href}`}>{title}</StyledLink>
+                  return <StyledLink key={title} href={`${href}`}>{title}</StyledLink>
                 })
               }
           </div>
@@ -157,7 +157,7 @@ const getRoutes = async () => {
             <SubTitle>Industries we serve</SubTitle>
             {
                 data.industriesWeServe.map(({title, href}: any) => {
-                  return <StyledLink href={`${href}`}>{title}</StyledLink>
+                  return <StyledLink key={title} href={`${href}`}>{title}</StyledLink>
                 })
               }
           </div>

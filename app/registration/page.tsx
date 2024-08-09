@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import { useCountriesStore } from "@/lib/store";
@@ -51,7 +51,7 @@ function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
 }
 
-export default function UserRegistration() {
+function UserRegistrationComponent() {
   const router = useRouter();
   const [cookies] = useCookies(["accessToken"]);
   const isUser  = useSearchParams().toString().split("=")[0] !== 'provider';
@@ -723,4 +723,12 @@ export default function UserRegistration() {
       <RegistrationSuccessPopup />
     </RegistrationWrapper>
   );
+}
+
+export default function UserRegistration(){
+  return (
+    <Suspense>
+      <UserRegistrationComponent />
+    </Suspense>
+  )
 }
