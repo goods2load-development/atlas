@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import AddNewReferralDialog from "./AddNewReferralDialog";
 import ReferralItem from "./ReferralItem";
 import { ReferralItemType } from "./types";
+import * as Slider from "@radix-ui/react-slider";
 import {
   arrayMove,
   rectSortingStrategy,
@@ -19,17 +20,33 @@ import {
   useSensors,
 } from "@dnd-kit/core";
 import { useReferralsStore } from "@/lib/store";
-import Loader from "@/components/common/Loader";
 import { Button } from "@/components/ui/button";
+import clsx from "clsx";
+import { removeEqualFields } from "@/lib/utils";
 
 const ReferralMain = () => {
-  const { getAllReferrals, isReferralsLoading, referrals } = useReferralsStore(
-    (state: any) => state
-  );
-  const [referralsItems, setReferralsItems] = useState<ReferralItemType[]>([]);
+  const {
+    getAllReferrals,
+    postNewReferral,
+    updateAllReferrals,
+    deleteReferral,
+    updateReferral: editReferralById,
+    updateReferralsViewCount,
+    isReferralsLoading,
+    referrals: referralsData,
+  } = useReferralsStore((state: any) => state);
+  const { referals: referrals = [], slicePerReferals = null } = referralsData;
 
-  const isAnyChanges =
+  const [referralsItems, setReferralsItems] = useState<ReferralItemType[]>([]);
+  const [localSlicePerReferals, setLocalSlicePerReferals] = useState<
+    null | number[]
+  >(null);
+
+  const isReferralsChanged =
     JSON.stringify(referrals) !== JSON.stringify(referralsItems);
+  const isSlicePerReferralsChanged =
+    localSlicePerReferals?.[0] !== slicePerReferals;
+  const isAnyChanges = isReferralsChanged || isSlicePerReferralsChanged;
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -46,10 +63,55 @@ const ReferralMain = () => {
     if (!referrals.length) return;
 
     setReferralsItems(referrals);
-  }, [referrals]);
+    setLocalSlicePerReferals([slicePerReferals]);
+  }, [referrals, slicePerReferals]);
 
-  const addNewReferral = (data: ReferralItemType) => {
-    setReferralsItems((prev) => [...prev, data]);
+  const addNewReferral = async (data: ReferralItemType) => {
+    postNewReferral({
+      ...data,
+      picture: data.picture[0],
+    }).then(getAllReferrals);
+  };
+
+  const updateReferrals = () => {
+    if (!isAnyChanges) return;
+
+    const listOfUpdates = [
+      ...(isSlicePerReferralsChanged
+        ? [
+            updateReferralsViewCount({
+              value: localSlicePerReferals?.[0].toString(),
+            }),
+          ]
+        : []),
+      ...(isReferralsChanged
+        ? [updateAllReferrals({ referals: referralsItems })]
+        : []),
+    ];
+
+    Promise.all(listOfUpdates).then(getAllReferrals);
+  };
+
+  const deleteReferralById = (id: string) => {
+    deleteReferral(id).then(getAllReferrals);
+  };
+
+  const editReferral = (
+    oldData: ReferralItemType,
+    data: ReferralItemType,
+    id: string
+  ) => {
+    const dataClone = { ...data };
+    delete (dataClone as any)["picture"];
+
+    const newRef = {
+      ...removeEqualFields(oldData, dataClone),
+      ...((data.picture as unknown as FileList)?.[0]?.name && {
+        file: data.picture[0],
+      }),
+    };
+
+    editReferralById(newRef, id).then(getAllReferrals);
   };
 
   const handleDragEnd = ({ active, over }: any) => {
@@ -69,9 +131,31 @@ const ReferralMain = () => {
         <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
           Referrals
         </h1>
-        <div className="flex gap-2">
+        <div
+          className={clsx("flex items-center gap-2", {
+            "pointer-events-none": isReferralsLoading,
+          })}
+        >
+          {localSlicePerReferals && localSlicePerReferals}
+          <Slider.Root
+            className="relative flex items-center select-none touch-none w-[200px] h-5"
+            value={localSlicePerReferals || [1]}
+            onValueChange={(val) => setLocalSlicePerReferals(val)}
+            min={1}
+            max={3}
+            step={1}
+          >
+            <Slider.Track className="bg-gray-200 relative grow rounded-full h-[3px]">
+              <Slider.Range className="absolute bg-orangePrimary rounded-full h-full" />
+            </Slider.Track>
+            <Slider.Thumb
+              className="block w-3 h-3 bg-white shadow-[0_2px_4px] shadow-blackA4 rounded-[10px] hover:bg-violet3 focus:outline-none focus:shadow-[0_0_0_3px] focus:shadow-blackA5"
+              aria-label="Slides"
+            />
+          </Slider.Root>
           <AddNewReferralDialog addNewReferral={addNewReferral} />
           <Button
+            onClick={updateReferrals}
             disabled={!isAnyChanges}
             type="submit"
             className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
@@ -80,25 +164,30 @@ const ReferralMain = () => {
           </Button>
         </div>
       </div>
-      <div className="flex flex-col gap-4">
-        {isReferralsLoading ? (
-          <Loader />
-        ) : (
-          <DndContext
-            sensors={sensors}
-            collisionDetection={closestCorners}
-            onDragEnd={handleDragEnd}
+      <div
+        className={clsx("flex flex-col gap-4", {
+          "pointer-events-none": isReferralsLoading,
+        })}
+      >
+        <DndContext
+          sensors={sensors}
+          collisionDetection={closestCorners}
+          onDragEnd={handleDragEnd}
+        >
+          <SortableContext
+            items={referralsItems.map((item) => item.id)}
+            strategy={rectSortingStrategy}
           >
-            <SortableContext
-              items={referralsItems.map((item) => item.id)}
-              strategy={rectSortingStrategy}
-            >
-              {referralsItems.map((item) => (
-                <ReferralItem key={item.id} referralItem={item} />
-              ))}
-            </SortableContext>
-          </DndContext>
-        )}
+            {referralsItems.map((item) => (
+              <ReferralItem
+                key={item.id}
+                referralItem={item}
+                deleteReferralById={deleteReferralById}
+                editReferral={editReferral}
+              />
+            ))}
+          </SortableContext>
+        </DndContext>
       </div>
     </div>
   );

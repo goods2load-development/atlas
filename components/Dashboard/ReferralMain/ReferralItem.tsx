@@ -1,12 +1,25 @@
-import { TrashIcon, ArrowUpRight, GripVertical, Pencil } from "lucide-react";
+import { TrashIcon, ArrowUpRight, GripVertical } from "lucide-react";
 import type { ReferralItemType } from "./types";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
 import EditReferralDialog from "./EditReferralDialog";
+import BannerPreview from "./BannerPreview";
 
-const ReferralItem = ({ referralItem }: { referralItem: ReferralItemType }) => {
-  const { title, url, id } = referralItem;
+const ReferralItem = ({
+  referralItem,
+  deleteReferralById,
+  editReferral,
+}: {
+  referralItem: ReferralItemType;
+  deleteReferralById: (id: string) => void;
+  editReferral: (
+    oldData: ReferralItemType,
+    data: ReferralItemType,
+    id: string
+  ) => void;
+}) => {
+  const { title, url, id, picture } = referralItem;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id,
@@ -34,8 +47,12 @@ const ReferralItem = ({ referralItem }: { referralItem: ReferralItemType }) => {
           {title}
         </h2>
         <div className="flex gap-2 ml-auto">
-          <EditReferralDialog referralItem={referralItem} />
-          <button title="Delete">
+          <BannerPreview image={picture} />
+          <EditReferralDialog
+            editReferral={editReferral}
+            referralItem={referralItem}
+          />
+          <button onClick={() => deleteReferralById(id)} title="Delete">
             <TrashIcon />
           </button>
           <Link title="Check url" href={url} target="_blank">

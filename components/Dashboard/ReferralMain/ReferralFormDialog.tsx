@@ -13,17 +13,24 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
+import { useEffect, useState } from "react";
+import { fileToBase64 } from "@/lib/utils";
+import { X } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   url: z.string().url("Enter a valid URL"),
-  picture: z
-    .instanceof(FileList)
-    .refine((files) => files.length === 1, "You need to provide a file")
-    .refine(
-      (files) => files[0].size <= 2000000,
-      "The file is too large, it should be less than 2MB"
-    ),
+  picture: z.union([
+    z.string(),
+    z
+      .unknown()
+      .transform((value) => value as FileList)
+      .refine((files) => files?.length === 1, "You need to provide a file")
+      .refine(
+        (files) => files?.[0]?.size <= 2000000,
+        "The file is too large, it should be less than 2MB"
+      ),
+  ]),
 });
 
 const ReferralFormDialog = ({
@@ -33,16 +40,37 @@ const ReferralFormDialog = ({
   onSubmitCallback: (data: any) => void;
   defaultValues?: any;
 }) => {
+  const [imgSrc, setImgSrc] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "all",
     shouldUnregister: false,
     ...(!!defaultValues && {
-      defaultValues,
+      defaultValues: {
+        ...defaultValues,
+        picture: `${process.env.NEXT_PUBLIC_BASE_URL}${defaultValues.picture}`,
+      },
     }),
   });
 
-  const { handleSubmit, control, reset } = form;
+  const { handleSubmit, control, reset, getValues, setValue } = form;
+  const pictureValue = getValues("picture");
+
+  useEffect(() => {
+    (async () => {
+      if (typeof pictureValue === "string") {
+        setImgSrc(pictureValue);
+        return;
+      }
+
+      if (pictureValue?.length) {
+        const base64 = await fileToBase64(pictureValue[0]);
+        setImgSrc(base64);
+      } else {
+        setImgSrc(null);
+      }
+    })();
+  }, [pictureValue]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     onSubmitCallback(data);
@@ -120,12 +148,36 @@ const ReferralFormDialog = ({
                     src="/upload.svg"
                     alt="upload"
                   />
-                  {field.value ? field.value[0]?.name : "Upload banner"}
+                  {field.value
+                    ? (field.value as FileList)?.[0]?.name
+                    : "Upload banner"}
                 </FormLabel>
                 <FormMessage />
               </FormItem>
             )}
           />
+          {imgSrc && (
+            <div className="w-1/3 relative inline-block">
+              <button
+                onClick={() => {
+                  setValue("picture", null as any);
+                  setImgSrc(null);
+                }}
+                type="button"
+                className="bg-orangePrimary w-4 h-4 rounded-full flex items-center justify-center
+              absolute -top-2 -right-2"
+              >
+                <X color="white" />
+              </button>
+              <Image
+                className="w-full"
+                src={imgSrc}
+                width={100}
+                height={100}
+                alt="banner"
+              />
+            </div>
+          )}
           <Button
             type="submit"
             className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
