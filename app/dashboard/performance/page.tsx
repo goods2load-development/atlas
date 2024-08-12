@@ -1,14 +1,12 @@
 "use client";
 
-import MobileSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
 import PerformanceMain from "@/components/Dashboard/PerformanceMain/PerformanceMain";
 import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
-import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
-import MobileFooter from "@/components/Dashboard/MobileFooter/MobileFooter";
 import { TabName } from "@/app/interface/helpData";
 import { useState } from "react";
 import { performanceData } from "@/components/Dashboard/PerformanceMain/mocks/data";
+import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
 
 export default function Performance({ params }: { params: { route: string } }) {
   const pathname = usePathname();
@@ -19,10 +17,8 @@ export default function Performance({ params }: { params: { route: string } }) {
   );
 
   return (
-    <div className="grid grid-cols-[auto_1fr]">
-      <Sidebar />
-      <MobileSidebar />
-      <div>
+    <DashboardLayout>
+      <>
         <div className={`${colorClass} lg:p-10 p-4 bg-[#f5f4f3] pt-20`}>
           <div className="flex gap-2 flex-col font-poppins">
             <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
@@ -41,9 +37,7 @@ export default function Performance({ params }: { params: { route: string } }) {
             tabsData={performanceData[activeTransport].tabsData}
           />
         </div>
-
-        <MobileFooter />
-      </div>
-    </div>
+      </>
+    </DashboardLayout>
   );
 }
