@@ -70,7 +70,7 @@ function UserRegistrationComponent() {
       }
 
       if (!parsedForm.provider) {
-        parsedForm.provider = false;
+        parsedForm.provider = !isUser;
       }
 
       return parsedForm;
