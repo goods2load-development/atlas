@@ -1,15 +1,30 @@
 "use client";
 import useDotButton from "@/app/hooks/useDotButton";
+import { useReferralsStore } from "@/lib/store";
+import clsx from "clsx";
+import Fade from "embla-carousel-fade";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
-import Image from "next/image";
+import { useEffect } from "react";
+import { ReferralItemType } from "./Dashboard/ReferralMain/types";
+import Link from "next/link";
 
 export default function TailoredServices() {
-  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
-    Autoplay({ playOnInit: true, delay: 3000 }),
-  ]);
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, slidesToScroll: "auto" },
+    [Autoplay({ playOnInit: true, delay: 5000 }), Fade()]
+  );
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
+
+  const { getAllReferrals, referrals: referralsData } = useReferralsStore(
+    (state: any) => state
+  );
+  const { referals: referrals = [], slicePerReferals = null } = referralsData;
+
+  useEffect(() => {
+    getAllReferrals();
+  }, []);
 
   return (
     <div className="px-[16px] py-[104px] w-full max-w-[1328px] mx-auto lg:bg-bgLogistics bg-no-repeat bg-cover">
@@ -22,32 +37,45 @@ export default function TailoredServices() {
       <p className="max-w-[344px] font-light text-lg mb-10">
         Unlock Your Business&apos;s Full Potential with Our Customized Solutions
       </p>
-      <div className="embla relative min-h-[412px] mx-auto" ref={emblaRef}>
-        <div className="embla__container flex">
-          <div
-            className={`embla__slide flex-[0_0_100%] ${selectedIndex === 0 && "is-selected"}`}
-          >
-            <div className="bg-black h-full rounded-2xl overflow-hidden"></div>
-          </div>
-          <div
-            className={`embla__slide flex-[0_0_100%] ${selectedIndex === 1 && "is-selected"}`}
-          >
-            <div className="bg-black h-full rounded-2xl overflow-hidden"></div>
-          </div>
-          <div
-            className={`embla__slide flex-[0_0_100%] ${selectedIndex === 2 && "is-selected"}`}
-          >
-            <div className="bg-black h-full rounded-2xl overflow-hidden"></div>
-          </div>
-        </div>
 
-        <div className="embla__controls absolute -bottom-8 left-[50%] translate-x-[-50%] z-10 flex flex-col">
+      <div className="min-h-[360px] mx-auto overflow-hidden" ref={emblaRef}>
+        <div className="flex">
+          {referrals.map((referral: ReferralItemType, index: number) => (
+            <div
+              className={clsx(
+                "min-h-[360px] min-w-0 md:pr-10 flex-[0_0_100%]",
+                {
+                  "md:flex-[0_0_33.3333%]": slicePerReferals === 3,
+                  "md:flex-[0_0_50%]": slicePerReferals === 2,
+                }
+              )}
+              key={index}
+            >
+              <div
+                style={{
+                  background: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referral.picture})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                  backgroundRepeat: "no-repeat",
+                }}
+                className="h-full rounded-2xl overflow-hidden relative"
+              >
+                <Link
+                  target="_blank"
+                  className="absolute inset-0"
+                  href={referral.url}
+                />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="flex flex-col mt-8">
           <div className="embla__dots self-center">
             {scrollSnaps.map((_, index) => (
               <button
                 key={index}
                 onClick={() => onDotButtonClick(index)}
-                className={"embla__dot w-[12px] h-[12px] w rounded-full mx-[6px] border border-orangePrimary".concat(
+                className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
                   index === selectedIndex
                     ? " bg-orangePrimary"
                     : " bg-transparent"
