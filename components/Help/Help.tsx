@@ -8,8 +8,7 @@ import { useState } from "react";
 export default function Help() {
   const router = useRouter();
   const tabParam = useSearchParams().toString().split("=")[0];
-  const tabName = `${tabParam[0]?.toUpperCase()}${tabParam.slice(1, tabParam.length)}`;
-  const tabFromDataByParam = tabs.find(({ name }) => name === tabName);
+  const tabFromDataByParam = tabs.find(({ name }) => name === tabParam);
   const initTab = tabFromDataByParam || tabs[0];
   const [currentTab, setCurrentTab] = useState(initTab);
 

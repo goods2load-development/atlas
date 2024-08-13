@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { useRouter } from "next/navigation";
 import { useCountriesStore } from "@/lib/store";
@@ -37,6 +37,8 @@ import { getCookie } from "react-use-cookie";
 import InputPassword from "@/components/common/InputPassword";
 import RegistrationSuccessPopup from "./RegistrationSuccessPopup";
 import CountryCode from "@/components/common/CountryCode";
+import { useSearchParams } from "next/navigation";
+
 interface CountriesProps {
   value: string;
   label: string;
@@ -49,9 +51,10 @@ function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
 }
 
-export default function UserRegistration() {
+function UserRegistrationComponent() {
   const router = useRouter();
   const [cookies] = useCookies(["accessToken"]);
+  const isUser  = useSearchParams().toString().split("=")[0] !== 'provider';
   const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
   const [formState, setFormState] = useState(() => {
     const savedFormState =
@@ -67,7 +70,7 @@ export default function UserRegistration() {
       }
 
       if (!parsedForm.provider) {
-        parsedForm.provider = false;
+        parsedForm.provider = !isUser;
       }
 
       return parsedForm;
@@ -84,7 +87,7 @@ export default function UserRegistration() {
       postalCode: "",
       city: "",
       communication: false,
-      provider: false,
+      provider: !isUser,
     };
   });
 
@@ -187,7 +190,7 @@ export default function UserRegistration() {
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
-  const [userRegistration, setUserRegistration] = useState(true);
+  const [userRegistration, setUserRegistration] = useState(isUser);
   async function fillFieldsWithGoogle() {
     signIn("google", { redirect: true });
   }
@@ -247,6 +250,8 @@ export default function UserRegistration() {
                       onCheckedChange={(e) => {
                         field.onChange(e);
                         setUserRegistration(!e);
+
+                        !e ? router.push('/registration?user') : router.push('/registration?provider'); // Change url depends on role user
                       }}
                     />
                   </FormControl>
@@ -718,4 +723,12 @@ export default function UserRegistration() {
       <RegistrationSuccessPopup />
     </RegistrationWrapper>
   );
+}
+
+export default function UserRegistration(){
+  return (
+    <Suspense>
+      <UserRegistrationComponent />
+    </Suspense>
+  )
 }
