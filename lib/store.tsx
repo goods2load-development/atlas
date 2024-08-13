@@ -282,7 +282,7 @@ export const useReferralsStore = create((set) => ({
     const formData = new FormData();
     if (data.title) formData.append("title", data.title);
     if (data.url) formData.append("url", data.url);
-    if (data.file) formData.append("file", data.picture);
+    if (data.file) formData.append("file", data.file);
 
     return patchRequest({
       url: `referals/${id}`,
