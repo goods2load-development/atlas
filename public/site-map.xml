@@ -67,15 +67,15 @@
 
   <faq>
     <url>
-      <href>http://localhost:3000/help?truck</href>
+      <href>https://stage.goods2load.com/help?truck</href>
       <title>Truck</title>
     </url>
     <url>
-      <href>http://localhost:3000/help?ship</href>
+      <href>https://stage.goods2load.com/help?ship</href>
       <title>Ship</title>
     </url>
     <url>
-      <href>http://localhost:3000/help?plane</href>
+      <href>https://stage.goods2load.com/help?plane</href>
       <title>Plane</title>
     </url>
   </faq>
@@ -90,12 +90,12 @@
 
     <signUp>
         <url>
-        <href>http://localhost:3000/registration?provider</href>
+        <href>https://stage.goods2load.com/registration?provider</href>
         <title>Sign Up for Logistic Provider</title>
         </url>
 
          <url>
-        <href>http://localhost:3000/registration?user</href>
+        <href>https://stage.goods2load.com/registration?user</href>
         <title>Sign Up for User</title>
         </url>
     </signUp>
@@ -144,7 +144,7 @@
 
      <newsAndInsights>
         <url>
-            <href>http://localhost:3000/air-freight-services</href>
+            <href>https://stage.goods2load.com/air-freight-services</href>
             <title>Air Freight Services at GOODS2LOAD</title>
         </url>
         <url>
