@@ -27,61 +27,64 @@ export default function TailoredServices() {
   }, []);
 
   return (
-    <div className="px-[16px] py-[104px] w-full max-w-[1328px] mx-auto lg:bg-bgLogistics bg-no-repeat bg-cover">
-      <h2 className="text-black text-[40px] sm:text-[30px]/[34px] mb-2">
-        <i className="bg-allTittleColor px-2 rounded-md">
-          Empower Your Business
-        </i>{" "}
-        with <span className="font-light">Tailored Services</span>
-      </h2>
-      <p className="max-w-[344px] font-light text-lg mb-10">
-        Unlock Your Business&apos;s Full Potential with Our Customized Solutions
-      </p>
+    <div className="px-[16px] py-20 md:py-[104px] w-full mx-auto bg-bgLogistics bg-no-repeat bg-cover">
+      <div className="max-w-[1328px] mx-auto">
+        <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
+          <i className="bg-allTittleColor px-2 rounded-md">
+            Empower Your Business
+          </i>{" "}
+          with <span className="font-light">Tailored Services</span>
+        </h2>
+        <p className="max-w-[344px] text-center md:text-left font-light text-lg mb-8 md:mb-10 mx-auto md:mx-0">
+          Unlock Your Business&apos;s Full Potential with Our Customized
+          Solutions
+        </p>
 
-      <div className="min-h-[360px] mx-auto overflow-hidden" ref={emblaRef}>
-        <div className="flex">
-          {referrals.map((referral: ReferralItemType, index: number) => (
-            <div
-              className={clsx(
-                "min-h-[360px] min-w-0 md:pr-10 flex-[0_0_100%]",
-                {
-                  "md:flex-[0_0_33.3333%]": slicePerReferals === 3,
-                  "md:flex-[0_0_50%]": slicePerReferals === 2,
-                }
-              )}
-              key={index}
-            >
+        <div className="min-h-[360px] mx-auto overflow-hidden" ref={emblaRef}>
+          <div className="flex">
+            {referrals.map((referral: ReferralItemType, index: number) => (
               <div
-                style={{
-                  background: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referral.picture})`,
-                  backgroundSize: "cover",
-                  backgroundPosition: "center",
-                  backgroundRepeat: "no-repeat",
-                }}
-                className="h-full rounded-2xl overflow-hidden relative"
-              >
-                <Link
-                  target="_blank"
-                  className="absolute inset-0"
-                  href={referral.url}
-                />
-              </div>
-            </div>
-          ))}
-        </div>
-        <div className="flex flex-col mt-8">
-          <div className="embla__dots self-center">
-            {scrollSnaps.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => onDotButtonClick(index)}
-                className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
-                  index === selectedIndex
-                    ? " bg-orangePrimary"
-                    : " bg-transparent"
+                className={clsx(
+                  "min-h-[360px] min-w-0 md:pr-10 flex-[0_0_100%]",
+                  {
+                    "md:flex-[0_0_33.3333%]": slicePerReferals === 3,
+                    "md:flex-[0_0_50%]": slicePerReferals === 2,
+                  }
                 )}
-              />
+                key={index}
+              >
+                <div
+                  style={{
+                    background: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referral.picture})`,
+                    backgroundSize: "cover",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                  className="h-full rounded-2xl overflow-hidden relative"
+                >
+                  <Link
+                    target="_blank"
+                    className="absolute inset-0"
+                    href={referral.url}
+                  />
+                </div>
+              </div>
             ))}
+          </div>
+          <div className="flex flex-col mt-8">
+            <div className="embla__dots self-center">
+              {scrollSnaps.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => onDotButtonClick(index)}
+                  className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
+                    index === selectedIndex
+                      ? " bg-orangePrimary"
+                      : " bg-transparent"
+                  )}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </div>
