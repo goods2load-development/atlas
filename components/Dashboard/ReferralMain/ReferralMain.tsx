@@ -23,6 +23,7 @@ import { useReferralsStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
 import { removeEqualFields } from "@/lib/utils";
+import { useToast } from "@/components/ui/use-toast";
 
 const ReferralMain = () => {
   const {
@@ -36,6 +37,7 @@ const ReferralMain = () => {
     referrals: referralsData,
   } = useReferralsStore((state: any) => state);
   const { referals: referrals = [], slicePerReferals = null } = referralsData;
+  const { toast } = useToast();
 
   const [referralsItems, setReferralsItems] = useState<ReferralItemType[]>([]);
   const [localSlicePerReferals, setLocalSlicePerReferals] = useState<
@@ -70,7 +72,15 @@ const ReferralMain = () => {
     postNewReferral({
       ...data,
       picture: data.picture[0],
-    }).then(getAllReferrals);
+    })
+      .then(getAllReferrals)
+      .then(
+        toast({
+          title: "New referral added.",
+          variant: "default",
+          className: "bg-green-500",
+        })
+      );
   };
 
   const updateReferrals = () => {
@@ -89,11 +99,27 @@ const ReferralMain = () => {
         : []),
     ];
 
-    Promise.all(listOfUpdates).then(getAllReferrals);
+    Promise.all(listOfUpdates)
+      .then(getAllReferrals)
+      .then(() =>
+        toast({
+          title: "Referrals list updated.",
+          variant: "default",
+          className: "bg-green-500",
+        })
+      );
   };
 
   const deleteReferralById = (id: string) => {
-    deleteReferral(id).then(getAllReferrals);
+    deleteReferral(id)
+      .then(getAllReferrals)
+      .then(
+        toast({
+          title: "Referral deleted.",
+          variant: "default",
+          className: "bg-green-500",
+        })
+      );
   };
 
   const editReferral = (
@@ -111,7 +137,13 @@ const ReferralMain = () => {
       }),
     };
 
-    editReferralById(newRef, id).then(getAllReferrals);
+    editReferralById(newRef, id).then(getAllReferrals).then(
+      toast({
+        title: `Referral "${data.title}" edited.`,
+        variant: "default",
+        className: "bg-green-500",
+      })
+    );;
   };
 
   const handleDragEnd = ({ active, over }: any) => {
