@@ -85,6 +85,8 @@ const config = {
         bgFooter: "url(../public/footerbg.png)",
         bgOptimize: "url(../public/optimizebg.jpg)",
         bgLogistics: "url(../public/logisticbg.svg)",
+        bgReferrals: "url(../public/referralsbg.svg)",
+        bgReferralsMobile: "url(../public/referralsbg-mobile.svg)",
         bgQuestions: "url(../public/accordionbg.png)",
         bgCareer: "url(../assets/careerBg.png)",
         "career-mobile": "url(../assets/careerBg-mobile.jpg)",
