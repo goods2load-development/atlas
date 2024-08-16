@@ -244,3 +244,72 @@ export const useLangStore = create<ILangStore>((set) => ({
     if (lang) set({ lang });
   },
 }));
+
+export const useReferralsStore = create((set) => ({
+  referrals: {},
+  isReferralsLoading: true,
+  getAllReferrals: () => {
+    set({ isReferralsLoading: true });
+    return getRequest({
+      url: "referals",
+    })
+      .then((referrals) => {
+        set({ referrals });
+      })
+      .finally(() => set({ isReferralsLoading: false }));
+  },
+  postNewReferral: (data: any) => {
+    set({ isReferralsLoading: true });
+
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("url", data.url);
+    formData.append("file", data.picture);
+
+    return postRequest({
+      url: "referals",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then((referrals) => {
+        set({ referrals });
+      })
+      .finally(() => set({ isReferralsLoading: false }));
+  },
+  updateReferral: (data: any, id: string) => {
+    set({ isReferralsLoading: true });
+
+    const formData = new FormData();
+    if (data.title) formData.append("title", data.title);
+    if (data.url) formData.append("url", data.url);
+    if (data.file) formData.append("file", data.file);
+
+    return patchRequest({
+      url: `referals/${id}`,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+  updateAllReferrals: (data: any) => {
+    set({ isReferralsLoading: true });
+
+    return patchRequest({
+      url: "referals/change-order",
+      data,
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+  updateReferralsViewCount: ({ value }: any) => {
+    set({ isReferralsLoading: true });
+
+    return patchRequest({
+      url: `referals/view-count?value=${value}`,
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+  deleteReferral: (id: string) => {
+    set({ isReferralsLoading: true });
+
+    return deleteRequest({
+      url: `referals/${id}`,
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+}));
