@@ -6,6 +6,7 @@ import SearchMain from "@/components/SearchMain";
 import SubHeaderMain from "@/components/SubHeaderMain";
 import SliderMain from "@/components/SliderMain";
 import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
+import TailoredServices from "@/components/TailoredServices";
 import Analytics from "@/components/Dashboard/Analytics";
 
 export default function Home() {
@@ -27,6 +28,7 @@ export default function Home() {
           <SearchMain main />
         </div>
         <SubHeaderMain />
+        <TailoredServices />
         <SliderMain />
         <QuestionsAndAnswers />
         <Analytics />

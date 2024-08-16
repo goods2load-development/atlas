@@ -287,7 +287,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                     variant="outline"
                     role="combobox"
                     className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
-                    onClick={() => setFromCountryOpen(true)}
+                    onClick={() => setFromCountryOpen(!fromCountryOpen)}
                   >
                     <ToolTipComponent asChild text={fromCountry}>
                       {fromCountry ? (
@@ -336,7 +336,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                     variant="outline"
                     role="combobox"
                     className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
-                    onClick={() => setFromCityOpen(true)}
+                    onClick={() => setFromCityOpen(!fromCityOpen)}
                   >
                     <ToolTipComponent asChild text={from}>
                       {from ? (
@@ -405,7 +405,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                     variant="outline"
                     role="combobox"
                     className="pl-[26px] h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
-                    onClick={() => setToCountryOpen(true)}
+                    onClick={() => setToCountryOpen(!toCountryOpen)}
                   >
                     <ToolTipComponent asChild text={toCountry}>
                       {toCountry ? (
@@ -454,7 +454,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                     variant="outline"
                     role="combobox"
                     className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
-                    onClick={() => setToCityOpen(true)}
+                    onClick={() => setToCityOpen(!toCityOpen)}
                   >
                     <ToolTipComponent asChild text={to}>
                       {to ? (
