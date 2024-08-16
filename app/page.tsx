@@ -4,7 +4,6 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import SearchMain from "@/components/SearchMain";
 import SubHeaderMain from "@/components/SubHeaderMain";
-import LogisticInsights from "@/components/LogisticInsights";
 import SliderMain from "@/components/SliderMain";
 import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import Analytics from "@/components/Dashboard/Analytics";
@@ -28,7 +27,6 @@ export default function Home() {
           <SearchMain main />
         </div>
         <SubHeaderMain />
-        <LogisticInsights />
         <SliderMain />
         <QuestionsAndAnswers />
         <Analytics />
