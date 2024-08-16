@@ -601,8 +601,8 @@ export default function SearchMain({ main }: { main?: boolean }) {
           </div>
         </div>
         <div className="sm:flex justify-stretch items-end w-full">
-          <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[10%]">
-            <label className="mb-2 block">Total KG</label>
+          <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[14%]">
+            <label className="mb-2 block">Total Weight(Kg)</label>
             <Input
               className="h-[60px] rounded-[16px] sm:rounded-r-none sm:rounded-l-[16px] border-none font-normal text-black"
               type="number"
@@ -651,7 +651,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </label>
               <Input
                 className="h-[60px] sm:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
-                placeholder="100"
+                placeholder="e.g. 100"
                 type="number"
                 value={length}
                 onChange={(e) => setFilter({ length: e.target.value })}
@@ -664,7 +664,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
               <Input
                 value={width}
                 className="h-[60px] rounded-none border-none font-normal text-black"
-                placeholder="120"
+                placeholder="e.g. 120"
                 type="number"
                 onChange={(e) => setFilter({ width: e.target.value })}
               />
@@ -675,14 +675,14 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </label>
               <Input
                 className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
-                placeholder="165"
+                placeholder="e.g. 165"
                 type="number"
                 value={height}
                 onChange={(e) => setFilter({ height: e.target.value })}
               />
             </div>
           </div>
-          <div className="sm:w-[30%] flex">
+          <div className="sm:w-[25%] flex">
             <div className="mr-[1px] w-1/2">
               <label className="mb-2 block text-center sm:text-left">
                 Goods Value
