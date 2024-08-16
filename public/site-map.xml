@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <home>
+    <url>
+      <href>https://stage.goods2load.com</href>
+      <title>Home page</title>
+    </url>
+  </home>
+
+  <blogs>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/blog</href>
+      <title>Blog Post</title>
+    </url>
+  </blogs>
+
+  <about>
+    <url>
+      <href>https://stage.goods2load.com/about-us?company</href>
+      <title>Company</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/about-us?trust</href>
+      <title>Trust</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/about-us?media</href>
+      <title>Media</title>
+    </url>
+  </about>
+
+  <faq>
+    <url>
+      <href>https://stage.goods2load.com/help?truck</href>
+      <title>Truck</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/help?ship</href>
+      <title>Ship</title>
+    </url>
+    <url>
+      <href>https://stage.goods2load.com/help?plane</href>
+      <title>Plane</title>
+    </url>
+  </faq>
+
+
+  <login>
+    <url>
+      <href>https://stage.goods2load.com/sign-in</href>
+      <title>Login In</title>
+    </url>
+  </login>
+
+    <signUp>
+        <url>
+        <href>https://stage.goods2load.com/registration?provider</href>
+        <title>Sign Up for Logistic Provider</title>
+        </url>
+
+         <url>
+        <href>https://stage.goods2load.com/registration?user</href>
+        <title>Sign Up for User</title>
+        </url>
+    </signUp>
+
+    <partners>
+        <url>
+            <href>https://stage.goods2load.com/partners-with-us</href>
+            <title>Partner with us</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com/partners</href>
+            <title>Our Partners</title>
+        </url>
+    </partners>
+
+     <career>
+        <url>
+            <href>https://stage.goods2load.com/career</href>
+            <title>Career</title>
+        </url>
+    </career>
+
+     <legacy>
+        <url>
+            <href>https://stage.goods2load.com/terms-of-service</href>
+            <title>Terms and Conditions</title>
+        </url>
+
+        <url>
+            <href>https://stage.goods2load.com/privacy-policy</href>
+            <title>Privacy Policy</title>
+        </url>
+
+        <url>
+            <href>https://stage.goods2load.com/cookie-policy</href>
+            <title>Cookie Policy</title>
+        </url>
+    </legacy>
+
+     <sitemap>
+        <url>
+            <href>https://stage.goods2load.com/sitemap</href>
+            <title>Site Map</title>
+        </url>
+    </sitemap>
+
+     <newsAndInsights>
+        <url>
+            <href>http://localhost:3000/air-freight-services</href>
+            <title>Air Freight Services at GOODS2LOAD</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Road Freight Services at GOODS2LOAD</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Sea Freight Services at GOODS2LOAD</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Incoterms Explained: Your Guide to International Commercial Terms</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>CO2 Emission</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Sustainability at GOODS2LOAD</title>
+        </url>
+    </newsAndInsights>
+
+      <industriesWeServe>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Automotive</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Construction and Building Materials</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Energy and Utilities Logistics Solutions</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Fashion and Apparel Logistics Solutions</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Food and Beverage Logistics Solutions</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Manufacturing</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Pharmaceuticals and Healthcare Logistics Solutions</title>
+        </url>
+        <url>
+            <href>https://stage.goods2load.com</href>
+            <title>Technology and Electronics Logistics Solutions</title>
+        </url>
+    </industriesWeServe>
+</urlset>
