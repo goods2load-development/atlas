@@ -36,7 +36,7 @@ const lItems: lItemProps[] = [
 
 function LogisticsItem({ item }: { item: lItemProps }) {
   return (
-    <div className="w-full mb-5 max-w-[400px]">
+    <div className="w-full mb-5 max-w-[400px] text-left">
       <div className="bg-gradient-to-br from-gradFrom to-gradTo px-[30px] py-[20px] rounded-sm mb-[30px]">
         <img
           src={item.imageSrc}
@@ -58,11 +58,13 @@ function LogisticsItem({ item }: { item: lItemProps }) {
         target="_blank"
         className="text-orangePrimary text-[18px]/[22px]"
       >
-        Read more
-        <img
-          src="/arrowlong.png"
+        Know more
+        <Image
+          width={101}
+          height={6}
+          src="/arrowlong.svg"
           className="inline-block ml-3"
-          alt={"arrowlong"}
+          alt="arrowlong"
         />
       </Link>
     </div>
@@ -71,7 +73,7 @@ function LogisticsItem({ item }: { item: lItemProps }) {
 
 export default function LogisticInsights() {
   return (
-    <div className="px-[16px] py-[80px] lg:bg-bgLogistics bg-no-repeat bg-cover">
+    <div className="px-[16px] py-[80px] lg:bg-bgLogistics bg-no-repeat bg-cover text-black">
       <div className="max-w-[1328px] mx-auto">
         <h2 className="font-light text-[30px]/[34px] md:text-[40px]/[48px] text-center md:text-left">
           <i className="bg-allTittleColor rounded-md px-2 font-normal">

@@ -11,6 +11,8 @@ export interface IProduct {
   company: { name: string; logo: StaticImageData };
   portArrival: string;
   portDeparture: string;
+  price: string;
+  placementOfGoods: string;
 }
 
 export const products: IProduct[] = [
@@ -23,6 +25,8 @@ export const products: IProduct[] = [
     company: { name: "DP_World", logo: logoPlaceholder },
     portArrival: "",
     portDeparture: "",
+    price: "0",
+    placementOfGoods: "Pallets"
   },
   {
     withdraw: "19/04/2024",
@@ -33,5 +37,7 @@ export const products: IProduct[] = [
     company: { name: "Hapag_Lloyd", logo: logoPlaceholder2 },
     portArrival: "",
     portDeparture: "",
+    price: "0",
+    placementOfGoods: "Pallets"
   },
 ];

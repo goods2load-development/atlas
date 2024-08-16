@@ -53,3 +53,25 @@ export const generateBlockId = (title?: string) =>
     ?.replace(/ /g, "-")
     .replace(/[\s’?*()]/g, "")
     .toLowerCase() || "";
+
+export const fileToBase64 = (file: File): Promise<string> => {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+  });
+};
+
+export const removeEqualFields = <T extends Record<string, any>>(
+  obj1: T,
+  obj2: T
+): T => {
+  const result = { ...obj2 };
+  for (const key in result) {
+    if (obj1[key] === result[key]) {
+      delete result[key];
+    }
+  }
+  return result;
+};

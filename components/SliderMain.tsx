@@ -1,42 +1,4 @@
 "use client";
-import React, { useCallback, useEffect, useState } from "react";
-
-const useDotButton = (emblaApi: any) => {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const [scrollSnaps, setScrollSnaps] = useState([]);
-
-  const onDotButtonClick = useCallback(
-    (index: any) => {
-      if (!emblaApi) return;
-      emblaApi.scrollTo(index);
-    },
-    [emblaApi]
-  );
-
-  const onInit = useCallback((emblaApi: any) => {
-    setScrollSnaps(emblaApi.scrollSnapList());
-  }, []);
-
-  const onSelect = useCallback((emblaApi: any) => {
-    setSelectedIndex(emblaApi.selectedScrollSnap());
-  }, []);
-
-  useEffect(() => {
-    if (!emblaApi) return;
-
-    onInit(emblaApi);
-    onSelect(emblaApi);
-    emblaApi.on("reInit", onInit);
-    emblaApi.on("reInit", onSelect);
-    emblaApi.on("select", onSelect);
-  }, [emblaApi, onInit, onSelect]);
-
-  return {
-    selectedIndex,
-    scrollSnaps,
-    onDotButtonClick,
-  };
-};
 
 const DotButton = (props: any) => {
   const { children, ...restProps } = props;
@@ -51,6 +13,7 @@ const DotButton = (props: any) => {
 import useEmblaCarousel from "embla-carousel-react";
 import Autoplay from "embla-carousel-autoplay";
 import Link from "next/link";
+import useDotButton from "@/app/hooks/useDotButton";
 
 export default function SliderMain() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [

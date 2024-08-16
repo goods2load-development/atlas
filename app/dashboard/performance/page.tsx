@@ -1,28 +1,22 @@
 "use client";
 
-import MobileSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
 import PerformanceMain from "@/components/Dashboard/PerformanceMain/PerformanceMain";
 import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
-import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
 import { usePathname } from "next/navigation";
-import MobileFooter from "@/components/Dashboard/MobileFooter/MobileFooter";
-import { TabName } from "@/app/interface/helpData";
-import { useState } from "react";
-import { performanceData } from "@/components/Dashboard/PerformanceMain/mocks/data";
+import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
+import { usePerformanceStore } from "@/lib/analyticsStore";
+import { DeliveryBy } from "@/lib/filterStore";
+import { IAnalyticsStore } from "@/lib/analyticsStore";
 
 export default function Performance({ params }: { params: { route: string } }) {
   const pathname = usePathname();
   const colorClass = pathname === params.route ? "text-black" : "text-blue";
-
-  const [activeTransport, setActiveTransport] = useState<TabName>(
-    TabName.PLANE
-  );
+  const { deliveryBy, onChangeTransportation }: IAnalyticsStore =
+    usePerformanceStore();
 
   return (
-    <div className="grid grid-cols-[auto_1fr]">
-      <Sidebar />
-      <MobileSidebar />
-      <div>
+    <DashboardLayout>
+      <>
         <div className={`${colorClass} lg:p-10 p-4 bg-[#f5f4f3] pt-20`}>
           <div className="flex gap-2 flex-col font-poppins">
             <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
@@ -32,18 +26,14 @@ export default function Performance({ params }: { params: { route: string } }) {
               Performance
             </h2>
             <RadioGroupItems
-              onChageValue={(value: TabName) => setActiveTransport(value)}
+              onChangeValue={(value: DeliveryBy) => {
+                onChangeTransportation(value);
+              }}
             />
           </div>
-          <PerformanceMain
-            key={activeTransport}
-            cardsData={performanceData[activeTransport].cards}
-            tabsData={performanceData[activeTransport].tabsData}
-          />
+          <PerformanceMain key={deliveryBy} />
         </div>
-
-        <MobileFooter />
-      </div>
-    </div>
+      </>
+    </DashboardLayout>
   );
 }

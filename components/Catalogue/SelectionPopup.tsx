@@ -5,7 +5,6 @@ import { postRequest } from "@/lib/utils";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -24,7 +23,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import UIButton from "@/components/common/Button";
-import Loader from "@/components/common/Loader";
+import { useFilterStore } from "@/lib/filterStore";
 import CountryCode from "../common/CountryCode";
 
 interface SelectionPopupProps {
@@ -33,6 +32,8 @@ interface SelectionPopupProps {
   delivery: string;
   portArrival: string;
   portDeparture: string;
+  price: string;
+  placementOfGoods: string;
 }
 
 function IsRequired() {
@@ -40,6 +41,7 @@ function IsRequired() {
 }
 
 export default function SelectionPopup(props: SelectionPopupProps) {
+  const {deliveryBy} = useFilterStore(); // required field for BE
   const [step, setStep] = useState(0);
   const formSchema = z.object({
     countryCode: z.string(),
@@ -61,9 +63,11 @@ export default function SelectionPopup(props: SelectionPopupProps) {
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
+
     postRequest({
       url: "orders/select-catalog",
       data: {
+        transportation: deliveryBy,
         customerPhone: values.countryCode + values.phone,
         customerEmail: values.email,
         company: values.companyName,
@@ -72,6 +76,8 @@ export default function SelectionPopup(props: SelectionPopupProps) {
         delivery: props.delivery,
         portArrival: props.portArrival,
         portDeparture: props.portDeparture,
+        price: props.price, // Add for avarge company analytics
+        placementOfGoods: props.placementOfGoods // Add for avarge company analytics
       },
     }).then(() => {
       setStep(1);
