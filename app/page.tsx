@@ -8,6 +8,7 @@ import LogisticInsights from "@/components/LogisticInsights";
 import SliderMain from "@/components/SliderMain";
 import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import TailoredServices from "@/components/TailoredServices";
+import Analytics from "@/components/Dashboard/Analytics";
 
 export default function Home() {
   return (
@@ -32,6 +33,7 @@ export default function Home() {
         <TailoredServices />
         <SliderMain />
         <QuestionsAndAnswers />
+        <Analytics />
       </main>
       <Footer />
     </>
