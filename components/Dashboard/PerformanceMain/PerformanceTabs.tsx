@@ -1,16 +1,30 @@
-import { IMainMenuItemTab } from "@/app/interface/dashboard";
+import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
 import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
 import { ChevronUp } from "lucide-react";
 
-interface MainMenuTabsProps {
-  tabs: IMainMenuItemTab[];
-  handleTabClick: (name: string) => void;
+export interface IPerformanceTab {
+  label: PerformaceTab;
+  element: ReactNode;
 }
 
-const MainMenuTabs: React.FC<MainMenuTabsProps> = ({
+export enum PerformaceTab {
+  EVOLUTION = "Evolution",
+  COMPETITIVENESS = "Competitiveness",
+  USER_SEGMENTATION = "User segmentation",
+}
+
+
+interface PerformanceTabsProps {
+  tabs: IPerformanceTab[];
+  onChangeTab: (label: PerformaceTab) => void;
+  activeTab: PerformaceTab;
+}
+
+const PerformanceTabs: React.FC<PerformanceTabsProps> = ({
   tabs,
-  handleTabClick,
+  onChangeTab,
+  activeTab,
 }) => {
   return (
     <>
@@ -18,7 +32,7 @@ const MainMenuTabs: React.FC<MainMenuTabsProps> = ({
         {tabs.map((tab, index) => (
           <li
             key={index}
-            onClick={() => handleTabClick(tab.label)}
+            onClick={() => onChangeTab(tab.label)}
             className={cn(
               "text-md leading-6 opacity-60 relative flex  justify-center cursor-pointer mb-10 whitespace-nowrap",
               "p-4"
@@ -28,7 +42,7 @@ const MainMenuTabs: React.FC<MainMenuTabsProps> = ({
             <div
               className={cn(
                 "absolute w-[100%] h-[2px] bg-[#FF6720] top-[96%]",
-                tab.active ? "opacity-100" : "opacity-0"
+                activeTab === tab.label ? "opacity-100" : "opacity-0"
               )}
             ></div>
           </li>
@@ -40,7 +54,7 @@ const MainMenuTabs: React.FC<MainMenuTabsProps> = ({
           <DropdownMenu.Trigger className="p-1 text-white rounded-md flex items-center gap-3 outline-none w-full">
             <div className="flex gap-1 justify-between  p-1 w-full sm:p-2 sm:gap-2">
               <div className="whitespace-nowrap text-black border-primaryOrange border-b-2 pb-2 px-4 min-w-[205px]">
-                {tabs.filter((item) => item.active)[0].label}
+                {tabs.filter((item) => activeTab === item.label)[0].label}
               </div>
               <ChevronUp className="text-black rotate-180" />
             </div>
@@ -51,7 +65,7 @@ const MainMenuTabs: React.FC<MainMenuTabsProps> = ({
                 <DropdownMenu.Item
                   className={`outline-none p-2 whitespace-nowrap rounded-md flex gap-2 hover:bg-primaryOrange hover:opacity-80 cursor-pointer hover:text-white transition-all`}
                   key={idx}
-                  onSelect={() => handleTabClick(label)}
+                  onSelect={() => onChangeTab(label)}
                 >
                   <span>{label}</span>
                 </DropdownMenu.Item>
@@ -64,4 +78,4 @@ const MainMenuTabs: React.FC<MainMenuTabsProps> = ({
   );
 };
 
-export default MainMenuTabs;
+export default PerformanceTabs;

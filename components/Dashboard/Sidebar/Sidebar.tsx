@@ -50,7 +50,7 @@ const Sidebar: React.FC = () => {
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div>
-          <Image alt="logo-performance" width={50} height={20} src={mockLogo} />
+          <Image alt="logo-performance" width={50} height={55} src={mockLogo} />
         </div>
         <div className="flex flex-col">
           <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
@@ -90,6 +90,12 @@ const Sidebar: React.FC = () => {
             className="font-semibold mb-8 hover:no-underline"
           >
             OPPORTUNITY
+          </Link>
+          <Link
+            href={"/dashboard/referral"}
+            className="font-semibold mb-8 hover:no-underline uppercase"
+          >
+            Referral
           </Link>
           <button
             onClick={() => {

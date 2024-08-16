@@ -1,20 +1,15 @@
+import { DeliveryBy } from "@/lib/filterStore";
 import { ReactNode } from "react";
-import { PerformanceTabName, TabName } from "./helpData";
 
-export interface IMainMenuItemTab {
-  label: string;
-  active: boolean;
-  element: ReactNode;
+
+
+export interface ICompetitivenessiteItem {
+  name: string;
+  value: number;
 }
 
-export interface IMainMenuCard {
-  title: string;
-  category: TabName;
-  price: string;
-  type: PerformanceTabName;
-  active: boolean;
-  vs: number;
-  percentage: number;
-  isIncreasePercentage: boolean;
-  lastPrice: string;
+export interface IPerformanceCardData {
+  average: string;
+  lastYear: string | null;
 }
+

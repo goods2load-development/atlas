@@ -1,7 +1,7 @@
 import BarChartGraph, { BarChartData } from "../Charts/BarChart";
 import Map, { MarkersCoordinates } from "../Map/Map";
 
-const MocksData: BarChartData[] = [
+const MocksData: any = [
   { name: "Underserved routes", value: 160, color: "#FF6720" },
   { name: "Emerging trends", value: 195, color: "#BB4E1B" },
   {
@@ -59,7 +59,7 @@ const OpportunitiesMain = () => {
       </div>
       <div className="flex flex-col lg:flex-row gap-6">
         <div className="flex flex-col justify-center gap-4 py-4 px-3 bg-white rounded-md">
-          {MocksData.map((elem, index) => {
+          {MocksData.map((elem: any, index: number) => {
             return (
               <div
                 key={index}
