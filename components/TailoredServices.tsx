@@ -27,8 +27,8 @@ export default function TailoredServices() {
   }, []);
 
   return (
-    <div className="px-[16px] py-20 md:py-[104px] w-full mx-auto bg-bgLogistics bg-no-repeat bg-cover">
-      <div className="max-w-[1328px] mx-auto">
+    <div className="px-[16px] py-20 md:py-[104px] w-full mx-auto bg-bgLogistics bg-no-repeat bg-cover md:[background-position:300px_0px]">
+      <div className="max-w-[1328px] mx-auto ">
         <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
           <i className="bg-allTittleColor px-2 rounded-md">
             Empower Your Business
