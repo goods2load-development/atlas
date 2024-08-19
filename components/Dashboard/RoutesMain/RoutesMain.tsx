@@ -7,7 +7,7 @@ import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import { useRoutesStore } from "@/lib/store";
 import clsx from "clsx";
-import { Check, CircleX, TrashIcon } from "lucide-react";
+import { Check, TrashIcon } from "lucide-react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import ReplyDialog from "./ReplyDialog";
 import ViewDialog from "./ViewDialog";
