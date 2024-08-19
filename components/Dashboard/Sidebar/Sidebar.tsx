@@ -14,7 +14,8 @@ import { signOut } from "next-auth/react";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
-  const { logoutUser } = useUserStore((state: any) => state);
+  const { user, logoutUser, getUser } = useUserStore((state: any) => state);
+
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -27,6 +28,10 @@ const Sidebar: React.FC = () => {
       active: false,
     },
   ]);
+
+  useEffect(() => {
+    if (!!!user?.id) getUser();
+  }, [user?.id]);
 
   useEffect(() => {
     const slug = pathname.split("/").pop();
@@ -46,71 +51,73 @@ const Sidebar: React.FC = () => {
     });
   };
 
-  useEffect(() => {
-    (async () => {
-      postRequest({
-        url: "/selected-orders/789bf325-e2b8-496b-a63c-f80803cc7f37/reply",
-        data: {
-          message: "123",
-          reasons: ["1", "2"],
-        },
-      }).then((data) => {
-        console.log(123);
-      });
-    })();
-  }, []);
-
   return (
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div>
-          <Image alt="logo-performance" width={50} height={55} src={mockLogo} />
+          <Link href="/">
+            <Image
+              alt="logo-performance"
+              width={50}
+              height={55}
+              src={mockLogo}
+            />
+          </Link>
         </div>
         <div className="flex flex-col">
-          <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
+          {user?.role === "provider" ? (
+            <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
+          ) : (
+            <p className="font-semibold mt-8">ADMIN DASHBOARD</p>
+          )}
           <div className="flex flex-col mb-8 performance-sidebar-item">
-            {sideBar.map((it) => (
-              <Link
-                onClick={(e) => {
-                  setSidebar(
-                    sideBar.map((el) => {
-                      if (it.title === el.title) {
-                        return { ...el, active: true };
-                      }
-                      return { ...el, active: false };
-                    })
-                  );
-                }}
-                id={it.title}
-                key={it.href}
-                href={it.href}
-                className={cn(
-                  "font-light ml-3 mt-[16px] hover:no-underline relative"
-                )}
-              >
-                {it.title}
-                <div
+            {user?.role === "provider" &&
+              sideBar.map((it) => (
+                <Link
+                  onClick={(e) => {
+                    setSidebar(
+                      sideBar.map((el) => {
+                        if (it.title === el.title) {
+                          return { ...el, active: true };
+                        }
+                        return { ...el, active: false };
+                      })
+                    );
+                  }}
+                  id={it.title}
+                  key={it.href}
+                  href={it.href}
                   className={cn(
-                    "absolute -left-3 border top-0 hidden",
-                    it.active && "h-[110%] flex hover:flex"
+                    "font-light ml-3 mt-[16px] hover:no-underline relative"
                   )}
-                ></div>
-              </Link>
-            ))}
+                >
+                  {it.title}
+                  <div
+                    className={cn(
+                      "absolute -left-3 border top-0 hidden",
+                      it.active && "h-[110%] flex hover:flex"
+                    )}
+                  ></div>
+                </Link>
+              ))}
           </div>
 
-          <Link
-            href={"/dashboard/opportunities"}
-            className="font-semibold mb-8 hover:no-underline"
-          >
-            OPPORTUNITY
-          </Link>
-          <Link
-            href={"/dashboard/referral"}
-            className="font-semibold mb-8 hover:no-underline uppercase"
-          >
-            Referral
-          </Link>
+        {user?.role === "provider" && (
+            <Link
+              href={"/dashboard/opportunities"}
+              className="font-semibold mb-8 hover:no-underline"
+            >
+              OPPORTUNITY
+            </Link>
+          )}
+          {user?.role === "admin" && (
+            <Link
+              href={"/dashboard/referral"}
+              className="font-semibold mb-8 hover:no-underline uppercase"
+            >
+              Referral
+            </Link>
+          )}
           <button
             onClick={() => {
               onLogout();
