@@ -1,6 +1,7 @@
 import React from "react";
 import { media } from "@/app/_components/MediaContainer/MediaData";
 import MediaContainerItem from "@/app/_components/MediaContainer/MediaContainerItem";
+import LogisticInsights from "@/components/LogisticInsights";
 import { StaticImageData } from "next/image";
 
 export interface IMedia {
@@ -12,10 +13,13 @@ export interface IMedia {
 
 const MediaContainer = () => {
   return (
-    <div className="w-full sm:grid grid-cols-2 justify-center gap-8 top-[300px] pb-[104px] px-[16px] max-w-[1328px] mx-auto">
-      {media.map((item: any) => (
-        <MediaContainerItem key={item.date} item={item} />
-      ))}
+    <div>
+      <div className="w-full sm:grid grid-cols-2 justify-center gap-8 top-[300px] pb-[104px] px-[16px] max-w-[1328px] mx-auto">
+        {media.map((item: any) => (
+          <MediaContainerItem key={item.date} item={item} />
+        ))}
+      </div>
+      <LogisticInsights />
     </div>
   );
 };
