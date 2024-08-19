@@ -86,16 +86,22 @@ const Sidebar: React.FC = () => {
           </div>
 
           <Link
-            href={"/dashboard/opportunities"}
+            href="/dashboard/opportunities"
             className="font-semibold mb-8 hover:no-underline"
           >
             OPPORTUNITY
           </Link>
           <Link
-            href={"/dashboard/referral"}
+            href="/dashboard/referral"
             className="font-semibold mb-8 hover:no-underline uppercase"
           >
             Referral
+          </Link>
+          <Link
+            href="/dashboard/routes-list"
+            className="font-semibold mb-8 hover:no-underline uppercase"
+          >
+            Routes
           </Link>
           <button
             onClick={() => {
