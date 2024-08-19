@@ -17,7 +17,7 @@ const routes = {
     "/dashboard/market-trends",
     "/dashboard/opportunities",
   ],
-  [Roles.ADMIN]: ["/account", "/dashboard/referral"],
+  [Roles.ADMIN]: ["/account", "/dashboard/referral", "/dashboard/routes-list"],
 };
 
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
@@ -44,7 +44,7 @@ export async function middleware(request: NextRequest) {
     }
   } catch (error) {
     console.error("JWT verification failed:", error);
-    return NextResponse.redirect(new URL("/sign-in", request.url));
+    return NextResponse.redirect(new URL("/", request.url));
   }
 
   return NextResponse.next();
@@ -56,6 +56,7 @@ export const config = {
     "/dashboard/referral",
     "/dashboard/market-trends",
     "/dashboard/opportunities",
+    "/dashboard/routes-list",
     "/account",
   ],
 };
