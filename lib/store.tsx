@@ -313,3 +313,51 @@ export const useReferralsStore = create((set) => ({
     }).finally(() => set({ isReferralsLoading: false }));
   },
 }));
+
+export const useRoutesStore = create((set) => ({
+  routes: [],
+  isRoutesLoading: true,
+  getRoutes: ({ page = 1, take = 5 }) => {
+    set({ isRoutesLoading: true });
+    return getRequest({
+      url: "selected-orders",
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((routes) => {
+        set({ routes });
+      })
+      .finally(() => set({ isRoutesLoading: false }));
+  },
+  replyRoute: (id: string, data: any) => {
+    set({ isRoutesLoading: true });
+
+    const formData = {
+      message: data.message,
+      ...(data.reasons.length && {
+        reasons: data.reasons,
+      }),
+    };
+
+    return postRequest({
+      url: `selected-orders/${id}/reply`,
+      data: formData,
+    }).finally(() => set({ isRoutesLoading: false }));
+  },
+  applyRoute: (id: string) => {
+    set({ isRoutesLoading: true });
+
+    return postRequest({
+      url: `selected-orders/${id}/apply`,
+    }).finally(() => set({ isRoutesLoading: false }));
+  },
+  deleteRoute: (id: string) => {
+    set({ isRoutesLoading: true });
+
+    return deleteRequest({
+      url: `selected-orders/${id}`,
+    }).finally(() => set({ isRoutesLoading: false }));
+  },
+}));

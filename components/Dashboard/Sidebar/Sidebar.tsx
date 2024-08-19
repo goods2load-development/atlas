@@ -102,7 +102,7 @@ const Sidebar: React.FC = () => {
               ))}
           </div>
 
-        {user?.role === "provider" && (
+          {user?.role === "provider" && (
             <Link
               href={"/dashboard/opportunities"}
               className="font-semibold mb-8 hover:no-underline"
@@ -116,6 +116,14 @@ const Sidebar: React.FC = () => {
               className="font-semibold mb-8 hover:no-underline uppercase"
             >
               Referral
+            </Link>
+          )}
+          {user?.role === "admin" && (
+            <Link
+              href="/dashboard/routes-list"
+              className="font-semibold mb-8 hover:no-underline uppercase"
+            >
+              Routes
             </Link>
           )}
           <button
