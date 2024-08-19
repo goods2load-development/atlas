@@ -3,7 +3,7 @@
 import Logo from "@/components/Logo";
 import mockLogo from "@/assets/mock-logo.svg";
 import Socials from "@/components/Socials";
-import { cn } from "@/lib/utils";
+import { cn, postRequest } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -45,6 +45,20 @@ const Sidebar: React.FC = () => {
       signOut({ callbackUrl: "/" });
     });
   };
+
+  useEffect(() => {
+    (async () => {
+      postRequest({
+        url: "/selected-orders/789bf325-e2b8-496b-a63c-f80803cc7f37/reply",
+        data: {
+          message: "123",
+          reasons: ["1", "2"],
+        },
+      }).then((data) => {
+        console.log(123);
+      });
+    })();
+  }, []);
 
   return (
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
