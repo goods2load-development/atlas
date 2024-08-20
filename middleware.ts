@@ -17,7 +17,12 @@ const routes = {
     "/dashboard/market-trends",
     "/dashboard/opportunities",
   ],
-  [Roles.ADMIN]: ["/account", "/dashboard/referral", "/dashboard/routes-list"],
+  [Roles.ADMIN]: [
+    "/account",
+    "/dashboard/referral",
+    "/dashboard/routes-list",
+    "/dashboard/partners",
+  ],
 };
 
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
@@ -57,6 +62,7 @@ export const config = {
     "/dashboard/market-trends",
     "/dashboard/opportunities",
     "/dashboard/routes-list",
+    "/dashboard/partners",
     "/account",
   ],
 };
