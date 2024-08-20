@@ -5,6 +5,7 @@ import { CSS } from "@dnd-kit/utilities";
 import Link from "next/link";
 import EditReferralDialog from "./EditReferralDialog";
 import BannerPreview from "./BannerPreview";
+import ListItem from "@/components/ui/list-item";
 
 const ReferralItem = ({
   referralItem,
@@ -39,10 +40,7 @@ const ReferralItem = ({
       <button {...attributes} {...listeners}>
         <GripVertical size={40} strokeWidth={2.75} />
       </button>
-      <div
-        className="flex items-center border border-orange-500 p-4 w-full
-    rounded-lg shadow-lg bg-white hover:bg-orange-100 transition duration-300 ease-in-out"
-      >
+      <ListItem>
         <h2 className="max-w-[300px] text-lg md:text-2xl font-semibold text-orange-700">
           {title}
         </h2>
@@ -59,7 +57,7 @@ const ReferralItem = ({
             <ArrowUpRight size={30} />
           </Link>
         </div>
-      </div>
+      </ListItem>
     </div>
   );
 };
