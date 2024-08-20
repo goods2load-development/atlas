@@ -30,6 +30,9 @@ import { Reply } from "lucide-react";
 import { Textarea } from "@/components/ui/textarea";
 import { OrderRoute } from "./types";
 import { Checkbox } from "@/components/ui/checkbox";
+import { toNormalText } from "@/lib/utils";
+import { dateValues } from "./constants";
+import { format } from "date-fns";
 
 const formSchema = z.object({
   reasons: z.array(z.string()),
@@ -68,7 +71,7 @@ const ReplyDialog = ({
   };
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent
         onCloseClick={() => setIsOpen(false)}
         className="p-8 max-h-[540px] overflow-y-scroll"
@@ -100,23 +103,30 @@ const ReplyDialog = ({
               <>
                 {selectValue === "incorrect-fields" && (
                   <div className="grid grid-cols-2 gap-1 mb-2">
-                    {Object.keys(order).map((key) => (
-                      <FormItem key={key} className="flex space-x-3">
-                        <Checkbox
-                          onCheckedChange={(isChecked) =>
-                            onChangeReason(isChecked as boolean, key)
-                          }
-                          id={key}
-                          className="mt-2"
-                        />
-                        <FormLabel
-                          htmlFor={key}
-                          className="text-sm font-medium whitespace-normal max-w-full"
-                        >
-                          {key}
-                        </FormLabel>
-                      </FormItem>
-                    ))}
+                    {Object.entries(order).map(([key, value]) => {
+                      if (["id"].includes(key)) return null;
+                      const val = dateValues.includes(key as string)
+                        ? format(value, "MM/dd/yyyy")
+                        : value;
+                      return (
+                        <FormItem key={key} className="flex space-x-3">
+                          <Checkbox
+                            onCheckedChange={(isChecked) =>
+                              onChangeReason(isChecked as boolean, key)
+                            }
+                            id={key}
+                            className="mt-2"
+                          />
+                          <FormLabel
+                            htmlFor={key}
+                            className="text-sm font-medium whitespace-normal max-w-full"
+                          >
+                            <strong>{toNormalText(key)}</strong> (
+                            {val.toString()})
+                          </FormLabel>
+                        </FormItem>
+                      );
+                    })}
                   </div>
                 )}
                 <FormField
@@ -149,7 +159,7 @@ const ReplyDialog = ({
         </Form>
       </DialogContent>
       <DialogTrigger asChild>
-        <button onClick={() => setIsOpen(true)} title="Edit">
+        <button onClick={() => setIsOpen(true)} title="Reply">
           <Reply />
         </button>
       </DialogTrigger>

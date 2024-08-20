@@ -123,6 +123,12 @@ const Sidebar: React.FC = () => {
               >
                 Routes
               </Link>
+              <Link
+                href="/dashboard/partners"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Partners
+              </Link>
             </>
           )}
           <button

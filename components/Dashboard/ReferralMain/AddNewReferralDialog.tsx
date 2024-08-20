@@ -23,7 +23,7 @@ const AddNewReferralDialog = ({
   };
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent onCloseClick={() => setIsOpen(false)} className="p-8">
         <DialogHeader>
           <DialogTitle className="text-center text-[40px]/[48px] mb-3 uppercase font-bold">

@@ -6,6 +6,7 @@ import { number } from "zod";
 import { useEffect } from "react";
 import Image from "next/image";
 import { ToolTipComponent } from "./SearchMain";
+import { countVolume } from "@/lib/utils";
 
 export default function SelectedSearch() {
   const {
@@ -26,10 +27,6 @@ export default function SelectedSearch() {
     incoterms,
   } = useFilterStore((state: any) => state);
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
-
-  const countVolume = (width: number, length: number, height: number) => {
-    return width * height * length;
-  };
 
   const renderIcon = (deliveryBy: string) => {
     switch (deliveryBy) {

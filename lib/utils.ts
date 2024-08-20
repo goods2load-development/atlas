@@ -79,3 +79,15 @@ export const removeEqualFields = <T extends Record<string, any>>(
 export const isUserAdmin = (role: string) => role === "admin";
 export const isUser = (role: string) => role === "user";
 export const isUserProvider = (role: string) => role === "provider";
+
+export const toNormalText = (input: string) => {
+  const camelToSpace = input.replace(/([a-z])([A-Z])/g, "$1 $2");
+
+  const snakeToSpace = camelToSpace.replace(/_/g, " ");
+
+  return snakeToSpace.charAt(0).toUpperCase() + snakeToSpace.slice(1);
+};
+
+export const countVolume = (width: number, length: number, height: number) => {
+  return width * height * length;
+};
