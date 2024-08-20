@@ -16,8 +16,8 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { user, logoutUser, getUser } = useUserStore((state: any) => state);
 
-  const isAdmin = isUserAdmin(user.role);
-  const isProvider = isUserProvider(user.role);
+  const isAdmin = isUserAdmin(user?.role);
+  const isProvider = isUserProvider(user?.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -113,7 +113,7 @@ const Sidebar: React.FC = () => {
             <>
               <Link
                 href="/dashboard/referral"
-                className="font-semibold mb-8 hover:no-underline uppercase"
+                className="font-semibold mb-8 hover:no-underline uppercase mt-6"
               >
                 Referral
               </Link>
