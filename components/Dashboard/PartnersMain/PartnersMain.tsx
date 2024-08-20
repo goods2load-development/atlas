@@ -68,7 +68,7 @@ const PartnersMain = () => {
         <div className={clsx("flex flex-col gap-4")}>
           {!isPartnersLoading && !partners?.length && (
             <p className="font-bold text-red-600">
-              There is no any routes at the moment
+              There is no any new partners at the moment.
             </p>
           )}
           {partners?.map((partner, i: number) => (
