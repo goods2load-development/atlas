@@ -5,15 +5,18 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
 import Link from "next/link";
-import { cn } from "@/lib/utils";
+import { cn, isUserProvider } from "@/lib/utils";
 import closeSvg from "@/assets/close.svg";
-import mobileLogo from "@/assets/mobile-logo.svg";
 import mockLogo from "@/assets/mock-logo.svg";
 import { LogOut } from "lucide-react";
+import { useUserStore } from "@/lib/store";
 
 const MobileSidebar: React.FC = () => {
   const pathname = usePathname();
   const [expanded, setExpanded] = useState(false);
+  const { user } = useUserStore((state: any) => state);
+
+  const isProvider = isUserProvider(user.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -81,32 +84,33 @@ const MobileSidebar: React.FC = () => {
         </Button>
       </div>
       <div className="flex flex-col items-center gap-4 mt-6">
-        {sideBar.map((it) => (
-          <Link
-            onClick={(e) => {
-              setSidebar(
-                sideBar.map((el) => {
-                  if (it.title === el.title) {
-                    return { ...el, active: true };
-                  }
-                  return { ...el, active: false };
-                })
-              );
-            }}
-            id={it.title}
-            key={it.href}
-            href={it.href}
-            className="ml-3 hover:no-underline relative text-white"
-          >
-            {it.title}
-            <div
-              className={cn(
-                "absolute -left-3 border top-0 hidden",
-                it.active && "h-[110%] flex hover:flex"
-              )}
-            ></div>
-          </Link>
-        ))}
+        {isProvider &&
+          sideBar.map((it) => (
+            <Link
+              onClick={(e) => {
+                setSidebar(
+                  sideBar.map((el) => {
+                    if (it.title === el.title) {
+                      return { ...el, active: true };
+                    }
+                    return { ...el, active: false };
+                  })
+                );
+              }}
+              id={it.title}
+              key={it.href}
+              href={it.href}
+              className="ml-3 hover:no-underline relative text-white"
+            >
+              {it.title}
+              <div
+                className={cn(
+                  "absolute -left-3 border top-0 hidden",
+                  it.active && "h-[110%] flex hover:flex"
+                )}
+              ></div>
+            </Link>
+          ))}
 
         <Button className="flex  font-light pl-[12px] text-white mt-8">
           <LogOut className="mr-[8px]" />
