@@ -8,6 +8,10 @@ import {
 } from "@/components/ui/dialog";
 import { ViewIcon } from "lucide-react";
 import { OrderRoute, UserRoute } from "./types";
+import { countVolume, toNormalText } from "@/lib/utils";
+import { useMemo } from "react";
+import { format } from "date-fns";
+import { dateValues } from "./constants";
 
 const listOfUserData = [
   "companyName",
@@ -19,14 +23,33 @@ const listOfUserData = [
 ];
 
 const ViewDialog = ({
+  isOpen,
+  setIsOpen,
   user,
   order,
+  id,
 }: {
+  isOpen: boolean;
+  setIsOpen: (a: any) => void;
   user: UserRoute;
   order: OrderRoute;
+  id: string;
 }) => {
+  const volume = useMemo(
+    () => countVolume(order.width, order.length, order.height),
+    [order]
+  );
+
   return (
-    <Dialog>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(isOpen) => {
+        setIsOpen({
+          isOpen,
+          id: isOpen ? id : "",
+        });
+      }}
+    >
       <DialogContent className="p-8">
         <DialogHeader>
           <DialogTitle className="text-center text-[40px]/[48px] mb-3 uppercase font-bold">
@@ -40,7 +63,7 @@ const ViewDialog = ({
                 if (!value || !listOfUserData.includes(key)) return null;
                 return (
                   <p key={key}>
-                    <strong>{key}: </strong>
+                    <strong>{toNormalText(key)}: </strong>
                     {value.toString()}
                   </p>
                 );
@@ -49,21 +72,26 @@ const ViewDialog = ({
             <hr className="block mt-4" />
             <h2 className="font-bold text-xl my-4">Order data</h2>
             <div className="flex flex-col gap-2">
-              {Object.entries(order).map(([key, value]) => {
-                if (!value) return null;
-                return (
-                  <p key={key}>
-                    <strong>{key}: </strong>
-                    {value.toString()}
-                  </p>
-                );
-              })}
+              {[...Object.entries(order), ["volume", volume]].map(
+                ([key, value]) => {
+                  if (key === "id") return null;
+                  const val = dateValues.includes(key as string)
+                    ? format(value, "MM/dd/yyyy")
+                    : value;
+                  return (
+                    <p key={key}>
+                      <strong>{toNormalText(key as string)}: </strong>
+                      {val?.toString() || "-"}
+                    </p>
+                  );
+                }
+              )}
             </div>
           </div>
         </DialogHeader>
       </DialogContent>
       <DialogTrigger asChild>
-        <button title="Edit">
+        <button title="View">
           <ViewIcon />
         </button>
       </DialogTrigger>

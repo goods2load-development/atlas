@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
+import { Partner } from "@/components/Dashboard/PartnersMain/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -359,5 +360,40 @@ export const useRoutesStore = create((set) => ({
     return deleteRequest({
       url: `selected-orders/${id}`,
     }).finally(() => set({ isRoutesLoading: false }));
+  },
+}));
+
+interface PartnersStoreState {
+  partners: Partner[];
+  isPartnersLoading: boolean;
+  getPartners: () => Promise<void>;
+  approvePartner: (id: string) => Promise<void>;
+  rejectPartner: (id: string) => Promise<void>;
+}
+
+export const usePartnersStore = create<PartnersStoreState>((set) => ({
+  partners: [],
+  isPartnersLoading: true,
+  getPartners: () => {
+    set({ isPartnersLoading: true });
+    return getRequest({
+      url: "users/unconfirmed/providers",
+    })
+      .then((partners) => {
+        set({ partners });
+      })
+      .finally(() => set({ isPartnersLoading: false }));
+  },
+  approvePartner: (id: string) => {
+    set({ isPartnersLoading: true });
+    return postRequest({
+      url: `users/${id}/confirm`,
+    }).finally(() => set({ isPartnersLoading: false }));
+  },
+  rejectPartner: (id: string) => {
+    set({ isPartnersLoading: true });
+    return deleteRequest({
+      url: `users/${id}/unconfirm`,
+    }).finally(() => set({ isPartnersLoading: false }));
   },
 }));
