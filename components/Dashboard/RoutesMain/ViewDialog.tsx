@@ -74,14 +74,14 @@ const ViewDialog = ({
             <div className="flex flex-col gap-2">
               {[...Object.entries(order), ["volume", volume]].map(
                 ([key, value]) => {
-                  if (!value || key === "id") return null;
+                  if (key === "id") return null;
                   const val = dateValues.includes(key as string)
                     ? format(value, "MM/dd/yyyy")
                     : value;
                   return (
                     <p key={key}>
                       <strong>{toNormalText(key as string)}: </strong>
-                      {val.toString()}
+                      {val?.toString() || "-"}
                     </p>
                   );
                 }
