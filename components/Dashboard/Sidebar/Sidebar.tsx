@@ -3,7 +3,7 @@
 import Logo from "@/components/Logo";
 import mockLogo from "@/assets/mock-logo.svg";
 import Socials from "@/components/Socials";
-import { cn, postRequest } from "@/lib/utils";
+import { cn, isUserAdmin, isUserProvider } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -16,6 +16,8 @@ const Sidebar: React.FC = () => {
   const pathname = usePathname();
   const { user, logoutUser, getUser } = useUserStore((state: any) => state);
 
+  const isAdmin = isUserAdmin(user.role);
+  const isProvider = isUserProvider(user.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -65,66 +67,63 @@ const Sidebar: React.FC = () => {
           </Link>
         </div>
         <div className="flex flex-col">
-          {user?.role === "provider" ? (
-            <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
-          ) : (
-            <p className="font-semibold mt-8">ADMIN DASHBOARD</p>
-          )}
-          <div className="flex flex-col mb-8 performance-sidebar-item">
-            {user?.role === "provider" &&
-              sideBar.map((it) => (
-                <Link
-                  onClick={(e) => {
-                    setSidebar(
-                      sideBar.map((el) => {
-                        if (it.title === el.title) {
-                          return { ...el, active: true };
-                        }
-                        return { ...el, active: false };
-                      })
-                    );
-                  }}
-                  id={it.title}
-                  key={it.href}
-                  href={it.href}
-                  className={cn(
-                    "font-light ml-3 mt-[16px] hover:no-underline relative"
-                  )}
-                >
-                  {it.title}
-                  <div
+          {isProvider && (
+            <>
+              <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
+              <div className="flex flex-col mb-8 performance-sidebar-item">
+                {sideBar.map((it) => (
+                  <Link
+                    onClick={(e) => {
+                      setSidebar(
+                        sideBar.map((el) => {
+                          if (it.title === el.title) {
+                            return { ...el, active: true };
+                          }
+                          return { ...el, active: false };
+                        })
+                      );
+                    }}
+                    id={it.title}
+                    key={it.href}
+                    href={it.href}
                     className={cn(
-                      "absolute -left-3 border top-0 hidden",
-                      it.active && "h-[110%] flex hover:flex"
+                      "font-light ml-3 mt-[16px] hover:no-underline relative"
                     )}
-                  ></div>
-                </Link>
-              ))}
-          </div>
+                  >
+                    {it.title}
+                    <div
+                      className={cn(
+                        "absolute -left-3 border top-0 hidden",
+                        it.active && "h-[110%] flex hover:flex"
+                      )}
+                    ></div>
+                  </Link>
+                ))}
+              </div>
 
-          {user?.role === "provider" && (
-            <Link
-              href={"/dashboard/opportunities"}
-              className="font-semibold mb-8 hover:no-underline"
-            >
-              OPPORTUNITY
-            </Link>
+              <Link
+                href="/dashboard/opportunities"
+                className="font-semibold mb-8 hover:no-underline"
+              >
+                OPPORTUNITY
+              </Link>
+            </>
           )}
-          {user?.role === "admin" && (
-            <Link
-              href={"/dashboard/referral"}
-              className="font-semibold mb-8 hover:no-underline uppercase"
-            >
-              Referral
-            </Link>
-          )}
-          {user?.role === "admin" && (
-            <Link
-              href="/dashboard/routes-list"
-              className="font-semibold mb-8 hover:no-underline uppercase"
-            >
-              Routes
-            </Link>
+          {isAdmin && (
+            <>
+              <Link
+                href="/dashboard/referral"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Referral
+              </Link>
+              <Link
+                href="/dashboard/routes-list"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Routes
+              </Link>
+            </>
           )}
           <button
             onClick={() => {
