@@ -75,3 +75,7 @@ export const removeEqualFields = <T extends Record<string, any>>(
   }
   return result;
 };
+
+export const isUserAdmin = (role: string) => role === "admin";
+export const isUser = (role: string) => role === "user";
+export const isUserProvider = (role: string) => role === "provider";
