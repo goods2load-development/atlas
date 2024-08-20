@@ -368,6 +368,7 @@ interface PartnersStoreState {
   isPartnersLoading: boolean;
   getPartners: () => Promise<void>;
   approvePartner: (id: string) => Promise<void>;
+  rejectPartner: (id: string) => Promise<void>;
 }
 
 export const usePartnersStore = create<PartnersStoreState>((set) => ({
