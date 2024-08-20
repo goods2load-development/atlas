@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ListItem from "@/components/ui/list-item";
 import Pagination from "@/components/ui/pagination";
 import Spinner from "@/components/ui/spinner";
@@ -31,6 +31,11 @@ const RoutesMain = () => {
 
   const { meta } = routes;
 
+  const [isViewModalOpen, setIsViewModalOpen] = useState({
+    isOpen: false,
+    id: "",
+  });
+
   useEffect(() => {
     getRoutesForPage(page);
   }, [page]);
@@ -58,7 +63,7 @@ const RoutesMain = () => {
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
-          title: "Route applied.",
+          title: "Route approved. All data sent to provider.",
           variant: "destructive",
           className: "bg-green-500",
         })
@@ -76,7 +81,7 @@ const RoutesMain = () => {
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
-          title: "Route applied.",
+          title: "Reply sent.",
           variant: "destructive",
           className: "bg-green-500",
         })
@@ -108,21 +113,42 @@ const RoutesMain = () => {
         })}
       >
         <div className={clsx("flex flex-col gap-4")}>
+          {!isRoutesLoading && !routes?.data?.length && (
+            <p className="font-bold text-red-600">
+              There is no any routes at the moment
+            </p>
+          )}
           {routes?.data?.map(({ order, user, id }: any, i: number) => (
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
-                <p>{user.email}</p>
-                <div className="flex items-center gap-1">
+                <p
+                  onClick={() =>
+                    setIsViewModalOpen({
+                      id,
+                      isOpen: true,
+                    })
+                  }
+                  className="hover:underline hover:cursor-pointer"
+                >
+                  {user.email}
+                </p>
+                <div className="flex items-center gap-2">
                   <button onClick={() => applyRouteById(id)} title="Approve">
                     <Check />
                   </button>
-                  <button title="Delete">
+                  <button title="Reply">
                     <ReplyDialog
                       onSubmitCallback={(data: any) => replyRouteById(id, data)}
                       order={order}
                     />
                   </button>
-                  <ViewDialog user={user} order={order} />
+                  <ViewDialog
+                    isOpen={isViewModalOpen.id === id && isViewModalOpen.isOpen}
+                    setIsOpen={setIsViewModalOpen}
+                    user={user}
+                    order={order}
+                    id={id}
+                  />
                   <button onClick={() => deleteRouteById(id)} title="Delete">
                     <TrashIcon />
                   </button>
@@ -131,7 +157,7 @@ const RoutesMain = () => {
             </ListItem>
           ))}
         </div>
-        {meta && (
+        {meta && meta?.pageCount > TAKE && (
           <Pagination
             page={page}
             total={meta.pageCount}
