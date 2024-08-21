@@ -19,9 +19,12 @@ const PartnersMain = () => {
   const {
     partners,
     isPartnersLoading,
-    getPartners,
+    getPartnersApproved,
+    getPartnersInReview,
+    getPartnersNew,
     approvePartner,
     rejectPartner,
+    replyPartner,
   } = usePartnersStore((state) => state);
   const { toast } = useToast();
 
@@ -35,13 +38,24 @@ const PartnersMain = () => {
   const tab = searchParams.get("tab") || "new";
   const [searchValue, setSearchValue] = useState("");
   const filteredPartners = useMemo(
-    () => filterByField(partners, "email", searchValue),
+    () =>
+      filterByField(
+        partners.map((par) => ({ partnerId: par.id, ...par.user })),
+        "email",
+        searchValue
+      ),
     [searchValue, partners]
   );
 
   useEffect(() => {
     getPartners();
-  }, []);
+  }, [tab]);
+
+  const getPartners = () => {
+    if (tab === "new") return getPartnersNew();
+    if (tab === "in-review") return getPartnersInReview();
+    if (tab === "active") return getPartnersApproved();
+  };
 
   const handleSetTab = (tab: string) => {
     const params = new URLSearchParams(searchParams);
@@ -68,6 +82,18 @@ const PartnersMain = () => {
 
   const unconfirmPartner = (id: string) => {
     rejectPartner(id)
+      .then(getPartners)
+      .then(() =>
+        toast({
+          title: "User rejected.",
+          variant: "destructive",
+          className: "bg-green-500",
+        })
+      );
+  };
+
+  const replyPartnerById = (id: string, message: string) => {
+    return replyPartner(id, message)
       .then(getPartners)
       .then(() =>
         toast({
@@ -156,15 +182,21 @@ const PartnersMain = () => {
                     setIsOpen={setIsViewModalOpen}
                     partner={partner}
                   />
-                  <ReplyPartnerDialog onSubmitCallback={() => {}} />
+                  {tab === "new" && (
+                    <ReplyPartnerDialog
+                      onSubmitCallback={({ message }: any) =>
+                        replyPartnerById(partner.partnerId, message)
+                      }
+                    />
+                  )}
                   <button
-                    onClick={() => confirmPartner(partner.id)}
+                    onClick={() => confirmPartner(partner.partnerId)}
                     title="Confirm"
                   >
                     <Check />
                   </button>
                   <button
-                    onClick={() => unconfirmPartner(partner.id)}
+                    onClick={() => unconfirmPartner(partner.partnerId)}
                     title="Delete"
                   >
                     <TrashIcon />
