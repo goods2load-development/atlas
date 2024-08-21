@@ -36,6 +36,7 @@ export async function middleware(request: NextRequest) {
 
   try {
     const { payload } = await jwtVerify(token, SECRET_KEY);
+    console.log(payload, "JWT-PAYLOAD");
 
     if (!payload.role) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -44,7 +45,6 @@ export async function middleware(request: NextRequest) {
     const currentPath = request.nextUrl.pathname;
 
     if (!routes[payload.role as Roles].includes(currentPath)) {
-      console.log(1);
       return NextResponse.redirect(new URL("/", request.url));
     }
   } catch (error) {
@@ -57,13 +57,13 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/performance",
-    "/dashboard/referral",
-    "/dashboard/market-trends",
-    "/dashboard/opportunities",
-    "/dashboard/routes-list",
-    "/dashboard/partners",
-    "/account",
+    // "/dashboard/performance",
+    // "/dashboard/referral",
+    // "/dashboard/market-trends",
+    // "/dashboard/opportunities",
+    // "/dashboard/routes-list",
+    // "/dashboard/partners",
+    // "/account",
   ],
 };
 //
