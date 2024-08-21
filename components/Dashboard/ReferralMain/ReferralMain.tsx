@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import AddNewReferralDialog from "./AddNewReferralDialog";
 import ReferralItem from "./ReferralItem";
 import { ReferralItemType } from "./types";
@@ -22,8 +22,10 @@ import {
 import { useReferralsStore } from "@/lib/store";
 import { Button } from "@/components/ui/button";
 import clsx from "clsx";
-import { removeEqualFields } from "@/lib/utils";
+import { filterByField, removeEqualFields } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
+import debounce from "lodash/debounce";
+import { Input } from "@/components/ui/input";
 
 const ReferralMain = () => {
   const {
@@ -43,6 +45,12 @@ const ReferralMain = () => {
   const [localSlicePerReferals, setLocalSlicePerReferals] = useState<
     null | number[]
   >(null);
+
+  const [searchValue, setSearchValue] = useState("");
+  const filteredReferrals = useMemo(
+    () => filterByField(referralsItems, "title", searchValue),
+    [searchValue, referralsItems]
+  );
 
   const isReferralsChanged =
     JSON.stringify(referrals) !== JSON.stringify(referralsItems);
@@ -137,16 +145,19 @@ const ReferralMain = () => {
       }),
     };
 
-    editReferralById(newRef, id).then(getAllReferrals).then(
-      toast({
-        title: `Referral "${data.title}" edited.`,
-        variant: "default",
-        className: "bg-green-500",
-      })
-    );;
+    editReferralById(newRef, id)
+      .then(getAllReferrals)
+      .then(
+        toast({
+          title: `Referral "${data.title}" edited.`,
+          variant: "default",
+          className: "bg-green-500",
+        })
+      );
   };
 
   const handleDragEnd = ({ active, over }: any) => {
+    if (searchValue) return;
     if (over && active.id !== over?.id) {
       const activeIndex = referralsItems.findIndex(
         ({ id }) => id === active.id
@@ -156,6 +167,13 @@ const ReferralMain = () => {
       setReferralsItems(arrayMove(referralsItems, activeIndex, overIndex));
     }
   };
+
+  const debouncedSetSearchValue = useCallback(
+    debounce((value: string) => {
+      setSearchValue(value);
+    }, 200),
+    []
+  );
 
   return (
     <div className="min-h-screen">
@@ -196,6 +214,13 @@ const ReferralMain = () => {
           </Button>
         </div>
       </div>
+      <Input
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+          debouncedSetSearchValue(e.currentTarget.value)
+        }
+        className="max-w-[400px] mb-4"
+        placeholder="Search..."
+      />
       <div
         className={clsx("flex flex-col gap-4", {
           "pointer-events-none": isReferralsLoading,
@@ -207,10 +232,10 @@ const ReferralMain = () => {
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={referralsItems.map((item) => item.id)}
+            items={filteredReferrals.map((item) => item.id)}
             strategy={rectSortingStrategy}
           >
-            {referralsItems.map((item) => (
+            {filteredReferrals.map((item) => (
               <ReferralItem
                 key={item.id}
                 referralItem={item}

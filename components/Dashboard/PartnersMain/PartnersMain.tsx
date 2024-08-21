@@ -1,13 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import ListItem from "@/components/ui/list-item";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
+import { Input } from "@/components/ui/input";
 import { usePartnersStore } from "@/lib/store";
 import clsx from "clsx";
 import { Check, TrashIcon } from "lucide-react";
 import ViewPartnerDialog from "./ViewPartnerDialog";
+import debounce from "lodash/debounce";
+import { filterByField } from "@/lib/utils";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import ReplyPartnerDialog from "./ReplyPartnerDialog";
 
 const PartnersMain = () => {
   const {
@@ -23,10 +29,30 @@ const PartnersMain = () => {
     isOpen: false,
     id: "",
   });
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+  const tab = searchParams.get("tab") || "new";
+  const [searchValue, setSearchValue] = useState("");
+  const filteredPartners = useMemo(
+    () => filterByField(partners, "email", searchValue),
+    [searchValue, partners]
+  );
 
   useEffect(() => {
     getPartners();
   }, []);
+
+  const handleSetTab = (tab: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (tab) {
+      params.set("tab", tab);
+    } else {
+      params.delete("tab");
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+  };
 
   const confirmPartner = (id: string) => {
     approvePartner(id)
@@ -52,6 +78,13 @@ const PartnersMain = () => {
       );
   };
 
+  const debouncedSetSearchValue = useCallback(
+    debounce((value: string) => {
+      setSearchValue(value);
+    }, 200),
+    []
+  );
+
   return (
     <div className="min-h-screen">
       <div className="flex justify-between items-center mb-8">
@@ -60,6 +93,35 @@ const PartnersMain = () => {
         </h1>
         {isPartnersLoading && <Spinner />}
       </div>
+      <Input
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+          debouncedSetSearchValue(e.currentTarget.value)
+        }
+        className="max-w-[400px] mb-4"
+        placeholder="Search..."
+      />
+      <Tabs onValueChange={handleSetTab} value={tab} className="w-full mx-auto">
+        <TabsList className="grid w-[290px] grid-cols-3 mx-auto mb-[28px]">
+          <TabsTrigger
+            className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
+            value="new"
+          >
+            New
+          </TabsTrigger>
+          <TabsTrigger
+            value="in-review"
+            className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
+          >
+            In review
+          </TabsTrigger>
+          <TabsTrigger
+            value="active"
+            className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
+          >
+            Active
+          </TabsTrigger>
+        </TabsList>
+      </Tabs>
       <div
         className={clsx({
           "pointer-events-none": isPartnersLoading,
@@ -71,7 +133,7 @@ const PartnersMain = () => {
               There is no any new partners at the moment.
             </p>
           )}
-          {partners?.map((partner, i: number) => (
+          {filteredPartners?.map((partner, i: number) => (
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
                 <p
@@ -94,6 +156,7 @@ const PartnersMain = () => {
                     setIsOpen={setIsViewModalOpen}
                     partner={partner}
                   />
+                  <ReplyPartnerDialog onSubmitCallback={() => {}} />
                   <button
                     onClick={() => confirmPartner(partner.id)}
                     title="Confirm"
