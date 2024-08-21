@@ -25,7 +25,7 @@ const routes = {
   ],
 };
 
-const SECRET_KEY = new TextEncoder().encode("FaReqt4M3tsAHc5mO5HgUMb9F8u2JTWL");
+const SECRET_KEY = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
 
 export async function middleware(request: NextRequest) {
   const token = cookies().get("access_token")?.value;
@@ -57,12 +57,12 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/performance",
-    "/dashboard/referral",
-    "/dashboard/market-trends",
-    "/dashboard/opportunities",
-    "/dashboard/routes-list",
-    "/dashboard/partners",
-    "/account",
+    // "/dashboard/performance",
+    // "/dashboard/referral",
+    // "/dashboard/market-trends",
+    // "/dashboard/opportunities",
+    // "/dashboard/routes-list",
+    // "/dashboard/partners",
+    // "/account",
   ],
 };
