@@ -36,6 +36,7 @@ export async function middleware(request: NextRequest) {
 
   try {
     const { payload } = await jwtVerify(token, SECRET_KEY);
+    console.log(payload, "-------------PAYLOAD----------");
 
     const userRole = payload.role as Roles;
     if (!userRole || !routes[userRole]) {
@@ -43,6 +44,7 @@ export async function middleware(request: NextRequest) {
     }
 
     const currentPath = request.nextUrl.pathname;
+    console.log(currentPath, "-------------CURRENT-PAGE----------");
     const allowedRoutes = routes[userRole];
 
     // Check if the current path matches any allowed routes for the user's role
@@ -60,6 +62,6 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/dashboard/:path*", // Protect all dashboard routes
-    "/account", // Protect account route
+    // "/account", // Protect account route
   ],
 };
