@@ -36,13 +36,14 @@ export async function middleware(request: NextRequest) {
 
   try {
     const { payload } = await jwtVerify(token, SECRET_KEY);
-    console.log(payload, "JWT-PAYLOAD");
+    console.log(payload, "-----------------JWT-PAYLOAD------------------");
 
     if (!payload.role) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
     const currentPath = request.nextUrl.pathname;
+    console.log(currentPath, "---------------------------");
 
     if (!routes[payload.role as Roles].includes(currentPath)) {
       return NextResponse.redirect(new URL("/", request.url));
@@ -60,7 +61,7 @@ export const config = {
     // "/dashboard/performance",
     // "/dashboard/referral",
     // "/dashboard/market-trends",
-    // "/dashboard/opportunities",
+    "/dashboard/opportunities",
     // "/dashboard/routes-list",
     // "/dashboard/partners",
     // "/account",
