@@ -97,7 +97,7 @@ const PartnersMain = () => {
       .then(getPartners)
       .then(() =>
         toast({
-          title: "User rejected.",
+          title: "Reply sent.",
           variant: "destructive",
           className: "bg-green-500",
         })

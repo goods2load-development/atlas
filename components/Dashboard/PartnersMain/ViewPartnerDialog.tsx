@@ -55,7 +55,13 @@ const ViewPartnerDialog = ({
           <div className="max-h-[300px] overflow-y-scroll">
             <div className="flex flex-col gap-2">
               {Object.entries(partner).map(([key, value]) => {
-                if (value === null || value === "" || key === "id") return null;
+                if (
+                  value === null ||
+                  value === "" ||
+                  key === "id" ||
+                  key === "partnerId"
+                )
+                  return null;
                 if (linkFields.includes(key))
                   return (
                     <p key={key}>
