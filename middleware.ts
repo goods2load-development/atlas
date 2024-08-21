@@ -36,16 +36,17 @@ export async function middleware(request: NextRequest) {
 
   try {
     const { payload } = await jwtVerify(token, SECRET_KEY);
-    console.log(payload, "-----------------JWT-PAYLOAD------------------");
 
-    if (!payload.role) {
+    const userRole = payload.role as Roles;
+    if (!userRole || !routes[userRole]) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
     const currentPath = request.nextUrl.pathname;
-    console.log(currentPath, "---------------------------");
+    const allowedRoutes = routes[userRole];
 
-    if (!routes[payload.role as Roles].includes(currentPath)) {
+    // Check if the current path matches any allowed routes for the user's role
+    if (!allowedRoutes.some((route) => currentPath.startsWith(route))) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   } catch (error) {
@@ -58,12 +59,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // "/dashboard/performance",
-    // "/dashboard/referral",
-    // "/dashboard/market-trends",
-    "/dashboard/opportunities",
-    // "/dashboard/routes-list",
-    // "/dashboard/partners",
-    // "/account",
+    "/dashboard/:path*", // Protect all dashboard routes
+    "/account", // Protect account route
   ],
 };
