@@ -60,10 +60,9 @@ export const config = {
     // "/dashboard/performance",
     // "/dashboard/referral",
     // "/dashboard/market-trends",
-    // "/dashboard/opportunities",
+    "/dashboard/opportunities",
     // "/dashboard/routes-list",
     // "/dashboard/partners",
     // "/account",
   ],
 };
-//
