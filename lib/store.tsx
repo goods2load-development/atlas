@@ -203,6 +203,14 @@ export const useUserStore = create((set) => ({
       }));
     });
   },
+  onSaveUserPartner: async (name: string) => {
+    await postRequest({
+      url: `partners/${name}/save`,
+    });
+  },
+  onDeleteSavedPartner: async (id: string) => {
+    await deleteRequest({ url: `/partners/${id}/saved` });
+  },
 }));
 
 export const useForgotPasswordStore = create((set) => ({
@@ -397,4 +405,3 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     }).finally(() => set({ isPartnersLoading: false }));
   },
 }));
-

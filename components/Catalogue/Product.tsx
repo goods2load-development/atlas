@@ -34,7 +34,7 @@ function Icon(type: string) {
 
 export default function Product(props: Props) {
   const { toast } = useToast();
-  const { user, getUser }: any = useUserStore();
+  const { user, getUser, onSaveUserPartner }: any = useUserStore();
   const router = useRouter();
 
   useEffect(() => {
@@ -45,10 +45,12 @@ export default function Product(props: Props) {
     if (!user?.id) {
       router.push("/sign-in");
     } else {
-      toast({
-        title: "Partner saved",
-        variant: "default",
-        className: "bg-green-500 text-white",
+      onSaveUserPartner(props.company.name).then((data: any) => {
+        toast({
+          title: "Partner saved",
+          variant: "default",
+          className: "bg-green-500 text-white",
+        });
       });
     }
   };
