@@ -3,7 +3,7 @@
 import Logo from "@/components/Logo";
 import mockLogo from "@/assets/mock-logo.svg";
 import Socials from "@/components/Socials";
-import { cn } from "@/lib/utils";
+import { cn, isUserAdmin, isUserProvider } from "@/lib/utils";
 import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -14,7 +14,9 @@ import { signOut } from "next-auth/react";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
-  const { logoutUser } = useUserStore((state: any) => state);
+  const { logoutUser, user } = useUserStore((state: any) => state);
+  const isAdmin = isUserAdmin(user.role);
+  const isProvider = isUserProvider(user.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -50,55 +52,73 @@ const Sidebar: React.FC = () => {
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div>
-          <Link href="/">
-            {" "}
-            <Image
-              alt="logo-performance"
-              width={50}
-              height={20}
-              src={mockLogo}
-            />
-          </Link>
+          <Image alt="logo-performance" width={50} height={55} src={mockLogo} />
         </div>
         <div className="flex flex-col">
-          <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
-          <div className="flex flex-col mb-8 performance-sidebar-item">
-            {sideBar.map((it) => (
-              <Link
-                onClick={(e) => {
-                  setSidebar(
-                    sideBar.map((el) => {
-                      if (it.title === el.title) {
-                        return { ...el, active: true };
-                      }
-                      return { ...el, active: false };
-                    })
-                  );
-                }}
-                id={it.title}
-                key={it.href}
-                href={it.href}
-                className={cn(
-                  "font-light ml-3 mt-[16px] hover:no-underline relative"
-                )}
-              >
-                {it.title}
-                <div
-                  className={cn(
-                    "absolute -left-3 border top-0 hidden",
-                    it.active && "h-[110%] flex hover:flex"
-                  )}
-                ></div>
-              </Link>
-            ))}
-          </div>
+          {isProvider && (
+            <>
+              <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
+              <div className="flex flex-col mb-8 performance-sidebar-item">
+                {sideBar.map((it) => (
+                  <Link
+                    onClick={(e) => {
+                      setSidebar(
+                        sideBar.map((el) => {
+                          if (it.title === el.title) {
+                            return { ...el, active: true };
+                          }
+                          return { ...el, active: false };
+                        })
+                      );
+                    }}
+                    id={it.title}
+                    key={it.href}
+                    href={it.href}
+                    className={cn(
+                      "font-light ml-3 mt-[16px] hover:no-underline relative"
+                    )}
+                  >
+                    {it.title}
+                    <div
+                      className={cn(
+                        "absolute -left-3 border top-0 hidden",
+                        it.active && "h-[110%] flex hover:flex"
+                      )}
+                    ></div>
+                  </Link>
+                ))}
+              </div>
 
-          <Link
-            href={"/dashboard/opportunities"}
-            className="font-semibold mb-8 hover:no-underline"
-          >
-            OPPORTUNITY
-          </Link>
+              <Link
+                href="/dashboard/opportunities"
+                className="font-semibold mb-8 hover:no-underline"
+              >
+                OPPORTUNITY
+              </Link>
+            </>
+          )}
+          {isAdmin && (
+            <>
+              <Link
+                href="/dashboard/referral"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Referral
+              </Link>
+              <Link
+                href="/dashboard/routes-list"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Routes
+              </Link>
+              <Link
+                href="/dashboard/partners"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Partners
+              </Link>
+            </>
+          )}
           <button
             onClick={() => {
               onLogout();

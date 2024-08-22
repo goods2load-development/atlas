@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
+import {
+  Partner,
+  ResponsePartner,
+} from "@/components/Dashboard/PartnersMain/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -242,5 +246,189 @@ export const useLangStore = create<ILangStore>((set) => ({
     const lang = langs.find((elem) => elem.label === savedLang);
 
     if (lang) set({ lang });
+  },
+}));
+
+export const useReferralsStore = create((set) => ({
+  referrals: {},
+  isReferralsLoading: true,
+  getAllReferrals: () => {
+    set({ isReferralsLoading: true });
+    return getRequest({
+      url: "referals",
+    })
+      .then((referrals) => {
+        set({ referrals });
+      })
+      .finally(() => set({ isReferralsLoading: false }));
+  },
+  postNewReferral: (data: any) => {
+    set({ isReferralsLoading: true });
+
+    const formData = new FormData();
+    formData.append("title", data.title);
+    formData.append("url", data.url);
+    formData.append("file", data.picture);
+
+    return postRequest({
+      url: "referals",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then((referrals) => {
+        set({ referrals });
+      })
+      .finally(() => set({ isReferralsLoading: false }));
+  },
+  updateReferral: (data: any, id: string) => {
+    set({ isReferralsLoading: true });
+
+    const formData = new FormData();
+    if (data.title) formData.append("title", data.title);
+    if (data.url) formData.append("url", data.url);
+    if (data.file) formData.append("file", data.file);
+
+    return patchRequest({
+      url: `referals/${id}`,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+  updateAllReferrals: (data: any) => {
+    set({ isReferralsLoading: true });
+
+    return patchRequest({
+      url: "referals/change-order",
+      data,
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+  updateReferralsViewCount: ({ value }: any) => {
+    set({ isReferralsLoading: true });
+
+    return patchRequest({
+      url: `referals/view-count?value=${value}`,
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+  deleteReferral: (id: string) => {
+    set({ isReferralsLoading: true });
+
+    return deleteRequest({
+      url: `referals/${id}`,
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+}));
+
+export const useRoutesStore = create((set) => ({
+  routes: [],
+  isRoutesLoading: true,
+  getRoutes: ({ page = 1, take = 5 }) => {
+    set({ isRoutesLoading: true });
+    return getRequest({
+      url: "selected-orders",
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((routes) => {
+        set({ routes });
+      })
+      .finally(() => set({ isRoutesLoading: false }));
+  },
+  replyRoute: (id: string, data: any) => {
+    set({ isRoutesLoading: true });
+
+    const formData = {
+      message: data.message,
+      ...(data.reasons.length && {
+        reasons: data.reasons,
+      }),
+    };
+
+    return postRequest({
+      url: `selected-orders/${id}/reply`,
+      data: formData,
+    }).finally(() => set({ isRoutesLoading: false }));
+  },
+  applyRoute: (id: string) => {
+    set({ isRoutesLoading: true });
+
+    return postRequest({
+      url: `selected-orders/${id}/apply`,
+    }).finally(() => set({ isRoutesLoading: false }));
+  },
+  deleteRoute: (id: string) => {
+    set({ isRoutesLoading: true });
+
+    return deleteRequest({
+      url: `selected-orders/${id}`,
+    }).finally(() => set({ isRoutesLoading: false }));
+  },
+}));
+
+interface PartnersStoreState {
+  partners: ResponsePartner[];
+  isPartnersLoading: boolean;
+  getPartnersApproved: () => Promise<void>;
+  getPartnersInReview: () => Promise<void>;
+  getPartnersNew: () => Promise<void>;
+  approvePartner: (id: string) => Promise<void>;
+  rejectPartner: (id: string) => Promise<void>;
+  replyPartner: (id: string, message: string) => Promise<void>;
+}
+
+export const usePartnersStore = create<PartnersStoreState>((set) => ({
+  partners: [],
+  isPartnersLoading: true,
+  getPartnersApproved: () => {
+    set({ isPartnersLoading: true });
+    return getRequest({
+      url: "partners/approved",
+    })
+      .then((partners) => {
+        set({ partners });
+      })
+      .finally(() => set({ isPartnersLoading: false }));
+  },
+  getPartnersInReview: () => {
+    set({ isPartnersLoading: true });
+    return getRequest({
+      url: "partners/review",
+    })
+      .then((partners) => {
+        set({ partners });
+      })
+      .finally(() => set({ isPartnersLoading: false }));
+  },
+  getPartnersNew: () => {
+    set({ isPartnersLoading: true });
+    return getRequest({
+      url: "partners/new",
+    })
+      .then((partners) => {
+        set({ partners });
+      })
+      .finally(() => set({ isPartnersLoading: false }));
+  },
+  approvePartner: (id: string) => {
+    set({ isPartnersLoading: true });
+    return postRequest({
+      url: `partners/${id}/approve`,
+    }).finally(() => set({ isPartnersLoading: false }));
+  },
+  rejectPartner: (id: string) => {
+    set({ isPartnersLoading: true });
+    return deleteRequest({
+      url: `partners/${id}/reject`,
+    }).finally(() => set({ isPartnersLoading: false }));
+  },
+  replyPartner: (id: string, message: string) => {
+    set({ isPartnersLoading: true });
+    return postRequest({
+      url: `partners/${id}/review`,
+      body: {
+        message,
+      },
+    }).finally(() => set({ isPartnersLoading: false }));
   },
 }));
