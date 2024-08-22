@@ -96,6 +96,7 @@ export const useRegistrationStore = create((set) => ({
     formData.append("insuranceStatement", data.insuranceStatement);
     formData.append("issuingAuthority", data.issuingAuthority);
     formData.append("tradeLicenseNumber", data.tradeLicenseNumber);
+    formData.append("companyPhoto", data.companyPhoto);
 
     delete data.confirmPassword;
     delete data.privacy;
@@ -103,6 +104,7 @@ export const useRegistrationStore = create((set) => ({
     delete data.insuranceStatement;
     delete data.issuingAuthority;
     delete data.tradeLicenseNumber;
+    delete data.companyPhoto;
 
     delete data.license;
     postRequest({
