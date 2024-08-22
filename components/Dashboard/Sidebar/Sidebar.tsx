@@ -117,6 +117,12 @@ const Sidebar: React.FC = () => {
               >
                 Partners
               </Link>
+              <Link
+                href="/dashboard/blog"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Blog
+              </Link>
             </>
           )}
           <button
