@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -85,6 +85,8 @@ function FilterItemList({
 }
 
 export default function Filter() {
+  const [bestReviewed, setBestReviewd] = useState(false);
+
   const {
     deliveryBy,
     cheapest,
@@ -161,6 +163,12 @@ export default function Filter() {
             checked={goGreen}
             onChange={onOrderChange}
             label="GoGreen"
+          />
+          <FilterItem
+            id="bestReviewed"
+            checked={bestReviewed}
+            onChange={() => setBestReviewd(!bestReviewed)}
+            label="Best Reviewed"
           />
         </AccordionContent>
       </AccordionItem>

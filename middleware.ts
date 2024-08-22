@@ -61,7 +61,7 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/dashboard/:path*", // Protect all dashboard routes
+    // "/dashboard/:path*", // Protect all dashboard routes
     // "/account", // Protect account route
   ],
 };

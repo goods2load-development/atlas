@@ -15,7 +15,12 @@ export default function Products() {
   return products.length ? (
     <div className="bg-blue-000 space-y-[24px]">
       {products.map((product: any, index: number) => (
-        <Product key={index} {...product} currency={selectedCurrency} />
+        <Product
+          key={index}
+          {...product}
+          currency={selectedCurrency}
+          index={index}
+        /> // index for mocks data (GoogleReview)
       ))}
       {pagination.hasNextPage && (
         <div className="text-center pb-5">

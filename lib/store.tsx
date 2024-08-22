@@ -397,3 +397,4 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     }).finally(() => set({ isPartnersLoading: false }));
   },
 }));
+
