@@ -28,7 +28,9 @@ const routes = {
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
 
 export async function middleware(request: NextRequest) {
-  const token = cookies().get("access_token")?.value;
+  const token =
+    cookies().get("access_token")?.value ||
+    request.cookies.get("access_token")?.value;
 
   if (!token) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -37,14 +39,15 @@ export async function middleware(request: NextRequest) {
   try {
     const { payload } = await jwtVerify(token, SECRET_KEY);
 
-    if (!payload.role) {
+    const userRole = payload.role as Roles;
+    if (!userRole || !routes[userRole]) {
       return NextResponse.redirect(new URL("/", request.url));
     }
 
     const currentPath = request.nextUrl.pathname;
+    const allowedRoutes = routes[userRole];
 
-    if (!routes[payload.role as Roles].includes(currentPath)) {
-      console.log(1);
+    if (!allowedRoutes.some((route) => currentPath.startsWith(route))) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   } catch (error) {
@@ -56,13 +59,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    "/dashboard/performance",
-    "/dashboard/referral",
-    "/dashboard/market-trends",
-    "/dashboard/opportunities",
-    "/dashboard/routes-list",
-    "/dashboard/partners",
-    "/account",
-  ],
+  matcher: ["/dashboard/:path*", "/account"],
 };

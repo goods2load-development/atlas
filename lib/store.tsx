@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
 import { Partner } from "@/components/Dashboard/PartnersMain/types";
+import Cookie from "js-cookie";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -139,6 +140,9 @@ export const useUserStore = create((set) => ({
     }).then((userData: any) => {
       // TODO add redirect
       localStorage.setItem("id", userData.data.id);
+      Cookie.set("access_token", userData.data.access_token, {
+        expires: new Date(Date.now() + 60 * 60 * 1000),
+      });
       set(() => ({ user: userData?.data }));
     });
   },
@@ -198,6 +202,7 @@ export const useUserStore = create((set) => ({
       url: "/auth/logout",
     }).then(() => {
       localStorage.removeItem("id");
+      Cookie.remove("access_token");
       set(() => ({
         user: {},
       }));
