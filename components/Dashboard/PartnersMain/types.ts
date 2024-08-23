@@ -1,3 +1,11 @@
+export type PARTNER_STATUS = "APPROVED" | "IN REVIEW" | "NEW";
+
+export interface ResponsePartner {
+  id: string;
+  status: PARTNER_STATUS;
+  user: Partner;
+}
+
 export interface Partner {
   address: string;
   city: string | null;

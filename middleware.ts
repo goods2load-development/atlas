@@ -28,7 +28,9 @@ const routes = {
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
 
 export async function middleware(request: NextRequest) {
-  const token = cookies().get("access_token")?.value;
+  const token =
+    cookies().get("access_token")?.value ||
+    request.cookies.get("access_token")?.value;
 
   if (!token) {
     return NextResponse.redirect(new URL("/", request.url));
@@ -36,7 +38,6 @@ export async function middleware(request: NextRequest) {
 
   try {
     const { payload } = await jwtVerify(token, SECRET_KEY);
-    console.log(payload, "-------------PAYLOAD----------");
 
     const userRole = payload.role as Roles;
     if (!userRole || !routes[userRole]) {
@@ -44,10 +45,8 @@ export async function middleware(request: NextRequest) {
     }
 
     const currentPath = request.nextUrl.pathname;
-    console.log(currentPath, "-------------CURRENT-PAGE----------");
     const allowedRoutes = routes[userRole];
 
-    // Check if the current path matches any allowed routes for the user's role
     if (!allowedRoutes.some((route) => currentPath.startsWith(route))) {
       return NextResponse.redirect(new URL("/", request.url));
     }
@@ -60,8 +59,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: [
-    // "/dashboard/:path*", // Protect all dashboard routes
-    // "/account", // Protect account route
-  ],
+  matcher: ["/dashboard/:path*", "/account"],
 };

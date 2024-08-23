@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
 
@@ -63,12 +65,14 @@ const renderCustomizedLabel = ({
 };
 
 const CircleChart = ({ data }: { data: PieData[] }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
     };
+
+    handleResize();
 
     window.addEventListener("resize", handleResize);
     return () => {
