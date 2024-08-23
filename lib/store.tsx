@@ -1,7 +1,11 @@
 import { create } from "zustand";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
-import { Partner } from "@/components/Dashboard/PartnersMain/types";
+import Cookie from "js-cookie";
+import {
+  Partner,
+  ResponsePartner,
+} from "@/components/Dashboard/PartnersMain/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -141,6 +145,9 @@ export const useUserStore = create((set) => ({
     }).then((userData: any) => {
       // TODO add redirect
       localStorage.setItem("id", userData.data.id);
+      Cookie.set("access_token", userData.data.access_token, {
+        expires: new Date(Date.now() + 60 * 60 * 1000),
+      });
       set(() => ({ user: userData?.data }));
     });
   },
@@ -200,6 +207,7 @@ export const useUserStore = create((set) => ({
       url: "/auth/logout",
     }).then(() => {
       localStorage.removeItem("id");
+      Cookie.remove("access_token");
       set(() => ({
         user: {},
       }));
@@ -366,20 +374,43 @@ export const useRoutesStore = create((set) => ({
 }));
 
 interface PartnersStoreState {
-  partners: Partner[];
+  partners: ResponsePartner[];
   isPartnersLoading: boolean;
-  getPartners: () => Promise<void>;
+  getPartnersApproved: () => Promise<void>;
+  getPartnersInReview: () => Promise<void>;
+  getPartnersNew: () => Promise<void>;
   approvePartner: (id: string) => Promise<void>;
   rejectPartner: (id: string) => Promise<void>;
+  replyPartner: (id: string, message: string) => Promise<void>;
 }
 
 export const usePartnersStore = create<PartnersStoreState>((set) => ({
   partners: [],
   isPartnersLoading: true,
-  getPartners: () => {
+  getPartnersApproved: () => {
     set({ isPartnersLoading: true });
     return getRequest({
-      url: "users/unconfirmed/providers",
+      url: "partners/approved",
+    })
+      .then((partners) => {
+        set({ partners });
+      })
+      .finally(() => set({ isPartnersLoading: false }));
+  },
+  getPartnersInReview: () => {
+    set({ isPartnersLoading: true });
+    return getRequest({
+      url: "partners/review",
+    })
+      .then((partners) => {
+        set({ partners });
+      })
+      .finally(() => set({ isPartnersLoading: false }));
+  },
+  getPartnersNew: () => {
+    set({ isPartnersLoading: true });
+    return getRequest({
+      url: "partners/new",
     })
       .then((partners) => {
         set({ partners });
@@ -389,13 +420,22 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
   approvePartner: (id: string) => {
     set({ isPartnersLoading: true });
     return postRequest({
-      url: `users/${id}/confirm`,
+      url: `partners/${id}/approve`,
     }).finally(() => set({ isPartnersLoading: false }));
   },
   rejectPartner: (id: string) => {
     set({ isPartnersLoading: true });
     return deleteRequest({
-      url: `users/${id}/unconfirm`,
+      url: `partners/${id}/reject`,
+    }).finally(() => set({ isPartnersLoading: false }));
+  },
+  replyPartner: (id: string, message: string) => {
+    set({ isPartnersLoading: true });
+    return postRequest({
+      url: `partners/${id}/review`,
+      body: {
+        message,
+      },
     }).finally(() => set({ isPartnersLoading: false }));
   },
 }));

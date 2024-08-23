@@ -91,3 +91,10 @@ export const toNormalText = (input: string) => {
 export const countVolume = (width: number, length: number, height: number) => {
   return width * height * length;
 };
+
+export const filterByField = (arr: any[], field: string, value: string) => {
+  if (!arr?.length) return arr;
+  return arr.filter((item) =>
+    item[field].toString().toLowerCase().includes(value.toLowerCase())
+  );
+};
