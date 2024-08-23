@@ -99,10 +99,12 @@ export default function Account() {
             Account
           </i>
           <div className="mt-5 sm:mt-0 gap-4 flex items-center">
-            {user?.provider ? (
-              <Link href="/dashboard/performance">
+            {user?.role === "admin" || user?.role === "provider" ? (
+              <Link
+                href={`${user?.role === "admin" ? "/dashboard/referral" : "/dashboard/performance"}`}
+              >
                 <UIButton secondary className="w-full sm:w-[224px]">
-                  <img src="/analytics.svg" className="pr-1" /> Show Analytics
+                  <img src="/analytics.svg" className="pr-1" /> Dashboard
                 </UIButton>
               </Link>
             ) : (

@@ -291,6 +291,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         },
       }).then((data: any) => {
         const products = data.partners.data.map((item: any) => ({
+          orderId: item.id,
           deliveryBy: item.transportation,
           estimatedTransit: item.transit,
           company: {

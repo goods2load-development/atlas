@@ -14,9 +14,10 @@ import { signOut } from "next-auth/react";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
-  const { logoutUser, user } = useUserStore((state: any) => state);
-  const isAdmin = isUserAdmin(user.role);
-  const isProvider = isUserProvider(user.role);
+  const { user, logoutUser, getUser } = useUserStore((state: any) => state);
+
+  const isAdmin = isUserAdmin(user?.role);
+  const isProvider = isUserProvider(user?.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -29,6 +30,10 @@ const Sidebar: React.FC = () => {
       active: false,
     },
   ]);
+
+  useEffect(() => {
+    if (!!!user?.id) getUser();
+  }, [user?.id]);
 
   useEffect(() => {
     const slug = pathname.split("/").pop();
@@ -52,7 +57,14 @@ const Sidebar: React.FC = () => {
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div>
-          <Image alt="logo-performance" width={50} height={55} src={mockLogo} />
+          <Link href="/">
+            <Image
+              alt="logo-performance"
+              width={50}
+              height={55}
+              src={mockLogo}
+            />
+          </Link>
         </div>
         <div className="flex flex-col">
           {isProvider && (
@@ -101,7 +113,7 @@ const Sidebar: React.FC = () => {
             <>
               <Link
                 href="/dashboard/referral"
-                className="font-semibold mb-8 hover:no-underline uppercase"
+                className="font-semibold mb-8 hover:no-underline uppercase mt-6"
               >
                 Referral
               </Link>

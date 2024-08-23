@@ -93,6 +93,7 @@ export default function Product(props: Props) {
           )}
         </div>
         <SelectionPopup
+          orderId={props.orderId}
           company={props.company.name}
           withdraw={props.withdraw}
           delivery={props.delivery}
