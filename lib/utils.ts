@@ -1,6 +1,5 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import Cookie from "js-cookie";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -22,25 +21,15 @@ axios.interceptors.response.use(
 );
 
 export function getRequest(params: any) {
-  return axios
-    .get(params.url, {
-      ...params,
-      headers: {
-        Authorization: `Bearer ${Cookie.get("access_token")}`,
-      },
-    })
-    .then(function (response: any) {
-      return response.data;
-    });
+  return axios.get(params.url, { ...params }).then(function (response: any) {
+    return response.data;
+  });
 }
 
 export function postRequest(params: any) {
   return axios
     .post(params.url, params.data, {
       ...params,
-      headers: {
-        Authorization: `Bearer ${Cookie.get("access_token")}`,
-      },
     })
     .then(function (response: any) {
       return response.data;
@@ -48,28 +37,15 @@ export function postRequest(params: any) {
 }
 
 export function patchRequest(params: any) {
-  return axios
-    .patch(params.url, params.data, {
-      headers: {
-        Authorization: `Bearer ${Cookie.get("access_token")}`,
-      },
-    })
-    .then(function (response: any) {
-      return response.data;
-    });
+  return axios.patch(params.url, params.data).then(function (response: any) {
+    return response.data;
+  });
 }
 
 export function deleteRequest(params: any) {
-  return axios
-    .delete(params.url, {
-      data: params.data,
-      headers: {
-        Authorization: `Bearer ${Cookie.get("access_token")}`,
-      },
-    })
-    .then(function (response: any) {
-      return response.data;
-    });
+  return axios.delete(params.url, params.data).then(function (response: any) {
+    return response.data;
+  });
 }
 
 export const generateBlockId = (title?: string) =>
