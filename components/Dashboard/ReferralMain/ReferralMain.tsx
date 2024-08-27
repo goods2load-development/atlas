@@ -26,6 +26,7 @@ import { filterByField, removeEqualFields } from "@/lib/utils";
 import { useToast } from "@/components/ui/use-toast";
 import debounce from "lodash/debounce";
 import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const ReferralMain = () => {
   const {
@@ -35,16 +36,22 @@ const ReferralMain = () => {
     deleteReferral,
     updateReferral: editReferralById,
     updateReferralsViewCount,
+    updateReferralsIsRefInCatalog,
     isReferralsLoading,
     referrals: referralsData,
   } = useReferralsStore((state: any) => state);
-  const { referals: referrals = [], slicePerReferals = null } = referralsData;
+  const {
+    referals: referrals = [],
+    slicePerReferals = null,
+    referalIsInCatalog = true,
+  } = referralsData;
   const { toast } = useToast();
 
   const [referralsItems, setReferralsItems] = useState<ReferralItemType[]>([]);
   const [localSlicePerReferals, setLocalSlicePerReferals] = useState<
     null | number[]
   >(null);
+  const [localIsRefInCatalog, setLocalIsRefInCatalog] = useState<boolean>(true);
 
   const [searchValue, setSearchValue] = useState("");
   const filteredReferrals = useMemo(
@@ -56,7 +63,9 @@ const ReferralMain = () => {
     JSON.stringify(referrals) !== JSON.stringify(referralsItems);
   const isSlicePerReferralsChanged =
     localSlicePerReferals?.[0] !== slicePerReferals;
-  const isAnyChanges = isReferralsChanged || isSlicePerReferralsChanged;
+  const isRefInCatalogChanged = localIsRefInCatalog !== referalIsInCatalog;
+  const isAnyChanges =
+    isReferralsChanged || isSlicePerReferralsChanged || isRefInCatalogChanged;
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -74,6 +83,7 @@ const ReferralMain = () => {
 
     setReferralsItems(referrals);
     setLocalSlicePerReferals([slicePerReferals]);
+    setLocalIsRefInCatalog(referalIsInCatalog);
   }, [referrals, slicePerReferals]);
 
   const addNewReferral = async (data: ReferralItemType) => {
@@ -86,7 +96,7 @@ const ReferralMain = () => {
         toast({
           title: "New referral added.",
           variant: "default",
-          className: "bg-green-500",
+          className: "bg-green-500 text-white",
         })
       );
   };
@@ -104,6 +114,9 @@ const ReferralMain = () => {
         : []),
       ...(isReferralsChanged
         ? [updateAllReferrals({ referals: referralsItems })]
+        : []),
+      ...(isRefInCatalogChanged
+        ? [updateReferralsIsRefInCatalog(localIsRefInCatalog)]
         : []),
     ];
 
@@ -177,14 +190,17 @@ const ReferralMain = () => {
 
   return (
     <div className="min-h-screen">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
+      <div className="flex justify-between items-center mb-8 flex-wrap">
+        <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left mb-8 md:mb-0">
           Referrals
         </h1>
         <div
-          className={clsx("flex items-center gap-2", {
-            "pointer-events-none": isReferralsLoading,
-          })}
+          className={clsx(
+            "flex items-center gap-2 order-2 md:order-1 lg:order-2",
+            {
+              "pointer-events-none": isReferralsLoading,
+            }
+          )}
         >
           {localSlicePerReferals && localSlicePerReferals}
           <Slider.Root
@@ -213,6 +229,15 @@ const ReferralMain = () => {
             Update
           </Button>
         </div>
+        <label className="flex gap-2 lg:ml-auto items-center mr-0 lg:mr-4 mt-0 mb-8 md:mb-0 md:mt-4 lg:mt-0 order-1 md:order-2 lg:order-1 w-auto md:w-full lg:w-auto">
+          <span>In catalog</span>
+          <Checkbox
+            checked={localIsRefInCatalog}
+            onCheckedChange={(value) =>
+              setLocalIsRefInCatalog(value as boolean)
+            }
+          />
+        </label>
       </div>
       <Input
         onInput={(e: React.ChangeEvent<HTMLInputElement>) =>

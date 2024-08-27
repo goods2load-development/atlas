@@ -45,13 +45,21 @@ export default function Product(props: Props) {
     if (!user?.id) {
       router.push("/sign-in");
     } else {
-      onSaveUserPartner(props.company.name).then((data: any) => {
-        toast({
-          title: "Partner saved",
-          variant: "default",
-          className: "bg-green-500 text-white",
+      onSaveUserPartner(props.company.name)
+        .then((data: any) => {
+          toast({
+            title: "Partner saved",
+            variant: "default",
+            className: "bg-green-500 text-white",
+          });
+        })
+        .catch((error: any) => {
+          toast({
+            title: error.message,
+            variant: "default",
+            className: "bg-red-500 text-white",
+          });
         });
-      });
     }
   };
 
@@ -114,7 +122,7 @@ export default function Product(props: Props) {
         </div>
       </div>
       <div className="md:flex justify-between">
-        <div className="py-[8px] md:py-0 border-t md:border-none md:pl-6 items-center justify-center md:justify-start flex gap-2">
+        <div className="py-[8px] md:py-0 border-t md:border-none md:pl-6 items-center justify-center md:justify-start flex sm:flex-row flex-col gap-2">
           {props.CO2EmissionControlled && (
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
               <LeafIcon />
