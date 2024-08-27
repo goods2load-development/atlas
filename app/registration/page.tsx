@@ -54,7 +54,7 @@ function IsRequired() {
 function UserRegistrationComponent() {
   const router = useRouter();
   const [cookies] = useCookies(["accessToken"]);
-  const isUser  = useSearchParams().toString().split("=")[0] !== 'provider';
+  const isUser = useSearchParams().toString().split("=")[0] !== "provider";
   const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
   const [formState, setFormState] = useState(() => {
     const savedFormState =
@@ -83,6 +83,7 @@ function UserRegistrationComponent() {
       phoneNumber: "",
       email: "",
       companyName: "",
+      companyPhoto: "",
       address: "",
       postalCode: "",
       city: "",
@@ -108,6 +109,12 @@ function UserRegistrationComponent() {
       phoneNumber: z.string().regex(new RegExp("^[0-9]{4,10}$")),
       email: z.string().min(5).email(),
       companyName: z.string().min(2),
+      companyPhoto: z
+        .instanceof(File)
+        .optional()
+        .refine((file) => {
+          return !file || file.size <= MAX_UPLOAD_SIZE;
+        }, "File size must be less than 2MB"),
       address: z.string().optional(),
       postalCode: z.string().length(6).regex(new RegExp("^[0-9]*$")).optional(),
       city: z.string().optional(),
@@ -251,7 +258,9 @@ function UserRegistrationComponent() {
                         field.onChange(e);
                         setUserRegistration(!e);
 
-                        !e ? router.push('/registration?user') : router.push('/registration?provider'); // Change url depends on role user
+                        !e
+                          ? router.push("/registration?user")
+                          : router.push("/registration?provider"); // Change url depends on role user
                       }}
                     />
                   </FormControl>
@@ -345,6 +354,37 @@ function UserRegistrationComponent() {
                 </FormControl>
                 <FormMessage />
               </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="companyPhoto"
+            render={({ field }) => (
+              <>
+                <FormItem className="w-full mb-5 flex gap-4 items-center justify-between">
+                  <FormLabel className="font-light sm:font-normal">
+                    Company photo
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="hidden"
+                      name="companyPhoto"
+                      type="file"
+                      accept="image/png, image/gif, image/jpeg, image/webp"
+                      onChange={(e) => {
+                        field.onChange(
+                          e.target.files ? e.target.files[0] : null
+                        );
+                      }}
+                    />
+                  </FormControl>
+                  <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
+                    <img className="mr-[8px]" src="/upload.svg" />
+                    {field.value ? field.value.name : "Upload img"}
+                  </FormLabel>
+                </FormItem>
+                <FormMessage />
+              </>
             )}
           />
           <div className="sm:flex mb-5">
@@ -725,10 +765,10 @@ function UserRegistrationComponent() {
   );
 }
 
-export default function UserRegistration(){
+export default function UserRegistration() {
   return (
     <Suspense>
       <UserRegistrationComponent />
     </Suspense>
-  )
+  );
 }

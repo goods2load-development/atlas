@@ -21,7 +21,7 @@ export default function UploadCompanyLogo() {
         <div
           className="w-[68px] h-[68px] rounded-full bg-cover bg-center"
           style={{
-            backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto})`,
+            backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}/${user.companyPhoto})`,
           }}
         />
       ) : (
