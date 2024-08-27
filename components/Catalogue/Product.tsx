@@ -1,7 +1,4 @@
-import { cn, postRequest } from "@/lib/utils";
 import { IProduct } from "./MOCK";
-import { Button } from "../ui/button";
-import { ShipIcon } from "lucide-react";
 import LeafIcon from "@/assets/Product/LeafIcon";
 import SelectionPopup from "./SelectionPopup";
 import { GoogleRating } from "./GoogleRating";
@@ -12,6 +9,12 @@ import { googleRatingMocks } from "./MOCK";
 import { useUserStore } from "@/lib/store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Props extends IProduct {
   deliveryBy: string;
@@ -71,10 +74,23 @@ export default function Product(props: Props) {
             <div className="text-[24px]/[28px] font-light [&>i]:font-normal">
               Estimated <i>transit</i>
             </div>
-            <div className="text-[16px]/[24px] text-primary">
-              {props.estimatedTransit}
-              {props.estimatedTransit === 1 ? " day" : " days"}
-            </div>
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger className="text-[16px]/[26px] text-primaryOrange inline-block border-b border-transparent hover:border-primaryOrange transition-all cursor-pointer">
+                  {props.estimatedTransit}
+                  {props.estimatedTransit === 1 ? " day" : " days"}
+                </TooltipTrigger>
+
+                <TooltipContent
+                  side="top"
+                  className="text-[12px]/[17px] font-normal bg-orangeSecondary rounded-sm p-2 overflow-visible relative max-w-[250px] border-transparent"
+                >
+                  Travel time may vary depending on the regulations of the
+                  states traversed; it is advisable to consult with the
+                  logistics company for an accurate estimate
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           <div className="w-1/2 flex flex-col justify-center items-center text-center text-[20px]/[22px] font-medium">
             Company
@@ -115,10 +131,24 @@ export default function Product(props: Props) {
           <div className="text-[24px]/[28px] font-light [&>span]:font-normal [&>span]:italic">
             Order <span>cost</span>
           </div>
-          <div className="text-[20px]/[22px] font-medium">
-            From {props.currency.symbol}
-            {Math.round(parseInt(props.orderCost) * props.currency.rate)}
-          </div>
+
+          <TooltipProvider delayDuration={200}>
+            <Tooltip>
+              <TooltipTrigger className="text-[20px]/[22px] font-medium cursor-pointer inline-block mx-auto">
+                From {props.currency.symbol}
+                {Math.round(parseInt(props.orderCost) * props.currency.rate)}
+              </TooltipTrigger>
+
+              <TooltipContent
+                side="top"
+                className="text-[12px]/[17px] font-normal bg-orangeSecondary rounded-sm p-2 overflow-visible relative max-w-[250px] border-transparent"
+              >
+                This indicated price is only an estimate and may vary depending
+                on the availability of the requested cargo. Please consult with
+                the selected logistic partner to obtain a final free quote.
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
       <div className="md:flex justify-between">
