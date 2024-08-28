@@ -40,7 +40,10 @@ function FilterItem({ id, checked, onChange, label, price, fromValue }: any) {
           {label}
         </label>
         {fromValue && (
-          <div className="text-[#636363]">&#40;From ${fromValue}&#41;</div>
+          <div className="text-[#636363]">
+            <>&#40;</>From ${fromValue}
+            <>&#41;</>
+          </div>
         )}
         <p className="text-sm text-muted-foreground">{price}</p>
       </div>
