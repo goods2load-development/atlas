@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/tooltip";
 import InfoImg from "@/assets/info.svg";
 import defaultCompanyLogo from "@/assets/defaultCompanyLogo.svg";
+import { Check } from "lucide-react";
 
 interface Props extends IProduct {
   deliveryBy: string;
@@ -68,6 +69,16 @@ export default function Product(props: Props) {
     }
   };
 
+  const isAlreadySavedPartner = (
+    userSavedPartners: any = null,
+    partnerName: string
+  ) => {
+    if (!userSavedPartners) {
+      return false;
+    }
+    return userSavedPartners.some((item: any) => item.name === partnerName);
+  };
+
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
       <div className="md:flex justify-between md:border-b">
@@ -107,9 +118,18 @@ export default function Product(props: Props) {
           <div className="w-1/2 flex flex-col justify-start p-6 item-center text-center text-[20px]/[22px] font-medium flex-1 lg:ml-8">
             <div className="flex justify-center items-center gap-3">
               <span>{props.company.name}</span>
-              <button onClick={onSavePartner}>
-                <Image width={18} height={18} src={SaveIcon} alt="save" />
-              </button>
+              {!isAlreadySavedPartner(
+                user?.savedPartners,
+                props.company.name
+              ) ? (
+                <button onClick={onSavePartner}>
+                  <Image width={18} height={18} src={SaveIcon} alt="save" />
+                </button>
+              ) : (
+                <div>
+                  <Check className="w-[18px] h-[18px] text-green-600" />
+                </div>
+              )}
             </div>
 
             <Image

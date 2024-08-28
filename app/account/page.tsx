@@ -41,13 +41,21 @@ function RenderUserData({ data }: any) {
 }
 
 export default function Account() {
-  const { user, onDeleteSavedPartner } = useUserStore((state: any) => state);
+  const { user, logoutUser, onDeleteSavedPartner } = useUserStore(
+    (state: any) => state
+  );
   const [edit, setEdit] = useState<
     "info" | "address" | "regional" | "partners" | null
   >(null);
 
   const onDeletePartner = (id: string) => {
     onDeleteSavedPartner(id);
+  };
+
+  const onLogout = async () => {
+    logoutUser().then(() => {
+      signOut({ callbackUrl: "/" });
+    });
   };
 
   const info = [
@@ -241,6 +249,7 @@ export default function Account() {
             )}
           </CardContent>
         </Card>
+
         <div className="flex justify-between mb-10">
           <span className="flex items-center text-[28px]/[40px] sm:text-[48px]/[52px]">
             <Bookmark className="w-10 h-10 text-primaryOrange mr-2" />
@@ -275,7 +284,7 @@ export default function Account() {
                         }}
                         className="absolute -right-2 -top-2 z-10"
                       >
-                        <CircleX />
+                        <CircleX className="text-red-600" />
                       </button>
                     )}
                   </Link>
