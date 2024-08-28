@@ -3,6 +3,7 @@ import LeafIcon from "@/assets/Product/LeafIcon";
 import SelectionPopup from "./SelectionPopup";
 import { GoogleRating } from "./GoogleRating";
 import SaveIcon from "@/assets/save.svg";
+import SaveIconFilled from "@/assets/save-filled.svg";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { googleRatingMocks } from "./MOCK";
@@ -17,7 +18,6 @@ import {
 } from "@/components/ui/tooltip";
 import InfoImg from "@/assets/info.svg";
 import defaultCompanyLogo from "@/assets/defaultCompanyLogo.svg";
-import { Check } from "lucide-react";
 
 interface Props extends IProduct {
   deliveryBy: string;
@@ -76,7 +76,9 @@ export default function Product(props: Props) {
     if (!userSavedPartners) {
       return false;
     }
-    return userSavedPartners.some((item: any) => item.name === partnerName);
+    return userSavedPartners.some((item: any) => {
+      return item.name === partnerName;
+    });
   };
 
   return (
@@ -115,7 +117,10 @@ export default function Product(props: Props) {
               </TooltipProvider>
             </div>
           </div>
-          <div className="w-1/2 flex flex-col justify-start p-6 item-center text-center text-[20px]/[22px] font-medium flex-1 lg:ml-8">
+          <div
+            key={user?.id}
+            className="w-1/2 flex flex-col justify-start p-6 item-center text-center text-[20px]/[22px] font-medium flex-1 lg:ml-8"
+          >
             <div className="flex justify-center items-center gap-3">
               <span>{props.company.name}</span>
               {!isAlreadySavedPartner(
@@ -127,7 +132,12 @@ export default function Product(props: Props) {
                 </button>
               ) : (
                 <div>
-                  <Check className="w-[18px] h-[18px] text-green-600" />
+                  <Image
+                    width={18}
+                    height={18}
+                    src={SaveIconFilled}
+                    alt="save filled"
+                  />
                 </div>
               )}
             </div>
