@@ -14,7 +14,6 @@ const CompanyContainer = () => {
       <CompanyStory />
       <CompanyStoryMobileSlider />
       <CompanyArticle />
-      <CompanyLeadership />
       <CompanyOurStory />
       <CompanyLocation />
     </div>
