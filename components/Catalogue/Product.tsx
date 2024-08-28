@@ -73,9 +73,6 @@ export default function Product(props: Props) {
     userSavedPartners: any = null,
     partnerName: string
   ) => {
-    console.log(userSavedPartners, "saved partner name");
-    console.log(partnerName, "product  partner name");
-
     if (!userSavedPartners) {
       return false;
     }
