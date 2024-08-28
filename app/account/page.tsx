@@ -22,6 +22,8 @@ import RegionalSettingsForm from "@/components/RegionalSettingsForm";
 import PriceAlerts from "@/components/PriceAlerts";
 import LogoutIcon from "@/assets/logout.svg";
 import { TrendingUp } from "lucide-react";
+import { Bookmark } from "lucide-react";
+import { CircleX } from "lucide-react";
 
 function RenderUserData({ data }: any) {
   return (
@@ -39,16 +41,15 @@ function RenderUserData({ data }: any) {
 }
 
 export default function Account() {
-  const { user, logoutUser } = useUserStore((state: any) => state);
-  const [edit, setEdit] = useState<"info" | "address" | "regional" | null>(
-    null
-  );
+  const { user, onDeleteSavedPartner } = useUserStore((state: any) => state);
+  const [edit, setEdit] = useState<
+    "info" | "address" | "regional" | "partners" | null
+  >(null);
 
-  const onLogout = async () => {
-    logoutUser().then(() => {
-      signOut({ callbackUrl: "/" });
-    });
+  const onDeletePartner = (id: string) => {
+    onDeleteSavedPartner(id);
   };
+
   const info = [
     {
       title: "",
@@ -237,6 +238,67 @@ export default function Account() {
               <RegionalSettingsForm {...user} onCancel={() => setEdit(null)} />
             ) : (
               <RenderUserData data={region} />
+            )}
+          </CardContent>
+        </Card>
+        <div className="flex justify-between mb-10">
+          <span className="flex items-center text-[28px]/[40px] sm:text-[48px]/[52px]">
+            <Bookmark className="w-10 h-10 text-primaryOrange mr-2" />
+            <span className="font-medium">Logistics&nbsp;</span>partners saved
+          </span>
+        </div>
+        <Card className="">
+          <CardContent className="sm:flex justify-between">
+            <div className="flex gap-1">
+              {user?.savedPartners?.map(({ id, photo }: any) => {
+                return (
+                  <Link
+                    key={id}
+                    href={`/partner/${id}`}
+                    className="block w-[140px] h-12 bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative"
+                  >
+                    <div
+                      className="h-full"
+                      style={{
+                        backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${photo})`,
+
+                        backgroundSize: "contain",
+                        backgroundPositionX: "center",
+                        backgroundRepeat: "no-repeat",
+                      }}
+                    />
+                    {edit === "partners" && (
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          onDeletePartner(id);
+                        }}
+                        className="absolute -right-2 -top-2 z-10"
+                      >
+                        <CircleX />
+                      </button>
+                    )}
+                  </Link>
+                );
+              })}
+            </div>
+            {edit !== "partners" ? (
+              <UIButton
+                onClick={() => setEdit("partners")}
+                secondary
+                className={`rounded-full`}
+              >
+                Edit
+                <img src="/edit.svg" />
+              </UIButton>
+            ) : (
+              <UIButton
+                onClick={() => setEdit(null)}
+                secondary
+                className={`rounded-full bg-primaryOrange text-white`}
+              >
+                Save
+              </UIButton>
             )}
           </CardContent>
         </Card>

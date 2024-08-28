@@ -9,6 +9,7 @@ import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import { useFilterStore } from "@/lib/filterStore";
 import SelectedSearch from "../SelectedSearch";
+import { Referal } from "./Referral";
 
 const renderIcon = (deliveryBy: string) => {
   let src = "";
@@ -30,6 +31,7 @@ const renderIcon = (deliveryBy: string) => {
 export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
   const { deliveryBy } = useFilterStore((state: any) => state);
+
   return (
     <div className=" lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_16px] max-w-[1328px] mx-auto gap-8 overflow-visible">
       <div className="lg:hidden flex justify-between pb-[18px] items-center">
@@ -61,13 +63,23 @@ export default function Catalogue() {
       >
         <SelectedSearch />
       </div>
-      <div className="lg:bg-[#F9F9F9] rounded-2xl w-full lg:w-[280px] hidden lg:block">
-        <div className="lg:p-4 sticky top-0">
-          <PriceAlerts />
-          <Filter />
+      <div>
+        <div className="lg:bg-[#F9F9F9] rounded-2xl w-full lg:w-[280px] hidden lg:block h-max">
+          <div className="lg:p-4">
+            <PriceAlerts />
+            <Filter />
+          </div>
+        </div>
+
+        <div className="mt-8 hidden lg:block">
+          <Referal />
         </div>
       </div>
       <Products />
+
+      <div className="lg:hidden block mt-8">
+        <Referal className="mx-auto" />
+      </div>
     </div>
   );
 }

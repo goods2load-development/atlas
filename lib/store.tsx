@@ -172,9 +172,10 @@ export const useUserStore = create((set) => ({
   },
   updateUser: async (data: any) => {
     const id = localStorage.getItem("id");
+    const { savedPartners, ...restData } = data;
     await patchRequest({
       url: `/users/${id}`,
-      data: data,
+      data: restData,
     }).then((userData: any) => {
       set((state: any) => ({ user: { ...state.user, ...userData?.data } }));
     });
@@ -212,6 +213,36 @@ export const useUserStore = create((set) => ({
         user: {},
       }));
     });
+  },
+  onSaveUserPartner: async (name: string) => {
+    postRequest({
+      url: `partners/${name}/save`,
+    }).then((data) => {
+      if (!data) return;
+
+      set(({ user }: any) => {
+        return {
+          user: {
+            ...user,
+            savedPartners: [...user.savedPartners, data],
+          },
+        };
+      });
+    });
+  },
+  onDeleteSavedPartner: async (id: string) => {
+    await deleteRequest({ url: `/partners/${id}/delete` }).then(
+      ({ partnerId }) => {
+        set(({ user }: any) => ({
+          user: {
+            ...user,
+            savedPartners: user.savedPartners.filter(
+              ({ id }: { id: string }) => id !== partnerId
+            ),
+          },
+        }));
+      }
+    );
   },
 }));
 
@@ -314,6 +345,13 @@ export const useReferralsStore = create((set) => ({
 
     return patchRequest({
       url: `referals/view-count?value=${value}`,
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
+  updateReferralsIsRefInCatalog: (value: boolean) => {
+    set({ isReferralsLoading: true });
+
+    return patchRequest({
+      url: `referals/is-in-catalog?value=${value}`,
     }).finally(() => set({ isReferralsLoading: false }));
   },
   deleteReferral: (id: string) => {
