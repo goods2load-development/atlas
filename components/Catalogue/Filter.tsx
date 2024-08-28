@@ -62,7 +62,6 @@ function FilterItemList({
   price,
 }: FilterItemsListProps) {
   return items.map((item: any) => {
-    console.log(item, "123");
     return (
       <div className="flex items-top space-x-2 mb-3" key={item.id}>
         <Checkbox
