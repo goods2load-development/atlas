@@ -154,7 +154,7 @@ export default function Account() {
                 src={LogoutIcon}
                 alt="logout icon"
               />
-              Logout account
+              Logout
             </button>
           </div>
         </div>

@@ -2,6 +2,7 @@ import React from "react";
 import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
 import PartnersWithUsImg from "@/assets/PartnersImage/PartnersWithUs/partners-with-us.jpg";
 import Image from "next/image";
+import Link from "next/link";
 
 const PartnersWithUs: React.FC = () => {
   return (
@@ -16,9 +17,12 @@ const PartnersWithUs: React.FC = () => {
           <p className="mt-6 text-[18px]/[26px]">
             Be the copilot you would aspire to have beside in your journey.
           </p>
-          <button className="bg-primaryOrange w-full max-w-[201px] mx-auto rounded-[16px] text-white text-center pt-[10px] pb-[10px] mt-8 hover:opacity-95 cursor-pointer">
+          <Link
+            href="/registration?provider"
+            className="bg-primaryOrange w-full max-w-[201px] mx-auto rounded-[16px] text-white text-center pt-[10px] pb-[10px] mt-8 hover:opacity-95 cursor-pointer inline-block"
+          >
             Partners with us
-          </button>
+          </Link>
         </div>
 
         <Image
