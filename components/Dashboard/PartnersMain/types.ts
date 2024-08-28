@@ -3,6 +3,7 @@ export type PARTNER_STATUS = "APPROVED" | "IN REVIEW" | "NEW";
 export interface ResponsePartner {
   id: string;
   status: PARTNER_STATUS;
+  hasPage: boolean;
   user: Partner;
 }
 
