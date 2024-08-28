@@ -10,15 +10,14 @@ export interface GoogleRatingProps {
 
 export const GoogleRating = ({ data }: { data: GoogleRatingProps }) => {
   return (
-    <div className="flex items-center p-1 bg-lightOrange gap-2">
+    <div className="flex items-center p-1 bg-lightOrange gap-2 rounded-[8px] px-2">
       <Image
         width={80}
         height={30}
         src={GoogleRatingIcon}
         alt="Google rating"
       />
-      <div className="text-[14px]/[16px]">{data.value}</div>
-      <Stars value={Math.round(data.value)} width={10} height={10} />
+      <Stars value={Math.round(data.value)} width={15} height={15} />
       <Link
         href="/"
         target="_blank"

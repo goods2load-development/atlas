@@ -15,6 +15,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import InfoImg from "@/assets/info.svg";
+import defaultCompanyLogo from "@/assets/defaultCompanyLogo.svg";
 
 interface Props extends IProduct {
   deliveryBy: string;
@@ -71,49 +73,65 @@ export default function Product(props: Props) {
       <div className="md:flex justify-between md:border-b">
         <div className="flex border-b-[1px] md:border-b-[0px]">
           <div className="w-1/2 md:w-[184px] p-[24px] border-r-[1px]">
-            <div className="text-[24px]/[28px] font-light [&>i]:font-normal">
+            <div className="text-[24px]/[28px] font-light [&>i]:font-normal]">
               Estimated <i>transit</i>
             </div>
-            <TooltipProvider delayDuration={200}>
-              <Tooltip>
-                <TooltipTrigger className="text-[16px]/[26px] text-primaryOrange inline-block border-b border-transparent hover:border-primaryOrange transition-all cursor-pointer">
-                  {props.estimatedTransit}
-                  {props.estimatedTransit === 1 ? " day" : " days"}
-                </TooltipTrigger>
+            <div className="flex items-center gap-2 text-[16px]/[26px] text-primaryOrange">
+              <span>From</span>
+              {props.estimatedTransit}
+              {props.estimatedTransit === 1 ? " day" : " days"}
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger className="cursor-pointer">
+                    <Image
+                      className="cursor-pointer"
+                      src={InfoImg}
+                      width={18}
+                      height={18}
+                      alt="info"
+                    />
+                  </TooltipTrigger>
 
-                <TooltipContent
-                  side="top"
-                  className="text-[12px]/[17px] font-normal bg-orangeSecondary rounded-sm p-2 overflow-visible relative max-w-[250px] border-transparent"
-                >
-                  Travel time may vary depending on the regulations of the
-                  states traversed; it is advisable to consult with the
-                  logistics company for an accurate estimate
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+                  <TooltipContent
+                    side="top"
+                    className="text-[12px]/[17px] font-normal bg-primaryOrange text-white rounded-sm p-2 overflow-visible relative max-w-[250px] border-transparent"
+                  >
+                    Travel time may vary depending on the regulations of the
+                    states traversed; it is advisable to consult with the
+                    logistics company for an accurate estimate
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </div>
-          <div className="w-1/2 flex flex-col justify-center items-center text-center text-[20px]/[22px] font-medium">
-            Company
-            {props.company.logo ? (
-              <img
-                alt={props.company.name}
-                src={props.company.logo.src}
-                className="max-w-[104px] block"
-              />
-            ) : (
-              <div>{props.company.name}</div>
-            )}
+          <div className="w-1/2 flex flex-col justify-start p-6 item-center text-center text-[20px]/[22px] font-medium flex-1 lg:ml-8">
+            <div className="flex justify-center items-center gap-3">
+              {props.company.name}
+              <button onClick={onSavePartner}>
+                <Image width={18} height={18} src={SaveIcon} alt="save" />
+              </button>
+            </div>
+
+            <Image
+              width={33}
+              height={36}
+              src={defaultCompanyLogo}
+              alt="default company logo"
+              className="mx-auto mt-3"
+            />
           </div>
         </div>
-        <div className="flex border-b-[1px] md:border-b-[0px]">
+        <div className="flex border-b-[1px] md:border-b-[0px] flex-1">
           <div className="w-1/2 flex flex-col items-center p-[24px]">
             <div className="text-[20px]/[22px] font-medium flex gap-2 items-center">
               <img src={Icon(props.deliveryBy)} />
               Withdraw
             </div>
             <div className="text-[12px]/[18px]">
-              <div className="text-[14px]/[21px]">{props.withdraw}</div>
-              Estimated date
+              <div className="text-[14px]/[21px] mt-2">{props.delivery}</div>
+              <div className="text-[12px]/[18px] opacity-50 mt-1">
+                Estimated date
+              </div>
             </div>
           </div>
           <div className="w-1/2 flex flex-col items-center p-[24px]">
@@ -122,8 +140,10 @@ export default function Product(props: Props) {
               Delivery
             </div>
             <div className="text-[12px]/[18px]">
-              <div className="text-[14px]/[21px]">{props.delivery}</div>
-              Estimated date
+              <div className="text-[14px]/[21px] mt-2">{props.delivery}</div>
+              <div className="text-[12px]/[18px] opacity-50 mt-1">
+                Estimated date
+              </div>
             </div>
           </div>
         </div>
@@ -132,43 +152,48 @@ export default function Product(props: Props) {
             Order <span>cost</span>
           </div>
 
-          <TooltipProvider delayDuration={200}>
-            <Tooltip>
-              <TooltipTrigger className="text-[20px]/[22px] font-medium cursor-pointer inline-block mx-auto">
-                From {props.currency.symbol}
-                {Math.round(parseInt(props.orderCost) * props.currency.rate)}
-              </TooltipTrigger>
+          <div className="flex items-center gap-3 mx-auto">
+            <div className="text-[20px]/[22px] font-medium cursor-pointer inline-block">
+              From {props.currency.symbol}
+              {Math.round(parseInt(props.orderCost) * props.currency.rate)}
+            </div>
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Image
+                    className="cursor-pointer"
+                    src={InfoImg}
+                    width={18}
+                    height={18}
+                    alt="info"
+                  />
+                </TooltipTrigger>
 
-              <TooltipContent
-                side="top"
-                className="text-[12px]/[17px] font-normal bg-orangeSecondary rounded-sm p-2 overflow-visible relative max-w-[250px] border-transparent"
-              >
-                This indicated price is only an estimate and may vary depending
-                on the availability of the requested cargo. Please consult with
-                the selected logistic partner to obtain a final free quote.
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
+                <TooltipContent
+                  side="top"
+                  className="text-[12px]/[17px] font-normal bg-primaryOrange text-white rounded-sm p-2 overflow-visible relative max-w-[250px] border-transparent"
+                >
+                  This indicated price is only an estimate and may vary
+                  depending on the availability of the requested cargo. Please
+                  consult with the selected logistic partner to obtain a final
+                  free quote.
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
       </div>
       <div className="md:flex justify-between">
         <div className="py-[8px] md:py-0 border-t md:border-none md:pl-6 items-center justify-center md:justify-start flex sm:flex-row flex-col gap-2">
+          {googleRatingMocks[props.index] && (
+            <GoogleRating data={googleRatingMocks[props.index]} />
+          )}
           {props.CO2EmissionControlled && (
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
               <LeafIcon />
               CO2 Emission controlled
             </div>
           )}
-          {googleRatingMocks[props.index] && (
-            <GoogleRating data={googleRatingMocks[props.index]} />
-          )}
-          <button
-            className="flex gap-1 items-center p-2 border border-gray-300 rounded-full hover:border-transparent transition-all cursor-pointer"
-            onClick={onSavePartner}
-          >
-            <Image width={14} height={14} src={SaveIcon} alt="Save icon" />
-            <span className="text-[10px]/[14px] font-medium">Save</span>
-          </button>
         </div>
         <SelectionPopup
           orderId={props.orderId}
