@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { usePartnersStore } from "@/lib/store";
 import clsx from "clsx";
-import { Check, TrashIcon } from "lucide-react";
+import { Check, FilePlus, TrashIcon } from "lucide-react";
 import ViewPartnerDialog from "./ViewPartnerDialog";
 import debounce from "lodash/debounce";
 import { filterByField } from "@/lib/utils";
@@ -34,7 +34,7 @@ const PartnersMain = () => {
   });
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
   const tab = searchParams.get("tab") || "new";
   const [searchValue, setSearchValue] = useState("");
   const filteredPartners = useMemo(
@@ -189,18 +189,29 @@ const PartnersMain = () => {
                       }
                     />
                   )}
-                  <button
-                    onClick={() => confirmPartner(partner.partnerId)}
-                    title="Confirm"
-                  >
-                    <Check />
-                  </button>
+                  {tab !== "active" && (
+                    <button
+                      onClick={() => confirmPartner(partner.partnerId)}
+                      title="Confirm"
+                    >
+                      <Check />
+                    </button>
+                  )}
                   <button
                     onClick={() => unconfirmPartner(partner.partnerId)}
                     title="Delete"
                   >
                     <TrashIcon />
                   </button>
+                  {tab === "active" && (
+                    <button
+                      onClick={() =>
+                        push(`/dashboard/partners/create/${partner.partnerId}`)
+                      }
+                    >
+                      <FilePlus />
+                    </button>
+                  )}
                 </div>
               </div>
             </ListItem>

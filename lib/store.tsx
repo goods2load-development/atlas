@@ -4,6 +4,7 @@ import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
 import Cookie from "js-cookie";
 import {
   Partner,
+  PartnerPageResponse,
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
 
@@ -413,6 +414,7 @@ export const useRoutesStore = create((set) => ({
 
 interface PartnersStoreState {
   partners: ResponsePartner[];
+  partnerPage: PartnerPageResponse | null;
   isPartnersLoading: boolean;
   getPartnersApproved: () => Promise<void>;
   getPartnersInReview: () => Promise<void>;
@@ -420,10 +422,13 @@ interface PartnersStoreState {
   approvePartner: (id: string) => Promise<void>;
   rejectPartner: (id: string) => Promise<void>;
   replyPartner: (id: string, message: string) => Promise<void>;
+  createPartnerPage: (id: string, data: any) => Promise<void>;
+  getPartnersPage: (id: string) => Promise<void>;
 }
 
 export const usePartnersStore = create<PartnersStoreState>((set) => ({
   partners: [],
+  partnerPage: null,
   isPartnersLoading: true,
   getPartnersApproved: () => {
     set({ isPartnersLoading: true });
@@ -475,5 +480,20 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
         message,
       },
     }).finally(() => set({ isPartnersLoading: false }));
+  },
+  createPartnerPage: (data: any, id: string) => {
+    set({ isPartnersLoading: true });
+    return postRequest({
+      url: `partners/${id}/information`,
+      data,
+    }).finally(() => set({ isPartnersLoading: false }));
+  },
+  getPartnersPage: (id: string) => {
+    set({ isPartnersLoading: true });
+    return getRequest({
+      url: `partners/${id}/information`,
+    })
+      .then((data) => set({ partnerPage: data }))
+      .finally(() => set({ isPartnersLoading: false }));
   },
 }));
