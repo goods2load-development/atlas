@@ -98,3 +98,32 @@ export const filterByField = (arr: any[], field: string, value: string) => {
     item[field].toString().toLowerCase().includes(value.toLowerCase())
   );
 };
+
+export const addToFileList = (fileList: FileList, newFile: File) => {
+  const dataTransfer = new DataTransfer();
+
+  for (let i = 0; i < fileList.length; i++) {
+    dataTransfer.items.add(fileList[i]);
+  }
+  dataTransfer.items.add(newFile);
+
+  return dataTransfer.files;
+};
+
+export const removeFileFromFileList = (index: number, fileList: FileList) => {
+  const dt = new DataTransfer();
+
+  for (let i = 0; i < fileList.length; i++) {
+    const file = fileList[i];
+    if (index !== i) {
+      dt.items.add(file);
+    }
+  }
+
+  return dt.files;
+};
+
+export const getRandomHexColor = () =>
+  `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, "0")}`;
