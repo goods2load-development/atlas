@@ -1,46 +1,51 @@
 "use client";
-import React from "react";
-import Image from "next/image";
-import { CardContent } from "@/components/ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-} from "@/components/ui/carousel";
-
-import { sliderData } from "@/app/_components/Partners/PartnersOurPartners/sliderData";
-import Autoplay from "embla-carousel-autoplay";
+import React, { useEffect } from "react";
+import Link from "next/link";
+import defaultLogo from "@/assets/default-logo-g2l.svg";
+import { usePartnersStore } from "@/lib/store";
+import { Partner } from "@/components/Dashboard/PartnersMain/types";
 
 const PartnersOurPartners: React.FC = () => {
+  const { partners, getPartnersApproved } = usePartnersStore();
+
+  useEffect(() => {
+    getPartnersApproved();
+  }, []);
+
   return (
-    <section id="our-partners" className="w-full  items-center">
-      <div className="text-black text-center font-light md:text-[40px]/[48px] text-[34px]/[38px] flex px-[16px] max-w-[1328px] mx-auto">
+    <section
+      id="our-partners"
+      className="w-full items-center max-w-[1328px] mx-auto px-4"
+    >
+      <div className="text-black text-center font-light md:text-[40px]/[48px] text-[34px]/[38px] flex mb-8 justify-center lg:justify-start">
         Our
         <div className="font-normal italic bg-[#FEF1DF] rounded-[6px] md:h-[49px] px-[8px] ml-2 flex justify-center items-center">
           partners
         </div>
       </div>
-      <div className="flex w-full">
-        <div className="w-full flex flex-row justify-evenly">
-          <Carousel
-            className="w-full"
-            opts={{ loop: true, duration: 3000 }}
-            plugins={[Autoplay({ delay: 0 })]}
-          >
-            <CarouselContent className="-ml-1 w-full">
-              {sliderData.map((it, index) => (
-                <CarouselItem
-                  key={index}
-                  className="pl-1 basis-1/2 lg:basis-1/4 grid items-center"
-                >
-                  <CardContent className="flex items-center justify-center">
-                    <Image src={it.sliderImg} alt={it.alt} />
-                  </CardContent>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-          </Carousel>
-        </div>
+      <div className="flex w-full text-black gap-2 flex-wrap justify-center lg:justify-start">
+        {partners &&
+          partners.map(({ user }, idx) => {
+            return (
+              <Link
+                key={idx}
+                href={`/partner/123`}
+                className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative"
+              >
+                <div
+                  className="h-full"
+                  style={{
+                    backgroundImage: user.companyPhoto
+                      ? `url(${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto})`
+                      : `url(${defaultLogo.src})`,
+                    backgroundSize: "contain",
+                    backgroundPosition: "center",
+                    backgroundRepeat: "no-repeat",
+                  }}
+                />
+              </Link>
+            );
+          })}
       </div>
     </section>
   );

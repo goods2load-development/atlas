@@ -75,14 +75,25 @@ export default function LogisticInsights() {
   return (
     <div className="px-[16px] py-[80px] lg:bg-bgLogistics bg-no-repeat bg-cover text-black">
       <div className="max-w-[1328px] mx-auto">
-        <h2 className="font-light text-[30px]/[34px] md:text-[40px]/[48px] text-center md:text-left">
-          <i className="bg-allTittleColor rounded-md px-2 font-normal">
-            Logistics
-          </i>{" "}
-          insights:
-        </h2>
-        <div className="font-light text-[16px]/[20px] md:text-[18px]/[22px] py-3 text-center md:text-left">
-          stay ahead with our blog.
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="font-light text-[30px]/[34px] md:text-[40px]/[48px] text-center md:text-left">
+              <i className="bg-allTittleColor rounded-md px-2 font-normal">
+                Logistics
+              </i>{" "}
+              insights:
+            </h2>
+            <div className="font-light text-[16px]/[20px] md:text-[18px]/[22px] py-3 text-center md:text-left">
+              stay ahead with our blog.
+            </div>
+          </div>
+
+          <Link
+            className="py-3 w-[184px] rounded-2xl font-medium text-white hover:opacity-80"
+            href="/"
+          >
+            More articles
+          </Link>
         </div>
         <div className="sm:flex flex-wrap justify-around mt-5 gap-3">
           {lItems.map((item, index) => (

@@ -72,13 +72,13 @@ export default function Footer() {
                   Partners
                 </AccordionTrigger>
                 <AccordionContent>
-                  <Link href="/partners" className="block pb-3 font-light">
-                    Partner with us
-                  </Link>
                   <Link
-                    href="/partners#our-partners"
+                    href="/partners-with-us"
                     className="block pb-3 font-light"
                   >
+                    Partner with us
+                  </Link>
+                  <Link href="/partners" className="block pb-3 font-light">
                     Our partners
                   </Link>
                 </AccordionContent>

@@ -8,6 +8,8 @@ import PartnersBoostingTravel from "../_components/Partners/PartnersBoostingTrav
 import PartnersAmplify from "../_components/Partners/PartnersAmplify/PartnersAmplify";
 
 import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import { JoinOurTeam } from "../_components/Career/JoinOurTeam/JoinOurTeam";
+import CareerForm from "../_components/Career/CareerForm/CareerForm";
 
 const Partners: React.FC = () => {
   return (
@@ -31,6 +33,10 @@ const Partners: React.FC = () => {
 
         <div className="w-full flex flex-col justify-center items-center">
           <PartnersStartingFrom />
+          <section className="max-w-[1440px] w-full justify-center items-center gap-[40px] py-[40px] sm:py-[104px] px-5 m-auto">
+            <JoinOurTeam />
+            <CareerForm />
+          </section>
           <PartnersAudience />
           <PartnersAmplify />
           <PartnersVisibility />
