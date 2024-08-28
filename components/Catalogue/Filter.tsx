@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -22,7 +22,7 @@ function GroupSelection({ selectAll, clearAll }: any) {
     </div>
   );
 }
-function FilterItem({ id, checked, onChange, label, price }: any) {
+function FilterItem({ id, checked, onChange, label, price, fromValue }: any) {
   return (
     <div className="flex items-top space-x-2 mb-3">
       <Checkbox
@@ -39,6 +39,9 @@ function FilterItem({ id, checked, onChange, label, price }: any) {
         >
           {label}
         </label>
+        {fromValue && (
+          <div className="text-[#636363]">&#40;From ${fromValue}&#41;</div>
+        )}
         <p className="text-sm text-muted-foreground">{price}</p>
       </div>
     </div>
@@ -85,6 +88,8 @@ function FilterItemList({
 }
 
 export default function Filter() {
+  const [bestReviewed, setBestReviewd] = useState(false);
+
   const {
     deliveryBy,
     cheapest,
@@ -149,18 +154,27 @@ export default function Filter() {
             checked={cheapest}
             onChange={onOrderChange}
             label="Cheapest"
+            fromValue={530}
           />
           <FilterItem
             id="fastest"
             checked={fastest}
             onChange={onOrderChange}
             label="Fastest"
+            fromValue={4380}
           />
           <FilterItem
             id="goGreen"
             checked={goGreen}
             onChange={onOrderChange}
             label="GoGreen"
+            fromValue={5700}
+          />
+          <FilterItem
+            id="bestReviewed"
+            checked={bestReviewed}
+            onChange={() => setBestReviewd(!bestReviewed)}
+            label="Best Reviewed"
           />
         </AccordionContent>
       </AccordionItem>

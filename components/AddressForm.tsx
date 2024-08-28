@@ -64,11 +64,7 @@ export default function AddressForm(props: AddressFormProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const data = {
-      ...values,
-      postalCode: parseInt(values.postalCode),
-    };
-    updateUser(data);
+    updateUser(values);
     props.onCancel();
   }
   useEffect(() => {
