@@ -78,8 +78,8 @@ export default function Product(props: Props) {
             </div>
             <div className="flex items-center gap-2 text-[16px]/[26px] text-primaryOrange">
               <span>From</span>
-              {props.estimatedTransit}
-              {props.estimatedTransit === 1 ? " day" : " days"}
+              <span>{props.estimatedTransit}</span>
+              <span>{props.estimatedTransit === 1 ? " day" : " days"}</span>
               <TooltipProvider delayDuration={200}>
                 <Tooltip>
                   <TooltipTrigger className="cursor-pointer">
@@ -106,7 +106,7 @@ export default function Product(props: Props) {
           </div>
           <div className="w-1/2 flex flex-col justify-start p-6 item-center text-center text-[20px]/[22px] font-medium flex-1 lg:ml-8">
             <div className="flex justify-center items-center gap-3">
-              {props.company.name}
+              <span>{props.company.name}</span>
               <button onClick={onSavePartner}>
                 <Image width={18} height={18} src={SaveIcon} alt="save" />
               </button>
@@ -154,8 +154,10 @@ export default function Product(props: Props) {
 
           <div className="flex items-center gap-3 mx-auto">
             <div className="text-[20px]/[22px] font-medium cursor-pointer inline-block">
-              From {props.currency.symbol}
-              {Math.round(parseInt(props.orderCost) * props.currency.rate)}
+              From <span>{props.currency.symbol}</span>
+              <span>
+                {Math.round(parseInt(props.orderCost) * props.currency.rate)}
+              </span>
             </div>
             <TooltipProvider delayDuration={200}>
               <Tooltip>
