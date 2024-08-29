@@ -1,4 +1,5 @@
 import PartnerDataPage from "@/components/PartnersDataPage/PartnerDataPage";
+import { redirect } from "next/navigation";
 
 const Partner = async ({ params }: { params: { id: string } }) => {
   const [
@@ -17,6 +18,10 @@ const Partner = async ({ params }: { params: { id: string } }) => {
       cache: "no-store",
     }).then((res) => res.json()),
   ]);
+
+  if (!partnerData.hasPage) {
+    redirect("/");
+  }
 
   return (
     <PartnerDataPage companyPhoto={companyPhoto} partnerData={partnerData} />
