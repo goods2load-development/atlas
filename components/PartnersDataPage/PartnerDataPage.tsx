@@ -33,6 +33,7 @@ import { usePartnersStore } from "@/lib/store";
 import { PartnerPageResponse } from "../Dashboard/PartnersMain/types";
 import LoyaltAllWrapper from "@/app/_components/LoyaltAllWrapper/LoyaltAllWrapper";
 import { useToast } from "../ui/use-toast";
+import { PlaceDetails } from "./types";
 
 enum TabsEnum {
   SERVICES_PROVIDED = "Service provided",
@@ -44,12 +45,15 @@ enum TabsEnum {
 const PartnerDataPage = ({
   partnerData,
   companyPhoto,
+  placeInfo,
   isCreate = false,
 }: {
   companyPhoto: string;
   partnerData?: PartnerPageResponse;
+  placeInfo?: PlaceDetails;
   isCreate?: boolean;
 }) => {
+  console.log({ placeInfo });
   const isGet = !!partnerData;
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
@@ -130,6 +134,14 @@ const PartnerDataPage = ({
       color: (item as any).color || getRandomHexColor(),
     }));
   }, [partnerData, industriesData]);
+
+  const reviews = useMemo(() => {
+    if (!placeInfo) return null;
+    const reviewsClone = [...(placeInfo?.result?.reviews as any[])];
+    reviewsClone.sort((a, b) => b.rating - a.rating);
+    return reviewsClone.slice(0, 3);
+  }, [placeInfo?.result?.reviews]);
+
   console.log({ partnerData });
   const servicesProvidedData = [
     {
@@ -808,6 +820,7 @@ const PartnerDataPage = ({
           </div>
 
           <button
+            disabled={!isGet}
             type="button"
             className="hover:shadow-[0_2px_30px_16px_rgba(255,165,0,0.5)] transition-shadow duration-300 bg-primaryOrange
              mx-auto rounded-md text-white text-center py-4 px-20 hover:opacity-90 cursor-pointer font-medium mb-[104px]"
@@ -834,12 +847,16 @@ const PartnerDataPage = ({
             />
           ) : (
             <>
-              <GoogleRatingBunner />
-              <div className="flex justify-between gap-[43px] mt-10">
-                <Review />
-                <Review />
-                <Review />
-              </div>
+              {placeInfo && reviews && (
+                <>
+                  <GoogleRatingBunner placeInfo={placeInfo} />
+                  <div className="flex justify-between items-start gap-[43px] mt-10">
+                    {reviews.map((review) => (
+                      <Review review={review} key={review.time} />
+                    ))}
+                  </div>
+                </>
+              )}
             </>
           )}
 
