@@ -7,7 +7,7 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { usePartnersStore } from "@/lib/store";
 import clsx from "clsx";
-import { Check, FilePlus, TrashIcon } from "lucide-react";
+import { Check, FilePlus, FileSymlink, TrashIcon } from "lucide-react";
 import ViewPartnerDialog from "./ViewPartnerDialog";
 import debounce from "lodash/debounce";
 import { filterByField } from "@/lib/utils";
@@ -40,7 +40,11 @@ const PartnersMain = () => {
   const filteredPartners = useMemo(
     () =>
       filterByField(
-        partners.map((par) => ({ partnerId: par.id, ...par.user })),
+        partners.map((par) => ({
+          hasPage: par.hasPage,
+          partnerId: par.id,
+          ...par.user,
+        })),
         "email",
         searchValue
       ),
@@ -203,13 +207,22 @@ const PartnersMain = () => {
                   >
                     <TrashIcon />
                   </button>
-                  {tab === "active" && (
+                  {tab === "active" && !partner.hasPage && (
                     <button
                       onClick={() =>
                         push(`/dashboard/partners/create/${partner.partnerId}`)
                       }
                     >
                       <FilePlus />
+                    </button>
+                  )}
+                  {tab === "active" && partner.hasPage && (
+                    <button
+                      onClick={() =>
+                        push(`/partner/${partner.partnerId}`)
+                      }
+                    >
+                      <FileSymlink />
                     </button>
                   )}
                 </div>

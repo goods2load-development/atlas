@@ -4,10 +4,8 @@ import Image from "next/image";
 import PartnerLogoDefault from "@/assets/Partners/partner-logo-default.jpg";
 import { GoogleRatingBunner } from "@/app/_components/Partner/GoogleRatingBunner/GoogleRatingBunner";
 import { Review } from "@/app/_components/Partner/Review/Review";
-import { Form, UseFormReturn } from "react-hook-form";
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -30,10 +28,11 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import { formSchema } from "./constants";
 import { z } from "zod";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { usePartnersStore } from "@/lib/store";
 import { PartnerPageResponse } from "../Dashboard/PartnersMain/types";
 import LoyaltAllWrapper from "@/app/_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import { useToast } from "../ui/use-toast";
 
 enum TabsEnum {
   SERVICES_PROVIDED = "Service provided",
@@ -71,6 +70,8 @@ const PartnerDataPage = ({
     },
   });
   const { id } = useParams();
+  const { toast } = useToast();
+  const { push } = useRouter();
 
   const { isPartnersLoading, createPartnerPage } = usePartnersStore(
     (state) => state
@@ -269,9 +270,31 @@ const PartnerDataPage = ({
         enterprises: data.enterprises.toString(),
       },
       placementId: data.placementId,
-      files: Array.from(data.awardedBy as FileList),
+      files: data.awardedBy as FileList,
     };
-    createPartnerPage(body as any, id.toString());
+
+    const formData = new FormData();
+
+    formData.append("name", body.name);
+    formData.append("description", body.description);
+    formData.append("mission", body.mission);
+    formData.append("placementId", body.placementId);
+
+    formData.append("industries", JSON.stringify(body.industries));
+    formData.append("serviceProvided", JSON.stringify(body.serviceProvided));
+    formData.append("clientTarget", JSON.stringify(body.clientTarget));
+    formData.append("focus", JSON.stringify(body.focus));
+
+    Array.from(body.files).forEach((file) => formData.append("files", file));
+
+    createPartnerPage(formData as any, id.toString()).then(() => {
+      push("/dashboard/partners?tab=active");
+      toast({
+        title: "Page successfully created.",
+        variant: "default",
+        className: "bg-green-500",
+      });
+    });
   };
 
   const content = () => (
@@ -764,7 +787,8 @@ const PartnerDataPage = ({
 
           <button
             type="button"
-            className="bg-primaryOrange w-[343px] mx-auto rounded-md text-white text-center pt-[10px] pb-[10px] hover:opacity-90 cursor-pointer font-medium mb-[104px]"
+            className="hover:shadow-[0_2px_30px_16px_rgba(255,165,0,0.5)] transition-shadow duration-300 bg-primaryOrange
+             mx-auto rounded-md text-white text-center py-4 px-20 hover:opacity-90 cursor-pointer font-medium mb-[104px]"
           >
             GET A FREE QUOTATION
           </button>
@@ -834,8 +858,18 @@ const PartnerDataPage = ({
                   )}
                 />
               ) : (
-                // <Image />
-                <div></div>
+                partnerData?.awardsFiles.map((url) => (
+                  <div key={url} className="relative min-w-[294px] pb-[20%]">
+                    <Image
+                      className="h-auto"
+                      src={`${process.env.NEXT_PUBLIC_BASE_URL}${url}`}
+                      layout="fill"
+                      objectFit="contain"
+                      unoptimized
+                      alt="award"
+                    />
+                  </div>
+                ))
               )}
               {!isGet &&
                 awardedByBase64List.map((base, i) => (

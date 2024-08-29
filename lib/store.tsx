@@ -422,7 +422,7 @@ interface PartnersStoreState {
   approvePartner: (id: string) => Promise<void>;
   rejectPartner: (id: string) => Promise<void>;
   replyPartner: (id: string, message: string) => Promise<void>;
-  createPartnerPage: (id: string, data: any) => Promise<void>;
+  createPartnerPage: (data: any, id: string) => Promise<void>;
   getPartnersPage: (id: string) => Promise<void>;
 }
 
@@ -486,6 +486,7 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     return postRequest({
       url: `partners/${id}/information`,
       data,
+      headers: { "Content-Type": "multipart/form-data" },
     }).finally(() => set({ isPartnersLoading: false }));
   },
   getPartnersPage: (id: string) => {
