@@ -59,7 +59,8 @@ const ViewPartnerDialog = ({
                   value === null ||
                   value === "" ||
                   key === "id" ||
-                  key === "partnerId"
+                  key === "partnerId" ||
+                  key === "hasPage"
                 )
                   return null;
                 if (linkFields.includes(key))
