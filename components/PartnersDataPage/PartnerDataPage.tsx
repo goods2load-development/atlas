@@ -280,12 +280,34 @@ const PartnerDataPage = ({
     formData.append("mission", body.mission);
     formData.append("placementId", body.placementId);
 
-    formData.append("industries", JSON.stringify(body.industries));
-    formData.append("serviceProvided", JSON.stringify(body.serviceProvided));
-    formData.append("clientTarget", JSON.stringify(body.clientTarget));
-    formData.append("focus", JSON.stringify(body.focus));
+    // formData.append("serviceProvided", JSON.stringify(body.serviceProvided));
+    // formData.append("clientTarget", JSON.stringify(body.clientTarget));
+    // formData.append("focus", JSON.stringify(body.focus));
 
-    Array.from(body.files).forEach((file) => formData.append("files", file));
+    body.industries.forEach((industry, index) => {
+      formData.append(`industries[${index}]`, JSON.stringify(industry));
+    });
+    1;
+    body.focus.forEach((item, index) => {
+      formData.append(`focus[${index}]`, JSON.stringify(item));
+    });
+
+    Object.keys(body.serviceProvided).forEach((key) => {
+      const typedKey = key as keyof typeof body.serviceProvided;
+      formData.append(
+        `serviceProvided[${typedKey}]`,
+        body.serviceProvided[typedKey]
+      );
+    });
+
+    Object.keys(body.clientTarget).forEach((key) => {
+      const typedKey = key as keyof typeof body.clientTarget;
+      formData.append(`clientTarget[${typedKey}]`, body.clientTarget[typedKey]);
+    });
+
+    Array.from(body.files).forEach((file) =>
+      formData.append("awardedFiles", file)
+    );
 
     createPartnerPage(formData as any, id.toString()).then(() => {
       push("/dashboard/partners?tab=active");
