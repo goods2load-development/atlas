@@ -284,13 +284,8 @@ const PartnerDataPage = ({
     // formData.append("clientTarget", JSON.stringify(body.clientTarget));
     // formData.append("focus", JSON.stringify(body.focus));
 
-    body.industries.forEach((industry, index) => {
-      formData.append(`industries[${index}]`, JSON.stringify(industry));
-    });
-    1;
-    body.focus.forEach((item, index) => {
-      formData.append(`focus[${index}]`, JSON.stringify(item));
-    });
+    formData.append(`industries`, JSON.stringify(body.industries));
+    formData.append(`focus`, JSON.stringify(body.focus));
 
     Object.keys(body.serviceProvided).forEach((key) => {
       const typedKey = key as keyof typeof body.serviceProvided;
@@ -880,18 +875,23 @@ const PartnerDataPage = ({
                   )}
                 />
               ) : (
-                partnerData?.awardsFiles.map((url) => (
-                  <div key={url} className="relative min-w-[294px] pb-[20%]">
-                    <Image
-                      className="h-auto"
-                      src={`${process.env.NEXT_PUBLIC_BASE_URL}${url}`}
-                      layout="fill"
-                      objectFit="contain"
-                      unoptimized
-                      alt="award"
-                    />
-                  </div>
-                ))
+                partnerData?.awardsFiles.map((item) => {
+                  return (
+                    <div
+                      key={item.path}
+                      className="relative min-w-[294px] pb-[20%]"
+                    >
+                      <Image
+                        className="h-auto"
+                        src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
+                        layout="fill"
+                        objectFit="contain"
+                        unoptimized
+                        alt="award"
+                      />
+                    </div>
+                  );
+                })
               )}
               {!isGet &&
                 awardedByBase64List.map((base, i) => (
