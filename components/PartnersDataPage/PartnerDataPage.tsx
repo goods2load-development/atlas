@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 
 import Image from "next/image";
@@ -22,6 +23,7 @@ import {
   addToFileList,
   fileToBase64,
   getRandomHexColor,
+  urlsToFileList,
   removeFileFromFileList,
 } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -34,6 +36,8 @@ import { PartnerPageResponse } from "../Dashboard/PartnersMain/types";
 import LoyaltAllWrapper from "@/app/_components/LoyaltAllWrapper/LoyaltAllWrapper";
 import { useToast } from "../ui/use-toast";
 import { PlaceDetails } from "./types";
+import SelectionPopup from "../Catalogue/SelectionPopup";
+import SendDataToPartnerDialog from "./SendDataToPartnerDialog";
 
 enum TabsEnum {
   SERVICES_PROVIDED = "Service provided",
@@ -47,30 +51,31 @@ const PartnerDataPage = ({
   companyPhoto,
   placeInfo,
   isCreate = false,
+  isEdit = false,
 }: {
   companyPhoto: string;
   partnerData?: PartnerPageResponse;
   placeInfo?: PlaceDetails;
   isCreate?: boolean;
+  isEdit?: boolean;
 }) => {
-  console.log({ placeInfo });
-  const isGet = !!partnerData;
+  const isGet = !isCreate && !isEdit;
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: "",
-      description: "",
-      mission: "",
-      airFreight: "",
-      seaFreight: "",
-      roadFreight: "",
-      smallBusiness: "",
-      midMarket: "",
-      enterprises: "",
+      name: isEdit ? partnerData?.name : "",
+      description: isEdit ? partnerData?.description : "",
+      mission: isEdit ? partnerData?.mission : "",
+      airFreight: isEdit ? partnerData?.serviceProvided?.airFreight : "",
+      seaFreight: isEdit ? partnerData?.serviceProvided?.seaFreight : "",
+      roadFreight: isEdit ? partnerData?.serviceProvided?.roadFreight : "",
+      smallBusiness: isEdit ? partnerData?.clientTarget?.smallBusiness : "",
+      midMarket: isEdit ? partnerData?.clientTarget?.midMarket : "",
+      enterprises: isEdit ? partnerData?.clientTarget?.enterprises : "",
       focus: [],
       industries: [],
-      placementId: "",
+      placementId: isEdit ? partnerData?.placementId : "",
     },
   });
   const { id } = useParams();
@@ -95,13 +100,14 @@ const PartnerDataPage = ({
     color: "",
   });
   const [charData, setChartData] = useState({
-    airFreight: 0,
-    seaFreight: 0,
-    roadFreight: 0,
-    smallBusiness: 0,
-    midMarket: 0,
-    enterprises: 0,
+    airFreight: isEdit ? +partnerData?.serviceProvided.airFreight : 0,
+    seaFreight: isEdit ? +partnerData?.serviceProvided.seaFreight : 0,
+    roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
+    smallBusiness: isEdit ? +partnerData?.clientTarget?.smallBusiness : 0,
+    midMarket: isEdit ? +partnerData?.clientTarget?.midMarket : 0,
+    enterprises: isEdit ? +partnerData?.clientTarget?.enterprises : 0,
   });
+
   const [focusData, setFocusData] = useState<
     {
       label: string;
@@ -109,12 +115,15 @@ const PartnerDataPage = ({
       color: string;
       key?: string;
     }[]
-  >([]);
+  >(isEdit ? partnerData?.focus : []);
   const calculateCharFocusData = useMemo(() => {
-    return (isGet ? partnerData.focus : focusData).map((item) => ({
+    const partnerDataFocus = Array.isArray(partnerData?.focus)
+      ? partnerData.focus
+      : [partnerData?.focus];
+    return (isGet ? partnerDataFocus : focusData).map((item: any) => ({
       ...item,
-      value: +item.value,
-      name: item.label,
+      value: +item?.value,
+      name: item?.label,
       color: (item as any).color || getRandomHexColor(),
     }));
   }, [partnerData, focusData]);
@@ -125,14 +134,19 @@ const PartnerDataPage = ({
       color: string;
       key?: string;
     }[]
-  >([]);
+  >(isEdit ? partnerData?.industries : []);
   const calculateCharIndustriesData = useMemo(() => {
-    return (isGet ? partnerData.industries : industriesData).map((item) => ({
-      ...item,
-      value: +item.value,
-      name: item.label,
-      color: (item as any).color || getRandomHexColor(),
-    }));
+    const partnerDataindustries = Array.isArray(partnerData?.industries)
+      ? partnerData.industries
+      : [partnerData?.industries];
+    return (isGet ? partnerDataindustries : industriesData).map(
+      (item: any) => ({
+        ...item,
+        value: +item.value,
+        name: item.label,
+        color: (item as any).color || getRandomHexColor(),
+      })
+    );
   }, [partnerData, industriesData]);
 
   const reviews = useMemo(() => {
@@ -142,7 +156,6 @@ const PartnerDataPage = ({
     return reviewsClone.slice(0, 3);
   }, [placeInfo?.result?.reviews]);
 
-  console.log({ partnerData });
   const servicesProvidedData = [
     {
       name: "Air Freight",
@@ -216,6 +229,29 @@ const PartnerDataPage = ({
     );
   }, [industriesData]);
 
+  useEffect(() => {
+    if (!isEdit) return;
+    (async () => {
+      const fileList = await urlsToFileList(
+        partnerData?.awardsFiles.map(
+          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`
+        )
+      );
+
+      form?.setValue("awardedBy", fileList);
+
+      const listBase64 = await Promise.all(
+        Array.from(fileList).map(async (file) => {
+          const base = await fileToBase64(file);
+
+          return base;
+        })
+      );
+
+      setAwardedByBase64List(listBase64);
+    })();
+  }, [isEdit]);
+
   const onTabChange = (value: string) => {
     setActiveTab(value as TabsEnum);
   };
@@ -264,7 +300,6 @@ const PartnerDataPage = ({
   };
 
   const onCreatePageSubmit = (data: z.infer<typeof formSchema>) => {
-    console.log({ data });
     const body = {
       name: data.name,
       description: data.description,
@@ -291,10 +326,6 @@ const PartnerDataPage = ({
     formData.append("description", body.description);
     formData.append("mission", body.mission);
     formData.append("placementId", body.placementId);
-
-    // formData.append("serviceProvided", JSON.stringify(body.serviceProvided));
-    // formData.append("clientTarget", JSON.stringify(body.clientTarget));
-    // formData.append("focus", JSON.stringify(body.focus));
 
     formData.append(`industries`, JSON.stringify(body.industries));
     formData.append(`focus`, JSON.stringify(body.focus));
@@ -330,7 +361,7 @@ const PartnerDataPage = ({
     <>
       <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px]">
         <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] pb-[170px] realtive">
-          {isCreate ? (
+          {!isGet ? (
             <FormField
               control={form?.control}
               name="name"
@@ -381,7 +412,7 @@ const PartnerDataPage = ({
               <div className="font-medium text-[28px]/[33px] mb-4">
                 About us
               </div>
-              {isCreate ? (
+              {!isGet ? (
                 <FormField
                   control={form?.control}
                   name="description"
@@ -411,7 +442,7 @@ const PartnerDataPage = ({
               <h5 className="text-[28px]/[33px] font-medium mb-4">
                 Our mission
               </h5>
-              {isCreate ? (
+              {!isGet ? (
                 <FormField
                   control={form?.control}
                   name="mission"
@@ -517,7 +548,7 @@ const PartnerDataPage = ({
                             ></div>
                             <div>{elem.name}</div>
                             <div className="ml-auto flex items-center">
-                              {isCreate ? (
+                              {!isGet ? (
                                 <FormField
                                   control={form?.control}
                                   name={elem.key as any}
@@ -560,7 +591,7 @@ const PartnerDataPage = ({
                       <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
                         Country focus
                       </div>
-                      {isCreate && (
+                      {!isGet && (
                         <>
                           <div className="flex gap-1 mb-2">
                             <Input
@@ -777,7 +808,7 @@ const PartnerDataPage = ({
                             ></div>
                             <div>{elem.name}</div>
                             <div className="ml-auto flex items-center">
-                              {isCreate ? (
+                              {!isGet ? (
                                 <FormField
                                   control={form?.control}
                                   name={elem.key as any}
@@ -814,16 +845,21 @@ const PartnerDataPage = ({
             </div>
           </div>
 
-          <button
-            disabled={!isGet}
-            type="button"
-            className="hover:shadow-[0_2px_30px_16px_rgba(255,165,0,0.5)] transition-shadow duration-300 bg-primaryOrange
-             mx-auto rounded-md text-white text-center py-4 px-20 hover:opacity-90 cursor-pointer font-medium mb-[104px]"
-          >
-            GET A FREE QUOTATION
-          </button>
+          <SendDataToPartnerDialog
+            trigger={
+              <button
+                disabled={!isGet}
+                type="button"
+                className="animate-button-ping transition-shadow bg-primaryOrange
+             mx-auto rounded-md text-white text-center py-4 px-20 hover:opacity-90
+            cursor-pointer font-medium mb-[104px]"
+              >
+                GET A FREE QUOTATION
+              </button>
+            }
+          />
 
-          {isCreate ? (
+          {!isGet ? (
             <FormField
               control={form?.control}
               name="placementId"
@@ -863,7 +899,7 @@ const PartnerDataPage = ({
               <i className="font-normal">by:</i>
             </h3>
             <div className="grid grid-cols-[repeat(auto-fill,_minmax(290px,_4fr))] gap-10">
-              {isCreate ? (
+              {!isGet && (
                 <FormField
                   control={form?.control}
                   name="awardedBy"
@@ -891,25 +927,21 @@ const PartnerDataPage = ({
                     </FormItem>
                   )}
                 />
-              ) : (
-                partnerData?.awardsFiles.map((item) => {
-                  return (
-                    <div
-                      key={item.path}
-                      className="relative min-w-[294px] pb-[20%]"
-                    >
-                      <Image
-                        className="h-auto"
-                        src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
-                        layout="fill"
-                        objectFit="contain"
-                        unoptimized
-                        alt="award"
-                      />
-                    </div>
-                  );
-                })
               )}
+
+              {isGet &&
+                partnerData?.awardsFiles.map((item) => (
+                  <Image
+                    key={item.path}
+                    width={293}
+                    height={400}
+                    className="h-auto w-full"
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
+                    unoptimized
+                    alt="award"
+                  />
+                ))}
+
               {!isGet &&
                 awardedByBase64List.map((base, i) => (
                   <div className="relative" key={base}>
@@ -947,7 +979,7 @@ const PartnerDataPage = ({
           })}
         </div>
       )}
-      {isCreate && (
+      {!isGet && (
         <Button
           type="submit"
           disabled={form?.formState?.isSubmitting}

@@ -56,7 +56,7 @@ interface ClientTarget {
 }
 
 export interface PartnerPageResponse {
-  awardsFiles: any[]; // or specify the exact type if known
+  awardsFiles: any[];
   clientTarget: ClientTarget;
   description: string;
   focus: FocusItem[];
@@ -65,6 +65,6 @@ export interface PartnerPageResponse {
   industries: IndustryItem[];
   mission: string;
   name: string;
-  photo: string;
+  placementId: string;
   serviceProvided: ServiceProvided;
 }

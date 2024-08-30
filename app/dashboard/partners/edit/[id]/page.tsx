@@ -1,7 +1,11 @@
 import PartnerDataPage from "@/components/PartnersDataPage/PartnerDataPage";
 import { redirect } from "next/navigation";
 
-const Partner = async ({ params }: { params: { id: string } }) => {
+export default async function EditPartnerPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const [
     partnerData,
     {
@@ -23,17 +27,11 @@ const Partner = async ({ params }: { params: { id: string } }) => {
     redirect("/");
   }
 
-  const testPlaceId = "ChIJMXnW227dOkcRW3Iy-GVzF_k";
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?fields=name%2Crating%2Creviews%2Curl%2Cuser_ratings_total&rating=5&place_id=${testPlaceId}&key=${process.env.GOOGLE_API_KEY}`;
-  const placeInfo = await (await fetch(url)).json();
-
   return (
     <PartnerDataPage
-      placeInfo={placeInfo}
       companyPhoto={companyPhoto}
       partnerData={partnerData}
+      isEdit
     />
   );
-};
-
-export default Partner;
+}
