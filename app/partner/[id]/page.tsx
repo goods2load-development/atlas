@@ -1,4 +1,5 @@
 import PartnerDataPage from "@/components/PartnersDataPage/PartnerDataPage";
+import { redirect } from "next/navigation";
 
 const Partner = async ({ params }: { params: { id: string } }) => {
   const [
@@ -17,6 +18,10 @@ const Partner = async ({ params }: { params: { id: string } }) => {
       cache: "no-store",
     }).then((res) => res.json()),
   ]);
+
+  if (!partnerData.hasPage) {
+    redirect("/");
+  }
 
   const testPlaceId = "ChIJMXnW227dOkcRW3Iy-GVzF_k";
   const url = `https://maps.googleapis.com/maps/api/place/details/json?fields=name%2Crating%2Creviews%2Curl%2Cuser_ratings_total&rating=5&place_id=${partnerData.placementId || testPlaceId}&key=${process.env.GOOGLE_API_KEY}`;
