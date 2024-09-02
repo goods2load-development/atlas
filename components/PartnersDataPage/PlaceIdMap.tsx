@@ -4,6 +4,7 @@ import {
   InfoWindow,
   LoadScript,
   StandaloneSearchBox,
+  useJsApiLoader,
 } from "@react-google-maps/api";
 import Spinner from "../ui/spinner";
 
@@ -24,6 +25,11 @@ const PlaceIdMap = ({
   placeId?: string;
   onChangePlaceId: (placeId: string) => void;
 }) => {
+  const { isLoaded } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string,
+    libraries: ["places"],
+  });
   const [place, setPlace] = useState<google.maps.places.PlaceResult | null>(
     null
   );
@@ -72,53 +78,51 @@ const PlaceIdMap = ({
   };
 
   return (
-    <LoadScript
-      googleMapsApiKey={"AIzaSyBX5oAxjOGufoTs6_hvU-ZrSk2j-N61qcY"}
-      libraries={["places"]}
-      loadingElement={<Spinner />}
-    >
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={center}
-        zoom={10}
-        onLoad={handleLoad}
-      >
-        <StandaloneSearchBox
-          onLoad={(ref) => (searchBoxRef.current = ref)}
-          onPlacesChanged={onPlacesChanged}
+    <>
+      {isLoaded && (
+        <GoogleMap
+          mapContainerStyle={containerStyle}
+          center={center}
+          zoom={10}
+          onLoad={handleLoad}
         >
-          <input
-            type="text"
-            placeholder="Search for places"
-            style={{
-              boxSizing: `border-box`,
-              border: `1px solid transparent`,
-              width: `240px`,
-              height: `32px`,
-              padding: `0 12px`,
-              borderRadius: `3px`,
-              boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
-              fontSize: `14px`,
-              outline: `none`,
-              textOverflow: `ellipses`,
-              position: "absolute",
-              left: "50%",
-              marginLeft: "-120px",
-              top: "10px",
-              color: "black",
-            }}
-          />
-        </StandaloneSearchBox>
-        {markerPosition && place && (
-          <InfoWindow position={markerPosition}>
-            <div className="text-black">
-              <h4 className="font-bold">{place.name}</h4>
-              <p style={{ margin: "5px 0" }}>Place ID: {place.place_id}</p>
-            </div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
-    </LoadScript>
+          <StandaloneSearchBox
+            onLoad={(ref) => (searchBoxRef.current = ref)}
+            onPlacesChanged={onPlacesChanged}
+          >
+            <input
+              type="text"
+              placeholder="Search for places"
+              style={{
+                boxSizing: `border-box`,
+                border: `1px solid transparent`,
+                width: `240px`,
+                height: `32px`,
+                padding: `0 12px`,
+                borderRadius: `3px`,
+                boxShadow: `0 2px 6px rgba(0, 0, 0, 0.3)`,
+                fontSize: `14px`,
+                outline: `none`,
+                textOverflow: `ellipses`,
+                position: "absolute",
+                left: "50%",
+                marginLeft: "-120px",
+                top: "10px",
+                color: "black",
+              }}
+            />
+          </StandaloneSearchBox>
+          {markerPosition && place && (
+            <InfoWindow position={markerPosition}>
+              <div className="text-black">
+                <h4 className="font-bold">{place.name}</h4>
+                <p style={{ margin: "5px 0" }}>Place ID: {place.place_id}</p>
+              </div>
+            </InfoWindow>
+          )}
+        </GoogleMap>
+      )}
+    </>
   );
 };
 

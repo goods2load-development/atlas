@@ -862,7 +862,7 @@ const PartnerDataPage = ({
               onChangePlaceId={(placeId: string) =>
                 form.setValue("placementId", placeId)
               }
-              placeId={isEdit && form.getValues("placementId")}
+              placeId={isEdit ? form.getValues("placementId") : undefined}
             />
           ) : (
             <>
