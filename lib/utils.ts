@@ -98,3 +98,63 @@ export const filterByField = (arr: any[], field: string, value: string) => {
     item[field].toString().toLowerCase().includes(value.toLowerCase())
   );
 };
+
+export const addToFileList = (fileList: FileList, newFile: File) => {
+  const dataTransfer = new DataTransfer();
+
+  for (let i = 0; i < fileList.length; i++) {
+    dataTransfer.items.add(fileList[i]);
+  }
+  dataTransfer.items.add(newFile);
+
+  return dataTransfer.files;
+};
+
+export const removeFileFromFileList = (index: number, fileList: FileList) => {
+  const dt = new DataTransfer();
+
+  for (let i = 0; i < fileList.length; i++) {
+    const file = fileList[i];
+    if (index !== i) {
+      dt.items.add(file);
+    }
+  }
+
+  return dt.files;
+};
+
+export const getRandomHexColor = () =>
+  `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, "0")}`;
+
+export const urlToFile = async (
+  url: string,
+  filename: string,
+  mimeType: string
+) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+
+  const file = new File([blob], filename, { type: mimeType });
+
+  return file;
+};
+
+export const urlsToFileList = async (urls: string[]) => {
+  const filesArray = await Promise.all(
+    urls.map(async (url, index) => {
+      const mimeType = `image/${url.split(".").at(-1)}`;
+      return await urlToFile(
+        url,
+        `file${index + 1}.${mimeType.split("/")[1]}`,
+        mimeType
+      );
+    })
+  );
+
+  const dataTransfer = new DataTransfer();
+  filesArray.forEach((file) => dataTransfer.items.add(file));
+
+  return dataTransfer.files;
+};
