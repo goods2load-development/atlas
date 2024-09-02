@@ -38,6 +38,7 @@ import { useToast } from "../ui/use-toast";
 import { PlaceDetails } from "./types";
 import SelectionPopup from "../Catalogue/SelectionPopup";
 import SendDataToPartnerDialog from "./SendDataToPartnerDialog";
+import PlaceIdMap from "./PlaceIdMap";
 
 enum TabsEnum {
   SERVICES_PROVIDED = "Service provided",
@@ -383,9 +384,6 @@ const PartnerDataPage = ({
               {partnerData?.name}
             </h1>
           )}
-
-          <div className="sm:hidden absolute w-full h-[337px] bg-primaryOrange bg-hero-pattern-mobile bg-cover -z-10"></div>
-          <div className="hidden 2xl:block absolute w-full h-[150px] top-[35%] bg-bgWhiteGradient"></div>
         </div>
 
         <div className="max-w-[1295px] w-full mx-auto pt-[72px] pb-[250px]">
@@ -860,21 +858,11 @@ const PartnerDataPage = ({
           />
 
           {!isGet ? (
-            <FormField
-              control={form?.control}
-              name="placementId"
-              render={({ field }) => (
-                <FormItem className="flex items-center gap-2 sm:pt-[120px]">
-                  <FormControl>
-                    <Input
-                      className="text-black"
-                      placeholder="Place ID"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+            <PlaceIdMap
+              onChangePlaceId={(placeId: string) =>
+                form.setValue("placementId", placeId)
+              }
+              placeId={isEdit && form.getValues("placementId")}
             />
           ) : (
             <>

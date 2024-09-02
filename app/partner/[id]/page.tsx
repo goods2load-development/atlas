@@ -24,8 +24,12 @@ const Partner = async ({ params }: { params: { id: string } }) => {
   }
 
   const testPlaceId = "ChIJMXnW227dOkcRW3Iy-GVzF_k";
-  const url = `https://maps.googleapis.com/maps/api/place/details/json?fields=name%2Crating%2Creviews%2Curl%2Cuser_ratings_total&rating=5&place_id=${testPlaceId}&key=${process.env.GOOGLE_API_KEY}`;
-  const placeInfo = await (await fetch(url)).json();
+  const url = `https://maps.googleapis.com/maps/api/place/details/json?fields=name%2Crating%2Creviews%2Curl%2Cuser_ratings_total&rating=5&place_id=${partnerData.placementId || testPlaceId}&key=${process.env.GOOGLE_API_KEY}`;
+  const placeInfo = await (
+    await fetch(url, {
+      cache: "no-store",
+    })
+  ).json();
 
   return (
     <PartnerDataPage
