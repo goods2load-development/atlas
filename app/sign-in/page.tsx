@@ -23,6 +23,7 @@ import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
 import Divider from "@/components/Divider";
 import { getCookie } from "react-use-cookie";
 import InputPassword from "@/components/common/InputPassword";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 interface Props {
   searchParams: {
@@ -33,6 +34,7 @@ interface Props {
 
 export default function Login({ searchParams: { callbackUrl, error } }: Props) {
   const [cookies] = useCookies(["accessToken"]);
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const formSchema = z.object({
     email: z.string().email(),
     password: z.string(),
@@ -45,11 +47,14 @@ export default function Login({ searchParams: { callbackUrl, error } }: Props) {
       password: "",
     },
   });
+
   const { user, postLoginData, authenticateUser } = useUserStore(
     (state: any) => state
   );
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    postLoginData(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!executeRecaptcha) return;
+    const token = await executeRecaptcha("login");
+    postLoginData({ ...values, recaptchaToken: token });
   }
 
   const signInWithGoogle = () => {

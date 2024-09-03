@@ -46,6 +46,7 @@ import italyFlag from "@/assets/italy-flag.svg";
 import cnFlag from "@/assets/cn-flag.svg";
 import inFlag from "@/assets/in-flag.svg";
 import CountryCode from "./common/CountryCode";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const phonesCode = [
   {
@@ -63,6 +64,7 @@ const phonesCode = [
 ];
 
 export default function PriceAlerts() {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [step, setStep] = useState(0);
   const formSchema = z
     .object({
@@ -134,7 +136,9 @@ export default function PriceAlerts() {
     );
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!executeRecaptcha) return;
+    const token = await executeRecaptcha("login");
     postRequest({
       url: "alerts/price",
       data: {
@@ -149,6 +153,7 @@ export default function PriceAlerts() {
           toRoute: `${item.toCountry}, ${item.to}`,
           price: item.price ? parseInt(item.price) : 0,
         })),
+        recaptchaToken: token,
       },
     }).then(() => {
       setStep(3);
