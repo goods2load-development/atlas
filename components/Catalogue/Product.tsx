@@ -3,6 +3,7 @@ import LeafIcon from "@/assets/Product/LeafIcon";
 import SelectionPopup from "./SelectionPopup";
 import { GoogleRating } from "./GoogleRating";
 import SaveIcon from "@/assets/save.svg";
+import SaveIconFilled from "@/assets/save-filled.svg";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { googleRatingMocks } from "./MOCK";
@@ -68,6 +69,18 @@ export default function Product(props: Props) {
     }
   };
 
+  const isAlreadySavedPartner = (
+    userSavedPartners: any = null,
+    partnerName: string
+  ) => {
+    if (!userSavedPartners) {
+      return false;
+    }
+    return userSavedPartners.some((item: any) => {
+      return item.name === partnerName;
+    });
+  };
+
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
       <div className="md:flex justify-between md:border-b">
@@ -104,12 +117,29 @@ export default function Product(props: Props) {
               </TooltipProvider>
             </div>
           </div>
-          <div className="w-1/2 flex flex-col justify-start p-6 item-center text-center text-[20px]/[22px] font-medium flex-1 lg:ml-8">
+          <div
+            key={user?.id}
+            className="w-1/2 flex flex-col justify-start p-6 item-center text-center text-[20px]/[22px] font-medium flex-1 lg:ml-8"
+          >
             <div className="flex justify-center items-center gap-3">
               <span>{props.company.name}</span>
-              <button onClick={onSavePartner}>
-                <Image width={18} height={18} src={SaveIcon} alt="save" />
-              </button>
+              {!isAlreadySavedPartner(
+                user?.savedPartners,
+                props.company.name
+              ) ? (
+                <button onClick={onSavePartner}>
+                  <Image width={18} height={18} src={SaveIcon} alt="save" />
+                </button>
+              ) : (
+                <div>
+                  <Image
+                    width={18}
+                    height={18}
+                    src={SaveIconFilled}
+                    alt="save filled"
+                  />
+                </div>
+              )}
             </div>
 
             <Image

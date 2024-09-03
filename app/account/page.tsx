@@ -1,8 +1,10 @@
 "use client";
 import React, { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { signOut } from "next-auth/react";
 import UIButton from "@/components/common/Button";
 import {
   Card,
@@ -18,7 +20,8 @@ import AddressForm from "@/components/AddressForm";
 import UploadCompanyLogo from "@/components/UploadCompanyLogo";
 import RegionalSettingsForm from "@/components/RegionalSettingsForm";
 import PriceAlerts from "@/components/PriceAlerts";
-import Image from "next/image";
+import LogoutIcon from "@/assets/logout.svg";
+import { TrendingUp } from "lucide-react";
 import { Bookmark } from "lucide-react";
 import { CircleX } from "lucide-react";
 
@@ -38,13 +41,21 @@ function RenderUserData({ data }: any) {
 }
 
 export default function Account() {
-  const { user, onDeleteSavedPartner } = useUserStore((state: any) => state);
+  const { user, logoutUser, onDeleteSavedPartner } = useUserStore(
+    (state: any) => state
+  );
   const [edit, setEdit] = useState<
     "info" | "address" | "regional" | "partners" | null
   >(null);
 
   const onDeletePartner = (id: string) => {
     onDeleteSavedPartner(id);
+  };
+
+  const onLogout = async () => {
+    logoutUser().then(() => {
+      signOut({ callbackUrl: "/" });
+    });
   };
 
   const info = [
@@ -107,20 +118,44 @@ export default function Account() {
             Account
           </i>
           <div className="mt-5 sm:mt-0 gap-4 flex items-center">
-            {user?.role === "admin" || user?.role === "provider" ? (
+            {user?.role === "admin" && (
               <Link
                 href={`${user?.role === "admin" ? "/dashboard/referral" : "/dashboard/performance"}`}
               >
                 <UIButton secondary className="w-full sm:w-[224px]">
-                  <img src="/analytics.svg" className="pr-1" /> Dashboard
+                  <TrendingUp className="w-4 h-4 mr-[6px]" />
+                  Dashboard
                 </UIButton>
               </Link>
-            ) : (
+            )}
+            {user?.role === "provider" && (
+              <Link
+                href={`${user?.role === "admin" ? "/dashboard/referral" : "/dashboard/performance"}`}
+              >
+                <UIButton secondary className="w-full sm:w-[224px]">
+                  <TrendingUp className="mr-[6px] w-4 h-4" />
+                  Show analytics
+                </UIButton>
+              </Link>
+            )}
+            {user?.role === "user" && (
               <div className="w-full sm:w-[224px]">
                 <PriceAlerts />
               </div>
             )}
             <DeleteAccount />
+            <button
+              onClick={onLogout}
+              className="flex items-center gap-3 text-[14px]/[17px] font-medium cursor-pointer hover:opacity-50 transition-all"
+            >
+              <Image
+                width={13}
+                height={16}
+                src={LogoutIcon}
+                alt="logout icon"
+              />
+              Logout
+            </button>
           </div>
         </div>
         <Card className="mb-10">
@@ -214,6 +249,7 @@ export default function Account() {
             )}
           </CardContent>
         </Card>
+
         <div className="flex justify-between mb-10">
           <span className="flex items-center text-[28px]/[40px] sm:text-[48px]/[52px]">
             <Bookmark className="w-10 h-10 text-primaryOrange mr-2" />
@@ -248,7 +284,7 @@ export default function Account() {
                         }}
                         className="absolute -right-2 -top-2 z-10"
                       >
-                        <CircleX />
+                        <CircleX className="text-red-600" />
                       </button>
                     )}
                   </Link>

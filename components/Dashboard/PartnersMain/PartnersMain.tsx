@@ -215,6 +215,7 @@ const PartnersMain = () => {
                   </button>
                   {tab === "active" && !partner.hasPage && (
                     <button
+                      title="create page"
                       onClick={() =>
                         push(`/dashboard/partners/create/${partner.partnerId}`)
                       }
@@ -224,6 +225,7 @@ const PartnersMain = () => {
                   )}
                   {tab === "active" && partner.hasPage && (
                     <button
+                      title="visit page"
                       onClick={() => push(`/partner/${partner.partnerId}`)}
                     >
                       <FileSymlink />
@@ -231,7 +233,10 @@ const PartnersMain = () => {
                   )}
                   {tab === "active" && partner.hasPage && (
                     <button
-                      onClick={() => push(`/dashboard/partners/edit/${partner.partnerId}`)}
+                      title="edit page"
+                      onClick={() =>
+                        push(`/dashboard/partners/edit/${partner.partnerId}`)
+                      }
                     >
                       <Edit2Icon />
                     </button>

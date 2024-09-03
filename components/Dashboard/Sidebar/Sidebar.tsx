@@ -4,7 +4,6 @@ import Logo from "@/components/Logo";
 import mockLogo from "@/assets/mock-logo.svg";
 import Socials from "@/components/Socials";
 import { cn, isUserAdmin, isUserProvider } from "@/lib/utils";
-import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -46,12 +45,6 @@ const Sidebar: React.FC = () => {
       })
     );
   }, [pathname]);
-
-  const onLogout = async () => {
-    logoutUser().then(() => {
-      signOut({ callbackUrl: "/" });
-    });
-  };
 
   return (
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
@@ -131,15 +124,6 @@ const Sidebar: React.FC = () => {
               </Link>
             </>
           )}
-          <button
-            onClick={() => {
-              onLogout();
-            }}
-            className="flex  font-light pl-[12px]"
-          >
-            <LogOut className="mr-[8px]" />
-            Logout Account
-          </button>
         </div>
       </div>
       <div>

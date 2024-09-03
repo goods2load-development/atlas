@@ -363,7 +363,7 @@ function UserRegistrationComponent() {
               <>
                 <FormItem className="w-full mb-5 flex gap-4 items-center justify-between">
                   <FormLabel className="font-light sm:font-normal">
-                    Company photo
+                    Company logo
                   </FormLabel>
                   <FormControl>
                     <Input
@@ -380,7 +380,7 @@ function UserRegistrationComponent() {
                   </FormControl>
                   <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
                     <img className="mr-[8px]" src="/upload.svg" />
-                    {field.value ? field.value.name : "Upload img"}
+                    {field.value ? field.value.name : "Upload logo"}
                   </FormLabel>
                 </FormItem>
                 <FormMessage />

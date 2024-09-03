@@ -42,7 +42,7 @@ function IsRequired() {
 }
 
 export default function SelectionPopup(props: SelectionPopupProps) {
-  const {deliveryBy} = useFilterStore(); // required field for BE
+  const { deliveryBy } = useFilterStore(); // required field for BE
   const [step, setStep] = useState(0);
   const formSchema = z.object({
     countryCode: z.string(),
@@ -64,10 +64,10 @@ export default function SelectionPopup(props: SelectionPopupProps) {
     },
   });
   function onSubmit(values: z.infer<typeof formSchema>) {
-
     postRequest({
       url: "orders/select-catalog",
       data: {
+        userId: localStorage.getItem("id"),
         orderId: props.orderId,
         transportation: deliveryBy,
         customerPhone: values.countryCode + values.phone,
@@ -78,8 +78,8 @@ export default function SelectionPopup(props: SelectionPopupProps) {
         delivery: props.delivery,
         portArrival: props.portArrival,
         portDeparture: props.portDeparture,
-        price: props.price, 
-        placementOfGoods: props.placementOfGoods
+        price: props.price,
+        placementOfGoods: props.placementOfGoods,
       },
     }).then(() => {
       setStep(1);

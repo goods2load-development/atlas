@@ -110,14 +110,18 @@ const config = {
       },
       keyframes: {
         "button-ping": {
-          "0%": { transform: "scale(.9)" },
+          "0%": {
+            transform: "scale(.9)",
+          },
           "70%": {
             transform: "scale(1)",
-            "box-shadow": "0 0 0 10px rgb(255,103,32,0.2)",
+            "box-shadow":
+              "0 0 10px 10px rgba(255, 103, 32, 0.5)" /* Added blur radius of 10px */,
           },
           "100%": {
             transform: "scale(.9)",
-            "box-shadow": "0 0 0 0 rgb(255,103,32,0.2)",
+            "box-shadow":
+              "0 0 10px 0 rgba(255, 103, 32, 0.5)" /* Added blur radius of 10px */,
           },
         },
         "infinite-scroll": {
