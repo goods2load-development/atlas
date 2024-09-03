@@ -21,6 +21,7 @@ import AttachSvg from "../../Svg/CareerSvg/Attach/AttachSvg";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Label } from "@radix-ui/react-label";
 import { postRequest } from "@/lib/utils";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 const MAX_FILE_SIZE = 2000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -42,6 +43,7 @@ const formSchema = z.object({
 });
 
 const CareerForm: React.FC = () => {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,8 +55,16 @@ const CareerForm: React.FC = () => {
     },
   });
   const fileRef = form.register("currentFile", { required: true });
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    postRequest({ url: "/careers", data });
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    if (!executeRecaptcha) return;
+    const token = await executeRecaptcha("login");
+    postRequest({
+      url: "/careers",
+      data: {
+        ...data,
+        recaptchaToken: token,
+      },
+    });
   };
   const data: any = [
     { placeHolder: "First name", type: "text", name: "firstName" },

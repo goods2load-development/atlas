@@ -7,7 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 import axios from "axios";
-import { signOut } from "next-auth/react";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "api/";
 axios.defaults.withCredentials = true;

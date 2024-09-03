@@ -1,4 +1,4 @@
-import React, {  useState } from "react";
+import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { postRequest } from "@/lib/utils";
 
@@ -25,7 +25,7 @@ import UIButton from "@/components/common/Button";
 import CountryCode from "../common/CountryCode";
 import { Textarea } from "../ui/textarea";
 import { useParams } from "next/navigation";
-import {  useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
@@ -65,6 +65,7 @@ export default function SendDataToPartnerDialog({
     const data = {
       ...values,
       phone: `${values.countryCode}${values.phone}`,
+      recaptchaToken: token,
     };
 
     delete (data as any).countryCode;

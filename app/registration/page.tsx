@@ -38,6 +38,7 @@ import InputPassword from "@/components/common/InputPassword";
 import RegistrationSuccessPopup from "./RegistrationSuccessPopup";
 import CountryCode from "@/components/common/CountryCode";
 import { useSearchParams } from "next/navigation";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 interface CountriesProps {
   value: string;
@@ -52,6 +53,7 @@ function IsRequired() {
 }
 
 function UserRegistrationComponent() {
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(["accessToken"]);
   const isUser = useSearchParams().toString().split("=")[0] !== "provider";
@@ -191,8 +193,13 @@ function UserRegistrationComponent() {
   const { postUserRegistrationData } = useRegistrationStore(
     (state: any) => state
   );
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    postUserRegistrationData(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!executeRecaptcha) return;
+    const token = await executeRecaptcha("login");
+    postUserRegistrationData({
+      ...values,
+      recaptchaToken: token,
+    });
   }
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
