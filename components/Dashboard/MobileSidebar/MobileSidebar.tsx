@@ -16,7 +16,7 @@ const MobileSidebar: React.FC = () => {
   const [expanded, setExpanded] = useState(false);
   const { user } = useUserStore((state: any) => state);
 
-  const isProvider = isUserProvider(user.role);
+  const isProvider = isUserProvider(user?.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",

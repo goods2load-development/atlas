@@ -1,8 +1,10 @@
 import { StaticImageData } from "next/image";
 import logoPlaceholder from "@/assets/Product/DP_World.png";
 import logoPlaceholder2 from "@/assets/Product/Hapag_Lloyd.png";
+import { GoogleRatingProps } from "./GoogleRating";
 
 export interface IProduct {
+  orderId: string;
   withdraw: string;
   delivery: string;
   orderCost: string;
@@ -15,29 +17,17 @@ export interface IProduct {
   placementOfGoods: string;
 }
 
-export const products: IProduct[] = [
+export const googleRatingMocks: GoogleRatingProps[] = [
   {
-    withdraw: "10/04/2024",
-    delivery: "20/05/2024",
-    orderCost: "From $ 4380",
-    estimatedTransit: 48,
-    CO2EmissionControlled: false,
-    company: { name: "DP_World", logo: logoPlaceholder },
-    portArrival: "",
-    portDeparture: "",
-    price: "0",
-    placementOfGoods: "Pallets"
+    value: 4.6,
+    reviewsCount: 34,
   },
   {
-    withdraw: "19/04/2024",
-    delivery: "29/05/2024",
-    orderCost: "From $ 4308",
-    estimatedTransit: 53,
-    CO2EmissionControlled: true,
-    company: { name: "Hapag_Lloyd", logo: logoPlaceholder2 },
-    portArrival: "",
-    portDeparture: "",
-    price: "0",
-    placementOfGoods: "Pallets"
+    value: 3.1,
+    reviewsCount: 45,
+  },
+  {
+    value: 5,
+    reviewsCount: 94,
   },
 ];

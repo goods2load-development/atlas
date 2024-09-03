@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import Cookie from "js-cookie";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -9,6 +10,44 @@ import axios from "axios";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "api/";
 axios.defaults.withCredentials = true;
+
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  async function (error) {
+    const originalRequest = error.config;
+
+    if (
+      error.response &&
+      error.response.status === 403 &&
+      error.response.data.message === "jwt expired" &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        const response = await axios.post(`/auth/refresh`);
+        if (response.status === 201) {
+          Cookie.set("access_token", response.data.access_token, {
+            expires: new Date(Date.now() + 60 * 60 * 1000),
+          });
+
+          originalRequest.headers["Authorization"] =
+            `Bearer ${response.data.access_token}`;
+
+          return axios(originalRequest);
+        } else {
+          throw new Error(response.statusText);
+        }
+      } catch (error) {
+        return error;
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 axios.interceptors.response.use(
   function (response) {
@@ -97,4 +136,64 @@ export const filterByField = (arr: any[], field: string, value: string) => {
   return arr.filter((item) =>
     item[field].toString().toLowerCase().includes(value.toLowerCase())
   );
+};
+
+export const addToFileList = (fileList: FileList, newFile: File) => {
+  const dataTransfer = new DataTransfer();
+
+  for (let i = 0; i < fileList.length; i++) {
+    dataTransfer.items.add(fileList[i]);
+  }
+  dataTransfer.items.add(newFile);
+
+  return dataTransfer.files;
+};
+
+export const removeFileFromFileList = (index: number, fileList: FileList) => {
+  const dt = new DataTransfer();
+
+  for (let i = 0; i < fileList.length; i++) {
+    const file = fileList[i];
+    if (index !== i) {
+      dt.items.add(file);
+    }
+  }
+
+  return dt.files;
+};
+
+export const getRandomHexColor = () =>
+  `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, "0")}`;
+
+export const urlToFile = async (
+  url: string,
+  filename: string,
+  mimeType: string
+) => {
+  const response = await fetch(url);
+  const blob = await response.blob();
+
+  const file = new File([blob], filename, { type: mimeType });
+
+  return file;
+};
+
+export const urlsToFileList = async (urls: string[]) => {
+  const filesArray = await Promise.all(
+    urls.map(async (url, index) => {
+      const mimeType = `image/${url.split(".").at(-1)}`;
+      return await urlToFile(
+        url,
+        `file${index + 1}.${mimeType.split("/")[1]}`,
+        mimeType
+      );
+    })
+  );
+
+  const dataTransfer = new DataTransfer();
+  filesArray.forEach((file) => dataTransfer.items.add(file));
+
+  return dataTransfer.files;
 };

@@ -16,11 +16,15 @@ export default function OpportunitiesPage({
   const colorClass = pathname === params.route ? "text-black" : "text-blue";
 
   return (
-    <div className="grid sm:grid-cols-[auto_1fr]">
-      <Sidebar />
+    <div className="grid sm:grid-cols-[auto]">
+      <div className="fixed">
+        <Sidebar />
+      </div>
       <MobileSidebar />
 
-      <div className={`${colorClass} lg:p-10 p-4  bg-[#f5f4f3] pt-20`}>
+      <div
+        className={`${colorClass} lg:p-10 p-4  bg-[#f5f4f3] pt-20 sm:ml-[240px]`}
+      >
         <div className="flex gap-2 flex-col font-poppins">
           <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
             Opportunities

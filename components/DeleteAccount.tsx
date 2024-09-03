@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { redirect } from "next/navigation";
 import { useUserStore } from "@/lib/store";
+import { Trash2 } from "lucide-react";
 
 export default function DeleteAccount() {
   const { deleteUser } = useUserStore((state: any) => state);
@@ -23,7 +24,7 @@ export default function DeleteAccount() {
           secondary
           className="text-[#666666] border-[#666666] hover:bg-[#666666] w-full sm:w-[224px]"
         >
-          <img src="/trash.svg" />
+          <Trash2 className="w-4 h-4 mr-[6px]" />
           Delete account
         </UIButton>
       </DialogTrigger>

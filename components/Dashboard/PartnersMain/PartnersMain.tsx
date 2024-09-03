@@ -7,7 +7,13 @@ import { useToast } from "@/components/ui/use-toast";
 import { Input } from "@/components/ui/input";
 import { usePartnersStore } from "@/lib/store";
 import clsx from "clsx";
-import { Check, TrashIcon } from "lucide-react";
+import {
+  Check,
+  Edit2Icon,
+  FilePlus,
+  FileSymlink,
+  TrashIcon,
+} from "lucide-react";
 import ViewPartnerDialog from "./ViewPartnerDialog";
 import debounce from "lodash/debounce";
 import { filterByField } from "@/lib/utils";
@@ -34,13 +40,17 @@ const PartnersMain = () => {
   });
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const { replace } = useRouter();
+  const { replace, push } = useRouter();
   const tab = searchParams.get("tab") || "new";
   const [searchValue, setSearchValue] = useState("");
   const filteredPartners = useMemo(
     () =>
       filterByField(
-        partners.map((par) => ({ partnerId: par.id, ...par.user })),
+        partners.map((par) => ({
+          hasPage: par.hasPage,
+          partnerId: par.id,
+          ...par.user,
+        })),
         "email",
         searchValue
       ),
@@ -189,18 +199,48 @@ const PartnersMain = () => {
                       }
                     />
                   )}
-                  <button
-                    onClick={() => confirmPartner(partner.partnerId)}
-                    title="Confirm"
-                  >
-                    <Check />
-                  </button>
+                  {tab !== "active" && (
+                    <button
+                      onClick={() => confirmPartner(partner.partnerId)}
+                      title="Confirm"
+                    >
+                      <Check />
+                    </button>
+                  )}
                   <button
                     onClick={() => unconfirmPartner(partner.partnerId)}
                     title="Delete"
                   >
                     <TrashIcon />
                   </button>
+                  {tab === "active" && !partner.hasPage && (
+                    <button
+                      title="create page"
+                      onClick={() =>
+                        push(`/dashboard/partners/create/${partner.partnerId}`)
+                      }
+                    >
+                      <FilePlus />
+                    </button>
+                  )}
+                  {tab === "active" && partner.hasPage && (
+                    <button
+                      title="visit page"
+                      onClick={() => push(`/partner/${partner.partnerId}`)}
+                    >
+                      <FileSymlink />
+                    </button>
+                  )}
+                  {tab === "active" && partner.hasPage && (
+                    <button
+                      title="edit page"
+                      onClick={() =>
+                        push(`/dashboard/partners/edit/${partner.partnerId}`)
+                      }
+                    >
+                      <Edit2Icon />
+                    </button>
+                  )}
                 </div>
               </div>
             </ListItem>

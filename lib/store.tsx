@@ -1,8 +1,10 @@
 import { create } from "zustand";
 import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
+import Cookie from "js-cookie";
 import {
   Partner,
+  PartnerPageResponse,
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
 
@@ -99,6 +101,7 @@ export const useRegistrationStore = create((set) => ({
     formData.append("insuranceStatement", data.insuranceStatement);
     formData.append("issuingAuthority", data.issuingAuthority);
     formData.append("tradeLicenseNumber", data.tradeLicenseNumber);
+    formData.append("companyPhoto", data.companyPhoto);
 
     delete data.confirmPassword;
     delete data.privacy;
@@ -106,6 +109,7 @@ export const useRegistrationStore = create((set) => ({
     delete data.insuranceStatement;
     delete data.issuingAuthority;
     delete data.tradeLicenseNumber;
+    delete data.companyPhoto;
 
     delete data.license;
     postRequest({
@@ -142,6 +146,9 @@ export const useUserStore = create((set) => ({
     }).then((userData: any) => {
       // TODO add redirect
       localStorage.setItem("id", userData.data.id);
+      Cookie.set("access_token", userData.data.access_token, {
+        expires: new Date(Date.now() + 60 * 60 * 1000),
+      });
       set(() => ({ user: userData?.data }));
     });
   },
@@ -166,9 +173,10 @@ export const useUserStore = create((set) => ({
   },
   updateUser: async (data: any) => {
     const id = localStorage.getItem("id");
+    const { savedPartners, ...restData } = data;
     await patchRequest({
       url: `/users/${id}`,
-      data: data,
+      data: restData,
     }).then((userData: any) => {
       set((state: any) => ({ user: { ...state.user, ...userData?.data } }));
     });
@@ -201,10 +209,41 @@ export const useUserStore = create((set) => ({
       url: "/auth/logout",
     }).then(() => {
       localStorage.removeItem("id");
+      Cookie.remove("access_token");
       set(() => ({
         user: {},
       }));
     });
+  },
+  onSaveUserPartner: async (name: string) => {
+    postRequest({
+      url: `partners/${name}/save`,
+    }).then((data) => {
+      if (!data) return;
+
+      set(({ user }: any) => {
+        return {
+          user: {
+            ...user,
+            savedPartners: [...user.savedPartners, data],
+          },
+        };
+      });
+    });
+  },
+  onDeleteSavedPartner: async (id: string) => {
+    await deleteRequest({ url: `/partners/${id}/delete` }).then(
+      ({ partnerId }) => {
+        set(({ user }: any) => ({
+          user: {
+            ...user,
+            savedPartners: user.savedPartners.filter(
+              ({ id }: { id: string }) => id !== partnerId
+            ),
+          },
+        }));
+      }
+    );
   },
 }));
 
@@ -309,6 +348,13 @@ export const useReferralsStore = create((set) => ({
       url: `referals/view-count?value=${value}`,
     }).finally(() => set({ isReferralsLoading: false }));
   },
+  updateReferralsIsRefInCatalog: (value: boolean) => {
+    set({ isReferralsLoading: true });
+
+    return patchRequest({
+      url: `referals/is-in-catalog?value=${value}`,
+    }).finally(() => set({ isReferralsLoading: false }));
+  },
   deleteReferral: (id: string) => {
     set({ isReferralsLoading: true });
 
@@ -368,6 +414,7 @@ export const useRoutesStore = create((set) => ({
 
 interface PartnersStoreState {
   partners: ResponsePartner[];
+  partnerPage: PartnerPageResponse | null;
   isPartnersLoading: boolean;
   getPartnersApproved: () => Promise<void>;
   getPartnersInReview: () => Promise<void>;
@@ -375,10 +422,13 @@ interface PartnersStoreState {
   approvePartner: (id: string) => Promise<void>;
   rejectPartner: (id: string) => Promise<void>;
   replyPartner: (id: string, message: string) => Promise<void>;
+  createPartnerPage: (data: any, id: string) => Promise<void>;
+  getPartnersPage: (id: string) => Promise<void>;
 }
 
 export const usePartnersStore = create<PartnersStoreState>((set) => ({
   partners: [],
+  partnerPage: null,
   isPartnersLoading: true,
   getPartnersApproved: () => {
     set({ isPartnersLoading: true });
@@ -430,5 +480,21 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
         message,
       },
     }).finally(() => set({ isPartnersLoading: false }));
+  },
+  createPartnerPage: (data: any, id: string) => {
+    set({ isPartnersLoading: true });
+    return postRequest({
+      url: `partners/${id}/information`,
+      data,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).finally(() => set({ isPartnersLoading: false }));
+  },
+  getPartnersPage: (id: string) => {
+    set({ isPartnersLoading: true });
+    return getRequest({
+      url: `partners/${id}/information`,
+    })
+      .then((data) => set({ partnerPage: data }))
+      .finally(() => set({ isPartnersLoading: false }));
   },
 }));

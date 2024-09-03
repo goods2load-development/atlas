@@ -69,7 +69,7 @@ export default function Header({ children }: PropsWithChildren) {
                   <Link href="/sign-in">Log in</Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link href="/registration">Sign up</Link>
+                  <Link href="/registration?user">Sign up</Link>
                 </NavigationMenuItem>
               </>
             )}

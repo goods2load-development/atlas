@@ -25,8 +25,10 @@ import { Input } from "@/components/ui/input";
 import UIButton from "@/components/common/Button";
 import { useFilterStore } from "@/lib/filterStore";
 import CountryCode from "../common/CountryCode";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 interface SelectionPopupProps {
+  orderId: string;
   company: string;
   withdraw: string;
   delivery: string;
@@ -41,8 +43,9 @@ function IsRequired() {
 }
 
 export default function SelectionPopup(props: SelectionPopupProps) {
-  const {deliveryBy} = useFilterStore(); // required field for BE
+  const { deliveryBy } = useFilterStore(); // required field for BE
   const [step, setStep] = useState(0);
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const formSchema = z.object({
     countryCode: z.string(),
     phone: z
@@ -62,11 +65,15 @@ export default function SelectionPopup(props: SelectionPopupProps) {
       companyName: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!executeRecaptcha) return;
+    const token = await executeRecaptcha("login");
     postRequest({
       url: "orders/select-catalog",
       data: {
+        userId: localStorage.getItem("id"),
+        orderId: props.orderId,
         transportation: deliveryBy,
         customerPhone: values.countryCode + values.phone,
         customerEmail: values.email,
@@ -76,8 +83,9 @@ export default function SelectionPopup(props: SelectionPopupProps) {
         delivery: props.delivery,
         portArrival: props.portArrival,
         portDeparture: props.portDeparture,
-        price: props.price, // Add for avarge company analytics
-        placementOfGoods: props.placementOfGoods // Add for avarge company analytics
+        price: props.price,
+        placementOfGoods: props.placementOfGoods,
+        recaptchaToken: token,
       },
     }).then(() => {
       setStep(1);

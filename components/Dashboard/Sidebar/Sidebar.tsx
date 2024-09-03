@@ -4,7 +4,6 @@ import Logo from "@/components/Logo";
 import mockLogo from "@/assets/mock-logo.svg";
 import Socials from "@/components/Socials";
 import { cn, isUserAdmin, isUserProvider } from "@/lib/utils";
-import { LogOut } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -14,9 +13,10 @@ import { signOut } from "next-auth/react";
 
 const Sidebar: React.FC = () => {
   const pathname = usePathname();
-  const { logoutUser, user } = useUserStore((state: any) => state);
-  const isAdmin = isUserAdmin(user.role);
-  const isProvider = isUserProvider(user.role);
+  const { user, logoutUser, getUser } = useUserStore((state: any) => state);
+
+  const isAdmin = isUserAdmin(user?.role);
+  const isProvider = isUserProvider(user?.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -31,6 +31,10 @@ const Sidebar: React.FC = () => {
   ]);
 
   useEffect(() => {
+    if (!!!user?.id) getUser();
+  }, [user?.id]);
+
+  useEffect(() => {
     const slug = pathname.split("/").pop();
     setSidebar(
       sideBar.map((it) => {
@@ -42,17 +46,18 @@ const Sidebar: React.FC = () => {
     );
   }, [pathname]);
 
-  const onLogout = async () => {
-    logoutUser().then(() => {
-      signOut({ callbackUrl: "/" });
-    });
-  };
-
   return (
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div>
-          <Image alt="logo-performance" width={50} height={55} src={mockLogo} />
+          <Link href="/">
+            <Image
+              alt="logo-performance"
+              width={50}
+              height={55}
+              src={mockLogo}
+            />
+          </Link>
         </div>
         <div className="flex flex-col">
           {isProvider && (
@@ -101,7 +106,7 @@ const Sidebar: React.FC = () => {
             <>
               <Link
                 href="/dashboard/referral"
-                className="font-semibold mb-8 hover:no-underline uppercase"
+                className="font-semibold mb-8 hover:no-underline uppercase mt-6"
               >
                 Referral
               </Link>
@@ -125,15 +130,6 @@ const Sidebar: React.FC = () => {
               </Link>
             </>
           )}
-          <button
-            onClick={() => {
-              onLogout();
-            }}
-            className="flex  font-light pl-[12px]"
-          >
-            <LogOut className="mr-[8px]" />
-            Logout Account
-          </button>
         </div>
       </div>
       <div>

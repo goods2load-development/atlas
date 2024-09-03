@@ -87,6 +87,7 @@ const config = {
         bgLogistics: "url(../public/logisticbg.svg)",
         bgReferrals: "url(../public/referralsbg.svg)",
         bgReferralsMobile: "url(../public/referralsbg-mobile.svg)",
+        bgPartnerLogo: "url(../public/partner-logo-line.svg)",
         bgQuestions: "url(../public/accordionbg.png)",
         bgCareer: "url(../assets/careerBg.png)",
         "career-mobile": "url(../assets/careerBg-mobile.jpg)",
@@ -103,10 +104,26 @@ const config = {
       },
       animation: {
         "infinite-scroll": "infinite-scroll 25s linear infinite",
+        "button-ping": "button-ping 1.5s infinite",
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       keyframes: {
+        "button-ping": {
+          "0%": {
+            transform: "scale(.9)",
+          },
+          "70%": {
+            transform: "scale(1)",
+            "box-shadow":
+              "0 0 10px 10px rgba(255, 103, 32, 0.5)" /* Added blur radius of 10px */,
+          },
+          "100%": {
+            transform: "scale(.9)",
+            "box-shadow":
+              "0 0 10px 0 rgba(255, 103, 32, 0.5)" /* Added blur radius of 10px */,
+          },
+        },
         "infinite-scroll": {
           from: { transform: "translateX(0)" },
           to: { transform: "translateX(-100%)" },
