@@ -25,6 +25,7 @@ import { Input } from "@/components/ui/input";
 import UIButton from "@/components/common/Button";
 import { useFilterStore } from "@/lib/filterStore";
 import CountryCode from "../common/CountryCode";
+import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 
 interface SelectionPopupProps {
   orderId: string;
@@ -44,6 +45,7 @@ function IsRequired() {
 export default function SelectionPopup(props: SelectionPopupProps) {
   const { deliveryBy } = useFilterStore(); // required field for BE
   const [step, setStep] = useState(0);
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const formSchema = z.object({
     countryCode: z.string(),
     phone: z
@@ -63,7 +65,10 @@ export default function SelectionPopup(props: SelectionPopupProps) {
       companyName: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!executeRecaptcha) return;
+    const token = await executeRecaptcha("login");
     postRequest({
       url: "orders/select-catalog",
       data: {
@@ -80,6 +85,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
         portDeparture: props.portDeparture,
         price: props.price,
         placementOfGoods: props.placementOfGoods,
+        recaptchaToken: token,
       },
     }).then(() => {
       setStep(1);

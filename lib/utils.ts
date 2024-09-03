@@ -1,5 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
+import Cookie from "js-cookie";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -9,6 +10,44 @@ import axios from "axios";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "api/";
 axios.defaults.withCredentials = true;
+
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  async function (error) {
+    const originalRequest = error.config;
+
+    if (
+      error.response &&
+      error.response.status === 403 &&
+      error.response.data.message === "jwt expired" &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        const response = await axios.post(`/auth/refresh`);
+        if (response.status === 201) {
+          Cookie.set("access_token", response.data.access_token, {
+            expires: new Date(Date.now() + 60 * 60 * 1000),
+          });
+
+          originalRequest.headers["Authorization"] =
+            `Bearer ${response.data.access_token}`;
+
+          return axios(originalRequest);
+        } else {
+          throw new Error(response.statusText);
+        }
+      } catch (error) {
+        return error;
+      }
+    }
+
+    return Promise.reject(error);
+  }
+);
 
 axios.interceptors.response.use(
   function (response) {
