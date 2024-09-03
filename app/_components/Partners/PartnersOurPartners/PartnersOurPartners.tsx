@@ -25,11 +25,11 @@ const PartnersOurPartners: React.FC = () => {
       </div>
       <div className="flex w-full text-black gap-2 flex-wrap justify-center lg:justify-start">
         {partners &&
-          partners.map(({ user }, idx) => {
+          partners.map(({ user, ...partner }, idx) => {
             return (
               <Link
                 key={idx}
-                href={`/partner/123`}
+                href={`/partner/${partner.id}`}
                 className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative"
               >
                 <div
