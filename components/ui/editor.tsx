@@ -50,4 +50,6 @@ const Editor = React.memo(
   }
 );
 
+Editor.displayName = "Editor";
+
 export default Editor;
