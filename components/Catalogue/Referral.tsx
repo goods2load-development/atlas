@@ -16,7 +16,7 @@ export const Referal = ({ className }: { className?: string }) => {
     getAllReferrals();
   }, []);
 
-  if (!referals || !referalIsInCatalog) {
+  if (referals?.length === 0 || !referalIsInCatalog) {
     return;
   }
 
@@ -24,7 +24,7 @@ export const Referal = ({ className }: { className?: string }) => {
     <div className={clsx("min-h-[360px] w-[279px]", className)}>
       <div
         style={{
-          backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referals[0].picture})`,
+          backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referals[0]?.picture})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
@@ -35,7 +35,7 @@ export const Referal = ({ className }: { className?: string }) => {
         <Link
           target="_blank"
           className="text-primaryOrange text-[18px]/[22px] font-medium flex justify-between mt-auto"
-          href={referals[0].url}
+          href={referals[0]?.url}
         >
           Read more
           <Image width={100} height={5} src={longArrow} alt="arrow" />
