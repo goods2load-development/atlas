@@ -95,7 +95,7 @@ const ReferralMain = () => {
       .then(
         toast({
           title: "New referral added.",
-          variant: "default",
+          variant: "destructive",
           className: "bg-green-500 text-white",
         })
       );
@@ -125,7 +125,7 @@ const ReferralMain = () => {
       .then(() =>
         toast({
           title: "Referrals list updated.",
-          variant: "default",
+          variant: "destructive",
           className: "bg-green-500",
         })
       );
@@ -137,7 +137,7 @@ const ReferralMain = () => {
       .then(
         toast({
           title: "Referral deleted.",
-          variant: "default",
+          variant: "destructive",
           className: "bg-green-500",
         })
       );
@@ -163,7 +163,7 @@ const ReferralMain = () => {
       .then(
         toast({
           title: `Referral "${data.title}" edited.`,
-          variant: "default",
+          variant: "destructive",
           className: "bg-green-500",
         })
       );

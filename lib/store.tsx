@@ -7,6 +7,7 @@ import {
   PartnerPageResponse,
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
+import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -496,5 +497,150 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     })
       .then((data) => set({ partnerPage: data }))
       .finally(() => set({ isPartnersLoading: false }));
+  },
+}));
+
+interface BlogAdminStoreState {
+  blogs: Blog[];
+  blog: Blog | null;
+  categories: any[];
+  comments: BlogComment[];
+  unapprovedComments: BlogComment[];
+  isBlogLoading: boolean;
+  createBlog: (data: any) => Promise<void>;
+  getBlogCategories: () => Promise<void>;
+  getBlogs: (skip?: number, take?: number) => Promise<void>;
+  getBlog: (id: string) => Promise<void>;
+  deleteBlog: (id: string) => Promise<void>;
+  getCommentsById: (id: string) => Promise<void>;
+  getUnapprovedComments: () => Promise<void>;
+  deleteCommentById: (id: string) => Promise<void>;
+  approveComment: (id: string) => Promise<void>;
+  createBlogCategory: (data: {
+    name: string;
+    description: string;
+  }) => Promise<void>;
+  updateBlogCategory: (
+    data: {
+      name: string;
+      description: string;
+    },
+    id: string
+  ) => Promise<void>;
+  deleteBlogCategory: (id: string) => Promise<void>;
+}
+
+export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
+  blogs: [],
+  blog: null,
+  categories: [],
+  comments: [],
+  unapprovedComments: [],
+  isBlogLoading: true,
+  createBlog: (data: any) => {
+    set({ isBlogLoading: true });
+    return postRequest({
+      url: "blogs",
+      data,
+    })
+      .then((blogs) => {
+        set({ blogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  getBlogs: (skip = 0, take = 15) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: "blogs",
+      params: {
+        skip,
+        take,
+      },
+    })
+      .then((blogs) => {
+        set({ blogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  getBlog: (id: string) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blogs/${id}`,
+    })
+      .then((blog) => {
+        set({ blog });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  deleteBlog: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blogs/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getCommentsById: (id: string) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blog-comments/${id}/approved`,
+    })
+      .then((comments) => {
+        set({ comments });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  deleteCommentById: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blog-comments/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getUnapprovedComments: () => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blog-comments/unapproved`,
+    })
+      .then((unapprovedComments) => {
+        set({ unapprovedComments });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  approveComment: (id: string) => {
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blog-comments/${id}/approve`,
+      data: {
+        approved: true,
+      },
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getBlogCategories: () => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: "blog-types",
+    })
+      .then((categories) => {
+        set({ categories });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  createBlogCategory: (data) => {
+    set({ isBlogLoading: true });
+    return postRequest({
+      url: "blog-types",
+      data,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  updateBlogCategory: (data, id) => {
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blog-types/${id}`,
+      data,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  deleteBlogCategory: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blog-types/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
   },
 }));

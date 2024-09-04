@@ -352,7 +352,7 @@ const PartnerDataPage = ({
       push("/dashboard/partners?tab=active");
       toast({
         title: "Page successfully created.",
-        variant: "default",
+        variant: "destructive",
         className: "bg-green-500",
       });
     });

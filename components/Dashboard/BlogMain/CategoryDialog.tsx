@@ -18,24 +18,60 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
 import { useState } from "react";
+import { Textarea } from "@/components/ui/textarea";
+import { useBlogAdminStore } from "@/lib/store";
+import { Edit } from "lucide-react";
 
 const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
+  name: z.string().min(1, "Title is required"),
+  description: z.string().min(1, "Description is required"),
 });
 
-const AddCategoryDialog = () => {
+const CategoryDialog = ({
+  type,
+  category,
+}: {
+  type: "create" | "update";
+  category?: any;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const isCreate = type === "create";
+  const isUpdate = type === "update";
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "all",
     shouldUnregister: false,
+    ...(isUpdate && {
+      defaultValues: {
+        name: category.name,
+        description: category.description,
+      },
+    }),
   });
 
-  const { handleSubmit, control, reset, getValues, setValue } = form;
+  const { handleSubmit, control, reset } = form;
+
+  const { createBlogCategory, updateBlogCategory, getBlogCategories } =
+    useBlogAdminStore();
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    reset();
+    if (isCreate) {
+      createBlogCategory(data)
+        .then(getBlogCategories)
+        .then(() => {
+          reset();
+          setIsOpen(false);
+        });
+    }
+    if (isUpdate) {
+      updateBlogCategory(data, category.id)
+        .then(getBlogCategories)
+        .then(() => {
+          reset();
+          setIsOpen(false);
+        });
+    }
   };
 
   return (
@@ -43,7 +79,7 @@ const AddCategoryDialog = () => {
       <DialogContent onCloseClick={() => setIsOpen(false)} className="p-8">
         <DialogHeader>
           <DialogTitle className="text-center text-[40px]/[48px] mb-3 uppercase font-bold">
-            Add new category
+            {isCreate ? "Add new category" : "Edit category"}
           </DialogTitle>
         </DialogHeader>
         <FormProvider {...form}>
@@ -51,7 +87,7 @@ const AddCategoryDialog = () => {
             <div className="flex flex-col gap-4">
               <FormField
                 control={control}
-                name="title"
+                name="name"
                 render={({ field }) => (
                   <FormItem className="flex items-center gap-2">
                     <FormControl>
@@ -65,8 +101,25 @@ const AddCategoryDialog = () => {
                   </FormItem>
                 )}
               />
+              <FormField
+                control={control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2">
+                    <FormControl>
+                      <Textarea
+                        className="bg-gray-2 border-0 min-h-[200px]"
+                        placeholder="Description..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
               <Button
+                onClick={(e) => e.stopPropagation()}
                 type="submit"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
@@ -77,10 +130,16 @@ const AddCategoryDialog = () => {
         </FormProvider>
       </DialogContent>
       <DialogTrigger asChild>
-        <Button>Add new category</Button>
+        {isCreate ? (
+          <Button>Add new category</Button>
+        ) : (
+          <button title="update">
+            <Edit />
+          </button>
+        )}
       </DialogTrigger>
     </Dialog>
   );
 };
 
-export default AddCategoryDialog;
+export default CategoryDialog;
