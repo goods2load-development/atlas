@@ -1,3 +1,4 @@
+import Link from "next/link";
 import React from "react";
 
 interface Blog {
@@ -8,6 +9,7 @@ interface Blog {
   createdAt: string;
   readingTime: number;
   blogTypeId: string;
+  slug: string;
 }
 
 interface BlogType {
@@ -39,7 +41,7 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => (
               alt={blog.title}
             />
             <div className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg">
-              {category} {/* Display the category name */}
+              {category}
             </div>
           </div>
           <div className="p-4 flex flex-col h-full justify-between">
@@ -51,12 +53,15 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => (
               <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
               <span>{`${blog.readingTime} min read`}</span>
             </div>
-            <a
-              href="#"
+            <Link
+              href={{
+                pathname: `/blog/${blog.slug}`,
+                query: { id: blog.id },
+              }}
               className="text-orange-500 hover:underline mt-4 inline-block self-start"
             >
               Know more →
-            </a>
+            </Link>
           </div>
         </div>
       );
@@ -65,3 +70,4 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => (
 );
 
 export default BlogList;
+
