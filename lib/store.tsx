@@ -412,6 +412,30 @@ export const useRoutesStore = create((set) => ({
   },
 }));
 
+export const usePriceAlertsStore = create((set) => ({
+  priceAlerts: [],
+  isPriceAlertLoading: false,
+
+  getPriceAlerts: ({ page = 1, take = 5 }) => {
+    set({ isPriceAlertLoading: true });
+    return getRequest({
+      url: "alerts",
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((priceAlerts) => {
+        console.log(priceAlerts);
+        set({ priceAlerts });
+      })
+      .finally(() => set({ isPriceAlertLoading: false }));
+  },
+
+  sendPriceAlert: (id: string) => {},
+  deletePriceAlert: (id: string) => {},
+}));
+
 interface PartnersStoreState {
   partners: ResponsePartner[];
   partnerPage: PartnerPageResponse | null;
