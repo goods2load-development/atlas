@@ -90,7 +90,7 @@ const BlogPage: React.FC = () => {
           </div>
           
           {/* Comment Section */}
-          <CommentSection comments={blog.comments} /> 
+          <CommentSection /> 
         </div>
       </div>
       <Footer />
