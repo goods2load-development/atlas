@@ -6,21 +6,56 @@ import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import clsx from "clsx";
 import Link from "next/link";
-import { useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useBlogAdminStore } from "@/lib/store";
 import { Edit, MessageCircle, Trash } from "lucide-react";
+import Pagination from "@/components/ui/pagination";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Input } from "@/components/ui/input";
+import debounce from "lodash/debounce";
+
+const TAKE = 5;
 
 const BlogMain = () => {
   const { toast } = useToast();
-  const { blogs, isBlogLoading, getBlogs, deleteBlog } = useBlogAdminStore();
+  const {
+    blogs,
+    foundBlogs,
+    isBlogLoading,
+    getBlogs,
+    deleteBlog,
+    searchBlogs,
+  } = useBlogAdminStore();
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get("page") || 1);
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  const [searchValue, setSearchValue] = useState("");
+
+  const blogsData = searchValue ? foundBlogs : blogs;
 
   useEffect(() => {
-    getBlogs();
-  }, []);
+    getBlogs({
+      page,
+      take: TAKE,
+    });
+  }, [page]);
+
+  useEffect(() => {
+    if (!searchValue) return;
+
+    searchBlogs({ searchTerm: searchValue, page, take: TAKE });
+  }, [searchValue]);
 
   const handleDeleteBlog = (id: string) => {
     deleteBlog(id)
-      .then(() => getBlogs())
+      .then(() =>
+        getBlogs({
+          page,
+          take: TAKE,
+        })
+      )
       .then(() =>
         toast({
           title: "Blog deleted.",
@@ -29,6 +64,24 @@ const BlogMain = () => {
         })
       );
   };
+
+  const handleSetPage = (page: number) => {
+    const params = new URLSearchParams(searchParams);
+    if (page) {
+      params.set("page", page.toString());
+    } else {
+      params.delete("page");
+    }
+
+    replace(`${pathname}?${params.toString()}`);
+  };
+
+  const debouncedSetSearchValue = useCallback(
+    debounce((value: string) => {
+      setSearchValue(value);
+    }, 200),
+    []
+  );
 
   return (
     <div className="min-h-screen">
@@ -39,6 +92,13 @@ const BlogMain = () => {
         {isBlogLoading && <Spinner />}
       </div>
       <div className="flex justify-end gap-2 mb-4">
+        <Input
+          onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+            debouncedSetSearchValue(e.currentTarget.value)
+          }
+          className="max-w-[400px] mb-4 mr-auto"
+          placeholder="Search..."
+        />
         <Link href="/dashboard/blog/create">
           <Button>Add new blog</Button>
         </Link>
@@ -54,7 +114,7 @@ const BlogMain = () => {
           "pointer-events-none": isBlogLoading,
         })}
       >
-        {blogs?.data?.map((post) => (
+        {blogsData?.data?.map((post) => (
           <ListItem key={post.id}>
             <div className="w-full flex justify-between gap-2">
               <Link
@@ -87,6 +147,14 @@ const BlogMain = () => {
             </div>
           </ListItem>
         ))}
+
+        {blogsData?.meta && blogsData.meta.pageCount > 1 && (
+          <Pagination
+            page={page}
+            total={blogsData.meta.pageCount}
+            onPageChange={(newPage) => handleSetPage(newPage)}
+          />
+        )}
       </div>
     </div>
   );

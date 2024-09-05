@@ -501,7 +501,14 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
 }));
 
 interface BlogAdminStoreState {
-  blogs: Blog[];
+  blogs: {
+    data: Blog[];
+    meta: any;
+  } | null;
+  foundBlogs: {
+    data: Blog[];
+    meta: any;
+  } | null;
   blog: Blog | null;
   categories: any[];
   comments: BlogComment[];
@@ -509,7 +516,7 @@ interface BlogAdminStoreState {
   isBlogLoading: boolean;
   createBlog: (data: any) => Promise<void>;
   getBlogCategories: () => Promise<void>;
-  getBlogs: (skip?: number, take?: number) => Promise<void>;
+  getBlogs: ({ page, take }: { page?: number; take?: number }) => Promise<void>;
   getBlog: (id: string) => Promise<void>;
   deleteBlog: (id: string) => Promise<void>;
   getCommentsById: (id: string) => Promise<void>;
@@ -528,11 +535,17 @@ interface BlogAdminStoreState {
     id: string
   ) => Promise<void>;
   deleteBlogCategory: (id: string) => Promise<void>;
+  searchBlogs: (data: {
+    searchTerm: string;
+    page?: number;
+    take?: number;
+  }) => Promise<void>;
 }
 
 export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
-  blogs: [],
+  blogs: null,
   blog: null,
+  foundBlogs: null,
   categories: [],
   comments: [],
   unapprovedComments: [],
@@ -548,12 +561,12 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
       })
       .finally(() => set({ isBlogLoading: false }));
   },
-  getBlogs: (skip = 0, take = 15) => {
+  getBlogs: ({ page = 1, take = 5 }) => {
     set({ isBlogLoading: true });
     return getRequest({
       url: "blogs",
       params: {
-        skip,
+        page,
         take,
       },
     })
@@ -642,5 +655,20 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
     return deleteRequest({
       url: `blog-types/${id}`,
     }).finally(() => set({ isBlogLoading: false }));
+  },
+  searchBlogs: ({ page = 1, take = 5, searchTerm }) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blogs`,
+      params: {
+        searchTerm,
+        page,
+        take,
+      },
+    })
+      .then((foundBlogs) => {
+        set({ foundBlogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
   },
 }));
