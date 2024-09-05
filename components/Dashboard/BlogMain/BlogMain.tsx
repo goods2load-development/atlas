@@ -54,7 +54,7 @@ const BlogMain = () => {
           "pointer-events-none": isBlogLoading,
         })}
       >
-        {blogs.map((post) => (
+        {blogs?.data?.map((post) => (
           <ListItem key={post.id}>
             <div className="w-full flex justify-between gap-2">
               <Link
