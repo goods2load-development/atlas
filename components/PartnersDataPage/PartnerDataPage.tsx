@@ -39,6 +39,7 @@ import { PlaceDetails } from "./types";
 import SelectionPopup from "../Catalogue/SelectionPopup";
 import SendDataToPartnerDialog from "./SendDataToPartnerDialog";
 import PlaceIdMap from "./PlaceIdMap";
+import bgDecorline from "@/assets/bg-decor-line.svg";
 
 enum TabsEnum {
   SERVICES_PROVIDED = "Service provided",
@@ -360,8 +361,8 @@ const PartnerDataPage = ({
 
   const content = () => (
     <>
-      <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px]">
-        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] pb-[170px] realtive">
+      <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px] -z-10 sm:z-0">
+        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 bg-primaryOrange sm:bg-transparent sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] realtive">
           {!isGet ? (
             <FormField
               control={form?.control}
@@ -384,15 +385,23 @@ const PartnerDataPage = ({
               {partnerData?.name}
             </h1>
           )}
-        </div>
 
-        <div className="max-w-[1295px] w-full mx-auto pt-[72px] pb-[250px]">
-          <div className="flex gap-14 justify-between mb-[104px]">
+          <div className="sm:hidden absolute -top-32 left-0">
+            <Image src={bgDecorline} />
+          </div>
+
+          <div className="sm:hidden absolute -top-32 right-0 scale-x-[-1]">
+            <Image src={bgDecorline} />
+          </div>
+        </div>
+        <div className="sm:hidden h-16 white-gradient w-full"></div>
+        <div className="max-w-[1295px] w-full mx-auto md:pt-[72px] pt-6 pb-[250px] px-4">
+          <div className="lg:flex gap-14 justify-between mb-10 sm:mb-[104px]">
             <div
-              className="basis-1/2 px-20 rounded-2xl border border-solid border-primaryOrange 
-            bg-bgPartnerLogo bg-no-repeat [background-position:center_bottom]  shadow-[2px_2px_10px_0px_#FF672029] h-[487px]"
+              className="md:basis-1/2 px-20 rounded-2xl border border-solid border-primaryOrange 
+            bg-bgPartnerLogo bg-no-repeat md:[background-position:center_bottom] [background-position:bottom_bottom] rotate-180 md:rotate-0 shadow-[2px_2px_10px_0px_#FF672029] h-[250px] md:h-[487px]"
             >
-              <div className="relative w-full h-full">
+              <div className="relative w-full h-full rotate-180 md:rotate-0">
                 <Image
                   alt="Image Alt"
                   src={
@@ -406,8 +415,8 @@ const PartnerDataPage = ({
                 />
               </div>
             </div>
-            <div className="pt-7 text-black text-left max-w-[606px] basis-1/2">
-              <div className="font-medium text-[28px]/[33px] mb-4">
+            <div className="pt-7 text-black text-left sm:max-w-[606px] basis-1/2">
+              <div className="font-medium text-[28px]/[33px] sm:text-[24px]/[28px] mb-4">
                 About us
               </div>
               {!isGet ? (
@@ -428,16 +437,16 @@ const PartnerDataPage = ({
                   )}
                 />
               ) : (
-                <p className="mb-4 text-[18px]/[26px]">
+                <p className="mb-4 sm:text-[18px]/[26px] text-[15px]/[22px]">
                   {partnerData?.description}
                 </p>
               )}
             </div>
           </div>
 
-          <div className="flex gap-14 justify-between mb-14">
-            <div className="text-black text-left text-[18px]/[26px] max-w-[532px] w-full">
-              <h5 className="text-[28px]/[33px] font-medium mb-4">
+          <div className="md:flex gap-14 justify-between mb-14">
+            <div className="text-black text-left text-[18px]/[26px] sm:max-w-[532px] w-full">
+              <h5 className="text-[28px]/[33px] sm:text-[24px]/[28px] font-medium mb-4">
                 Our mission
               </h5>
               {!isGet ? (
@@ -458,13 +467,13 @@ const PartnerDataPage = ({
                   )}
                 />
               ) : (
-                <p className="mb-4 text-[18px]/[26px]">
+                <p className="mb-4 text-[15px]/[22px] sm:text-[18px]/[26px]">
                   {partnerData?.mission}
                 </p>
               )}
             </div>
 
-            <div className="text-black text-left p-4 border border-lightOrange basis-1/2">
+            {/* <div className="text-black text-left p-4 border border-lightOrange basis-1/2">
               <Tabs value={activeTab} onValueChange={onTabChange}>
                 <TabsList>
                   <TabsTrigger
@@ -840,10 +849,10 @@ const PartnerDataPage = ({
                   </div>
                 </TabsContent>
               </Tabs>
-            </div>
+            </div> */}
           </div>
 
-          <SendDataToPartnerDialog
+          {/* <SendDataToPartnerDialog
             trigger={
               <button
                 disabled={!isGet}
@@ -855,9 +864,9 @@ const PartnerDataPage = ({
                 GET A FREE QUOTATION
               </button>
             }
-          />
+          /> */}
 
-          {!isGet ? (
+          {/* {!isGet ? (
             <PlaceIdMap
               onChangePlaceId={(placeId: string) =>
                 form.setValue("placementId", placeId)
@@ -877,8 +886,8 @@ const PartnerDataPage = ({
                 </>
               )}
             </>
-          )}
-
+          )} */}
+          {/* 
           <div className="mt-[112px]">
             <h3 className="text-[48px]/[57px] mb-8 text-black text-left">
               <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
@@ -950,11 +959,11 @@ const PartnerDataPage = ({
                   </div>
                 ))}
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
 
-      {isCreate && isHasAnyErrors && (
+      {/* {isCreate && isHasAnyErrors && (
         <div className="fixed top-2 right-2 bg-white rounded-xl w-[300px] h-[140px] overflow-y-scroll p-2 shadow-md">
           <h3 className="text-2xl font-bold">Error list:</h3>
           {Object.values(form?.formState?.errors || {}).map((error, i) => {
@@ -975,7 +984,7 @@ const PartnerDataPage = ({
         >
           Submit
         </Button>
-      )}
+      )} */}
     </>
   );
 
