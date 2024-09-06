@@ -152,7 +152,7 @@ const PartnerDataPage = ({
 
   const reviews = useMemo(() => {
     if (placeInfo?.status !== "OK") return null;
-    const reviewsClone = [...(placeInfo?.result?.reviews as any[])];
+    const reviewsClone = [...((placeInfo?.result?.reviews as any[]) || [])];
     reviewsClone.sort((a, b) => b.rating - a.rating);
     return reviewsClone.slice(0, 3);
   }, [placeInfo?.result?.reviews]);

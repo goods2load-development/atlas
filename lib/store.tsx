@@ -7,6 +7,7 @@ import {
   PartnerPageResponse,
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
+import { url } from "inspector";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -409,6 +410,40 @@ export const useRoutesStore = create((set) => ({
     return deleteRequest({
       url: `selected-orders/${id}`,
     }).finally(() => set({ isRoutesLoading: false }));
+  },
+}));
+
+export const usePriceAlertsStore = create((set) => ({
+  priceAlerts: [],
+  isPriceAlertLoading: false,
+
+  getPriceAlerts: ({ page = 1, take = 5 }) => {
+    set({ isPriceAlertLoading: true });
+    return getRequest({
+      url: "alerts",
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((priceAlerts) => {
+        console.log(priceAlerts);
+        set({ priceAlerts });
+      })
+      .finally(() => set({ isPriceAlertLoading: false }));
+  },
+
+  sendPriceAlert: (id: string) => {
+    set({ isPriceAlertLoading: true });
+    return postRequest({ url: `alerts/${id}/send` }).finally(() =>
+      set({ isPriceAlertLoading: false })
+    );
+  },
+  deletePriceAlert: (id: string) => {
+    set({ isPriceAlertLoading: true });
+    return deleteRequest({ url: `alerts/${id}` }).finally(() =>
+      set({ isPriceAlertLoading: false })
+    );
   },
 }));
 
