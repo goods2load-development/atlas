@@ -98,7 +98,12 @@ export const PriceAlertTab = () => {
           {priceAlerts?.data?.map((item: any, i: number) => (
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
-                <p className="hover:underline hover:cursor-pointer">
+                <p
+                  className="hover:underline hover:cursor-pointer"
+                  onClick={() =>
+                    setIsViewModalOpen({ isOpen: true, id: item.id })
+                  }
+                >
                   {item.email}
                 </p>
                 <div className="flex items-center gap-2">

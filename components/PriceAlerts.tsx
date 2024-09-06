@@ -225,7 +225,7 @@ export default function PriceAlerts() {
         </UIButton>
       </DialogTrigger>
       <DialogContent
-        className={`max-w-[365px] pt-[48px] px-1 overflow-auto max-h-screen sm:pl-10 ${
+        className={`max-w-[465px] pt-[48px] px-1 overflow-auto max-h-screen sm:pl-10 ${
           step === 3
             ? "sm:max-w-[632px] pb-[32px] "
             : "sm:max-w-[768px] p-[32px]"
@@ -258,7 +258,7 @@ export default function PriceAlerts() {
                 </DialogDescription>
               </DialogHeader>
               <div
-                className={`${step === 1 && isSearchFilled() ? "sm:min-h-[572px]" : "hidden"} ${step === 2 ? "h-[424px]" : null}`}
+                className={`${step === 1 && isSearchFilled() ? "sm:min-h-[272px]" : "hidden"} ${step === 2 ? "h-[424px]" : null}`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Desired <i className="font-normal">routes</i>
@@ -267,38 +267,37 @@ export default function PriceAlerts() {
                   You can select up to 10 routes that interest you and set price
                   alerts for them.
                 </DialogDescription>
-                <div className="flex flex-wrap text-[12px]/[18px] opacity-50 mt-[40px] mb-[4px]">
+                <div className="flex-wrap text-[12px]/[18px] opacity-50 mt-[40px] mb-[4px] hidden sm:flex ">
                   <div className="ml-[26px] w-[240px]">FROM</div>
                   <div className="ml-[44px] w-[230px]">TO</div>
                   <div className="ml-[5px]">PRICE ($)</div>
                 </div>
                 {fields.map((item, index) => (
                   <div
-                    className="flex flex-wrap items-center mb-[8px] w-full"
+                    className="flex flex-wrap items-center mb-[8px] w-full justify-center sm:justify-start gap-2 sm:gap-0"
                     key={index}
                   >
-                    <div className="w-[20px]">
-                      {index < 9 && "0"}
-                      {index + 1}
-                    </div>
-                    <div className="mx-[5px] w-[240px]">
+                    <div className="mx-[5px] sm:w-[240px] w-full mt-4 sm:mt-0 flex items-center sm:block justify-center">
+                      <div className="text-[14px]/[18px] opacity-50 mb-1 sm:hidden mr-2">
+                        From
+                      </div>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
                             role="combobox"
-                            className="justify-start truncate h-[44px] rounded-l-[8px] rounded-r-none px-1 border-none font-normal text-black bg-[#ffede4] whitespace-nowrap w-1/2 text-left"
+                            className="justify-start truncate h-[44px] rounded-l-[8px] rounded-r-none px-1 border-none font-normal text-black bg-[#ffede4] whitespace-nowrap sm:w-1/2 w-[135px] text-left"
                           >
                             <ToolTipComponent
                               text={item.fromCountry || "Country"}
                             >
-                              <div className="block w-full truncate lg:w-[110px] text-left pl-2">
+                              <div className="block w-[115px] sm:w-[120px] truncate text-left pl-2">
                                 {item.fromCountry || "Contry"}
                               </div>
                             </ToolTipComponent>
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0 pointer-events-auto">
+                        <PopoverContent className="w-full sm:w-[200px] p-0 pointer-events-auto">
                           <Command>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
@@ -334,10 +333,10 @@ export default function PriceAlerts() {
                           <Button
                             variant="outline"
                             role="combobox"
-                            className="justify-start h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] overflow-hidden w-1/2"
+                            className="justify-start h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] overflow-hidden sm:w-1/2 w-[135px]"
                           >
                             <ToolTipComponent text={item.from || "City"}>
-                              <div className="block w-full truncate lg:w-[110px] text-left">
+                              <div className="block truncate w-[115px] sm:w-[100px] text-left">
                                 {item.from || "City"}
                               </div>
                             </ToolTipComponent>
@@ -385,7 +384,7 @@ export default function PriceAlerts() {
                           ...switched,
                         });
                       }}
-                      className="p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] relative z-10 hover:bg-transparent group"
+                      className="ml-6 sm:ml-0 p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-full sm:w-[34px] h-[34px] relative z-10 hover:bg-transparent group"
                     >
                       <Image
                         className="min-w-[34px] min-h-[34px] group-hover:hidden"
@@ -402,18 +401,21 @@ export default function PriceAlerts() {
                         src="/turnhover.svg"
                       />
                     </Button>
-                    <div className="mx-[5px] w-[230px]">
+                    <div className="mx-[5px] sm:w-[230px] w-full flex items-center sm:block justify-center">
+                      <div className="text-right w-[38px] text-[14px]/[18px] opacity-50 mb-1 sm:hidden mr-2">
+                        To
+                      </div>
                       <Popover>
                         <PopoverTrigger asChild>
                           <Button
                             variant="outline"
                             role="combobox"
-                            className="justify-start h-[44px] rounded-l-[8px] rounded-r-none border-none font-normal text-black bg-[#ffede4] w-1/2"
+                            className="justify-start h-[44px] rounded-l-[8px] rounded-r-none border-none font-normal text-black bg-[#ffede4] sm:w-1/2 w-[135px]"
                           >
                             <ToolTipComponent
                               text={item.toCountry || "Country"}
                             >
-                              <div className="block w-full truncate lg:w-[110px] text-left">
+                              <div className="block w-[115px] sm:w-[95px] truncate text-left">
                                 {item.toCountry || "Country"}
                               </div>
                             </ToolTipComponent>
@@ -455,10 +457,10 @@ export default function PriceAlerts() {
                           <Button
                             variant="outline"
                             role="combobox"
-                            className="justify-start p-0 text-left h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] w-1/2 truncate pl-2"
+                            className="justify-start p-0 text-left h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] truncate pl-2 sm:w-1/2 w-[135px]"
                           >
                             <ToolTipComponent text={item.to || "City"}>
-                              <div className="block w-full truncate lg:w-[110px] text-left">
+                              <div className="block w-[115px] sm:w-[100px] truncate text-left">
                                 {item.to || "City"}
                               </div>
                             </ToolTipComponent>
@@ -492,6 +494,9 @@ export default function PriceAlerts() {
                         </PopoverContent>
                       </Popover>
                     </div>
+                    <div className="text-[14px]/[18px] opacity-50 sm:hidden">
+                      Price
+                    </div>
                     <Input
                       className="h-[44px] rounded-[8px] border-[1px] border-orangePrimary text-center w-[90px]"
                       defaultValue={item.price}
@@ -505,22 +510,11 @@ export default function PriceAlerts() {
                     </div>
                   </div>
                 ))}
-                <div className="flex mt-[16px]">
-                  {fields.length <= 9 && (
-                    <div
-                      onClick={onAddRoute}
-                      className="rounded-full border-2 border-orangePrimary text-orangePrimary w-[20px] h-[20px] text-center text-[18px]/[18px] cursor-pointer mr-[8px]"
-                    >
-                      +
-                    </div>
-                  )}
-                  Add a route ({fields.length}/10)
-                </div>
               </div>
               <div
                 className={`${step === 1 && !isSearchFilled() ? "sm:min-h-[172px]" : "hidden"}`}
               >
-                <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
+                <DialogTitle className="text-center text-[24px]/[29px] sm:text-[40px]/[48px] font-light my-4">
                   It&apos;s looks like you don&apos;t filled the&nbsp;
                   <Link
                     className="text-primaryOrange underline hover:no-underline"
