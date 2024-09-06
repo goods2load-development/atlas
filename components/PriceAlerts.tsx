@@ -521,7 +521,7 @@ export default function PriceAlerts() {
                 className={`${step === 1 && !isSearchFilled() ? "sm:min-h-[172px]" : "hidden"}`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
-                  It's looks like you don't filled the{" "}
+                  It&apos;s looks like you don&apos;t filled the&nbsp;
                   <Link
                     className="text-primaryOrange underline hover:no-underline"
                     href="/"
