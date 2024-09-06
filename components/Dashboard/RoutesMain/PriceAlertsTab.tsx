@@ -4,13 +4,11 @@ import ListItem from "@/components/ui/list-item";
 import Pagination from "@/components/ui/pagination";
 import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
-import { usePriceAlertsStore, useRoutesStore } from "@/lib/store";
+import { usePriceAlertsStore } from "@/lib/store";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Brush, Reply, TrashIcon } from "lucide-react";
-import ReplyDialog from "./ReplyDialog";
-import ViewDialog from "./ViewDialog";
+import { Reply, TrashIcon } from "lucide-react";
 import ViewDialogPriceAlert from "./ViewDilogPriceAlert";
 
 const TAKE = 5;
@@ -35,7 +33,7 @@ export const PriceAlertTab = () => {
   const { toast } = useToast();
 
   const page = Number(searchParams.get("priceAlertPage") || 1);
-  const { meta } = priceAlerts;
+  const meta = priceAlerts?.meta;
 
   useEffect(() => {
     getPriceAlertsForPage(page);
@@ -59,6 +57,30 @@ export const PriceAlertTab = () => {
     replace(`${pathname}?${params.toString()}`);
   };
 
+  const sendPriceAlertById = (id: string) => {
+    sendPriceAlert(id)
+      .then(() => getPriceAlertsForPage(page))
+      .then(() =>
+        toast({
+          title: "Price alert was sended",
+          variant: "destructive",
+          className: "bg-green-500 text-white",
+        })
+      );
+  };
+
+  const deletePriceAlertById = (id: string) => {
+    deletePriceAlert(id)
+      .then(() => getPriceAlertsForPage(page))
+      .then(() =>
+        toast({
+          title: "Price Alert deleted.",
+          variant: "destructive",
+          className: "bg-green-500 text-white",
+        })
+      );
+  };
+
   return (
     <>
       {isPriceAlertLoading && <Spinner />}
@@ -80,7 +102,10 @@ export const PriceAlertTab = () => {
                   {item.email}
                 </p>
                 <div className="flex items-center gap-2">
-                  <button title="Send" onClick={() => sendPriceAlert(item.id)}>
+                  <button
+                    title="Send"
+                    onClick={() => sendPriceAlertById(item.id)}
+                  >
                     <Reply />
                   </button>
                   <ViewDialogPriceAlert
@@ -94,7 +119,7 @@ export const PriceAlertTab = () => {
 
                   <button
                     title="Delete"
-                    onClick={() => deletePriceAlert(item.id)}
+                    onClick={() => deletePriceAlertById(item.id)}
                   >
                     <TrashIcon />
                   </button>
@@ -103,7 +128,7 @@ export const PriceAlertTab = () => {
             </ListItem>
           ))}
         </div>
-        {meta && meta?.pageCount > TAKE && (
+        {meta && meta?.pageCount > 1 && (
           <Pagination
             page={page}
             total={meta.pageCount}

@@ -47,6 +47,9 @@ import cnFlag from "@/assets/cn-flag.svg";
 import inFlag from "@/assets/in-flag.svg";
 import CountryCode from "./common/CountryCode";
 import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+import { useFilterStore } from "@/lib/filterStore";
+import { ToolTipComponent } from "./SearchMain";
+import Link from "next/link";
 
 const phonesCode = [
   {
@@ -65,6 +68,23 @@ const phonesCode = [
 
 export default function PriceAlerts() {
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const {
+    from,
+    fromCountry,
+    to,
+    toCountry,
+    arrival,
+    departure,
+    length,
+    width,
+    height,
+    goodsValue,
+    typeOfGoods,
+    placementOfGoods,
+    quantity,
+    totalKg,
+    incoterms,
+  } = useFilterStore();
   const [step, setStep] = useState(0);
   const formSchema = z
     .object({
@@ -98,7 +118,13 @@ export default function PriceAlerts() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       routes: [
-        { fromCountry: "", from: "", toCountry: "", to: "", price: "0" },
+        {
+          fromCountry,
+          from,
+          toCountry,
+          to,
+          price: "0",
+        },
       ],
       email: "",
       sms: "",
@@ -136,6 +162,22 @@ export default function PriceAlerts() {
     );
   };
 
+  const isSearchFilled = () => {
+    return (
+      Boolean(length) &&
+      Boolean(width) &&
+      Boolean(height) &&
+      Boolean(goodsValue) &&
+      Boolean(typeOfGoods) &&
+      Boolean(placementOfGoods) &&
+      Boolean(quantity) &&
+      Boolean(totalKg) &&
+      Boolean(incoterms) &&
+      Boolean(departure) &&
+      Boolean(arrival)
+    );
+  };
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha("login");
@@ -152,6 +194,17 @@ export default function PriceAlerts() {
           fromRoute: `${item.fromCountry}, ${item.from}`,
           toRoute: `${item.toCountry}, ${item.to}`,
           price: item.price ? parseInt(item.price) : 0,
+          arrival,
+          departure,
+          goodsValue,
+          typeOfGoods,
+          placementOfGoods,
+          quantity,
+          totalKg,
+          incoterms,
+          width,
+          length,
+          height,
         })),
         recaptchaToken: token,
       },
@@ -172,7 +225,7 @@ export default function PriceAlerts() {
         </UIButton>
       </DialogTrigger>
       <DialogContent
-        className={`max-w-[365px] pt-[48px] px-1 sm:px-[50px] overflow-auto max-h-screen ${
+        className={`max-w-[365px] pt-[48px] px-1 overflow-auto max-h-screen sm:pl-10 ${
           step === 3
             ? "sm:max-w-[632px] pb-[32px] "
             : "sm:max-w-[768px] p-[32px]"
@@ -205,7 +258,7 @@ export default function PriceAlerts() {
                 </DialogDescription>
               </DialogHeader>
               <div
-                className={`${step === 1 ? "sm:min-h-[572px]" : "hidden"} ${step === 2 ? "h-[424px]" : null}`}
+                className={`${step === 1 && isSearchFilled() ? "sm:min-h-[572px]" : "hidden"} ${step === 2 ? "h-[424px]" : null}`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Desired <i className="font-normal">routes</i>
@@ -234,9 +287,15 @@ export default function PriceAlerts() {
                           <Button
                             variant="outline"
                             role="combobox"
-                            className=" truncate h-[44px] rounded-l-[8px] rounded-r-none px-1 border-none font-normal text-black bg-[#ffede4] whitespace-nowrap w-1/2 text-left"
+                            className="justify-start truncate h-[44px] rounded-l-[8px] rounded-r-none px-1 border-none font-normal text-black bg-[#ffede4] whitespace-nowrap w-1/2 text-left"
                           >
-                            {item.fromCountry || "Country"}
+                            <ToolTipComponent
+                              text={item.fromCountry || "Country"}
+                            >
+                              <div className="block w-full truncate lg:w-[110px] text-left pl-2">
+                                {item.fromCountry || "Contry"}
+                              </div>
+                            </ToolTipComponent>
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-[200px] p-0 pointer-events-auto">
@@ -275,9 +334,13 @@ export default function PriceAlerts() {
                           <Button
                             variant="outline"
                             role="combobox"
-                            className="h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] overflow-hidden w-1/2"
+                            className="justify-start h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] overflow-hidden w-1/2"
                           >
-                            {item.from || "City"}
+                            <ToolTipComponent text={item.from || "City"}>
+                              <div className="block w-full truncate lg:w-[110px] text-left">
+                                {item.from || "City"}
+                              </div>
+                            </ToolTipComponent>
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-[200px] p-0 pointer-events-auto">
@@ -345,9 +408,15 @@ export default function PriceAlerts() {
                           <Button
                             variant="outline"
                             role="combobox"
-                            className="h-[44px] rounded-l-[8px] rounded-r-none border-none font-normal text-black bg-[#ffede4] w-1/2"
+                            className="justify-start h-[44px] rounded-l-[8px] rounded-r-none border-none font-normal text-black bg-[#ffede4] w-1/2"
                           >
-                            {item.toCountry || "Country"}
+                            <ToolTipComponent
+                              text={item.toCountry || "Country"}
+                            >
+                              <div className="block w-full truncate lg:w-[110px] text-left">
+                                {item.toCountry || "Country"}
+                              </div>
+                            </ToolTipComponent>
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-[200px] p-0 pointer-events-auto">
@@ -386,9 +455,13 @@ export default function PriceAlerts() {
                           <Button
                             variant="outline"
                             role="combobox"
-                            className="p-0 text-left h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] w-1/2 truncate"
+                            className="justify-start p-0 text-left h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] w-1/2 truncate pl-2"
                           >
-                            {item.to || "City"}
+                            <ToolTipComponent text={item.to || "City"}>
+                              <div className="block w-full truncate lg:w-[110px] text-left">
+                                {item.to || "City"}
+                              </div>
+                            </ToolTipComponent>
                           </Button>
                         </PopoverTrigger>
                         <PopoverContent className="w-[200px] p-0 pointer-events-auto">
@@ -443,6 +516,20 @@ export default function PriceAlerts() {
                   )}
                   Add a route ({fields.length}/10)
                 </div>
+              </div>
+              <div
+                className={`${step === 1 && !isSearchFilled() ? "sm:min-h-[172px]" : "hidden"}`}
+              >
+                <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
+                  It's looks like you don't filled the{" "}
+                  <Link
+                    className="text-primaryOrange underline hover:no-underline"
+                    href="/"
+                  >
+                    search bar
+                  </Link>
+                  . Please do it
+                </DialogTitle>
               </div>
               <div className={step === 2 ? "" : "hidden"}>
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
@@ -548,7 +635,7 @@ export default function PriceAlerts() {
                   Previous step
                 </UIButton>
                 <UIButton
-                  className="w-full sm:max-w-40 order-3"
+                  className={`w-full sm:max-w-40 order-3 ${step === 1 && !isSearchFilled() ? "hidden" : null}`}
                   type="submit"
                   onClick={(e: any) => {
                     console.log("submit");
