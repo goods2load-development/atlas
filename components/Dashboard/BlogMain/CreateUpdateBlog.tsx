@@ -1,5 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Image from "next/image";
 import { useBlogAdminStore } from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -42,17 +43,17 @@ const formSchema = z.object({
   content: z.string().min(1),
   blogTypeId: z.string().nonempty(),
   description: z.string(),
-  //   mainImageUrl: z.union([
-  //     z.string(),
-  //     z
-  //       .unknown()
-  //       .transform((value) => value as FileList)
-  //       .refine((files) => files?.length === 1, "You need to provide a file")
-  //       .refine(
-  //         (files) => files?.[0]?.size <= 2000000,
-  //         "The file is too large, it should be less than 2MB"
-  //       ),
-  //   ]),
+  mainImg: z.union([
+    z.string(),
+    z
+      .unknown()
+      .transform((value) => value as FileList)
+      .refine((files) => files?.length === 1, "You need to provide a file")
+      .refine(
+        (files) => files?.[0]?.size <= 2000000,
+        "The file is too large, it should be less than 2MB"
+      ),
+  ]),
   authorName: z.string(),
 });
 
@@ -63,10 +64,11 @@ const CreateUpdateBlog = ({
   type: "create" | "update";
   post?: Blog;
 }) => {
-  const isCreate = type === "create";
+  // const isCreate = type === "create";
   const isUpdate = type === "update";
 
-  const { categories, createBlog, getBlogCategories } = useBlogAdminStore();
+  const { categories, createBlog, updateBlog, getBlogCategories } =
+    useBlogAdminStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -78,12 +80,17 @@ const CreateUpdateBlog = ({
         blogTypeId: post?.blogTypeId,
         description: post.description,
         authorName: post.authorName,
+        mainImg: post.mainImageUrl as string,
       },
     }),
   });
 
   const [banner, setBanner] = useState<FileList | string | null>(null);
-  const [imgSrc, setImgSrc] = useState<string | null>(null);
+  const [imgSrc, setImgSrc] = useState<string | null>(
+    post?.mainImageUrl
+      ? `${process.env.NEXT_PUBLIC_BASE_URL}${post.mainImageUrl}`
+      : null
+  );
 
   const { toast } = useToast();
   const router = useRouter();
@@ -103,17 +110,37 @@ const CreateUpdateBlog = ({
     processBanner();
   }, [banner]);
 
-  console.log({ imgSrc });
-
   useEffect(() => {
     getBlogCategories();
   }, []);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
+    if (isUpdate && post) {
+      updateBlog(
+        {
+          ...data,
+          ...(data.mainImg !== "string" && {
+            mainImg: data.mainImg[0],
+          }),
+        },
+        post.id
+      )
+        .then(() =>
+          toast({
+            title: "Post updated.",
+            variant: "destructive",
+            className: "bg-green-500 text-white",
+          })
+        )
+        .then(() => router.push("/dashboard/blog"));
+
+      return;
+    }
+
     createBlog(data)
       .then(() =>
         toast({
-          title: "Blog created.",
+          title: "Post created.",
           variant: "destructive",
           className: "bg-green-500 text-white",
         })
@@ -247,9 +274,9 @@ const CreateUpdateBlog = ({
             <CategoryDialog type="create" />
           </div>
 
-          {/* <FormField
+          <FormField
             control={form.control}
-            name="mainImageUrl"
+            name="mainImg"
             render={({ field }) => (
               <FormItem className="w-full mt-5 sm:flex flex-wrap">
                 <div className="sm:w-1/2 sm:pr-2">
@@ -266,7 +293,7 @@ const CreateUpdateBlog = ({
                     type="file"
                     accept="image/*"
                     onChange={(e) => {
-                      //   field.onChange(e.target.files || null);
+                      field.onChange(e.target.files || null);
                       setBanner(e.target.files);
                     }}
                   />
@@ -292,8 +319,9 @@ const CreateUpdateBlog = ({
             <div className="w-1/3 relative inline-block">
               <button
                 onClick={() => {
-                  form.setValue("mainImageUrl", null as any);
+                  form.setValue("mainImg", null as any);
                   setBanner(null);
+                  setImgSrc(null);
                 }}
                 type="button"
                 className="bg-orangePrimary w-4 h-4 rounded-full flex items-center justify-center
@@ -309,13 +337,13 @@ const CreateUpdateBlog = ({
                 alt="banner"
               />
             </div>
-          )} */}
+          )}
 
           <Button
             disabled={form.formState.isSubmitting}
             className="bg-orangePrimary border-2 border-orangePrimary font-medium text-[16px]/[22px] w-full my-5"
           >
-            Create blog
+            {isUpdate ? "Update post" : "Create post"}
           </Button>
         </form>
       </Form>

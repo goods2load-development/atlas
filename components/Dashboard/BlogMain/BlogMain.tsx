@@ -32,21 +32,27 @@ const BlogMain = () => {
   const { replace } = useRouter();
 
   const [searchValue, setSearchValue] = useState("");
+  const isSearchMode = searchValue.length > 1;
 
-  const blogsData = searchValue ? foundBlogs : blogs;
+  const blogsData = isSearchMode ? foundBlogs : blogs;
 
   useEffect(() => {
-    getBlogs({
-      page,
-      take: TAKE,
-    });
+    if (isSearchMode) {
+      searchBlogs({ searchTerm: searchValue, page, take: TAKE });
+    } else {
+      getBlogs({
+        page,
+        take: TAKE,
+      });
+    }
   }, [page]);
 
   useEffect(() => {
-    if (!searchValue) return;
+    handleSetPage(1);
+    if (!isSearchMode) return;
 
     searchBlogs({ searchTerm: searchValue, page, take: TAKE });
-  }, [searchValue]);
+  }, [isSearchMode, searchValue]);
 
   const handleDeleteBlog = (id: string) => {
     deleteBlog(id)
@@ -114,6 +120,9 @@ const BlogMain = () => {
           "pointer-events-none": isBlogLoading,
         })}
       >
+        {!blogsData?.data?.length && !isBlogLoading && (
+          <p className="font-bold text-red-600">No blogs found.</p>
+        )}
         {blogsData?.data?.map((post) => (
           <ListItem key={post.id}>
             <div className="w-full flex justify-between gap-2">

@@ -515,6 +515,7 @@ interface BlogAdminStoreState {
   unapprovedComments: BlogComment[];
   isBlogLoading: boolean;
   createBlog: (data: any) => Promise<void>;
+  updateBlog: (data: any, id: string) => Promise<void>;
   getBlogCategories: () => Promise<void>;
   getBlogs: ({ page, take }: { page?: number; take?: number }) => Promise<void>;
   getBlog: (id: string) => Promise<void>;
@@ -552,14 +553,43 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
   isBlogLoading: true,
   createBlog: (data: any) => {
     set({ isBlogLoading: true });
+    const formData = new FormData();
+
+    formData.append("authorName", data.authorName);
+    formData.append("blogTypeId", data.blogTypeId);
+    formData.append("content", data.content);
+    formData.append("description", data.description);
+    formData.append("slug", data.slug);
+    formData.append("title", data.title);
+    formData.append("mainImg", data.mainImg[0]);
+
     return postRequest({
       url: "blogs",
-      data,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
     })
       .then((blogs) => {
         set({ blogs });
       })
       .finally(() => set({ isBlogLoading: false }));
+  },
+  updateBlog: (data: any, id: string) => {
+    const formData = new FormData();
+
+    formData.append("authorName", data.authorName);
+    formData.append("blogTypeId", data.blogTypeId);
+    formData.append("content", data.content);
+    formData.append("description", data.description);
+    formData.append("slug", data.slug);
+    formData.append("title", data.title);
+    if (data.mainImg) formData.append("mainImg", data.mainImg);
+
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blogs/${id}`,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).finally(() => set({ isBlogLoading: false }));
   },
   getBlogs: ({ page = 1, take = 5 }) => {
     set({ isBlogLoading: true });
