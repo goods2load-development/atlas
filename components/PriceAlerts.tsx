@@ -51,6 +51,7 @@ import { useFilterStore } from "@/lib/filterStore";
 import { ToolTipComponent } from "./SearchMain";
 import Link from "next/link";
 import { BellRing } from "lucide-react";
+import { useToast } from "./ui/use-toast";
 
 const phonesCode = [
   {
@@ -141,6 +142,7 @@ export default function PriceAlerts() {
   });
 
   const priceValue = watch(`routes.0.price`);
+  const { toast } = useToast();
 
   const isFieldsFilled = () => {
     const currentRoute = fields.slice(-1)[0];
@@ -223,7 +225,7 @@ export default function PriceAlerts() {
       <DialogContent
         className={`max-w-[465px] pt-[48px] px-1 overflow-auto max-h-screen sm:pl-10 ${
           step === 3
-            ? "sm:max-w-[632px] pb-[32px] "
+            ? "sm:max-w-[632px] pb-[32px] sm:pl-8 px-8"
             : "sm:max-w-[768px] p-[32px]"
         }`}
       >
@@ -634,6 +636,10 @@ export default function PriceAlerts() {
                       e.preventDefault();
 
                       if (step === 1 && !isFieldsFilled()) {
+                        toast({
+                          title: "Fill the fields!",
+                          className: "bg-red-500 text-white",
+                        });
                         return;
                       } else {
                         setStep(step + 1);
@@ -654,9 +660,9 @@ export default function PriceAlerts() {
               Thank <i className="font-normal">you!</i>
             </DialogTitle>
             <DialogDescription className="text-center">
-              Rest assured that once your desired route reaches the price you
-              are looking for, our team will promptly notify you, ensuring you
-              never miss out on a great deal.
+              We're on it! You'll be connected with logistics providers who fit
+              your needs, and we'll reach out if we need more details to ensure
+              everything goes smoothly.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
