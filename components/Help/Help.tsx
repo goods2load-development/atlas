@@ -21,7 +21,7 @@ export default function Help() {
           <span className="italic">?</span>
         </h1>
         <h2 className="sm:mb-[68px] text-[17px]/[28px] font-light leading-[28px]">
-          Doing business is never been so easy.
+          Doing business has never been easier.{" "}
         </h2>
         <div className="flex w-fit sm:pb-[190px] pb-[130px]"></div>
       </div>
@@ -46,7 +46,8 @@ export default function Help() {
               <img
                 src={icon}
                 className="w-[28px] min-w-[28px] h-[28px] min-h-[28px] sm:w-[40px] sm:min-w-[40px] sm:h-[40px] sm:min-h-[40px] mr-[8px] sm:mr-[16px]"
-               alt={'icon'}/>
+                alt={"icon"}
+              />
               {name}
             </TabsTrigger>
           ))}

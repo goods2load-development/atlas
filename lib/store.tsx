@@ -308,7 +308,8 @@ export const useReferralsStore = create((set) => ({
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("url", data.url);
-    formData.append("file", data.picture);
+    formData.append("smallBanner", data.smallBanner);
+    formData.append("bigBanner", data.bigBanner);
 
     return postRequest({
       url: "referals",

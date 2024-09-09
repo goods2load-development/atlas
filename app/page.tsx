@@ -18,8 +18,8 @@ export default function Home() {
             Unlock countless <i className="font-normal">high-quality</i>{" "}
             shipping options with <i className="font-normal">just one click</i>
           </h1>
-          <span className="font-light text-[16px]/[20px] sm:text-[24px]/[28px] text-center block sm:text-left px-5 sm:px-16">
-            Doing business is never been so easy.
+          <span className="font-light text-[16px]/[20px] sm:text-[24px]/[28px] text-center block sm:text-left">
+            Doing business has never been easier.
           </span>
         </div>
       </Header>
