@@ -12,7 +12,7 @@ interface Blog {
   content: string;
   slug: string;
   published: boolean;
-  createdAt: string; 
+  createdAt: string;
   updatedAt: string;
   blogTypeId: string;
   authorId: string | null;
