@@ -67,7 +67,7 @@ const CreateUpdateBlog = ({
   // const isCreate = type === "create";
   const isUpdate = type === "update";
 
-  const { categories, createBlog, updateBlog, getBlogCategories } =
+  const { categories, createBlog, updateBlog, getBlogs, getBlogCategories } =
     useBlogAdminStore();
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -132,12 +132,14 @@ const CreateUpdateBlog = ({
             className: "bg-green-500 text-white",
           })
         )
-        .then(() => router.push("/dashboard/blog"));
+        .then(() => router.push("/dashboard/blog"))
+        .then(() => setTimeout(() => window.location.reload(), 200));
 
       return;
     }
 
     createBlog(data)
+      .then(() => getBlogs({ page: 1, take: 5 }))
       .then(() =>
         toast({
           title: "Post created.",
@@ -335,6 +337,7 @@ const CreateUpdateBlog = ({
                 width={100}
                 height={100}
                 alt="banner"
+                unoptimized
               />
             </div>
           )}
