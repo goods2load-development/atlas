@@ -24,12 +24,12 @@ export const Referal = ({ className }: { className?: string }) => {
     <div className={clsx("min-h-[360px] w-[279px]", className)}>
       <div
         style={{
-          backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referals[0]?.picture})`,
+          backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referals[0]?.smallBanner})`,
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
         }}
-        className="h-[360px] rounded-2xl overflow-hidden relative  w-full py-6 px-4 text-white flex flex-col"
+        className="rounded-2xl overflow-hidden relative w-full aspect-[1/1] py-6 px-4 text-white flex flex-col"
       >
         <Image width={42} height={42} src={refLogo} alt="R-logo" />
         <Link
