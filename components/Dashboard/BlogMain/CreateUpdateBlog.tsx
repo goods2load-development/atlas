@@ -116,15 +116,7 @@ const CreateUpdateBlog = ({
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     if (isUpdate && post) {
-      updateBlog(
-        {
-          ...data,
-          ...(data.mainImg !== "string" && {
-            mainImg: data.mainImg[0],
-          }),
-        },
-        post.id
-      )
+      updateBlog(data, post.id)
         .then(() =>
           toast({
             title: "Post updated.",

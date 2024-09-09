@@ -582,7 +582,8 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
     formData.append("description", data.description);
     formData.append("slug", data.slug);
     formData.append("title", data.title);
-    if (data.mainImg) formData.append("mainImg", data.mainImg);
+    if (typeof data.mainImg !== "string")
+      formData.append("mainImg", data.mainImg[0]);
 
     set({ isBlogLoading: true });
     return patchRequest({
