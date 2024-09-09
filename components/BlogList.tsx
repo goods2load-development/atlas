@@ -29,6 +29,10 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => (
         categories?.find((cat) => cat.id === blog.blogTypeId)?.name ||
         "Uncategorized";
 
+      const blogImg = blog.mainImageUrl
+        ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
+        : "/default-image.jpg";
+
       return (
         <div
           key={blog.id}
@@ -37,7 +41,7 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => (
           <div className="relative">
             <img
               className="w-full h-64 object-cover rounded-lg"
-              src={blog.mainImageUrl}
+              src={blogImg}
               alt={blog.title}
             />
             <div className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg">

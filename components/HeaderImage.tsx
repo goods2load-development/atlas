@@ -1,5 +1,5 @@
-import React from 'react';
-import Image from 'next/image';
+import React from "react";
+import Image from "next/image";
 
 interface HeaderImageProps {
   title: string;
@@ -18,8 +18,9 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
   readingTime,
   publishDate,
 }) => {
-  // Use a default image URL if the provided URL is invalid
-  const imageUrl = mainImageUrl || '/default-image.jpg'; // Ensure you have a default image in the public directory
+  const imageUrl =
+    `${process.env.NEXT_PUBLIC_BASE_URL}${mainImageUrl}` ||
+    "/default-image.jpg";
 
   return (
     <div className="relative h-80 md:h-[350px] overflow-hidden">
@@ -40,9 +41,13 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
             {category}
           </span>
         </div>
-        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{title}</h1>
+        <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          {title}
+        </h1>
         <div className="flex items-center text-white">
-          <p className="text-sm">{publishDate} | {readingTime} min read</p>
+          <p className="text-sm">
+            {publishDate} | {readingTime} min read
+          </p>
         </div>
       </div>
     </div>
