@@ -33,7 +33,8 @@ const formSchema = z.object({
   bigBanner: z.union([
     z.string(),
     z
-      .instanceof(FileList)
+      .unknown()
+      .transform((value) => value as FileList)
       .refine((files) => files?.length === 1, "You need to provide a file")
       .refine(
         async (files) => files?.[0]?.size <= 2000000,
@@ -47,7 +48,8 @@ const formSchema = z.object({
   smallBanner: z.union([
     z.string(),
     z
-      .instanceof(FileList)
+      .unknown()
+      .transform((value) => value as FileList)
       .refine((files) => files?.length === 1, "You need to provide a file")
       .refine(
         async (files) => files?.[0]?.size <= 2000000,
