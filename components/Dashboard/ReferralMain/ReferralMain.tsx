@@ -89,7 +89,8 @@ const ReferralMain = () => {
   const addNewReferral = async (data: ReferralItemType) => {
     postNewReferral({
       ...data,
-      picture: data.picture[0],
+      bigBanner: data.bigBanner[0],
+      smallBanner: data.smallBanner[0],
     })
       .then(getAllReferrals)
       .then(
@@ -98,7 +99,7 @@ const ReferralMain = () => {
           variant: "default",
           className: "bg-green-500 text-white",
         })
-      );
+      )
   };
 
   const updateReferrals = () => {
@@ -153,9 +154,9 @@ const ReferralMain = () => {
 
     const newRef = {
       ...removeEqualFields(oldData, dataClone),
-      ...((data.picture as unknown as FileList)?.[0]?.name && {
-        file: data.picture[0],
-      }),
+      // ...((data.picture as unknown as FileList)?.[0]?.name && {
+      //   file: data.picture[0],
+      // }),
     };
 
     editReferralById(newRef, id)
