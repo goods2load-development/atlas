@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useCountriesStore } from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, useFieldArray } from "react-hook-form";
@@ -50,6 +50,7 @@ import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
 import { useFilterStore } from "@/lib/filterStore";
 import { ToolTipComponent } from "./SearchMain";
 import Link from "next/link";
+import { BellRing } from "lucide-react";
 
 const phonesCode = [
   {
@@ -130,7 +131,7 @@ export default function PriceAlerts() {
       sms: "",
     },
   });
-  const { control, register } = form;
+  const { control, register, watch } = form;
   const { fields, append, update, remove } = useFieldArray({
     control,
     name: "routes",
@@ -139,26 +140,21 @@ export default function PriceAlerts() {
     },
   });
 
-  const onAddRoute = () => {
-    if (isFieldsFilled()) {
-      append({
-        fromCountry: "",
-        from: "",
-        toCountry: "",
-        to: "",
-        price: "0",
-      });
-    }
-  };
+  const priceValue = watch(`routes.0.price`);
 
   const isFieldsFilled = () => {
     const currentRoute = fields.slice(-1)[0];
+
+    if (!Number(priceValue)) {
+      return false;
+    }
 
     return (
       currentRoute?.from &&
       currentRoute.fromCountry &&
       currentRoute.to &&
-      currentRoute.toCountry
+      currentRoute.toCountry &&
+      Number(priceValue) > 0
     );
   };
 
@@ -220,7 +216,7 @@ export default function PriceAlerts() {
     <Dialog onOpenChange={() => setStep(0)}>
       <DialogTrigger asChild>
         <UIButton className="w-full px-1">
-          <img src="/ringwhite.svg" />
+          <BellRing />
           Price alerts
         </UIButton>
       </DialogTrigger>

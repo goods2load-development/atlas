@@ -8,8 +8,9 @@ import { usePriceAlertsStore } from "@/lib/store";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Reply, TrashIcon } from "lucide-react";
+import { Check, Reply, TrashIcon } from "lucide-react";
 import ViewDialogPriceAlert from "./ViewDilogPriceAlert";
+import PriceAlertReplyDialog from "./PriceAlertReplyDialog";
 
 const TAKE = 5;
 
@@ -25,6 +26,7 @@ export const PriceAlertTab = () => {
     getPriceAlerts,
     deletePriceAlert,
     sendPriceAlert,
+    replyPriceAlerts,
   } = usePriceAlertsStore((state: any) => state);
 
   const searchParams = useSearchParams();
@@ -81,6 +83,18 @@ export const PriceAlertTab = () => {
       );
   };
 
+  const replyPriceAlertsById = (id: string, message: string) => {
+    return replyPriceAlerts(id, message)
+      .then(() => getPriceAlertsForPage(page))
+      .then(() =>
+        toast({
+          title: "Reply sent.",
+          variant: "destructive",
+          className: "bg-green-500",
+        })
+      );
+  };
+
   return (
     <>
       {isPriceAlertLoading && <Spinner />}
@@ -104,14 +118,21 @@ export const PriceAlertTab = () => {
                     setIsViewModalOpen({ isOpen: true, id: item.id })
                   }
                 >
-                  {item.email}
+                  {item.email || item.phoneNumber}
                 </p>
                 <div className="flex items-center gap-2">
                   <button
                     title="Send"
                     onClick={() => sendPriceAlertById(item.id)}
                   >
-                    <Reply />
+                    <Check />
+                  </button>
+                  <button title="Reply">
+                    <PriceAlertReplyDialog
+                      onSubmitCallback={(data: any) =>
+                        replyPriceAlertsById(item.id, data.message)
+                      }
+                    />
                   </button>
                   <ViewDialogPriceAlert
                     isOpen={
