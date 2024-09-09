@@ -274,7 +274,7 @@ export default function PriceAlerts() {
                 </div>
                 {fields.map((item, index) => (
                   <div
-                    className="flex flex-wrap items-center mb-[8px] w-full justify-center sm:justify-start gap-2 sm:gap-0"
+                    className="flex flex-wrap sm:flex-nowrap items-center mb-[8px] w-full justify-center sm:justify-start gap-2 sm:gap-0"
                     key={index}
                   >
                     <div className="mx-[5px] sm:w-[240px] w-full mt-4 sm:mt-0 flex items-center sm:block justify-center">
