@@ -661,9 +661,9 @@ export default function PriceAlerts() {
               Thank <i className="font-normal">you!</i>
             </DialogTitle>
             <DialogDescription className="text-center">
-              We're on it! You'll be connected with logistics providers who fit
-              your needs, and we'll reach out if we need more details to ensure
-              everything goes smoothly.
+              We&apos;re on it! You&apos;ll be connected with logistics
+              providers who fit your needs, and we&apos;ll reach out if we need
+              more details to ensure everything goes smoothly.
             </DialogDescription>
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
