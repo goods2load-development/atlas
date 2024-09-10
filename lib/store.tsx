@@ -434,6 +434,14 @@ export const usePriceAlertsStore = create((set) => ({
       .finally(() => set({ isPriceAlertLoading: false }));
   },
 
+  replyPriceAlerts: (id: string, message: string) => {
+    set({ isPriceAlertLoading: true });
+    return postRequest({
+      url: `alerts/${id}/reply`,
+      data: { message },
+    }).finally(() => set({ isPriceAlertLoading: false }));
+  },
+
   sendPriceAlert: (id: string) => {
     set({ isPriceAlertLoading: true });
     return postRequest({ url: `alerts/${id}/send` }).finally(() =>
