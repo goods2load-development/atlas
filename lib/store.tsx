@@ -3,10 +3,10 @@ import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
 import Cookie from "js-cookie";
 import {
-  Partner,
   PartnerPageResponse,
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
+import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
 import { url } from "inspector";
 
 export const useCountriesStore = create((set) => ({
@@ -308,7 +308,8 @@ export const useReferralsStore = create((set) => ({
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("url", data.url);
-    formData.append("file", data.picture);
+    formData.append("smallBanner", data.smallBanner);
+    formData.append("bigBanner", data.bigBanner);
 
     return postRequest({
       url: "referals",
@@ -433,6 +434,14 @@ export const usePriceAlertsStore = create((set) => ({
       .finally(() => set({ isPriceAlertLoading: false }));
   },
 
+  replyPriceAlerts: (id: string, message: string) => {
+    set({ isPriceAlertLoading: true });
+    return postRequest({
+      url: `alerts/${id}/reply`,
+      data: { message },
+    }).finally(() => set({ isPriceAlertLoading: false }));
+  },
+
   sendPriceAlert: (id: string) => {
     set({ isPriceAlertLoading: true });
     return postRequest({ url: `alerts/${id}/send` }).finally(() =>
@@ -531,5 +540,209 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     })
       .then((data) => set({ partnerPage: data }))
       .finally(() => set({ isPartnersLoading: false }));
+  },
+}));
+
+interface BlogAdminStoreState {
+  blogs: {
+    data: Blog[];
+    meta: any;
+  } | null;
+  foundBlogs: {
+    data: Blog[];
+    meta: any;
+  } | null;
+  blog: Blog | null;
+  categories: any[];
+  comments: BlogComment[];
+  unapprovedComments: BlogComment[];
+  isBlogLoading: boolean;
+  createBlog: (data: any) => Promise<void>;
+  updateBlog: (data: any, id: string) => Promise<void>;
+  getBlogCategories: () => Promise<void>;
+  getBlogs: ({ page, take }: { page?: number; take?: number }) => Promise<void>;
+  getBlog: (id: string) => Promise<void>;
+  deleteBlog: (id: string) => Promise<void>;
+  getCommentsById: (id: string) => Promise<void>;
+  getUnapprovedComments: () => Promise<void>;
+  deleteCommentById: (id: string) => Promise<void>;
+  approveComment: (id: string) => Promise<void>;
+  createBlogCategory: (data: {
+    name: string;
+    description: string;
+  }) => Promise<void>;
+  updateBlogCategory: (
+    data: {
+      name: string;
+      description: string;
+    },
+    id: string
+  ) => Promise<void>;
+  deleteBlogCategory: (id: string) => Promise<void>;
+  searchBlogs: (data: {
+    searchTerm: string;
+    page?: number;
+    take?: number;
+  }) => Promise<void>;
+}
+
+export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
+  blogs: null,
+  blog: null,
+  foundBlogs: null,
+  categories: [],
+  comments: [],
+  unapprovedComments: [],
+  isBlogLoading: true,
+  createBlog: (data: any) => {
+    set({ isBlogLoading: true });
+    const formData = new FormData();
+
+    formData.append("authorName", data.authorName);
+    formData.append("blogTypeId", data.blogTypeId);
+    formData.append("content", data.content);
+    formData.append("description", data.description);
+    formData.append("slug", data.slug);
+    formData.append("title", data.title);
+    formData.append("mainImg", data.mainImg[0]);
+
+    return postRequest({
+      url: "blogs",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then((blogs) => {
+        set({ blogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  updateBlog: (data: any, id: string) => {
+    const formData = new FormData();
+
+    formData.append("authorName", data.authorName);
+    formData.append("blogTypeId", data.blogTypeId);
+    formData.append("content", data.content);
+    formData.append("description", data.description);
+    formData.append("slug", data.slug);
+    formData.append("title", data.title);
+    if (typeof data.mainImg !== "string")
+      formData.append("mainImg", data.mainImg[0]);
+
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blogs/${id}`,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getBlogs: ({ page = 1, take = 5 }) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: "blogs",
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((blogs) => {
+        set({ blogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  getBlog: (id: string) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blogs/${id}`,
+    })
+      .then((blog) => {
+        set({ blog });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  deleteBlog: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blogs/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getCommentsById: (id: string) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blog-comments/${id}/approved`,
+    })
+      .then((comments) => {
+        set({ comments });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  deleteCommentById: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blog-comments/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getUnapprovedComments: () => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blog-comments/unapproved`,
+    })
+      .then((unapprovedComments) => {
+        set({ unapprovedComments });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  approveComment: (id: string) => {
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blog-comments/${id}/approve`,
+      data: {
+        approved: true,
+      },
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getBlogCategories: () => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: "blog-types",
+    })
+      .then((categories) => {
+        set({ categories });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  createBlogCategory: (data) => {
+    set({ isBlogLoading: true });
+    return postRequest({
+      url: "blog-types",
+      data,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  updateBlogCategory: (data, id) => {
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blog-types/${id}`,
+      data,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  deleteBlogCategory: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blog-types/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  searchBlogs: ({ page = 1, take = 5, searchTerm }) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blogs`,
+      params: {
+        searchTerm,
+        page,
+        take,
+      },
+    })
+      .then((foundBlogs) => {
+        set({ foundBlogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
   },
 }));

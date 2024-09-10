@@ -8,6 +8,7 @@ import useEmblaCarousel from "embla-carousel-react";
 import { useEffect } from "react";
 import { ReferralItemType } from "./Dashboard/ReferralMain/types";
 import Link from "next/link";
+import useBreakpoint from "@/app/hooks/useBreakpoint";
 
 export default function TailoredServices() {
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -21,6 +22,8 @@ export default function TailoredServices() {
     (state: any) => state
   );
   const { referals: referrals = [], slicePerReferals = null } = referralsData;
+
+  const { isBelowSm } = useBreakpoint("sm");
 
   useEffect(() => {
     getAllReferrals();
@@ -58,7 +61,7 @@ export default function TailoredServices() {
               >
                 <div
                   style={{
-                    background: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referral.picture})`,
+                    backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${slicePerReferals === 3 || isBelowSm ? referral.smallBanner : referral.bigBanner})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",

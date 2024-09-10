@@ -31,7 +31,7 @@ const ViewDialogPriceAlert = ({
 
   const {
     email,
-    phone,
+    phoneNumber,
     fromRoute,
     toRoute,
     price,
@@ -65,9 +65,10 @@ const ViewDialogPriceAlert = ({
                 <span className="font-semibold">Customer email:</span> {email}
               </div>
             )}
-            {phone && (
+            {phoneNumber && (
               <div>
-                <span className="font-semibold">Customer phone:</span> {phone}
+                <span className="font-semibold">Customer phone:</span>{" "}
+                {phoneNumber}
               </div>
             )}
             <div>

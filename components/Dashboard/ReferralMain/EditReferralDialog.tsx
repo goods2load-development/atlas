@@ -18,7 +18,7 @@ const EditReferralDialog = ({
   referralItem: ReferralItemType;
   editReferral: (oldData: any, data: any, id: string) => void;
 }) => {
-  const { title, url, picture, id } = referralItem;
+  const { title, url, bigBanner, smallBanner, id } = referralItem;
 
   const [isOpen, setIsOpen] = useState(false);
 
@@ -39,7 +39,8 @@ const EditReferralDialog = ({
           defaultValues={{
             title,
             url,
-            picture,
+            bigBanner,
+            smallBanner,
           }}
           onSubmitCallback={onSubmit}
         />

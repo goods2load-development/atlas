@@ -112,12 +112,12 @@ export default function Account() {
     <>
       <Header />
       <main className="flex min-h-screen flex-col py-5 sm:py-16 justify-between colored-main px-[16px] max-w-[1328px] mx-auto">
-        <div className="sm:flex justify-between mb-10 items-center">
+        <div className="md:flex justify-between mb-10 items-center">
           <i className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">
             <img src="/user.svg" className="mr-3" />
             Account
           </i>
-          <div className="mt-5 sm:mt-0 gap-4 flex items-center">
+          <div className="mt-5 md:mt-0 gap-4 flex items-center flex-wrap md:flex-nowrap">
             {user?.role === "admin" && (
               <Link
                 href={`${user?.role === "admin" ? "/dashboard/referral" : "/dashboard/performance"}`}
@@ -146,7 +146,7 @@ export default function Account() {
             <DeleteAccount />
             <button
               onClick={onLogout}
-              className="flex items-center gap-3 text-[14px]/[17px] font-medium cursor-pointer hover:opacity-50 transition-all"
+              className="flex items-center gap-3 text-[14px]/[17px] font-medium cursor-pointer hover:opacity-50 transition-all mx-auto"
             >
               <Image
                 width={13}

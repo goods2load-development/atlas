@@ -20,7 +20,7 @@ const ReferralItem = ({
     id: string
   ) => void;
 }) => {
-  const { title, url, id, picture } = referralItem;
+  const { title, url, id, bigBanner, smallBanner } = referralItem;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id,
@@ -45,7 +45,7 @@ const ReferralItem = ({
           {title}
         </h2>
         <div className="flex gap-2 ml-auto">
-          <BannerPreview image={picture} />
+          <BannerPreview bigBanner={bigBanner} smallBanner={smallBanner} />
           <EditReferralDialog
             editReferral={editReferral}
             referralItem={referralItem}
