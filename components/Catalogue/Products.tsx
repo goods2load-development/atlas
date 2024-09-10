@@ -12,7 +12,7 @@ export default function Products() {
   useEffect(() => {
     getProducts();
   }, []);
-  return products.length ? (
+  return products?.length ? (
     <div className="bg-blue-000 space-y-[24px]">
       {products.map((product: any, index: number) => (
         <Product
