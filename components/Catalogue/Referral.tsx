@@ -1,10 +1,8 @@
 import { useEffect } from "react";
 import { useReferralsStore } from "@/lib/store";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import clsx from "clsx";
-import refLogo from "@/assets/ref-logo.svg";
-import longArrow from "@/assets/long-arrow.svg";
 
 export const Referal = ({ className }: { className?: string }) => {
   const {
@@ -22,24 +20,35 @@ export const Referal = ({ className }: { className?: string }) => {
 
   return (
     <div className={clsx("min-h-[360px] w-[279px]", className)}>
-      <div
-        style={{
-          backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referals[0]?.picture})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-        className="h-[360px] rounded-2xl overflow-hidden relative  w-full py-6 px-4 text-white flex flex-col"
-      >
-        <Image width={42} height={42} src={refLogo} alt="R-logo" />
+      <div className="rounded-2xl overflow-hidden relative w-full mb-6">
         <Link
           target="_blank"
-          className="text-primaryOrange text-[18px]/[22px] font-medium flex justify-between mt-auto"
+          className="absolute inset-0"
           href={referals[0]?.url}
-        >
-          Read more
-          <Image width={100} height={5} src={longArrow} alt="arrow" />
-        </Link>
+        ></Link>
+        <Image
+          className="w-full"
+          width={100}
+          height={100}
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}${referals[0]?.smallBanner}`}
+          unoptimized
+          alt="preview"
+        />
+      </div>
+      <div className="rounded-2xl overflow-hidden relative w-full">
+        <Link
+          target="_blank"
+          className="absolute inset-0"
+          href={referals[0]?.url}
+        ></Link>
+        <Image
+          className="w-full"
+          width={100}
+          height={100}
+          src={`${process.env.NEXT_PUBLIC_BASE_URL}${referals[1]?.smallBanner}`}
+          unoptimized
+          alt="preview"
+        />
       </div>
     </div>
   );

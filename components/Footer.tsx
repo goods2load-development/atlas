@@ -87,6 +87,9 @@ export default function Footer() {
             <Link href="/career" className="sm:block pb-3 font-light hidden">
               Career
             </Link>
+            <Link href="/blog" className="sm:block pb-3 font-light hidden">
+              Blog
+            </Link>
           </div>
 
           <div className="text-center sm:hidden pb-3">
@@ -112,6 +115,9 @@ export default function Footer() {
             </Link>
             <Link href="/career" className="block pb-3 font-light">
               Career
+            </Link>
+            <Link href="/blog" className="block pb-3 font-light">
+              Blog
             </Link>
           </div>
           <div className="text-center sm:text-left">

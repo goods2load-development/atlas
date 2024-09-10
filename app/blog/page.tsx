@@ -39,19 +39,23 @@ const BlogPage: React.FC = () => {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const data = await getRequest({ url: "blogs" });
-        const sortedBlogs = data.sort((a: Blog, b: Blog) => {
-          if (b.weight === a.weight) {
-            return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-          }
-          return b.weight - a.weight;
-        });
-        setBlogs(sortedBlogs);
+        const response = await getRequest({ url: "blogs" });
+        if (response && Array.isArray(response.data)) {
+          const sortedBlogs = response.data.sort((a: Blog, b: Blog) => {
+            if (b.weight === a.weight) {
+              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+            }
+            return b.weight - a.weight;
+          });
+          setBlogs(sortedBlogs);
+        } else {
+          console.error("Unexpected data format:", response);
+        }
       } catch (error) {
         console.error("Failed to fetch blogs:", error);
       }
     };
-
+  
     fetchBlogs();
   }, []);
 

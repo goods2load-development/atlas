@@ -1,5 +1,5 @@
 "use client";
-import Image from "next/image";
+import NextImage from "next/image";
 import { Button } from "@/components/ui/button";
 import {
   FormControl,
@@ -17,18 +17,47 @@ import { useEffect, useState } from "react";
 import { fileToBase64 } from "@/lib/utils";
 import { X } from "lucide-react";
 
+const validateImageDimensions = (file: File, width: number, height: number) =>
+  new Promise<boolean>((resolve) => {
+    const img = new Image();
+    img.src = URL?.createObjectURL(file);
+    img.onload = () => {
+      resolve(img.width === width && img.height === height);
+    };
+  });
+
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
   url: z.string().url("Enter a valid URL"),
-  picture: z.union([
+
+  bigBanner: z.union([
     z.string(),
     z
       .unknown()
       .transform((value) => value as FileList)
       .refine((files) => files?.length === 1, "You need to provide a file")
       .refine(
-        (files) => files?.[0]?.size <= 2000000,
+        async (files) => files?.[0]?.size <= 2000000,
         "The file is too large, it should be less than 2MB"
+      )
+      .refine(
+        async (files) => await validateImageDimensions(files[0], 1300, 360),
+        "The image must be 1300x360"
+      ),
+  ]),
+  smallBanner: z.union([
+    z.string(),
+    z
+      .unknown()
+      .transform((value) => value as FileList)
+      .refine((files) => files?.length === 1, "You need to provide a file")
+      .refine(
+        async (files) => files?.[0]?.size <= 2000000,
+        "The file is too large, it should be less than 2MB"
+      )
+      .refine(
+        async (files) => await validateImageDimensions(files[0], 400, 400),
+        "The image must be 400x400"
       ),
   ]),
 });
@@ -40,7 +69,8 @@ const ReferralFormDialog = ({
   onSubmitCallback: (data: any) => void;
   defaultValues?: any;
 }) => {
-  const [imgSrc, setImgSrc] = useState<string | null>(null);
+  const [smallBannerSrc, setSmallBannerSrc] = useState<string | null>(null);
+  const [bigBannerSrc, setBigBannerSrc] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "all",
@@ -48,29 +78,41 @@ const ReferralFormDialog = ({
     ...(!!defaultValues && {
       defaultValues: {
         ...defaultValues,
-        picture: `${process.env.NEXT_PUBLIC_BASE_URL}${defaultValues.picture}`,
+        smallBanner: `${process.env.NEXT_PUBLIC_BASE_URL}${defaultValues.smallBanner}`,
+        bigBanner: `${process.env.NEXT_PUBLIC_BASE_URL}${defaultValues.bigBanner}`,
       },
     }),
   });
 
   const { handleSubmit, control, reset, getValues, setValue } = form;
-  const pictureValue = getValues("picture");
+  const bigBannerValue = getValues("bigBanner");
+  const smallBannerValue = getValues("smallBanner");
 
   useEffect(() => {
     (async () => {
-      if (typeof pictureValue === "string") {
-        setImgSrc(pictureValue);
-        return;
-      }
+      const bannerConfigs = [
+        {
+          banner: bigBannerValue,
+          setBanner: setBigBannerSrc,
+        },
+        {
+          banner: smallBannerValue,
+          setBanner: setSmallBannerSrc,
+        },
+      ];
 
-      if (pictureValue?.length) {
-        const base64 = await fileToBase64(pictureValue[0]);
-        setImgSrc(base64);
-      } else {
-        setImgSrc(null);
+      for (const { banner, setBanner } of bannerConfigs) {
+        if (typeof banner === "string") {
+          setBanner(banner);
+        } else if (banner?.length) {
+          const base64 = await fileToBase64(banner[0]);
+          setBanner(base64);
+        } else {
+          setBanner(null);
+        }
       }
     })();
-  }, [pictureValue]);
+  }, [bigBannerValue, smallBannerValue]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     onSubmitCallback(data);
@@ -121,15 +163,17 @@ const ReferralFormDialog = ({
           />
           <FormField
             control={form.control}
-            name="picture"
+            name="bigBanner"
             render={({ field }) => (
               <FormItem className="w-full mb-5 sm:flex flex-wrap">
                 <div className="sm:w-1/2 sm:pr-2">
                   <FormLabel className="text-[14px]/[18px] font-normal">
-                    Banner for your referral
+                    Large banner for your referral
                   </FormLabel>
                   <FormDescription className="text-[12px]">
-                    *Attachments not bigger than 2MB
+                    *Attachments not bigger than 2MB.
+                    <br />
+                    Recommended resolution 1300x360
                   </FormDescription>
                 </div>
                 <FormControl>
@@ -141,7 +185,7 @@ const ReferralFormDialog = ({
                   />
                 </FormControl>
                 <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                  <Image
+                  <NextImage
                     width={16}
                     height={16}
                     className="mr-[8px]"
@@ -156,12 +200,12 @@ const ReferralFormDialog = ({
               </FormItem>
             )}
           />
-          {imgSrc && (
+          {bigBannerSrc && (
             <div className="w-1/3 relative inline-block">
               <button
                 onClick={() => {
-                  setValue("picture", null as any);
-                  setImgSrc(null);
+                  setValue("bigBanner", null as any);
+                  setBigBannerSrc(null);
                 }}
                 type="button"
                 className="bg-orangePrimary w-4 h-4 rounded-full flex items-center justify-center
@@ -169,9 +213,70 @@ const ReferralFormDialog = ({
               >
                 <X color="white" />
               </button>
-              <Image
+              <NextImage
                 className="w-full"
-                src={imgSrc}
+                src={bigBannerSrc}
+                width={100}
+                height={100}
+                alt="banner"
+              />
+            </div>
+          )}
+          <FormField
+            control={form.control}
+            name="smallBanner"
+            render={({ field }) => (
+              <FormItem className="w-full mb-5 sm:flex flex-wrap">
+                <div className="sm:w-1/2 sm:pr-2">
+                  <FormLabel className="text-[14px]/[18px] font-normal">
+                    Small banner for your referral
+                  </FormLabel>
+                  <FormDescription className="text-[12px]">
+                    *Attachments not bigger than 2MB.
+                    <br />
+                    Recommended resolution 400x400
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Input
+                    className="hidden"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => field.onChange(e.target.files || null)}
+                  />
+                </FormControl>
+                <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
+                  <NextImage
+                    width={16}
+                    height={16}
+                    className="mr-[8px]"
+                    src="/upload.svg"
+                    alt="upload"
+                  />
+                  {field.value
+                    ? (field.value as FileList)?.[0]?.name
+                    : "Upload banner"}
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          {smallBannerSrc && (
+            <div className="w-1/3 relative inline-block">
+              <button
+                onClick={() => {
+                  setValue("smallBanner", null as any);
+                  setSmallBannerSrc(null);
+                }}
+                type="button"
+                className="bg-orangePrimary w-4 h-4 rounded-full flex items-center justify-center
+              absolute -top-2 -right-2"
+              >
+                <X color="white" />
+              </button>
+              <NextImage
+                className="w-full"
+                src={smallBannerSrc}
                 width={100}
                 height={100}
                 alt="banner"

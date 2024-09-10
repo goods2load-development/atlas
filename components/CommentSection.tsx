@@ -1,64 +1,114 @@
-import React, { useState } from 'react';
-import CommentInput from './CommentInput';
+import React, { useEffect, useState } from 'react';
+import { useUserStore } from '@/lib/store';
 import Comment from './Comment';
+import CommentInput from './CommentInput';
+import { getRequest, postRequest, deleteRequest } from '@/lib/utils';
+import { UserRoute } from './Dashboard/RoutesMain/types';
 
-const CommentSection: React.FC = () => {
-  const [showReplies, setShowReplies] = useState<boolean>(false);
-  const [parentLikes, setParentLikes] = useState<number>(0);
-  const [parentDislikes, setParentDislikes] = useState<number>(0);
-  const [replyLikes, setReplyLikes] = useState<number>(4);
-  const [replyDislikes, setReplyDislikes] = useState<number>(6);
+interface CommentSectionProps {
+  blogId: string;
+  activeUsers: number;
+  commentCount: number
+}
 
-  const [isEditingParent, setIsEditingParent] = useState<boolean>(false);
-  const [parentCommentText, setParentCommentText] = useState<string>('This is the actual comment.');
-  const [isEditingReply, setIsEditingReply] = useState<boolean>(false);
-  const [replyCommentText, setReplyCommentText] = useState<string>('This is a reply to the comment.');
+interface CommentData {
+  id: string;
+  comment: string;
+  userId: string;
+  createdAt: string;
+  likeCount: number;
+  dislikeCount: number;
+}
+
+interface UserState {
+  user: UserRoute;
+}
+
+const CommentSection: React.FC<CommentSectionProps> = ({ blogId, activeUsers, commentCount }) => {
+  const [comments, setComments] = useState<CommentData[]>([]);
+  const { user } = useUserStore<UserState>((state: any) => state);
+
+  const fetchComments = async () => {
+    try {
+      const response = await getRequest({
+        url: `/blog-comments/${blogId}/parents`,
+      });
+      setComments(response);
+    } catch (error) {
+      console.error('Error fetching comments:', error);
+    }
+  };
+
+  useEffect(() => {
+    fetchComments();
+  }, [blogId]);
+
+  const handleSubmitComment = async (commentText: string) => {
+    if (!user?.id) {
+      console.error("User is not logged in");
+      return;
+    }
+
+    try {
+      const newComment = await postRequest({
+        url: `/blog-comments`,
+        data: {
+          comment: commentText,
+          blogId,
+          userId: user.id,
+        },
+      });
+
+      setComments([newComment, ...comments]);
+    } catch (error) {
+      console.error('Error creating comment:', error);
+    }
+  };
+
+  const handleDeleteComment = async (commentId: string) => {
+    try {
+      await deleteRequest({
+        url: `/blog-comments/${commentId}`,
+      });
+      setComments(comments.filter(comment => comment.id !== commentId));
+    } catch (error) {
+      console.error('Error deleting comment:', error);
+    }
+  };
 
   return (
     <div className="w-full max-w-2xl mx-auto my-6 p-4 bg-white rounded-lg">
-      {/* Comments Header */}
       <div className="flex justify-between items-center py-2">
-        <h2 className="text-xl font-semibold">0 Comments</h2>
+        <h2 className="text-xl font-semibold">{commentCount} Comments</h2>
         <div className="flex items-center">
-          <span className="mr-2 text-[#FF4500]">Active Here:</span>
-          <span className="text-[#FF4500] font-semibold">0</span>
+          <div className="w-4 h-4 rounded-full bg-red-500 mr-2"></div>
+          <span className="mr-2 text-sm text-gray-500">Active Here:</span>
+          <span className="text-[#FF4500] font-semibold">{activeUsers}</span>
         </div>
       </div>
 
-      {/* Comment Input */}
-      <CommentInput />
+      <CommentInput onSubmit={handleSubmitComment} />
 
-      {/* Parent Comment */}
-      <Comment
-        author="John Doe"
-        daysAgo="6"
-        isEditing={isEditingParent}
-        commentText={parentCommentText}
-        likes={parentLikes}
-        dislikes={parentDislikes}
-        setLikes={setParentLikes}
-        setDislikes={setParentDislikes}
-        setIsEditing={setIsEditingParent}
-        setCommentText={setParentCommentText}
-        showReplies={showReplies}
-        setShowReplies={setShowReplies}
-      >
-        {/* Reply Comment */}
-        {showReplies && (
-          <Comment
-            author="Jane Doe"
-            daysAgo="5"
-            isEditing={isEditingReply}
-            commentText={replyCommentText}
-            likes={replyLikes}
-            dislikes={replyDislikes}
-            setLikes={setReplyLikes}
-            setDislikes={setReplyDislikes}
-            setIsEditing={setIsEditingReply}
-            setCommentText={setReplyCommentText}
-          />
-        )}
-      </Comment>
+      {comments.map((comment) => (
+        <Comment
+          key={comment.id}
+          id={comment.id}
+          userId={comment.userId}
+          currentUserId={user.id}
+          daysAgo={Math.floor((Date.now() - new Date(comment.createdAt).getTime()) / (1000 * 60 * 60 * 24)).toString()}
+          isEditing={false}
+          commentText={comment.comment}
+          likeCount={comment.likeCount}
+          dislikeCount={comment.dislikeCount}
+          setLikes={() => {}}
+          setDislikes={() => {}}
+          setIsEditing={() => {}}
+          setCommentText={() => {}}
+          showReplies={false} 
+          setShowReplies={() => {}}
+          onDelete={() => handleDeleteComment(comment.id)}
+        />
+      ))}
     </div>
   );
 };
