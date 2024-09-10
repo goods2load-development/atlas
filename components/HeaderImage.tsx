@@ -1,5 +1,6 @@
 import React from "react";
 import Image from "next/image";
+import { formatDate } from "@/lib/utils";
 
 interface HeaderImageProps {
   title: string;
@@ -18,9 +19,9 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
   readingTime,
   publishDate,
 }) => {
-  const imageUrl =
-    `${process.env.NEXT_PUBLIC_BASE_URL}${mainImageUrl}` ||
-    "/default-image.jpg";
+  const imageUrl = mainImageUrl
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}${mainImageUrl}`
+    : "/default-image.jpg";
 
   return (
     <div className="relative h-80 md:h-[350px] overflow-hidden">
@@ -46,7 +47,7 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
         </h1>
         <div className="flex items-center text-white">
           <p className="text-sm">
-            {publishDate} | {readingTime} min read
+            {formatDate(publishDate)} | {readingTime} min read
           </p>
         </div>
       </div>

@@ -197,3 +197,12 @@ export const urlsToFileList = async (urls: string[]) => {
 
   return dataTransfer.files;
 };
+
+export const formatDate = (dateString: string): string => {
+  const [month, day, year] = dateString.split("/");
+
+  const formattedMonth = month.padStart(2, "0");
+  const formattedDay = day.padStart(2, "0");
+
+  return `${formattedMonth}/${formattedDay}/${year}`;
+};
