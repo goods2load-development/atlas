@@ -10,7 +10,7 @@ import Loader from "@/components/common/Loader";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogList from "@/components/BlogList";
-import Link from "next/link";
+import { RelatedBlogs } from "@/app/_components/Blog/RelatedBlogs";
 
 interface BlogComment {
   id: string;
@@ -20,7 +20,7 @@ interface BlogComment {
   replies: BlogComment[];
 }
 
-interface Blog {
+export interface Blog {
   id: string;
   title: string;
   description: string;
@@ -42,7 +42,7 @@ interface Blog {
   commentCount: number;
 }
 
-interface BlogType {
+export interface BlogType {
   id: string;
   name: string;
 }
@@ -95,7 +95,7 @@ const BlogPage: React.FC = () => {
           publishDate={new Date(blog.createdAt || "").toLocaleDateString()}
         />
 
-        <div className="px-4 py-8 max-w-7xl">
+        <div className="px-4 py-8 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Table of Contents */}
             <div className="md:w-64 sticky top-0">
@@ -119,21 +119,7 @@ const BlogPage: React.FC = () => {
           />
 
           {/* Related Blogs Section */}
-          <div className="mt-12">
-            <h2 className="text-2xl font-bold mb-6">Related Articles</h2>
-            {relatedBlogs.length > 0 && (
-              <BlogList blogs={relatedBlogs} categories={categories} />
-            )}
-
-            {/* View All Blogs Button */}
-            <div className="mt-6 text-center">
-              <Link href="/blogs">
-                <button className="bg-orange-500 text-white px-4 py-2 rounded-lg">
-                  <a className="hover:underline">More articles</a>
-                </button>
-              </Link>
-            </div>
-          </div>
+          <RelatedBlogs categoriesName={blog.blogTypeName} />
         </div>
       </div>
       <Footer />

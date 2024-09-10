@@ -82,6 +82,8 @@ const config = {
           "url('../assets/PartnersImage/PartnersAmplify/partnersAmplifyBg.png')",
         bgMainPrimary: "url('../public/bgmain.svg')",
         bgMainPrimaryMobile: "url('../public/homebgmobile.svg')",
+        bgWhiteGradient:
+          "linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 50%)",
         bgFooter: "url(../public/footerbg.png)",
         bgOptimize: "url(../public/optimizebg.jpg)",
         bgLogistics: "url(../public/logisticbg.svg)",
@@ -96,6 +98,7 @@ const config = {
         "divide-pattern-mobile": "url('../assets/divide-pattern.jpg')",
         "hero-pattern-mobile": "url('../assets/hero-pattern-mobile.png')",
         "partners-mobile": "url('../assets/bg-partners-mobile.png')",
+        "blog-pattern": "url(../assets/Blog/bg-blog.png')",
         seo: "url(../public/seobg.svg)",
         seomobile: "url(../public/seobgmobile.svg)",
       },

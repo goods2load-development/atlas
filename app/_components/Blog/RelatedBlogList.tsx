@@ -1,35 +1,22 @@
+"use client";
+
+import { Blog } from "@/app/blog/[slug]/page";
 import Link from "next/link";
-import React, { useEffect } from "react";
 import { formatDate } from "@/lib/utils";
+import { useEffect } from "react";
 
-interface Blog {
-  id: string;
-  title: string;
-  description: string;
-  mainImageUrl: string;
-  createdAt: string;
-  updatedAt: string;
-  readingTime: number;
-  blogTypeName: string;
-  blogTypeId: string;
-  slug: string;
-}
-
-interface BlogType {
-  id: string;
-  name: string;
-}
-
-interface BlogListProps {
+interface IRelatedBlogsList {
   blogs: Blog[];
-  categories: BlogType[];
 }
 
-const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
-  const blogsWithOutFirstElement = blogs.slice(1);
+export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
+  useEffect(() => {
+    console.log(1);
+  }, []);
+
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-8">
-      {blogsWithOutFirstElement.map((blog) => {
+    <div className="grid grid-cols-1 items-center  md:grid-cols-3 gap-10 mt-8">
+      {blogs.map((blog) => {
         const blogImg = blog.mainImageUrl
           ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
           : "/default-image.jpg";
@@ -51,7 +38,9 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
             </div>
             <div className="p-4 flex flex-col h-full justify-between">
               <div>
-                <h3 className="text-xl font-bold mb-2">{blog.title}</h3>
+                <h3 className="text-[24px]/[28px] font-medium mb-2">
+                  {blog.title}
+                </h3>
                 <p className="text-gray-600 mb-4">{blog.description}</p>
               </div>
               <div className="text-gray-500 text-sm flex justify-between">
@@ -76,5 +65,3 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
     </div>
   );
 };
-
-export default BlogList;

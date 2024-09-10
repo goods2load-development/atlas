@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Cookie from "js-cookie";
+import { format } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -199,10 +200,5 @@ export const urlsToFileList = async (urls: string[]) => {
 };
 
 export const formatDate = (dateString: string): string => {
-  const [month, day, year] = dateString.split("/");
-
-  const formattedMonth = month.padStart(2, "0");
-  const formattedDay = day.padStart(2, "0");
-
-  return `${formattedMonth}/${formattedDay}/${year}`;
+  return format(new Date(dateString), "dd MMM yyyy");
 };
