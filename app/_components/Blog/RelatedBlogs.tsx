@@ -28,10 +28,6 @@ export const RelatedBlogs = ({
     fetchRelatedBlogs();
   }, []);
 
-  useEffect(() => {
-    console.log(relatedBlogs);
-  }, [relatedBlogs]);
-
   return (
     <div className="mt-12">
       <div className="flex items-center justify-between">

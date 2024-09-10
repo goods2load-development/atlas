@@ -10,10 +10,6 @@ interface IRelatedBlogsList {
 }
 
 export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
-  useEffect(() => {
-    console.log(1);
-  }, []);
-
   return (
     <div className="grid grid-cols-1 items-center  md:grid-cols-3 gap-10 mt-8">
       {blogs.map((blog) => {
