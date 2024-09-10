@@ -116,15 +116,7 @@ const CreateUpdateBlog = ({
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     if (isUpdate && post) {
-      updateBlog(
-        {
-          ...data,
-          ...(data.mainImg !== "string" && {
-            mainImg: data.mainImg[0],
-          }),
-        },
-        post.id
-      )
+      updateBlog(data, post.id)
         .then(() =>
           toast({
             title: "Post updated.",
@@ -156,6 +148,72 @@ const CreateUpdateBlog = ({
     <div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
+          <FormField
+            control={form.control}
+            name="mainImg"
+            render={({ field }) => (
+              <FormItem className="w-full mb-5 sm:flex flex-wrap">
+                <div className="sm:w-1/2 sm:pr-2">
+                  <FormLabel className="text-[14px]/[18px] font-normal">
+                    Main banner
+                  </FormLabel>
+                  <FormDescription className="text-[12px]">
+                    *Attachments not bigger than 2MB
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Input
+                    className="hidden"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => {
+                      field.onChange(e.target.files || null);
+                      setBanner(e.target.files);
+                    }}
+                  />
+                </FormControl>
+                <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
+                  <Image
+                    width={16}
+                    height={16}
+                    className="mr-[8px]"
+                    src="/upload.svg"
+                    alt="upload"
+                  />
+                  {field.value
+                    ? (field.value as FileList)?.[0]?.name
+                    : "Upload banner"}
+                </FormLabel>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          {imgSrc && (
+            <div className="w-1/3 relative inline-block">
+              <button
+                onClick={() => {
+                  form.setValue("mainImg", null as any);
+                  setBanner(null);
+                  setImgSrc(null);
+                }}
+                type="button"
+                className="bg-orangePrimary w-4 h-4 rounded-full flex items-center justify-center
+              absolute -top-2 -right-2"
+              >
+                <X color="white" />
+              </button>
+              <Image
+                className="w-full"
+                src={imgSrc as string}
+                width={100}
+                height={100}
+                alt="banner"
+                unoptimized
+              />
+            </div>
+          )}
+
           <FormField
             control={form.control}
             name="title"
@@ -275,72 +333,6 @@ const CreateUpdateBlog = ({
 
             <CategoryDialog type="create" />
           </div>
-
-          <FormField
-            control={form.control}
-            name="mainImg"
-            render={({ field }) => (
-              <FormItem className="w-full mt-5 sm:flex flex-wrap">
-                <div className="sm:w-1/2 sm:pr-2">
-                  <FormLabel className="text-[14px]/[18px] font-normal">
-                    Main banner
-                  </FormLabel>
-                  <FormDescription className="text-[12px]">
-                    *Attachments not bigger than 2MB
-                  </FormDescription>
-                </div>
-                <FormControl>
-                  <Input
-                    className="hidden"
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => {
-                      field.onChange(e.target.files || null);
-                      setBanner(e.target.files);
-                    }}
-                  />
-                </FormControl>
-                <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                  <Image
-                    width={16}
-                    height={16}
-                    className="mr-[8px]"
-                    src="/upload.svg"
-                    alt="upload"
-                  />
-                  {field.value
-                    ? (field.value as FileList)?.[0]?.name
-                    : "Upload banner"}
-                </FormLabel>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {imgSrc && (
-            <div className="w-1/3 relative inline-block">
-              <button
-                onClick={() => {
-                  form.setValue("mainImg", null as any);
-                  setBanner(null);
-                  setImgSrc(null);
-                }}
-                type="button"
-                className="bg-orangePrimary w-4 h-4 rounded-full flex items-center justify-center
-              absolute -top-2 -right-2"
-              >
-                <X color="white" />
-              </button>
-              <Image
-                className="w-full"
-                src={imgSrc as string}
-                width={100}
-                height={100}
-                alt="banner"
-                unoptimized
-              />
-            </div>
-          )}
 
           <Button
             disabled={form.formState.isSubmitting}

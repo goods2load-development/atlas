@@ -32,7 +32,8 @@ const ViewCommentDialog = ({ comment }: { comment: BlogComment }) => {
             <h2 className="font-bold text-xl my-4">Comment data</h2>
             <div className="flex flex-col gap-2">
               {Object.entries(comment).map(([key, val]) => {
-                if (["id", "userId", "user"].includes(key)) return null;
+                if (["id", "userId", "user", "blog", "blogId"].includes(key))
+                  return null;
 
                 const value = key === "date" ? format(val, "MM/dd/yyyy") : val;
 

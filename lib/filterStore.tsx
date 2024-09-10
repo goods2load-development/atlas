@@ -290,7 +290,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           },
         },
       }).then((data: any) => {
-        const products = data.partners.data.map((item: any) => ({
+        const products = data?.partners?.data?.map((item: any) => ({
           orderId: item.id,
           deliveryBy: item.transportation,
           estimatedTransit: item.transit,
@@ -313,7 +313,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           placementOfGoods: item.placementOfGoods // Added for analytics avarge store when user select this product
         }));
         console.log("products", products);
-        set(() => ({ products, pagination: data.partners.meta }));
+        set(() => ({ products, pagination: data?.partners?.meta }));
       });
     },
   };

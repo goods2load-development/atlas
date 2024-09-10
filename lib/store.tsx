@@ -3,10 +3,10 @@ import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
 import Cookie from "js-cookie";
 import {
-  Partner,
   PartnerPageResponse,
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
+import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
 import { url } from "inspector";
 
 export const useCountriesStore = create((set) => ({
@@ -308,7 +308,8 @@ export const useReferralsStore = create((set) => ({
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("url", data.url);
-    formData.append("file", data.picture);
+    formData.append("smallBanner", data.smallBanner);
+    formData.append("bigBanner", data.bigBanner);
 
     return postRequest({
       url: "referals",
@@ -431,6 +432,14 @@ export const usePriceAlertsStore = create((set) => ({
         set({ priceAlerts });
       })
       .finally(() => set({ isPriceAlertLoading: false }));
+  },
+
+  replyPriceAlerts: (id: string, message: string) => {
+    set({ isPriceAlertLoading: true });
+    return postRequest({
+      url: `alerts/${id}/reply`,
+      data: { message },
+    }).finally(() => set({ isPriceAlertLoading: false }));
   },
 
   sendPriceAlert: (id: string) => {
@@ -616,7 +625,8 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
     formData.append("description", data.description);
     formData.append("slug", data.slug);
     formData.append("title", data.title);
-    if (data.mainImg) formData.append("mainImg", data.mainImg);
+    if (typeof data.mainImg !== "string")
+      formData.append("mainImg", data.mainImg[0]);
 
     set({ isBlogLoading: true });
     return patchRequest({
