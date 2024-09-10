@@ -637,7 +637,8 @@ export default function PriceAlerts() {
 
                       if (step === 1 && !isFieldsFilled()) {
                         toast({
-                          title: "Fill the fields!",
+                          title: "Fill out the fields",
+                          variant: "destructive",
                           className: "bg-red-500 text-white",
                         });
                         return;
