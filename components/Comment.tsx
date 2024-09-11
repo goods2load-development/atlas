@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
-import { ChevronUp, ChevronDown, Edit, Trash2 } from 'lucide-react';
-import { patchRequest, deleteRequest, postRequest, getRequest } from '@/lib/utils';
-import ReplyComment from './ReplyComment';
+import React, { useEffect, useState } from "react";
+import { ChevronUp, ChevronDown, Edit, Trash2 } from "lucide-react";
+import {
+  patchRequest,
+  deleteRequest,
+  postRequest,
+  getRequest,
+} from "@/lib/utils";
+import ReplyComment from "./ReplyComment";
 
 interface CommentData {
   id: string;
@@ -19,15 +24,11 @@ interface CommentProps {
   id: string;
   userId: string;
   daysAgo: string;
-  isEditing: boolean;
   currentUserId: string;
   commentText: string;
+  blogId: string;
   likeCount: number;
   dislikeCount: number;
-  setLikes: () => void;
-  setDislikes: () => void;
-  setIsEditing: (isEditing: boolean) => void;
-  setCommentText: (text: string) => void;
   showReplies?: boolean;
   setShowReplies?: () => void;
   children?: React.ReactNode;
@@ -39,15 +40,11 @@ const Comment: React.FC<CommentProps> = ({
   id,
   userId,
   daysAgo,
-  isEditing,
   commentText,
   likeCount,
   dislikeCount,
   currentUserId,
-  setLikes,
-  setDislikes,
-  setIsEditing,
-  setCommentText,
+  blogId,
   showReplies,
   setShowReplies,
   children,
@@ -56,10 +53,18 @@ const Comment: React.FC<CommentProps> = ({
 }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [editedText, setEditedText] = useState(commentText);
-  const [replyText, setReplyText] = useState('');
+  const [replyText, setReplyText] = useState("");
   const [replies, setReplies] = useState<CommentData[]>([]);
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
   const [repliesFetched, setRepliesFetched] = useState(false);
+
+  const [localLikesCount, setLocalLikesCount] = useState(likeCount);
+  const [localDislikesCount, setLocalDislikesCount] = useState(dislikeCount);
+  const [localCommentText, setLocalCommentText] = useState(commentText);
+
+  const isAvailableToEdit = currentUserId === userId;
+
+  const [isEditing, setIsEditing] = useState(false);
 
   const handleSaveEdit = async () => {
     try {
@@ -67,21 +72,18 @@ const Comment: React.FC<CommentProps> = ({
         url: `/blog-comments/${id}`,
         data: { comment: editedText },
       });
-      setCommentText(editedText);
+      setLocalCommentText(editedText);
       setIsEditing(false);
     } catch (error) {
-      console.error('Error updating comment:', error);
+      console.error("Error updating comment:", error);
     }
   };
 
   const handleDelete = async () => {
     try {
-      await deleteRequest({
-        url: `/blog-comments/${id}`,
-      });
       onDelete && onDelete();
     } catch (error) {
-      console.error('Error deleting comment:', error);
+      console.error("Error deleting comment:", error);
     }
   };
 
@@ -92,26 +94,29 @@ const Comment: React.FC<CommentProps> = ({
         data: {
           comment: replyText,
           parentCommentId: parentId || id,
-          blogId: replies[0]?.blogId,
+          blogId,
           userId,
         },
       });
       setReplies([newReply, ...replies]);
-      setReplyText('');
+      setReplyText("");
       setIsReplying(false);
     } catch (error) {
-      console.error('Error posting reply:', error);
+      console.error("Error posting reply:", error);
     }
   };
 
   const fetchReplies = async () => {
     if (!repliesFetched) {
       try {
-        const response = await getRequest({ url: `/blog-comments/parent/${id}/replies` });
+        const response = await getRequest({
+          url: `/blog-comments/parent/${id}/replies`,
+        });
+        console.log(response, "replies");
         setReplies(response);
         setRepliesFetched(true);
       } catch (error) {
-        console.error('Error fetching replies:', error);
+        console.error("Error fetching replies:", error);
       }
     }
     setAreRepliesVisible(!areRepliesVisible);
@@ -122,14 +127,16 @@ const Comment: React.FC<CommentProps> = ({
       await patchRequest({
         url: `/blog-comments/${id}/reaction`,
         data: {
-          userId,
+          userId: currentUserId,
           commentId: id,
-          reaction: 'LIKE',
+          reaction: "LIKE",
         },
+      }).then(({ likeCount, dislikeCount }) => {
+        setLocalDislikesCount(dislikeCount);
+        setLocalLikesCount(likeCount);
       });
-      setLikes();
     } catch (error) {
-      console.error('Error liking comment:', error);
+      console.error("Error liking comment:", error);
     }
   };
 
@@ -138,15 +145,30 @@ const Comment: React.FC<CommentProps> = ({
       await patchRequest({
         url: `/blog-comments/${id}/reaction`,
         data: {
-          userId,
+          userId: currentUserId,
           commentId: id,
-          reaction: 'DISLIKE',
+          reaction: "DISLIKE",
         },
+      }).then(({ dislikeCount, likeCount }) => {
+        setLocalLikesCount(likeCount);
+        setLocalDislikesCount(dislikeCount);
       });
-      setDislikes();
     } catch (error) {
-      console.error('Error disliking comment:', error);
+      console.error("Error disliking comment:", error);
     }
+  };
+
+  const handleReplieCommentDelete = async (id: string) => {
+    await deleteRequest({
+      url: `/blog-comments/${id}`,
+    })
+      .then((data) => {
+        setReplies((data) => [...data.filter((item) => item.id !== id)]);
+        console.log(data);
+      })
+      .catch((error) => {
+        console.error("Error deleting comment", error);
+      });
   };
 
   return (
@@ -160,29 +182,44 @@ const Comment: React.FC<CommentProps> = ({
           />
           <div>
             <p className="font-semibold text-gray-800">User {userId}</p>
-            <p className="text-sm text-gray-500">{daysAgo} days ago</p>
+            <p className="text-sm text-gray-500">
+              {Number(daysAgo) <= 0 ? "today" : `${daysAgo} days ago`}
+            </p>
           </div>
         </div>
         <div className="flex items-center space-x-2">
-          {isEditing ? (
-            <>
-              <button onClick={handleSaveEdit} className="p-2 rounded-lg hover:bg-gray-200">
-                <span className="w-5 h-5 text-[#FF7A00]">Save</span>
-              </button>
-              <button onClick={() => setIsEditing(false)} className="p-2 rounded-lg hover:bg-gray-200">
-                <span className="w-5 h-5 text-[#FF7A00]">Cancel</span>
-              </button>
-            </>
-          ) : (
-            <>
-              <button onClick={() => setIsEditing(true)} className="p-2 rounded-lg hover:bg-gray-200">
-                <Edit className="w-5 h-5 text-[#FF7A00]" />
-              </button>
-              <button onClick={handleDelete} className="p-2 rounded-lg hover:bg-gray-200">
-                <Trash2 className="w-5 h-5 text-[#FF7A00]" />
-              </button>
-            </>
-          )}
+          {isAvailableToEdit &&
+            (isEditing ? (
+              <>
+                <button
+                  onClick={handleSaveEdit}
+                  className="p-2 rounded-lg hover:bg-gray-200"
+                >
+                  <span className="w-5 h-5 text-[#FF7A00]">Save</span>
+                </button>
+                <button
+                  onClick={() => setIsEditing(false)}
+                  className="p-2 rounded-lg hover:bg-gray-200"
+                >
+                  <span className="w-5 h-5 text-[#FF7A00]">Cancel</span>
+                </button>
+              </>
+            ) : (
+              <>
+                <button
+                  onClick={() => setIsEditing(true)}
+                  className="p-2 rounded-lg hover:bg-gray-200"
+                >
+                  <Edit className="w-5 h-5 text-[#FF7A00]" />
+                </button>
+                <button
+                  onClick={handleDelete}
+                  className="p-2 rounded-lg hover:bg-gray-200"
+                >
+                  <Trash2 className="w-5 h-5 text-[#FF7A00]" />
+                </button>
+              </>
+            ))}
         </div>
       </div>
 
@@ -193,31 +230,37 @@ const Comment: React.FC<CommentProps> = ({
           className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-orange-200 mt-3"
         />
       ) : (
-        <p className="mt-3 text-gray-700">{commentText}</p>
+        <p className="mt-3 text-gray-700">{localCommentText}</p>
       )}
 
       <div className="mt-4 flex items-center space-x-4">
-        <button onClick={handleLike} className="flex items-center p-2 rounded-lg hover:bg-gray-200">
+        <button
+          onClick={handleLike}
+          className="flex items-center p-2 rounded-lg hover:bg-gray-200"
+        >
           <ChevronUp className="w-5 h-5 text-[#FF7A00] mr-1" />
-          <span className="text-gray-700">{likeCount}</span>
+          <span className="text-gray-700">{localLikesCount}</span>
         </button>
-        <button onClick={handleDislike} className="flex items-center p-2 rounded-lg hover:bg-gray-200">
+        <button
+          onClick={handleDislike}
+          className="flex items-center p-2 rounded-lg hover:bg-gray-200"
+        >
           <ChevronDown className="w-5 h-5 text-[#FF7A00] mr-1" />
-          <span className="text-gray-700">{dislikeCount}</span>
+          <span className="text-gray-700">{localDislikesCount}</span>
         </button>
 
         <button
           onClick={() => setIsReplying(!isReplying)}
           className="text-sm text-gray-500 hover:underline"
         >
-          {isReplying ? 'Cancel Reply' : 'Reply'}
+          {isReplying ? "Cancel Reply" : "Reply"}
         </button>
 
         <button
           onClick={fetchReplies}
           className="text-sm text-gray-500 hover:underline"
         >
-          {areRepliesVisible ? 'Hide Replies' : 'Show Replies'}
+          {areRepliesVisible ? "Hide Replies" : "Show Replies"}
         </button>
       </div>
 
@@ -252,17 +295,18 @@ const Comment: React.FC<CommentProps> = ({
             <ReplyComment
               key={reply.id}
               id={reply.id}
+              currentUserId={currentUserId}
               userId={reply.userId}
-              daysAgo={Math.floor((Date.now() - new Date(reply.date).getTime()) / (1000 * 60 * 60 * 24)).toString()}
-              isEditing={false}
+              daysAgo={Math.floor(
+                (Date.now() - new Date(reply.date).getTime()) /
+                  (1000 * 60 * 60 * 24)
+              ).toString()}
               commentText={reply.comment}
               likeCount={reply.likeCount}
               dislikeCount={reply.dislikeCount}
-              setLikes={() => {}}
-              setDislikes={() => {}}
-              setIsEditing={() => {}}
-              setCommentText={() => {}}
+              blogId={blogId}
               parentId={reply.id}
+              onDelete={handleReplieCommentDelete}
             />
           ))}
         </div>

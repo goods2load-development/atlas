@@ -15,7 +15,8 @@ interface CommentData {
   id: string;
   comment: string;
   userId: string;
-  createdAt: string;
+  blogId: string;
+  date: Date;
   likeCount: number;
   dislikeCount: number;
 }
@@ -93,24 +94,20 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 
       <CommentInput onSubmit={handleSubmitComment} />
 
-      {comments.map((comment) => (
+      {comments?.map((comment) => (
         <Comment
           key={comment.id}
           id={comment.id}
           userId={comment.userId}
           currentUserId={user?.id}
+          blogId={comment.blogId}
           daysAgo={Math.floor(
-            (Date.now() - new Date(comment.createdAt).getTime()) /
+            (Date.now() - new Date(comment.date).getTime()) /
               (1000 * 60 * 60 * 24)
           ).toString()}
-          isEditing={false}
           commentText={comment.comment}
           likeCount={comment.likeCount}
           dislikeCount={comment.dislikeCount}
-          setLikes={() => {}}
-          setDislikes={() => {}}
-          setIsEditing={() => {}}
-          setCommentText={() => {}}
           showReplies={false}
           setShowReplies={() => {}}
           onDelete={() => handleDeleteComment(comment.id)}
