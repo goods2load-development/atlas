@@ -22,6 +22,7 @@ const routes = {
     "/dashboard/referral",
     "/dashboard/routes-list",
     "/dashboard/partners",
+    "/dashboard/blog",
   ],
 };
 

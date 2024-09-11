@@ -103,7 +103,7 @@ const ApproveComments = () => {
                   <ListItem key={comment.id}>
                     <div className="w-full flex justify-between gap-2">
                       <Link
-                        href={`/blog/${comment.blog.slug}`}
+                        href={`/blog/${comment.blog.slug}?id=${comment.blogId}`}
                         className="max-w-[400px]"
                       >
                         {comment.comment}
