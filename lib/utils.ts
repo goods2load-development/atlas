@@ -1,6 +1,7 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import Cookie from "js-cookie";
+import { format } from "date-fns";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -196,4 +197,8 @@ export const urlsToFileList = async (urls: string[]) => {
   filesArray.forEach((file) => dataTransfer.items.add(file));
 
   return dataTransfer.files;
+};
+
+export const formatDate = (dateString: string): string => {
+  return format(new Date(dateString), "dd MMM yyyy");
 };

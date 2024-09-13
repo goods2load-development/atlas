@@ -5,7 +5,10 @@ import Footer from "@/components/Footer";
 import BlogList from "@/components/BlogList";
 import FeaturedBlog from "@/components/FeaturedBlog";
 import BlogFilter from "@/components/BlogFilter";
-import { getRequest } from "@/lib/utils"; 
+import { getRequest } from "@/lib/utils";
+import UIButton from "@/components/common/Button";
+import decorLine from "@/assets/Blog/blog-decor-line.svg";
+import Image from "next/image";
 
 interface Blog {
   id: string;
@@ -14,9 +17,10 @@ interface Blog {
   content: string;
   slug: string;
   published: boolean;
-  createdAt: string; 
+  createdAt: string;
   updatedAt: string;
   blogTypeId: string;
+  blogTypeName: string;
   authorId: string | null;
   authorName: string | null;
   weight: number;
@@ -30,24 +34,30 @@ interface BlogType {
   name: string;
 }
 
+enum BlogFilters {
+  NEWS = "Newest",
+  POPULAR = "Popular",
+}
+
+const DEFAULT_BLOG_ITEMS = 5;
+
 const BlogPage: React.FC = () => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [categories, setCategories] = useState<BlogType[]>([]);
-  const [selectedCategory, setSelectedCategory] = useState<string>("");
-  const [filter, setFilter] = useState<string>("Newest");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [filter, setFilter] = useState<string>(BlogFilters.NEWS);
+  const [takeBlogs, setTakeBlogs] = useState<number>(DEFAULT_BLOG_ITEMS);
+  const [blogsMeta, setBlogsMeta] = useState<any>(null);
 
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await getRequest({ url: "blogs" });
+        const response = await getRequest({
+          url: `blogs?take=${takeBlogs}&category=${selectedCategory}&filter=${filter}`,
+        });
         if (response && Array.isArray(response.data)) {
-          const sortedBlogs = response.data.sort((a: Blog, b: Blog) => {
-            if (b.weight === a.weight) {
-              return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-            }
-            return b.weight - a.weight;
-          });
-          setBlogs(sortedBlogs);
+          setBlogs(response.data);
+          setBlogsMeta(response.meta);
         } else {
           console.error("Unexpected data format:", response);
         }
@@ -55,9 +65,9 @@ const BlogPage: React.FC = () => {
         console.error("Failed to fetch blogs:", error);
       }
     };
-  
+
     fetchBlogs();
-  }, []);
+  }, [takeBlogs, filter, selectedCategory]);
 
   useEffect(() => {
     const fetchCategories = async () => {
@@ -72,41 +82,49 @@ const BlogPage: React.FC = () => {
     fetchCategories();
   }, []);
 
-  const filteredBlogs = selectedCategory
-    ? blogs.filter((blog) => blog.blogTypeId === selectedCategory)
-    : blogs;
-
-  const sortedFilteredBlogs = filteredBlogs.sort((a, b) => {
-    if (filter === "Newest") {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    } else if (filter === "Popular") {
-      return b.weight - a.weight;
-    }
-    return 0;
-  });
-
   return (
     <>
-      <Header>
-        <div className="px-[16px] max-w-[1328px] mx-auto text-center">
-          <h1 className="pt-16 pb-5 text-[64px]/[68px] font-light max-w-[1265px] mx-auto">
+      <Header />
+      <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white sm:mt-[-75px] pb-[104px] overflow-hidden">
+        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] sm:bg-hero-pattern bg-cover bg-bottom text-white sm:pb-[240px] md:pb-[230px] pb-[80px] realtive h-[350px] sm:h-[540px] relative">
+          <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-8 sm:mb-2 sm:pt-[120px]">
             Blog
           </h1>
+          <div className="sm:hidden absolute w-full h-[425px] bg-primaryOrange bg-hero-pattern-mobile bg-cover bg-no-repeat -z-10"></div>
+          <div className="md:hidden 2xl:block absolute bottom-0 w-full h-[150px] bg-bgWhiteGradient"></div>
         </div>
-      </Header>
-      <div className="container mx-auto px-4 py-8 max-w-85%">
-        {blogs.length > 0 && (
-          <FeaturedBlog blog={blogs[0]} categories={categories} />
-        )} 
-        <BlogFilter
-          filter={filter}
-          setFilter={setFilter}
-          selectedCategory={selectedCategory}
-          setSelectedCategory={setSelectedCategory}
-          categories={categories}
+        <Image
+          className="absolute xl:top-[22.5%] top-[24%] right-[0] xl:w-[53%] w-[50%] md:block hidden"
+          width={865}
+          height={201}
+          src={decorLine}
+          alt="decor-line"
         />
-        <BlogList blogs={sortedFilteredBlogs} categories={categories} /> 
+        <div className="container mx-auto px-4 md:py-8 max-w-[1328px] text-black">
+          {blogs.length > 0 && (
+            <FeaturedBlog blog={blogs[0]} categories={categories} />
+          )}
+          <BlogFilter
+            filter={filter}
+            setFilter={setFilter}
+            selectedCategory={selectedCategory}
+            setSelectedCategory={setSelectedCategory}
+            categories={categories}
+          />
+          <BlogList blogs={blogs} categories={categories} />
+          {blogsMeta && blogsMeta.hasNextPage && (
+            <div className="text-center pb-5 mt-8">
+              <UIButton
+                onClick={() => setTakeBlogs((take) => take + 2)}
+                secondary
+              >
+                Show more results
+              </UIButton>
+            </div>
+          )}
+        </div>
       </div>
+
       <Footer />
     </>
   );

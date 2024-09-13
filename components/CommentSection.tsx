@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { useUserStore } from '@/lib/store';
-import Comment from './Comment';
-import CommentInput from './CommentInput';
-import { getRequest, postRequest, deleteRequest } from '@/lib/utils';
-import { UserRoute } from './Dashboard/RoutesMain/types';
+import React, { useEffect, useState } from "react";
+import { useUserStore } from "@/lib/store";
+import Comment from "./Comment";
+import CommentInput from "./CommentInput";
+import { getRequest, postRequest, deleteRequest } from "@/lib/utils";
+import { UserRoute } from "./Dashboard/RoutesMain/types";
 
 interface CommentSectionProps {
   blogId: string;
   activeUsers: number;
-  commentCount: number
+  commentCount: number;
 }
 
 interface CommentData {
   id: string;
   comment: string;
   userId: string;
-  createdAt: string;
+  blogId: string;
+  date: Date;
   likeCount: number;
   dislikeCount: number;
 }
@@ -24,7 +25,11 @@ interface UserState {
   user: UserRoute;
 }
 
-const CommentSection: React.FC<CommentSectionProps> = ({ blogId, activeUsers, commentCount }) => {
+const CommentSection: React.FC<CommentSectionProps> = ({
+  blogId,
+  activeUsers,
+  commentCount,
+}) => {
   const [comments, setComments] = useState<CommentData[]>([]);
   const { user } = useUserStore<UserState>((state: any) => state);
 
@@ -35,7 +40,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId, activeUsers, co
       });
       setComments(response);
     } catch (error) {
-      console.error('Error fetching comments:', error);
+      console.error("Error fetching comments:", error);
     }
   };
 
@@ -61,7 +66,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId, activeUsers, co
 
       setComments([newComment, ...comments]);
     } catch (error) {
-      console.error('Error creating comment:', error);
+      console.error("Error creating comment:", error);
     }
   };
 
@@ -70,9 +75,9 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId, activeUsers, co
       await deleteRequest({
         url: `/blog-comments/${commentId}`,
       });
-      setComments(comments.filter(comment => comment.id !== commentId));
+      setComments(comments.filter((comment) => comment.id !== commentId));
     } catch (error) {
-      console.error('Error deleting comment:', error);
+      console.error("Error deleting comment:", error);
     }
   };
 
@@ -89,22 +94,21 @@ const CommentSection: React.FC<CommentSectionProps> = ({ blogId, activeUsers, co
 
       <CommentInput onSubmit={handleSubmitComment} />
 
-      {comments.map((comment) => (
+      {comments?.map((comment) => (
         <Comment
           key={comment.id}
           id={comment.id}
           userId={comment.userId}
-          currentUserId={user.id}
-          daysAgo={Math.floor((Date.now() - new Date(comment.createdAt).getTime()) / (1000 * 60 * 60 * 24)).toString()}
-          isEditing={false}
+          currentUserId={user?.id}
+          blogId={comment.blogId}
+          daysAgo={Math.floor(
+            (Date.now() - new Date(comment.date).getTime()) /
+              (1000 * 60 * 60 * 24)
+          ).toString()}
           commentText={comment.comment}
           likeCount={comment.likeCount}
           dislikeCount={comment.dislikeCount}
-          setLikes={() => {}}
-          setDislikes={() => {}}
-          setIsEditing={() => {}}
-          setCommentText={() => {}}
-          showReplies={false} 
+          showReplies={false}
           setShowReplies={() => {}}
           onDelete={() => handleDeleteComment(comment.id)}
         />

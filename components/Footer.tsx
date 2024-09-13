@@ -90,6 +90,9 @@ export default function Footer() {
             <Link href="/blog" className="sm:block pb-3 font-light hidden">
               Blog
             </Link>
+            <Link href="/blog" className="sm:block pb-3 font-light hidden">
+              Blog
+            </Link>
           </div>
 
           <div className="text-center sm:hidden pb-3">
