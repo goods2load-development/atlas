@@ -1,5 +1,5 @@
 import React from "react";
-import { formatDate } from "@/lib/utils";
+import { format } from "date-fns";
 
 interface FeaturedBlogProps {
   blog: Blog;
@@ -52,9 +52,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
         <h2 className="text-2xl font-bold mb-4">{blog.title}</h2>
         <p className="text-gray-600 mb-4">{blog.description}</p>
         <div className="flex justify-between text-gray-500 text-sm">
-          <span>
-            {formatDate(new Date(blog.updatedAt).toLocaleDateString())}
-          </span>
+          <span>{format(new Date(blog.updatedAt), "dd MMM yyyy")}</span>
           <span>{blog.readingTime} min read</span>
         </div>
       </div>
