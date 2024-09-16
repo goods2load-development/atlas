@@ -128,7 +128,7 @@ const BlogMain = () => {
             <div className="w-full flex justify-between gap-2">
               <Link
                 className="hover:underline font-bold"
-                href={`/blog/${post.slug}?id=${post.id}`}
+                href={`/blog/${post.slug}`}
               >
                 {post.title} | {post.blogTypeName}
               </Link>

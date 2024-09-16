@@ -638,7 +638,7 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
   getBlogs: ({ page = 1, take = 5 }) => {
     set({ isBlogLoading: true });
     return getRequest({
-      url: "blogs",
+      url: "blogs?filter=Newest",
       params: {
         page,
         take,
@@ -649,10 +649,10 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
       })
       .finally(() => set({ isBlogLoading: false }));
   },
-  getBlog: (id: string) => {
+  getBlog: (slug: string) => {
     set({ isBlogLoading: true });
     return getRequest({
-      url: `blogs/${id}`,
+      url: `blogs/${slug}`,
     })
       .then((blog) => {
         set({ blog });
