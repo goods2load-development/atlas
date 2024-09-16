@@ -291,3 +291,16 @@ input[type="number"] {
 .grecaptcha-badge {
   visibility: hidden;
 }
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-opacity {
+  animation: fadeIn 0.1s ease-in-out;
+}

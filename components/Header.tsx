@@ -14,7 +14,7 @@ import ErrorBoundary from "./ErrorBoundary";
 
 import * as NavigationMenuRadix from "@radix-ui/react-navigation-menu";
 import { ChevronRight } from "lucide-react";
-import DynamicMenu from "./ui/DynamicMenu";
+import DynamicMenu from "./DynamicMenu";
 
 export default function Header({ children }: PropsWithChildren) {
   const { user, getUser } = useUserStore((state: any) => state);
