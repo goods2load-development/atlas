@@ -47,7 +47,7 @@ export interface BlogType {
   name: string;
 }
 
-const BlogPage: React.FC = () => {
+const BlogPage: React.FC = ({ params }: any) => {
   const [blog, setBlog] = useState<Blog | null>(null);
   const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
   const [categories, setCategories] = useState<BlogType[]>([]);
@@ -56,15 +56,15 @@ const BlogPage: React.FC = () => {
   >([]);
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
+  const { slug } = params;
 
   useEffect(() => {
     const fetchBlog = async () => {
-      if (!id) return;
-
+      if (!slug) return;
       try {
-        const data = await getRequest({ url: `/blogs/${id}` });
+        const data = await getRequest({ url: `/blogs/slug/${slug}` });
         setBlog(data);
-        await postRequest({ url: `/blogs/${id}/increment-active-users` });
+        await postRequest({ url: `/blogs/${data.id}/increment-active-users` });
 
         const relatedData = await getRequest({ url: "/blogs" });
         setRelatedBlogs(relatedData.slice(0, 3));

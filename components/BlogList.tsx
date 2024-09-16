@@ -1,6 +1,6 @@
 import Link from "next/link";
 import React, { useEffect } from "react";
-import { formatDate } from "@/lib/utils";
+import { format } from "date-fns";
 
 interface Blog {
   id: string;
@@ -55,15 +55,12 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
                 <p className="text-gray-600 mb-4">{blog.description}</p>
               </div>
               <div className="text-gray-500 text-sm flex justify-between">
-                <span>
-                  {formatDate(new Date(blog.updatedAt).toLocaleDateString())}
-                </span>
+                <span>{format(new Date(blog?.updatedAt), "dd MMM yyyy")}</span>
                 <span>{`${blog.readingTime} min read`}</span>
               </div>
               <Link
                 href={{
                   pathname: `/blog/${blog.slug}`,
-                  query: { id: blog.id },
                 }}
                 className="text-orange-500 hover:underline mt-4 inline-block self-start"
               >
