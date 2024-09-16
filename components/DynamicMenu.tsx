@@ -23,10 +23,6 @@ const DynamicMenu = () => {
     });
   }, []);
 
-  useEffect(() => {
-    console.log(menuData);
-  }, [menuData]);
-
   if (!menuData) {
     return <div className="h-14"></div>;
   }
@@ -43,7 +39,7 @@ const DynamicMenu = () => {
               onMouseLeave={() => setOpenDropdown(null)}
             >
               <Link
-                href="/"
+                href={href}
                 className="py-2 px-3 hover:opacity-80 transition-opacity flex items-center gap-2 rounded hover:no-underline"
               >
                 <span className="pointer-events-none">{title}</span>
