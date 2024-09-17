@@ -231,6 +231,7 @@ const CreateUpdateBlog = ({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="slug"
@@ -267,6 +268,7 @@ const CreateUpdateBlog = ({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="description"
@@ -284,6 +286,7 @@ const CreateUpdateBlog = ({
               </FormItem>
             )}
           />
+
           <FormField
             control={form.control}
             name="authorName"

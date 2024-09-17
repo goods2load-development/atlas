@@ -44,7 +44,7 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
         </div>
         <h1 className="text-3xl md:text-4xl text-white mb-4">{title}</h1>
         <div className="flex items-center text-white lg:justify-between gap-3">
-          <p className="text-sm">{formatDate(publishDate)}</p>
+          <p className="text-sm">{publishDate}</p>
           <p className="text-sm">{readingTime} min read</p>
         </div>
         <div className="text-primaryOrange">{authorName}</div>

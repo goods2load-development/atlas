@@ -11,6 +11,8 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import BlogList from "@/components/BlogList";
 import { RelatedBlogs } from "@/app/_components/Blog/RelatedBlogs";
+import { useUserStore } from "@/lib/store";
+import { format } from "date-fns";
 
 interface BlogComment {
   id: string;
@@ -48,6 +50,7 @@ export interface BlogType {
 }
 
 const BlogPage: React.FC = ({ params }: any) => {
+  const { user }: any = useUserStore();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
   const [categories, setCategories] = useState<BlogType[]>([]);
@@ -55,16 +58,25 @@ const BlogPage: React.FC = ({ params }: any) => {
     { id: string; text: string; level: number }[]
   >([]);
   const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  const [isMounted, setIsMounted] = useState(false);
+
   const { slug } = params;
 
   useEffect(() => {
+    let data: any;
+    setIsMounted(true);
     const fetchBlog = async () => {
       if (!slug) return;
       try {
-        const data = await getRequest({ url: `/blogs/slug/${slug}` });
+        data = await getRequest({ url: `/blogs/slug/${slug}` });
         setBlog(data);
-        await postRequest({ url: `/blogs/${data.id}/increment-active-users` });
+
+        await postRequest({
+          url: `/blogs/${data.id}/increment-active-users`,
+          data: {
+            userId: localStorage.getItem("id"),
+          },
+        });
 
         const relatedData = await getRequest({ url: "/blogs" });
         setRelatedBlogs(relatedData.slice(0, 3));
@@ -77,7 +89,19 @@ const BlogPage: React.FC = ({ params }: any) => {
     };
 
     fetchBlog();
-  }, [id]);
+
+    return () => {
+      if (isMounted) {
+        postRequest({
+          url: `/blogs/${data.id}/decrement-active-users`,
+          data: {
+            userId: localStorage.getItem("id"),
+          },
+        });
+      }
+      setIsMounted(false);
+    };
+  }, [slug, isMounted]);
 
   if (!blog) return <Loader />;
 
@@ -92,7 +116,7 @@ const BlogPage: React.FC = ({ params }: any) => {
           category={blog.blogTypeName}
           authorName={blog.authorName || "Unknown Author"}
           readingTime={blog.readingTime}
-          publishDate={new Date(blog.createdAt || "").toLocaleDateString()}
+          publishDate={format(new Date(blog.createdAt), "dd MMM yyyy")}
         />
 
         <div className="px-4 py-8 max-w-7xl mx-auto">
