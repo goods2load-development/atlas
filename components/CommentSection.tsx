@@ -14,6 +14,7 @@ interface CommentSectionProps {
 interface CommentData {
   id: string;
   comment: string;
+  user: any;
   userId: string;
   blogId: string;
   date: Date;
@@ -38,6 +39,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       const response = await getRequest({
         url: `/blog-comments/${blogId}/parents`,
       });
+
       setComments(response);
     } catch (error) {
       console.error("Error fetching comments:", error);
@@ -99,6 +101,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           key={comment.id}
           id={comment.id}
           userId={comment.userId}
+          userName={comment?.user?.firstName}
           currentUserId={user?.id}
           blogId={comment.blogId}
           daysAgo={Math.floor(

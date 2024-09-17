@@ -15,6 +15,7 @@ interface CommentData {
   dislikeCount: number;
   date: string;
   userId: string;
+  user: any;
   blogId: string;
   parentCommentId?: string;
   replies: CommentData[];
@@ -23,6 +24,7 @@ interface CommentData {
 interface CommentProps {
   id: string;
   userId: string;
+  userName: string;
   daysAgo: string;
   currentUserId: string;
   commentText: string;
@@ -39,6 +41,7 @@ interface CommentProps {
 const Comment: React.FC<CommentProps> = ({
   id,
   userId,
+  userName,
   daysAgo,
   commentText,
   likeCount,
@@ -181,7 +184,7 @@ const Comment: React.FC<CommentProps> = ({
             className="w-10 h-10 rounded-full mr-3"
           />
           <div>
-            <p className="font-semibold text-gray-800">User {userId}</p>
+            <p className="font-semibold text-gray-800">{userName || "User"}</p>
             <p className="text-sm text-gray-500">
               {Number(daysAgo) <= 0 ? "today" : `${daysAgo} days ago`}
             </p>
@@ -297,6 +300,7 @@ const Comment: React.FC<CommentProps> = ({
               id={reply.id}
               currentUserId={currentUserId}
               userId={reply.userId}
+              userName={reply.user?.firstName}
               daysAgo={Math.floor(
                 (Date.now() - new Date(reply.date).getTime()) /
                   (1000 * 60 * 60 * 24)

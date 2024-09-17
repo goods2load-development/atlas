@@ -5,6 +5,7 @@ import { patchRequest, deleteRequest, postRequest } from "@/lib/utils";
 interface ReplyCommentProps {
   id: string;
   userId: string;
+  userName?: string;
   currentUserId: string;
   daysAgo: string;
 
@@ -20,6 +21,7 @@ interface ReplyCommentProps {
 const ReplyComment: React.FC<ReplyCommentProps> = ({
   id,
   userId,
+  userName,
   currentUserId,
   daysAgo,
 
@@ -121,7 +123,7 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
             className="w-8 h-8 rounded-full mr-3"
           />
           <div>
-            <p className="font-semibold text-gray-800">User {userId}</p>
+            <p className="font-semibold text-gray-800">{userName || "User"}</p>
             <p className="text-sm text-gray-500">
               {Number(daysAgo) <= 0 ? "today" : `${daysAgo} days ago`}
             </p>
