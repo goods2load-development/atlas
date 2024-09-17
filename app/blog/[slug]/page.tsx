@@ -58,20 +58,23 @@ const BlogPage: React.FC = ({ params }: any) => {
     { id: string; text: string; level: number }[]
   >([]);
   const searchParams = useSearchParams();
+  const [isMounted, setIsMounted] = useState(false);
 
   const { slug } = params;
 
   useEffect(() => {
+    let data: any;
+    setIsMounted(true);
     const fetchBlog = async () => {
       if (!slug) return;
       try {
-        const data = await getRequest({ url: `/blogs/slug/${slug}` });
+        data = await getRequest({ url: `/blogs/slug/${slug}` });
         setBlog(data);
 
         await postRequest({
           url: `/blogs/${data.id}/increment-active-users`,
           data: {
-            userId: user.id,
+            userId: localStorage.getItem("id"),
           },
         });
 
@@ -86,7 +89,19 @@ const BlogPage: React.FC = ({ params }: any) => {
     };
 
     fetchBlog();
-  }, [slug]);
+
+    return () => {
+      if (isMounted) {
+        postRequest({
+          url: `/blogs/${data.id}/decrement-active-users`,
+          data: {
+            userId: localStorage.getItem("id"),
+          },
+        });
+      }
+      setIsMounted(false);
+    };
+  }, [slug, isMounted]);
 
   if (!blog) return <Loader />;
 
