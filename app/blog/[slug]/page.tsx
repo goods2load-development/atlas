@@ -60,7 +60,7 @@ const BlogPage: React.FC = ({ params }: any) => {
   >([]);
   const searchParams = useSearchParams();
   const [isMounted, setIsMounted] = useState(false);
-  const [localActiceUsers, setLocalActiveUsers] = useState(null);
+  const [localActiveUsers, setLocalActiveUsers] = useState(null);
 
   const { slug } = params;
 
@@ -148,7 +148,7 @@ const BlogPage: React.FC = ({ params }: any) => {
           {/* Comments Section */}
           <CommentSection
             blogId={blog.id}
-            activeUsers={localActiceUsers || 0}
+            activeUsers={localActiveUsers || 0}
             commentCount={blog.commentCount}
           />
 
