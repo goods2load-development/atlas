@@ -20,6 +20,7 @@ interface CommentData {
   date: Date;
   likeCount: number;
   dislikeCount: number;
+  edited: boolean;
 }
 
 interface UserState {
@@ -52,7 +53,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 
   const handleSubmitComment = async (commentText: string) => {
     if (!user?.id) {
-      console.error("User is not logged in");
+      console.error("User is not logged in"); 
       return;
     }
 
@@ -84,15 +85,25 @@ const CommentSection: React.FC<CommentSectionProps> = ({
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto my-6 p-4 bg-white rounded-lg">
+    <div className="w-full max-w-2xl mx-auto my-6 p-4 bg-white rounded-lg overflow-x-hidden">
       <div className="flex justify-between items-center py-2">
-        <h2 className="text-xl font-semibold">{commentCount} Comments</h2>
+        <h2 className="text-xl font-semibold">
+          <span>{comments?.length}</span> Comments
+        </h2>
         <div className="flex items-center">
-          <div className="w-4 h-4 rounded-full bg-red-500 mr-2"></div>
+          <div className="w-4 h-4 rounded-full bg-primaryOrange mr-2"></div>
           <span className="mr-2 text-sm text-gray-500">Active Here:</span>
-          <span className="text-[#FF4500] font-semibold">{activeUsers}</span>
+          <span className="text-primaryOrange font-semibold">
+            {activeUsers}
+          </span>
         </div>
       </div>
+
+      {!comments.length && (
+        <div className="text-black text-center py-4 bg-[#FFC1A2] rounded-md my-8">
+          Be the first to leave a comment
+        </div>
+      )}
 
       <CommentInput onSubmit={handleSubmitComment} />
 
@@ -102,6 +113,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           id={comment.id}
           userId={comment.userId}
           userName={comment?.user?.firstName}
+          userPhoto={comment?.user?.companyPhoto}
           currentUserId={user?.id}
           blogId={comment.blogId}
           daysAgo={Math.floor(
@@ -109,6 +121,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
               (1000 * 60 * 60 * 24)
           ).toString()}
           commentText={comment.comment}
+          edited={comment.edited}
           likeCount={comment.likeCount}
           dislikeCount={comment.dislikeCount}
           showReplies={false}

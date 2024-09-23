@@ -13,6 +13,7 @@ import BlogList from "@/components/BlogList";
 import { RelatedBlogs } from "@/app/_components/Blog/RelatedBlogs";
 import { useUserStore } from "@/lib/store";
 import { format } from "date-fns";
+import SharedLinks from "@/components/SharedLinks";
 
 interface BlogComment {
   id: string;
@@ -59,6 +60,7 @@ const BlogPage: React.FC = ({ params }: any) => {
   >([]);
   const searchParams = useSearchParams();
   const [isMounted, setIsMounted] = useState(false);
+  const [localActiceUsers, setLocalActiveUsers] = useState(null);
 
   const { slug } = params;
 
@@ -76,10 +78,13 @@ const BlogPage: React.FC = ({ params }: any) => {
           data: {
             userId: localStorage.getItem("id"),
           },
+        }).then((data) => {
+          setLocalActiveUsers(data);
         });
 
-        const relatedData = await getRequest({ url: "/blogs" });
-        setRelatedBlogs(relatedData.slice(0, 3));
+        const { data: relatedData } = await getRequest({ url: "/blogs" });
+
+        setRelatedBlogs(relatedData?.data?.slice(0, 3));
 
         const categoriesData = await getRequest({ url: "/blog-types" });
         setCategories(categoriesData);
@@ -122,8 +127,13 @@ const BlogPage: React.FC = ({ params }: any) => {
         <div className="px-4 py-8 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row gap-8">
             {/* Table of Contents */}
-            <div className="md:w-64 sticky top-0">
-              <TableOfContents headings={headings} />
+            <div className="md:w-64 md:sticky top-0">
+              <div className="md:sticky top-0 z-50">
+                <TableOfContents headings={headings} />
+                <div className="mt-6">
+                  <SharedLinks />
+                </div>
+              </div>
             </div>
 
             {/* Blog Content */}
@@ -138,12 +148,15 @@ const BlogPage: React.FC = ({ params }: any) => {
           {/* Comments Section */}
           <CommentSection
             blogId={blog.id}
-            activeUsers={blog.activeUsers}
+            activeUsers={localActiceUsers || 0}
             commentCount={blog.commentCount}
           />
 
           {/* Related Blogs Section */}
-          <RelatedBlogs categoriesName={blog.blogTypeName} />
+          <RelatedBlogs
+            categoriesName={blog.blogTypeName}
+            excludeBlogId={blog?.id}
+          />
         </div>
       </div>
       <Footer />
