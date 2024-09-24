@@ -410,7 +410,7 @@ const Comment: React.FC<CommentProps> = ({
               id={reply.id}
               currentUserId={currentUserId}
               userId={reply.userId}
-              userName={reply.user?.firstName}
+              userName={reply.user?.companyName}
               userPhoto={reply?.user?.companyPhoto}
               daysAgo={Math.floor(
                 (Date.now() - new Date(reply.date).getTime()) /
