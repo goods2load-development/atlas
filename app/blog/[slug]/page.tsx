@@ -9,11 +9,13 @@ import { getRequest, postRequest } from "@/lib/utils";
 import Loader from "@/components/common/Loader";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import BlogList from "@/components/BlogList";
 import { RelatedBlogs } from "@/app/_components/Blog/RelatedBlogs";
 import { useUserStore } from "@/lib/store";
 import { format } from "date-fns";
 import SharedLinks from "@/components/SharedLinks";
+import { Referal } from "@/components/Catalogue/Referral";
+import TailoredServices from "@/components/TailoredServices";
+import ReferalsSlider from "@/components/Catalogue/ReferralsSlider";
 
 interface BlogComment {
   id: string;
@@ -98,7 +100,7 @@ const BlogPage: React.FC = ({ params }: any) => {
     return () => {
       if (isMounted) {
         postRequest({
-          url: `/blogs/${data.id}/decrement-active-users`,
+          url: `/blogs/${data?.id}/decrement-active-users`,
           data: {
             userId: localStorage.getItem("id"),
           },
@@ -124,14 +126,17 @@ const BlogPage: React.FC = ({ params }: any) => {
           publishDate={format(new Date(blog.createdAt), "dd MMM yyyy")}
         />
 
-        <div className="px-4 py-8 max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-8">
+        <div className="px-4 py-8">
+          <div className="flex flex-col md:flex-row gap-8 max-w-[1328px] mx-auto">
             {/* Table of Contents */}
-            <div className="md:w-64 md:sticky top-0">
-              <div className="md:sticky top-0 z-50">
+            <div className="sticky top-0 z-50">
+              <div className="sticky top-0 z-50">
                 <TableOfContents headings={headings} />
-                <div className="mt-6">
+                <div className="mt-6 hidden md:block">
                   <SharedLinks />
+                </div>
+                <div className="mt-10 hidden md:block">
+                  <Referal forceDisplaying={true} />
                 </div>
               </div>
             </div>
@@ -143,6 +148,10 @@ const BlogPage: React.FC = ({ params }: any) => {
                 onHeadingsParsed={setHeadings}
               />
             </div>
+          </div>
+
+          <div className="mt-6 md:hidden">
+            <ReferalsSlider />
           </div>
 
           {/* Comments Section */}
