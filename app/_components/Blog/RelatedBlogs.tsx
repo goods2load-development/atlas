@@ -35,7 +35,7 @@ export const RelatedBlogs = ({
   }
 
   return (
-    <div className="mt-12">
+    <div className="mt-12 max-w-[1328px] mx-auto">
       <div className="flex items-center justify-between">
         <h2 className="text-[20px]/[24px] md:text-[40px]/[44px] flex items-center gap-2 font-light">
           <div className="py-1.5 px-2 bg-[#FEF1DF] rounded-[4px] font-normal">

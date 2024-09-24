@@ -36,14 +36,14 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
         <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-transparent" />
       </div>
 
-      <div className="relative z-10 p-8 h-full flex flex-col justify-center lg:max-w-[420px] lg:w-full">
+      <div className="relative z-10 p-8 h-full flex flex-col justify-center lg:w-full lg:max-w-[1328px] lg:mx-auto">
         <div className="flex items-center mb-4">
           <span className="bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
             {category}
           </span>
         </div>
         <h1 className="text-3xl md:text-4xl text-white mb-4">{title}</h1>
-        <div className="flex items-center text-white lg:justify-between gap-3">
+        <div className="flex items-center text-white gap-3 lg:gap-40">
           <p className="text-sm">{publishDate}</p>
           <p className="text-sm">{readingTime} min read</p>
         </div>
