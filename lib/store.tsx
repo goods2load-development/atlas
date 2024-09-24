@@ -8,7 +8,7 @@ import {
 } from "@/components/Dashboard/PartnersMain/types";
 import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
 import { url } from "inspector";
-import { FooterData } from "@/components/Dashboard/FooterMain/types";
+import {HeaderFooterData} from "@/components/Dashboard/HeaderFooterMain/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -749,14 +749,19 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
 }));
 
 interface FooterStoreState {
-  footerData: FooterData | null;
+  footerData:HeaderFooterData| null;
+  headerData :HeaderFooterData| null;
   isFooterLoading: boolean;
+  isHeaderLoading: boolean;
   getFooterData: () => void;
+  getHeaderData: () => void;
 }
 
-export const useFooterStore = create<FooterStoreState>((set) => ({
+export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
   footerData: null,
+  headerData: null,
   isFooterLoading: true,
+  isHeaderLoading: true,
   getFooterData: () => {
     set({ isFooterLoading: true });
     return getRequest({
@@ -766,5 +771,15 @@ export const useFooterStore = create<FooterStoreState>((set) => ({
         set({ footerData });
       })
       .finally(() => set({ isFooterLoading: false }));
+  },
+  getHeaderData: () => {
+    set({ isHeaderLoading: true });
+    return getRequest({
+      url: "dynamic-menu/header",
+    })
+      .then((headerData) => {
+        set({ headerData });
+      })
+      .finally(() => set({ isHeaderLoading: false }));
   },
 }));

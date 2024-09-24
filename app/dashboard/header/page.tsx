@@ -1,12 +1,12 @@
 import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import FooterMain from "@/components/Dashboard/HeaderFooterMain/FooterMain";
+import HeaderMain from "@/components/Dashboard/HeaderFooterMain/HeaderMain";
 
-export default function Referral() {
+export default function Footer() {
   return (
     <DashboardLayout>
       <>
         <div className="lg:p-10 p-4 bg-[#f5f4f3] pt-20">
-          <FooterMain />
+          <HeaderMain />
         </div>
       </>
     </DashboardLayout>

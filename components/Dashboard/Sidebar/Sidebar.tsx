@@ -128,6 +128,18 @@ const Sidebar: React.FC = () => {
               >
                 Blog
               </Link>
+              <Link
+                href="/dashboard/footer"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Footer
+              </Link>
+              <Link
+                href="/dashboard/header"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Header
+              </Link>
             </>
           )}
         </div>

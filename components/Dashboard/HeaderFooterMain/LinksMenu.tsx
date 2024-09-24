@@ -4,8 +4,8 @@ import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import clsx from "clsx";
 import { useEffect, useMemo, useState } from "react";
-import { useFooterStore } from "@/lib/store";
-import { FooterData, FooterItem } from "./types";
+import { useFooterHeaderStore } from "@/lib/store";
+import { HeaderFooterData, FooterItem } from "./types";
 import {
   DndContext,
   KeyboardSensor,
@@ -32,14 +32,62 @@ import {
 import LinkDialog from "./LinkDialog";
 import { Button } from "@/components/ui/button";
 
+const LinksMenu = ({
+  data,
+  setData,
+}: {
+  data: HeaderFooterData;
+  setData: any;
+}) => {
+  const items = useMemo(() => {
+    if (!data) return [];
+
+    return mapHrefs(data.json);
+  }, [data]);
+
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(KeyboardSensor, {
+      coordinateGetter: sortableKeyboardCoordinates,
+    })
+  );
+
+  const handleDragEnd = (event: DragEndEvent) => {
+    console.log({ event });
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+  };
+
+  return (
+    <ul className="bg-white shadow-lg rounded-lg p-4 space-y-2">
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCorners}
+        onDragEnd={handleDragEnd}
+      >
+        <SortableContext items={items} strategy={verticalListSortingStrategy}>
+          {data.json.map((item, index) => (
+            <MenuItem
+              key={index}
+              item={item}
+              id={item.href}
+              setHeaderDataDynamic={setData}
+            />
+          ))}
+        </SortableContext>
+      </DndContext>
+    </ul>
+  );
+};
+
 const MenuItem = ({
   item,
   id,
-  setFooterDataDynamic,
+  setHeaderDataDynamic,
 }: {
   item: FooterItem;
   id: string;
-  setFooterDataDynamic: any;
+  setHeaderDataDynamic: any;
 }) => {
   const {
     attributes,
@@ -65,7 +113,7 @@ const MenuItem = ({
   };
 
   const onDeleteItem = () => {
-    setFooterDataDynamic((prev: FooterData) => {
+    setHeaderDataDynamic((prev: HeaderFooterData) => {
       const newItems = deleteItemByHref([...prev.json], id);
 
       return {
@@ -76,7 +124,7 @@ const MenuItem = ({
   };
 
   const onAddNewItem = (data: { href: string; title: string }) => {
-    setFooterDataDynamic((prev: FooterData) => {
+    setHeaderDataDynamic((prev: HeaderFooterData) => {
       const newItems = addItemToChildrenByHref([...prev.json], id, data);
 
       return {
@@ -87,7 +135,7 @@ const MenuItem = ({
   };
 
   const onEditItem = (data: { href: string; title: string }) => {
-    setFooterDataDynamic((prev: FooterData) => {
+    setHeaderDataDynamic((prev: HeaderFooterData) => {
       const newItems = editItemByHref([...prev.json], id, data);
 
       return {
@@ -126,7 +174,7 @@ const MenuItem = ({
               key={index}
               item={child}
               id={child.href}
-              setFooterDataDynamic={setFooterDataDynamic}
+              setHeaderDataDynamic={setHeaderDataDynamic}
             />
           ))}
         </ul>
@@ -135,89 +183,5 @@ const MenuItem = ({
   );
 };
 
-const FooterMain = () => {
-  const { toast } = useToast();
-  const { footerData, isFooterLoading, getFooterData } = useFooterStore();
-  const [footerDataDynamic, setFooterDataDynamic] = useState<FooterData | null>(
-    footerData
-  );
 
-  const hasAnyChanges = useMemo(() => {
-    if (!footerData) return false;
-
-    return JSON.stringify(footerData) !== JSON.stringify(footerDataDynamic);
-  }, [footerData, footerDataDynamic]);
-
-  const items = useMemo(() => {
-    if (!footerDataDynamic) return [];
-
-    return mapHrefs(footerDataDynamic.json);
-  }, [footerDataDynamic]);
-
-  useEffect(() => {
-    getFooterData();
-  }, []);
-
-  useEffect(() => {
-    if (footerData) {
-      setFooterDataDynamic(footerData);
-    }
-  }, [footerData]);
-
-  const sensors = useSensors(
-    useSensor(PointerSensor),
-    useSensor(KeyboardSensor, {
-      coordinateGetter: sortableKeyboardCoordinates,
-    })
-  );
-
-  const handleDragEnd = (event: DragEndEvent) => {
-    console.log({ event });
-    const { active, over } = event;
-    if (!over || active.id === over.id) return;
-  };
-
-  return (
-    <div className="min-h-screen">
-      <div className="flex justify-between items-center mb-8 gap-2">
-        <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
-          Footer
-        </h1>
-        {isFooterLoading && <Spinner />}
-        <Button disabled={isFooterLoading || !hasAnyChanges} className="ml-auto">Update</Button>
-      </div>
-
-      <div
-        className={clsx("flex flex-col gap-4", {
-          "pointer-events-none": isFooterLoading,
-        })}
-      >
-        {footerDataDynamic?.json?.length && (
-          <ul className="bg-white shadow-lg rounded-lg p-4 space-y-2">
-            <DndContext
-              sensors={sensors}
-              collisionDetection={closestCorners}
-              onDragEnd={handleDragEnd}
-            >
-              <SortableContext
-                items={items}
-                strategy={verticalListSortingStrategy}
-              >
-                {footerDataDynamic.json.map((item, index) => (
-                  <MenuItem
-                    key={index}
-                    item={item}
-                    id={item.href}
-                    setFooterDataDynamic={setFooterDataDynamic}
-                  />
-                ))}
-              </SortableContext>
-            </DndContext>
-          </ul>
-        )}
-      </div>
-    </div>
-  );
-};
-
-export default FooterMain;
+export default LinksMenu;

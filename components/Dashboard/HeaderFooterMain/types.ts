@@ -4,7 +4,7 @@ export interface FooterItem {
   children?: FooterItem[];
 }
 
-export interface FooterData {
+export interface HeaderFooterData {
   id: string;
   json: FooterItem[];
 }
