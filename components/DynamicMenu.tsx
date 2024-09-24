@@ -28,8 +28,8 @@ const DynamicMenu = () => {
   }
 
   return (
-    <nav className="py-2 text-white bg-[#ff8b55dd] hidden sm:block">
-      <div className="container mx-auto px-4 flex flex-wrap items-center gap-2">
+    <nav className="py-2 text-white bg-[#ff8b55dd] hidden sm:block w-full">
+      <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-10">
         {menuData.map(({ title, href, children }) => {
           return (
             <div
@@ -57,7 +57,8 @@ const DynamicMenu = () => {
                 <div
                   inert={title === openDropdown}
                   className={clsx(
-                    "absolute bg-white text-black w-max animate-in transition-opacity animate-opacity"
+                    `absolute bg-white text-black w-max animate-in transition-opacity animate-opacity
+                    rounded-xl py-2 px-4`
                   )}
                 >
                   {children?.map(({ title, href, children }) => {
@@ -70,17 +71,27 @@ const DynamicMenu = () => {
                       >
                         <Link
                           href={href}
-                          className="px-6 py-2 hover:opacity-75 transition-opacity flex gap-2 items-center"
+                          className={clsx(
+                            `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center`,
+                            {
+                              "border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline":
+                                children,
+                              "border-b": !children,
+                            }
+                          )}
                         >
                           {title}
-                          {children && <ChevronRight className="w-4 h-4" />}
+                          {children && (
+                            <ChevronRight className="w-4 h-4 text-orangePrimary" />
+                          )}
                         </Link>
 
-                        {openSubDropdown === title && (
+                        {openSubDropdown === title && children && (
                           <div
                             inert={openSubDropdown === title}
                             className={clsx(
-                              "absolute left-full top-0 bg-white w-max text-black  animate-opacity"
+                              `absolute left-full top-0 bg-white w-max text-black animate-opacity
+                              rounded-xl py-2 px-4`
                             )}
                           >
                             {children?.map(({ title, href }) => {
@@ -88,7 +99,9 @@ const DynamicMenu = () => {
                                 <Link
                                   key={title}
                                   href={href}
-                                  className="block px-6 py-2 hover:opacity-75 transition-opacity"
+                                  className={clsx(
+                                    `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b`
+                                  )}
                                 >
                                   {title}
                                 </Link>

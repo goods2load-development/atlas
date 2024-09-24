@@ -12,16 +12,16 @@ import LangSwitcher from "./LangSwicher";
 import Currencies from "./Currencies";
 import ErrorBoundary from "./ErrorBoundary";
 
-import * as NavigationMenuRadix from "@radix-ui/react-navigation-menu";
-import { ChevronRight } from "lucide-react";
 import DynamicMenu from "./DynamicMenu";
 
 export default function Header({ children }: PropsWithChildren) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [open, setOpen] = useState(false);
+
   useEffect(() => {
     if (!user?.id) getUser();
   }, [user?.id]);
+
   return (
     <div
       className={`${
@@ -30,10 +30,8 @@ export default function Header({ children }: PropsWithChildren) {
           : "bg-orangePrimary"
       } bg-cover bg-center text-white`}
     >
-      <header
-        className={`min-h-[75px] px-[16px] max-w-[1328px] mx-auto ${open && "bg-orangePrimary"}`}
-      >
-        <div className="flex items-center justify-between ">
+      <header className={`min-h-[75px] mx-auto ${open && "bg-orangePrimary"}`}>
+        <div className="flex items-center justify-between px-[16px] ">
           <Logo width={236} height={28} />
           <div
             className="w-[32px] h-[24px] sm:hidden flex flex-col justify-between items-center relative"
@@ -86,7 +84,7 @@ export default function Header({ children }: PropsWithChildren) {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div>
+        <div >
           <DynamicMenu />
         </div>
       </header>
