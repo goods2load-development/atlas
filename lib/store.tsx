@@ -8,6 +8,7 @@ import {
 } from "@/components/Dashboard/PartnersMain/types";
 import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
 import { url } from "inspector";
+import { FooterData } from "@/components/Dashboard/FooterMain/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -638,7 +639,7 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
   getBlogs: ({ page = 1, take = 5 }) => {
     set({ isBlogLoading: true });
     return getRequest({
-      url: "blogs",
+      url: "blogs?filter=Newest",
       params: {
         page,
         take,
@@ -649,10 +650,10 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
       })
       .finally(() => set({ isBlogLoading: false }));
   },
-  getBlog: (id: string) => {
+  getBlog: (slug: string) => {
     set({ isBlogLoading: true });
     return getRequest({
-      url: `blogs/${id}`,
+      url: `blogs/${slug}`,
     })
       .then((blog) => {
         set({ blog });
@@ -744,5 +745,26 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
         set({ foundBlogs });
       })
       .finally(() => set({ isBlogLoading: false }));
+  },
+}));
+
+interface FooterStoreState {
+  footerData: FooterData | null;
+  isFooterLoading: boolean;
+  getFooterData: () => void;
+}
+
+export const useFooterStore = create<FooterStoreState>((set) => ({
+  footerData: null,
+  isFooterLoading: true,
+  getFooterData: () => {
+    set({ isFooterLoading: true });
+    return getRequest({
+      url: "dynamic-menu/footer",
+    })
+      .then((footerData) => {
+        set({ footerData });
+      })
+      .finally(() => set({ isFooterLoading: false }));
   },
 }));
