@@ -1,7 +1,6 @@
 "use client";
 
 import Logo from "@/components/Logo";
-import mockLogo from "@/assets/mock-logo.svg";
 import Socials from "@/components/Socials";
 import { cn, isUserAdmin, isUserProvider } from "@/lib/utils";
 import Image from "next/image";
@@ -49,16 +48,6 @@ const Sidebar: React.FC = () => {
   return (
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
-        <div>
-          <Link href="/">
-            <Image
-              alt="logo-performance"
-              width={50}
-              height={55}
-              src={mockLogo}
-            />
-          </Link>
-        </div>
         <div className="flex flex-col">
           {isProvider && (
             <>

@@ -1,151 +1,136 @@
 "use client";
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
+import Image from "next/image";
 import Link from "next/link";
+import { useEffect } from "react";
 import Logo from "@/components/Logo";
 import Socials from "@/components/Socials";
-import LangSwitcher from "./LangSwicher";
-import * as React from "react";
+import { Input } from "./ui/input";
+import { useFooterHeaderStore } from "@/lib/store";
+import addressIcon from "@/assets/address.svg";
+import phoneIcon from "@/assets/phone.svg";
+import emailIcon from "@/assets/email.svg";
+import arrowRightIcon from "@/assets/arrow-right-input.svg";
 import ErrorBoundary from "./ErrorBoundary";
+import LangSwitcher from "./LangSwicher";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
-  return (
-    <footer className="text-white min-h-[244px] pt-[56px] bg-bgFooter bg-cover bg-center">
-      <div className="md:flex justify-between align-middle block px-[16px] max-w-[1328px] mx-auto row gap-10">
-        <div className="space-y-5 sm:space-y-10 mb-10">
-          <Logo width={340} height={42} />
-          <div className="hidden sm:block">
-            <Socials />
-          </div>
-        </div>
-        <div className="sm:flex lg:w-1/2 justify-between gap-3">
-          <Accordion
-            type="single"
-            collapsible
-            defaultValue="item-1"
-            className="w-24 f-accordion"
-          >
-            <AccordionItem
-              value="item-1"
-              className="border-transparent hidden sm:block"
-            >
-              <AccordionTrigger
-                className="pt-0 pb-3 font-normal"
-                usageContext={"footer"}
-              >
-                About us
-              </AccordionTrigger>
-              <AccordionContent>
-                <Link
-                  href="/about-us?company"
-                  className="block pb-3 font-light"
-                >
-                  Company
-                </Link>
-                <Link href="/about-us?trust" className="block pb-3 font-light">
-                  Trust
-                </Link>
-                <Link href="/about-us?media" className="block pb-3 font-light">
-                  Media
-                </Link>
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-          <div>
-            <Accordion
-              type="single"
-              collapsible
-              defaultValue="item-1"
-              className="w-32 f-accordion hidden sm:block"
-            >
-              <AccordionItem value="item-1" className="border-transparent">
-                <AccordionTrigger
-                  className="pt-0 pb-3 font-normal"
-                  usageContext={"footer"}
-                >
-                  Partners
-                </AccordionTrigger>
-                <AccordionContent>
-                  <Link
-                    href="/partners-with-us"
-                    className="block pb-3 font-light"
-                  >
-                    Partner with us
-                  </Link>
-                  <Link href="/partners" className="block pb-3 font-light">
-                    Our partners
-                  </Link>
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-            <Link href="/career" className="sm:block pb-3 font-light hidden">
-              Career
-            </Link>
-            <Link href="/blog" className="sm:block pb-3 font-light hidden">
-              Blog
-            </Link>
-          </div>
+  const { footerData, getFooterData } = useFooterHeaderStore();
 
-          <div className="text-center sm:hidden pb-3">
-            <p className="font-medium pb-3">About us</p>
-            <Link href="/about-us?company" className="block pb-3 font-light">
-              Company
-            </Link>
-            <Link href="/about-us?trust" className="block pb-3 font-light">
-              Trust
-            </Link>
-            <Link href="/about-us?media" className="block pb-3 font-light">
-              Media
-            </Link>
-            <p className="font-medium pb-3 pt-5">Partners</p>
-            <Link href="/partners" className="block pb-3 font-light">
-              Partner with us
-            </Link>
-            <Link
-              href="/partners#our-partners"
-              className="block pb-3 font-light"
-            >
-              Our partners
-            </Link>
-            <Link href="/career" className="block pb-3 font-light">
-              Career
-            </Link>
-            <Link href="/blog" className="block pb-3 font-light">
-              Blog
-            </Link>
+  useEffect(() => {
+    getFooterData();
+  }, [getFooterData]);
+
+  if (!footerData?.json) return null;
+
+  return (
+    <footer className="text-white min-h-[244px] bg-bgFooter bg-cover bg-center">
+      <div className="md:flex align-middle block px-4 py-10 max-w-[1328px] mx-auto row gap-16">
+        <div className="space-y-5 sm:space-y-10 max-sm:mb-10 max-sm:text-center max-sm:flex max-sm:flex-col max-sm:items-center">
+          <div className="mb-6">
+            <Logo width={205} height={31} />
           </div>
-          <div className="text-center sm:text-left">
-            <Link href="/help" className="block pb-4">
-              FAQs
-            </Link>
-            <Link href="/terms-of-service" className="block pb-4">
-              Terms and Conditions
-            </Link>
-            <Link href="/privacy-policy" className="block pb-4">
-              Privacy Policy
-            </Link>
-            <Link href="/cookie-policy" className="block pb-4">
-              Cookie Policy
-            </Link>
+          <p className="max-w-[233px] text-sm mb-7">
+            G2L is the premier platform for reliable, cost-effective logistics
+            solutions and predictive data. Our mission is to transform the
+            logistics landscape by integrating leading SMEs and digitizing
+            traditional freight forwarders, delivering tailored services that
+            meet the needs of emerging businesses worldwide.
+          </p>
+          <div>
+            <h3 className="font-semibold mb-2">Contacts</h3>
+            <address className="not-italic flex flex-col gap-2 max-sm:items-center">
+              <div className="flex gap-2 items-center">
+                <Image width={17} height={17} src={addressIcon} alt="address" />
+                <span>GOODS2LLOAD FZ LLC</span>
+              </div>
+              <div className="flex gap-2 items-center">
+                <Image width={17} height={19} src={phoneIcon} alt="phone" />
+                <a href="tel:+971505574291">+971505574291</a>
+              </div>
+              <div className="flex gap-2 items-center">
+                <Image width={17} height={17} src={emailIcon} alt="email" />
+                <a href="mailto:hey@goods2load.com">hey@goods2load.com</a>
+              </div>
+            </address>
           </div>
-        </div>
-        <div className="text-center">
-          <ErrorBoundary>
-            <LangSwitcher />
-          </ErrorBoundary>
-        </div>
-        <div className="flex sm:hidden justify-center pt-[40px]">
           <Socials />
         </div>
+        <div className="flex flex-col justify-between max-sm:items-center gap-4">
+          <div className="flex self-start gap-8 flex-wrap max-sm:flex-col max-sm:mx-auto">
+            {footerData.json.map((item) => (
+              <div key={item.title}>
+                <h3 className="font-semibold mb-2 max-sm:text-center">
+                  {item.title}
+                </h3>
+                {item.children?.length && (
+                  <ul className="flex flex-col gap-2">
+                    {item.children.map((childItem) => (
+                      <li className="max-sm:text-center" key={childItem.title}>
+                        <Link className="text-sm" href={childItem.href}>
+                          {childItem.title}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                )}
+              </div>
+            ))}
+          </div>
+          <form className="max-w-[246px] w-full sm:ml-auto">
+            <legend className="mb-4 font-semibold">Join our News Letter</legend>
+            <div className="relative">
+              <Input
+                type="email"
+                pattern="email"
+                className="pr-7 w-full text-black"
+                placeholder="Enter your email"
+              />
+              <button
+                title="send"
+                className="absolute top-0 right-2 translate-y-1/2"
+              >
+                <Image src={arrowRightIcon} width={24} height={24} alt="send" />
+              </button>
+            </div>
+          </form>
+        </div>
       </div>
-      <div className="color-white text-center py-[13px] font-[16px]/[24px] bg-[#ff6720] font-light">
+      <div className="text-orangePrimary font-semibold text-center py-[13px] font-[16px]/[24px] bg-white">
         GOODS2LOAD {currentYear} | All Rights Reserved
+      </div>
+      <div className="bg-primaryOrange py-4">
+        <div className="flex items-center justify-center md:justify-between max-w-[1328px] mx-auto">
+          <nav className="text-sm flex flex-wrap md:mx-auto max-md:justify-center">
+            <Link
+              className="mr-8 md:mr-12 relative link-with-line"
+              href="/terms-of-service"
+            >
+              Terms and conditions
+            </Link>
+            <Link
+              className="mr-8 md:mr-12 relative link-with-line"
+              href="/cookie-policy"
+            >
+              Cookie Policy
+            </Link>
+            <Link
+              className="mr-8 md:mr-12 relative link-with-line"
+              href="/privacy-policy"
+            >
+              Privacy Policy
+            </Link>
+            <Link className="mr-8 md:mr-12 relative link-with-line" href="/sitemap">
+              Sitemap
+            </Link>
+            <div className="text-center">
+              <ErrorBoundary>
+                <LangSwitcher />
+              </ErrorBoundary>
+            </div>
+          </nav>
+        </div>
       </div>
     </footer>
   );
