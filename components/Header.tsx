@@ -31,7 +31,7 @@ export default function Header({ children }: PropsWithChildren) {
       } bg-cover bg-center text-white`}
     >
       <header className={`min-h-[75px] mx-auto ${open && "bg-orangePrimary"}`}>
-        <div className="flex items-center justify-between px-[16px] ">
+        <div className="flex items-center justify-between px-4">
           <Logo width={236} height={28} />
           <div
             className="w-[32px] h-[24px] sm:hidden flex flex-col justify-between items-center relative"

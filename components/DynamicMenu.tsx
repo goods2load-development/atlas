@@ -28,7 +28,7 @@ const DynamicMenu = () => {
   }
 
   return (
-    <nav className="py-2 text-white bg-[#ff8b55dd] hidden sm:block w-full">
+    <nav className="py-2 text-white hidden sm:block w-full">
       <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-10">
         {menuData.map(({ title, href, children }) => {
           return (
@@ -45,10 +45,9 @@ const DynamicMenu = () => {
                 <span className="pointer-events-none">{title}</span>
                 {children && (
                   <ChevronRight
-                    className={clsx(
-                      "w-4 h-4 transition-transform",
-                      title === openDropdown ? "rotate-90" : ""
-                    )}
+                    className={clsx("w-4 h-4 transition-transform rotate-90", {
+                      "-rotate-90": title === openDropdown,
+                    })}
                   />
                 )}
               </Link>
@@ -57,8 +56,8 @@ const DynamicMenu = () => {
                 <div
                   inert={title === openDropdown}
                   className={clsx(
-                    `absolute bg-white text-black w-max animate-in transition-opacity animate-opacity
-                    rounded-xl py-2 px-4`
+                    `min-w-[200px] absolute bg-white text-black w-max animate-in transition-opacity animate-opacity
+                    rounded-xl py-2 px-4 shadow-md`
                   )}
                 >
                   {children?.map(({ title, href, children }) => {
@@ -72,12 +71,7 @@ const DynamicMenu = () => {
                         <Link
                           href={href}
                           className={clsx(
-                            `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center`,
-                            {
-                              "border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline":
-                                children,
-                              "border-b": !children,
-                            }
+                            `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`
                           )}
                         >
                           {title}
@@ -91,7 +85,7 @@ const DynamicMenu = () => {
                             inert={openSubDropdown === title}
                             className={clsx(
                               `absolute left-full top-0 bg-white w-max text-black animate-opacity
-                              rounded-xl py-2 px-4`
+                              rounded-xl py-2 px-4 shadow-md`
                             )}
                           >
                             {children?.map(({ title, href }) => {
@@ -100,7 +94,7 @@ const DynamicMenu = () => {
                                   key={title}
                                   href={href}
                                   className={clsx(
-                                    `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b`
+                                    `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`
                                   )}
                                 >
                                   {title}

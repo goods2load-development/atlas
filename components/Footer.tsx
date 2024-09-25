@@ -89,7 +89,7 @@ export default function Footer() {
               />
               <button
                 title="send"
-                className="absolute top-0 right-2 translate-y-1/2"
+                className="absolute top-1/2 right-2 -translate-y-1/2"
               >
                 <Image src={arrowRightIcon} width={24} height={24} alt="send" />
               </button>
@@ -101,8 +101,8 @@ export default function Footer() {
         GOODS2LOAD {currentYear} | All Rights Reserved
       </div>
       <div className="bg-primaryOrange py-4">
-        <div className="flex items-center justify-center md:justify-between max-w-[1328px] mx-auto">
-          <nav className="text-sm flex flex-wrap md:mx-auto max-md:justify-center">
+        <div className="flex items-center justify-center max-w-[1328px] mx-auto">
+          <nav className="text-sm flex items-center flex-wrap mx-auto">
             <Link
               className="mr-8 md:mr-12 relative link-with-line"
               href="/terms-of-service"
@@ -121,15 +121,23 @@ export default function Footer() {
             >
               Privacy Policy
             </Link>
-            <Link className="mr-8 md:mr-12 relative link-with-line" href="/sitemap">
+            <Link
+              className="mr-8 md:mr-12 relative max-md:link-with-line"
+              href="/sitemap"
+            >
               Sitemap
             </Link>
-            <div className="text-center">
+            <div className="md:hidden text-center">
               <ErrorBoundary>
                 <LangSwitcher />
               </ErrorBoundary>
             </div>
           </nav>
+          <div className="max-md:hidden text-center">
+            <ErrorBoundary>
+              <LangSwitcher />
+            </ErrorBoundary>
+          </div>
         </div>
       </div>
     </footer>
