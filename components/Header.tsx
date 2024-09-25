@@ -84,7 +84,7 @@ export default function Header({ children }: PropsWithChildren) {
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div >
+        <div>
           <DynamicMenu />
         </div>
       </header>

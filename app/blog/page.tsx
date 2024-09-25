@@ -7,8 +7,6 @@ import FeaturedBlog from "@/components/FeaturedBlog";
 import BlogFilter from "@/components/BlogFilter";
 import { getRequest } from "@/lib/utils";
 import UIButton from "@/components/common/Button";
-import decorLine from "@/assets/Blog/blog-decor-line.svg";
-import Image from "next/image";
 
 interface Blog {
   id: string;
@@ -86,42 +84,38 @@ const BlogPage: React.FC = () => {
     <>
       <Header />
       <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white sm:mt-[-75px] pb-[104px] overflow-hidden">
-        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] sm:bg-hero-pattern bg-cover bg-bottom text-white sm:pb-[240px] md:pb-[230px] pb-[80px] realtive h-[350px] sm:h-[540px] relative">
+        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] sm:bg-hero-pattern bg-cover bg-bottom text-white sm:pb-[240px] md:pb-[230px] pb-[80px] h-[350px] sm:h-[540px] relative">
           <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-8 sm:mb-2 sm:pt-[120px]">
             Blog
           </h1>
           <div className="sm:hidden absolute w-full h-[425px] bg-primaryOrange bg-hero-pattern-mobile bg-cover bg-no-repeat -z-10"></div>
           <div className="md:hidden 2xl:block absolute bottom-0 w-full h-[150px] bg-bgWhiteGradient"></div>
         </div>
-        <Image
-          className="absolute xl:top-[22.5%] top-[24%] right-[0] xl:w-[53%] w-[50%] md:block hidden"
-          width={865}
-          height={201}
-          src={decorLine}
-          alt="decor-line"
-        />
-        <div className="container mx-auto px-4 md:py-8 max-w-[1328px] text-black">
+
+        <div className="mx-auto md:py-8 text-black w-full">
           {blogs.length > 0 && (
             <FeaturedBlog blog={blogs[0]} categories={categories} />
           )}
-          <BlogFilter
-            filter={filter}
-            setFilter={setFilter}
-            selectedCategory={selectedCategory}
-            setSelectedCategory={setSelectedCategory}
-            categories={categories}
-          />
-          <BlogList blogs={blogs} categories={categories} />
-          {blogsMeta && blogsMeta.hasNextPage && (
-            <div className="text-center pb-5 mt-8">
-              <UIButton
-                onClick={() => setTakeBlogs((take) => take + 2)}
-                secondary
-              >
-                Show more results
-              </UIButton>
-            </div>
-          )}
+          <div className="container max-w-[1320px] px-4">
+            <BlogFilter
+              filter={filter}
+              setFilter={setFilter}
+              selectedCategory={selectedCategory}
+              setSelectedCategory={setSelectedCategory}
+              categories={categories}
+            />
+            <BlogList blogs={blogs} categories={categories} />
+            {blogsMeta && blogsMeta.hasNextPage && (
+              <div className="text-center pb-5 mt-8">
+                <UIButton
+                  onClick={() => setTakeBlogs((take) => take + 2)}
+                  secondary
+                >
+                  Show more results
+                </UIButton>
+              </div>
+            )}
+          </div>
         </div>
       </div>
 

@@ -2,8 +2,7 @@
 
 import { Blog } from "@/app/blog/[slug]/page";
 import Link from "next/link";
-import { formatDate } from "@/lib/utils";
-import { useEffect } from "react";
+import { format } from "date-fns";
 
 interface IRelatedBlogsList {
   blogs: Blog[];
@@ -34,21 +33,26 @@ export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
             </div>
             <div className="p-4 flex flex-col h-full justify-between">
               <div>
-                <h3 className="text-[24px]/[28px] font-medium mb-2">
-                  {blog.title}
-                </h3>
-                <p className="text-gray-600 mb-4">{blog.description}</p>
+                <Link
+                  href={{
+                    pathname: `/blog/${blog.slug}`,
+                  }}
+                >
+                  <h3 className="text-[24px]/[28px] font-medium mb-2">
+                    {blog.title}
+                  </h3>
+                </Link>
+                <p className="text-gray-600 mb-4 h-[96px] line-clamp-4">
+                  {blog.description}
+                </p>
               </div>
               <div className="text-gray-500 text-sm flex justify-between">
-                <span>
-                  {formatDate(new Date(blog.updatedAt).toLocaleDateString())}
-                </span>
+                <span>{format(new Date(blog.updatedAt), "dd MMM yyyy")}</span>
                 <span>{`${blog.readingTime} min read`}</span>
               </div>
               <Link
                 href={{
                   pathname: `/blog/${blog.slug}`,
-                  query: { id: blog.id },
                 }}
                 className="text-orange-500 hover:underline mt-4 inline-block self-start"
               >

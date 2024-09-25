@@ -9,8 +9,13 @@ import { getRequest, postRequest } from "@/lib/utils";
 import Loader from "@/components/common/Loader";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import BlogList from "@/components/BlogList";
 import { RelatedBlogs } from "@/app/_components/Blog/RelatedBlogs";
+import { useUserStore } from "@/lib/store";
+import { format } from "date-fns";
+import SharedLinks from "@/components/SharedLinks";
+import { Referal } from "@/components/Catalogue/Referral";
+import TailoredServices from "@/components/TailoredServices";
+import ReferalsSlider from "@/components/Catalogue/ReferralsSlider";
 
 interface BlogComment {
   id: string;
@@ -48,6 +53,7 @@ export interface BlogType {
 }
 
 const BlogPage: React.FC = ({ params }: any) => {
+  const { user }: any = useUserStore();
   const [blog, setBlog] = useState<Blog | null>(null);
   const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
   const [categories, setCategories] = useState<BlogType[]>([]);
@@ -55,19 +61,32 @@ const BlogPage: React.FC = ({ params }: any) => {
     { id: string; text: string; level: number }[]
   >([]);
   const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  const [isMounted, setIsMounted] = useState(false);
+  const [localActiveUsers, setLocalActiveUsers] = useState(null);
+
   const { slug } = params;
 
   useEffect(() => {
+    let data: any;
+    setIsMounted(true);
     const fetchBlog = async () => {
       if (!slug) return;
       try {
-        const data = await getRequest({ url: `/blogs/slug/${slug}` });
+        data = await getRequest({ url: `/blogs/slug/${slug}` });
         setBlog(data);
-        await postRequest({ url: `/blogs/${data.id}/increment-active-users` });
 
-        const relatedData = await getRequest({ url: "/blogs" });
-        setRelatedBlogs(relatedData.slice(0, 3));
+        await postRequest({
+          url: `/blogs/${data.id}/increment-active-users`,
+          data: {
+            userId: localStorage.getItem("id"),
+          },
+        }).then((data) => {
+          setLocalActiveUsers(data);
+        });
+
+        const { data: relatedData } = await getRequest({ url: "/blogs" });
+
+        setRelatedBlogs(relatedData?.data?.slice(0, 3));
 
         const categoriesData = await getRequest({ url: "/blog-types" });
         setCategories(categoriesData);
@@ -77,7 +96,19 @@ const BlogPage: React.FC = ({ params }: any) => {
     };
 
     fetchBlog();
-  }, [id]);
+
+    return () => {
+      if (isMounted) {
+        postRequest({
+          url: `/blogs/${data?.id}/decrement-active-users`,
+          data: {
+            userId: localStorage.getItem("id"),
+          },
+        });
+      }
+      setIsMounted(false);
+    };
+  }, [slug, isMounted]);
 
   if (!blog) return <Loader />;
 
@@ -92,14 +123,22 @@ const BlogPage: React.FC = ({ params }: any) => {
           category={blog.blogTypeName}
           authorName={blog.authorName || "Unknown Author"}
           readingTime={blog.readingTime}
-          publishDate={new Date(blog.createdAt || "").toLocaleDateString()}
+          publishDate={format(new Date(blog.createdAt), "dd MMM yyyy")}
         />
 
-        <div className="px-4 py-8 max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row gap-8">
+        <div className="px-4 py-8">
+          <div className="flex flex-col md:flex-row gap-8 max-w-[1328px] mx-auto">
             {/* Table of Contents */}
-            <div className="md:w-64 sticky top-0">
-              <TableOfContents headings={headings} />
+            <div className="sticky top-0 z-50">
+              <div className="sticky top-0 z-50">
+                <TableOfContents headings={headings} />
+                <div className="mt-6 hidden md:block">
+                  <SharedLinks />
+                </div>
+                <div className="mt-10 hidden md:block">
+                  <Referal forceDisplaying={true} />
+                </div>
+              </div>
             </div>
 
             {/* Blog Content */}
@@ -111,15 +150,22 @@ const BlogPage: React.FC = ({ params }: any) => {
             </div>
           </div>
 
+          <div className="mt-6 md:hidden">
+            <ReferalsSlider />
+          </div>
+
           {/* Comments Section */}
           <CommentSection
             blogId={blog.id}
-            activeUsers={blog.activeUsers}
+            activeUsers={localActiveUsers || 0}
             commentCount={blog.commentCount}
           />
 
           {/* Related Blogs Section */}
-          <RelatedBlogs categoriesName={blog.blogTypeName} />
+          <RelatedBlogs
+            categoriesName={blog.blogTypeName}
+            excludeBlogId={blog?.id}
+          />
         </div>
       </div>
       <Footer />
