@@ -22,7 +22,7 @@ import { CirclePlus, Edit } from "lucide-react";
 
 const formSchema = z.object({
   title: z.string().min(1, "Title is required"),
-  href: z.string().min(1, "Link is required"),
+  href: z.string(),
 });
 
 const LinkDialog = ({

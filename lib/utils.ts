@@ -67,6 +67,16 @@ export function getRequest(params: any) {
   });
 }
 
+export function putRequest(params: any) {
+  return axios
+    .put(params.url, params.data, {
+      ...params,
+    })
+    .then(function (response: any) {
+      return response.data;
+    });
+}
+
 export function postRequest(params: any) {
   return axios
     .post(params.url, params.data, {

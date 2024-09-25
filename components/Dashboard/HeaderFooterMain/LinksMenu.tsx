@@ -52,6 +52,17 @@ const LinksMenu = ({
     })
   );
 
+  const onAddNewItem = (data: { href: string; title: string }, id: string) => {
+    setData((prev: HeaderFooterData) => {
+      const newItems = addItemToChildrenByHref([...prev.json], id, data);
+
+      return {
+        ...prev,
+        json: newItems,
+      };
+    });
+  };
+
   const handleDragEnd = (event: DragEndEvent) => {
     console.log({ event });
     const { active, over } = event;
@@ -60,6 +71,8 @@ const LinksMenu = ({
 
   return (
     <ul className="bg-white shadow-lg rounded-lg p-4 space-y-2">
+      <LinkDialog type="create" addNewItem={(data) => onAddNewItem(data, "")} />
+
       <DndContext
         sensors={sensors}
         collisionDetection={closestCorners}
@@ -72,6 +85,7 @@ const LinksMenu = ({
               item={item}
               id={item.href}
               setHeaderDataDynamic={setData}
+              onAddNewItem={onAddNewItem}
             />
           ))}
         </SortableContext>
@@ -84,10 +98,12 @@ const MenuItem = ({
   item,
   id,
   setHeaderDataDynamic,
+  onAddNewItem,
 }: {
   item: FooterItem;
   id: string;
   setHeaderDataDynamic: any;
+  onAddNewItem: any;
 }) => {
   const {
     attributes,
@@ -123,17 +139,6 @@ const MenuItem = ({
     });
   };
 
-  const onAddNewItem = (data: { href: string; title: string }) => {
-    setHeaderDataDynamic((prev: HeaderFooterData) => {
-      const newItems = addItemToChildrenByHref([...prev.json], id, data);
-
-      return {
-        ...prev,
-        json: newItems,
-      };
-    });
-  };
-
   const onEditItem = (data: { href: string; title: string }) => {
     setHeaderDataDynamic((prev: HeaderFooterData) => {
       const newItems = editItemByHref([...prev.json], id, data);
@@ -157,7 +162,10 @@ const MenuItem = ({
         <button onClick={onDeleteItem} title="delete">
           <Trash size={15} color="orange" />
         </button>
-        <LinkDialog type="create" addNewItem={onAddNewItem} />
+        <LinkDialog
+          type="create"
+          addNewItem={(data) => onAddNewItem(data, id)}
+        />
         <LinkDialog
           type="edit"
           editItem={onEditItem}
@@ -175,6 +183,7 @@ const MenuItem = ({
               item={child}
               id={child.href}
               setHeaderDataDynamic={setHeaderDataDynamic}
+              onAddNewItem={onAddNewItem}
             />
           ))}
         </ul>
@@ -182,6 +191,5 @@ const MenuItem = ({
     </li>
   );
 };
-
 
 export default LinksMenu;
