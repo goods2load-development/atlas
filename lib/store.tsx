@@ -7,7 +7,6 @@ import {
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
 import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
-import { url } from "inspector";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -177,7 +176,9 @@ export const useUserStore = create((set) => ({
     const { savedPartners, ...restData } = data;
     await patchRequest({
       url: `/users/${id}`,
-      data: restData,
+      data: {
+        ...restData,
+      },
     }).then((userData: any) => {
       set((state: any) => ({ user: { ...state.user, ...userData?.data } }));
     });
