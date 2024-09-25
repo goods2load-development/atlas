@@ -23,6 +23,8 @@ const routes = {
     "/dashboard/routes-list",
     "/dashboard/partners",
     "/dashboard/blog",
+    "/dashboard/header",
+    "/dashboard/footer",
   ],
 };
 

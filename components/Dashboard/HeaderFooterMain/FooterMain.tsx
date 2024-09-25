@@ -11,7 +11,8 @@ import LinksMenu from "./LinksMenu";
 
 const FooterMain = () => {
   const { toast } = useToast();
-  const { footerData, isFooterLoading, getFooterData } = useFooterHeaderStore();
+  const { footerData, isFooterLoading, getFooterData, updateHeaderFooterData } =
+    useFooterHeaderStore();
   const [footerDataDynamic, setFooterDataDynamic] =
     useState<HeaderFooterData | null>(footerData);
 
@@ -31,6 +32,20 @@ const FooterMain = () => {
     }
   }, [footerData]);
 
+  const updateHeader = () => {
+    if (!footerDataDynamic) return;
+
+    updateHeaderFooterData(footerDataDynamic.id, footerDataDynamic?.json)
+      .then(getFooterData)
+      .then(() =>
+        toast({
+          title: "Footer updated.",
+          variant: "destructive",
+          className: "bg-green-500 text-white",
+        })
+      );
+  };
+
   return (
     <div className="min-h-screen">
       <div className="flex justify-between items-center mb-8 gap-2">
@@ -39,6 +54,7 @@ const FooterMain = () => {
         </h1>
         {isFooterLoading && <Spinner />}
         <Button
+          onClick={updateHeader}
           disabled={isFooterLoading || !hasAnyChanges}
           className="ml-auto"
         >

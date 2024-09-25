@@ -28,7 +28,7 @@ const DynamicMenu = () => {
   }
 
   return (
-    <nav className="py-2 text-white hidden sm:block w-full">
+    <nav className="py-2 bg-[rgba(255,255,255,0.2)] text-white hidden sm:block w-full">
       <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-10">
         {menuData.map(({ title, href, children }) => {
           return (

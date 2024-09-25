@@ -20,7 +20,7 @@ export default function Header({ children }: PropsWithChildren) {
 
   useEffect(() => {
     if (!user?.id) getUser();
-  }, [user?.id]);
+  }, [getUser, user?.id]);
 
   return (
     <div
@@ -31,7 +31,7 @@ export default function Header({ children }: PropsWithChildren) {
       } bg-cover bg-center text-white`}
     >
       <header className={`min-h-[75px] mx-auto ${open && "bg-orangePrimary"}`}>
-        <div className="flex items-center justify-between px-4">
+        <div className="flex items-center justify-between px-4 max-w-[1328px] mx-auto">
           <Logo width={236} height={28} />
           <div
             className="w-[32px] h-[24px] sm:hidden flex flex-col justify-between items-center relative"

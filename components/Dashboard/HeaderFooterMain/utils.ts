@@ -41,6 +41,10 @@ export const addItemToChildrenByHref = (
   parentHref: string,
   newItem: { href: string; title: string }
 ): FooterItem[] => {
+  if (!parentHref) {
+    return [...footerData, newItem];
+  }
+
   return footerData.map((item) => {
     if (item.href === parentHref) {
       const updatedChildren = item.children

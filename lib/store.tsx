@@ -1,5 +1,11 @@
 import { create } from "zustand";
-import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
+import {
+  getRequest,
+  postRequest,
+  patchRequest,
+  deleteRequest,
+  putRequest,
+} from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
 import Cookie from "js-cookie";
 import {
@@ -7,7 +13,10 @@ import {
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
 import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
-import { HeaderFooterData } from "@/components/Dashboard/HeaderFooterMain/types";
+import {
+  FooterItem,
+  HeaderFooterData,
+} from "@/components/Dashboard/HeaderFooterMain/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -754,8 +763,9 @@ interface FooterStoreState {
   headerData: HeaderFooterData | null;
   isFooterLoading: boolean;
   isHeaderLoading: boolean;
-  getFooterData: () => void;
-  getHeaderData: () => void;
+  getFooterData: () => Promise<void>;
+  getHeaderData: () => Promise<void>;
+  updateHeaderFooterData: (id: string, data: FooterItem[]) => Promise<void>;
 }
 
 export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
@@ -782,5 +792,16 @@ export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
         set({ headerData });
       })
       .finally(() => set({ isHeaderLoading: false }));
+  },
+  updateHeaderFooterData: (id, data) => {
+    set({ isHeaderLoading: true, isFooterLoading: true });
+    return putRequest({
+      url: `dynamic-menu/${id}`,
+      data,
+    })
+      .then((headerData) => {
+        set({ headerData });
+      })
+      .finally(() => set({ isHeaderLoading: false, isFooterLoading: false }));
   },
 }));

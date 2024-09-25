@@ -11,7 +11,8 @@ import LinksMenu from "./LinksMenu";
 
 const HeaderMain = () => {
   const { toast } = useToast();
-  const { headerData, isHeaderLoading, getHeaderData } = useFooterHeaderStore();
+  const { headerData, isHeaderLoading, getHeaderData, updateHeaderFooterData } =
+    useFooterHeaderStore();
   const [headerDataDynamic, setHeaderDataDynamic] =
     useState<HeaderFooterData | null>(headerData);
 
@@ -31,6 +32,20 @@ const HeaderMain = () => {
     }
   }, [headerData]);
 
+  const updateHeader = () => {
+    if (!headerDataDynamic) return;
+
+    updateHeaderFooterData(headerDataDynamic.id, headerDataDynamic?.json)
+      .then(getHeaderData)
+      .then(() =>
+        toast({
+          title: "Header updated.",
+          variant: "destructive",
+          className: "bg-green-500 text-white",
+        })
+      );
+  };
+
   return (
     <div className="min-h-screen">
       <div className="flex justify-between items-center mb-8 gap-2">
@@ -39,6 +54,7 @@ const HeaderMain = () => {
         </h1>
         {isHeaderLoading && <Spinner />}
         <Button
+          onClick={updateHeader}
           disabled={isHeaderLoading || !hasAnyChanges}
           className="ml-auto"
         >
