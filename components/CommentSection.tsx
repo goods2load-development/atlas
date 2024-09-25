@@ -53,7 +53,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 
   const handleSubmitComment = async (commentText: string) => {
     if (!user?.id) {
-      console.error("User is not logged in"); 
+      console.error("User is not logged in");
       return;
     }
 
@@ -112,7 +112,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           key={comment.id}
           id={comment.id}
           userId={comment.userId}
-          userName={comment?.user?.firstName}
+          userName={comment?.user?.companyName}
           userPhoto={comment?.user?.companyPhoto}
           currentUserId={user?.id}
           blogId={comment.blogId}
