@@ -26,6 +26,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
     ).map((heading, index) => {
       const id = `heading-${index}`;
       heading.setAttribute("id", id);
+      heading.classList.add(`heading-${heading.tagName.toLowerCase()}`);
       return {
         id,
         text: heading.textContent || "",

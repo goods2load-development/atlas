@@ -7,8 +7,7 @@ import {
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
 import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
-import { url } from "inspector";
-import {HeaderFooterData} from "@/components/Dashboard/HeaderFooterMain/types";
+import { HeaderFooterData } from "@/components/Dashboard/HeaderFooterMain/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -178,7 +177,9 @@ export const useUserStore = create((set) => ({
     const { savedPartners, ...restData } = data;
     await patchRequest({
       url: `/users/${id}`,
-      data: restData,
+      data: {
+        ...restData,
+      },
     }).then((userData: any) => {
       set((state: any) => ({ user: { ...state.user, ...userData?.data } }));
     });
@@ -749,8 +750,8 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
 }));
 
 interface FooterStoreState {
-  footerData:HeaderFooterData| null;
-  headerData :HeaderFooterData| null;
+  footerData: HeaderFooterData | null;
+  headerData: HeaderFooterData | null;
   isFooterLoading: boolean;
   isHeaderLoading: boolean;
   getFooterData: () => void;
