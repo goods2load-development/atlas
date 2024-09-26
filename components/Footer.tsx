@@ -58,43 +58,57 @@ export default function Footer() {
           <Socials />
         </div>
         <div className="flex flex-col justify-between max-sm:items-center gap-4">
-          <div className="flex self-start gap-8 flex-wrap max-sm:flex-col max-sm:mx-auto">
-            {footerData.json.map((item) => (
-              <div key={item.title}>
-                <h3 className="font-semibold mb-2 max-sm:text-center">
-                  {item.title}
-                </h3>
-                {item.children?.length && (
-                  <ul className="flex flex-col gap-2">
-                    {item.children.map((childItem) => (
-                      <li className="max-sm:text-center" key={childItem.title}>
-                        <Link className="text-sm" href={childItem.href}>
-                          {childItem.title}
-                        </Link>
-                      </li>
-                    ))}
-                  </ul>
+          <div className="flex gap-8 flex-wrap max-sm:flex-col max-sm:mx-auto sm:h-full">
+            {footerData.json.map((item, i) => (
+              <div className="flex flex-col justify-between gap-8 min-w-[216px]" key={item.title}>
+                <div>
+                  <h3 className="font-semibold mb-2 max-sm:text-center">
+                    {item.title}
+                  </h3>
+                  {item.children?.length && (
+                    <ul className="flex flex-col gap-2">
+                      {item.children.map((childItem) => (
+                        <li
+                          className="max-sm:text-center"
+                          key={childItem.title}
+                        >
+                          <Link className="text-sm" href={childItem.href}>
+                            {childItem.title}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+                {i === footerData.json.length - 1 && (
+                  <form className="max-w-[246px] w-full sm:ml-auto">
+                    <legend className="mb-4 font-semibold">
+                      Join our News Letter
+                    </legend>
+                    <div className="relative">
+                      <Input
+                        type="email"
+                        pattern="email"
+                        className="pr-7 w-full text-black"
+                        placeholder="Enter your email"
+                      />
+                      <button
+                        title="send"
+                        className="absolute top-1/2 right-2 -translate-y-1/2"
+                      >
+                        <Image
+                          src={arrowRightIcon}
+                          width={24}
+                          height={24}
+                          alt="send"
+                        />
+                      </button>
+                    </div>
+                  </form>
                 )}
               </div>
             ))}
           </div>
-          <form className="max-w-[246px] w-full sm:ml-auto">
-            <legend className="mb-4 font-semibold">Join our News Letter</legend>
-            <div className="relative">
-              <Input
-                type="email"
-                pattern="email"
-                className="pr-7 w-full text-black"
-                placeholder="Enter your email"
-              />
-              <button
-                title="send"
-                className="absolute top-1/2 right-2 -translate-y-1/2"
-              >
-                <Image src={arrowRightIcon} width={24} height={24} alt="send" />
-              </button>
-            </div>
-          </form>
         </div>
       </div>
       <div className="text-orangePrimary font-semibold text-center py-[13px] font-[16px]/[24px] bg-white">
