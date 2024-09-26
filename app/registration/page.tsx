@@ -325,7 +325,7 @@ function UserRegistrationComponent() {
               render={({ field }) => (
                 <FormItem className="sm:w-6/12 mt-3 sm:mt-0">
                   <FormLabel className="font-light sm:font-normal">
-                    Email
+                      Business Email
                     <IsRequired />
                   </FormLabel>
                   <FormControl>
@@ -401,7 +401,7 @@ function UserRegistrationComponent() {
               render={({ field }) => (
                 <FormItem className="sm:w-8/12 sm:mr-3">
                   <FormLabel className="font-light sm:font-normal">
-                    Address
+                      Business Address
                   </FormLabel>
                   <FormControl>
                     <Input

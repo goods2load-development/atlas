@@ -262,8 +262,7 @@ export default function PriceAlerts() {
                   Desired <i className="font-normal">routes</i>
                 </DialogTitle>
                 <DialogDescription className="text-center text-[18px]/[26px] max-w-[424px] mx-auto">
-                  You can select up to 10 routes that interest you and set price
-                  alerts for them.
+                  Here, you can set your preferred price for the route you previously selected, and we'll notify you when it becomes available.
                 </DialogDescription>
                 <div className="flex-wrap text-[12px]/[18px] opacity-50 mt-[40px] mb-[4px] hidden sm:flex ">
                   <div className="ml-[26px] w-[240px]">FROM</div>
@@ -513,14 +512,14 @@ export default function PriceAlerts() {
                 className={`${step === 1 && !isSearchFilled() ? "sm:min-h-[172px]" : "hidden"}`}
               >
                 <DialogTitle className="text-center text-[24px]/[29px] sm:text-[40px]/[48px] font-light my-4">
-                  It&apos;s looks like you don&apos;t filled the&nbsp;
+                  Just a step away!
                   <Link
                     className="text-primaryOrange underline hover:no-underline"
                     href="/"
                   >
-                    search bar
+                    Click here
                   </Link>
-                  . Please do it
+                  to fill in the search bar and get matched with the right partner.
                 </DialogTitle>
               </div>
               <div className={step === 2 ? "" : "hidden"}>

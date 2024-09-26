@@ -197,7 +197,7 @@ export default function Account() {
         <Card className="mb-10">
           <CardHeader>
             <CardTitle className="font-medium text-[18px]/[22px] flex justify-between">
-              <span>Address</span>
+              <span>Business Address</span>
               <UIButton
                 onClick={() => setEdit("address")}
                 secondary

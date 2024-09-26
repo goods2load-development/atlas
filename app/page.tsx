@@ -8,6 +8,7 @@ import SliderMain from "@/components/SliderMain";
 import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import TailoredServices from "@/components/TailoredServices";
 import Analytics from "@/components/Dashboard/Analytics";
+import ConsentPopup from "@/components/common/ConsentPopup";
 
 export default function Home() {
   return (
@@ -34,6 +35,7 @@ export default function Home() {
         <Analytics />
       </main>
       <Footer />
+        <ConsentPopup />
     </>
   );
 }
