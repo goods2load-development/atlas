@@ -10,10 +10,31 @@ const Editor = React.memo(
           width: "100%",
           height: 400,
           block_unsupported_drop: false,
+          automatic_uploads: true,
+          image_title: true,
+          file_picker_callback: function (callback, value, meta) {
+            const input = document.createElement("input");
+            input.setAttribute("type", "file");
+            input.setAttribute("accept", "image/*");
+
+            input.onchange = function () {
+              const file = (this as any).files[0];
+
+              const reader = new FileReader();
+              reader.onload = function (e: any) {
+                callback(e.target.result, {
+                  alt: file.name,
+                });
+              };
+              reader.readAsDataURL(file);
+            };
+
+            input.click();
+          },
+          file_picker_types: "image",
           plugins: [
-            "accordion",
-            "table",
             "image",
+            "table",
             "anchor",
             "autolink",
             "charmap",
@@ -38,7 +59,6 @@ const Editor = React.memo(
           ],
           font_family_formats:
             "Avenir Black=Avenir Black; Avenir Heavy=Avenir Heavy; Avenir Medium=Avenir Medium;",
-          file_picker_types: "image",
           menubar: "favs file edit view insert format tools table help",
         }}
         onEditorChange={(v) => {
