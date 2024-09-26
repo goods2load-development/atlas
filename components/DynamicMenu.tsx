@@ -75,12 +75,12 @@ const DynamicMenu = () => {
                           )}
                         >
                           {title}
-                          {children && (
+                          {!!children?.length && (
                             <ChevronRight className="w-4 h-4 text-orangePrimary" />
                           )}
                         </Link>
 
-                        {openSubDropdown === title && children && (
+                        {openSubDropdown === title && !!children?.length && (
                           <div
                             inert={openSubDropdown === title}
                             className={clsx(
