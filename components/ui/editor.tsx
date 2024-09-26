@@ -12,6 +12,46 @@ const Editor = React.memo(
           block_unsupported_drop: false,
           automatic_uploads: true,
           image_title: true,
+          file_picker_types: "image",
+          images_upload_url: `${process.env.NEXT_PUBLIC_BASE_URL}api/blogs/editor/upload`,
+
+          images_upload_handler: (blobInfo: any, progress: any) => {
+            return new Promise((resolve, reject) => {
+              const formData = new FormData();
+              formData.append("file", blobInfo.blob(), blobInfo.filename());
+
+              const xhr = new XMLHttpRequest();
+              xhr.open(
+                "POST",
+                `${process.env.NEXT_PUBLIC_BASE_URL}api/blogs/editor/upload`
+              );
+
+              xhr.upload.onprogress = (e) => {
+                progress((e.loaded / e.total) * 100);
+              };
+
+              xhr.onload = () => {
+                if (xhr.status >= 200 && xhr.status < 300) {
+                  const json = JSON.parse(xhr.responseText);
+
+                  if (json) {
+                    resolve(`${process.env.NEXT_PUBLIC_BASE_URL}/${json}`);
+                  } else {
+                    reject("Invalid JSON response");
+                  }
+                } else {
+                  reject(`HTTP Error: ${xhr.status}`);
+                }
+              };
+
+              xhr.onerror = () => {
+                reject("Image upload failed due to a network error.");
+              };
+
+              xhr.send(formData);
+            });
+          },
+
           file_picker_callback: function (callback, value, meta) {
             const input = document.createElement("input");
             input.setAttribute("type", "file");
@@ -31,7 +71,7 @@ const Editor = React.memo(
 
             input.click();
           },
-          file_picker_types: "image",
+
           plugins: [
             "image",
             "table",
