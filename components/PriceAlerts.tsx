@@ -97,7 +97,7 @@ export default function PriceAlerts() {
           toCountry: z.string().optional(),
           to: z.string().optional(),
           price: z.string().optional(),
-        })
+        }),
       ),
       email: z.string(),
       countryCode: z.string().optional(),
@@ -262,7 +262,9 @@ export default function PriceAlerts() {
                   Desired <i className="font-normal">routes</i>
                 </DialogTitle>
                 <DialogDescription className="text-center text-[18px]/[26px] max-w-[424px] mx-auto">
-                  Here, you can set your preferred price for the route you previously selected, and we'll notify you when it becomes available.
+                  Here, you can set your preferred price for the route you
+                  previously selected, and we&apos;ll notify you when it becomes
+                  available.
                 </DialogDescription>
                 <div className="flex-wrap text-[12px]/[18px] opacity-50 mt-[40px] mb-[4px] hidden sm:flex ">
                   <div className="ml-[26px] w-[240px]">FROM</div>
@@ -316,7 +318,7 @@ export default function PriceAlerts() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  )
+                                  ),
                                 )}
                               </CommandGroup>
                             )}
@@ -440,7 +442,7 @@ export default function PriceAlerts() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  )
+                                  ),
                                 )}
                               </CommandGroup>
                             )}
@@ -519,7 +521,8 @@ export default function PriceAlerts() {
                   >
                     Click here
                   </Link>
-                  to fill in the search bar and get matched with the right partner.
+                  to fill in the search bar and get matched with the right
+                  partner.
                 </DialogTitle>
               </div>
               <div className={step === 2 ? "" : "hidden"}>
