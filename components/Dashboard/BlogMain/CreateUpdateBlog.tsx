@@ -27,9 +27,10 @@ import {
 import { fileToBase64 } from "@/lib/utils";
 import { X } from "lucide-react";
 import { useToast } from "@/components/ui/use-toast";
-import { useParams, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import CategoryDialog from "./CategoryDialog";
 import { Blog } from "./types";
+import { formatToSlug } from "./utils";
 
 const formSchema = z.object({
   title: z.string().nonempty(),
@@ -91,6 +92,7 @@ const CreateUpdateBlog = ({
       ? `${process.env.NEXT_PUBLIC_BASE_URL}${post.mainImageUrl}`
       : null
   );
+  const [titleValue, setTitleValue] = useState("");
 
   const { toast } = useToast();
   const router = useRouter();
@@ -113,6 +115,10 @@ const CreateUpdateBlog = ({
   useEffect(() => {
     getBlogCategories();
   }, []);
+
+  useEffect(() => {
+    form.setValue("slug", formatToSlug(titleValue));
+  }, [titleValue]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     if (isUpdate && post) {
@@ -225,6 +231,10 @@ const CreateUpdateBlog = ({
                     className="bg-white border-0"
                     placeholder="Blog Title"
                     {...field}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      setTitleValue(e.target.value);
+                    }}
                   />
                 </FormControl>
                 <FormMessage />
