@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect } from "react";
 import { getRequest } from "@/lib/utils";
 import Link from "next/link";
@@ -10,7 +12,7 @@ interface IMenuItem {
   children?: IMenuItem[];
 }
 
-const DynamicMenu = () => {
+const DynamicMenu = ({ variant = "primary" }) => {
   const [menuData, setMenuData] = useState<null | IMenuItem[]>(null);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
@@ -28,8 +30,15 @@ const DynamicMenu = () => {
   }
 
   return (
-    <nav className="py-2 bg-[rgba(255,255,255,0.2)] text-white hidden sm:block w-full">
-      <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-10">
+    <nav
+      className={clsx(
+        "py-2 text-white hidden sm:block w-full relative z-50",
+        variant === "primary"
+          ? "bg-[rgba(255,255,255,0.2)]"
+          : "bg-primaryOrange"
+      )}
+    >
+      <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-10 relative">
         {menuData.map(({ title, href, children }) => {
           return (
             <div

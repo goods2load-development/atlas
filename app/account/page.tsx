@@ -110,7 +110,7 @@ export default function Account() {
   ];
   return (
     <>
-      <Header />
+      <Header variant="secondary" />
       <main className="flex min-h-screen flex-col py-5 sm:py-16 justify-between colored-main px-[16px] max-w-[1328px] mx-auto">
         <div className="md:flex justify-between mb-10 items-center">
           <i className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">

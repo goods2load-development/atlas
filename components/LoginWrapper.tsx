@@ -12,7 +12,7 @@ export default function LoginWrapper(props: LoginWrapperProps) {
   const { children } = props;
   return (
     <>
-      <Header />
+      <Header variant="secondary" />
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
         <div className="sm:flex">
           <div className="sm:w-6/12 p-[16px] sm:py-16">

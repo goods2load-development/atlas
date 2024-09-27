@@ -7,7 +7,7 @@ import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
 
 const Career: React.FC = () => {
   return (
-    <LoyaltAllWrapper>
+    <LoyaltAllWrapper headerVariant="secondary">
       <section className="max-w-[1440px] w-full justify-center items-center gap-[40px] py-[40px] sm:py-[104px] px-5 m-auto">
         <JoinOurTeam />
         <CareerForm />

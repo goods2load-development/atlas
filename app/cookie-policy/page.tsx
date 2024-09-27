@@ -6,7 +6,7 @@ import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
 
 export default function CookiePolicyPage() {
   return (
-    <LoyaltAllWrapper>
+    <LoyaltAllWrapper headerVariant="secondary">
       <LegacyPage {...cookiePolicyPageData} />
     </LoyaltAllWrapper>
   );
