@@ -117,7 +117,7 @@ const CreateUpdateBlog = ({
   }, []);
 
   useEffect(() => {
-    form.setValue("slug", formatToSlug(titleValue));
+    if (titleValue) form.setValue("slug", formatToSlug(titleValue));
   }, [titleValue]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
