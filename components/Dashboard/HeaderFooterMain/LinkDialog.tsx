@@ -17,13 +17,27 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { CirclePlus, Edit } from "lucide-react";
+import { routes } from "next-routes-list";
+import { filterRoutes } from "./utils";
+import Autocomplete from "@/components/ui/autocomplete";
 
-const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  href: z.string(),
-});
+const formSchema = z
+  .object({
+    title: z.string().min(1, "Title is required"),
+    innerLink: z.string().optional(),
+    outerLink: z.string().optional(),
+  })
+  .refine(
+    (data) =>
+      (data.innerLink && !data.outerLink) ||
+      (!data.innerLink && data.outerLink),
+    {
+      message: "Either inner link or outer link must be provided, but not both",
+      path: ["link"],
+    }
+  );
 
 const LinkDialog = ({
   type,
@@ -44,31 +58,50 @@ const LinkDialog = ({
   const isCreate = type === "create";
   const isEdit = type === "edit";
 
+  const allRoutes = useMemo(() => {
+    return filterRoutes(routes);
+  }, [routes]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     mode: "all",
     shouldUnregister: false,
     defaultValues: {
       title: isEdit && data ? data.title : "",
-      href: isEdit && data ? data.href : "",
+      innerLink:
+        isEdit && data && allRoutes.includes(data.href) ? data.href : undefined,
+      outerLink:
+        isEdit && data && !allRoutes.includes(data.href)
+          ? data.href
+          : undefined,
     },
   });
 
   const { handleSubmit, control } = form;
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
+    const formattedData = {
+      title: data.title,
+      href: (data.innerLink || data.outerLink) as string,
+    };
     if (isCreate && addNewItem) {
-      addNewItem(data);
+      addNewItem(formattedData);
     }
     if (isEdit && editItem) {
-      editItem(data);
+      editItem(formattedData);
     }
     setIsOpen(false);
   };
 
+  console.log({ errors: form.formState.errors, values: form.getValues() });
+
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent onCloseClick={() => setIsOpen(false)} className="p-8">
+      <DialogContent
+        isOverlay={false}
+        onCloseClick={() => setIsOpen(false)}
+        className="p-8"
+      >
         <DialogHeader>
           <DialogTitle className="text-center text-[40px]/[48px] mb-3 uppercase font-bold">
             {isCreate ? "Add new link" : "Edit link"}
@@ -93,22 +126,45 @@ const LinkDialog = ({
                   </FormItem>
                 )}
               />
+
               <FormField
                 control={control}
-                name="href"
+                name="innerLink"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2">
+                    <FormControl>
+                      <Autocomplete
+                        data={allRoutes}
+                        placeholder="Internal link"
+                        defaultValue={form.getValues("innerLink") || undefined}
+                        {...field}
+                        setOuterPick={(pick) =>
+                          form.setValue("innerLink", pick || undefined)
+                        }
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={control}
+                name="outerLink"
                 render={({ field }) => (
                   <FormItem className="flex items-center gap-2">
                     <FormControl>
                       <Input
                         className="bg-gray-2 border-0 !mt-0"
-                        placeholder="Link"
+                        placeholder="External link"
                         {...field}
                       />
                     </FormControl>
-                    <FormMessage />
                   </FormItem>
                 )}
               />
+              <FormMessage>
+                {(form.formState.errors as any)?.link?.message}
+              </FormMessage>
 
               <Button
                 onClick={(e) => e.stopPropagation()}

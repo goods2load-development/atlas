@@ -87,3 +87,9 @@ export const editItemByHref = (
     return item;
   });
 };
+
+export const filterRoutes = (routes: string[]) =>
+  routes.filter(
+    (route) =>
+      !route.includes("dashboard") && !route.includes("[") && route !== "/"
+  );
