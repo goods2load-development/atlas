@@ -114,7 +114,7 @@ const BlogPage: React.FC = ({ params }: any) => {
 
   return (
     <>
-      <Header />
+      <Header variant="secondary" />
       <div className="blog-page">
         {/* Header Section */}
         <HeaderImage

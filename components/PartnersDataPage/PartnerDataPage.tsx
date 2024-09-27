@@ -361,7 +361,7 @@ const PartnerDataPage = ({
   const content = () => (
     <>
       <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px]">
-        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] pb-[170px] realtive">
+        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] pb-[170px] realtive -z-10">
           {!isGet ? (
             <FormField
               control={form?.control}
