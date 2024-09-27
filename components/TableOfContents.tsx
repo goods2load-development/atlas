@@ -54,13 +54,13 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
           {headings.map((heading, index) => (
             <li
               key={heading.id}
-              className="flex items-center cursor-pointer"
+              className="flex items-start cursor-pointer"
               onClick={() => handleClick(heading.id, index)}
             >
               {activeIndex === index ? (
-                <span className="min-w-4 min-h-4 bg-orange-500 rounded-full mr-1"></span>
+                <span className="min-w-4 min-h-4 bg-orange-500 rounded-full mr-1 my-1"></span>
               ) : (
-                <span className="min-w-4 min-h-4 border-2 border-gray-400 rounded-full mr-1"></span>
+                <span className="min-w-4 min-h-4 border-2 border-gray-400 rounded-full mr-1 my-0.5"></span>
               )}
               <span
                 className={`max-w-full px-1  ${

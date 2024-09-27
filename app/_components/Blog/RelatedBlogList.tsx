@@ -10,7 +10,7 @@ interface IRelatedBlogsList {
 
 export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
   return (
-    <div className="grid grid-cols-1 items-center  md:grid-cols-3 gap-10 mt-8">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8">
       {blogs.map((blog) => {
         const blogImg = blog.mainImageUrl
           ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
