@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "generate-next-routes-list & next dev",
-    "build": "next build",
+    "build": "generate-next-routes-list & next build",
     "start": "generate-next-routes-list & next start",
     "lint": "next lint",
     "generate-next-routes-list": "generate-next-routes-list"
