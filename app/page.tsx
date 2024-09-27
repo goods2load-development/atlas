@@ -9,11 +9,12 @@ import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import TailoredServices from "@/components/TailoredServices";
 import Analytics from "@/components/Dashboard/Analytics";
 import ConsentPopup from "@/components/common/ConsentPopup";
+import DynamicMenu from "@/components/DynamicMenu";
 
 export default function Home() {
   return (
     <>
-      <Header>
+      <Header variant="primary">
         <div className="px-[16px] max-w-[1328px] mx-auto">
           <h1 className="pt-[32px] sm:pt-16 pb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1265px] text-center sm:text-left">
             Unlock countless <i className="font-normal">high-quality</i>{" "}
@@ -35,7 +36,7 @@ export default function Home() {
         <Analytics />
       </main>
       <Footer />
-        <ConsentPopup />
+      <ConsentPopup />
     </>
   );
 }

@@ -84,7 +84,7 @@ const BlogPage: React.FC = () => {
     <>
       <Header />
       <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white sm:mt-[-75px] pb-[104px] overflow-hidden">
-        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] sm:bg-hero-pattern bg-cover bg-bottom text-white sm:pb-[240px] md:pb-[230px] pb-[80px] h-[350px] sm:h-[540px] relative">
+        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] sm:bg-hero-pattern bg-cover bg-bottom text-white sm:pb-[240px] md:pb-[230px] pb-[80px] h-[350px] sm:h-[540px] relative -z-10">
           <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-8 sm:mb-2 sm:pt-[120px]">
             Blog
           </h1>

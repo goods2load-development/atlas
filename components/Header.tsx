@@ -14,7 +14,13 @@ import ErrorBoundary from "./ErrorBoundary";
 
 import DynamicMenu from "./DynamicMenu";
 
-export default function Header({ children }: PropsWithChildren) {
+export type HeaderVariant = "primary" | "secondary";
+
+interface HeaderProps extends PropsWithChildren {
+  variant?: HeaderVariant;
+}
+
+export default function Header({ children, variant = "primary" }: HeaderProps) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [open, setOpen] = useState(false);
 
@@ -28,9 +34,11 @@ export default function Header({ children }: PropsWithChildren) {
         !!children
           ? "bg-orangePrimary bg-bgMainPrimaryMobile sm:bg-bgMainPrimary pb-48 h-[640px] sm:h-auto"
           : "bg-orangePrimary"
-      } bg-cover bg-center text-white`}
+      } bg-cover bg-center text-white `}
     >
-      <header className={`min-h-[75px] mx-auto ${open && "bg-orangePrimary"}`}>
+      <header
+        className={`min-h-[75px] mx-auto ${open && "bg-orangePrimary"} bg-orangePrimary`}
+      >
         <div className="flex items-center justify-between px-4 max-w-[1328px] mx-auto">
           <Logo width={236} height={28} />
           <div
@@ -85,7 +93,7 @@ export default function Header({ children }: PropsWithChildren) {
           </NavigationMenu>
         </div>
         <div>
-          <DynamicMenu />
+          <DynamicMenu variant={variant} />
         </div>
       </header>
       {children}
