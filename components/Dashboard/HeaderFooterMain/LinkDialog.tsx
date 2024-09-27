@@ -93,8 +93,6 @@ const LinkDialog = ({
     setIsOpen(false);
   };
 
-  console.log({ errors: form.formState.errors, values: form.getValues() });
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent

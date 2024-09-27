@@ -88,6 +88,27 @@ export const editItemByHref = (
   });
 };
 
+export const replaceChildrenByHref = (
+  items: FooterItem[],
+  targetHref: string,
+  newChildren: FooterItem[]
+): FooterItem[] => {
+  const isHasHref = items.find((item) => item.href === targetHref);
+
+  if (isHasHref) return newChildren;
+
+  return items.map((link) => {
+    if (link?.children?.length) {
+      return {
+        ...link,
+        children: replaceChildrenByHref(link.children, targetHref, newChildren),
+      };
+    }
+
+    return link;
+  });
+};
+
 export const filterRoutes = (routes: string[]) =>
   routes.filter(
     (route) =>
