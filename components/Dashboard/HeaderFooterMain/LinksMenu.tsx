@@ -1,10 +1,5 @@
 "use client";
 
-import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
-import clsx from "clsx";
-import { useEffect, useMemo, useState } from "react";
-import { useFooterHeaderStore } from "@/lib/store";
 import { HeaderFooterData, FooterItem } from "./types";
 import {
   DndContext,
@@ -22,17 +17,15 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
-import { closestCorners, defaultDropAnimation } from "@dnd-kit/core";
-import { CirclePlus, GripVertical, Trash } from "lucide-react";
+import { closestCorners } from "@dnd-kit/core";
+import { GripVertical, Trash } from "lucide-react";
 import {
   addItemToChildrenByHref,
   deleteItemByHref,
   editItemByHref,
-  mapHrefs,
   replaceChildrenByHref,
 } from "./utils";
 import LinkDialog from "./LinkDialog";
-import { Button } from "@/components/ui/button";
 
 const LinksMenu = ({
   data,
@@ -41,12 +34,6 @@ const LinksMenu = ({
   data: HeaderFooterData;
   setData: React.Dispatch<React.SetStateAction<HeaderFooterData | null>>;
 }) => {
-  const items = useMemo(() => {
-    if (!data) return [];
-
-    return mapHrefs(data.json);
-  }, [data]);
-
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
