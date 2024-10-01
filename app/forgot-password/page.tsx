@@ -15,8 +15,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LoginWrapper from "@/components/LoginWrapper";
+import { toast, useToast } from "@/components/ui/use-toast";
 
 export default function Login() {
+  const { toast } = useToast();
+
   const formSchema = z.object({
     email: z.string().email(),
   });
@@ -31,7 +34,15 @@ export default function Login() {
     (state: any) => state
   );
   function onSubmit(values: z.infer<typeof formSchema>) {
-    postForgotPasswordData(values);
+    postForgotPasswordData(values).then(() =>
+      toast({
+        title: "Reset password",
+        description:
+          "We've sent you an email. Please check your Inbox to reset your password",
+        variant: "default",
+        className: "bg-green-500 text-white",
+      })
+    );
   }
   return (
     <LoginWrapper>
