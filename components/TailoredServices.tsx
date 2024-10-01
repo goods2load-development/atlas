@@ -30,8 +30,8 @@ export default function TailoredServices() {
   }, []);
 
   return (
-    <div
-      className="px-[16px] py-20 md:py-[104px] w-full mx-auto bg-bgReferralsMobile md:bg-bgReferrals md:[background-position:0_30px]
+    <section
+      className="px-4 py-20 md:py-[104px] w-full mx-auto bg-bgReferralsMobile md:bg-bgReferrals md:[background-position:0_30px]
      [background-position:0_250px] bg-no-repeat bg-contain 2xl:bg-cover"
     >
       <div className="max-w-[1328px] mx-auto">
@@ -94,6 +94,6 @@ export default function TailoredServices() {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
