@@ -805,3 +805,25 @@ export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
       .finally(() => set({ isHeaderLoading: false, isFooterLoading: false }));
   },
 }));
+
+export const useTemplatesStore = create((set) => ({
+  templatesData: null,
+  isTemplatesLoading: false,
+  getTemplates: (page = 1, take = 5, searchTerm = "") => {
+    set({ isTemplatesLoading: true });
+    return getRequest({
+      url: "seo-pages",
+      params: {
+        page,
+        take,
+        searchTerm: searchTerm ? searchTerm : null,
+      },
+    })
+      .then((templatesData) => {
+        set({ templatesData });
+      })
+      .finally(() => {
+        set({ isTemplatesLoading: false });
+      });
+  },
+}));

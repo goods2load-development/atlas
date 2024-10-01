@@ -129,6 +129,12 @@ const Sidebar: React.FC = () => {
               >
                 Header
               </Link>
+              <Link
+                href="/dashboard/template"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Templates
+              </Link>
             </>
           )}
         </div>
