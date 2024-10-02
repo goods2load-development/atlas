@@ -14,10 +14,15 @@ import UIButton from "@/components/common/Button";
 import CookiesImage from "@/assets/LegacyImages/cookies.png";
 import Image from "next/image";
 
+const LOCAL_STORAGE_KEY_COOKIES_AGREEMENT = "cookiesAgreement";
+
 const ConsentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    if (localStorage.getItem(LOCAL_STORAGE_KEY_COOKIES_AGREEMENT) === "true")
+      return;
+
     const timer = setTimeout(() => {
       setIsVisible(true);
     }, 2000); // Show popup after 2 seconds
@@ -28,6 +33,7 @@ const ConsentPopup = () => {
   const handleAcceptAll = () => {
     // Handle the accept all action
     setIsVisible(false);
+    localStorage.setItem("cookiesAgreement", "true");
   };
 
   const handleClose = () => {
