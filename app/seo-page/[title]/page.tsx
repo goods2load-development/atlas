@@ -26,7 +26,7 @@ export default async function SeoPage({
 
   return (
     <>
-      <SeoPageMain type="create" data={data} />
+      <SeoPageMain type="view" data={data} />
       <Footer />
     </>
   );

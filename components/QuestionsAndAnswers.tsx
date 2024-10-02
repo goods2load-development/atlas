@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import clsx from "clsx";
 
 function QuestionItem(props: any) {
   return (
@@ -26,8 +27,10 @@ function QuestionItem(props: any) {
 }
 
 export default function QuestionsAndAnswers({
+  isBackground = true,
   data,
 }: {
+  isBackground?: boolean;
   data: {
     title: string;
     number: string;
@@ -35,7 +38,12 @@ export default function QuestionsAndAnswers({
   }[];
 }) {
   return (
-    <section className="px-5 sm:px-16 sm:py-24 py-12 flex flex-col md:bg-bgQuestions bg-top bg-100% bg-no-repeat relative">
+    <section
+      className={clsx(
+        "px-5 sm:px-16 sm:py-24 py-12 flex flex-col bg-top bg-100% bg-no-repeat relative",
+        isBackground ? "md:bg-bgQuestions" : null
+      )}
+    >
       <img
         src="/faqmobile1.png"
         className="absolute left-0 bottom-0 md:hidden"
@@ -58,9 +66,7 @@ export default function QuestionsAndAnswers({
         collapsible
         className="max-w-[884px] w-full self-center"
       >
-        {data?.map((item) => (
-          <QuestionItem {...item} key={item.number} />
-        ))}
+        {data?.map((item) => <QuestionItem {...item} key={item.number} />)}
       </Accordion>
     </section>
   );

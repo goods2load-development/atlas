@@ -4,9 +4,14 @@ interface Block {
   video?: string;
 }
 
-interface DropdownItem {
+export interface DropdownItem {
   title: string;
   description: string;
+}
+
+interface Achievement {
+  label: string;
+  value: string;
 }
 
 export interface SeoPage {
@@ -17,7 +22,9 @@ export interface SeoPage {
   block1File: string;
   block2File: string;
   blocks: Block[];
+  achievements: Achievement[];
   dropdown: {
+    title: string;
     items: DropdownItem[];
   };
 }

@@ -17,6 +17,7 @@ import {
   FooterItem,
   HeaderFooterData,
 } from "@/components/Dashboard/HeaderFooterMain/types";
+import { url } from "inspector";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -825,5 +826,13 @@ export const useTemplatesStore = create((set) => ({
       .finally(() => {
         set({ isTemplatesLoading: false });
       });
+  },
+
+  onCreateTemplatePage: (data: any) => {
+    return postRequest({
+      url: "seo-pages",
+      data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
   },
 }));

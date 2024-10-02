@@ -26,6 +26,7 @@ const routes = {
     "/dashboard/header",
     "/dashboard/footer",
     "/dashboard/template",
+    "/dashboard/template/create",
   ],
 };
 
