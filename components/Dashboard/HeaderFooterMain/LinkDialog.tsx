@@ -17,10 +17,11 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { CirclePlus, Edit } from "lucide-react";
 import { routes } from "next-routes-list";
-import { filterRoutes } from "./utils";
+import { getAllRoutes } from "./utils";
+
 import Autocomplete from "@/components/ui/autocomplete";
 
 const formSchema = z
@@ -54,13 +55,17 @@ const LinkDialog = ({
   };
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [routes, setRoutes] = useState<string[]>([]);
 
   const isCreate = type === "create";
   const isEdit = type === "edit";
 
-  const allRoutes = useMemo(() => {
-    return filterRoutes(routes);
-  }, [routes]);
+  useEffect(() => {
+    (async () => {
+      const allRoutes = await getAllRoutes();
+      setRoutes(allRoutes);
+    })();
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -69,11 +74,9 @@ const LinkDialog = ({
     defaultValues: {
       title: isEdit && data ? data.title : "",
       innerLink:
-        isEdit && data && allRoutes.includes(data.href) ? data.href : undefined,
+        isEdit && data && routes.includes(data.href) ? data.href : undefined,
       outerLink:
-        isEdit && data && !allRoutes.includes(data.href)
-          ? data.href
-          : undefined,
+        isEdit && data && !routes.includes(data.href) ? data.href : undefined,
     },
   });
 
@@ -132,7 +135,7 @@ const LinkDialog = ({
                   <FormItem className="flex items-center gap-2">
                     <FormControl>
                       <Autocomplete
-                        data={allRoutes}
+                        data={routes}
                         placeholder="Internal link"
                         defaultValue={form.getValues("innerLink") || undefined}
                         {...field}

@@ -114,3 +114,30 @@ export const filterRoutes = (routes: string[]) =>
     (route) =>
       !route.includes("dashboard") && !route.includes("[") && route !== "/"
   );
+
+export async function getAllRoutes() {
+  try {
+    const response = await fetch(`/dynamic-sitemap-0.xml`);
+    const xmlText = await response.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+
+    const urlNodes = xmlDoc.getElementsByTagName("url");
+
+    const routes = Array.from(urlNodes)
+      .map((urlNode) => {
+        const loc = urlNode.getElementsByTagName("loc")[0]?.textContent;
+        if (loc) {
+          const url = new URL(loc);
+          return url.pathname;
+        }
+        return null;
+      })
+      .filter(Boolean) as string[];
+
+    return filterRoutes(routes);
+  } catch (error) {
+    console.error("Error fetching sitemap:", error);
+    return [];
+  }
+}
