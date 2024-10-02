@@ -14,18 +14,25 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import Pagination from "@/components/ui/pagination";
 import Link from "next/link";
+import { toast, useToast } from "@/components/ui/use-toast";
 
 const TAKE = 5;
 
 const PartnersMain = () => {
-  const { templatesData, isTemplatesLoading, getTemplates }: any =
-    useTemplatesStore((state) => state);
+  ``;
+  const {
+    templatesData,
+    isTemplatesLoading,
+    getTemplates,
+    onDeleteTemplatePage,
+  }: any = useTemplatesStore((state) => state);
 
   const pathname = usePathname();
   const { replace } = useRouter();
   const searchParams = useSearchParams();
 
   const page = Number(searchParams.get("page") || 1);
+  const { toast } = useToast();
 
   const { push } = useRouter();
   const [searchTerm, setSearchTerm] = useState("");
@@ -55,6 +62,17 @@ const PartnersMain = () => {
     }
 
     replace(`${pathname}?${params.toString()}`);
+  };
+
+  const onDeleteTemplate = (id: string) => {
+    onDeleteTemplatePage(id).then((data: any) => {
+      toast({
+        title: "Page deleted",
+        variant: "default",
+        className: "bg-green-500",
+      });
+      getTemplatesForPage(page, TAKE, searchTerm);
+    });
   };
 
   return (
@@ -114,7 +132,10 @@ const PartnersMain = () => {
                     <FileSymlink />
                   </button>
 
-                  <button onClick={() => {}} title="Delete">
+                  <button
+                    onClick={() => onDeleteTemplate(template.id)}
+                    title="Delete"
+                  >
                     <TrashIcon />
                   </button>
                 </div>
