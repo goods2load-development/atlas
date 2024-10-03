@@ -2,7 +2,14 @@ import React from "react";
 import { Editor as EditField } from "@tinymce/tinymce-react";
 
 const Editor = React.memo(
-  ({ onChange, ...rest }: { onChange: (val: string) => void }) => {
+  ({
+    onChange,
+    isMinimalize = false,
+    ...rest
+  }: {
+    onChange: (val: string) => void;
+    isMinimalize?: boolean;
+  }) => {
     return (
       <EditField
         apiKey="1zr97k784iih6tmou388pmbr9n1nd7v1n82l7afbc0nhkh3w"
@@ -99,7 +106,9 @@ const Editor = React.memo(
           ],
           font_family_formats:
             "Avenir Black=Avenir Black; Avenir Heavy=Avenir Heavy; Avenir Medium=Avenir Medium;",
-          menubar: "favs file edit view insert format tools table help",
+          menubar: isMinimalize
+            ? ""
+            : "favs file edit view insert format tools table help",
         }}
         onEditorChange={(v) => {
           onChange(v);

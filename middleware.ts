@@ -25,6 +25,8 @@ const routes = {
     "/dashboard/blog",
     "/dashboard/header",
     "/dashboard/footer",
+    "/dashboard/template",
+    "/dashboard/template/create",
   ],
 };
 

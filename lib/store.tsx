@@ -17,6 +17,7 @@ import {
   FooterItem,
   HeaderFooterData,
 } from "@/components/Dashboard/HeaderFooterMain/types";
+import { url } from "inspector";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -801,5 +802,62 @@ export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
         set({ headerData });
       })
       .finally(() => set({ isHeaderLoading: false, isFooterLoading: false }));
+  },
+}));
+
+interface TemplatesStore {
+  templatesData: TemplateResponse | null;
+  isTemplatesLoading: boolean;
+  getTemplates: (
+    page?: number,
+    take?: number,
+    searchTerm?: string
+  ) => Promise<void>;
+  onCreateTemplatePage: (data: FormData) => Promise<void>;
+  onEditTemplatePage: (id: string, data: FormData) => Promise<void>;
+  onDeleteTemplatePage: (id: string) => Promise<void>;
+}
+
+export const useTemplatesStore = create<TemplatesStore>((set) => ({
+  templatesData: null,
+  isTemplatesLoading: true,
+
+  getTemplates: async (page = 1, take = 5, searchTerm = "") => {
+    set({ isTemplatesLoading: true });
+    try {
+      const templatesData = await getRequest({
+        url: "seo-pages",
+        params: {
+          page,
+          take,
+          searchTerm: searchTerm || null,
+        },
+      });
+      set({ templatesData });
+    } finally {
+      set({ isTemplatesLoading: false });
+    }
+  },
+
+  onCreateTemplatePage: async (data: FormData) => {
+    return postRequest({
+      url: "seo-pages",
+      data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  onEditTemplatePage: async (id: string, data: FormData) => {
+    return putRequest({
+      url: `seo-pages/${id}`,
+      data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  onDeleteTemplatePage: (id: string) => {
+    return deleteRequest({
+      url: `seo-pages/${id}`,
+    });
   },
 }));
