@@ -274,8 +274,6 @@ export const useForgotPasswordStore = create((set) => ({
     postRequest({
       url: "auth/reset-password",
       data,
-    }).then((userData: any) => {
-      // TODO add redirect
     });
   },
 }));

@@ -1,6 +1,6 @@
 "use client";
 import React, { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useForgotPasswordStore } from "@/lib/store";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import LoginWrapper from "@/components/LoginWrapper";
+import { useToast } from "@/components/ui/use-toast";
 
 function ResetPasswordComponent() {
   const searchParams = useSearchParams();
@@ -38,16 +39,25 @@ function ResetPasswordComponent() {
       confirmPassword: "",
     },
   });
+  const router = useRouter();
+  const { toast } = useToast();
   const { postResetPasswordData } = useForgotPasswordStore(
     (state: any) => state
   );
   function onSubmit(values: z.infer<typeof formSchema>) {
     const data = {
       password: values.password,
-      id,
+      userId: id,
       token,
     };
-    postResetPasswordData(data);
+    postResetPasswordData(data).then(() => {
+      router.push("/sign-in");
+      toast({
+        description: "Password changed successfully",
+        variant: "default",
+        className: "bg-green-500 text-white",
+      });
+    });
   }
   return (
     <LoginWrapper>
