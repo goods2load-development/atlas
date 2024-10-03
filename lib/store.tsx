@@ -815,6 +815,7 @@ interface TemplatesStore {
   ) => Promise<void>;
   onCreateTemplatePage: (data: FormData) => Promise<void>;
   onEditTemplatePage: (id: string, data: FormData) => Promise<void>;
+  onDeleteTemplatePage: (id: string) => Promise<void>;
 }
 
 export const useTemplatesStore = create<TemplatesStore>((set) => ({
@@ -849,14 +850,6 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
   onEditTemplatePage: async (id: string, data: FormData) => {
     return putRequest({
       url: `seo-pages/${id}`,
-      data,
-      headers: { "Content-Type": "multipart/form-data" },
-    });
-  },
-
-  onCreateTemplatePage: (data: any) => {
-    return postRequest({
-      url: "seo-pages",
       data,
       headers: { "Content-Type": "multipart/form-data" },
     });
