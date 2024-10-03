@@ -853,4 +853,18 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
       headers: { "Content-Type": "multipart/form-data" },
     });
   },
+
+  onCreateTemplatePage: (data: any) => {
+    return postRequest({
+      url: "seo-pages",
+      data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  onDeleteTemplatePage: (id: string) => {
+    return deleteRequest({
+      url: `seo-pages/${id}`,
+    });
+  },
 }));
