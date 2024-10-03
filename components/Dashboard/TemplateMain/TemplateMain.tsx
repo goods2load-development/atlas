@@ -18,8 +18,9 @@ import Link from "next/link";
 const TAKE = 5;
 
 const PartnersMain = () => {
-  const { templatesData, isTemplatesLoading, getTemplates }: any =
-    useTemplatesStore((state) => state);
+  const { templatesData, isTemplatesLoading, getTemplates } = useTemplatesStore(
+    (state) => state
+  );
 
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -86,10 +87,10 @@ const PartnersMain = () => {
         <div className={clsx("flex flex-col gap-4")}>
           {!isTemplatesLoading && !templatesData?.data?.length && (
             <p className="font-bold text-red-600">
-              There is no any new partners at the moment.
+              There is no any new templates at the moment.
             </p>
           )}
-          {templatesData?.data?.map((template: any, i: number) => (
+          {templatesData?.data?.map((template, i: number) => (
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
                 <Link
@@ -109,7 +110,7 @@ const PartnersMain = () => {
                   </button>
                   <button
                     title="visit page"
-                    onClick={() => push(`/${template.title}`)}
+                    onClick={() => push(`/seo-page/${template.title}`)}
                   >
                     <FileSymlink />
                   </button>

@@ -7,15 +7,14 @@ import clsx from "clsx";
 import Fade from "embla-carousel-fade";
 import Autoplay from "embla-carousel-autoplay";
 import useEmblaCarousel from "embla-carousel-react";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { z } from "zod";
-import { CircleX, Plus, Trash, X } from "lucide-react";
+import { CircleX, Edit, Plus, X } from "lucide-react";
 
 import Header from "@/components/Header";
 import SearchMain from "@/components/SearchMain";
 import SubHeaderMain from "@/components/SubHeaderMain";
-import SliderMain from "@/components/SliderMain";
 import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import Analytics from "@/components/Dashboard/Analytics";
 import TailoredServices from "../TailoredServices";
@@ -31,10 +30,9 @@ import {
   FormLabel,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { fileToBase64 } from "@/lib/utils";
+import { fileToBase64, urlsToFileList } from "@/lib/utils";
 import Editor from "../ui/editor";
 import { Button } from "../ui/button";
-import { title } from "process";
 import { Textarea } from "../ui/textarea";
 import { useTemplatesStore } from "@/lib/store";
 import { useRouter } from "next/navigation";
@@ -108,44 +106,28 @@ export default function SeoPageMain({
   const router = useRouter();
 
   const [localDropdownItems, setLocalDropDownItems] = useState<DropdownItem[]>(
-    []
+    isEdit ? (data?.dropdown?.items as any) : []
   );
+  const [qaForm, setQAForm] = useState({
+    title: "",
+    description: "",
+  });
 
   const form = useForm<z.infer<typeof seoPageSchema>>({
     mode: "all",
-
     resolver: zodResolver(seoPageSchema),
+    ...(isEdit &&
+      data && {
+        defaultValues: {
+          title: data.title,
+          description: data.description,
+          category: data.category,
+          blocks: data.blocks,
+          achievements: data.achievements,
+          dropdown: data.dropdown,
+        },
+      }),
   });
-
-  console.log({
-    data,
-    values: form.getValues(),
-  });
-
-  const onCreateDropdownItem = () => {
-    const dropdownItems = form.getValues("dropdown.items");
-    const formValues = form.getValues();
-
-    const allFieldsFilled = dropdownItems?.every((item) => {
-      return item.title.trim() !== "" && item.description.trim() !== "";
-    });
-
-    if (allFieldsFilled) {
-      const newDropdownItem = {
-        title: dropdownItems![0].title,
-        description: dropdownItems![0].description,
-      };
-      setLocalDropDownItems((prev) => [...prev, newDropdownItem]);
-      form.setValue(`dropdown.items.${0}.title`, "");
-      form.setValue(`dropdown.items.${0}.description`, "");
-    }
-  };
-
-  const onDeleteLocalDropDown = (targetIdx: number) => {
-    setLocalDropDownItems((prev) =>
-      prev.filter((item, prevIdx) => targetIdx !== prevIdx)
-    );
-  };
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, slidesToScroll: "auto" },
@@ -161,14 +143,58 @@ export default function SeoPageMain({
 
   const isBelowSm = true;
 
-  const [editableItem, setEditableItem] = useState<string | null>(null);
-  const [dynamicValues, setDynamicValues] = useState({
-    // ach
-  });
-
   useEffect(() => {
     getAllReferrals();
   }, []);
+
+  useEffect(() => {
+    form.setValue("dropdown.items", localDropdownItems);
+  }, [form, localDropdownItems]);
+
+  useEffect(() => {
+    if (!isEdit || !data) return;
+    (async () => {
+      const urlsList = [data?.block1File, data?.block2File].map(
+        (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item}`
+      );
+      const [file1, file2] = await Promise.all(
+        urlsList.map(async (url) => await urlsToFileList([url]))
+      );
+
+      form?.setValue("block1File", file1);
+      form?.setValue("block2File", file2);
+
+      const listBase64 = await Promise.all(
+        Array.from([file1, file2]).map(async (files) => {
+          const base = await fileToBase64(files[0]);
+
+          return base;
+        })
+      );
+
+      setBlockImagesBase64List({
+        block1File: listBase64[0],
+        block2File: listBase64[1],
+      });
+    })();
+  }, [data, form, isEdit]);
+
+  const onCreateDropdownItem = () => {
+    const { title, description } = qaForm;
+    if (!title || !description) return;
+
+    setLocalDropDownItems((prev) => [...prev, qaForm]);
+    setQAForm({
+      title: "",
+      description: "",
+    });
+  };
+
+  const onDeleteLocalDropDown = (targetIdx: number) => {
+    setLocalDropDownItems((prev) =>
+      prev.filter((item, prevIdx) => targetIdx !== prevIdx)
+    );
+  };
 
   const handleUploadBlockImages = async (event: any, field: BlockFiles) => {
     const base = await fileToBase64(event.target.files[0]);
@@ -187,7 +213,7 @@ export default function SeoPageMain({
     setBlockImagesBase64List((prev: any) => ({ ...prev, [field]: null }));
   };
 
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: z.infer<typeof seoPageSchema>) => {
     const formData = new FormData();
 
     formData.append("title", data.title);
@@ -195,8 +221,8 @@ export default function SeoPageMain({
     formData.append("blocks", JSON.stringify(data.blocks));
     formData.append("achievements", JSON.stringify(data.achievements));
     formData.append("dropdown", JSON.stringify({ items: localDropdownItems }));
-    formData.append("block1File", data.block1File);
-    formData.append("block2File", data.block2File);
+    formData.append("block1File", data.block1File as any);
+    formData.append("block2File", data.block2File as any);
     formData.append("category", "Logistics"); // Need implement category
 
     onCreateTemplatePage(formData).then((data: any) => {
@@ -204,15 +230,11 @@ export default function SeoPageMain({
     });
   };
 
-  const onSubmitErrors = (errors: any) => {
-    console.log("ERRORS", errors);
-  };
-
   const content = () => (
     <>
       <Header>
         <div className="px-[16px] max-w-[1328px] mx-auto">
-          {isCreate && (
+          {!isView && (
             <div className="">
               <FormField
                 control={form?.control}
@@ -225,10 +247,6 @@ export default function SeoPageMain({
                         placeholder="Title"
                         autoFocus
                         {...field}
-                        onBlur={(e) => {
-                          field.onBlur();
-                          setEditableItem(null);
-                        }}
                       />
                     </FormControl>
                     <br />
@@ -248,10 +266,6 @@ export default function SeoPageMain({
                         placeholder="description"
                         autoFocus
                         {...field}
-                        onBlur={(e) => {
-                          field.onBlur();
-                          setEditableItem(null);
-                        }}
                       />
                     </FormControl>
                     <br />
@@ -271,77 +285,6 @@ export default function SeoPageMain({
               </p>
             </>
           )}
-          {/* {!isView && editableItem === "title" ? (
-            <FormField
-              control={form?.control}
-              name="title"
-              render={({ field }) => (
-                <FormItem className="mt-8 sm:mt-16">
-                  <FormControl>
-                    <Input
-                      className="text-black text-[38px]/[42px] sm:text-[64px]/[68px] font-light py-9"
-                      placeholder="Title"
-                      autoFocus
-                      {...field}
-                      onBlur={(e) => {
-                        field.onBlur();
-                        setEditableItem(null);
-                      }}
-                    />
-                  </FormControl>
-                  <br />
-                  <FormMessage className="text-white" />
-                </FormItem>
-              )}
-            />
-          ) : (
-            <h1
-              {...(!isView && {
-                onClick: () => setEditableItem("title"),
-              })}
-              aria-placeholder="Title..."
-              contentEditable
-              className="mt-8 sm:mt-16 mb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1265px] text-center sm:text-left"
-            >
-              {isView ? data?.title : form.getValues("title")}
-            </h1>
-          )}
-
-          {!isView && editableItem === "description" ? (
-            <FormField
-              control={form?.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      className="text-black"
-                      placeholder="Description"
-                      autoFocus
-                      {...field}
-                      onBlur={(e) => {
-                        field.onBlur();
-                        setEditableItem(null);
-                      }}
-                    />
-                  </FormControl>
-                  <br />
-                  <FormMessage className="text-white" />
-                </FormItem>
-              )}
-            />
-          ) : (
-            <p
-              {...(!isView && {
-                onClick: () => setEditableItem("description"),
-              })}
-              aria-placeholder="Description..."
-              contentEditable
-              className="font-light max-w-[916px] text-lg text-center block sm:text-left"
-            >
-              {isView ? data?.description : form.getValues("description")}
-            </p>
-          )} */}
         </div>
       </Header>
       <div className="mt-[-270px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
@@ -361,7 +304,7 @@ export default function SeoPageMain({
                   unoptimized
                 />
               )}
-              {isCreate && (
+              {!isView && (
                 <FormField
                   control={form?.control}
                   name="block1File"
@@ -413,7 +356,7 @@ export default function SeoPageMain({
                   )}
                 />
               )}
-              {isCreate && (
+              {!isView && (
                 <FormField
                   control={form?.control}
                   name={`blocks.${0}.video`}
@@ -446,7 +389,7 @@ export default function SeoPageMain({
                   </p>
                 </>
               )}
-              {isCreate && (
+              {!isView && (
                 <FormField
                   control={form?.control}
                   name={`blocks.${0}.title`}
@@ -464,7 +407,7 @@ export default function SeoPageMain({
                   )}
                 />
               )}
-              {isCreate && (
+              {!isView && (
                 <FormField
                   control={form?.control}
                   name={`blocks.${0}.description`}
@@ -497,7 +440,7 @@ export default function SeoPageMain({
                   </p>
                 </>
               )}
-              {isCreate && (
+              {!isView && (
                 <FormField
                   control={form?.control}
                   name={`blocks.${1}.title`}
@@ -515,7 +458,7 @@ export default function SeoPageMain({
                   )}
                 />
               )}
-              {isCreate && (
+              {!isView && (
                 <FormField
                   control={form?.control}
                   name={`blocks.${1}.description`}
@@ -541,7 +484,7 @@ export default function SeoPageMain({
                   unoptimized
                 />
               )}
-              {isCreate && (
+              {!isView && (
                 <FormField
                   control={form?.control}
                   name="block2File"
@@ -593,7 +536,7 @@ export default function SeoPageMain({
                   )}
                 />
               )}
-              {isCreate && (
+              {!isView && (
                 <FormField
                   control={form?.control}
                   name={`blocks.${1}.video`}
@@ -689,7 +632,10 @@ export default function SeoPageMain({
             {isView &&
               data?.achievements.map(({ label, value }) => {
                 return (
-                  <div className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0">
+                  <div
+                    key={label}
+                    className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0"
+                  >
                     <h3 className="text-[28px] text-orangePrimary mb-4">
                       {value}
                     </h3>
@@ -698,11 +644,14 @@ export default function SeoPageMain({
                 );
               })}
 
-            {isCreate &&
+            {!isView &&
               achievementsLabels.map((item: string, idx: number) => {
                 form?.setValue(`achievements.${idx}.label`, item);
                 return (
-                  <div className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0">
+                  <div
+                    key={item}
+                    className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0"
+                  >
                     <FormField
                       control={form?.control}
                       name={`achievements.${idx}.value`}
@@ -729,21 +678,8 @@ export default function SeoPageMain({
           </div>
         </div>
       </section>
-      {isView && (
-        <QuestionsAndAnswers
-          data={
-            data
-              ? data?.dropdown?.items?.map((item, i) => ({
-                  number: `${i < 9 ? "0" : ""}${i + 1}`,
-                  title: item.title,
-                  content: item.description,
-                }))
-              : []
-          }
-        />
-      )}
 
-      {isCreate && (
+      {!isView && (
         <>
           <div className="flex flex-col items-center my-8 max-w-[884px] mx-auto">
             <h3 className="text-[28px]/[34px] mb-8">
@@ -751,43 +687,34 @@ export default function SeoPageMain({
             </h3>
 
             <div className="w-full flex gap-10">
-              <FormField
-                control={form?.control}
-                name={`dropdown.items.${0}.title`}
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Input
-                        className="text-black text-[24px]/[28px] sm:text-[24px]/[28px] font-light py-4"
-                        placeholder="Question title"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+              <Input
+                value={qaForm.title}
+                onChange={(e) =>
+                  setQAForm({
+                    ...qaForm,
+                    title: e.target.value,
+                  })
+                }
+                className="text-black text-[24px]/[28px] sm:text-[24px]/[28px] font-light py-4"
+                placeholder="Question title"
               />
-              <FormField
-                control={form?.control}
-                name={`dropdown.items.${0}.description`}
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <Textarea
-                        className="text-black text-[24px]/[28px] sm:text-[24px]/[28px] font-light py-4 min-h-[100px]"
-                        placeholder="Answer description"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+
+              <Textarea
+                value={qaForm.description}
+                onChange={(e) =>
+                  setQAForm({
+                    ...qaForm,
+                    description: e.target.value,
+                  })
+                }
+                className="text-black text-[24px]/[28px] sm:text-[24px]/[28px] font-light py-4 min-h-[100px]"
+                placeholder="Answer description"
               />
             </div>
 
             <Button
               type="button"
-              onClick={() => onCreateDropdownItem()}
+              onClick={onCreateDropdownItem}
               className="mt-6"
             >
               Create new item <Plus />
@@ -815,25 +742,34 @@ export default function SeoPageMain({
               })}
           </div>
 
-          {localDropdownItems && (
-            <QuestionsAndAnswers
-              isBackground={false}
-              data={localDropdownItems.map((item, i) => ({
-                number: `${i < 9 ? "0" : ""}${i + 1}`,
-                title: item.title,
-                content: item.description,
-              }))}
-            />
-          )}
+          <QuestionsAndAnswers
+            data={(isView && data
+              ? data?.dropdown?.items
+              : localDropdownItems
+            ).map((item, i) => ({
+              number: `${i < 9 ? "0" : ""}${i + 1}`,
+              title: item.title,
+              content: item.description,
+            }))}
+          />
         </>
       )}
 
       <Analytics />
 
-      {isCreate && (
+      {!isView && (
         <div className="my-20 mx-auto max-w-[192px] rounded-lg bg-white py-8 px-6">
           <Button>
-            Create Page <Plus />
+            {isCreate && (
+              <>
+                Create Page <Plus />
+              </>
+            )}
+            {isEdit && (
+              <>
+                Edit Page <Edit />
+              </>
+            )}
           </Button>
         </div>
       )}
@@ -846,9 +782,7 @@ export default function SeoPageMain({
         content()
       ) : (
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit, onSubmitErrors)}>
-            {content()}
-          </form>
+          <form onSubmit={form.handleSubmit(onSubmit)}>{content()}</form>
         </FormProvider>
       )}
     </main>

@@ -807,28 +807,39 @@ export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
   },
 }));
 
-export const useTemplatesStore = create((set) => ({
+interface TemplatesStore {
+  templatesData: TemplateResponse | null;
+  isTemplatesLoading: boolean;
+  getTemplates: (
+    page?: number,
+    take?: number,
+    searchTerm?: string
+  ) => Promise<void>;
+  onCreateTemplatePage: (data: FormData) => Promise<void>;
+}
+
+export const useTemplatesStore = create<TemplatesStore>((set) => ({
   templatesData: null,
-  isTemplatesLoading: false,
-  getTemplates: (page = 1, take = 5, searchTerm = "") => {
+  isTemplatesLoading: true,
+
+  getTemplates: async (page = 1, take = 5, searchTerm = "") => {
     set({ isTemplatesLoading: true });
-    return getRequest({
-      url: "seo-pages",
-      params: {
-        page,
-        take,
-        searchTerm: searchTerm ? searchTerm : null,
-      },
-    })
-      .then((templatesData) => {
-        set({ templatesData });
-      })
-      .finally(() => {
-        set({ isTemplatesLoading: false });
+    try {
+      const templatesData = await getRequest({
+        url: "seo-pages",
+        params: {
+          page,
+          take,
+          searchTerm: searchTerm || null,
+        },
       });
+      set({ templatesData });
+    } finally {
+      set({ isTemplatesLoading: false });
+    }
   },
 
-  onCreateTemplatePage: (data: any) => {
+  onCreateTemplatePage: async (data: FormData) => {
     return postRequest({
       url: "seo-pages",
       data,

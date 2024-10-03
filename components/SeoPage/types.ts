@@ -7,6 +7,7 @@ interface Block {
 export interface DropdownItem {
   title: string;
   description: string;
+  number?: string;
 }
 
 interface Achievement {
