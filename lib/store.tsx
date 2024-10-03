@@ -816,6 +816,7 @@ interface TemplatesStore {
     searchTerm?: string
   ) => Promise<void>;
   onCreateTemplatePage: (data: FormData) => Promise<void>;
+  onEditTemplatePage: (id: string, data: FormData) => Promise<void>;
 }
 
 export const useTemplatesStore = create<TemplatesStore>((set) => ({
@@ -842,6 +843,14 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
   onCreateTemplatePage: async (data: FormData) => {
     return postRequest({
       url: "seo-pages",
+      data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  onEditTemplatePage: async (id: string, data: FormData) => {
+    return putRequest({
+      url: `seo-pages/${id}`,
       data,
       headers: { "Content-Type": "multipart/form-data" },
     });

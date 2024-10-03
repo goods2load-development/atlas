@@ -64,7 +64,7 @@ const seoPageSchema = z.object({
     z.object({
       title: z.string(),
       description: z.string(),
-      video: z.string().url().optional(),
+      video: z.string().optional(),
     })
   ),
   achievements: z.array(
@@ -92,7 +92,7 @@ export default function SeoPageMain({
   type: "view" | "edit" | "create";
   data?: SeoPage;
 }) {
-  const { onCreateTemplatePage }: any = useTemplatesStore();
+  const { onCreateTemplatePage, onEditTemplatePage }: any = useTemplatesStore();
 
   const isView = type === "view";
   const isEdit = type === "edit";
@@ -128,6 +128,10 @@ export default function SeoPageMain({
         },
       }),
   });
+
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, slidesToScroll: "auto" },
@@ -208,26 +212,58 @@ export default function SeoPageMain({
     });
   };
 
+  function convertYouTubeUrl(url: string) {
+    const shortUrlPattern = /youtu\.be\/([a-zA-Z0-9_-]+)/;
+    const longUrlPattern = /youtube\.com\/.*v=([a-zA-Z0-9_-]+)/;
+
+    let videoId;
+
+    const shortUrlMatch = url.match(shortUrlPattern);
+    if (shortUrlMatch) {
+      videoId = shortUrlMatch[1];
+    }
+
+    const longUrlMatch = url.match(longUrlPattern);
+    if (longUrlMatch) {
+      videoId = longUrlMatch[1];
+    }
+
+    if (videoId) {
+      return `https://www.youtube.com/embed/${videoId}`;
+    } else {
+      return url;
+    }
+  }
+
   const handleDeleteBlockImages = (field: BlockFiles) => {
     form?.setValue(field, undefined);
     setBlockImagesBase64List((prev: any) => ({ ...prev, [field]: null }));
   };
 
-  const onSubmit = (data: z.infer<typeof seoPageSchema>) => {
+  const onSubmit = (updatesData: z.infer<typeof seoPageSchema>) => {
     const formData = new FormData();
 
-    formData.append("title", data.title);
-    formData.append("description", data.description);
-    formData.append("blocks", JSON.stringify(data.blocks));
-    formData.append("achievements", JSON.stringify(data.achievements));
+    formData.append("title", updatesData.title);
+    formData.append("description", updatesData.description);
+    formData.append("blocks", JSON.stringify(updatesData.blocks));
+    formData.append("achievements", JSON.stringify(updatesData.achievements));
     formData.append("dropdown", JSON.stringify({ items: localDropdownItems }));
-    formData.append("block1File", data.block1File as any);
-    formData.append("block2File", data.block2File as any);
+    formData.append("block1File", updatesData.block1File as any);
+    formData.append("block2File", updatesData.block2File as any);
     formData.append("category", "Logistics"); // Need implement category
 
-    onCreateTemplatePage(formData).then((data: any) => {
-      router.push(`/seo-page/${data.title}`);
-    });
+    if (isCreate) {
+      onCreateTemplatePage(formData).then((data: any) => {
+        router.push(`/seo-page/${data.title}`);
+      });
+    }
+
+    if (isEdit) {
+      onEditTemplatePage(data?.id, formData).then((data: any) => {
+        console.log(data);
+        router.push(`/seo-page/${data.title}`);
+      });
+    }
   };
 
   const content = () => (
@@ -262,7 +298,7 @@ export default function SeoPageMain({
                   <FormItem className="mt-4 sm:mt-16">
                     <FormControl>
                       <Input
-                        className="text-[24px]/[28px] sm:text-[24px]/[28px] font-light py-6 bg-transparent border-transparent text-white placeholder:text-white"
+                        className="text-[24px]/[28px] sm:text-[24px]/[28px] max-w-[916px] font-light py-6 bg-transparent border-transparent text-white placeholder:text-white"
                         placeholder="description"
                         autoFocus
                         {...field}
@@ -294,16 +330,27 @@ export default function SeoPageMain({
         <div className="max-w-[1328px] mx-auto px-4">
           <div className="flex max-md:justify-center max-md:flex-wrap md:gap-14 gap-8">
             <div className="md:basis-1/2 max-md:order-1">
-              {isView && (
-                <Image
-                  className="w-full"
-                  width={100}
-                  height={100}
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${data?.block1File}`}
-                  alt="block"
-                  unoptimized
-                />
-              )}
+              {isView &&
+                (data?.blocks[0]?.video ? (
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={convertYouTubeUrl(data?.blocks[0]?.video)}
+                    title="YouTube video player"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <Image
+                    className="w-full"
+                    width={100}
+                    height={100}
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${data?.block1File}`}
+                    alt="block"
+                    unoptimized
+                  />
+                ))}
               {!isView && (
                 <FormField
                   control={form?.control}
@@ -384,9 +431,12 @@ export default function SeoPageMain({
                   <h3 className="font-medium text-[28px]/[33.6px] mb-4">
                     {data?.blocks[0].title}
                   </h3>
-                  <p className="text-[18px]/[26px]">
-                    {data?.blocks[0].description}
-                  </p>
+                  <div
+                    className="text-[18px]/[26px]"
+                    dangerouslySetInnerHTML={{
+                      __html: data?.blocks[0].description || "",
+                    }}
+                  ></div>
                 </>
               )}
               {!isView && (
@@ -435,9 +485,12 @@ export default function SeoPageMain({
                   <h3 className="font-medium text-[28px]/[33.6px] mb-4">
                     {data?.blocks[0].title}
                   </h3>
-                  <p className="text-[18px]/[26px]">
-                    {data?.blocks[0].description}
-                  </p>
+                  <div
+                    className="text-[18px]/[26px]"
+                    dangerouslySetInnerHTML={{
+                      __html: data?.blocks[1].description || "",
+                    }}
+                  ></div>
                 </>
               )}
               {!isView && (
@@ -474,16 +527,28 @@ export default function SeoPageMain({
               )}
             </div>
             <div className="md:basis-1/2">
-              {isView && (
-                <Image
-                  className="w-full"
-                  width={100}
-                  height={100}
-                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${data?.block2File}`}
-                  alt="block"
-                  unoptimized
-                />
-              )}
+              {isView &&
+                (data?.blocks[1]?.video ? (
+                  <iframe
+                    width="560"
+                    height="315"
+                    src={convertYouTubeUrl(data?.blocks[1]?.video)}
+                    title="YouTube video player"
+                    frameBorder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerPolicy="strict-origin-when-cross-origin"
+                    allowFullScreen
+                  ></iframe>
+                ) : (
+                  <Image
+                    className="w-full"
+                    width={100}
+                    height={100}
+                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${data?.block2File}`}
+                    alt="block"
+                    unoptimized
+                  />
+                ))}
               {!isView && (
                 <FormField
                   control={form?.control}
@@ -741,19 +806,19 @@ export default function SeoPageMain({
                 );
               })}
           </div>
-
-          <QuestionsAndAnswers
-            data={(isView && data
-              ? data?.dropdown?.items
-              : localDropdownItems
-            ).map((item, i) => ({
-              number: `${i < 9 ? "0" : ""}${i + 1}`,
-              title: item.title,
-              content: item.description,
-            }))}
-          />
         </>
       )}
+
+      <QuestionsAndAnswers
+        isBackground={isView}
+        data={(isView && data ? data?.dropdown?.items : localDropdownItems).map(
+          (item, i) => ({
+            number: `${i < 9 ? "0" : ""}${i + 1}`,
+            title: item.title,
+            content: item.description,
+          })
+        )}
+      />
 
       <Analytics />
 
