@@ -10,7 +10,11 @@ import { ReferralItemType } from "./Dashboard/ReferralMain/types";
 import Link from "next/link";
 import useBreakpoint from "@/app/hooks/useBreakpoint";
 
-export default function TailoredServices() {
+export default function TailoredServices({
+  className = "",
+  isTitle = true,
+  isDots = true,
+}) {
   const [emblaRef, emblaApi] = useEmblaCarousel(
     { loop: true, slidesToScroll: "auto" },
     [Autoplay({ playOnInit: true, delay: 5000 }), Fade()]
@@ -31,20 +35,26 @@ export default function TailoredServices() {
 
   return (
     <section
-      className="px-4 py-20 md:py-[104px] w-full mx-auto bg-bgReferralsMobile md:bg-bgReferrals md:[background-position:0_30px]
-     [background-position:0_250px] bg-no-repeat bg-contain 2xl:bg-cover"
+      className={clsx(
+        "px-4 w-full mx-auto bg-bgReferralsMobile md:bg-bgReferrals md:[background-position:0_30px] [background-position:0_250px] bg-no-repeat bg-contain 2xl:bg-cover",
+        className
+      )}
     >
       <div className="max-w-[1328px] mx-auto">
-        <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
-          <i className="bg-allTittleColor px-2 rounded-md">
-            Empower Your Business
-          </i>{" "}
-          with <span className="font-light">Tailored Services</span>
-        </h2>
-        <p className="max-w-[344px] text-center md:text-left font-light text-lg mb-8 md:mb-10 mx-auto md:mx-0">
-          Unlock Your Business&apos;s Full Potential with Our Customized
-          Solutions
-        </p>
+        {isTitle && (
+          <>
+            <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
+              <i className="bg-allTittleColor px-2 rounded-md">
+                Empower Your Business
+              </i>{" "}
+              with <span className="font-light">Tailored Services</span>
+            </h2>
+            <p className="max-w-[344px] text-center md:text-left font-light text-lg mb-8 md:mb-10 mx-auto md:mx-0">
+              Unlock Your Business&apos;s Full Potential with Our Customized
+              Solutions
+            </p>
+          </>
+        )}
 
         <div className="min-h-[360px] mx-auto overflow-hidden" ref={emblaRef}>
           <div className="flex">
@@ -77,21 +87,23 @@ export default function TailoredServices() {
               </div>
             ))}
           </div>
-          <div className="flex flex-col mt-8">
-            <div className="embla__dots self-center">
-              {scrollSnaps.map((_, index) => (
-                <button
-                  key={index}
-                  onClick={() => onDotButtonClick(index)}
-                  className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
-                    index === selectedIndex
-                      ? " bg-orangePrimary"
-                      : " bg-transparent"
-                  )}
-                />
-              ))}
+          {isDots && (
+            <div className="flex flex-col mt-8">
+              <div className="embla__dots self-center">
+                {scrollSnaps.map((_, index) => (
+                  <button
+                    key={index}
+                    onClick={() => onDotButtonClick(index)}
+                    className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
+                      index === selectedIndex
+                        ? " bg-orangePrimary"
+                        : " bg-transparent"
+                    )}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

@@ -19,7 +19,7 @@ import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import Analytics from "@/components/Dashboard/Analytics";
 import TailoredServices from "../TailoredServices";
 
-import { DropdownItem, SeoPage } from "./types";
+import { DropdownItem, SeoPage, SeoPageCategory } from "./types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import {
@@ -30,12 +30,20 @@ import {
   FormLabel,
 } from "../ui/form";
 import { Input } from "../ui/input";
-import { fileToBase64, urlsToFileList } from "@/lib/utils";
+import { fileToBase64, getRequest, urlsToFileList } from "@/lib/utils";
 import Editor from "../ui/editor";
 import { Button } from "../ui/button";
 import { Textarea } from "../ui/textarea";
 import { useTemplatesStore } from "@/lib/store";
 import { useRouter } from "next/navigation";
+import PartnersOurPartners from "@/app/_components/Partners/PartnersOurPartners/PartnersOurPartners";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -47,19 +55,17 @@ const achievementsLabels: string[] = [
 ];
 
 const seoPageSchema = z.object({
-  category: z.string().optional(),
-  description: z.string(),
-  title: z.string(),
+  category: z.string(),
+  description: z.string().min(3, "At least 3 symbols"),
+  title: z.string().min(3, "At least 3 symbols"),
   block1File: z
     .unknown()
     .transform((value) => value as FileList | undefined)
-    .refine((files) => true, "You need to provide a file")
-    .optional(),
+    .refine((files) => true, "You need to provide a file"),
   block2File: z
     .unknown()
     .transform((value) => value as FileList | undefined)
-    .refine((files) => true, "You need to provide a file")
-    .optional(),
+    .refine((files) => true, "You need to provide a file"),
   blocks: z.array(
     z.object({
       title: z.string(),
@@ -92,7 +98,15 @@ export default function SeoPageMain({
   type: "view" | "edit" | "create";
   data?: SeoPage;
 }) {
-  const { onCreateTemplatePage, onEditTemplatePage }: any = useTemplatesStore();
+  const {
+    categories,
+    onCreateTemplatePage,
+    onEditTemplatePage,
+    getTemplateCategories,
+  }: any = useTemplatesStore();
+  const [relatedPages, setRelatedPages] = useState<SeoPage[] | undefined>(
+    undefined
+  );
 
   const isView = type === "view";
   const isEdit = type === "edit";
@@ -121,7 +135,7 @@ export default function SeoPageMain({
         defaultValues: {
           title: data.title,
           description: data.description,
-          category: data.category,
+          category: data.category.id,
           blocks: data.blocks,
           achievements: data.achievements,
           dropdown: data.dropdown,
@@ -129,8 +143,20 @@ export default function SeoPageMain({
       }),
   });
 
+  const getRelatedPages = () => {
+    return getRequest({
+      url: "seo-pages",
+      params: {
+        excludeId: data?.id || undefined,
+        category: data?.category.id || undefined,
+      },
+    });
+  };
+
   useEffect(() => {
-    console.log(data);
+    if (isView) {
+      getRelatedPages().then((data) => setRelatedPages(data?.data));
+    }
   }, [data]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -149,6 +175,7 @@ export default function SeoPageMain({
 
   useEffect(() => {
     getAllReferrals();
+    getTemplateCategories();
   }, []);
 
   useEffect(() => {
@@ -250,7 +277,7 @@ export default function SeoPageMain({
     formData.append("dropdown", JSON.stringify({ items: localDropdownItems }));
     formData.append("block1File", updatesData.block1File as any);
     formData.append("block2File", updatesData.block2File as any);
-    formData.append("category", "Logistics"); // Need implement category
+    formData.append("categoryId", updatesData.category);
 
     if (isCreate) {
       onCreateTemplatePage(formData).then((data: any) => {
@@ -277,16 +304,19 @@ export default function SeoPageMain({
                 name="title"
                 render={({ field }) => (
                   <FormItem className="mt-4 sm:mt-16">
+                    <FormLabel className="twxt-white text-[26px]/[30px] mt-6 mb-2">
+                      Title
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        className="text-[38px]/[42px] sm:text-[34px]/[38px] font-light py-9 bg-transparent border-transparent  text-white placeholder:text-white"
+                        className="text-[30px]/[36px] sm:text-[24px]/[28px] font-light py-9 bg-transparent border-transparent  text-black placeholder:text-gray-500 bg-white max-w-[400px]"
                         placeholder="Title"
                         autoFocus
                         {...field}
                       />
                     </FormControl>
                     <br />
-                    <FormMessage className="text-red-500" />
+                    <FormMessage className="text-white" />
                   </FormItem>
                 )}
               />
@@ -295,17 +325,49 @@ export default function SeoPageMain({
                 control={form?.control}
                 name="description"
                 render={({ field }) => (
-                  <FormItem className="mt-4 sm:mt-16">
+                  <FormItem className="mt-4 sm:mt-10">
+                    <FormLabel className="twxt-white text-[26px]/[30px] mt-6 mb-2">
+                      Description
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        className="text-[24px]/[28px] sm:text-[24px]/[28px] max-w-[916px] font-light py-6 bg-transparent border-transparent text-white placeholder:text-white"
+                        className="text-[30px]/[36px] sm:text-[24px]/[28px] font-light py-9 bg-transparent border-transparent  text-black placeholder:text-gray-500 bg-white max-w-[650px]"
                         placeholder="description"
                         autoFocus
                         {...field}
                       />
                     </FormControl>
                     <br />
-                    <FormMessage className="text-red-500" />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="category"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="twxt-white text-[26px]/[30px] mt-6 mb-2">
+                      Category
+                    </FormLabel>
+                    <Select value={field.value} onValueChange={field.onChange}>
+                      <FormControl className="max-w-[526px] w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
+                        <SelectTrigger>
+                          <SelectValue placeholder="Category" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        {categories?.map((item: SeoPageCategory) => {
+                          return (
+                            <SelectItem key={item.id} value={item.id}>
+                              {item.name}
+                            </SelectItem>
+                          );
+                        })}
+                      </SelectContent>
+                    </Select>
+
+                    <FormMessage className="text-white" />
                   </FormItem>
                 )}
               />
@@ -626,68 +688,84 @@ export default function SeoPageMain({
           </div>
         </div>
       </section>
-      <section
-        className="px-4 py-20 md:py-[104px] w-full mx-auto bg-bgReferralsMobile md:bg-bgReferrals md:[background-position:0_30px]
-     [background-position:0_250px] bg-no-repeat bg-contain 2xl:bg-cover"
-      >
-        <div className="max-w-[1328px] mx-auto">
-          <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
-            <i className="bg-allTittleColor px-2 rounded-md">
-              Empower Your Business
-            </i>{" "}
-            with <span className="font-light">Tailored Services</span>
-          </h2>
-          <p className="max-w-[344px] text-center md:text-left font-light text-lg mb-8 md:mb-10 mx-auto md:mx-0">
-            Unlock Your Business&apos;s Full Potential with Our Customized
-            Solutions
-          </p>
-
-          <div className="min-h-[360px] mx-auto overflow-hidden" ref={emblaRef}>
-            <div className="flex">
-              {referrals.map((referral: any, index: number) => (
-                <div
-                  className={clsx(
-                    "min-h-[360px] min-w-0 md:pr-10 flex-[0_0_33.3333%]"
-                  )}
-                  key={index}
-                >
-                  <div
-                    style={{
-                      backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${slicePerReferals === 3 || isBelowSm ? referral.smallBanner : referral.bigBanner})`,
-                      backgroundSize: "cover",
-                      backgroundPosition: "center",
-                      backgroundRepeat: "no-repeat",
-                    }}
-                    className="h-full rounded-2xl overflow-hidden relative"
-                  >
-                    <Link
-                      target="_blank"
-                      className="absolute inset-0"
-                      href={referral.url}
-                    />
-                  </div>
-                </div>
-              ))}
+      {!!relatedPages?.length && (
+        <section className="px-4 md:py-[104px] w-full mx-auto">
+          <div className="max-w-[1328px] mx-auto">
+            <div className="px-1 bg-[#FEF1DF] inline-block rounded-lg mb-4">
+              <h2 className="text-black text-[30px] sm:text-[40px] text-center md:text-left">
+                {data?.category.name}
+              </h2>
             </div>
-            <div className="flex flex-col mt-8">
-              <div className="embla__dots self-center">
-                {scrollSnaps.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => onDotButtonClick(index)}
-                    className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
-                      index === selectedIndex
-                        ? " bg-orangePrimary"
-                        : " bg-transparent"
-                    )}
-                  />
+
+            <p className="mb-10">{data?.description}</p>
+
+            <div
+              className="min-h-[360px] mx-auto overflow-hidden"
+              ref={emblaRef}
+            >
+              <div className="flex gap-10">
+                {relatedPages?.map((page: SeoPage, index: number) => (
+                  <div
+                    key={page.id}
+                    className="bg-white rounded-lg max-w-[405px] overflow-hidden flex flex-col justify-between"
+                  >
+                    <div className="relative">
+                      <img
+                        className="w-full h-[285px] object-cover rounded-lg"
+                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
+                        alt={page.blocks[0].title}
+                      />
+                    </div>
+                    <div className="p-4 flex flex-col h-full justify-between">
+                      <div>
+                        <h3 className="text-xl font-bold mb-2">
+                          <Link
+                            href={{
+                              pathname: `/seo-page/${page.title}`,
+                            }}
+                          >
+                            {page.title}
+                          </Link>
+                        </h3>
+                        <p className="text-gray-600 mb-4 max-h-40 line-clamp-3">
+                          {page.description}
+                        </p>
+                      </div>
+
+                      <Link
+                        href={{
+                          pathname: `/seo-page/${page.title}`,
+                        }}
+                        className="text-orange-500 hover:underline mt-4 inline-block self-start"
+                      >
+                        Know more →
+                      </Link>
+                    </div>
+                  </div>
                 ))}
+              </div>
+              <div className="flex flex-col mt-8">
+                <div className="embla__dots self-center">
+                  {scrollSnaps.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => onDotButtonClick(index)}
+                      className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
+                        index === selectedIndex
+                          ? " bg-orangePrimary"
+                          : " bg-transparent"
+                      )}
+                    />
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-      {isView && <TailoredServices />}
+        </section>
+      )}
+      {isView && (
+        <TailoredServices className="mb-20" isTitle={false} isDots={false} />
+      )}
       <section className="bg-allTittleColor py-12 md:py-[56px]">
         <div className="max-w-[1328px] mx-auto px-4">
           <h2 className="text-black text-[30px] sm:text-[40px] mb-10 text-center md:text-left">
@@ -838,6 +916,8 @@ export default function SeoPageMain({
           </Button>
         </div>
       )}
+
+      {isView && <PartnersOurPartners className="pb-[104px]" />}
     </>
   );
 

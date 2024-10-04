@@ -15,10 +15,15 @@ interface Achievement {
   value: string;
 }
 
+export interface SeoPageCategory {
+  id: string;
+  name: string;
+}
+
 export interface SeoPage {
   id: string;
   title: string;
-  category: string;
+  category: SeoPageCategory;
   description: string;
   block1File: string;
   block2File: string;

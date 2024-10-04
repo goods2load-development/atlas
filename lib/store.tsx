@@ -18,6 +18,7 @@ import {
   HeaderFooterData,
 } from "@/components/Dashboard/HeaderFooterMain/types";
 import { url } from "inspector";
+import { SeoPageCategory } from "@/components/SeoPage/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -807,20 +808,28 @@ export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
 
 interface TemplatesStore {
   templatesData: TemplateResponse | null;
+  categories: SeoPageCategory[] | null;
   isTemplatesLoading: boolean;
+  isTemplateCategoriesLoading: boolean;
   getTemplates: (
     page?: number,
     take?: number,
     searchTerm?: string
   ) => Promise<void>;
+  getTemplateCategories: () => Promise<void>;
   onCreateTemplatePage: (data: FormData) => Promise<void>;
   onEditTemplatePage: (id: string, data: FormData) => Promise<void>;
   onDeleteTemplatePage: (id: string) => Promise<void>;
+  createTemplateCategory: (data: { name: string }) => Promise<void>;
+  updateTemplateCategory: (data: SeoPageCategory) => Promise<void>;
+  deleteTemplateCategory: (id: string) => Promise<void>;
 }
 
 export const useTemplatesStore = create<TemplatesStore>((set) => ({
   templatesData: null,
+  categories: null,
   isTemplatesLoading: true,
+  isTemplateCategoriesLoading: false,
 
   getTemplates: async (page = 1, take = 5, searchTerm = "") => {
     set({ isTemplatesLoading: true });
@@ -840,6 +849,7 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
   },
 
   onCreateTemplatePage: async (data: FormData) => {
+    set({ isTemplatesLoading: true });
     return postRequest({
       url: "seo-pages",
       data,
@@ -858,6 +868,39 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
   onDeleteTemplatePage: (id: string) => {
     return deleteRequest({
       url: `seo-pages/${id}`,
+    });
+  },
+
+  getTemplateCategories: async () => {
+    set({ isTemplateCategoriesLoading: true });
+    return getRequest({
+      url: "seo-pages/categories",
+    })
+      .then((data) => {
+        set({ categories: data });
+      })
+      .finally(() => {
+        set({ isTemplateCategoriesLoading: false });
+      });
+  },
+
+  createTemplateCategory: async (data) => {
+    return postRequest({
+      url: "seo-pages/categories",
+      data,
+    });
+  },
+
+  updateTemplateCategory: async (data) => {
+    return patchRequest({
+      url: `seo-pages/categories/${data.id}`,
+      data,
+    });
+  },
+
+  deleteTemplateCategory: async (id: string) => {
+    return deleteRequest({
+      url: `seo-pages/categories/${id}`,
     });
   },
 }));
