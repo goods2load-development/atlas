@@ -109,8 +109,8 @@ const TemplateCategoryDialog = ({
               />
 
               <Button
-                onClick={(e) => e.stopPropagation()}
-                type="submit"
+                onClick={handleSubmit(onSubmit)}
+                type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
                 Continue
