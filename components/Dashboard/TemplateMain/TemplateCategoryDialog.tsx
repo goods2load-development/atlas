@@ -17,7 +17,7 @@ import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { useTemplatesStore } from "@/lib/store";
 import { Edit } from "lucide-react";
@@ -29,9 +29,11 @@ const formSchema = z.object({
 const TemplateCategoryDialog = ({
   type,
   category,
+  children,
 }: {
   type: "create" | "update";
   category?: any;
+  children?: ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const isCreate = type === "create";
@@ -119,7 +121,11 @@ const TemplateCategoryDialog = ({
       </DialogContent>
       <DialogTrigger asChild>
         {isCreate ? (
-          <Button>Add new category</Button>
+          children ? (
+            children
+          ) : (
+            <Button>Add new category</Button>
+          )
         ) : (
           <button title="update">
             <Edit />
