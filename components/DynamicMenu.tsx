@@ -12,10 +12,101 @@ interface IMenuItem {
   children?: IMenuItem[];
 }
 
-const DynamicMenu = ({ variant = "primary" }) => {
-  const [menuData, setMenuData] = useState<null | IMenuItem[]>(null);
+const MenuItems = ({
+  items,
+  depth = 1,
+}: {
+  items: IMenuItem[];
+  depth?: number;
+}) => {
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [openSubDropdown, setOpenSubDropdown] = useState<string | null>(null);
+  return items.map(({ title, href, children }) => {
+    const isDropdownOpen = openDropdown === title;
+
+    return (
+      <div
+        key={title}
+        className="relative"
+        onMouseEnter={() => children && setOpenDropdown(title)}
+        onMouseLeave={() => setOpenDropdown(null)}
+      >
+        {depth === 1 && (
+          <>
+            {children?.length ? (
+              <p className="py-2 px-3 hover:opacity-80 transition-opacity flex items-center gap-2 rounded hover:no-underline">
+                <span className="pointer-events-none">{title}</span>
+                <ChevronRight
+                  className={clsx("w-4 h-4 transition-transform rotate-90", {
+                    "-rotate-90": title === openDropdown,
+                  })}
+                />
+              </p>
+            ) : (
+              <Link
+                href={href}
+                className="py-2 px-3 hover:opacity-80 transition-opacity flex items-center gap-2 rounded hover:no-underline"
+              >
+                {title}
+              </Link>
+            )}
+          </>
+        )}
+
+        {(isDropdownOpen || depth > 1) && (
+          <div
+            className={clsx(
+              `min-w-[200px] absolute bg-white text-black w-max animate-in transition-opacity animate-opacity
+              rounded-xl py-2 px-4 shadow-md`
+            )}
+          >
+            {(depth === 1 ? children : items)?.map(
+              ({ title, href, children }) => (
+                <div
+                  key={title}
+                  className="relative"
+                  onMouseEnter={() => {
+                    setOpenSubDropdown(title);
+                  }}
+                  onMouseLeave={() => setOpenSubDropdown(null)}
+                >
+                  {children?.length ? (
+                    <p
+                      className={clsx(
+                        `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`
+                      )}
+                    >
+                      {title}
+                      <ChevronRight className="w-4 h-4 text-orangePrimary" />
+                    </p>
+                  ) : (
+                    <Link
+                      href={href}
+                      className={clsx(
+                        `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`
+                      )}
+                    >
+                      {title}
+                    </Link>
+                  )}
+
+                  {openSubDropdown === title && !!children?.length && (
+                    <div className="absolute right-0 top-0">
+                      <MenuItems depth={depth + 1} items={children} />
+                    </div>
+                  )}
+                </div>
+              )
+            )}
+          </div>
+        )}
+      </div>
+    );
+  });
+};
+
+const DynamicMenu = ({ variant = "primary" }) => {
+  const [menuData, setMenuData] = useState<null | IMenuItem[]>(null);
 
   useEffect(() => {
     getRequest({
@@ -29,6 +120,8 @@ const DynamicMenu = ({ variant = "primary" }) => {
     return <div className="h-14"></div>;
   }
 
+  // Recursive function to render menus
+
   return (
     <nav
       className={clsx(
@@ -39,87 +132,7 @@ const DynamicMenu = ({ variant = "primary" }) => {
       )}
     >
       <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-10 relative">
-        {menuData.map(({ title, href, children }) => {
-          return (
-            <div
-              key={title}
-              className="relative"
-              onMouseEnter={() => children && setOpenDropdown(title)}
-              onMouseLeave={() => setOpenDropdown(null)}
-            >
-              <Link
-                href={href}
-                className="py-2 px-3 hover:opacity-80 transition-opacity flex items-center gap-2 rounded hover:no-underline"
-              >
-                <span className="pointer-events-none">{title}</span>
-                {children && (
-                  <ChevronRight
-                    className={clsx("w-4 h-4 transition-transform rotate-90", {
-                      "-rotate-90": title === openDropdown,
-                    })}
-                  />
-                )}
-              </Link>
-
-              {openDropdown === title && (
-                <div
-                  inert={title === openDropdown}
-                  className={clsx(
-                    `min-w-[200px] absolute bg-white text-black w-max animate-in transition-opacity animate-opacity
-                    rounded-xl py-2 px-4 shadow-md`
-                  )}
-                >
-                  {children?.map(({ title, href, children }) => {
-                    return (
-                      <div
-                        key={title}
-                        className="relative"
-                        onMouseEnter={() => setOpenSubDropdown(title)}
-                        onMouseLeave={() => setOpenSubDropdown(null)}
-                      >
-                        <Link
-                          href={href}
-                          className={clsx(
-                            `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`
-                          )}
-                        >
-                          {title}
-                          {!!children?.length && (
-                            <ChevronRight className="w-4 h-4 text-orangePrimary" />
-                          )}
-                        </Link>
-
-                        {openSubDropdown === title && !!children?.length && (
-                          <div
-                            inert={openSubDropdown === title}
-                            className={clsx(
-                              `absolute left-full top-0 bg-white w-max text-black animate-opacity
-                              rounded-xl py-2 px-4 shadow-md`
-                            )}
-                          >
-                            {children?.map(({ title, href }) => {
-                              return (
-                                <Link
-                                  key={title}
-                                  href={href}
-                                  className={clsx(
-                                    `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`
-                                  )}
-                                >
-                                  {title}
-                                </Link>
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                </div>
-              )}
-            </div>
-          );
-        })}
+        {menuData && <MenuItems items={menuData} />}
       </div>
     </nav>
   );
