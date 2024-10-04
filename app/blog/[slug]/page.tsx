@@ -14,7 +14,6 @@ import { useUserStore } from "@/lib/store";
 import { format } from "date-fns";
 import SharedLinks from "@/components/SharedLinks";
 import { Referal } from "@/components/Catalogue/Referral";
-import TailoredServices from "@/components/TailoredServices";
 import ReferalsSlider from "@/components/Catalogue/ReferralsSlider";
 
 interface BlogComment {

@@ -4,8 +4,15 @@ import Link from "next/link";
 import defaultLogo from "@/assets/default-logo-g2l.svg";
 import { usePartnersStore } from "@/lib/store";
 import { Partner } from "@/components/Dashboard/PartnersMain/types";
+import clsx from "clsx";
 
-const PartnersOurPartners: React.FC = () => {
+interface PartnersOurPartnersProps {
+  className?: string;
+}
+
+const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
+  className,
+}) => {
   const { partners, getPartnersApproved } = usePartnersStore();
 
   useEffect(() => {
@@ -15,7 +22,10 @@ const PartnersOurPartners: React.FC = () => {
   return (
     <section
       id="our-partners"
-      className="w-full items-center max-w-[1328px] mx-auto px-4"
+      className={clsx(
+        "w-full items-center max-w-[1328px] mx-auto px-4",
+        className
+      )}
     >
       <div className="text-black text-center font-light md:text-[40px]/[48px] text-[34px]/[38px] flex mb-8 justify-center lg:justify-start">
         Our

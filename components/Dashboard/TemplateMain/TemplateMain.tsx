@@ -68,7 +68,7 @@ const PartnersMain = () => {
       toast({
         title: "Page deleted",
         variant: "default",
-        className: "bg-green-500",
+        className: "bg-green-500 text-white",
       });
       getTemplatesForPage(page, TAKE, searchTerm);
     });
@@ -90,9 +90,15 @@ const PartnersMain = () => {
           className="max-w-[400px]"
           placeholder="Search..."
         />
-        <Button onClick={() => push("/dashboard/template/create")}>
-          <Plus />
-        </Button>
+        <div className="flex gap-2">
+          <Button onClick={() => push("/dashboard/template/categories")}>
+            Categories
+          </Button>
+          <Button onClick={() => push("/dashboard/template/create")}>
+            Create page
+            <Plus />
+          </Button>
+        </div>
       </div>
 
       <div
