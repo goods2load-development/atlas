@@ -822,7 +822,7 @@ interface TemplatesStore {
   onDeleteTemplatePage: (id: string) => Promise<void>;
   createTemplateCategory: (data: { name: string }) => Promise<void>;
   updateTemplateCategory: (data: SeoPageCategory) => Promise<void>;
-  deleteTemplateCategory: (id: string) => Promise<void>;
+  deleteTemplateCategory: (id: string) => Promise<any>;
 }
 
 export const useTemplatesStore = create<TemplatesStore>((set) => ({

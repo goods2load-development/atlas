@@ -44,6 +44,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDialog";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -311,7 +312,6 @@ export default function SeoPageMain({
                       <Input
                         className="text-[30px]/[36px] sm:text-[24px]/[28px] font-light py-9 bg-transparent border-transparent  text-black placeholder:text-gray-500 bg-white max-w-[400px]"
                         placeholder="Title"
-                        autoFocus
                         {...field}
                       />
                     </FormControl>
@@ -333,7 +333,6 @@ export default function SeoPageMain({
                       <Input
                         className="text-[30px]/[36px] sm:text-[24px]/[28px] font-light py-9 bg-transparent border-transparent  text-black placeholder:text-gray-500 bg-white max-w-[650px]"
                         placeholder="description"
-                        autoFocus
                         {...field}
                       />
                     </FormControl>
@@ -347,11 +346,22 @@ export default function SeoPageMain({
                 name="category"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="twxt-white text-[26px]/[30px] mt-6 mb-2">
-                      Category
-                    </FormLabel>
+                    <div className="flex items-center gap-1">
+                      <FormLabel className="text-white text-[26px]/[30px]">
+                        Category
+                      </FormLabel>
+
+                      <TemplateCategoryDialog type="create">
+                        <Button
+                          type="button"
+                          className="bg-transparent text-white hover:bg-transparent hover:opacity-80 transition-all p-0"
+                        >
+                          <Plus />
+                        </Button>
+                      </TemplateCategoryDialog>
+                    </div>
                     <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl className="max-w-[526px] w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
+                      <FormControl className="max-w-[526px] min-w-60 w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
                         <SelectTrigger>
                           <SelectValue placeholder="Category" />
                         </SelectTrigger>
@@ -691,73 +701,59 @@ export default function SeoPageMain({
       {!!relatedPages?.length && (
         <section className="px-4 md:py-[104px] w-full mx-auto">
           <div className="max-w-[1328px] mx-auto">
-            <div className="px-1 bg-[#FEF1DF] inline-block rounded-lg mb-4">
-              <h2 className="text-black text-[30px] sm:text-[40px] text-center md:text-left">
-                {data?.category.name}
-              </h2>
-            </div>
-
-            <p className="mb-10">{data?.description}</p>
+            <h2 className="text-[20px]/[24px] md:text-[40px]/[44px] flex items-center gap-2 font-light">
+              <div className="py-1.5 px-2 bg-[#FEF1DF] rounded-[4px] font-normal">
+                <i>Related</i>
+              </div>{" "}
+              topics:
+            </h2>
 
             <div
-              className="min-h-[360px] mx-auto overflow-hidden"
+              className="min-h-[360px] mx-auto overflow-hidden mt-10"
               ref={emblaRef}
             >
               <div className="flex gap-10">
-                {relatedPages?.map((page: SeoPage, index: number) => (
-                  <div
-                    key={page.id}
-                    className="bg-white rounded-lg max-w-[405px] overflow-hidden flex flex-col justify-between"
-                  >
-                    <div className="relative">
-                      <img
-                        className="w-full h-[285px] object-cover rounded-lg"
-                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
-                        alt={page.blocks[0].title}
-                      />
-                    </div>
-                    <div className="p-4 flex flex-col h-full justify-between">
-                      <div>
-                        <h3 className="text-xl font-bold mb-2">
-                          <Link
-                            href={{
-                              pathname: `/seo-page/${page.title}`,
-                            }}
-                          >
-                            {page.title}
-                          </Link>
-                        </h3>
-                        <p className="text-gray-600 mb-4 max-h-40 line-clamp-3">
-                          {page.description}
-                        </p>
+                {relatedPages
+                  ?.slice(0, 3)
+                  .map((page: SeoPage, index: number) => (
+                    <div
+                      key={page.id}
+                      className="bg-white rounded-lg max-w-[405px] overflow-hidden flex flex-col justify-between"
+                    >
+                      <div className="relative">
+                        <img
+                          className="w-full h-[285px] object-cover rounded-lg"
+                          src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
+                          alt={page.blocks[0].title}
+                        />
                       </div>
+                      <div className="p-4 flex flex-col h-full justify-between">
+                        <div>
+                          <h3 className="text-xl font-bold mb-2">
+                            <Link
+                              href={{
+                                pathname: `/seo-page/${page.title}`,
+                              }}
+                            >
+                              {page.title}
+                            </Link>
+                          </h3>
+                          <p className="text-gray-600 mb-4 max-h-40 line-clamp-3">
+                            {page.description}
+                          </p>
+                        </div>
 
-                      <Link
-                        href={{
-                          pathname: `/seo-page/${page.title}`,
-                        }}
-                        className="text-orange-500 hover:underline mt-4 inline-block self-start"
-                      >
-                        Know more →
-                      </Link>
+                        <Link
+                          href={{
+                            pathname: `/seo-page/${page.title}`,
+                          }}
+                          className="text-orange-500 hover:underline mt-4 inline-block self-start"
+                        >
+                          Know more →
+                        </Link>
+                      </div>
                     </div>
-                  </div>
-                ))}
-              </div>
-              <div className="flex flex-col mt-8">
-                <div className="embla__dots self-center">
-                  {scrollSnaps.map((_, index) => (
-                    <button
-                      key={index}
-                      onClick={() => onDotButtonClick(index)}
-                      className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
-                        index === selectedIndex
-                          ? " bg-orangePrimary"
-                          : " bg-transparent"
-                      )}
-                    />
                   ))}
-                </div>
               </div>
             </div>
           </div>

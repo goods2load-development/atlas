@@ -22,15 +22,16 @@ const TemplateCategoriesMain = () => {
   }, []);
 
   const handleDeleteTemplateCategory = (id: string) => {
-    deleteTemplateCategory(id)
-      .then(getTemplateCategories)
-      .then(() =>
+    deleteTemplateCategory(id).then((data) => {
+      if (data) {
+        getTemplateCategories();
         toast({
           title: "Category deleted.",
           variant: "destructive",
           className: "bg-green-500 text-white",
-        })
-      );
+        });
+      }
+    });
   };
 
   return (
