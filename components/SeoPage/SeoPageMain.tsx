@@ -954,7 +954,7 @@ export default function SeoPageMain({
         </div>
       )}
 
-      {isView && <PartnersOurPartners className="pb-[104px]" />}
+      {isView && <PartnersOurPartners className="py-8 md:pt-12 md:pb-[104px]" />}
     </>
   );
 
