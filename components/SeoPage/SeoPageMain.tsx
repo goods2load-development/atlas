@@ -129,9 +129,6 @@ export default function SeoPageMain({
     description: "",
   });
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   const form = useForm<z.infer<typeof seoPageSchema>>({
     mode: "all",
     resolver: zodResolver(seoPageSchema),
@@ -290,14 +287,9 @@ export default function SeoPageMain({
 
     if (isEdit) {
       onEditTemplatePage(data?.id, formData).then((data: any) => {
-        console.log(data);
         router.push(`/${data.title}`);
       });
     }
-  };
-
-  const onErrors = (error: any) => {
-    console.log(error);
   };
 
   const content = () => (
@@ -1004,9 +996,7 @@ export default function SeoPageMain({
         content()
       ) : (
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit, onErrors)}>
-            {content()}
-          </form>
+          <form onSubmit={form.handleSubmit(onSubmit)}>{content()}</form>
         </FormProvider>
       )}
     </main>
