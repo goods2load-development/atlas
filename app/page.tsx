@@ -113,7 +113,7 @@ export default function Home() {
           <SearchMain main />
         </div>
         <SubHeaderMain />
-        <TailoredServices className="py-20 md:py-[104px] " />
+        <TailoredServices className="py-20 md:py-[104px]" />
         <SliderMain />
         <QuestionsAndAnswers data={questionsContent} />
         <Analytics />

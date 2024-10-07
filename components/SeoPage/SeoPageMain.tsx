@@ -2,7 +2,6 @@
 import Image from "next/image";
 
 import useDotButton from "@/app/hooks/useDotButton";
-import { useReferralsStore } from "@/lib/store";
 import clsx from "clsx";
 import Fade from "embla-carousel-fade";
 import Autoplay from "embla-carousel-autoplay";
@@ -45,6 +44,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDialog";
+import useBreakpoint from "@/app/hooks/useBreakpoint";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -167,15 +167,9 @@ export default function SeoPageMain({
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
 
-  const { getAllReferrals, referrals: referralsData } = useReferralsStore(
-    (state: any) => state
-  );
-  const { referals: referrals = [], slicePerReferals = null } = referralsData;
-
-  const isBelowSm = true;
+  const { isBelowSm } = useBreakpoint("sm");
 
   useEffect(() => {
-    getAllReferrals();
     getTemplateCategories();
   }, []);
 
@@ -297,7 +291,7 @@ export default function SeoPageMain({
   const content = () => (
     <>
       <Header>
-        <div className="px-[16px] max-w-[1328px] mx-auto">
+        <div className="px-4 max-w-[1328px] mx-auto">
           {!isView && (
             <div className="">
               <FormField
@@ -398,13 +392,18 @@ export default function SeoPageMain({
       <div className="mt-[-270px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
         {isView && <SearchMain main />}
       </div>
-      <section className={clsx("pb-8 md:pb-[111px]", !isView ? "mt-40" : null)}>
+      <section
+        className={clsx("pb-8 md:pb-[111px]", {
+          "mt-40": !isView,
+        })}
+      >
         <div className="max-w-[1328px] mx-auto px-4">
           <div className="flex max-md:justify-center max-md:flex-wrap md:gap-14 gap-8">
             <div className="md:basis-1/2 max-md:order-1">
               {isView &&
                 (data?.blocks[0]?.video ? (
                   <iframe
+                    className="max-w-full"
                     width="560"
                     height="315"
                     src={convertYouTubeUrl(data?.blocks[0]?.video)}
@@ -548,8 +547,8 @@ export default function SeoPageMain({
         </div>
       </section>
       <SubHeaderMain />
-      <section className="py-8 md:py-[111px]">
-        <div className="max-w-[1328px] mx-auto">
+      <section className="py-12 md:py-[111px]">
+        <div className="max-w-[1328px] mx-auto px-4">
           <div className="flex max-md:justify-center max-md:flex-wrap md:gap-14 gap-8">
             <div className="md:basis-1/2">
               {isView && (
@@ -602,6 +601,7 @@ export default function SeoPageMain({
               {isView &&
                 (data?.blocks[1]?.video ? (
                   <iframe
+                    className="max-w-full"
                     width="560"
                     height="315"
                     src={convertYouTubeUrl(data?.blocks[1]?.video)}
@@ -699,69 +699,82 @@ export default function SeoPageMain({
         </div>
       </section>
       {!!relatedPages?.length && (
-        <section className="px-4 md:py-[104px] w-full mx-auto">
-          <div className="max-w-[1328px] mx-auto">
-            <h2 className="text-[20px]/[24px] md:text-[40px]/[44px] flex items-center gap-2 font-light">
+        <section className="w-full mx-auto">
+          <div className="max-w-[1328px] mx-auto px-4">
+            <h2 className="text-[30px]/[34px] md:text-[40px]/[44px] mb-8 md:mb-10 max-md:justify-center flex items-center gap-2 font-light">
               <div className="py-1.5 px-2 bg-[#FEF1DF] rounded-[4px] font-normal">
                 <i>Related</i>
               </div>{" "}
               topics:
             </h2>
-
-            <div
-              className="min-h-[360px] mx-auto overflow-hidden mt-10"
-              ref={emblaRef}
-            >
-              <div className="flex gap-10">
-                {relatedPages
-                  ?.slice(0, 3)
-                  .map((page: SeoPage, index: number) => (
-                    <div
-                      key={page.id}
-                      className="bg-white rounded-lg max-w-[405px] overflow-hidden flex flex-col justify-between"
-                    >
-                      <div className="relative">
-                        <img
-                          className="w-full h-[285px] object-cover rounded-lg"
-                          src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
-                          alt={page.blocks[0].title}
-                        />
-                      </div>
-                      <div className="p-4 flex flex-col h-full justify-between">
-                        <div>
-                          <h3 className="text-xl font-bold mb-2">
-                            <Link
-                              href={{
-                                pathname: `/seo-page/${page.title}`,
-                              }}
-                            >
-                              {page.title}
-                            </Link>
-                          </h3>
-                          <p className="text-gray-600 mb-4 max-h-40 line-clamp-3">
-                            {page.description}
-                          </p>
-                        </div>
-
-                        <Link
-                          href={{
-                            pathname: `/seo-page/${page.title}`,
-                          }}
-                          className="text-orange-500 hover:underline mt-4 inline-block self-start"
-                        >
-                          Know more →
-                        </Link>
-                      </div>
+            <div className="mx-auto overflow-hidden" ref={emblaRef}>
+              <div className="flex">
+                {relatedPages.map((page: SeoPage, index: number) => (
+                  <div
+                    className={clsx("min-w-0 md:pr-10 flex-[0_0_33.3333%]", {
+                      "!flex-[0_0_100%]": isBelowSm,
+                    })}
+                    key={index}
+                  >
+                    <div className="relative">
+                      <Image
+                        width={405}
+                        height={360}
+                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
+                        alt={page.blocks[0].title}
+                        unoptimized
+                      />
                     </div>
-                  ))}
+                    <div className="p-4 flex flex-col">
+                      <div>
+                        <h3 className="text-xl font-bold mb-2">
+                          <Link
+                            href={{
+                              pathname: `/seo-page/${page.title}`,
+                            }}
+                          >
+                            {page.title}
+                          </Link>
+                        </h3>
+                        <p className="text-gray-600 mb-4 max-h-40 line-clamp-3">
+                          {page.description}
+                        </p>
+                      </div>
+
+                      <Link
+                        href={{
+                          pathname: `/seo-page/${page.title}`,
+                        }}
+                        className="text-orange-500 hover:underline mt-4 inline-block self-start"
+                      >
+                        Know more →
+                      </Link>
+                    </div>
+                  </div>
+                ))}
               </div>
+              {scrollSnaps.length >= 2 && (
+                <div className="flex flex-col">
+                  <div className="embla__dots self-center">
+                    {scrollSnaps.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => onDotButtonClick(index)}
+                        className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
+                          index === selectedIndex
+                            ? " bg-orangePrimary"
+                            : " bg-transparent"
+                        )}
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </section>
       )}
-      {isView && (
-        <TailoredServices className="mb-20" isTitle={false} isDots={false} />
-      )}
+      {isView && <TailoredServices className="py-20 md:py-[104px]" />}
       <section className="bg-allTittleColor py-12 md:py-[56px]">
         <div className="max-w-[1328px] mx-auto px-4">
           <h2 className="text-black text-[30px] sm:text-[40px] mb-10 text-center md:text-left">
@@ -815,6 +828,28 @@ export default function SeoPageMain({
                 );
               })}
           </div>
+        </div>
+      </section>
+
+      <section className="pt-12 md:pt-[104px] bg-bgReferrals md:bg-cover md:[background-position:0_-60px]
+       bg-no-repeat">
+        <div className="px-4 max-w-[1328px] mx-auto">
+          <h2 className="font-medium text-2xl md:text-3xl mb-4">Industries We Serve</h2>
+          <p className="mb-6 md:mb-10">
+            Our air freight services cater to a wide range of industries,
+            including manufacturing, automotive, technology, pharmaceuticals,
+            and more. Whether you are importing raw materials or exporting
+            finished products, GOODS2LOAD provides scalable and reliable air
+            cargo solutions to support your business growth. When you win, we
+            win!
+          </p>
+
+          <h2 className="font-medium text-2xl md:text-3xl mb-4">Get Started Today</h2>
+          <p>
+            Experience the advantage of seamless air freight services with
+            GOODS2LOAD. We optimize your air cargo operations for maximum
+            efficiency and reliability. Our network is your network!
+          </p>
         </div>
       </section>
 
