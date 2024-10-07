@@ -790,6 +790,7 @@ export default function SeoPageMain({
             <span className="font-light">Our</span> <i>Achievements:</i>
           </h2>
           <div className="flex flex-wrap justify-between flex-col md:flex-row md:gap-[70px] max-md:text-center">
+          <div className="flex flex-wrap justify-between flex-col md:flex-row md:gap-[70px] max-md:text-center">
             {isView &&
               data?.achievements.map(({ label, value }) => {
                 return (
@@ -807,7 +808,6 @@ export default function SeoPageMain({
 
             {!isView &&
               achievementsLabels.map((item: string, idx: number) => {
-                form?.setValue(`achievements.${idx}.label`, item);
                 return (
                   <div
                     key={item}
@@ -830,9 +830,23 @@ export default function SeoPageMain({
                         </FormItem>
                       )}
                     />
-                    <strong className="font-medium text-[22px] whitespace-nowrap">
-                      {item}
-                    </strong>
+                    <FormField
+                      control={form?.control}
+                      name={`achievements.${idx}.label`}
+                      render={({ field }) => (
+                        <FormItem className="">
+                          <FormControl>
+                            <Input
+                              className="text-black text-[20px]/[24px] sm:text-[20px]/[24px] font-light py-2 mb-2"
+                              placeholder="label"
+                              type="text"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 );
               })}
@@ -841,8 +855,7 @@ export default function SeoPageMain({
       </section>
 
       <section
-        className="pt-12 md:pt-[104px] bg-bgReferrals md:bg-cover md:[background-position:0_-60px]
-       bg-no-repeat"
+        className="pt-12 md:pt-[104px] bg-bgSeoPage [background-position:top_right] max-md:[background-size:140px] bg-no-repeat"
       >
         <div className="px-4 max-w-[1328px] mx-auto">
           <h2 className="font-medium text-2xl md:text-3xl mb-4">
@@ -991,6 +1004,9 @@ export default function SeoPageMain({
         </div>
       )}
 
+      {isView && (
+        <PartnersOurPartners className="py-8 md:pt-12 md:pb-[104px]" />
+      )}
       {isView && (
         <PartnersOurPartners className="py-8 md:pt-12 md:pb-[104px]" />
       )}
