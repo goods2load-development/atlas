@@ -151,7 +151,7 @@ export default function Account() {
                 <PriceAlerts />
               </div>
             )}
-            <DeleteAccount />
+            {user?.role !== "editor" && <DeleteAccount />}
             <button
               onClick={onLogout}
               className="flex items-center gap-3 text-[14px]/[17px] font-medium cursor-pointer hover:opacity-50 transition-all mx-auto"

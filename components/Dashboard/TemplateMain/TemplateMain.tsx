@@ -116,7 +116,7 @@ const PartnersMain = () => {
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
                 <Link
-                  href={`/seo-page/${template.title}`}
+                  href={`/${template.title}`}
                   className="hover:underline hover:cursor-pointer"
                 >
                   {template.title}
