@@ -42,8 +42,9 @@ const Autocomplete = ({
 
   const setFilteredData = (inputValue: string) => {
     const filteredSuggestions = data.filter((item) =>
-      item.toLowerCase().includes(inputValue)
+      item.toLowerCase().includes(inputValue.toLowerCase())
     );
+
     setSuggestions(filteredSuggestions);
   };
 
