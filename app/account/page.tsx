@@ -128,6 +128,14 @@ export default function Account() {
                 </UIButton>
               </Link>
             )}
+            {user?.role === "editor" && (
+              <Link href={"/dashboard/template"}>
+                <UIButton secondary className="w-full sm:w-[224px]">
+                  <TrendingUp className="w-4 h-4 mr-[6px]" />
+                  Editor
+                </UIButton>
+              </Link>
+            )}
             {user?.role === "provider" && (
               <Link
                 href={`${user?.role === "admin" ? "/dashboard/referral" : "/dashboard/performance"}`}

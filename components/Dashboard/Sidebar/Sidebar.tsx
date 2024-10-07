@@ -2,7 +2,7 @@
 
 import Logo from "@/components/Logo";
 import Socials from "@/components/Socials";
-import { cn, isUserAdmin, isUserProvider } from "@/lib/utils";
+import { cn, isUserAdmin, isUserProvider, isUserEditor } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,6 +16,7 @@ const Sidebar: React.FC = () => {
 
   const isAdmin = isUserAdmin(user?.role);
   const isProvider = isUserProvider(user?.role);
+  const isEditor = isUserEditor(user?.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -111,6 +112,34 @@ const Sidebar: React.FC = () => {
               >
                 Partners
               </Link>
+              <Link
+                href="/dashboard/blog"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Blog
+              </Link>
+              <Link
+                href="/dashboard/footer"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Footer
+              </Link>
+              <Link
+                href="/dashboard/header"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Header
+              </Link>
+              <Link
+                href="/dashboard/template"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Templates
+              </Link>
+            </>
+          )}
+          {isEditor && (
+            <>
               <Link
                 href="/dashboard/blog"
                 className="font-semibold mb-8 hover:no-underline uppercase"

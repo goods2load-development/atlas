@@ -7,6 +7,7 @@ enum Roles {
   ADMIN = "admin",
   USER = "user",
   PROVIDER = "provider",
+  EDITOR = "editor",
 }
 
 const routes = {
@@ -22,6 +23,14 @@ const routes = {
     "/dashboard/referral",
     "/dashboard/routes-list",
     "/dashboard/partners",
+    "/dashboard/blog",
+    "/dashboard/header",
+    "/dashboard/footer",
+    "/dashboard/template",
+    "/dashboard/template/create",
+  ],
+  [Roles.EDITOR]: [
+    "/account",
     "/dashboard/blog",
     "/dashboard/header",
     "/dashboard/footer",
