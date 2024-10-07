@@ -789,7 +789,7 @@ export default function SeoPageMain({
           <h2 className="text-black text-[30px] sm:text-[40px] mb-10 text-center md:text-left">
             <span className="font-light">Our</span> <i>Achievements:</i>
           </h2>
-          <div className="flex flex-wrap justify-between flex-col md:flex-row md:gap-[70px] max-md:text-center">
+          <div className="flex justify-between flex-col md:flex-row md:gap-[70px] max-md:text-center">
             {isView &&
               data?.achievements.map(({ label, value }) => {
                 return (
@@ -800,7 +800,9 @@ export default function SeoPageMain({
                     <h3 className="text-[28px] text-orangePrimary mb-4">
                       {value}
                     </h3>
-                    <strong className="font-medium text-[22px]">{label}</strong>
+                    <strong className="font-medium text-[22px] whitespace-nowrap">
+                      {label}
+                    </strong>
                   </div>
                 );
               })}
@@ -829,7 +831,9 @@ export default function SeoPageMain({
                         </FormItem>
                       )}
                     />
-                    <strong className="font-medium text-[22px]">{item}</strong>
+                    <strong className="font-medium text-[22px] whitespace-nowrap">
+                      {item}
+                    </strong>
                   </div>
                 );
               })}
