@@ -33,10 +33,6 @@ const formSchema = z
   .refine((data) => !(data.innerLink && data.outerLink), {
     message: "Only one of inner link or outer link must be provided, not both.",
     path: ["link"], // Specifies where the error relates
-  })
-  .refine((data) => data.innerLink || data.outerLink, {
-    message: "Either inner link or outer link must be provided.",
-    path: ["link"], // General path for either of the links
   });
 
 const LinkDialog = ({

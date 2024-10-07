@@ -88,7 +88,7 @@ const seoPageSchema = z.object({
           description: z.string(),
         })
       )
-      .optional(),
+      .nonempty("Dropdown items cannot be empty"),
   }),
 });
 
@@ -174,7 +174,7 @@ export default function SeoPageMain({
   }, []);
 
   useEffect(() => {
-    form.setValue("dropdown.items", localDropdownItems);
+    form.setValue("dropdown.items", localDropdownItems as any);
   }, [form, localDropdownItems]);
 
   useEffect(() => {
@@ -831,10 +831,14 @@ export default function SeoPageMain({
         </div>
       </section>
 
-      <section className="pt-12 md:pt-[104px] bg-bgReferrals md:bg-cover md:[background-position:0_-60px]
-       bg-no-repeat">
+      <section
+        className="pt-12 md:pt-[104px] bg-bgReferrals md:bg-cover md:[background-position:0_-60px]
+       bg-no-repeat"
+      >
         <div className="px-4 max-w-[1328px] mx-auto">
-          <h2 className="font-medium text-2xl md:text-3xl mb-4">Industries We Serve</h2>
+          <h2 className="font-medium text-2xl md:text-3xl mb-4">
+            Industries We Serve
+          </h2>
           <p className="mb-6 md:mb-10">
             Our air freight services cater to a wide range of industries,
             including manufacturing, automotive, technology, pharmaceuticals,
@@ -844,7 +848,9 @@ export default function SeoPageMain({
             win!
           </p>
 
-          <h2 className="font-medium text-2xl md:text-3xl mb-4">Get Started Today</h2>
+          <h2 className="font-medium text-2xl md:text-3xl mb-4">
+            Get Started Today
+          </h2>
           <p>
             Experience the advantage of seamless air freight services with
             GOODS2LOAD. We optimize your air cargo operations for maximum
