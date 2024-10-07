@@ -59,24 +59,33 @@ export default function Footer() {
         </div>
         <div className="flex flex-col justify-between max-sm:items-center gap-4">
           <div className="flex gap-8 flex-wrap max-sm:flex-col max-sm:mx-auto sm:h-full">
-            {footerData.json.map((item, i) => (
-              <div className="flex flex-col justify-between gap-8 min-w-[216px]" key={item.title}>
+            {footerData?.json?.map((item, i) => (
+              <div
+                className="flex flex-col justify-between gap-8 min-w-[216px]"
+                key={item.title}
+              >
                 <div>
                   <h3 className="font-semibold mb-2 max-sm:text-center">
                     {item.title}
                   </h3>
                   {item.children?.length && (
                     <ul className="flex flex-col gap-2">
-                      {item.children.map((childItem) => (
-                        <li
-                          className="max-sm:text-center"
-                          key={childItem.title}
-                        >
-                          <Link className="text-sm" href={childItem.href}>
-                            {childItem.title}
-                          </Link>
-                        </li>
-                      ))}
+                      {item.children.map((childItem) => {
+                        return (
+                          <li
+                            className="max-sm:text-center"
+                            key={childItem.title}
+                          >
+                            {childItem?.href ? (
+                              <Link className="text-sm" href={childItem?.href}>
+                                {childItem.title}
+                              </Link>
+                            ) : (
+                              <div>{childItem?.title}</div>
+                            )}
+                          </li>
+                        );
+                      })}
                     </ul>
                   )}
                 </div>
