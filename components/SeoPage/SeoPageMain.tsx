@@ -88,7 +88,7 @@ const seoPageSchema = z.object({
           description: z.string(),
         })
       )
-      .optional(),
+      .nonempty("Dropdown items cannot be empty"),
   }),
 });
 
@@ -174,7 +174,7 @@ export default function SeoPageMain({
   }, []);
 
   useEffect(() => {
-    form.setValue("dropdown.items", localDropdownItems);
+    form.setValue("dropdown.items", localDropdownItems as any);
   }, [form, localDropdownItems]);
 
   useEffect(() => {
@@ -954,7 +954,7 @@ export default function SeoPageMain({
         </div>
       )}
 
-      {isView && <PartnersOurPartners className="pb-[104px]" />}
+      {isView && <PartnersOurPartners className="py-8 md:pt-12 md:pb-[104px]" />}
     </>
   );
 

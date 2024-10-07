@@ -40,7 +40,7 @@ export default function QuestionsAndAnswers({
   return (
     <section
       className={clsx(
-        "px-5 sm:px-16 sm:py-24 py-12 flex flex-col bg-top bg-100% bg-no-repeat relative",
+        "px-5 sm:px-16 sm:py-24 py-12 flex flex-col bg-top bg-100% bg-no-repeat relative min-h-[700px]",
         isBackground ? "md:bg-bgQuestions" : null
       )}
     >
