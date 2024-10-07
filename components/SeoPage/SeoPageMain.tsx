@@ -832,8 +832,7 @@ export default function SeoPageMain({
       </section>
 
       <section
-        className="pt-12 md:pt-[104px] bg-bgReferrals md:bg-cover md:[background-position:0_-60px]
-       bg-no-repeat"
+        className="pt-12 md:pt-[104px] bg-bgSeoPage [background-position:top_right] max-md:[background-size:140px] bg-no-repeat"
       >
         <div className="px-4 max-w-[1328px] mx-auto">
           <h2 className="font-medium text-2xl md:text-3xl mb-4">
