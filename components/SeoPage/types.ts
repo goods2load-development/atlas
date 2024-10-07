@@ -29,6 +29,8 @@ export interface SeoPage {
   block2File: string;
   blocks: Block[];
   achievements: Achievement[];
+  industryText: string;
+  getStartedText: string;
   dropdown: {
     title: string;
     items: DropdownItem[];
