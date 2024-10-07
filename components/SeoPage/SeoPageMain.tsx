@@ -59,6 +59,8 @@ const seoPageSchema = z.object({
   category: z.string(),
   description: z.string().min(3, "At least 3 symbols"),
   title: z.string().min(3, "At least 3 symbols"),
+  industryText: z.string().min(3, "At least 3 symbols"),
+  getStartedText: z.string().min(3, "At least 3 symbols"),
   block1File: z
     .unknown()
     .transform((value) => value as FileList | undefined)
@@ -128,6 +130,9 @@ export default function SeoPageMain({
     description: "",
   });
 
+  useEffect(() => {
+    console.log(data);
+  }, [data]);
   const form = useForm<z.infer<typeof seoPageSchema>>({
     mode: "all",
     resolver: zodResolver(seoPageSchema),
@@ -140,6 +145,8 @@ export default function SeoPageMain({
           blocks: data.blocks,
           achievements: data.achievements,
           dropdown: data.dropdown,
+          industryText: data?.industryText,
+          getStartedText: data?.getStartedText,
         },
       }),
   });
@@ -273,6 +280,8 @@ export default function SeoPageMain({
     formData.append("block1File", updatesData.block1File as any);
     formData.append("block2File", updatesData.block2File as any);
     formData.append("categoryId", updatesData.category);
+    formData.append("industryText", updatesData.industryText);
+    formData.append("getStartedText", updatesData.getStartedText);
 
     if (isCreate) {
       onCreateTemplatePage(formData).then((data: any) => {
@@ -780,13 +789,13 @@ export default function SeoPageMain({
           <h2 className="text-black text-[30px] sm:text-[40px] mb-10 text-center md:text-left">
             <span className="font-light">Our</span> <i>Achievements:</i>
           </h2>
-          <div className="flex flex-wrap flex-col md:flex-row md:gap-[70px] max-md:text-center">
+          <div className="flex flex-wrap justify-between flex-col md:flex-row md:gap-[70px] max-md:text-center">
             {isView &&
               data?.achievements.map(({ label, value }) => {
                 return (
                   <div
                     key={label}
-                    className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0"
+                    className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0 border-r border-[#FFC1A2] last:border-transparent"
                   >
                     <h3 className="text-[28px] text-orangePrimary mb-4">
                       {value}
@@ -802,7 +811,7 @@ export default function SeoPageMain({
                 return (
                   <div
                     key={item}
-                    className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0"
+                    className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0 border-r border-[#FFC1A2] last:border-transparent"
                   >
                     <FormField
                       control={form?.control}
@@ -839,23 +848,51 @@ export default function SeoPageMain({
           <h2 className="font-medium text-2xl md:text-3xl mb-4">
             Industries We Serve
           </h2>
-          <p className="mb-6 md:mb-10">
-            Our air freight services cater to a wide range of industries,
-            including manufacturing, automotive, technology, pharmaceuticals,
-            and more. Whether you are importing raw materials or exporting
-            finished products, GOODS2LOAD provides scalable and reliable air
-            cargo solutions to support your business growth. When you win, we
-            win!
-          </p>
+          {isView && <p>{data?.industryText}</p>}
 
-          <h2 className="font-medium text-2xl md:text-3xl mb-4">
+          {!isView && (
+            <FormField
+              control={form?.control}
+              name={`industryText`}
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormControl>
+                    <Input
+                      className="text-black text-[20px]/[24px] sm:text-[20px]/[24px] font-light py-2 mb-2"
+                      placeholder="value"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
+
+          <h2 className="font-medium text-2xl md:text-3xl mb-4 mt-10">
             Get Started Today
           </h2>
-          <p>
-            Experience the advantage of seamless air freight services with
-            GOODS2LOAD. We optimize your air cargo operations for maximum
-            efficiency and reliability. Our network is your network!
-          </p>
+          {isView && <p>{data?.getStartedText}</p>}
+          {!isView && (
+            <FormField
+              control={form?.control}
+              name={`getStartedText`}
+              render={({ field }) => (
+                <FormItem className="">
+                  <FormControl>
+                    <Input
+                      className="text-black text-[20px]/[24px] sm:text-[20px]/[24px] font-light py-2 mb-2"
+                      placeholder="value"
+                      type="text"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          )}
         </div>
       </section>
 
@@ -954,7 +991,9 @@ export default function SeoPageMain({
         </div>
       )}
 
-      {isView && <PartnersOurPartners className="py-8 md:pt-12 md:pb-[104px]" />}
+      {isView && (
+        <PartnersOurPartners className="py-8 md:pt-12 md:pb-[104px]" />
+      )}
     </>
   );
 
