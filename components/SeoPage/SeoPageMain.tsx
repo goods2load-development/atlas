@@ -78,7 +78,6 @@ const seoPageSchema = z.object({
   ),
   achievements: z.array(
     z.object({
-      label: z.string(),
       value: z.string(),
     })
   ),
@@ -295,6 +294,10 @@ export default function SeoPageMain({
         router.push(`/${data.title}`);
       });
     }
+  };
+
+  const onErrors = (error: any) => {
+    console.log(error);
   };
 
   const content = () => (
@@ -1001,7 +1004,9 @@ export default function SeoPageMain({
         content()
       ) : (
         <FormProvider {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)}>{content()}</form>
+          <form onSubmit={form.handleSubmit(onSubmit, onErrors)}>
+            {content()}
+          </form>
         </FormProvider>
       )}
     </main>
