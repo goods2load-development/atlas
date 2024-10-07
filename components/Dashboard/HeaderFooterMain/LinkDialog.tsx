@@ -19,10 +19,10 @@ import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
 import { useEffect, useMemo, useState } from "react";
 import { CirclePlus, Edit } from "lucide-react";
-import { routes } from "next-routes-list";
 import { getAllRoutes } from "./utils";
 
 import Autocomplete from "@/components/ui/autocomplete";
+import { getRequest } from "@/lib/utils";
 
 const formSchema = z
   .object({
@@ -30,15 +30,14 @@ const formSchema = z
     innerLink: z.string().optional(),
     outerLink: z.string().optional(),
   })
-  .refine(
-    (data) =>
-      (data.innerLink && !data.outerLink) ||
-      (!data.innerLink && data.outerLink),
-    {
-      message: "Either inner link or outer link must be provided, but not both",
-      path: ["link"],
-    }
-  );
+  .refine((data) => !(data.innerLink && data.outerLink), {
+    message: "Only one of inner link or outer link must be provided, not both.",
+    path: ["link"], // Specifies where the error relates
+  })
+  .refine((data) => data.innerLink || data.outerLink, {
+    message: "Either inner link or outer link must be provided.",
+    path: ["link"], // General path for either of the links
+  });
 
 const LinkDialog = ({
   type,
@@ -56,14 +55,23 @@ const LinkDialog = ({
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [routes, setRoutes] = useState<string[]>([]);
+  const [pages, setPages] = useState<string[]>([]);
+
+  const availableRoutes = useMemo(() => [...pages, ...routes], [routes, pages]);
 
   const isCreate = type === "create";
   const isEdit = type === "edit";
 
   useEffect(() => {
     (async () => {
-      const allRoutes = await getAllRoutes();
-      setRoutes(allRoutes);
+      const [routes, pages] = await Promise.all([
+        getAllRoutes(),
+        getRequest({
+          url: "seo-pages/urls",
+        }),
+      ]);
+      setRoutes(routes);
+      setPages(pages.map((page: { title: string }) => `/${page.title}`));
     })();
   }, []);
 
@@ -135,7 +143,7 @@ const LinkDialog = ({
                   <FormItem className="flex items-center gap-2">
                     <FormControl>
                       <Autocomplete
-                        data={routes}
+                        data={availableRoutes}
                         placeholder="Internal link"
                         defaultValue={form.getValues("innerLink") || undefined}
                         {...field}

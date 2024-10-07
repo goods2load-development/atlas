@@ -20,10 +20,10 @@ import { CSS } from "@dnd-kit/utilities";
 import { closestCorners } from "@dnd-kit/core";
 import { GripVertical, Trash } from "lucide-react";
 import {
-  addItemToChildrenByHref,
-  deleteItemByHref,
-  editItemByHref,
-  replaceChildrenByHref,
+  addItemToChildrenByTitle,
+  deleteItemByTitle,
+  editItemByTitle,
+  replaceChildrenByTitle,
 } from "./utils";
 import LinkDialog from "./LinkDialog";
 
@@ -43,7 +43,7 @@ const LinksMenu = ({
 
   const onAddNewItem = (data: { href: string; title: string }, id: string) => {
     setData((prev: HeaderFooterData | null) => {
-      const newItems = addItemToChildrenByHref(
+      const newItems = addItemToChildrenByTitle(
         [...(prev as HeaderFooterData).json],
         id,
         data
@@ -60,8 +60,10 @@ const LinksMenu = ({
     const { active, over } = event;
 
     if (over && active.id !== over?.id) {
-      const activeIndex = data.json.findIndex(({ href }) => href === active.id);
-      const overIndex = data.json.findIndex(({ href }) => href === over.id);
+      const activeIndex = data.json.findIndex(
+        ({ title }) => title === active.id
+      );
+      const overIndex = data.json.findIndex(({ title }) => title === over.id);
 
       setData({
         ...data,
@@ -80,14 +82,14 @@ const LinksMenu = ({
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={data.json.map((item) => item.href)}
+          items={data.json.map((item) => item.title)}
           strategy={verticalListSortingStrategy}
         >
           {data.json.map((item, index) => (
             <MenuItem
               key={index}
               item={item}
-              id={item.href}
+              id={item.title}
               setHeaderDataDynamic={setData}
               onAddNewItem={onAddNewItem}
             />
@@ -111,9 +113,7 @@ const MenuItem = ({
   >;
   onAddNewItem: (newItem: { href: string; title: string }, id: string) => void;
 }) => {
-  const items = item?.children?.length
-    ? item?.children?.map((item) => item.href)
-    : [];
+  const items = item?.children?.map((item) => item.title) || [];
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -147,7 +147,7 @@ const MenuItem = ({
 
   const onDeleteItem = () => {
     setHeaderDataDynamic((prev: HeaderFooterData | null) => {
-      const newItems = deleteItemByHref(
+      const newItems = deleteItemByTitle(
         [...(prev as HeaderFooterData).json],
         id
       );
@@ -161,7 +161,7 @@ const MenuItem = ({
 
   const onEditItem = (data: { href: string; title: string }) => {
     setHeaderDataDynamic((prev: HeaderFooterData | null) => {
-      const newItems = editItemByHref(
+      const newItems = editItemByTitle(
         [...(prev as HeaderFooterData).json],
         id,
         data
@@ -181,16 +181,18 @@ const MenuItem = ({
 
     if (over && active.id !== over?.id) {
       const activeIndex = item.children.findIndex(
-        ({ href }) => href === active.id
+        ({ title }) => title === active.id
       );
-      const overIndex = item.children.findIndex(({ href }) => href === over.id);
+      const overIndex = item.children.findIndex(
+        ({ title }) => title === over.id
+      );
 
       const result = arrayMove(item.children, activeIndex, overIndex);
 
       setHeaderDataDynamic((prev: HeaderFooterData | null) => {
-        const newItems = replaceChildrenByHref(
+        const newItems = replaceChildrenByTitle(
           [...(prev as HeaderFooterData).json],
-          result[0].href,
+          result[0].title,
           result
         );
 
@@ -242,7 +244,7 @@ const MenuItem = ({
                 <MenuItem
                   key={index}
                   item={child}
-                  id={child.href}
+                  id={child.title}
                   setHeaderDataDynamic={setHeaderDataDynamic}
                   onAddNewItem={onAddNewItem}
                 />
