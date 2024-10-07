@@ -78,7 +78,6 @@ const seoPageSchema = z.object({
   ),
   achievements: z.array(
     z.object({
-      label: z.string(),
       value: z.string(),
     })
   ),
@@ -130,9 +129,6 @@ export default function SeoPageMain({
     description: "",
   });
 
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
   const form = useForm<z.infer<typeof seoPageSchema>>({
     mode: "all",
     resolver: zodResolver(seoPageSchema),
@@ -291,7 +287,6 @@ export default function SeoPageMain({
 
     if (isEdit) {
       onEditTemplatePage(data?.id, formData).then((data: any) => {
-        console.log(data);
         router.push(`/${data.title}`);
       });
     }
