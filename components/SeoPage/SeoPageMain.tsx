@@ -780,7 +780,7 @@ export default function SeoPageMain({
           <h2 className="text-black text-[30px] sm:text-[40px] mb-10 text-center md:text-left">
             <span className="font-light">Our</span> <i>Achievements:</i>
           </h2>
-          <div className="flex flex-wrap flex-col md:flex-row md:gap-[70px] max-md:text-center">
+          <div className="flex flex-wrap justify-between flex-col md:flex-row md:gap-[70px] max-md:text-center">
             {isView &&
               data?.achievements.map(({ label, value }) => {
                 return (
@@ -798,11 +798,10 @@ export default function SeoPageMain({
 
             {!isView &&
               achievementsLabels.map((item: string, idx: number) => {
-                form?.setValue(`achievements.${idx}.label`, item);
                 return (
                   <div
                     key={item}
-                    className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0"
+                    className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0 bg"
                   >
                     <FormField
                       control={form?.control}
@@ -821,9 +820,23 @@ export default function SeoPageMain({
                         </FormItem>
                       )}
                     />
-                    <strong className="font-medium text-[22px] whitespace-nowrap">
-                      {item}
-                    </strong>
+                    <FormField
+                      control={form?.control}
+                      name={`achievements.${idx}.label`}
+                      render={({ field }) => (
+                        <FormItem className="">
+                          <FormControl>
+                            <Input
+                              className="text-black text-[20px]/[24px] sm:text-[20px]/[24px] font-light py-2 mb-2"
+                              placeholder="label"
+                              type="text"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
                   </div>
                 );
               })}
@@ -954,7 +967,9 @@ export default function SeoPageMain({
         </div>
       )}
 
-      {isView && <PartnersOurPartners className="py-8 md:pt-12 md:pb-[104px]" />}
+      {isView && (
+        <PartnersOurPartners className="py-8 md:pt-12 md:pb-[104px]" />
+      )}
     </>
   );
 
