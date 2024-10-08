@@ -80,7 +80,7 @@ export default function Page() {
 
   return (
     <>
-      <Header />
+      <Header variant="secondary" />
       <main className="min-h-screen colored-main max-w-[1328px] mx-auto py-10 sm:py-[72px] px-4">
         <h1 className="text-center text-[48px]/[58px] mb-8">Site Map</h1>
         <SubTitle>Home page</SubTitle>

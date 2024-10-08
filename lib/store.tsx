@@ -1,12 +1,24 @@
 import { create } from "zustand";
-import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
+import {
+  getRequest,
+  postRequest,
+  patchRequest,
+  deleteRequest,
+  putRequest,
+} from "./utils";
 import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
 import Cookie from "js-cookie";
 import {
-  Partner,
   PartnerPageResponse,
   ResponsePartner,
 } from "@/components/Dashboard/PartnersMain/types";
+import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
+import {
+  FooterItem,
+  HeaderFooterData,
+} from "@/components/Dashboard/HeaderFooterMain/types";
+import { url } from "inspector";
+import { SeoPageCategory } from "@/components/SeoPage/types";
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -176,7 +188,9 @@ export const useUserStore = create((set) => ({
     const { savedPartners, ...restData } = data;
     await patchRequest({
       url: `/users/${id}`,
-      data: restData,
+      data: {
+        ...restData,
+      },
     }).then((userData: any) => {
       set((state: any) => ({ user: { ...state.user, ...userData?.data } }));
     });
@@ -261,8 +275,6 @@ export const useForgotPasswordStore = create((set) => ({
     postRequest({
       url: "auth/reset-password",
       data,
-    }).then((userData: any) => {
-      // TODO add redirect
     });
   },
 }));
@@ -307,7 +319,8 @@ export const useReferralsStore = create((set) => ({
     const formData = new FormData();
     formData.append("title", data.title);
     formData.append("url", data.url);
-    formData.append("file", data.picture);
+    formData.append("smallBanner", data.smallBanner);
+    formData.append("bigBanner", data.bigBanner);
 
     return postRequest({
       url: "referals",
@@ -412,6 +425,48 @@ export const useRoutesStore = create((set) => ({
   },
 }));
 
+export const usePriceAlertsStore = create((set) => ({
+  priceAlerts: [],
+  isPriceAlertLoading: false,
+
+  getPriceAlerts: ({ page = 1, take = 5 }) => {
+    set({ isPriceAlertLoading: true });
+    return getRequest({
+      url: "alerts",
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((priceAlerts) => {
+        console.log(priceAlerts);
+        set({ priceAlerts });
+      })
+      .finally(() => set({ isPriceAlertLoading: false }));
+  },
+
+  replyPriceAlerts: (id: string, message: string) => {
+    set({ isPriceAlertLoading: true });
+    return postRequest({
+      url: `alerts/${id}/reply`,
+      data: { message },
+    }).finally(() => set({ isPriceAlertLoading: false }));
+  },
+
+  sendPriceAlert: (id: string) => {
+    set({ isPriceAlertLoading: true });
+    return postRequest({ url: `alerts/${id}/send` }).finally(() =>
+      set({ isPriceAlertLoading: false })
+    );
+  },
+  deletePriceAlert: (id: string) => {
+    set({ isPriceAlertLoading: true });
+    return deleteRequest({ url: `alerts/${id}` }).finally(() =>
+      set({ isPriceAlertLoading: false })
+    );
+  },
+}));
+
 interface PartnersStoreState {
   partners: ResponsePartner[];
   partnerPage: PartnerPageResponse | null;
@@ -496,5 +551,356 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     })
       .then((data) => set({ partnerPage: data }))
       .finally(() => set({ isPartnersLoading: false }));
+  },
+}));
+
+interface BlogAdminStoreState {
+  blogs: {
+    data: Blog[];
+    meta: any;
+  } | null;
+  foundBlogs: {
+    data: Blog[];
+    meta: any;
+  } | null;
+  blog: Blog | null;
+  categories: any[];
+  comments: BlogComment[];
+  unapprovedComments: BlogComment[];
+  isBlogLoading: boolean;
+  createBlog: (data: any) => Promise<void>;
+  updateBlog: (data: any, id: string) => Promise<void>;
+  getBlogCategories: () => Promise<void>;
+  getBlogs: ({ page, take }: { page?: number; take?: number }) => Promise<void>;
+  getBlog: (id: string) => Promise<void>;
+  deleteBlog: (id: string) => Promise<void>;
+  getCommentsById: (id: string) => Promise<void>;
+  getUnapprovedComments: () => Promise<void>;
+  deleteCommentById: (id: string) => Promise<void>;
+  approveComment: (id: string) => Promise<void>;
+  createBlogCategory: (data: {
+    name: string;
+    description: string;
+  }) => Promise<void>;
+  updateBlogCategory: (
+    data: {
+      name: string;
+      description: string;
+    },
+    id: string
+  ) => Promise<void>;
+  deleteBlogCategory: (id: string) => Promise<void>;
+  searchBlogs: (data: {
+    searchTerm: string;
+    page?: number;
+    take?: number;
+  }) => Promise<void>;
+}
+
+export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
+  blogs: null,
+  blog: null,
+  foundBlogs: null,
+  categories: [],
+  comments: [],
+  unapprovedComments: [],
+  isBlogLoading: true,
+  createBlog: (data: any) => {
+    set({ isBlogLoading: true });
+    const formData = new FormData();
+
+    formData.append("authorName", data.authorName);
+    formData.append("blogTypeId", data.blogTypeId);
+    formData.append("content", data.content);
+    formData.append("description", data.description);
+    formData.append("slug", data.slug);
+    formData.append("title", data.title);
+    formData.append("mainImg", data.mainImg[0]);
+
+    return postRequest({
+      url: "blogs",
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then((blogs) => {
+        set({ blogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  updateBlog: (data: any, id: string) => {
+    const formData = new FormData();
+
+    formData.append("authorName", data.authorName);
+    formData.append("blogTypeId", data.blogTypeId);
+    formData.append("content", data.content);
+    formData.append("description", data.description);
+    formData.append("slug", data.slug);
+    formData.append("title", data.title);
+    if (typeof data.mainImg !== "string")
+      formData.append("mainImg", data.mainImg[0]);
+
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blogs/${id}`,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getBlogs: ({ page = 1, take = 5 }) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: "blogs?filter=Newest",
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((blogs) => {
+        set({ blogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  getBlog: (slug: string) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blogs/${slug}`,
+    })
+      .then((blog) => {
+        set({ blog });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  deleteBlog: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blogs/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getCommentsById: (id: string) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blog-comments/${id}/approved`,
+    })
+      .then((comments) => {
+        set({ comments });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  deleteCommentById: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blog-comments/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getUnapprovedComments: () => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blog-comments/unapproved`,
+    })
+      .then((unapprovedComments) => {
+        set({ unapprovedComments });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  approveComment: (id: string) => {
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blog-comments/${id}/approve`,
+      data: {
+        approved: true,
+      },
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  getBlogCategories: () => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: "blog-types",
+    })
+      .then((categories) => {
+        set({ categories });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+  createBlogCategory: (data) => {
+    set({ isBlogLoading: true });
+    return postRequest({
+      url: "blog-types",
+      data,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  updateBlogCategory: (data, id) => {
+    set({ isBlogLoading: true });
+    return patchRequest({
+      url: `blog-types/${id}`,
+      data,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  deleteBlogCategory: (id: string) => {
+    set({ isBlogLoading: true });
+    return deleteRequest({
+      url: `blog-types/${id}`,
+    }).finally(() => set({ isBlogLoading: false }));
+  },
+  searchBlogs: ({ page = 1, take = 5, searchTerm }) => {
+    set({ isBlogLoading: true });
+    return getRequest({
+      url: `blogs`,
+      params: {
+        searchTerm,
+        page,
+        take,
+      },
+    })
+      .then((foundBlogs) => {
+        set({ foundBlogs });
+      })
+      .finally(() => set({ isBlogLoading: false }));
+  },
+}));
+
+interface FooterStoreState {
+  footerData: HeaderFooterData | null;
+  headerData: HeaderFooterData | null;
+  isFooterLoading: boolean;
+  isHeaderLoading: boolean;
+  getFooterData: () => Promise<void>;
+  getHeaderData: () => Promise<void>;
+  updateHeaderFooterData: (id: string, data: FooterItem[]) => Promise<void>;
+}
+
+export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
+  footerData: null,
+  headerData: null,
+  isFooterLoading: true,
+  isHeaderLoading: true,
+  getFooterData: () => {
+    set({ isFooterLoading: true });
+    return getRequest({
+      url: "dynamic-menu/footer",
+    })
+      .then((footerData) => {
+        set({ footerData });
+      })
+      .finally(() => set({ isFooterLoading: false }));
+  },
+  getHeaderData: () => {
+    set({ isHeaderLoading: true });
+    return getRequest({
+      url: "dynamic-menu/header",
+    })
+      .then((headerData) => {
+        set({ headerData });
+      })
+      .finally(() => set({ isHeaderLoading: false }));
+  },
+  updateHeaderFooterData: (id, data) => {
+    set({ isHeaderLoading: true, isFooterLoading: true });
+    return putRequest({
+      url: `dynamic-menu/${id}`,
+      data,
+    })
+      .then((headerData) => {
+        set({ headerData });
+      })
+      .finally(() => set({ isHeaderLoading: false, isFooterLoading: false }));
+  },
+}));
+
+interface TemplatesStore {
+  templatesData: TemplateResponse | null;
+  categories: SeoPageCategory[] | null;
+  isTemplatesLoading: boolean;
+  isTemplateCategoriesLoading: boolean;
+  getTemplates: (
+    page?: number,
+    take?: number,
+    searchTerm?: string
+  ) => Promise<void>;
+  getTemplateCategories: () => Promise<void>;
+  onCreateTemplatePage: (data: FormData) => Promise<void>;
+  onEditTemplatePage: (id: string, data: FormData) => Promise<void>;
+  onDeleteTemplatePage: (id: string) => Promise<void>;
+  createTemplateCategory: (data: { name: string }) => Promise<void>;
+  updateTemplateCategory: (data: SeoPageCategory) => Promise<void>;
+  deleteTemplateCategory: (id: string) => Promise<any>;
+}
+
+export const useTemplatesStore = create<TemplatesStore>((set) => ({
+  templatesData: null,
+  categories: null,
+  isTemplatesLoading: true,
+  isTemplateCategoriesLoading: false,
+
+  getTemplates: async (page = 1, take = 5, searchTerm = "") => {
+    set({ isTemplatesLoading: true });
+    try {
+      const templatesData = await getRequest({
+        url: "seo-pages",
+        params: {
+          page,
+          take,
+          searchTerm: searchTerm || null,
+        },
+      });
+      set({ templatesData });
+    } finally {
+      set({ isTemplatesLoading: false });
+    }
+  },
+
+  onCreateTemplatePage: async (data: FormData) => {
+    set({ isTemplatesLoading: true });
+    return postRequest({
+      url: "seo-pages",
+      data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  onEditTemplatePage: async (id: string, data: FormData) => {
+    return putRequest({
+      url: `seo-pages/${id}`,
+      data,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+  },
+
+  onDeleteTemplatePage: (id: string) => {
+    return deleteRequest({
+      url: `seo-pages/${id}`,
+    });
+  },
+
+  getTemplateCategories: async () => {
+    set({ isTemplateCategoriesLoading: true });
+    return getRequest({
+      url: "seo-pages/categories",
+    })
+      .then((data) => {
+        set({ categories: data });
+      })
+      .finally(() => {
+        set({ isTemplateCategoriesLoading: false });
+      });
+  },
+
+  createTemplateCategory: async (data) => {
+    return postRequest({
+      url: "seo-pages/categories",
+      data,
+    });
+  },
+
+  updateTemplateCategory: async (data) => {
+    return patchRequest({
+      url: `seo-pages/categories/${data.id}`,
+      data,
+    });
+  },
+
+  deleteTemplateCategory: async (id: string) => {
+    return deleteRequest({
+      url: `seo-pages/categories/${id}`,
+    });
   },
 }));

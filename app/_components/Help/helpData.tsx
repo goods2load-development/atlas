@@ -1,8 +1,4 @@
 import { HelpData, TabName } from "@/app/interface/helpData";
-import HelpShipSvg from "@/components/ui/Svg/HelpSvg/HelpShipSvg";
-import HelpPlaneSvg from "@/components/ui/Svg/HelpSvg/HelpPlaneSvg";
-import HelpTruckSvg from "@/components/ui/Svg/HelpSvg/HelpTruckSvg";
-import Image from "next/image";
 
 export const tabs = [
   {

@@ -110,14 +110,14 @@ export default function Account() {
   ];
   return (
     <>
-      <Header />
+      <Header variant="secondary" />
       <main className="flex min-h-screen flex-col py-5 sm:py-16 justify-between colored-main px-[16px] max-w-[1328px] mx-auto">
-        <div className="sm:flex justify-between mb-10 items-center">
+        <div className="md:flex justify-between mb-10 items-center">
           <i className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">
             <img src="/user.svg" className="mr-3" />
             Account
           </i>
-          <div className="mt-5 sm:mt-0 gap-4 flex items-center">
+          <div className="mt-5 md:mt-0 gap-4 flex items-center flex-wrap md:flex-nowrap">
             {user?.role === "admin" && (
               <Link
                 href={`${user?.role === "admin" ? "/dashboard/referral" : "/dashboard/performance"}`}
@@ -125,6 +125,14 @@ export default function Account() {
                 <UIButton secondary className="w-full sm:w-[224px]">
                   <TrendingUp className="w-4 h-4 mr-[6px]" />
                   Dashboard
+                </UIButton>
+              </Link>
+            )}
+            {user?.role === "editor" && (
+              <Link href={"/dashboard/template"}>
+                <UIButton secondary className="w-full sm:w-[224px]">
+                  <TrendingUp className="w-4 h-4 mr-[6px]" />
+                  Editor
                 </UIButton>
               </Link>
             )}
@@ -143,10 +151,10 @@ export default function Account() {
                 <PriceAlerts />
               </div>
             )}
-            <DeleteAccount />
+            {user?.role !== "editor" && <DeleteAccount />}
             <button
               onClick={onLogout}
-              className="flex items-center gap-3 text-[14px]/[17px] font-medium cursor-pointer hover:opacity-50 transition-all"
+              className="flex items-center gap-3 text-[14px]/[17px] font-medium cursor-pointer hover:opacity-50 transition-all mx-auto"
             >
               <Image
                 width={13}
@@ -197,7 +205,7 @@ export default function Account() {
         <Card className="mb-10">
           <CardHeader>
             <CardTitle className="font-medium text-[18px]/[22px] flex justify-between">
-              <span>Address</span>
+              <span>Business Address</span>
               <UIButton
                 onClick={() => setEdit("address")}
                 secondary

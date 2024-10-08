@@ -184,6 +184,25 @@ body {
   .decorative-link:hover::after {
     width: 50%;
   }
+
+  .link-with-line::after {
+    content: "";
+    position: absolute;
+    right: -24px;
+    top: 3px;
+    bottom: 3px;
+    width: 1px;
+    background-color: white;
+  }
+  @media (max-width: 768px) {
+    .link-with-line::after {
+      right: -16px;
+    }
+  }
+
+  .link-with-line:not(:last-child)::after {
+    display: block;
+  }
 }
 
 @media (max-width: 640px) {
@@ -286,4 +305,15 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.grecaptcha-badge {
+  visibility: hidden;
+}
+
+[contenteditable="true"]:empty:before {
+  content: attr(aria-placeholder);
+  pointer-events: none;
+  display: block;
+  color: #c8c8c8;
 }

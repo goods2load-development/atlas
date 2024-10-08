@@ -1,12 +1,18 @@
 import { useEffect } from "react";
 import { useReferralsStore } from "@/lib/store";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import clsx from "clsx";
-import refLogo from "@/assets/ref-logo.svg";
-import longArrow from "@/assets/long-arrow.svg";
 
-export const Referal = ({ className }: { className?: string }) => {
+export const Referal = ({
+  className,
+  countOfDisplaying = 2,
+  forceDisplaying = false,
+}: {
+  className?: string;
+  countOfDisplaying?: number;
+  forceDisplaying?: boolean;
+}) => {
   const {
     getAllReferrals,
     referrals: { referals, referalIsInCatalog },
@@ -16,31 +22,38 @@ export const Referal = ({ className }: { className?: string }) => {
     getAllReferrals();
   }, []);
 
-  if (!referals || !referalIsInCatalog) {
+  if (referals?.length === 0 || (!referalIsInCatalog && !forceDisplaying)) {
     return;
   }
 
   return (
     <div className={clsx("min-h-[360px] w-[279px]", className)}>
-      <div
-        style={{
-          backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${referals[0].picture})`,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-        }}
-        className="h-[360px] rounded-2xl overflow-hidden relative  w-full py-6 px-4 text-white flex flex-col"
-      >
-        <Image width={42} height={42} src={refLogo} alt="R-logo" />
-        <Link
-          target="_blank"
-          className="text-primaryOrange text-[18px]/[22px] font-medium flex justify-between mt-auto"
-          href={referals[0].url}
-        >
-          Read more
-          <Image width={100} height={5} src={longArrow} alt="arrow" />
-        </Link>
-      </div>
+      {referals?.map((item: any, idx: number) => {
+        if (idx + 1 > countOfDisplaying) {
+          return;
+        }
+
+        return (
+          <div
+            key={item.url}
+            className="rounded-2xl overflow-hidden relative w-full mb-6"
+          >
+            <Link
+              target="_blank"
+              className="absolute inset-0"
+              href={item.url}
+            ></Link>
+            <Image
+              className="w-full"
+              width={100}
+              height={100}
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.smallBanner}`}
+              unoptimized
+              alt="preview"
+            />
+          </div>
+        );
+      })}
     </div>
   );
 };

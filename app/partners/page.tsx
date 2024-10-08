@@ -15,7 +15,7 @@ const Partners: React.FC = () => {
   return (
     <LoyaltAllWrapper>
       <div className="flex flex-col w-full items-center justify-center text-white text-center pb-[100px] sm:mt-[-75px]">
-        <div className="flex flex-col w-full items-center justify-center bg-primaryOrange sm:bg-transparent bg-partners-mobile sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:max-h-[700px]">
+        <div className="flex flex-col w-full items-center justify-center bg-primaryOrange sm:bg-transparent bg-partners-mobile sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:max-h-[700px] -z-10 relative">
           <div className="flex flex-col w-full items-center justify-center pt-10 sm:pt-[47px] text-white text-center pb-[20px] sm:pb-[100px]">
             <h1 className="text-[30px]/[34px] sm:text-[48px]/[57px] font-light sm:pt-[150px] mb-[40px] max-w-[1000px]">
               Engage with businesses throughout their journey of envisioning,

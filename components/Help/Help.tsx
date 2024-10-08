@@ -14,14 +14,14 @@ export default function Help() {
 
   return (
     <>
-      <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] bg-orangePrimary sm:bg-transparent bg-partners-mobile sm:bg-hero-pattern bg-cover bg-top sm:bg-center text-white text-center mt-[-75px]">
+      <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] bg-orangePrimary sm:bg-transparent bg-partners-mobile sm:bg-hero-pattern bg-cover bg-top sm:bg-center text-white text-center mt-[-75px]relative -z-10">
         <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-4 sm:mb-2 sm:pt-[120px] pt-28">
           How can we <span className="italic">help</span>
           <span className="italic"> you</span>
           <span className="italic">?</span>
         </h1>
         <h2 className="sm:mb-[68px] text-[17px]/[28px] font-light leading-[28px]">
-          Doing business is never been so easy.
+          Doing business has never been easier.{" "}
         </h2>
         <div className="flex w-fit sm:pb-[190px] pb-[130px]"></div>
       </div>
@@ -46,7 +46,8 @@ export default function Help() {
               <img
                 src={icon}
                 className="w-[28px] min-w-[28px] h-[28px] min-h-[28px] sm:w-[40px] sm:min-w-[40px] sm:h-[40px] sm:min-h-[40px] mr-[8px] sm:mr-[16px]"
-               alt={'icon'}/>
+                alt={"icon"}
+              />
               {name}
             </TabsTrigger>
           ))}

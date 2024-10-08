@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 
 export default function Socials({ container }: { container?: string }) {
   return (
-    <div className={cn("flex justify-center", container)}>
+    <div className={cn("flex", container)}>
       <Link
         href="https://www.instagram.com/goods2load/"
         className="mr-3 hover:opacity-80"

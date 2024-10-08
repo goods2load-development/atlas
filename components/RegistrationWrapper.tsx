@@ -14,7 +14,7 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
   const { children, userRegistration } = props;
   return (
     <>
-      <Header />
+      <Header variant="secondary" />
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
         <div className="sm:flex w-full">
           <div className="w-full sm:w-6/12 p-[16px] sm:py-16">

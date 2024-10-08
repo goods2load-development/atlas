@@ -23,7 +23,7 @@ export default function SliderMain() {
     useDotButton(emblaApi);
 
   return (
-    <div
+    <section
       className="embla overflow-hidden relative min-h-[412px]"
       ref={emblaRef}
     >
@@ -92,6 +92,6 @@ export default function SliderMain() {
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 }

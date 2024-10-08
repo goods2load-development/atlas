@@ -1,9 +1,8 @@
 "use client";
 
 import Logo from "@/components/Logo";
-import mockLogo from "@/assets/mock-logo.svg";
 import Socials from "@/components/Socials";
-import { cn, isUserAdmin, isUserProvider } from "@/lib/utils";
+import { cn, isUserAdmin, isUserProvider, isUserEditor } from "@/lib/utils";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -17,6 +16,7 @@ const Sidebar: React.FC = () => {
 
   const isAdmin = isUserAdmin(user?.role);
   const isProvider = isUserProvider(user?.role);
+  const isEditor = isUserEditor(user?.role);
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -49,16 +49,6 @@ const Sidebar: React.FC = () => {
   return (
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
-        <div>
-          <Link href="/">
-            <Image
-              alt="logo-performance"
-              width={50}
-              height={55}
-              src={mockLogo}
-            />
-          </Link>
-        </div>
         <div className="flex flex-col">
           {isProvider && (
             <>
@@ -121,6 +111,58 @@ const Sidebar: React.FC = () => {
                 className="font-semibold mb-8 hover:no-underline uppercase"
               >
                 Partners
+              </Link>
+              <Link
+                href="/dashboard/blog"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Blog
+              </Link>
+              <Link
+                href="/dashboard/footer"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Footer
+              </Link>
+              <Link
+                href="/dashboard/header"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Header
+              </Link>
+              <Link
+                href="/dashboard/template"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Templates
+              </Link>
+            </>
+          )}
+          {isEditor && (
+            <>
+              <Link
+                href="/dashboard/blog"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Blog
+              </Link>
+              <Link
+                href="/dashboard/footer"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Footer
+              </Link>
+              <Link
+                href="/dashboard/header"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Header
+              </Link>
+              <Link
+                href="/dashboard/template"
+                className="font-semibold mb-8 hover:no-underline uppercase"
+              >
+                Templates
               </Link>
             </>
           )}

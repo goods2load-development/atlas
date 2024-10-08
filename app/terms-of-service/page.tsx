@@ -6,7 +6,7 @@ import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
 
 export default function TermsOfServicePage() {
   return (
-    <LoyaltAllWrapper>
+    <LoyaltAllWrapper headerVariant="secondary">
       <LegacyPage {...termsOfServicePageData} />
     </LoyaltAllWrapper>
   );

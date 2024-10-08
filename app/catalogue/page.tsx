@@ -3,7 +3,7 @@ import Catalogue from "@/components/Catalogue/Catalogue";
 
 export default function CataloguePage() {
   return (
-    <LoyaltAllWrapper>
+    <LoyaltAllWrapper headerVariant="secondary">
       <Catalogue />
     </LoyaltAllWrapper>
   );

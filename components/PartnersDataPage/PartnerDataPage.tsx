@@ -151,8 +151,8 @@ const PartnerDataPage = ({
   }, [partnerData, industriesData]);
 
   const reviews = useMemo(() => {
-    if (!placeInfo) return null;
-    const reviewsClone = [...(placeInfo?.result?.reviews as any[])];
+    if (placeInfo?.status !== "OK") return null;
+    const reviewsClone = [...((placeInfo?.result?.reviews as any[]) || [])];
     reviewsClone.sort((a, b) => b.rating - a.rating);
     return reviewsClone.slice(0, 3);
   }, [placeInfo?.result?.reviews]);
@@ -352,7 +352,7 @@ const PartnerDataPage = ({
       push("/dashboard/partners?tab=active");
       toast({
         title: "Page successfully created.",
-        variant: "default",
+        variant: "destructive",
         className: "bg-green-500",
       });
     });
@@ -361,7 +361,7 @@ const PartnerDataPage = ({
   const content = () => (
     <>
       <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px]">
-        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] pb-[170px] realtive">
+        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] pb-[170px] realtive -z-10">
           {!isGet ? (
             <FormField
               control={form?.control}
