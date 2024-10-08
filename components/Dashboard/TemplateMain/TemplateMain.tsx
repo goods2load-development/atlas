@@ -116,7 +116,7 @@ const PartnersMain = () => {
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
                 <Link
-                  href={`/${template.title}`}
+                  href={`/${template.slug}`}
                   className="hover:underline hover:cursor-pointer"
                 >
                   {template.title}
@@ -125,14 +125,14 @@ const PartnersMain = () => {
                   <button
                     title="edit page"
                     onClick={() =>
-                      push(`/dashboard/template/edit/${template.title}`)
+                      push(`/dashboard/template/edit/${template.slug}`)
                     }
                   >
                     <Edit2Icon />
                   </button>
                   <button
                     title="visit page"
-                    onClick={() => push(`/seo-page/${template.title}`)}
+                    onClick={() => push(`/${template.slug}`)}
                   >
                     <FileSymlink />
                   </button>

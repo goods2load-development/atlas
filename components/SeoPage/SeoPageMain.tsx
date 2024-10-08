@@ -45,6 +45,7 @@ import {
 } from "@/components/ui/select";
 import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDialog";
 import useBreakpoint from "@/app/hooks/useBreakpoint";
+import { formatToSlug } from "../Dashboard/BlogMain/utils";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -59,8 +60,7 @@ const seoPageSchema = z.object({
   category: z.string(),
   description: z.string().min(3, "At least 3 symbols"),
   title: z.string().min(3, "At least 3 symbols"),
-  industryText: z.string().min(3, "At least 3 symbols"),
-  getStartedText: z.string().min(3, "At least 3 symbols"),
+  subText: z.string().min(3, "At least 3 symbols"),
   block1File: z
     .unknown()
     .transform((value) => value as FileList | undefined)
@@ -78,6 +78,7 @@ const seoPageSchema = z.object({
   ),
   achievements: z.array(
     z.object({
+      label: z.string(),
       value: z.string(),
     })
   ),
@@ -141,8 +142,7 @@ export default function SeoPageMain({
           blocks: data.blocks,
           achievements: data.achievements,
           dropdown: data.dropdown,
-          industryText: data?.industryText,
-          getStartedText: data?.getStartedText,
+          subText: data?.subText,
         },
       }),
   });
@@ -276,18 +276,18 @@ export default function SeoPageMain({
     formData.append("block1File", updatesData.block1File as any);
     formData.append("block2File", updatesData.block2File as any);
     formData.append("categoryId", updatesData.category);
-    formData.append("industryText", updatesData.industryText);
-    formData.append("getStartedText", updatesData.getStartedText);
+    formData.append("subText", updatesData.subText);
+    formData.append("slug", formatToSlug(updatesData?.title));
 
     if (isCreate) {
       onCreateTemplatePage(formData).then((data: any) => {
-        router.push(`/${data.title}`);
+        router.push(`/${data.slug}`);
       });
     }
 
     if (isEdit) {
       onEditTemplatePage(data?.id, formData).then((data: any) => {
-        router.push(`/${data.title}`);
+        router.push(`/${data.slug}`);
       });
     }
   };
@@ -727,6 +727,7 @@ export default function SeoPageMain({
                         src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
                         alt={page.blocks[0].title}
                         unoptimized
+                        className="h-[360px] w-[405px]"
                       />
                     </div>
                     <div className="p-4 flex flex-col">
@@ -804,6 +805,7 @@ export default function SeoPageMain({
 
             {!isView &&
               achievementsLabels.map((item: string, idx: number) => {
+                form?.setValue(`achievements.${idx}.label`, item);
                 return (
                   <div
                     key={item}
@@ -836,57 +838,28 @@ export default function SeoPageMain({
         </div>
       </section>
 
-      <section className="pt-12 md:pt-[104px] bg-bgSeoPage [background-position:top_right] max-md:[background-size:140px] bg-no-repeat">
-        <div className="px-4 max-w-[1328px] mx-auto">
-          <h2 className="font-medium text-2xl md:text-3xl mb-4">
-            Industries We Serve
-          </h2>
-          {isView && <p>{data?.industryText}</p>}
-
-          {!isView && (
-            <FormField
-              control={form?.control}
-              name={`industryText`}
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormControl>
-                    <Input
-                      className="text-black text-[20px]/[24px] sm:text-[20px]/[24px] font-light py-2 mb-2"
-                      placeholder="value"
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-
-          <h2 className="font-medium text-2xl md:text-3xl mb-4 mt-10">
-            Get Started Today
-          </h2>
-          {isView && <p>{data?.getStartedText}</p>}
-          {!isView && (
-            <FormField
-              control={form?.control}
-              name={`getStartedText`}
-              render={({ field }) => (
-                <FormItem className="">
-                  <FormControl>
-                    <Input
-                      className="text-black text-[20px]/[24px] sm:text-[20px]/[24px] font-light py-2 mb-2"
-                      placeholder="value"
-                      type="text"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          )}
-        </div>
+      <section className="pt-8 md:pt-[104px] bg-bgSeoPage [background-position:top_right] max-md:[background-size:140px] bg-no-repeat mb-12">
+        {isView && (
+          <div
+            className="text-[18px]/[26px] max-w-[75%] mx-auto"
+            dangerouslySetInnerHTML={{
+              __html: data?.subText || "",
+            }}
+          ></div>
+        )}
+        {!isView && (
+          <FormField
+            control={form?.control}
+            name={"subText"}
+            render={({ field }) => (
+              <FormItem className="max-w-[75%] mx-auto">
+                <FormControl>
+                  <Editor isMinimalize={true} {...field} />
+                </FormControl>
+              </FormItem>
+            )}
+          />
+        )}
       </section>
 
       {!isView && (

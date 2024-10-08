@@ -23,14 +23,14 @@ export interface SeoPageCategory {
 export interface SeoPage {
   id: string;
   title: string;
+  slug: string;
   category: SeoPageCategory;
   description: string;
   block1File: string;
   block2File: string;
   blocks: Block[];
   achievements: Achievement[];
-  industryText: string;
-  getStartedText: string;
+  subText: string;
   dropdown: {
     title: string;
     items: DropdownItem[];
