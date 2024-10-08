@@ -67,7 +67,7 @@ const LinkDialog = ({
         }),
       ]);
       setRoutes(routes);
-      setPages(pages.map((page: { title: string }) => `/${page.title}`));
+      setPages(pages.map((page: { slug: string }) => `/${page.slug}`));
     })();
   }, []);
 
