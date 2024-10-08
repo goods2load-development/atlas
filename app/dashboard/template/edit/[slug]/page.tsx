@@ -3,12 +3,12 @@ import SeoPageMain from "@/components/SeoPage/SeoPageMain";
 import Footer from "@/components/Footer";
 
 export default async function SeoPage({
-  params: { title },
+  params: { slug },
 }: {
-  params: { title: string };
+  params: { slug: string };
 }) {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}api/seo-pages/${title}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}api/seo-pages/${slug}`,
     {
       cache: "no-store",
     }
@@ -26,7 +26,7 @@ export default async function SeoPage({
 
   return (
     <>
-      <SeoPageMain type="view" data={data} />
+      <SeoPageMain type="edit" data={data} />
       <Footer />
     </>
   );

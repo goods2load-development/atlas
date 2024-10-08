@@ -43,6 +43,8 @@ interface Template {
   block2File: string;
   achievements: Achievement[];
   blocks: Block[];
+  slug: string;
+  subText: string;
   dropdown: Dropdown;
 }
 
