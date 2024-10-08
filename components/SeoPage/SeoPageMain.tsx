@@ -287,7 +287,6 @@ export default function SeoPageMain({
 
     if (isEdit) {
       onEditTemplatePage(data?.id, formData).then((data: any) => {
-        console.log(data);
         router.push(`/${data.slug}`);
       });
     }
@@ -743,11 +742,7 @@ export default function SeoPageMain({
                           </Link>
                         </h3>
                         <p className="text-gray-600 mb-4 max-h-40 line-clamp-3">
-                          Lorem ipsum dolor sit amet consectetur adipisicing
-                          elit. Aliquam vitae, pariatur quod quam ea deserunt,
-                          quia cumque ipsam, dolorum suscipit dignissimos ad
-                          provident ab dolorem. Beatae magnam asperiores
-                          exercitationem dolore.
+                          {page.description}
                         </p>
                       </div>
 
