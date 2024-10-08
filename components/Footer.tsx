@@ -73,7 +73,7 @@ export default function Footer() {
                       {item.children.map((childItem) => {
                         return (
                           <li
-                            className="max-sm:text-center"
+                            className="max-sm:text-center text-[14px]"
                             key={childItem.title}
                           >
                             {childItem?.href ? (
