@@ -34,6 +34,14 @@ const BlogContent: React.FC<BlogContentProps> = ({
       };
     });
 
+    const uls = Array.from(doc.querySelectorAll("ul")).map((ul, index) => {
+      return ul.classList.add(`ul-dynamic-content`);
+    });
+
+    const ols = Array.from(doc.querySelectorAll("ol")).map((ol, index) => {
+      return ol.classList.add(`ol-dynamic-content`);
+    });
+
     onHeadingsParsed(headings);
 
     setParsedContent(doc.body.innerHTML);
