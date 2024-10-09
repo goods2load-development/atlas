@@ -56,7 +56,7 @@ const MenuItems = ({
         {(isDropdownOpen || depth > 1) && (
           <div
             className={clsx(
-              `min-w-[200px] absolute bg-white text-black w-max animate-in transition-opacity animate-opacity
+              `min-w-[200px] absolute z-10 bg-white text-black w-max animate-in transition-opacity animate-opacity
               rounded-xl py-2 px-4 shadow-md`
             )}
           >
@@ -125,13 +125,13 @@ const DynamicMenu = ({ variant = "primary" }) => {
   return (
     <nav
       className={clsx(
-        "py-2 text-white hidden sm:block w-full relative z-50",
+        "py-2 text-white w-full relative z-50",
         variant === "primary"
           ? "bg-[rgba(255,255,255,0.2)]"
           : "bg-primaryOrange"
       )}
     >
-      <div className="container mx-auto px-4 flex flex-wrap items-center justify-center gap-10 relative">
+      <div className="sm:container sm:mx-auto sm:px-4 sm:flex flex-wrap  items-center justify-center sm:gap-10 relative flex-1">
         {menuData && <MenuItems items={menuData} />}
       </div>
     </nav>

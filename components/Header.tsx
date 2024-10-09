@@ -59,7 +59,7 @@ export default function Header({ children, variant = "primary" }: HeaderProps) {
             )}
           </div>
           <NavigationMenu
-            className={`${open ? "border-b border-white" : "hidden"} sm:block absolute sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm p-5 bg-orangePrimary sm:bg-transparent text-white pr-0`}
+            className={`${open ? "border-b-2 border-white sm:border-none block" : "hidden"}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
           >
             <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
               <NavigationMenuItem>
@@ -89,10 +89,14 @@ export default function Header({ children, variant = "primary" }: HeaderProps) {
                   <LangSwitcher />
                 </ErrorBoundary>
               </NavigationMenuItem>
+
+              <div className="block sm:hidden w-full">
+                <DynamicMenu variant={variant} />
+              </div>
             </NavigationMenuList>
           </NavigationMenu>
         </div>
-        <div>
+        <div className="hidden sm:block">
           <DynamicMenu variant={variant} />
         </div>
       </header>
