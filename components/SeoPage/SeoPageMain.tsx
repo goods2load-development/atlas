@@ -47,6 +47,7 @@ import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDi
 import useBreakpoint from "@/app/hooks/useBreakpoint";
 import { formatToSlug } from "../Dashboard/BlogMain/utils";
 import "@/app/content.css";
+import Head from "next/head";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -295,6 +296,17 @@ export default function SeoPageMain({
 
   const content = () => (
     <>
+      <Head>
+        <meta name="robots" content="index, follow" />
+        <title>{data?.title || "Goods2load"}</title>
+        <meta name="description" content={data?.description || "Goods2load"} />
+        <meta name="keywords" content={data?.category.name || ""} />
+        <link
+          rel="canonical"
+          href={`${process.env.NEXT_PUBLIC_CLIENT_URL}${data?.slug}`}
+          key="canonical"
+        />
+      </Head>
       <Header>
         <div className="px-4 max-w-[1328px] mx-auto">
           {!isView && (
@@ -504,9 +516,9 @@ export default function SeoPageMain({
             <div className="md:basis-1/2">
               {isView && (
                 <>
-                  <h3 className="font-medium text-[28px]/[33.6px] mb-4">
+                  <h2 className="font-medium text-[28px]/[33.6px] mb-4">
                     {data?.blocks[0].title}
-                  </h3>
+                  </h2>
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
@@ -558,9 +570,9 @@ export default function SeoPageMain({
             <div className="md:basis-1/2">
               {isView && (
                 <>
-                  <h3 className="font-medium text-[28px]/[33.6px] mb-4">
+                  <h2 className="font-medium text-[28px]/[33.6px] mb-4">
                     {data?.blocks[0].title}
-                  </h3>
+                  </h2>
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
@@ -733,23 +745,23 @@ export default function SeoPageMain({
                     </div>
                     <div className="p-4 flex flex-col">
                       <div>
-                        <h3 className="text-xl font-bold mb-2">
-                          <Link
-                            href={{
-                              pathname: `/${page.title}`,
-                            }}
-                          >
-                            {page.title}
-                          </Link>
-                        </h3>
-                        <p className="text-gray-600 mb-4 max-h-40 line-clamp-3">
+                        <Link
+                          className="text-xl font-bold mb-2  min-h-[56px] line-clamp-2"
+                          href={{
+                            pathname: `/${page.slug}`,
+                          }}
+                        >
+                          {page.title}
+                        </Link>
+
+                        <p className="text-gray-600 mb-4 max-h-40 line-clamp-3 min-h-[72px]">
                           {page.description}
                         </p>
                       </div>
 
                       <Link
                         href={{
-                          pathname: `/${page.title}`,
+                          pathname: `/${page.slug}`,
                         }}
                         className="text-orange-500 hover:underline mt-4 inline-block self-start"
                       >
@@ -794,9 +806,9 @@ export default function SeoPageMain({
                     key={label}
                     className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0 border-r border-[#FFC1A2] last:border-transparent"
                   >
-                    <h3 className="text-[28px] text-orangePrimary mb-4">
+                    <span className="text-[28px] text-orangePrimary mb-4 block">
                       {value}
-                    </h3>
+                    </span>
                     <strong className="font-medium text-[22px] whitespace-nowrap">
                       {label}
                     </strong>
