@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import { Button } from "../../ui/button";
 import Link from "next/link";
-import { cn, isUserProvider } from "@/lib/utils";
+import { cn, isUserAdmin, isUserEditor, isUserProvider } from "@/lib/utils";
 import closeSvg from "@/assets/close.svg";
 import { LogOut } from "lucide-react";
 import { useUserStore } from "@/lib/store";
@@ -16,6 +16,9 @@ const MobileSidebar: React.FC = () => {
   const { user } = useUserStore((state: any) => state);
 
   const isProvider = isUserProvider(user?.role);
+  const isAdmin = isUserAdmin(user?.role);
+  const isEditor = isUserEditor(user?.role);
+
   const [sideBar, setSidebar] = useState([
     {
       title: "Performance",
@@ -57,7 +60,7 @@ const MobileSidebar: React.FC = () => {
   return (
     <aside
       className={cn(
-        "sm:hidden fixed w-full bg-primaryOrange top-0 z-10 px-4 py-2 pb-4",
+        "sm:hidden fixed w-full bg-primaryOrange top-0 z-10 px-4 py-2 pb-4 text-white",
         expanded ? "h-[auto] overflow-scroll" : "h-[56px] overflow-hidden"
       )}
       style={{}}
@@ -80,7 +83,7 @@ const MobileSidebar: React.FC = () => {
           )}
         </Button>
       </div>
-      <div className="flex flex-col items-center gap-4 mt-6">
+      <div className="flex flex-col items-center gap-4">
         {isProvider &&
           sideBar.map((it) => (
             <Link
@@ -108,6 +111,81 @@ const MobileSidebar: React.FC = () => {
               ></div>
             </Link>
           ))}
+
+        {isAdmin && (
+          <>
+            <Link
+              href="/dashboard/referral"
+              className="font-semibold mb-2 hover:no-underline uppercase mt-6"
+            >
+              Referral
+            </Link>
+            <Link
+              href="/dashboard/routes-list"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Routes
+            </Link>
+            <Link
+              href="/dashboard/partners"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Partners
+            </Link>
+            <Link
+              href="/dashboard/blog"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Blog
+            </Link>
+            <Link
+              href="/dashboard/footer"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Footer
+            </Link>
+            <Link
+              href="/dashboard/header"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Header
+            </Link>
+            <Link
+              href="/dashboard/template"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Templates
+            </Link>
+          </>
+        )}
+        {isEditor && (
+          <>
+            <Link
+              href="/dashboard/blog"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Blog
+            </Link>
+            <Link
+              href="/dashboard/footer"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Footer
+            </Link>
+            <Link
+              href="/dashboard/header"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Header
+            </Link>
+            <Link
+              href="/dashboard/template"
+              className="font-semibold mb-2 hover:no-underline uppercase"
+            >
+              Templates
+            </Link>
+          </>
+        )}
 
         <Button className="flex  font-light pl-[12px] text-white mt-8">
           <LogOut className="mr-[8px]" />

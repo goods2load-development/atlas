@@ -108,7 +108,7 @@ export default function Home() {
         </div>
       </Header>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main max-w-full">
-        <div className="mt-[-270px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
+        <div className="mt-[-170px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
           <SearchMain main />
         </div>
         <SubHeaderMain />

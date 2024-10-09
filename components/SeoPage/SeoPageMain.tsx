@@ -395,7 +395,7 @@ export default function SeoPageMain({
           )}
         </div>
       </Header>
-      <div className="mt-[-270px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
+      <div className="mt-[-130px] sm-[-180px] lg:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
         {isView && <SearchMain main />}
       </div>
       <section
@@ -787,7 +787,7 @@ export default function SeoPageMain({
           <h2 className="text-black text-[30px] sm:text-[40px] mb-10 text-center md:text-left">
             <span className="font-light">Our</span> <i>Achievements:</i>
           </h2>
-          <div className="flex justify-between flex-col md:flex-row md:gap-[70px] max-md:text-center">
+          <div className="flex justify-between flex-col md:flex-row md:gap-[70px] max-md:text-center flex-wrap">
             {isView &&
               data?.achievements.map(({ label, value }) => {
                 return (
