@@ -16,7 +16,7 @@ function QuestionItem(props: any) {
           <i className="text-[20px]/[24px] font-light sm:text-[24px]/[28px] inline-block w-8 sm:w-20 pr-10">
             {props.number}
           </i>
-          <span className="text-blackTertiary">{props.title}</span>
+          <h3 className="text-blackTertiary inline">{props.title}</h3>
         </div>
       </AccordionTrigger>
       <AccordionContent className="pl-5 sm:pl-20 text-[16px]/[24px] font-light max-w-[760px] text-blackTertiary">
@@ -54,13 +54,13 @@ export default function QuestionsAndAnswers({
         className="absolute top-0 right-0 md:hidden"
         alt={"faqmobile2"}
       />
-      <div className="text-center text-[34px] sm:text-[48px] mb-12 font-light">
+      <h2 className="text-center text-[34px] sm:text-[48px] mb-12 font-light">
         <i className="bg-allTittleColor px-2 rounded-md font-normal">Answers</i>
         <span> to Your Burning </span>
         <i className="bg-allTittleColor px-2 rounded-md font-normal">
           Questions
         </i>
-      </div>
+      </h2>
       <Accordion
         type="single"
         collapsible

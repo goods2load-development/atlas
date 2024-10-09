@@ -15,6 +15,7 @@ import { format } from "date-fns";
 import SharedLinks from "@/components/SharedLinks";
 import { Referal } from "@/components/Catalogue/Referral";
 import ReferalsSlider from "@/components/Catalogue/ReferralsSlider";
+import Head from "next/head";
 
 interface BlogComment {
   id: string;
@@ -113,6 +114,17 @@ const BlogPage: React.FC = ({ params }: any) => {
 
   return (
     <>
+      <Head>
+        <meta name="robots" content="index, follow" />
+        <title>{blog?.title || "Blog"}</title>
+        <meta name="description" content={blog?.description || ""} />
+        <meta name="keywords" content={blog?.blogTypeName || ""} />
+        <link
+          rel="canonical"
+          href={`${process.env.NEXT_PUBLIC_CLIENT_URL}blog/${blog?.slug}`}
+          key="canonical"
+        />
+      </Head>
       <Header variant="secondary" />
       <div className="blog-page">
         {/* Header Section */}
