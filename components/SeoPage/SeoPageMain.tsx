@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 
 import useDotButton from "@/app/hooks/useDotButton";
