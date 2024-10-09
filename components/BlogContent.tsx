@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "@/app/content.css";
 
 interface BlogContentProps {
   content: string;
@@ -48,7 +49,7 @@ const BlogContent: React.FC<BlogContentProps> = ({
   }, [content]);
 
   return (
-    <div className="blog-content p-4">
+    <div className="content blog-content p-4">
       <div dangerouslySetInnerHTML={{ __html: parsedContent }} />
     </div>
   );

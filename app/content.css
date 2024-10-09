@@ -1,0 +1,83 @@
+.content {
+  font-family: inherit !important;
+  font-size: 18px;
+}
+
+.content h1 {
+  font-size: 48px;
+  margin-bottom: 24px;
+}
+
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  font-weight: 500;
+  margin-bottom: 16px;
+  padding-top: 16px;
+}
+
+.content h2 {
+  font-size: 28px;
+}
+
+.content h3 {
+  font-size: 24px;
+}
+.content h4 {
+  font-size: 20px;
+}
+.content h5 {
+  font-size: 16px;
+}
+.content h6 {
+  font-size: 12px;
+}
+
+.content p,
+.content ul {
+  margin-bottom: 24px;
+}
+
+.content a {
+  text-decoration: underline;
+  font-weight: 500;
+  font-style: italic;
+}
+
+.content table {
+  max-width: 100%;
+  width: 100%;
+  font-size: 16px;
+  margin: 36px 0;
+}
+
+.content td {
+  padding: 16px 21px;
+  border-width: 1px !important;
+  border-color: #0000001a !important;
+}
+
+.content td > * {
+  margin: 0;
+}
+
+.content table tr:first-child {
+  background: #ffc1a2;
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.content li {
+  list-style-type: disc;
+  margin-left: 24px;
+}
+
+.content li p {
+  margin-bottom: 12px;
+}
+
+.content img {
+    margin-bottom: 28px;
+}

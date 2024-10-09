@@ -46,6 +46,7 @@ import {
 import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDialog";
 import useBreakpoint from "@/app/hooks/useBreakpoint";
 import { formatToSlug } from "../Dashboard/BlogMain/utils";
+import "@/app/content.css";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -507,7 +508,7 @@ export default function SeoPageMain({
                     {data?.blocks[0].title}
                   </h3>
                   <div
-                    className="text-[18px]/[26px]"
+                    className="content"
                     dangerouslySetInnerHTML={{
                       __html: data?.blocks[0].description || "",
                     }}
@@ -561,7 +562,7 @@ export default function SeoPageMain({
                     {data?.blocks[0].title}
                   </h3>
                   <div
-                    className="text-[18px]/[26px]"
+                    className="content"
                     dangerouslySetInnerHTML={{
                       __html: data?.blocks[1].description || "",
                     }}
@@ -841,7 +842,7 @@ export default function SeoPageMain({
       <section className="pt-8 md:pt-[104px] bg-bgSeoPage [background-position:top_right] max-md:[background-size:140px] bg-no-repeat mb-12">
         {isView && (
           <div
-            className="text-[18px]/[26px] max-w-[75%] mx-auto"
+            className="content max-w-[75%] mx-auto"
             dangerouslySetInnerHTML={{
               __html: data?.subText || "",
             }}
