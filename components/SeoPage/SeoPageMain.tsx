@@ -562,7 +562,7 @@ export default function SeoPageMain({
                     {data?.blocks[0].title}
                   </h3>
                   <div
-                    className="text-[18px]/[26px]"
+                    className="content"
                     dangerouslySetInnerHTML={{
                       __html: data?.blocks[1].description || "",
                     }}
