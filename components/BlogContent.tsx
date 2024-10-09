@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import "@/app/content.css";
 
 interface BlogContentProps {
   content: string;
@@ -34,21 +35,13 @@ const BlogContent: React.FC<BlogContentProps> = ({
       };
     });
 
-    const uls = Array.from(doc.querySelectorAll("ul")).map((ul, index) => {
-      return ul.classList.add(`ul-dynamic-content`);
-    });
-
-    const ols = Array.from(doc.querySelectorAll("ol")).map((ol, index) => {
-      return ol.classList.add(`ol-dynamic-content`);
-    });
-
     onHeadingsParsed(headings);
 
     setParsedContent(doc.body.innerHTML);
   }, [content]);
 
   return (
-    <div className="blog-content p-4">
+    <div className="content blog-content p-4">
       <div dangerouslySetInnerHTML={{ __html: parsedContent }} />
     </div>
   );
