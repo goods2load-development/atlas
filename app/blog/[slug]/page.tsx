@@ -15,7 +15,7 @@ import { format } from "date-fns";
 import SharedLinks from "@/components/SharedLinks";
 import { Referal } from "@/components/Catalogue/Referral";
 import ReferalsSlider from "@/components/Catalogue/ReferralsSlider";
-import { Head } from "next/document";
+import Head from "next/head";
 
 interface BlogComment {
   id: string;

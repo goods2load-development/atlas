@@ -47,7 +47,6 @@ import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDi
 import useBreakpoint from "@/app/hooks/useBreakpoint";
 import { formatToSlug } from "../Dashboard/BlogMain/utils";
 import "@/app/content.css";
-import Head from "next/head";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -296,17 +295,6 @@ export default function SeoPageMain({
 
   const content = () => (
     <>
-      <Head>
-        <meta name="robots" content="index, follow" />
-        <title>{data?.title || "Goods2load"}</title>
-        <meta name="description" content={data?.description || "Goods2load"} />
-        <meta name="keywords" content={data?.category.name || ""} />
-        <link
-          rel="canonical"
-          href={`${process.env.NEXT_PUBLIC_CLIENT_URL}${data?.slug}`}
-          key="canonical"
-        />
-      </Head>
       <Header>
         <div className="px-4 max-w-[1328px] mx-auto">
           {!isView && (
