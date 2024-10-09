@@ -11,7 +11,7 @@ import Link from "next/link";
 import { z } from "zod";
 import { CircleX, Edit, Plus, X } from "lucide-react";
 
-import Header from "@/components/Header";
+import Header from "@/components/Header/Header";
 import SearchMain from "@/components/SearchMain";
 import SubHeaderMain from "@/components/SubHeaderMain";
 import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";

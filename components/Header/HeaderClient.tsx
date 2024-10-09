@@ -8,19 +8,25 @@ import {
   NavigationMenuList,
 } from "@/components/ui/navigation-menu";
 import { useUserStore } from "@/lib/store";
-import LangSwitcher from "./LangSwicher";
-import Currencies from "./Currencies";
-import ErrorBoundary from "./ErrorBoundary";
+import LangSwitcher from "../LangSwicher";
+import Currencies from "../Currencies";
+import ErrorBoundary from "../ErrorBoundary";
 
 import DynamicMenu from "./DynamicMenu";
+import { IMenuItem } from "./types";
 
 export type HeaderVariant = "primary" | "secondary";
 
 interface HeaderProps extends PropsWithChildren {
   variant?: HeaderVariant;
+  menuData: IMenuItem[];
 }
 
-export default function Header({ children, variant = "primary" }: HeaderProps) {
+export default function HeaderClient({
+  children,
+  variant = "primary",
+  menuData,
+}: HeaderProps) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [open, setOpen] = useState(false);
 
@@ -93,7 +99,7 @@ export default function Header({ children, variant = "primary" }: HeaderProps) {
           </NavigationMenu>
         </div>
         <div>
-          <DynamicMenu variant={variant} />
+          <DynamicMenu menuData={menuData} variant={variant} />
         </div>
       </header>
       {children}

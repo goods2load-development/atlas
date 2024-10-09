@@ -1,6 +1,6 @@
 import React from "react";
 
-import Header from "@/components/Header";
+import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import SearchMain from "@/components/SearchMain";
 import SubHeaderMain from "@/components/SubHeaderMain";
@@ -9,7 +9,6 @@ import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import TailoredServices from "@/components/TailoredServices";
 import Analytics from "@/components/Dashboard/Analytics";
 import ConsentPopup from "@/components/common/ConsentPopup";
-import DynamicMenu from "@/components/DynamicMenu";
 
 const questionsContent = [
   {

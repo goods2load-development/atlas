@@ -1,4 +1,4 @@
-import Header, { HeaderVariant } from "@/components/Header";
+import Header, { HeaderVariant } from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 
 interface LoyaltAllWrapper {

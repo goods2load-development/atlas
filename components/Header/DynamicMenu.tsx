@@ -5,12 +5,7 @@ import { getRequest } from "@/lib/utils";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import clsx from "clsx";
-
-interface IMenuItem {
-  title: string;
-  href: string;
-  children?: IMenuItem[];
-}
+import { IMenuItem } from "./types";
 
 const MenuItems = ({
   items,
@@ -105,22 +100,10 @@ const MenuItems = ({
   });
 };
 
-const DynamicMenu = ({ variant = "primary" }) => {
-  const [menuData, setMenuData] = useState<null | IMenuItem[]>(null);
-
-  useEffect(() => {
-    getRequest({
-      url: "dynamic-menu/header",
-    }).then(({ json }) => {
-      setMenuData(json);
-    });
-  }, []);
-
+const DynamicMenu = ({ variant = "primary", menuData }: any) => {
   if (!menuData) {
     return <div className="h-14"></div>;
   }
-
-  // Recursive function to render menus
 
   return (
     <nav
