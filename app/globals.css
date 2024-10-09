@@ -317,22 +317,3 @@ input[type="number"] {
   display: block;
   color: #c8c8c8;
 }
-
-.ul-dynamic-content {
-  list-style-type: disc; /* Default bullet points */
-  margin: 0; /* Removes default outer margin */
-  padding-left: 1.5em; /* Adds padding for indentation */
-  line-height: 1.6; /* Improves readability with increased line height */
-}
-
-.ol-dynamic-content {
-  list-style-type: decimal; /* Default numbering */
-  margin: 0; /* Removes default outer margin */
-  padding-left: 1.5em; /* Adds padding for indentation */
-  line-height: 1.6; /* Improves readability with increased line height */
-}
-
-.ul-dynamic-content li,
-.ol-dynamic-content li {
-  margin-bottom: 0.5em; /* Adds spacing between list items */
-}
