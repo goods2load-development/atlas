@@ -47,10 +47,18 @@
 }
 
 .content table {
-  max-width: 100%;
   width: 100%;
+  max-width: 100%;
   font-size: 16px;
   margin: 36px 0;
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.content table tbody {
+  display: table;
+  width: 100%;
 }
 
 .content td {
@@ -79,5 +87,32 @@
 }
 
 .content img {
-    margin-bottom: 28px;
+  margin-bottom: 28px;
+}
+
+@media (max-width: 768px) {
+  .content {
+    font-size: 16px;
+  }
+
+  .content h1 {
+    font-size: 32px;
+  }
+
+  .content h2 {
+    font-size: 24px;
+  }
+
+  .content h3 {
+    font-size: 20px;
+  }
+  .content h4 {
+    font-size: 16px;
+  }
+  .content h5 {
+    font-size: 12px;
+  }
+  .content h6 {
+    font-size: 8px;
+  }
 }

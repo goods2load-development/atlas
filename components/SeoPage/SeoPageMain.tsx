@@ -842,7 +842,7 @@ export default function SeoPageMain({
       <section className="pt-8 md:pt-[104px] bg-bgSeoPage [background-position:top_right] max-md:[background-size:140px] bg-no-repeat mb-12">
         {isView && (
           <div
-            className="content max-w-[75%] mx-auto"
+            className="content max-w-[1328px] mx-auto px-4"
             dangerouslySetInnerHTML={{
               __html: data?.subText || "",
             }}
