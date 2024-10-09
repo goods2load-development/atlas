@@ -1,4 +1,3 @@
-"use client";
 import { Suspense } from "react";
 import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
 import AboutUs from "@/components/AboutUs/AboutUs";

@@ -11,7 +11,7 @@ import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
 import { JoinOurTeam } from "../_components/Career/JoinOurTeam/JoinOurTeam";
 import CareerForm from "../_components/Career/CareerForm/CareerForm";
 
-const Partners: React.FC = () => {
+const Partners = () => {
   return (
     <LoyaltAllWrapper>
       <div className="flex flex-col w-full items-center justify-center text-white text-center pb-[100px] sm:mt-[-75px]">

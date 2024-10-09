@@ -1,11 +1,10 @@
 "use client";
 
-import { Blog } from "@/app/blog/[slug]/page";
 import Link from "next/link";
 import { format } from "date-fns";
 
 interface IRelatedBlogsList {
-  blogs: Blog[];
+  blogs: any[];
 }
 
 export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
