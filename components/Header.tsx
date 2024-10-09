@@ -32,14 +32,14 @@ export default function Header({ children, variant = "primary" }: HeaderProps) {
     <div
       className={`${
         !!children
-          ? "bg-orangePrimary bg-bgMainPrimaryMobile sm:bg-bgMainPrimary pb-48 h-[640px] sm:h-auto"
+          ? "bg-orangePrimary sm:bg-bgMainPrimary pb-48 sm:h-auto"
           : "bg-orangePrimary"
-      } bg-cover bg-center text-white `}
+      } bg-cover text-white `}
     >
       <header
-        className={`min-h-[75px] mx-auto ${open && "bg-orangePrimary"} bg-orangePrimary`}
+        className={`flex items-center justify-between  sm:block min-h-[75px] mx-auto ${open ? "bg-orangePrimary" : ""} bg-orangePrimary`}
       >
-        <div className="flex items-center justify-between px-4 max-w-[1328px] mx-auto">
+        <div className="flex items-center justify-between px-4 max-w-[1328px] sm:mx-auto flex-1">
           <Logo width={236} height={28} />
           <div
             className="w-[32px] h-[24px] sm:hidden flex flex-col justify-between items-center relative"
@@ -59,7 +59,7 @@ export default function Header({ children, variant = "primary" }: HeaderProps) {
             )}
           </div>
           <NavigationMenu
-            className={`${!open && "hidden"} sm:block absolute sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm p-5 bg-orangePrimary sm:bg-transparent text-white pr-0`}
+            className={`${open ? "border-b border-white" : "hidden"} sm:block absolute sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm p-5 bg-orangePrimary sm:bg-transparent text-white pr-0`}
           >
             <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
               <NavigationMenuItem>
