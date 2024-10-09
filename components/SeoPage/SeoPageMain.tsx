@@ -46,6 +46,7 @@ import {
 import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDialog";
 import useBreakpoint from "@/app/hooks/useBreakpoint";
 import { formatToSlug } from "../Dashboard/BlogMain/utils";
+import "@/app/content.css";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -503,11 +504,11 @@ export default function SeoPageMain({
             <div className="md:basis-1/2">
               {isView && (
                 <>
-                  <h3 className="font-medium text-[28px]/[33.6px] mb-4">
+                  <h2 className="font-medium text-[28px]/[33.6px] mb-4">
                     {data?.blocks[0].title}
-                  </h3>
+                  </h2>
                   <div
-                    className="text-[18px]/[26px]"
+                    className="content"
                     dangerouslySetInnerHTML={{
                       __html: data?.blocks[0].description || "",
                     }}
@@ -557,11 +558,11 @@ export default function SeoPageMain({
             <div className="md:basis-1/2">
               {isView && (
                 <>
-                  <h3 className="font-medium text-[28px]/[33.6px] mb-4">
+                  <h2 className="font-medium text-[28px]/[33.6px] mb-4">
                     {data?.blocks[0].title}
-                  </h3>
+                  </h2>
                   <div
-                    className="text-[18px]/[26px]"
+                    className="content"
                     dangerouslySetInnerHTML={{
                       __html: data?.blocks[1].description || "",
                     }}
@@ -732,23 +733,23 @@ export default function SeoPageMain({
                     </div>
                     <div className="p-4 flex flex-col">
                       <div>
-                        <h3 className="text-xl font-bold mb-2">
-                          <Link
-                            href={{
-                              pathname: `/${page.title}`,
-                            }}
-                          >
-                            {page.title}
-                          </Link>
-                        </h3>
-                        <p className="text-gray-600 mb-4 max-h-40 line-clamp-3">
+                        <Link
+                          className="text-xl font-bold mb-2  min-h-[56px] line-clamp-2"
+                          href={{
+                            pathname: `/${page.slug}`,
+                          }}
+                        >
+                          {page.title}
+                        </Link>
+
+                        <p className="text-gray-600 mb-4 max-h-40 line-clamp-3 min-h-[72px]">
                           {page.description}
                         </p>
                       </div>
 
                       <Link
                         href={{
-                          pathname: `/${page.title}`,
+                          pathname: `/${page.slug}`,
                         }}
                         className="text-orange-500 hover:underline mt-4 inline-block self-start"
                       >
@@ -793,9 +794,9 @@ export default function SeoPageMain({
                     key={label}
                     className="max-md:py-6 md:pr-[70px] pb-4 md:pb-0 border-r border-[#FFC1A2] last:border-transparent"
                   >
-                    <h3 className="text-[28px] text-orangePrimary mb-4">
+                    <span className="text-[28px] text-orangePrimary mb-4 block">
                       {value}
-                    </h3>
+                    </span>
                     <strong className="font-medium text-[22px] whitespace-nowrap">
                       {label}
                     </strong>
@@ -841,7 +842,7 @@ export default function SeoPageMain({
       <section className="pt-8 md:pt-[104px] bg-bgSeoPage [background-position:top_right] max-md:[background-size:140px] bg-no-repeat mb-12">
         {isView && (
           <div
-            className="text-[18px]/[26px] max-w-[75%] mx-auto"
+            className="content max-w-[1328px] mx-auto px-4"
             dangerouslySetInnerHTML={{
               __html: data?.subText || "",
             }}

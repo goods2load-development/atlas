@@ -12,7 +12,7 @@ const Editor = React.memo(
   }) => {
     return (
       <EditField
-        apiKey="wcrtq4xqojwt47khn0bfga9f2t1otyufj6h6gwhoiol5ivty"
+        apiKey={process.env.NEXT_PUBLIC_TINY_KEY}
         init={{
           width: "100%",
           height: 400,
