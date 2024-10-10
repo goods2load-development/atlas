@@ -114,7 +114,7 @@ const DynamicMenu = ({ variant = "primary", menuData }: any) => {
           : "bg-primaryOrange"
       )}
     >
-      <div className="sm:container sm:mx-auto sm:px-4 sm:flex flex-wrap  items-center justify-center sm:gap-10 relative flex-1">
+      <div className="sm:container sm:mx-auto sm:px-4 sm:flex flex-wrap  items-center justify-center sm:gap-x-10 sm:gap-y-4 relative flex-1">
         {menuData && <MenuItems items={menuData} />}
       </div>
     </nav>
