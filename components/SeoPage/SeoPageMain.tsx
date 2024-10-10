@@ -560,7 +560,7 @@ export default function SeoPageMain({
               {isView && (
                 <>
                   <h2 className="font-medium text-[28px]/[33.6px] mb-4">
-                    {data?.blocks[0].title}
+                    {data?.blocks[1].title}
                   </h2>
                   <div
                     className="content"

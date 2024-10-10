@@ -8,6 +8,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 import axios from "axios";
+import { signOut } from "next-auth/react";
 
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "api/";
 axios.defaults.withCredentials = true;
@@ -19,7 +20,7 @@ async function handleTokenRefresh(originalRequest: any) {
     const response = await axios.post(`/auth/refresh`);
     if (response.status === 201) {
       Cookie.set("access_token", response.data.access_token, {
-        expires: new Date(Date.now() + 60 * 60 * 1000),
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
 
       originalRequest.headers["Authorization"] =
@@ -67,10 +68,12 @@ axios.interceptors.response.use(
       error.response.data.message === "Invalid token" &&
       !originalRequest._retry
     ) {
-      return handleTokenRefresh(originalRequest);
+      signOut({ callbackUrl: "/" });
+      localStorage.removeItem("id");
+      Cookie.remove("access_token");
     }
 
-    return Promise.reject(error);
+    return;
   }
 );
 
