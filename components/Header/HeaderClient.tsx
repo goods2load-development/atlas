@@ -19,7 +19,7 @@ export type HeaderVariant = "primary" | "secondary";
 
 interface HeaderProps extends PropsWithChildren {
   variant?: HeaderVariant;
-  menuData: IMenuItem[];
+  menuData: IMenuItem[] | undefined;
 }
 
 export default function HeaderClient({
@@ -97,7 +97,7 @@ export default function HeaderClient({
               </NavigationMenuItem>
 
               <div className="block sm:hidden w-full">
-                <DynamicMenu variant={variant} />
+                <DynamicMenu menuData={menuData} variant={variant} />
               </div>
             </NavigationMenuList>
           </NavigationMenu>
