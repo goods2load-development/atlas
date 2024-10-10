@@ -1,10 +1,9 @@
-import React from "react";
 import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
 import PartnersWithUsImg from "@/assets/PartnersImage/PartnersWithUs/partners-with-us.jpg";
 import Image from "next/image";
 import Link from "next/link";
 
-const PartnersWithUs: React.FC = () => {
+const PartnersWithUs = () => {
   return (
     <LoyaltAllWrapper headerVariant="secondary">
       <div className="md:flex gap-2 justify-between">

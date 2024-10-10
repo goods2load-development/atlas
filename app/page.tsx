@@ -1,6 +1,6 @@
 import React from "react";
 
-import Header from "@/components/Header";
+import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import SearchMain from "@/components/SearchMain";
 import SubHeaderMain from "@/components/SubHeaderMain";
@@ -9,7 +9,6 @@ import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import TailoredServices from "@/components/TailoredServices";
 import Analytics from "@/components/Dashboard/Analytics";
 import ConsentPopup from "@/components/common/ConsentPopup";
-import DynamicMenu from "@/components/DynamicMenu";
 
 const questionsContent = [
   {
@@ -109,7 +108,7 @@ export default function Home() {
         </div>
       </Header>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main max-w-full">
-        <div className="mt-[-270px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
+        <div className="mt-[-170px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
           <SearchMain main />
         </div>
         <SubHeaderMain />

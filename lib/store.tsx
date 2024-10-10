@@ -159,7 +159,7 @@ export const useUserStore = create((set) => ({
       // TODO add redirect
       localStorage.setItem("id", userData.data.id);
       Cookie.set("access_token", userData.data.access_token, {
-        expires: new Date(Date.now() + 60 * 60 * 1000),
+        expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
       set(() => ({ user: userData?.data }));
     });

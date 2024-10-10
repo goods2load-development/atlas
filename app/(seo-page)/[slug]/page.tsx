@@ -1,12 +1,9 @@
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import SeoPageMain from "@/components/SeoPage/SeoPageMain";
 import Footer from "@/components/Footer";
 
-export default async function SeoPage({
-  params: { slug },
-}: {
-  params: { slug: string };
-}) {
+async function getSeoData(slug: string) {
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}api/seo-pages/${slug}`,
     {
@@ -15,10 +12,45 @@ export default async function SeoPage({
   );
 
   if (!res.ok) {
-    return notFound();
+    return null;
   }
 
-  const data = await res.json();
+  return res.json();
+}
+
+export async function generateMetadata({
+  params: { slug },
+}: {
+  params: { slug: string };
+}) {
+  const data = await getSeoData(slug);
+
+  if (!data) {
+    return { title: "Not Found" };
+  }
+
+  const headersList = headers();
+  const host = headersList.get("host");
+  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
+
+  const canonicalURL = `${protocol}://${host}/${data?.slug}`;
+
+  return {
+    title: data?.title || "Goods2load",
+    description: data?.description || "Goods2load",
+    keywords: data?.category?.name || "",
+    alternates: {
+      canonical: canonicalURL,
+    },
+  };
+}
+
+export default async function SeoPage({
+  params: { slug },
+}: {
+  params: { slug: string };
+}) {
+  const data = await getSeoData(slug);
 
   if (!data) {
     return notFound();

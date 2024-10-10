@@ -1,9 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { getRequest } from "@/lib/utils";
-import { type Blog } from "@/app/blog/[slug]/page";
 import Link from "next/link";
-import BlogList from "@/components/BlogList";
 import { RelatedBlogList } from "./RelatedBlogList";
 
 export interface IReleatedBlogsProps {
@@ -17,7 +15,7 @@ export const RelatedBlogs = ({
   categoriesName = "all",
   excludeBlogId,
 }: IReleatedBlogsProps) => {
-  const [relatedBlogs, setRelatedBlogs] = useState<Blog[]>([]);
+  const [relatedBlogs, setRelatedBlogs] = useState<any[]>([]);
 
   const fetchRelatedBlogs = async () => {
     const relatedData = await getRequest({

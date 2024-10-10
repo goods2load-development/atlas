@@ -1,8 +1,5 @@
-"use client";
-
-import Header, { HeaderVariant } from "@/components/Header";
+import Header, { HeaderVariant } from "@/components/Header/Header";
 import Footer from "@/components/Footer";
-import DynamicMenu from "@/components/DynamicMenu";
 
 interface LoyaltAllWrapper {
   children: string | JSX.Element | JSX.Element[];
