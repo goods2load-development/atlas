@@ -7,66 +7,135 @@ import bg from "@/assets/LegacyImages/termsOfService.png";
 
 const data: ILegacyDataBlock[] = [
   {
-    title: "Who are we?",
+    title: "About Us: ",
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Goods2Load (“us”, “we” or “our” as the context requires) provides online transportation search services (including flight, ship and truck price comparison) and other transportation related services (the “Services”) to small medium enterprise throughout the world via our websites, apps and other platforms (the “Platforms”).",
+          `Goods2Load’s website (<a href="/" target=_blank>https://goods2load.com/</a>) and all services or functionality or technology provided by Goods2Load currently existing or developed in the future (collectively, our “Platforms”) are owned and managed by the company GOODS2LOAD FZ-LLC, having its registered office in Compass Building, Al Shohada Road, Al Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab Emirates, having license number 47010212 (“Goods2Load”, “we”, “us”). `,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Goods2Load is not a transportation agent and is not responsible for providing, setting or controlling the prices applicable to, any of the transportation options or products which you find and book via our Services (“Third Party Travel Products”). All such Third Party Transportation Products are provided by independent transportation agents, airlines, cargo, operators or other third parties (“Travel Providers”) and are subject to the terms and conditions of those third parties.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "Our Services and Platforms are provided by Goods2Load FZ LLC, a private limited company incorporated and registered in United Arab Emirates with license number 47010212. You can find our details, including correspondence address and registered office, on our Company Details page.",
+          `Goods2Load is an online platform which provides transportation <b>(flights, ships, trucks) </b> comparison services. Users can find relevant Transportation Providers by applying various filters for carrying out comparisons including but not limited to industry-wise solutions (such as Pharmaceuticals, Electronics, Automotive, Manufacturing & Retail, Exhibition & Interior Design, Apparel & Fashion, E-commerce, Food & Beverage, Energy), transport solutions (like Cold Chain, Dangerous Goods, High-Value Goods, Last Mile Delivery, Project Cargo, General Solutions), additional services (including White Glove Services, E-commerce Fulfillment, Heavy Equipment Logistics, Cross-Border Expansion), and other criteria such as Best Reviewed, Carbon Offset, and Industry Recognition (“Services”) to small and medium enterprises throughout the world (provided the Transportation Providers registered on our Platforms operate in such location) via our Platforms. Goods2Load connects users with independent third-party Transportation Providers, independent transportation agents, airlines, cargo, operators or other third parties (“Transportation Providers”). Goods2Load is not a transportation agent or provider. While Goods2Load facilitates the interaction between users and Transportation Providers, Goods2Load does not own, operate, or control the transportation services provided and is not responsible for providing, setting or controlling the information provided by any of the transportation options you find via our Services. All such transportation information and options (“Transportation Services”) are provided by the Transportation Providers and any interactions users may have with them are subject to the terms and conditions of those third parties.`,
         ],
       },
     ],
   },
   {
-    title: "These Terms",
+    title: "Acceptance of Terms:",
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "These terms and conditions (“Terms”) govern your access to and use of our Services and Platforms, together with our privacy policy, cookie policy and community guidelines. By accessing or using the Services or Platforms, you are confirming that you have read, understood and agreed to these Terms and those of the privacy policy, cookie policy and community guidelines.",
+          `Any person who accesses and/or uses the Platforms in any manner (“user”,“you”or “your”) or uses any current or future Services or functionality or offer made available
+on the Platforms will be subject to and governed by these Terms for use of our Services
+and Platforms, together with our <a href="/privacy-policy">Privacy Policy</a>, <a href="/cookie-policy">Cookies Policy</a>  and community
+guidelines (collectively,
+“Terms of Usage”). By accessing or using the Services or
+Platforms, you are confirming that you have read, understood and agreed to be legally
+bound by the Terms of Usage that may be applicable to the Platforms at the time of your
+access and usage of the Platforms and which may be updated from time to time. If you
+do not agree to be bound by these Terms, you may not access or use the Platforms or
+any Services or should cease to do so immediately.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Some of our Services and Platforms (for example, our ‘Goods2Load for Logistic Services Partners’ products) impose different terms and conditions on the use of those services. Where that is the case, you will be clearly notified and those terms will operate in place of or together with these Terms as appropriate.",
+          `Please note that we may, from time to time, modify these Terms without notice to you.
+You can review the most current version of the Terms at any time on this page. Every
+time you wish to use our Platforms, please check these Terms through the link <a href="/terms-of-service"> https://
+goods2load.com/terms-of-service </a> to ensure that you understand the terms and
+conditions that apply at that time. Further, please note that we reserve the right to
+either change the format and the content of the Platforms or suspend the operation of
+the Platforms for support or maintenance work, in order to update the content or for
+any other reason, at any time, and you will be deemed to have accepted any
+amendments if you continue using our Services or Platforms after the amendments are
+displayed. If you do not agree to any change to the Terms, you must immediately stop
+using the Platforms.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "We may amend these Terms at any time at our discretion. If these Terms are amended, we will publish the revised terms and conditions and you will be deemed to have accepted any amendments if you continue using our Services or Platforms after the amendments are displayed. If you do not accept all of these Terms then you should not use our Services or Platforms.",
+          `In the event that some part of our Services and Platforms impose different terms and
+conditions on the use of specific services, you will be clearly notified and those terms
+will operate in place of or together with these Terms as appropriate.`,
         ],
       },
     ],
   },
   {
-    title: "Using our Services",
+    title: "Eligibility:",
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "You may only use our Services and Platforms in compliance with applicable laws and for legitimate purposes. In consideration of you agreeing to these Terms, we grant you a non- transferable, non-exclusive licence to download, access and use our Services and Platforms for your own personal, non-commercial purposes and for no other purpose. We grant this licence subject to you agreeing that you shall not:",
+          `By agreeing to these Terms and using our Platforms and/or Services in any manner, you
+represent and warrant that you meet specific eligibility criteria. Your age must be the
+higher of: (i) 18 years old, or (ii) the age of majority in your relevant jurisdiction. You
+must be fully competent and possess the necessary capacity to validly enter into this
+Agreement, and assure that your access to the Platforms or Services has not been
+disabled or restricted.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `You agree to comply with the applicable Laws (as defined herein), as a condition of
+entering into this Agreement. Your use of the Platforms and Services must be solely for
+lawful purposes, and you must refrain from engaging in any illegal or fraudulent
+practices. You affirm that you are not a competitor of Goods2Load and that you do not
+offer services that compete with those provided by Goods2Load.`,
+        ],
+      },
+    ],
+  },
+  {
+    title: "Restrictions on Use:",
+    body: [
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `You may only use our Services and Platforms in compliance with applicable Laws and
+for legitimate purposes. In consideration of you agreeing to these Terms, we grant you a
+non- transferable, non-exclusive licence to download, access and use our Services and
+Platforms. We grant this licence subject to you agreeing that you shall not:`,
         ],
         additionalContent: [
           {
             type: ILegacyDataBlockBodyType.ULIST,
             content: [
-              "use our Services or Platforms for any commercial purpose or in any manner which may cause damage to Goods2Load or bring Goods2Load into disrepute;",
-              "disassemble, reverse engineer or otherwise decompile any software, applications, updates or hardware contained in or available via our Services or Platforms, except as legally permitted; copy, distribute, communicate to the public, sell, rent, lend or otherwise use our Services or Platforms, or seek to violate or circumvent any security measures in place to restrict your access to or use of our Services or Platforms;",
-              "use or interfere with our Services or Platforms in a way that could damage, disable, overburden, impair or compromise our systems or security or interfere with other users; introduce onto, or transmit via our Services or Platforms any disruptive or malicious code, virus, worm, or trojan horse, or a ‘denial of service’ or ‘spam’ attack; or remove, alter or replace any notices of authorship, trade marks, business names, logos or other designations of origin on our Services or Platforms, or pass off or attempt to pass off our Services or Platforms as the product of anyone other than Goods2Load.",
+              `use our Services or Platforms for any purpose or in any manner which may cause
+damage to Goods2Load or bring Goods2Load into disrepute;`,
+              `disassemble, reverse engineer or otherwise decompile any software,
+applications, updates or hardware contained in or available via our Services or
+Platforms;`,
+              ` copy, distribute, communicate to the public, sell, rent or lend our Services or
+Platforms, or seek to violate or circumvent any security measures in place to
+restrict your access to or use of our Services or Platforms;`,
+              `use or interfere with our Services or Platforms in a way that could damage,
+disable, overburden, impair or compromise our systems or security or interfere
+with other users; introduce onto, or transmit via our Services or Platforms any
+disruptive or malicious code, virus, worm, or trojan horse, or a ‘denial of service’
+or ‘spam’ attack;`,
+              `remove, delete, alter, modify or replace any notices of authorship, trademarks,
+copyrights, business names, logos or other designations of origin on our Services
+or Platforms, or pass off or attempt to pass off our Services or Platforms as the
+product of anyone other than Goods2Load;`,
+              `use any unauthorised automated computer program, software agent, bot, spider
+or other software or application to scan, copy, index, sort or otherwise exploit
+our Services or Platforms or the data contained on them. Goods2Load has made a
+substantial investment in collecting, processing and presenting data of
+Transportation Providers, and offers access to transportation data on a
+commercial API basis, so any breach of this provision is a material breach of
+these terms and Goods2Load reserves the right to take any technical or legal
+action to detect and restrict unauthorised automated access to our Services and
+Platforms;`,
+              `use the Platforms or Services to engage in any actions that harm, harass, or
+infringe upon the rights or privacy of anyone.`,
             ],
           },
         ],
@@ -74,58 +143,15 @@ const data: ILegacyDataBlock[] = [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "You also agree not to use any unauthorised automated computer program, software agent, bot, spider or other software or application to scan, copy, index, sort or otherwise exploit our Services or Platforms or the data contained on them. Goods2Load has made a substantial investment in collecting, processing and presenting thousands of transportation data suppliers, and offers access to transportation data on a commercial API basis, so any breach of this provision is a material breach of these terms and Goods2Load reserves the right to take any technical or legal action to detect and restrict unauthorised automated access to our Services and Platforms.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "Where you sign up to our Services or Platforms with a log-in account or password, you are responsible for keeping those password and log-in details confidential and secure. If you become aware, or suspect for any reason, that the security of your log-in details has been compromised, please let us know via our Help immediately.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "Our Services and Platforms are not intended for personal use and for any children under 18 years of age, and no one under the age of 18 may provide any information to or via our Services or Platforms. We do not knowingly collect personal information from children under 18, and if we learn that we have collected or received personal information from a child under 18, we will delete that information in accordance with our Privacy Policy.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "To the extent that any part of our Services or Platforms is hosted on a third party website (for example, Facebook or another social media website) and there are separate terms of use relating to that website, you agree to comply with those terms and conditions in addition to these Terms.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Sharing information with us",
-    body: [
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "We take your privacy seriously and operate at all times in accordance with applicable data protection laws. You acknowledge that any business data (as defined in our privacy policy) which you submit to or via our Services or Platforms may be used by us in accordance with our privacy policy. You agree to ensure that all business data you provide to us is accurate and up to date and that you have all consents, licenses or approvals necessary to allow us to use that information in accordance with these Terms, our community guidelines and our privacy policy.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "To the extent that our Services or Platforms allow you to post, upload, transmit or otherwise make available any information, images, video, or other data with Goods2Load or other Goods2Load users (“User Content”), you agree that:",
-        ],
-        additionalContent: [
-          {
-            type: ILegacyDataBlockBodyType.ULIST,
-            content: [
-              "you are solely responsible for User Content that you upload and you represent and agree that you will not share anything which you do not have the permission or right to share or for which you cannot grant the licence in paragraph 2 below;",
-              "although all intellectual property rights in any User Content shall be owned by you or your licensors, and you are always free to share your User Content with anyone else, you hereby grant Goods2Load and the Goods2Load group of companies a non-exclusive, perpetual and royalty- free, worldwide, transferable and sublicensable right to host, use, reproduce whether electronically or otherwise, publicly display, distribute, modify, adapt, publish, translate and create derivative works of all User Content (in accordance with our privacy policy) including for analytics, advertising and marketing purposes of our Services and Platforms. For example, we may make Your Content available to our business partners or other Goods2Load group companies for display on their sites. You control the User Content that you upload to the Goods2Load Services and may terminate this license at any time by deleting the User Content or your Goods2Load account. Deleted User Content will be promptly removed within 48 hours.",
-              "we have no obligation to store, retain, publish or make available any User Content uploaded by you, and you will be responsible for creating backups of your User Content.",
-            ],
-          },
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "If you provide us with any suggestions, comments, improvements, ideas or other feedback (“Feedback”), you hereby irrevocably assign ownership of all intellectual property rights subsisting in that feedback to us and acknowledge that we can use and share such Feedback for any purpose at our discretion. You can provide feedback to us by clicking on the ‘feedback’ tab or through our Helpdesk.",
+          `Where you sign up to our Services or Platforms with a log-in account or password, you
+are responsible for keeping the password and log-in details confidential and secure. If
+you become aware, or suspect for any reason, that the security of your log-in details has
+been compromised, please let us know immediately.`,
+
+          `<br>To the extent that any part of our Services or Platforms is hosted on a third-party
+website (for example, Meta or another social media website) and there are separate
+terms of use relating to that website, you agree to comply with those terms and
+conditions in addition to these Terms.`,
         ],
       },
     ],

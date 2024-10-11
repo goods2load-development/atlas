@@ -15,11 +15,11 @@ const data: ILegacyDataBlock[] = [
           important to you and we are committed to being transparent about the technologies we use.
           We'll only ever use cookies and similar technologies, such as tags and pixels for the
           purposes set out in this Cookie Policy (<strong>“Policy”</strong>) as part of our Services (as defined in
-          our Terms of Service) when you visit or use our Platforms (as defined in our Terms of
+          our <a href="/terms-of-service" target="_blank">Terms of Service</a> ) when you visit or use our Platforms (as defined in our Terms of
           Service). These are controlled either by us or directly by third parties acting on our behalf or
           independently. We will never use cookies to inflate or alter the options you see when
           searching on Goods2Load or to manipulate demand. <br />
-          This Policy should be read together with our Privacy Policy and our Terms of Service, as
+          This Policy should be read together with our <a href="/privacy-policy" target="_blank"> Privacy Policy</a> and our <a href="/terms-of-service" target="_blank">Terms of Service </a>, as
           applicable. We will review this Policy from time to time to make sure it's up-to-date. If we
           make changes, we'll post the latest version here. When we make significant changes, we'll
           let you know when you next access our services, or by other communications.`,
@@ -670,7 +670,7 @@ const data: ILegacyDataBlock[] = [
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           `If you have any questions regarding this Policy or would like more information about the
-          cookies used on our Platforms, please contact us.`,
+          cookies used on our Platforms, please <a href="mailto:hey@goods2load.com">contact us. </a>`,
         ],
       },
     ],
