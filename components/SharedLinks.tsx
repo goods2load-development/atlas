@@ -21,7 +21,7 @@ const SharedLinks: React.FC = () => {
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(
-        `${process.env.NEXT_PUBLIC_CLIENT_URL}${currentUrl}`
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/${currentUrl}`
       );
       toast({
         title: "Link copied",
@@ -44,7 +44,7 @@ const SharedLinks: React.FC = () => {
       <LinkedinShareButton
         title="Goods2load"
         summary="Blog"
-        url={`${process.env.NEXT_PUBLIC_CLIENT_URL}${currentUrl}`}
+        url={`${process.env.NEXT_PUBLIC_CLIENT_URL}/${currentUrl}`}
       >
         <div className="min-w-8 min-h-8 flex items-center justify-center rounded-full bg-primaryOrange hover:opacity-80 transition-opacity">
           <Image src={inIcon} width={18} height={18} alt="LinkedIn" />
@@ -52,14 +52,14 @@ const SharedLinks: React.FC = () => {
       </LinkedinShareButton>
       <TwitterShareButton
         title="Goods2load"
-        url={`${process.env.NEXT_PUBLIC_CLIENT_URL}${currentUrl}`}
+        url={`${process.env.NEXT_PUBLIC_CLIENT_URL}/${currentUrl}`}
       >
         <div className="min-w-8 min-h-8 flex items-center justify-center rounded-full bg-primaryOrange hover:opacity-80 transition-opacity">
           <Image src={xIcon} width={18} height={18} alt="X" />
         </div>
       </TwitterShareButton>
       <FacebookShareButton
-        url={`${process.env.NEXT_PUBLIC_BASE_URL}${currentUrl}`}
+        url={`${process.env.NEXT_PUBLIC_CLIENT_URL}/${currentUrl}`}
       >
         <div className="min-w-8 min-h-8 flex items-center justify-center rounded-full bg-primaryOrange hover:opacity-80 transition-opacity">
           <Image src={fcIcon} width={18} height={18} alt="Facebook" />
