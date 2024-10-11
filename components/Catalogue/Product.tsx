@@ -26,7 +26,7 @@ import recognationIcon from "@/assets/industryRecognations.svg";
 interface Props extends IProduct {
   deliveryBy: string;
   currency: any;
-  index: number; // index for mocks data (GoogleReview)
+  index: number; 
 }
 
 function Icon(type: string) {
@@ -75,7 +75,7 @@ export default function Product(props: Props) {
 
   const isAlreadySavedPartner = (
     userSavedPartners: any = null,
-    partnerName: string,
+    partnerName: string
   ) => {
     if (!userSavedPartners) {
       return false;
@@ -121,7 +121,7 @@ export default function Product(props: Props) {
         {props.partnerInfo?.services?.map(({ label, items }: any) => {
           return (
             <div key={label} className="border-r">
-              <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap">
+              <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap min-w-[200px]">
                 {label}
               </div>
 
@@ -129,7 +129,7 @@ export default function Product(props: Props) {
                 {items.slice(0, 3).map((item: string) => {
                   return (
                     <ToolTipComponent className="block" key={item} text={item}>
-                      <div className="text-center text-[14px]/[21px] pl-2 pr-1 border border-[#FF672080] rounded-[5px] text-primaryOrange w-max mb-2 max-w-[126px] overflow-hidden text-ellipsis whitespace-nowrap">
+                      <div className="text-center text-[14px]/[21px] pl-2 pr-1 border border-[#FF672080] rounded-[5px] text-primaryOrange w-max mb-2 max-w-[146px] overflow-hidden text-ellipsis whitespace-nowrap">
                         {item}
                       </div>
                     </ToolTipComponent>

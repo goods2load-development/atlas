@@ -329,7 +329,7 @@ export default function Filter() {
             onChange={onValueChange}
             checked={cross_border_expansio}
             id="cross_border_expansio"
-            label="Cross-Border Expansio"
+            label="Cross-Border Expansion"
           />
         </AccordionContent>
       </AccordionItem>
