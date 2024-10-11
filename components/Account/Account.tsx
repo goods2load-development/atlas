@@ -17,7 +17,7 @@ import PersonalInformationForm from "@/components/PersonalInformationForm";
 import AddressForm from "@/components/AddressForm";
 import UploadCompanyLogo from "@/components/UploadCompanyLogo";
 import RegionalSettingsForm from "@/components/RegionalSettingsForm";
-import PriceAlerts from "@/components/PriceAlerts";
+import SolutionFinder from "@/components/SolutionFinder";
 import LogoutIcon from "@/assets/logout.svg";
 import { TrendingUp } from "lucide-react";
 import { Bookmark } from "lucide-react";
@@ -40,7 +40,7 @@ function RenderUserData({ data }: any) {
 
 export default function Account() {
   const { user, logoutUser, onDeleteSavedPartner } = useUserStore(
-    (state: any) => state
+    (state: any) => state,
   );
   const [edit, setEdit] = useState<
     "info" | "address" | "regional" | "partners" | null
@@ -145,7 +145,7 @@ export default function Account() {
             )}
             {user?.role === "user" && (
               <div className="w-full sm:w-[224px]">
-                <PriceAlerts />
+                <SolutionFinder />
               </div>
             )}
             {user?.role !== "editor" && <DeleteAccount />}

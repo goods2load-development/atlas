@@ -68,7 +68,7 @@ const phonesCode = [
   },
 ];
 
-export default function PriceAlerts() {
+export default function SolutionFinder() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const {
     from,
@@ -96,7 +96,6 @@ export default function PriceAlerts() {
           from: z.string().optional(),
           toCountry: z.string().optional(),
           to: z.string().optional(),
-          price: z.string().optional(),
         }),
       ),
       email: z.string(),
@@ -125,7 +124,6 @@ export default function PriceAlerts() {
           from,
           toCountry,
           to,
-          price: "0",
         },
       ],
       email: "",
@@ -141,22 +139,16 @@ export default function PriceAlerts() {
     },
   });
 
-  const priceValue = watch(`routes.0.price`);
   const { toast } = useToast();
 
   const isFieldsFilled = () => {
     const currentRoute = fields.slice(-1)[0];
 
-    if (!Number(priceValue)) {
-      return false;
-    }
-
     return (
       currentRoute?.from &&
       currentRoute.fromCountry &&
       currentRoute.to &&
-      currentRoute.toCountry &&
-      Number(priceValue) > 0
+      currentRoute.toCountry
     );
   };
 
@@ -191,7 +183,6 @@ export default function PriceAlerts() {
         routes: values.routes.map((item) => ({
           fromRoute: `${item.fromCountry}, ${item.from}`,
           toRoute: `${item.toCountry}, ${item.to}`,
-          price: item.price ? parseInt(item.price) : 0,
           arrival,
           departure,
           goodsValue,
@@ -219,14 +210,14 @@ export default function PriceAlerts() {
       <DialogTrigger asChild>
         <UIButton className="w-full px-1">
           <BellRing />
-          Price alerts
+          Solution Finder
         </UIButton>
       </DialogTrigger>
       <DialogContent
         className={`max-w-[465px] pt-[48px] px-1 overflow-auto max-h-screen sm:pl-10 ${
           step === 3
             ? "sm:max-w-[632px] pb-[32px] sm:pl-8 px-8"
-            : "sm:max-w-[768px] p-[32px]"
+            : "sm:max-w-[632px] p-[32px]"
         }`}
       >
         <Form {...form}>
@@ -236,7 +227,7 @@ export default function PriceAlerts() {
           >
             <div>
               <DialogHeader
-                className={`sm:min-h-[500px] ${step !== 0 && "hidden"}`}
+                className={`sm:min-h-[300px] ${step !== 0 && "hidden"} items-center`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light">
                   <Image
@@ -246,13 +237,13 @@ export default function PriceAlerts() {
                     width={54}
                     height={54}
                   />
-                  Get price <i className="font-normal">alerts</i>
+                  Get a Solution <i className="font-normal">finder</i>
                 </DialogTitle>
-                <DialogDescription className="text-center text-[18px]/[26px] pt-3">
-                  You can opt to receive notifications whenever a specific route
-                  becomes available at your desired price point. To enable this
-                  feature, simply click the button below to add the routes you
-                  are interested in.
+                <DialogDescription className="text-center text-[18px]/[26px] pt-3 max-w-[504px]">
+                  You can opt to receive notifications whenever a specific
+                  solution becomes available. To enable this feature, simply
+                  click the button below to add the solution you are interested
+                  in.
                 </DialogDescription>
               </DialogHeader>
               <div
@@ -261,15 +252,14 @@ export default function PriceAlerts() {
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Desired <i className="font-normal">routes</i>
                 </DialogTitle>
-                <DialogDescription className="text-center text-[18px]/[26px] max-w-[424px] mx-auto">
-                  Here, you can set your preferred price for the route you
-                  previously selected, and we&apos;ll notify you when it becomes
-                  available.
+                <DialogDescription className="text-center text-[18px]/[26px] max-w-[452px] mx-auto">
+                  Here, you can set your preferred solution for the route you
+                  previously selected, and we&#39;ll notify you when we will
+                  find the right partner for you.
                 </DialogDescription>
                 <div className="flex-wrap text-[12px]/[18px] opacity-50 mt-[40px] mb-[4px] hidden sm:flex ">
                   <div className="ml-[26px] w-[240px]">FROM</div>
                   <div className="ml-[44px] w-[230px]">TO</div>
-                  <div className="ml-[5px]">PRICE ($)</div>
                 </div>
                 {fields.map((item, index) => (
                   <div
@@ -493,20 +483,6 @@ export default function PriceAlerts() {
                         </PopoverContent>
                       </Popover>
                     </div>
-                    <div className="text-[14px]/[18px] opacity-50 sm:hidden">
-                      Price
-                    </div>
-                    <Input
-                      className="h-[44px] rounded-[8px] border-[1px] border-orangePrimary text-center w-[90px]"
-                      defaultValue={item.price}
-                      {...register(`routes.${index}.price` as const)}
-                    />
-                    <div
-                      onClick={() => remove(index)}
-                      className={`ml-[5px] rounded-full border-2 border-orangePrimary text-orangePrimary min-w-[20px] w-[20px] min-h-[20px] h-[20px] text-center text-[18px]/[18px] cursor-pointer ${index === 0 && "hidden"}`}
-                    >
-                      -
-                    </div>
                   </div>
                 ))}
               </div>
@@ -529,24 +505,24 @@ export default function PriceAlerts() {
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Contact <i className="font-normal">information</i>
                 </DialogTitle>
-                <DialogDescription className="text-center text-[18px]/[26px] mx-auto max-w-[424px]">
+                <DialogDescription className="text-center text-[18px]/[26px] mx-auto max-w-[490px]">
                   Choose how you want to receive notifications (email or SMS)
                   and share your contact information for this.
                 </DialogDescription>
                 <Tabs
                   defaultValue="email"
-                  className="w-full max-w-[396px] mx-auto mt-[44px]"
+                  className="w-full max-w-[396px] mx-auto mt-[40px]"
                 >
-                  <TabsList className="grid w-[290px] grid-cols-2 mx-auto mb-[28px]">
+                  <TabsList className="grid w-[290px] grid-cols-2 mx-auto mb-[24px] gap-4">
                     <TabsTrigger
-                      className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
+                      className={`data-[state="active"]:bg-orange-50 data-[state="active"]:border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
                       value="email"
                     >
                       Email
                     </TabsTrigger>
                     <TabsTrigger
                       value="sms"
-                      className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
+                      className={`data-[state="active"]:bg-orange-50 data-[state="active"]:border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
                     >
                       SMS
                     </TabsTrigger>
@@ -632,9 +608,7 @@ export default function PriceAlerts() {
                   className={`w-full sm:max-w-40 order-3 ${step === 1 && !isSearchFilled() ? "hidden" : null}`}
                   type="submit"
                   onClick={(e: any) => {
-                    console.log("submit");
                     if (step !== 2) {
-                      console.log("step");
                       e.preventDefault();
 
                       if (step === 1 && !isFieldsFilled()) {
@@ -662,7 +636,7 @@ export default function PriceAlerts() {
             <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
               Thank <i className="font-normal">you!</i>
             </DialogTitle>
-            <DialogDescription className="text-center">
+            <DialogDescription className="text-center text-[18px]/[26px]">
               We&apos;re on it! You&apos;ll be connected with logistics
               providers who fit your needs, and we&apos;ll reach out if we need
               more details to ensure everything goes smoothly.

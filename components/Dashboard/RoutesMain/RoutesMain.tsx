@@ -5,7 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { RoutesTab } from "./RoutesTab";
-import PriceAlerts from "@/components/PriceAlerts";
+import PriceAlerts from "@/components/SolutionFinder";
 import { PriceAlertTab } from "./PriceAlertsTab";
 
 const RoutesMain = () => {
