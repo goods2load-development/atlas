@@ -97,7 +97,7 @@ export default function PriceAlerts() {
           toCountry: z.string().optional(),
           to: z.string().optional(),
           price: z.string().optional(),
-        }),
+        })
       ),
       email: z.string(),
       countryCode: z.string().optional(),
@@ -217,9 +217,9 @@ export default function PriceAlerts() {
   return (
     <Dialog onOpenChange={() => setStep(0)}>
       <DialogTrigger asChild>
-        <UIButton className="w-full px-1">
-          <BellRing />
-          Price alerts
+        <UIButton className="w-full px-1 font-normal">
+          <BellRing width={19} height={19} className="mr-2" />
+          Solution finder
         </UIButton>
       </DialogTrigger>
       <DialogContent
@@ -318,7 +318,7 @@ export default function PriceAlerts() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  ),
+                                  )
                                 )}
                               </CommandGroup>
                             )}
@@ -442,7 +442,7 @@ export default function PriceAlerts() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  ),
+                                  )
                                 )}
                               </CommandGroup>
                             )}
