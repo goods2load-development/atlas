@@ -42,7 +42,11 @@ const ConsentPopup = () => {
 
   return (
     <Dialog open={isVisible} onOpenChange={handleClose}>
-      <DialogContent className={"max-w-4xl gap-9 p-12"}>
+      <DialogContent
+        className={
+          "max-w-4xl md:gap-9  p-4 md:p-12 overflow-y-auto w-[95%] max-h-[90vh]"
+        }
+      >
         <DialogHeader className={"flex flex-row mx-auto gap-4 items-center"}>
           <Image
             src={CookiesImage}
@@ -51,12 +55,12 @@ const ConsentPopup = () => {
             height={48}
             className={"w-[48px] h-[48px]"}
           />
-          <DialogTitle className={"text-5xl font-thin"}>
+          <DialogTitle className={"md:text-5xl text-2xl font-thin"}>
             Cookie <span className={"font-normal italic"}>Settings</span>
           </DialogTitle>
         </DialogHeader>
         <DialogDescription
-          className={"text-center text-blackTertiary text-base"}
+          className={"text-center text-blackTertiary md:text-base text-[14px]"}
         >
           By clicking &quot;Accept All,&quot; you agree that this website may
           use selected technologies to store and access data on your device.
@@ -102,7 +106,7 @@ const ConsentPopup = () => {
           . You can also email our team at hey@goods2load.com to modify your
           settings, request a PDF copy, or exercise your data protection rights.
         </DialogDescription>
-        <DialogFooter className="flex sm:justify-center gap-10">
+        <DialogFooter className="flex sm:justify-center md:gap-10 gap-3">
           <UIButton
             onClick={handleAcceptAll}
             className={"font-normal py-3 px-12"}

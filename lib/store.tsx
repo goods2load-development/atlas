@@ -252,11 +252,11 @@ export const useUserStore = create((set) => ({
           user: {
             ...user,
             savedPartners: user.savedPartners.filter(
-              ({ id }: { id: string }) => id !== partnerId
+              ({ id }: { id: string }) => id !== partnerId,
             ),
           },
         }));
-      }
+      },
     );
   },
 }));
@@ -439,7 +439,6 @@ export const usePriceAlertsStore = create((set) => ({
       },
     })
       .then((priceAlerts) => {
-        console.log(priceAlerts);
         set({ priceAlerts });
       })
       .finally(() => set({ isPriceAlertLoading: false }));
@@ -456,13 +455,13 @@ export const usePriceAlertsStore = create((set) => ({
   sendPriceAlert: (id: string) => {
     set({ isPriceAlertLoading: true });
     return postRequest({ url: `alerts/${id}/send` }).finally(() =>
-      set({ isPriceAlertLoading: false })
+      set({ isPriceAlertLoading: false }),
     );
   },
   deletePriceAlert: (id: string) => {
     set({ isPriceAlertLoading: true });
     return deleteRequest({ url: `alerts/${id}` }).finally(() =>
-      set({ isPriceAlertLoading: false })
+      set({ isPriceAlertLoading: false }),
     );
   },
 }));
@@ -587,7 +586,7 @@ interface BlogAdminStoreState {
       name: string;
       description: string;
     },
-    id: string
+    id: string,
   ) => Promise<void>;
   deleteBlogCategory: (id: string) => Promise<void>;
   searchBlogs: (data: {
@@ -814,7 +813,7 @@ interface TemplatesStore {
   getTemplates: (
     page?: number,
     take?: number,
-    searchTerm?: string
+    searchTerm?: string,
   ) => Promise<void>;
   getTemplateCategories: () => Promise<void>;
   onCreateTemplatePage: (data: FormData) => Promise<void>;
