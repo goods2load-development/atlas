@@ -8,6 +8,12 @@ export interface IProductServices {
   items: string[];
 }
 
+export interface IPartnerInfo {
+  partnerId: string;
+  services: IProductServices[];
+  awards: boolean;
+}
+
 export interface IProduct {
   orderId: string;
   withdraw: string;
@@ -20,7 +26,7 @@ export interface IProduct {
   portDeparture: string;
   price: string;
   placementOfGoods: string;
-  services: IProductServices[];
+  partnerInfo: IPartnerInfo;
 }
 
 export const googleRatingMocks: GoogleRatingProps[] = [
