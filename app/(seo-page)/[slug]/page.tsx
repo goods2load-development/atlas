@@ -28,17 +28,14 @@ export async function generateMetadata({
     return { title: "Not Found" };
   }
 
-  const host = process.env.NEXT_PUBLIC_CLIENT_URL;
-  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-
-  const canonicalURL = `${protocol}://${host}/${data?.slug}`;
+  const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${data?.slug}`;
 
   return {
     title: data?.title || "Goods2load",
     description: data?.description || "Goods2load",
     keywords: data?.category?.name || "",
     alternates: {
-      canonical: canonicalURL,
+      canonical,
     },
   };
 }
