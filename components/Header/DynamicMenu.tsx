@@ -52,7 +52,7 @@ const MenuItems = ({
           <div
             className={clsx(
               `min-w-[200px] absolute z-10 bg-white text-black w-max animate-in transition-opacity animate-opacity
-              rounded-xl py-2 px-4 shadow-md`
+              rounded-xl py-2 px-4 shadow-md`,
             )}
           >
             {(depth === 1 ? children : items)?.map(
@@ -68,7 +68,7 @@ const MenuItems = ({
                   {children?.length ? (
                     <p
                       className={clsx(
-                        `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`
+                        `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`,
                       )}
                     >
                       {title}
@@ -78,7 +78,7 @@ const MenuItems = ({
                     <Link
                       href={href}
                       className={clsx(
-                        `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`
+                        `py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline`,
                       )}
                     >
                       {title}
@@ -91,7 +91,7 @@ const MenuItems = ({
                     </div>
                   )}
                 </div>
-              )
+              ),
             )}
           </div>
         )}
@@ -108,10 +108,10 @@ const DynamicMenu = ({ variant = "primary", menuData }: any) => {
   return (
     <nav
       className={clsx(
-        "py-2 text-white w-full relative z-50",
+        "py-2 text-white w-full relative z-19",
         variant === "primary"
           ? "bg-[rgba(255,255,255,0.2)]"
-          : "bg-primaryOrange"
+          : "bg-primaryOrange",
       )}
     >
       <div className="sm:container sm:mx-auto sm:px-4 sm:flex flex-wrap  items-center justify-center sm:gap-x-10 sm:gap-y-4 relative flex-1">

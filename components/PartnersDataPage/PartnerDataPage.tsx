@@ -84,10 +84,10 @@ const PartnerDataPage = ({
   const { push } = useRouter();
 
   const { isPartnersLoading, createPartnerPage } = usePartnersStore(
-    (state) => state
+    (state) => state,
   );
   const [activeTab, setActiveTab] = useState<TabsEnum>(
-    TabsEnum.SERVICES_PROVIDED
+    TabsEnum.SERVICES_PROVIDED,
   );
   const [awardedByBase64List, setAwardedByBase64List] = useState<string[]>([]);
   const [countryFocusForm, setCountryFocusForm] = useState({
@@ -146,7 +146,7 @@ const PartnerDataPage = ({
         value: +item.value,
         name: item.label,
         color: (item as any).color || getRandomHexColor(),
-      })
+      }),
     );
   }, [partnerData, industriesData]);
 
@@ -216,7 +216,7 @@ const PartnerDataPage = ({
       focusData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any
+      })) as any,
     );
   }, [focusData]);
 
@@ -226,7 +226,7 @@ const PartnerDataPage = ({
       industriesData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any
+      })) as any,
     );
   }, [industriesData]);
 
@@ -235,8 +235,8 @@ const PartnerDataPage = ({
     (async () => {
       const fileList = await urlsToFileList(
         partnerData?.awardsFiles.map(
-          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`
-        )
+          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
+        ),
       );
 
       form?.setValue("awardedBy", fileList);
@@ -246,7 +246,7 @@ const PartnerDataPage = ({
           const base = await fileToBase64(file);
 
           return base;
-        })
+        }),
       );
 
       setAwardedByBase64List(listBase64);
@@ -270,7 +270,7 @@ const PartnerDataPage = ({
 
       const updatedFileList = addToFileList(
         awardedByValues as FileList,
-        newFile
+        newFile,
       );
       form?.setValue("awardedBy", updatedFileList);
       const list = await Promise.all(
@@ -278,7 +278,7 @@ const PartnerDataPage = ({
           const base = await fileToBase64(file);
 
           return base;
-        })
+        }),
       );
 
       setAwardedByBase64List(list);
@@ -295,7 +295,7 @@ const PartnerDataPage = ({
 
     const updatedFileList = removeFileFromFileList(
       index,
-      form?.getValues("awardedBy") as FileList
+      form?.getValues("awardedBy") as FileList,
     );
     form?.setValue("awardedBy", updatedFileList);
   };
@@ -335,7 +335,7 @@ const PartnerDataPage = ({
       const typedKey = key as keyof typeof body.serviceProvided;
       formData.append(
         `serviceProvided[${typedKey}]`,
-        body.serviceProvided[typedKey]
+        body.serviceProvided[typedKey],
       );
     });
 
@@ -345,7 +345,7 @@ const PartnerDataPage = ({
     });
 
     Array.from(body.files).forEach((file) =>
-      formData.append("awardedFiles", file)
+      formData.append("awardedFiles", file),
     );
 
     createPartnerPage(formData as any, id.toString()).then(() => {
@@ -669,8 +669,8 @@ const PartnerDataPage = ({
                                   onClick={() =>
                                     setFocusData((data) =>
                                       data.filter(
-                                        (item) => item.label !== elem.label
-                                      )
+                                        (item) => item.label !== elem.label,
+                                      ),
                                     )
                                   }
                                 >
@@ -678,7 +678,7 @@ const PartnerDataPage = ({
                                 </button>
                               )}
                             </div>
-                          )
+                          ),
                         )}
                       </div>
                     </div>
@@ -772,8 +772,8 @@ const PartnerDataPage = ({
                                 onClick={() =>
                                   setIndustriesData((data) =>
                                     data.filter(
-                                      (item) => item.label !== elem.label
-                                    )
+                                      (item) => item.label !== elem.label,
+                                    ),
                                   )
                                 }
                               >
@@ -879,7 +879,7 @@ const PartnerDataPage = ({
             </>
           )}
 
-          <div className="mt-[112px]">
+          <div className="pt-[112px]" id={"awards"}>
             <h3 className="text-[48px]/[57px] mb-8 text-black text-left">
               <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
                 <span>Awarded</span>

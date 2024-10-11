@@ -75,7 +75,7 @@ export default function Product(props: Props) {
 
   const isAlreadySavedPartner = (
     userSavedPartners: any = null,
-    partnerName: string
+    partnerName: string,
   ) => {
     if (!userSavedPartners) {
       return false;
@@ -176,7 +176,7 @@ export default function Product(props: Props) {
               />
               <Link
                 className="underline underline-offset-1 hover:no-underline"
-                href={`/partner/${props.partnerInfo?.partnerId}`}
+                href={`/partner/${props.partnerInfo?.partnerId}#awards`}
               >
                 Industry Recognition
               </Link>
