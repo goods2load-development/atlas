@@ -10,6 +10,8 @@ import { googleRatingMocks } from "./MOCK";
 import { useUserStore } from "@/lib/store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import SendDataToPartnerDialog from "../PartnersDataPage/SendDataToPartnerDialog";
+import { ToolTipComponent } from "../SearchMain";
 import {
   Tooltip,
   TooltipContent,
@@ -18,11 +20,13 @@ import {
 } from "@/components/ui/tooltip";
 import InfoImg from "@/assets/info.svg";
 import defaultCompanyLogo from "@/assets/defaultCompanyLogo.svg";
+import Link from "next/link";
+import recognationIcon from "@/assets/industryRecognations.svg";
 
 interface Props extends IProduct {
   deliveryBy: string;
   currency: any;
-  index: number; // index for mocks data (GoogleReview)
+  index: number; 
 }
 
 function Icon(type: string) {
@@ -83,139 +87,75 @@ export default function Product(props: Props) {
 
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
-      <div className="md:flex justify-between md:border-b">
-        <div className="flex border-b-[1px] md:border-b-[0px]">
-          <div className="w-1/2 md:w-[184px] p-[24px] border-r-[1px]">
-            <div className="text-[24px]/[28px] font-light [&>i]:font-normal]">
-              Estimated <i>transit</i>
-            </div>
-            <div className="flex items-center gap-2 text-[16px]/[26px] text-primaryOrange">
-              <span>From</span>
-              <span>{props.estimatedTransit}</span>
-              <span>{props.estimatedTransit === 1 ? " day" : " days"}</span>
-              <TooltipProvider delayDuration={200}>
-                <Tooltip>
-                  <TooltipTrigger className="cursor-pointer">
-                    <Image
-                      className="cursor-pointer"
-                      src={InfoImg}
-                      width={18}
-                      height={18}
-                      alt="info"
-                    />
-                  </TooltipTrigger>
-
-                  <TooltipContent
-                    side="top"
-                    className="text-[12px]/[17px] font-normal bg-primaryOrange text-white rounded-sm p-2 overflow-visible relative max-w-[250px] border-transparent"
-                  >
-                    Travel time may vary depending on the regulations of the
-                    states traversed; it is advisable to consult with the
-                    logistics company for an accurate estimate
-                  </TooltipContent>
-                </Tooltip>
-              </TooltipProvider>
-            </div>
+      <div className="md:flex justify-start md:border-b">
+        <div className="py-[37px] pl-[58px] pr-[35px] border-r">
+          <div className="flex items-center gap-3">
+            <div>{props.company.name}</div>
+            {!isAlreadySavedPartner(user?.savedPartners, props.company.name) ? (
+              <button
+                className="hover:opacity-60 transition-opacity"
+                onClick={onSavePartner}
+              >
+                <Image width={18} height={18} src={SaveIcon} alt="save" />
+              </button>
+            ) : (
+              <div>
+                <Image
+                  width={18}
+                  height={18}
+                  src={SaveIconFilled}
+                  alt="save filled"
+                />
+              </div>
+            )}
           </div>
-          <div
-            key={user?.id}
-            className="w-1/2 flex flex-col justify-start p-6 item-center text-center text-[20px]/[22px] font-medium flex-1 lg:ml-8"
-          >
-            <div className="flex justify-center items-center gap-3">
-              <span>{props.company.name}</span>
-              {!isAlreadySavedPartner(
-                user?.savedPartners,
-                props.company.name
-              ) ? (
-                <button onClick={onSavePartner}>
-                  <Image width={18} height={18} src={SaveIcon} alt="save" />
-                </button>
-              ) : (
-                <div>
-                  <Image
-                    width={18}
-                    height={18}
-                    src={SaveIconFilled}
-                    alt="save filled"
-                  />
-                </div>
-              )}
-            </div>
 
-            <Image
-              width={33}
-              height={36}
-              src={defaultCompanyLogo}
-              alt="default company logo"
-              className="mx-auto mt-3"
-            />
-          </div>
+          <Image
+            width={33}
+            height={36}
+            src={defaultCompanyLogo}
+            alt="default company logo"
+            className="mx-auto mt-3"
+          />
         </div>
-        <div className="flex border-b-[1px] md:border-b-[0px] flex-1">
-          <div className="w-1/2 flex flex-col items-center p-[24px]">
-            <div className="text-[20px]/[22px] font-medium flex gap-2 items-center">
-              <img src={Icon(props.deliveryBy)} />
-              Withdraw
-            </div>
-            <div className="text-[12px]/[18px]">
-              <div className="text-[14px]/[21px] mt-2">{props.delivery}</div>
-              <div className="text-[12px]/[18px] opacity-50 mt-1">
-                Estimated date
+        {props.partnerInfo?.services?.map(({ label, items }: any) => {
+          return (
+            <div key={label} className="border-r">
+              <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap min-w-[200px]">
+                {label}
+              </div>
+
+              <div className="mt-4 px-[17.5px]">
+                {items.slice(0, 3).map((item: string) => {
+                  return (
+                    <ToolTipComponent className="block" key={item} text={item}>
+                      <div className="text-center text-[14px]/[21px] pl-2 pr-1 border border-[#FF672080] rounded-[5px] text-primaryOrange w-max mb-2 max-w-[146px] overflow-hidden text-ellipsis whitespace-nowrap">
+                        {item}
+                      </div>
+                    </ToolTipComponent>
+                  );
+                })}
               </div>
             </div>
-          </div>
-          <div className="w-1/2 flex flex-col items-center p-[24px]">
-            <div className="text-[20px]/[22px] font-medium flex gap-2 items-center">
-              <img src={Icon(props.deliveryBy)} />
-              Delivery
-            </div>
-            <div className="text-[12px]/[18px]">
-              <div className="text-[14px]/[21px] mt-2">{props.delivery}</div>
-              <div className="text-[12px]/[18px] opacity-50 mt-1">
-                Estimated date
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="md:w-[200px] min-w-[200px] min-h-[104px] text-center flex flex-col justify-center md:border-l-[1px] md:border-b-[0px]">
-          <div className="text-[24px]/[28px] font-light [&>span]:font-normal [&>span]:italic">
-            Order <span>cost</span>
-          </div>
-
-          <div className="flex items-center gap-3 mx-auto">
-            <div className="text-[20px]/[22px] font-medium cursor-pointer inline-block">
-              From <span>{props.currency.symbol}</span>
-              <span>
-                {Math.round(parseInt(props.orderCost) * props.currency.rate)}
-              </span>
-            </div>
-            <TooltipProvider delayDuration={200}>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Image
-                    className="cursor-pointer"
-                    src={InfoImg}
-                    width={18}
-                    height={18}
-                    alt="info"
-                  />
-                </TooltipTrigger>
-
-                <TooltipContent
-                  side="top"
-                  className="text-[12px]/[17px] font-normal bg-primaryOrange text-white rounded-sm p-2 overflow-visible relative max-w-[250px] border-transparent"
-                >
-                  This indicated price is only an estimate and may vary
-                  depending on the availability of the requested cargo. Please
-                  consult with the selected logistic partner to obtain a final
-                  free quote.
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          );
+        })}
+        <div className="flex items-center justify-center flex-1">
+          <SendDataToPartnerDialog
+            trigger={
+              <button
+                disabled={false}
+                type="button"
+                className=" bg-primaryOrange
+           text-white text-[16px]/[24px] font-semibold py-3 px-4 rounded-[16px]
+            cursor-pointer hover:opacity-75 transition-opacity"
+              >
+                Get a free quotation
+              </button>
+            }
+          />
         </div>
       </div>
-      <div className="md:flex justify-between">
+      <div className="md:flex justify-between py-2">
         <div className="py-[8px] md:py-0 border-t md:border-none md:pl-6 items-center justify-center md:justify-start flex sm:flex-row flex-col gap-2">
           {googleRatingMocks[props.index] && (
             <GoogleRating data={googleRatingMocks[props.index]} />
@@ -223,11 +163,27 @@ export default function Product(props: Props) {
           {props.CO2EmissionControlled && (
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
               <LeafIcon />
-              CO2 Emission controlled
+              Carbon Offset
+            </div>
+          )}
+          {props.partnerInfo?.awards && (
+            <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E3F5F8] text-[#417FAE] w-fit flex">
+              <Image
+                width={21}
+                height={21}
+                src={recognationIcon}
+                alt="Recognations"
+              />
+              <Link
+                className="underline underline-offset-1 hover:no-underline"
+                href={`/partner/${props.partnerInfo?.partnerId}#awards`}
+              >
+                Industry Recognition
+              </Link>
             </div>
           )}
         </div>
-        <SelectionPopup
+        {/* <SelectionPopup
           orderId={props.orderId}
           company={props.company.name}
           withdraw={props.withdraw}
@@ -236,7 +192,7 @@ export default function Product(props: Props) {
           portDeparture={props.portDeparture}
           price={props.price}
           placementOfGoods={props.placementOfGoods}
-        />
+        /> */}
       </div>
     </div>
   );

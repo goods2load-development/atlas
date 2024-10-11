@@ -3,6 +3,17 @@ import logoPlaceholder from "@/assets/Product/DP_World.png";
 import logoPlaceholder2 from "@/assets/Product/Hapag_Lloyd.png";
 import { GoogleRatingProps } from "./GoogleRating";
 
+export interface IProductServices {
+  label: string;
+  items: string[];
+}
+
+export interface IPartnerInfo {
+  partnerId: string;
+  services: IProductServices[];
+  awards: boolean;
+}
+
 export interface IProduct {
   orderId: string;
   withdraw: string;
@@ -15,6 +26,7 @@ export interface IProduct {
   portDeparture: string;
   price: string;
   placementOfGoods: string;
+  partnerInfo: IPartnerInfo;
 }
 
 export const googleRatingMocks: GoogleRatingProps[] = [

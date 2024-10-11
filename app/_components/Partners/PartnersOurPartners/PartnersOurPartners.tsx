@@ -3,7 +3,6 @@ import React, { useEffect } from "react";
 import Link from "next/link";
 import defaultLogo from "@/assets/default-logo-g2l.svg";
 import { usePartnersStore } from "@/lib/store";
-import { Partner } from "@/components/Dashboard/PartnersMain/types";
 import clsx from "clsx";
 
 interface PartnersOurPartnersProps {
@@ -45,9 +44,7 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
                 <div
                   className="h-full"
                   style={{
-                    backgroundImage: user.companyPhoto
-                      ? `url(${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto})`
-                      : `url(${defaultLogo.src})`,
+                    backgroundImage: `url(${defaultLogo.src})`,
                     backgroundSize: "contain",
                     backgroundPosition: "center",
                     backgroundRepeat: "no-repeat",

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { headers } from "next/headers";
 import SeoPageMain from "@/components/SeoPage/SeoPageMain";
 import Footer from "@/components/Footer";
 
@@ -29,18 +28,14 @@ export async function generateMetadata({
     return { title: "Not Found" };
   }
 
-  const headersList = headers();
-  const host = headersList.get("host");
-  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
-
-  const canonicalURL = `${protocol}://${host}/${data?.slug}`;
+  const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${data?.slug}`;
 
   return {
     title: data?.title || "Goods2load",
     description: data?.description || "Goods2load",
     keywords: data?.category?.name || "",
     alternates: {
-      canonical: canonicalURL,
+      canonical,
     },
   };
 }

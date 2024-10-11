@@ -32,8 +32,8 @@ export enum DeliveryBy {
 interface FilterStoreProps {
   valid: boolean;
   partnersSelected: string[];
-  priceMin: string | null;
-  priceMax: string | null;
+  // priceMin: string | null;
+  // priceMax: string | null;
   deliveryBy: DeliveryBy;
   fromCountry: string;
   from: string;
@@ -51,9 +51,37 @@ interface FilterStoreProps {
   goodsValue: string;
   incoterms: string;
   sortBy: null | any;
-  cheapest: boolean;
-  fastest: boolean;
-  goGreen: boolean;
+
+  // Services
+  bestReviewed: boolean;
+  carbonOffset: boolean;
+  industryRecognition: boolean;
+
+  // Industry Solutions
+  pharmaceuticals: boolean;
+  electronics: boolean;
+  automotive: boolean;
+  manufacturing_retail: boolean;
+  exhibition_interior_design: boolean;
+  apparel_fashion: boolean;
+  ecommerce: boolean;
+  food_beverage: boolean;
+  energy: boolean;
+
+  // Transport Solutions
+  cold_chain: boolean;
+  dangerous_goods: boolean;
+  high_value_goods: false;
+  last_mile_delivery: boolean;
+  project_cargo: boolean;
+  general_solutions: boolean;
+
+  // Additional services
+  white_gloves_services: boolean;
+  ecommerce_fullfillment: boolean;
+  heavy_equipment_logistics: boolean;
+  cross_border_expansio: boolean;
+
   partners: any[];
   portsDepartureSelected: string[];
   portsArrivalSelected: string[];
@@ -93,11 +121,39 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     incoterms: savedSeachForm?.incoterms || "DDP",
 
     // filter options
-    cheapest: false,
-    fastest: false,
-    goGreen: false,
-    priceMin: null,
-    priceMax: null,
+
+    // Services
+    bestReviewed: false,
+    carbonOffset: false,
+    industryRecognition: false,
+
+    // Industry solutions
+    pharmaceuticals: false,
+    electronics: false,
+    automotive: false,
+    manufacturing_retail: false,
+    exhibition_interior_design: false,
+    apparel_fashion: false,
+    ecommerce: false,
+    food_beverage: false,
+    energy: false,
+
+    // Transport solutions
+    cold_chain: false,
+    dangerous_goods: false,
+    high_value_goods: false,
+    last_mile_delivery: false,
+    project_cargo: false,
+    general_solutions: false,
+
+    // Additional Services
+    white_gloves_services: false,
+    ecommerce_fullfillment: false,
+    heavy_equipment_logistics: false,
+    cross_border_expansio: false,
+
+    // priceMin: null,
+    // priceMax: null,
     partners: [],
     partnersSelected: [],
     portsDeparture: [],
@@ -199,11 +255,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         departure,
         arrival,
         typeOfGoods,
-        cheapest,
-        fastest,
-        goGreen,
-        priceMin,
-        priceMax,
+        bestReviewed,
+        carbonOffset,
+        industryRecognition,
+        // priceMin,
+        // priceMax,
         partnersSelected,
         portsDepartureSelected,
         portsArrivalSelected,
@@ -272,22 +328,18 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           goodsValue:
             parseInt(goodsValue) /
             useCurrenciesStore.getState().selectedCurrency.rate,
-          order: {
-            cheapest: cheapest,
-            fastest: fastest,
-            goGreen: goGreen,
-          },
+
           provider: {},
-          price: {
-            min: priceMin
-              ? parseInt(priceMin) /
-                useCurrenciesStore.getState().selectedCurrency.rate
-              : undefined,
-            max: priceMax
-              ? parseInt(priceMax) /
-                useCurrenciesStore.getState().selectedCurrency.rate
-              : undefined,
-          },
+          // price: {
+          //   min: priceMin
+          //     ? parseInt(priceMin) /
+          //       useCurrenciesStore.getState().selectedCurrency.rate
+          //     : undefined,
+          //   max: priceMax
+          //     ? parseInt(priceMax) /
+          //       useCurrenciesStore.getState().selectedCurrency.rate
+          //     : undefined,
+          // },
         },
       }).then((data: any) => {
         const products = data?.partners?.data?.map((item: any) => ({
@@ -310,9 +362,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           portArrival: item.portArrival,
           portDeparture: item.portDeparture,
           price: item.price, // Added for analytics avarge store when user select this product
-          placementOfGoods: item.placementOfGoods // Added for analytics avarge store when user select this product
+          placementOfGoods: item.placementOfGoods, // Added for analytics avarge store when user select this product
+          partnerInfo: item.partnerInfo,
         }));
-        console.log("products", products);
         set(() => ({ products, pagination: data?.partners?.meta }));
       });
     },

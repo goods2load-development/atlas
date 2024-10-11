@@ -1,5 +1,4 @@
 import { Metadata } from "next";
-import { headers } from "next/headers";
 import BlogSlug from "@/components/BlogSlug/BlogSlug";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header/Header";
@@ -20,11 +19,8 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const blog = await getBlogData(slug);
-  const headersList = headers();
-  const host = headersList.get("host");
-  const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
-  const canonical = `${protocol}://${host}/blog/${slug}`;
+  const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/blog/${slug}`;
 
   return {
     title: blog.title,

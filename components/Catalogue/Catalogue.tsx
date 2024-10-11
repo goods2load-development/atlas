@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import PriceAlerts from "@/components/PriceAlerts";
+import PriceAlerts from "@/components/SolutionFinder";
 import Filter from "./Filter";
 import Products from "./Products";
 import { useState } from "react";
