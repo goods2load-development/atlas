@@ -66,6 +66,7 @@ type Incoterms = {
 
 const incotermsList: Incoterms = {
   plane: [
+    { name: "Unknown", description: "In case if You don't know." },
     { name: "DDP", description: "Delivered Duty Paid" },
     { name: "DPU", description: "Delivered at Place Unloaded" },
     { name: "DAP", description: "Delivered At Place" },
