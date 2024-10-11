@@ -20,6 +20,8 @@ import {
 } from "@/components/ui/tooltip";
 import InfoImg from "@/assets/info.svg";
 import defaultCompanyLogo from "@/assets/defaultCompanyLogo.svg";
+import Link from "next/link";
+import recognationIcon from "@/assets/industryRecognations.svg";
 
 interface Props extends IProduct {
   deliveryBy: string;
@@ -116,7 +118,7 @@ export default function Product(props: Props) {
             className="mx-auto mt-3"
           />
         </div>
-        {props.services?.map(({ label, items }: any) => {
+        {props.partnerInfo?.services?.map(({ label, items }: any) => {
           return (
             <div key={label} className="border-r">
               <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap">
@@ -162,6 +164,22 @@ export default function Product(props: Props) {
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
               <LeafIcon />
               Carbon Offset
+            </div>
+          )}
+          {props.partnerInfo?.awards && (
+            <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E3F5F8] text-[#417FAE] w-fit flex">
+              <Image
+                width={21}
+                height={21}
+                src={recognationIcon}
+                alt="Recognations"
+              />
+              <Link
+                className="underline underline-offset-1 hover:no-underline"
+                href={`/partner/${props.partnerInfo?.partnerId}`}
+              >
+                Industry Recognition
+              </Link>
             </div>
           )}
         </div>
