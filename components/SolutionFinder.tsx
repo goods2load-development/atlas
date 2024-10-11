@@ -308,7 +308,7 @@ export default function SolutionFinder() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  ),
+                                  )
                                 )}
                               </CommandGroup>
                             )}
@@ -432,7 +432,7 @@ export default function SolutionFinder() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  ),
+                                  )
                                 )}
                               </CommandGroup>
                             )}
