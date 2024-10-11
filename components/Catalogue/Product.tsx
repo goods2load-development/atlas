@@ -118,7 +118,7 @@ export default function Product(props: Props) {
         </div>
         {props.services?.map(({ label, items }: any) => {
           return (
-            <div className="border-r">
+            <div key={label} className="border-r">
               <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap">
                 {label}
               </div>
