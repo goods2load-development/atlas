@@ -197,7 +197,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height,
           goodsValue,
         },
-        newFilter,
+        newFilter
       );
       set((state: FilterStoreProps) => ({
         ...state,
@@ -229,7 +229,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
               label: item.properties.name,
             }));
             const selected: any[] = data?.features.map(
-              (item: any) => item.properties.name,
+              (item: any) => item.properties.name
             );
             if (departure) {
               set(() => ({
@@ -292,7 +292,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height,
           goodsValue,
           incoterms,
-        }),
+        })
       );
 
       postRequest({
@@ -351,11 +351,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           },
           withdraw: format(
             new Date(item.withdraw).toDateString(),
-            "MM/dd/yyyy",
+            "MM/dd/yyyy"
           ),
           delivery: format(
             new Date(item.delivery).toDateString(),
-            "MM/dd/yyyy",
+            "MM/dd/yyyy"
           ),
           orderCost: item.price,
           CO2EmissionControlled: item.goGreen,
@@ -363,7 +363,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           portDeparture: item.portDeparture,
           price: item.price, // Added for analytics avarge store when user select this product
           placementOfGoods: item.placementOfGoods, // Added for analytics avarge store when user select this product
-          services: item.services,
+          partnerInfo: item.partnerInfo,
         }));
         set(() => ({ products, pagination: data?.partners?.meta }));
       });
@@ -412,7 +412,7 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
         }
       });
       const majorCurrencies = currenciesSorted.filter(
-        (i: any) => i.code === "USD" || i.code === "EUR" || i.code === "GBP",
+        (i: any) => i.code === "USD" || i.code === "EUR" || i.code === "GBP"
       );
       set(() => ({
         currencies: majorCurrencies
@@ -420,8 +420,8 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
             currenciesSorted.filter(
               (i: any) =>
                 !(i.code === "USD" || i.code === "EUR" || i.code === "GBP") &&
-                exchangeRates[i.code],
-            ),
+                exchangeRates[i.code]
+            )
           )
           .map((item: any) => ({ ...item, rate: exchangeRates[item.code] })),
         selectedCurrency: {
