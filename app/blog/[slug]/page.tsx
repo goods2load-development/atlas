@@ -21,7 +21,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const blog = await getBlogData(slug);
   const headersList = headers();
-  const host = headersList.get("host");
+  const host = process.env.NEXT_PUBLIC_CLIENT_URL;
   const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
   const canonical = `${protocol}://${host}/blog/${slug}`;

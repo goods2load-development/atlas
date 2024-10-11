@@ -71,9 +71,10 @@ axios.interceptors.response.use(
       signOut({ callbackUrl: "/" });
       localStorage.removeItem("id");
       Cookie.remove("access_token");
+      return;
     }
 
-    return;
+    return Promise.reject(error);
   }
 );
 

@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import { headers } from "next/headers";
 import SeoPageMain from "@/components/SeoPage/SeoPageMain";
 import Footer from "@/components/Footer";
 
@@ -29,8 +28,7 @@ export async function generateMetadata({
     return { title: "Not Found" };
   }
 
-  const headersList = headers();
-  const host = headersList.get("host");
+  const host = process.env.NEXT_PUBLIC_CLIENT_URL;
   const protocol = process.env.NODE_ENV === "production" ? "https" : "http";
 
   const canonicalURL = `${protocol}://${host}/${data?.slug}`;
