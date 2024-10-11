@@ -13,6 +13,7 @@ import emailIcon from "@/assets/email.svg";
 import arrowRightIcon from "@/assets/arrow-right-input.svg";
 import ErrorBoundary from "./ErrorBoundary";
 import LangSwitcher from "./LangSwicher";
+import JoinOurNewsLetter from "./JoinOurNewsLetter";
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -89,32 +90,7 @@ export default function Footer() {
                     </ul>
                   )}
                 </div>
-                {i === footerData.json.length - 1 && (
-                  <form className="max-w-[246px] w-full sm:ml-auto">
-                    <legend className="mb-4 font-semibold">
-                      Join our News Letter
-                    </legend>
-                    <div className="relative">
-                      <Input
-                        type="email"
-                        pattern="email"
-                        className="pr-7 w-full text-black"
-                        placeholder="Enter your email"
-                      />
-                      <button
-                        title="send"
-                        className="absolute top-1/2 right-2 -translate-y-1/2"
-                      >
-                        <Image
-                          src={arrowRightIcon}
-                          width={24}
-                          height={24}
-                          alt="send"
-                        />
-                      </button>
-                    </div>
-                  </form>
-                )}
+                {i === footerData.json.length - 1 && <JoinOurNewsLetter />}
               </div>
             ))}
           </div>
