@@ -157,238 +157,435 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Goods2Load’s property",
+    title: "Sharing information with us:",
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Except as set out elsewhere in these Terms, all intellectual property rights including copyright (including copyright in computer software), patents, trade marks or business names, design rights, database rights, know-how, trade secrets and rights of confidence in our Services and Platforms (together, the “Intellectual Property Rights”) are owned by or licensed to Goods2Load. You acknowledge that by using the Services or Platforms, you will not acquire any right, title or interest in or to them except for the limited licence to use them granted to you by these Terms. You also acknowledge that you have no right to have access to any of the Services or Platforms in source-code form unless it is released under a license specifically permitting such access.",
+          `We take your privacy seriously and operate at all times in accordance with applicable
+          data protection laws. We do not intend to collect any personally identifiable data from
+          users including Logistics Providers, but in the event that any personal data is obtained,
+          such data will be processed according to our Privacy Policy. Any user information that is
+          gathered will be strictly for analytical purposes. You acknowledge that any Personal
+          Data or Business Data (as defined in our Privacy Policy) which you submit via our
+          Services or Platforms may be used by us in accordance with our Privacy Policy.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `To the extent that our Services or Platforms allow users including Logistics Providers to
+            post, upload, transmit or otherwise make available any information, images, video, or
+            other data with Goods2Load or other Goods2Load users (“User Content”), you agree
+            that:`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.ULIST,
+        content: [
+          `you will ensure that all User Content you provide to us is accurate and up to date
+          and that you have all consents, licenses or approvals necessary to share it, and
+          that it does not violate any laws, the Terms of Usage, or third-party rights and to
+          allow us to use that information;`,
+          `you are responsible for ensuring that any billing information you provide is
+          accurate and that you are authorized to use the payment methods submitted on
+          the Platforms;`,
+          `you are solely responsible for User Content that you upload and you represent
+          and agree that you will not share anything which you do not have the permission
+          or right to share or for which you cannot grant the license;`,
+          `although all intellectual property rights in any User Content shall be owned by
+          you or your licensors, you hereby grant Goods2Load a non-exclusive, perpetual
+          and royalty-free, worldwide, transferable and sublicensable right to host, use,
+          reproduce, display, distribute, modify, adapt, publish, translate and create
+          derivative works of all User Content (in accordance with our Privacy Policy)
+          including for analytics, advertising and marketing purposes of our Services and
+          Platforms. For example, we may make User Content available to our business
+          partners for display on their sites. You control the User Content that you upload
+          to the Goods2Load Services and may terminate this license at any time by
+          deleting the User Content or your Goods2Load account. Deleted User Content
+          will be removed from our Platforms.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Feedback</strong>: If you provide us with any suggestions, comments, improvements, ideas or
+          other feedback (“Feedback”), you agree that such Feedback is provided voluntarily and
+          will be deemed non-confidential and non-proprietary. You hereby irrevocably assign
+          ownership of all intellectual property rights subsisting in that Feedback to us and we
+          reserve the right to use, reproduce, modify, and display the Feedback in any manner and
+          for any purpos  e, including for improving the Platforms or Services and for marketing.
+          Additionally, you grant us the right to associate your name or personal information
+          provided with the Feedback, for purposes such as attribution or clarification, unless you
+          explicitly request anonymity. Any personal data will be processed in accordance with
+          our Privacy Policy.`,
         ],
       },
     ],
   },
   {
-    title: "Other people’s property",
+    title: "Communication:",
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "We respect the intellectual property rights of others. If you have reason to believe that your copyright is being infringed by any content on our Services or Platforms, please send a written notification of the alleged infringement to legal@goods2load.net, for the attention of the Legal Department. Alternatively, you can contact us in writing at:",
+          `You authorise Goods2Load (and its authorized agents) to contact you via various
+          communication methods, including but not limited to SMS, phone calls, emails, and
+          WhatsApp, using the contact details you have provided, for matters related to the
+          Services.`,
         ],
       },
+    ],
+  },
+  {
+    title: "User Conduct:",
+    body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: ["Goods2load FZ-LLC"],
-        additionalContent: [
-          {
-            type: ILegacyDataBlockBodyType.PARAGRAPH,
-            content: [
-              "LICENCE NO 47010212 ADDRESS BIZ00921 Compass Building, Al Shohada Road, AL Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab Emirates",
-            ],
-          },
+        content: [
+          `We maintain a zero-tolerance policy towards abusive language or inappropriate
+            behavior directed at us, our Platforms and Services, employees, representatives, or our
+            users and if it is determined that a user engages in such conduct, including the use of
+            offensive language, threats, defamation, or libel, this may be considered grounds for
+            legal and criminal proceedings`,
+        ],
+      },
+    ],
+  },
+  {
+    title: "Intellectual Property Rights (IPR):",
+    body: [
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Goods2Load’s IPR</strong>: Except as set out elsewhere in these Terms, all intellectual property
+          rights including copyright (including copyright in computer software), patents,
+          trademarks or business names, design rights, database rights, know-how, trade secrets
+          and rights of confidence in our Services and Platforms are owned by or licensed to
+          Goods2Load. You acknowledge that by using the Services or Platforms, you will not
+          acquire any right, title or interest in or to them except for the limited licence to use them
+          granted to you by these Terms. You also acknowledge that you have no right to have
+          access to any of the Services or Platforms in source-code form unless it is released under
+          a license specifically permitting such access.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "To assist us with resolving any alleged infringement, and where applicable in order to make a valid notification under the Digital Millennium Copyright Act (for which purposes the Legal Department are the designated agent) please include the following information in your notice:",
+          `<strong>Third-Party IPR</strong>: We make no representations regarding the ownership or validity of
+          the IPR posted on our Platforms by third parties. We respect the intellectual property
+          rights of others. If you have reason to believe that your copyright is being infringed by
+          any content on our Services or Platforms, please send a written notification of the
+          alleged infringement to <a href="mailto:legal@goods2load.com">legal@goods2load.com</a>, for the attention of the Legal
+          Department. You acknowledge that we shall not be held liable for any infringement or
+          legal issues related to any alleged or actual infringement of such IPR, including but not
+          limited to copyright, trademark, or patent infringement, by virtue of any
+          representations being made.`,
+        ],
+      },
+    ],
+  },
+  {
+    title: "Currency:",
+    body: [
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `All listed options shown on the Platforms, or quoted by customer service, are shown as
+          per the user’s choice and preference. The Platforms may include an automated currency
+          conversion tool that relies on third-party data, but we are not responsible for the
+          accuracy of these exchange rates, which are provided solely for reference purposes.`,
+        ],
+      },
+    ],
+  },
+  {
+    title: "Limitations and exclusions of liability:",
+    body: [
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Limitation of Liability for Logistics Providers</strong>: Goods2Load offers a digital platform
+          that connects users with independent third-party Transportation Providers. While
+          Goods2Load facilitates the interaction between users and Transportation Providers,
+          Goods2Load does not own, operate, or control the Transportation Services provided.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `By using the Services, you acknowledge and agree that Goods2Load:`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.OLIST,
         content: [
-          "1. identification of the copyrighted work claimed to have been infringed;",
-          "2. identification of the claimed infringing material and enough information for us to reasonably locate it on our Services (providing the URL(s) of the materials is fine);",
-          "3. enough information for Goods2Load to contact you, such as an address, telephone number, and, if available, an email address;",
-          "4. a statement by you that you have a good faith belief that the disputed use is not authorized by the copyright owner, its agent, or the law;",
-          "5. for claims under the DMCA only, a statement by you, made under penalty of perjury, that the above information in your notification is accurate and that you are the copyright owner or are authorized to act on the copyright owner’s behalf, and your physical or electronic signature.",
-          "6. Price accuracy and warranty disclaimer",
+          `<strong>Is not liable</strong> for the actions, omissions, services, or failures of any
+          Transportation Provider listed on the Platforms, including, but not limited to,
+          issues regarding the quality, timeliness, safety, or legality of services provided.`,
+          `<strong>Does not guarantee</strong> fthe performance or suitability of any Transportation
+          Provider, and it is the user’s responsibility to independently conduct verification
+          before engaging with any Transportation Provider. Nevertheless, Goods2Load
+          endeavours to procure that the content displayed on or via our Services and
+          Platforms is up to date and accurate.`,
+          `<strong>Cannot guarantee</strong> that the information displayed on the Platforms are accurate
+          or free from discrepancies as the information is based on data obtained from
+          independent Transportation Providers or relevant third parties. Although
+          Goods2Load always endeavours to display accurate and updated information on
+          the Platforms, sometimes information may be subject to change, updation or
+          contain errors beyond our control. Users are encouraged to verify any
+          information directly with the relevant Transportation Provider before making
+          decisions or bookings, as Goods2Load accepts no liability for any inaccuracies
+          regarding the information.`,
+          `<strong>Shall not be responsible</strong> for any direct, indirect, incidental, special, or
+          consequential damages arising from or related to the Transportation services
+          provided by any Transportation Provider, including but not limited to, loss of
+          goods, delays, or failure of delivery.`,
+          `<strong>Provides no warranties</strong> or representations regarding the availability or
+          reliability of Transportation services. All services provided by Transportation
+          Providers are performed at the user's own risk.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Your use of the Services and Platforms is entirely at your own risk.",
+          `Goods2Load does not endorse, warrant, or assume liability for any Transportation
+          Provider's actions or services. Goods2Load is not responsible for any agreements or
+          arrangements you enter into with third parties, including Transportation Providers, as a
+          result of using our Services or Platforms.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Although we enforce strict price accuracy policies with all Transportation Providers who supply our transportation data and do our best to ensure that the content displayed on or via our Services and Platforms is up to date and accurate, we cannot guarantee the reliability or accuracy of such content.",
+          `If you encounter any problems with any booking you make with a Transportation
+            Provider whom you may have been redirected to through the Platforms, you
+            acknowledge that you must resolve that issue with the relevant Transportation Provider
+            and that your sole remedy in such circumstances, including any refund, lies with the
+            relevant Transportation Provider and not with Goods2Load. The identity of the relevant
+            Transportation Provider and the terms and conditions applicable to your booking with
+            them will be notified to you at the time of booking and you should ensure that you read
+            and fully understand them before completing your booking. The Transportation
+            Provider’s terms should set out what rights you have against the Transportation
+            Provider and will explain their liability to you in the event of anything going wrong`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Likewise, our price forecasts are based on data that we hold that relates to past pricing trends, but there is no guarantee that our forecasts will be correct.",
+          `<strong>Alerts</strong>: Goods2Load offers a "Solution Finder" service that allows users to sign up for
+          alerts and notifications about transportation solutions matching their specified criteria.
+          While we strive to provide accurate and timely information, Goods2Load does not
+          guarantee the availability, suitability, or quality of any Transportation Services identified
+          through this service. Users acknowledge that Goods2Load is not responsible for any loss
+          or damage arising from the use of the Solution Finder service or reliance on the
+          information provided.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "We provide the Services and Platforms on an ‘as is’ basis and expressly disclaim all warranties, conditions and guarantees of any kind, whether express or implied, including but not limited to, the implied warranties of title, non-infringement, merchantability and accuracy, as well as any warranties implied by usage of trade, course of dealing or course of performance. To the extent permitted by law, we make no representations and do not warrant to you that our Services or Platforms (a) are accurate, complete or up to date; (b) will always be available; (c) will meet your expectations; or (d) are secure or are free from errors, faults, defects, viruses or malware.",
+          `<strong>Disclaimer of Implied Warranties</strong>: Your use of the Services and Platforms is entirely at
+          your own risk. We provide the Services and Platforms on an ‘as is’ basis and expressly
+          disclaim all warranties, conditions and guarantees of any kind, whether express or
+          implied, including but not limited to, the implied warranties of title, non-infringement,
+          merchantability and accuracy, as well as any warranties implied by usage of trade,
+          course of dealing or course of performance. To the extent permitted by law, we make no
+          representations and do not warrant to you that our Services or Platforms (a) are
+          accurate, complete or up to date; (b) will always be available; (c) will meet your
+          expectations; or (d) are secure or are free from errors, faults, defects, viruses or
+          malware.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Third-Party Links and Advertisements</strong>: Where our Services or Platforms include links
+          to third-party websites or resources, including advertisers, these are provided solely for
+          informational purposes. We have no control over the contents of those sites or resources
+          and accept no responsibility for them or for any loss or damage that may arise from
+          your use of them. Goods2Load has not reviewed all of the third-party websites linked to
+          its Platforms and is not responsible for the content or accuracy of any off-site pages nor
+          are we responsible for the availability of such external websites or resources, and do not
+          endorse and are not responsible in any way for the privacy practices or the content of
+          such websites, including (without limitation) any advertising, products or other
+          materials or services on or available from such websites or resources, nor for any loss or
+          damage in connection with the use of or reliance on any such content, or goods or
+          services available on such external websites (including but not limited to fraud) or
+          resources to the extent permitted by the applicable Law. Any advertising material
+          submitted by third parties on our Platforms is solely the responsibility of the advertiser,
+          and Goods2Load assumes no liability for any errors, omissions, or inaccuracies in such
+          material.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Unauthorized Activities, Misrepresentation and Unofficial Offers</strong>: Goods2Load is
+            not responsible for any fraud, misrepresentation, or unauthorized activities conducted
+            by third parties using the Platforms, including any unofficial offers, advertisements, or
+            contests falsely claiming association with Goods2Load.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Use of Platforms</strong>: To the maximum extent permitted by law, we (together with our
+            officers, directors, employees, representatives, affiliates, providers and third parties) do
+            not accept any liability for (a) any inaccuracies or omissions in the content displayed on
+            or via our Services or Platforms; or (b) any act of god, accident, delay or any special,
+            exemplary, punitive, indirect, incidental or consequential loss or damage of any kind
+            (including, without limitation, lost profits or lost savings), whether based in contract,
+            tort (including negligence), strict liability or otherwise, incurred by you arising out of or
+            in connection with your access to, use of, or inability to access or use, our Services or
+            Platforms or their content.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Indemnity</strong>: Subject to these Terms, you will be responsible and liable to us for all
+          actions, claims, proceedings, costs, damages, losses and expenses (including, without
+          limitation, legal fees) incurred by us, and each of our officers, directors, employees and
+          agents, arising out of or in any way connected with your misuse of our Services or
+          Platforms or breach of these Terms.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Consumer Protection</strong>: Nothing in these Terms is intended to limit or exclude any
+            liability that cannot be excluded or limited by law.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
+          `<strong>Maximum Liability</strong>: Subject to these Terms and to the extent permitted by law, our
+          maximum aggregate liability to you arising out of or in connection with these Terms or
+          your access to, use of, or inability to access or use, our Services or Platforms shall be
+          limited to the sum of AED 1,000 (One Thousand UAE Dirhams).`,
         ],
       },
     ],
   },
   {
-    title: "Price forecasting",
+    title: "General Provisions:",
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Goods2Load may provide you with air, sea and road cargo forecasting information if you choose to sign up to price alerts. Our price forecasts are the best guess that we can provide at any given time based on the data that we hold that relates to past trends. There is no guarantee that our forecasts will be correct, since pricing and availability depends on third parties, as explained above. While you may choose to rely on our forecasts, we do not and cannot guarantee their accuracy and accept no liability for any inaccuracy or unavailability of indicative prices.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Making transportation bookings via Goods2Load",
-    body: [
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "Goods2Load is not a transportation agent and is not responsible for providing any transportation options displayed via the Services or Platforms or for setting or controlling the prices we display. Any Third Party Travel Products which you find and/or book via our Services or Platforms are provided by independent Transportation Providers.",
+          `<strong>Assignment</strong>: These Terms are personal to you. You shall not be entitled to assign these
+            Terms in whole or in part to any third party without our prior written consent.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Goods2Load facilitates your bookings with Transportation Providers but is not responsible and has no liability to you in respect of such bookings. The identity of the relevant Transportation Provider and the terms and conditions applicable to your booking with them (“Transportation Provider Terms”) will be notified to you at the time of booking and you should ensure that you read and fully understand them before completing your booking. The only exception to this is if you’ve booked with Goods2Load’s Transportation Service, which is subject to a different set of terms and conditions. Unless your booking confirmation has come from Goods2Load, then this is unlikely to affect you.",
+          `<strong>Entire Agreement</strong>: These Terms represent the entire agreement between us and you
+          and supersede and replace all and any previous terms, conditions, agreements and
+          arrangements in respect of your use of our Services or Platforms.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "The Transportation Provider Terms should set out what rights you have against the Transportation Provider and will explain their liability to you in the event of anything going wrong.",
+          `<strong>Non-Waiver</strong>: Any failure by us to enforce any of these Terms shall not be a waiver of
+them or limit the right to subsequently enforce any of these Terms.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "You agree to comply in full with all applicable Transportation Provider Terms. You acknowledge that breaching Transportation Provider Terms could result in the cancellation of reservations, revocation of frequent flier miles and other benefits, and additional charges.",
+          `<strong>Severability</strong>: The invalidity or unenforceability of any provision (in whole or part) of
+these Terms shall not affect the validity or enforceability of the remaining provisions (in
+whole or part). The whole or part of any provision which is held by a court of competent
+jurisdiction to be invalid or unenforceable shall be deemed deleted from these Terms.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Where you have used our Platforms to book two or more related transportation products within a 24-hour period (for example a air service and truck service booked separately but within 24 hours of each other) then this may be classified as a “Linked Travel Arrangement” depending on where you are located and the applicable consumer protection laws that apply. Where a Linked Transportation Arrangement has been created, you will not have the same level of consumer protection that you would get where you book both a air service and truck service together through one single agent (where you may then get the benefits that apply to booking packages). This means that you need to rely on each individual Transportation Provider to perform their services, and do not have legal recourse to the organiser or the retailer of a package. In the event of the insolvency of one of the providers involved in the Linked Transportation Arrangement, the protections available under the EU Package Transportation Regulations will not apply.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Limitations and exclusions of liability",
-    body: [
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "These Terms set out the full extent of Goods2Load’s obligations and liabilities in respect of our Services and Platforms.",
+          `<strong>Non-Application to Third-Party</strong>: A person who is not a party to these Terms shall have
+no right to enforce any provision of these Terms.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Goods2Load has no responsibility whatsoever for any arrangements you make with any third party as a result of your use of our Services or Platforms (including, without limitation, any Transportation Provider). If you encounter any problems with any booking you make or attempt to make via Goods2Load, you acknowledge that you should resolve that issue with the relevant Transportation Provider and that your sole remedy in such circumstances, including any refund, lies with the relevant Transportation Provider and not with Goods2Load. Where our Services or Platforms contain links to other sites and resources provided by third parties, these links are provided for your information only. We have no control over the contents of those sites or resources and accept no responsibility for them or for any loss or damage that may arise from your use of them.",
+          `<strong>Language</strong>: If these Terms of Service are translated into any other language and there is
+a discrepancy between the English text and the text in the other language, the English
+text version will prevail to the fullest and maximum extent permitted by applicable Law.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "You may see advertising material submitted by third parties on our Services and Platforms. Each individual advertiser is solely responsible for the content of its advertising material and Goods2Load accepts no responsibility for the content of advertising material, including, without limitation, any errors, omissions or inaccuracies.",
+          `<strong>Force Majeure</strong>: We shall not be liable for any failure to perform our obligations under
+the Terms of Usage if such failure is caused by events or circumstances beyond our
+reasonable control, including but not limited to acts of God, war, terrorism, strikes,
+epidemics, pandemics, natural disasters, or any other similar event.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "To the maximum extent permitted by law, we (together with our officers, directors, employees, representatives, affiliates, providers and third parties) do not accept any liability for (a) any inaccuracies or omissions in the content displayed on or via our Services or Platforms; or (b) any act of god, accident, delay or any special, exemplary, punitive, indirect, incidental or consequential loss or damage of any kind (including, without limitation, lost profits or lost savings), whether based in contract, tort (including negligence), strict liability or otherwise, incurred by you arising out of or in connection with your access to, use of, or inability to access or use, our Services or Platforms or their contents.",
+          `<strong>Termination</strong>: Goods2Load may in its absolute discretion immediately terminate any
+          agreement with you under these Terms at any time upon notice to you and/or, if you
+          have an account with Goods2Load, by cancelling your membership and your access to
+          your account and removing any User Content you have uploaded to our Services or
+          Platforms. Goods2Load may suspend your access and use in whole or in part without
+          notice at any time, for example to prevent you from uploading any User Content, without
+          incurring any liability to you whatsoever. You may terminate your account by writing to
+          us at <a href="mailto:legal@goods2load.com">legal@goods2load.com</a> and cease using the Services. Upon receipt of such notice,
+          Goods2Load will deactivate your account and cease providing Services to you. Any
+          outstanding obligations or liabilities incurred prior to termination will remain in effect.
+          Goods2Load reserves the right to retain any data or information you have provided in
+          accordance with our Privacy Policy. Goods2Load will not be liable for any claims or
+          damages arising from your decision to terminate your account.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Subject to these Terms and to the extent permitted by law, our maximum aggregate liability to you arising out of or in connection with these Terms or your access to, use of, or inability to access or use, our Services or Platforms shall be limited to the sum of $100 (one hundred United States dollar).",
+          `<strong>Remedies for Breaches</strong>: In the event of any breach of these Terms or applicable laws,
+          Goods2Load reserves the right to pursue all available remedies, including suspending or
+          terminating your access to the Services, seeking injunctive or equitable relief, recovering
+          damages, and withholding Services. You agree to indemnify Goods2Load for any losses,
+          costs, or legal fees arising from such breaches. Goods2Load may also recover any costs
+          incurred in legal actions taken due to the breach. All remedies are cumulative, and
+          failure to enforce any provision does not constitute a waiver of Goods2Load’s rights.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "Nothing in these Terms shall limit or exclude (a) our liability in respect of death or personal injury caused by our negligence or for our fraud or fraudulent misrepresentation; (b) any other liability that cannot be excluded by law; or (c) your statutory rights.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Your liability to us",
-    body: [
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "Subject to these Terms, you will be responsible and liable to us for all actions, claims, proceedings, costs, damages, losses and expenses (including, without limitation, legal fees) incurred by us or the Goods2Load Group Companies, and each of our officers, directors, employees and agents, arising out of or in any way connected with your use of our Services or Platforms or breach of these Terms.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "Termination",
-    body: [
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "Goods2Load may in its absolute discretion immediately terminate any agreement with you under these Terms at any time upon notice to you and/or, if you have a log-in account, by cancelling your membership and your access to your account and removing any User Content you have uploaded to our Services or Platforms. Goods2Load may suspend your access and use in whole or in part without notice at any time, for example to prevent you from uploading any User Content, without incurring any liability to you whatsoever.",
-        ],
-      },
-    ],
-  },
-  {
-    title: "General provisions",
-    body: [
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "You acknowledge that your unauthorised use of our Services or Platforms may result in irreparable damage and injury to Goods2Load and/or its affiliates or licensors for which money damages would be inadequate. Consequently, in the event of such unauthorised use, we and our affiliates and/or licensors (as applicable) shall have the right, in addition to any other legal remedies available, to seek an immediate injunction against you.",
+          `<strong>Definition of Law(s)</strong>: For the purposes of this Agreement, “Law(s)” refers to all
+            applicable laws and statutes of the United Arab Emirates, as well as any regulations,
+            ordinances, codes, rules, directives, and guidelines issued by its governmental or
+            regulatory authorities. This also includes, without limitation, regulations on Anti-Money
+            Laundering (AML), import and export laws, customs regulations, money exchange laws,
+            and any other applicable laws or binding court orders or decisions relevant to this
+            Agreement and the activities contemplated herein. “Law(s)” also refers to any other
+            relevant laws of other jurisdictions where Goods2Load may be legally operating or that
+            may apply to users by virtue of their activities under this Agreement.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "The invalidity or unenforceability of any provision (in whole or part) of these Terms shall not affect the validity or enforceability of the remaining provisions (in whole or part). The whole or part of any provision which is held by a court of competent jurisdiction to be invalid or unenforceable shall be deemed deleted from these Terms.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "These Terms are personal to you. You shall not be entitled to assign these Terms in whole or in part to any third party without our prior written consent.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "These Terms represent the entire agreement between us and your official legal business representer and supersede and replace all and any previous terms, conditions, agreements and arrangements in respect of your use of our Services or Platforms.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "We will act promptly to any indications of User Content that is in breach of these Terms. Where you know of or suspect any illegal activities, please contact us at our helpdesk.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "Any failure by us to enforce any of these Terms shall not be a waiver of them or limit the right to subsequently enforce any of these Terms.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "A person who is not a party to these Terms shall have no right to enforce any provision of these Terms.",
-        ],
-      },
-      {
-        type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [
-          "Irrespective of the country from which you access or use Services or Platforms, to the extent permitted by law these Terms and your use shall be governed in accordance with the laws of United Arab Emirate, Dubai city and you are deemed to have submitted to the non-exclusive jurisdiction of the courts of United Arab Emirate, Dubai city to resolve any disputes which may arise hereunder. If you are using the Platforms or Services for commercial purposes, or via an unauthorised computer program as further described and prohibited under the “using our services” section of these Terms, then you submit to the exclusive jurisdiction of the courts of United Arab Emirate, Dubai city for any disputes arising hereunder unless there is an existing commercial agreement between us governing your use which specifies otherwise.",
+          `<strong>Dispute Resolution</strong>: In the event of a dispute with Goods2Load, we encourage you to
+          first seek resolution by contacting us directly at <a href="mailto:legal@goods2load.com">legal@goods2load.com</a> for the attention
+          of the Legal Department. We will carefully review your complaint and strive to resolve it
+          promptly. If we are unable to settle the dispute amicably, then the dispute, including
+          issues related to the Terms, their formation, and any non-contractual matters, will be
+          governed by the law of the Dubai International Financial Centre (DIFC), United Arab
+          Emirates as applicable in the DIFC and interpreted accordingly. You irrevocably consent
+          to the exclusive jurisdiction of the DIFC Courts to resolve any disputes or claims
+          associated with or arising out of your use of the Platforms or these Terms of Service,
+          including their validity, application, or termination, and any related contractual or non-
+          contractual obligations. This clause shall apply irrespective of the country from which
+          you access or use Services or Platforms.`,
         ],
       },
     ],
@@ -399,8 +596,16 @@ conditions in addition to these Terms.`,
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          "If you require further information about Goods2Load or have any suggestions concerning how to improve our Services or Platforms, please contact our helpdesk. Alternatively, you can write to us at ADDRESS BIZ00921 Compass Building, Al Shohada Road, AL Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab Emirates LICENCE NO 47010212 marked for the attention of our ‘Chief Legal Officer’.",
+          `If you require further information about these Terms or regarding Goods2Load or have
+          any suggestions concerning how to improve our Services or Platforms, please contact us
+          at <a href="mailto:legal@goods2load.com">legal@goods2load.com</a>. Alternatively, you can write to us at BIZ00921 Compass
+          Building, Al Shohada Road, AL Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab
+          Emirates LICENCE NO 47010212.`,
         ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [`These Terms were last updated on 11 October 2024.`],
       },
     ],
   },
