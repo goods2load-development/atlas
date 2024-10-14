@@ -38,7 +38,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
     ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
     : "/default-image.jpg";
   return (
-    <div className="mb-8 w-full mt-10 overflow-visible relative">
+    <div className="mb-8 w-full mt-10 overflow-visible relative text-left">
       <div className="flex flex-col md:flex-row gap-6 items-start rounded-lg container max-w-[1320px] px-4 relative z-20">
         <div className="relative w-full md:w-[620px] h-[388px]">
           <img

@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 import Blog from "@/components/Blog/Blog";
 import Footer from "@/components/Footer";
-import Header from "@/components/Header/Header";
+import BigLayout from "@/components/BigLayout";
 
 export const metadata: Metadata = {
   title: "Blog",
@@ -22,8 +22,9 @@ export default async function BlogPage() {
 
   return (
     <>
-      <Header />
-      <Blog categories={categories} blogData={blogData} />
+      <BigLayout title="Blog">
+        <Blog categories={categories} blogData={blogData} />
+      </BigLayout>
       <Footer />
     </>
   );

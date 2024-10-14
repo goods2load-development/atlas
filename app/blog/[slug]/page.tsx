@@ -2,6 +2,8 @@ import { Metadata } from "next";
 import BlogSlug from "@/components/BlogSlug/BlogSlug";
 import Footer from "@/components/Footer";
 import Header from "@/components/Header/Header";
+import HeaderClient from "@/components/Header/HeaderClient";
+import DynamicMenu from "@/components/Header/DynamicMenu";
 
 async function getBlogData(slug: string) {
   const response = await fetch(
@@ -42,7 +44,8 @@ export default async function BlogPage({
 
   return (
     <>
-      <Header variant="secondary" />
+      <HeaderClient variant="secondary" />
+      <DynamicMenu />
       <BlogSlug blog={blog} />
       <Footer />
     </>

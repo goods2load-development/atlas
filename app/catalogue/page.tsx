@@ -1,10 +1,16 @@
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import HeaderClient from "@/components/Header/HeaderClient";
+
 import Catalogue from "@/components/Catalogue/Catalogue";
+import DynamicMenu from "@/components/Header/DynamicMenu";
+import Footer from "@/components/Footer";
 
 export default function CataloguePage() {
   return (
-    <LoyaltAllWrapper headerVariant="secondary">
+    <>
+      <HeaderClient />
+      <DynamicMenu />
       <Catalogue />
-    </LoyaltAllWrapper>
+      <Footer />
+    </>
   );
 }
