@@ -1,3 +1,5 @@
+import BigLayout from "@/components/BigLayout";
+import Footer from "@/components/Footer";
 import PartnerDataPage from "@/components/PartnersDataPage/PartnerDataPage";
 import { redirect } from "next/navigation";
 
@@ -30,11 +32,16 @@ const Partner = async ({ params }: { params: { id: string } }) => {
   ).json();
 
   return (
-    <PartnerDataPage
-      placeInfo={placeInfo}
-      companyPhoto={companyPhoto}
-      partnerData={partnerData}
-    />
+    <>
+      <BigLayout title={partnerData.name}>
+        <PartnerDataPage
+          placeInfo={placeInfo}
+          companyPhoto={companyPhoto}
+          partnerData={partnerData}
+        />
+      </BigLayout>
+      <Footer />
+    </>
   );
 };
 

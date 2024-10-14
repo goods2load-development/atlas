@@ -1,6 +1,8 @@
 import { notFound } from "next/navigation";
 import SeoPageMain from "@/components/SeoPage/SeoPageMain";
 import Footer from "@/components/Footer";
+import HeaderClient from "@/components/Header/HeaderClient";
+import DynamicMenu from "@/components/Header/DynamicMenu";
 
 export default async function SeoPage({
   params: { slug },
@@ -26,6 +28,8 @@ export default async function SeoPage({
 
   return (
     <>
+      <HeaderClient />
+      <DynamicMenu variant="secondary" />
       <SeoPageMain type="edit" data={data} />
       <Footer />
     </>

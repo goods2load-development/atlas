@@ -1,9 +1,6 @@
 "use client";
 
-import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
-import Image from "next/image";
-import { Suspense } from "react";
 
 interface RegistrationWrapperProps {
   children: any;
@@ -14,7 +11,6 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
   const { children, userRegistration } = props;
   return (
     <>
-      <Header variant="secondary" />
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
         <div className="sm:flex w-full">
           <div className="w-full sm:w-6/12 p-[16px] sm:py-16">

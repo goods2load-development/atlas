@@ -12,7 +12,6 @@ export default function LoyaltAllWrapper({
 }: LoyaltAllWrapper) {
   return (
     <>
-      <Header variant={headerVariant} />
       {children}
       <Footer />
     </>

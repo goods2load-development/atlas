@@ -1,11 +1,16 @@
 import { cookiePolicyPageData } from "./data";
 import LegacyPage from "@/components/Legacy/LegacyPage";
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import Footer from "@/components/Footer";
+import HeaderClient from "@/components/Header/HeaderClient";
+import DynamicMenu from "@/components/Header/DynamicMenu";
 
 export default function CookiePolicyPage() {
   return (
-    <LoyaltAllWrapper headerVariant="secondary">
+    <>
+      <HeaderClient />
+      <DynamicMenu />
       <LegacyPage {...cookiePolicyPageData} />
-    </LoyaltAllWrapper>
+      <Footer />
+    </>
   );
 }

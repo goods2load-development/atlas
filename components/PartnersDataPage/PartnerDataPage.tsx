@@ -39,6 +39,9 @@ import { PlaceDetails } from "./types";
 import SelectionPopup from "../Catalogue/SelectionPopup";
 import SendDataToPartnerDialog from "./SendDataToPartnerDialog";
 import PlaceIdMap from "./PlaceIdMap";
+import MainLayout from "../MainLayout";
+import BigLayout from "../BigLayout";
+import HeaderClient from "../Header/HeaderClient";
 
 enum TabsEnum {
   SERVICES_PROVIDED = "Service provided",
@@ -84,10 +87,10 @@ const PartnerDataPage = ({
   const { push } = useRouter();
 
   const { isPartnersLoading, createPartnerPage } = usePartnersStore(
-    (state) => state,
+    (state) => state
   );
   const [activeTab, setActiveTab] = useState<TabsEnum>(
-    TabsEnum.SERVICES_PROVIDED,
+    TabsEnum.SERVICES_PROVIDED
   );
   const [awardedByBase64List, setAwardedByBase64List] = useState<string[]>([]);
   const [countryFocusForm, setCountryFocusForm] = useState({
@@ -146,7 +149,7 @@ const PartnerDataPage = ({
         value: +item.value,
         name: item.label,
         color: (item as any).color || getRandomHexColor(),
-      }),
+      })
     );
   }, [partnerData, industriesData]);
 
@@ -216,7 +219,7 @@ const PartnerDataPage = ({
       focusData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any,
+      })) as any
     );
   }, [focusData]);
 
@@ -226,7 +229,7 @@ const PartnerDataPage = ({
       industriesData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any,
+      })) as any
     );
   }, [industriesData]);
 
@@ -235,8 +238,8 @@ const PartnerDataPage = ({
     (async () => {
       const fileList = await urlsToFileList(
         partnerData?.awardsFiles.map(
-          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
-        ),
+          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`
+        )
       );
 
       form?.setValue("awardedBy", fileList);
@@ -246,7 +249,7 @@ const PartnerDataPage = ({
           const base = await fileToBase64(file);
 
           return base;
-        }),
+        })
       );
 
       setAwardedByBase64List(listBase64);
@@ -270,7 +273,7 @@ const PartnerDataPage = ({
 
       const updatedFileList = addToFileList(
         awardedByValues as FileList,
-        newFile,
+        newFile
       );
       form?.setValue("awardedBy", updatedFileList);
       const list = await Promise.all(
@@ -278,7 +281,7 @@ const PartnerDataPage = ({
           const base = await fileToBase64(file);
 
           return base;
-        }),
+        })
       );
 
       setAwardedByBase64List(list);
@@ -295,7 +298,7 @@ const PartnerDataPage = ({
 
     const updatedFileList = removeFileFromFileList(
       index,
-      form?.getValues("awardedBy") as FileList,
+      form?.getValues("awardedBy") as FileList
     );
     form?.setValue("awardedBy", updatedFileList);
   };
@@ -335,7 +338,7 @@ const PartnerDataPage = ({
       const typedKey = key as keyof typeof body.serviceProvided;
       formData.append(
         `serviceProvided[${typedKey}]`,
-        body.serviceProvided[typedKey],
+        body.serviceProvided[typedKey]
       );
     });
 
@@ -345,7 +348,7 @@ const PartnerDataPage = ({
     });
 
     Array.from(body.files).forEach((file) =>
-      formData.append("awardedFiles", file),
+      formData.append("awardedFiles", file)
     );
 
     createPartnerPage(formData as any, id.toString()).then(() => {
@@ -360,403 +363,290 @@ const PartnerDataPage = ({
 
   const content = () => (
     <>
-      <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px]">
-        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] pb-[170px] realtive -z-10">
-          {!isGet ? (
-            <FormField
-              control={form?.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem className="flex items-center gap-2 sm:pt-[120px]">
-                  <FormControl>
-                    <Input
-                      className="text-black"
-                      placeholder="Name of company"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          ) : (
-            <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-2 sm:pt-[120px]">
-              {partnerData?.name}
-            </h1>
-          )}
-        </div>
-
-        <div className="max-w-[1295px] w-full mx-auto pt-[72px] pb-[250px]">
-          <div className="flex gap-14 justify-between mb-[104px]">
-            <div
-              className="basis-1/2 px-20 rounded-2xl border border-solid border-primaryOrange 
-            bg-bgPartnerLogo bg-no-repeat [background-position:center_bottom]  shadow-[2px_2px_10px_0px_#FF672029] h-[487px]"
-            >
-              <div className="relative w-full h-full">
-                <Image
-                  alt="Image Alt"
-                  src={
-                    companyPhoto
-                      ? `${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`
-                      : PartnerLogoDefault
-                  }
-                  layout="fill"
-                  objectFit="contain"
-                  unoptimized
-                />
-              </div>
-            </div>
-            <div className="pt-7 text-black text-left max-w-[606px] basis-1/2">
-              <div className="font-medium text-[28px]/[33px] mb-4">
-                About us
-              </div>
-              {!isGet ? (
-                <FormField
-                  control={form?.control}
-                  name="description"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center gap-2 w-[600px]">
-                      <FormControl>
-                        <Textarea
-                          className="text-black min-h-[300px]"
-                          placeholder="Description"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ) : (
-                <p className="mb-4 text-[18px]/[26px]">
-                  {partnerData?.description}
-                </p>
-              )}
+      {!isGet && (
+        <>
+          <HeaderClient />
+          <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center">
+            <div className="flex flex-col w-full items-center justify-center sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[370px] pb-[170px]">
+              <FormField
+                control={form?.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2 sm:pt-[120px] w-max mx-auto">
+                    <FormControl>
+                      <Input
+                        className="text-black"
+                        placeholder="Name of company"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className="sm:hidden absolute w-full h-[337px] bg-primaryOrange bg-hero-pattern-mobile bg-cover -z-10"></div>
             </div>
           </div>
-
-          <div className="flex gap-14 justify-between mb-14">
-            <div className="text-black text-left text-[18px]/[26px] max-w-[532px] w-full">
-              <h5 className="text-[28px]/[33px] font-medium mb-4">
-                Our mission
-              </h5>
-              {!isGet ? (
-                <FormField
-                  control={form?.control}
-                  name="mission"
-                  render={({ field }) => (
-                    <FormItem className="flex items-center gap-2 w-full">
-                      <FormControl>
-                        <Textarea
-                          className="text-black min-h-[300px]"
-                          placeholder="Mission"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              ) : (
-                <p className="mb-4 text-[18px]/[26px]">
-                  {partnerData?.mission}
-                </p>
-              )}
+        </>
+      )}
+      <div className="max-w-[1295px] w-full mx-auto pt-[72px] pb-[250px]">
+        <div className="flex gap-14 justify-between mb-[104px]">
+          <div
+            className="basis-1/2 px-20 rounded-2xl border border-solid border-primaryOrange 
+            bg-bgPartnerLogo bg-no-repeat [background-position:center_bottom]  shadow-[2px_2px_10px_0px_#FF672029] h-[487px]"
+          >
+            <div className="relative w-full h-full">
+              <Image
+                alt="Image Alt"
+                src={
+                  companyPhoto
+                    ? `${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`
+                    : PartnerLogoDefault
+                }
+                layout="fill"
+                objectFit="contain"
+                unoptimized
+              />
             </div>
+          </div>
+          <div className="pt-7 text-black text-left max-w-[606px] basis-1/2">
+            <div className="font-medium text-[28px]/[33px] mb-4">About us</div>
+            {!isGet ? (
+              <FormField
+                control={form?.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2 w-[600px]">
+                    <FormControl>
+                      <Textarea
+                        className="text-black min-h-[300px]"
+                        placeholder="Description"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : (
+              <p className="mb-4 text-[18px]/[26px]">
+                {partnerData?.description}
+              </p>
+            )}
+          </div>
+        </div>
 
-            <div className="text-black text-left p-4 border border-lightOrange basis-1/2">
-              <Tabs value={activeTab} onValueChange={onTabChange}>
-                <TabsList>
-                  <TabsTrigger
-                    className={`cursor-pointer text-[16px]/[24px] font-semibold w-[169px] rounded-none border-b border-r border-lightOrange`}
-                    value={TabsEnum.SERVICES_PROVIDED}
-                    style={{
-                      backgroundColor:
-                        TabsEnum.SERVICES_PROVIDED === activeTab
-                          ? "#FFEDE4"
-                          : "inherit",
-                      color:
-                        TabsEnum.SERVICES_PROVIDED === activeTab
-                          ? "#FF6720"
-                          : "#000",
-                    }}
-                  >
-                    {TabsEnum.SERVICES_PROVIDED}
-                  </TabsTrigger>
-                  <TabsTrigger
-                    className={`cursor-pointer text-[16px]/[24px] font-semibold w-[169px] rounded-none border-b border-r border-lightOrange`}
-                    value={TabsEnum.FOCUS}
-                    style={{
-                      backgroundColor:
-                        TabsEnum.FOCUS === activeTab ? "#FFEDE4" : "inherit",
-                      color: TabsEnum.FOCUS === activeTab ? "#FF6720" : "#000",
-                    }}
-                  >
-                    {TabsEnum.FOCUS}
-                  </TabsTrigger>
-                  <TabsTrigger
-                    className={`cursor-pointer text-[16px]/[24px] font-semibold w-[169px] rounded-none border-b border-r border-lightOrange`}
-                    value={TabsEnum.INDUSTRIES}
-                    style={{
-                      backgroundColor:
-                        TabsEnum.INDUSTRIES === activeTab
-                          ? "#FFEDE4"
-                          : "inherit",
-                      color:
-                        TabsEnum.INDUSTRIES === activeTab ? "#FF6720" : "#000",
-                    }}
-                  >
-                    {TabsEnum.INDUSTRIES}
-                  </TabsTrigger>
-                  <TabsTrigger
-                    className={`cursor-pointer text-[16px]/[24px] font-semibold w-[169px] rounded-none border-b border-r border-lightOrange`}
-                    value={TabsEnum.CLIENT_TARGET}
-                    style={{
-                      backgroundColor:
-                        TabsEnum.CLIENT_TARGET === activeTab
-                          ? "#FFEDE4"
-                          : "inherit",
-                      color:
-                        TabsEnum.CLIENT_TARGET === activeTab
-                          ? "#FF6720"
-                          : "#000",
-                    }}
-                  >
-                    {TabsEnum.CLIENT_TARGET}
-                  </TabsTrigger>
-                </TabsList>
+        <div className="flex gap-14 justify-between mb-14">
+          <div className="text-black text-left text-[18px]/[26px] max-w-[532px] w-full">
+            <h5 className="text-[28px]/[33px] font-medium mb-4">Our mission</h5>
+            {!isGet ? (
+              <FormField
+                control={form?.control}
+                name="mission"
+                render={({ field }) => (
+                  <FormItem className="flex items-center gap-2 w-full">
+                    <FormControl>
+                      <Textarea
+                        className="text-black min-h-[300px]"
+                        placeholder="Mission"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            ) : (
+              <p className="mb-4 text-[18px]/[26px]">{partnerData?.mission}</p>
+            )}
+          </div>
 
-                <TabsContent value={TabsEnum.SERVICES_PROVIDED}>
-                  <div className="flex gap-[46px]">
-                    <div className="w-[280px] h-[280px]">
-                      <PieChart data={servicesProvidedData} />
+          <div className="text-black text-left p-4 border border-lightOrange basis-1/2">
+            <Tabs value={activeTab} onValueChange={onTabChange}>
+              <TabsList>
+                <TabsTrigger
+                  className={`cursor-pointer text-[16px]/[24px] font-semibold w-[169px] rounded-none border-b border-r border-lightOrange`}
+                  value={TabsEnum.SERVICES_PROVIDED}
+                  style={{
+                    backgroundColor:
+                      TabsEnum.SERVICES_PROVIDED === activeTab
+                        ? "#FFEDE4"
+                        : "inherit",
+                    color:
+                      TabsEnum.SERVICES_PROVIDED === activeTab
+                        ? "#FF6720"
+                        : "#000",
+                  }}
+                >
+                  {TabsEnum.SERVICES_PROVIDED}
+                </TabsTrigger>
+                <TabsTrigger
+                  className={`cursor-pointer text-[16px]/[24px] font-semibold w-[169px] rounded-none border-b border-r border-lightOrange`}
+                  value={TabsEnum.FOCUS}
+                  style={{
+                    backgroundColor:
+                      TabsEnum.FOCUS === activeTab ? "#FFEDE4" : "inherit",
+                    color: TabsEnum.FOCUS === activeTab ? "#FF6720" : "#000",
+                  }}
+                >
+                  {TabsEnum.FOCUS}
+                </TabsTrigger>
+                <TabsTrigger
+                  className={`cursor-pointer text-[16px]/[24px] font-semibold w-[169px] rounded-none border-b border-r border-lightOrange`}
+                  value={TabsEnum.INDUSTRIES}
+                  style={{
+                    backgroundColor:
+                      TabsEnum.INDUSTRIES === activeTab ? "#FFEDE4" : "inherit",
+                    color:
+                      TabsEnum.INDUSTRIES === activeTab ? "#FF6720" : "#000",
+                  }}
+                >
+                  {TabsEnum.INDUSTRIES}
+                </TabsTrigger>
+                <TabsTrigger
+                  className={`cursor-pointer text-[16px]/[24px] font-semibold w-[169px] rounded-none border-b border-r border-lightOrange`}
+                  value={TabsEnum.CLIENT_TARGET}
+                  style={{
+                    backgroundColor:
+                      TabsEnum.CLIENT_TARGET === activeTab
+                        ? "#FFEDE4"
+                        : "inherit",
+                    color:
+                      TabsEnum.CLIENT_TARGET === activeTab ? "#FF6720" : "#000",
+                  }}
+                >
+                  {TabsEnum.CLIENT_TARGET}
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value={TabsEnum.SERVICES_PROVIDED}>
+                <div className="flex gap-[46px]">
+                  <div className="w-[280px] h-[280px]">
+                    <PieChart data={servicesProvidedData} />
+                  </div>
+
+                  <div className="mt-[30px] flex-1">
+                    <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
+                      Services lines
                     </div>
 
-                    <div className="mt-[30px] flex-1">
-                      <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
-                        Services lines
-                      </div>
-
-                      <div>
-                        {servicesProvidedData.map((elem) => (
-                          <div key={elem.name} className="flex gap-2 mb-4">
-                            <div
-                              className="w-[24px] h-[24px] rounded-sm"
-                              style={{ backgroundColor: elem.color }}
-                            ></div>
-                            <div>{elem.name}</div>
-                            <div className="ml-auto flex items-center">
-                              {!isGet ? (
-                                <FormField
-                                  control={form?.control}
-                                  name={elem.key as any}
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormControl>
-                                        <Input
-                                          type="number"
-                                          className="text-black max-w-[50px]"
-                                          onInput={(e: any) =>
-                                            setChartData({
-                                              ...charData,
-                                              [elem.key]: +e.target.value,
-                                            })
-                                          }
-                                          {...field}
-                                        />
-                                      </FormControl>
-                                    </FormItem>
-                                  )}
-                                />
-                              ) : (
-                                elem.value
-                              )}
-                              %
-                            </div>
+                    <div>
+                      {servicesProvidedData.map((elem) => (
+                        <div key={elem.name} className="flex gap-2 mb-4">
+                          <div
+                            className="w-[24px] h-[24px] rounded-sm"
+                            style={{ backgroundColor: elem.color }}
+                          ></div>
+                          <div>{elem.name}</div>
+                          <div className="ml-auto flex items-center">
+                            {!isGet ? (
+                              <FormField
+                                control={form?.control}
+                                name={elem.key as any}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <Input
+                                        type="number"
+                                        className="text-black max-w-[50px]"
+                                        onInput={(e: any) =>
+                                          setChartData({
+                                            ...charData,
+                                            [elem.key]: +e.target.value,
+                                          })
+                                        }
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                  </FormItem>
+                                )}
+                              />
+                            ) : (
+                              elem.value
+                            )}
+                            %
                           </div>
-                        ))}
-                      </div>
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </TabsContent>
-                <TabsContent value={TabsEnum.FOCUS}>
-                  <div className="flex gap-[46px]">
-                    <div className="w-[280px] h-[280px]">
-                      <PieChart data={calculateCharFocusData} />
-                    </div>
+                </div>
+              </TabsContent>
+              <TabsContent value={TabsEnum.FOCUS}>
+                <div className="flex gap-[46px]">
+                  <div className="w-[280px] h-[280px]">
+                    <PieChart data={calculateCharFocusData} />
+                  </div>
 
-                    <div className="mt-[30px] flex-1">
-                      <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
-                        Country focus
-                      </div>
-                      {!isGet && (
-                        <>
-                          <div className="flex gap-1 mb-2">
-                            <Input
-                              onChange={(e) =>
-                                setCountryFocusForm({
-                                  ...countryFocusForm,
-                                  label: e.target.value,
-                                })
-                              }
-                              value={countryFocusForm.label}
-                              placeholder="Label"
-                            />
-                            <Input
-                              type="number"
-                              onChange={(e) =>
-                                setCountryFocusForm({
-                                  ...countryFocusForm,
-                                  value: e.target.value,
-                                })
-                              }
-                              value={countryFocusForm.value}
-                              placeholder="Value"
-                            />
-                            <Input
-                              type="color"
-                              onChange={(e) =>
-                                setCountryFocusForm({
-                                  ...countryFocusForm,
-                                  color: e.target.value,
-                                })
-                              }
-                              value={countryFocusForm.value}
-                              placeholder="Value"
-                            />
-                          </div>
-                          <Button
-                            type="button"
-                            disabled={
-                              !countryFocusForm.value || !countryFocusForm.label
-                            }
-                            onClick={() => {
-                              setFocusData([
-                                ...focusData,
-                                {
-                                  label: countryFocusForm.label,
-                                  value: +countryFocusForm.value,
-                                  color: countryFocusForm.color,
-                                },
-                              ]);
+                  <div className="mt-[30px] flex-1">
+                    <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
+                      Country focus
+                    </div>
+                    {!isGet && (
+                      <>
+                        <div className="flex gap-1 mb-2">
+                          <Input
+                            onChange={(e) =>
                               setCountryFocusForm({
-                                label: "",
-                                value: "",
-                                color: "",
-                              });
-                            }}
-                            className="w-full mb-2"
-                          >
-                            Add sector
-                          </Button>
-                        </>
-                      )}
-                      <div>
-                        {(isGet ? calculateCharFocusData : focusData).map(
-                          (elem) => (
-                            <div key={elem.label} className="flex gap-2 mb-4">
-                              <div
-                                className="w-[24px] h-[24px] rounded-sm"
-                                style={{ backgroundColor: elem.color }}
-                              ></div>
-                              <div>{elem.label}</div>
-                              <div className="ml-auto flex items-center">
-                                {elem.value}%
-                              </div>
-                              {!isGet && (
-                                <button
-                                  type="button"
-                                  onClick={() =>
-                                    setFocusData((data) =>
-                                      data.filter(
-                                        (item) => item.label !== elem.label,
-                                      ),
-                                    )
-                                  }
-                                >
-                                  <TrashIcon />
-                                </button>
-                              )}
-                            </div>
-                          ),
-                        )}
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-                <TabsContent value={TabsEnum.INDUSTRIES}>
-                  <div className="flex gap-[46px]">
-                    <div className="w-[280px] h-[280px]">
-                      <PieChart data={calculateCharIndustriesData} />
-                    </div>
-
-                    <div className="mt-[30px] flex-1">
-                      <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
-                        Service lines
-                      </div>
-                      {!isGet && (
-                        <>
-                          {" "}
-                          <div className="flex gap-1 mb-2">
-                            <Input
-                              onChange={(e) =>
-                                setIndustriesForm({
-                                  ...industriesForm,
-                                  label: e.target.value,
-                                })
-                              }
-                              value={industriesForm.label}
-                              placeholder="Label"
-                            />
-                            <Input
-                              type="number"
-                              onChange={(e) =>
-                                setIndustriesForm({
-                                  ...industriesForm,
-                                  value: e.target.value,
-                                })
-                              }
-                              value={industriesForm.value}
-                              placeholder="Value"
-                            />
-                            <Input
-                              type="color"
-                              onChange={(e) =>
-                                setIndustriesForm({
-                                  ...industriesForm,
-                                  color: e.target.value,
-                                })
-                              }
-                              value={industriesForm.color}
-                              placeholder="Value"
-                            />
-                          </div>
-                          <Button
-                            type="button"
-                            disabled={
-                              !industriesForm.value || !industriesForm.label
+                                ...countryFocusForm,
+                                label: e.target.value,
+                              })
                             }
-                            onClick={() => {
-                              setIndustriesData([
-                                ...industriesData,
-                                {
-                                  label: industriesForm.label,
-                                  value: +industriesForm.value,
-                                  color: industriesForm.color,
-                                },
-                              ]);
-                            }}
-                            className="w-full mb-2"
-                          >
-                            Add sector
-                          </Button>
-                        </>
-                      )}
-                      <div>
-                        {(isGet
-                          ? calculateCharIndustriesData
-                          : industriesData
-                        ).map((elem) => (
+                            value={countryFocusForm.label}
+                            placeholder="Label"
+                          />
+                          <Input
+                            type="number"
+                            onChange={(e) =>
+                              setCountryFocusForm({
+                                ...countryFocusForm,
+                                value: e.target.value,
+                              })
+                            }
+                            value={countryFocusForm.value}
+                            placeholder="Value"
+                          />
+                          <Input
+                            type="color"
+                            onChange={(e) =>
+                              setCountryFocusForm({
+                                ...countryFocusForm,
+                                color: e.target.value,
+                              })
+                            }
+                            value={countryFocusForm.value}
+                            placeholder="Value"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          disabled={
+                            !countryFocusForm.value || !countryFocusForm.label
+                          }
+                          onClick={() => {
+                            setFocusData([
+                              ...focusData,
+                              {
+                                label: countryFocusForm.label,
+                                value: +countryFocusForm.value,
+                                color: countryFocusForm.color,
+                              },
+                            ]);
+                            setCountryFocusForm({
+                              label: "",
+                              value: "",
+                              color: "",
+                            });
+                          }}
+                          className="w-full mb-2"
+                        >
+                          Add sector
+                        </Button>
+                      </>
+                    )}
+                    <div>
+                      {(isGet ? calculateCharFocusData : focusData).map(
+                        (elem) => (
                           <div key={elem.label} className="flex gap-2 mb-4">
                             <div
                               className="w-[24px] h-[24px] rounded-sm"
@@ -770,10 +660,10 @@ const PartnerDataPage = ({
                               <button
                                 type="button"
                                 onClick={() =>
-                                  setIndustriesData((data) =>
+                                  setFocusData((data) =>
                                     data.filter(
-                                      (item) => item.label !== elem.label,
-                                    ),
+                                      (item) => item.label !== elem.label
+                                    )
                                   )
                                 }
                               >
@@ -781,178 +671,280 @@ const PartnerDataPage = ({
                               </button>
                             )}
                           </div>
-                        ))}
-                      </div>
+                        )
+                      )}
                     </div>
                   </div>
-                </TabsContent>
-                <TabsContent value={TabsEnum.CLIENT_TARGET}>
-                  <div className="flex gap-[46px]">
-                    <div className="w-[280px] h-[280px]">
-                      <PieChart data={clientsTargetData} />
+                </div>
+              </TabsContent>
+              <TabsContent value={TabsEnum.INDUSTRIES}>
+                <div className="flex gap-[46px]">
+                  <div className="w-[280px] h-[280px]">
+                    <PieChart data={calculateCharIndustriesData} />
+                  </div>
+
+                  <div className="mt-[30px] flex-1">
+                    <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
+                      Service lines
                     </div>
-
-                    <div className="mt-[30px] flex-1">
-                      <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
-                        Services lines
-                      </div>
-
-                      <div>
-                        {clientsTargetData.map((elem) => (
-                          <div key={elem.name} className="flex gap-2 mb-4">
-                            <div
-                              className="w-[24px] h-[24px] rounded-sm"
-                              style={{ backgroundColor: elem.color }}
-                            ></div>
-                            <div>{elem.name}</div>
-                            <div className="ml-auto flex items-center">
-                              {!isGet ? (
-                                <FormField
-                                  control={form?.control}
-                                  name={elem.key as any}
-                                  render={({ field }) => (
-                                    <FormItem>
-                                      <FormControl>
-                                        <Input
-                                          type="number"
-                                          className="text-black max-w-[50px]"
-                                          onInput={(e: any) =>
-                                            setChartData({
-                                              ...charData,
-                                              [elem.key]: +e.target.value,
-                                            })
-                                          }
-                                          {...field}
-                                        />
-                                      </FormControl>
-                                    </FormItem>
-                                  )}
-                                />
-                              ) : (
-                                elem.value
-                              )}
-                              %
-                            </div>
+                    {!isGet && (
+                      <>
+                        {" "}
+                        <div className="flex gap-1 mb-2">
+                          <Input
+                            onChange={(e) =>
+                              setIndustriesForm({
+                                ...industriesForm,
+                                label: e.target.value,
+                              })
+                            }
+                            value={industriesForm.label}
+                            placeholder="Label"
+                          />
+                          <Input
+                            type="number"
+                            onChange={(e) =>
+                              setIndustriesForm({
+                                ...industriesForm,
+                                value: e.target.value,
+                              })
+                            }
+                            value={industriesForm.value}
+                            placeholder="Value"
+                          />
+                          <Input
+                            type="color"
+                            onChange={(e) =>
+                              setIndustriesForm({
+                                ...industriesForm,
+                                color: e.target.value,
+                              })
+                            }
+                            value={industriesForm.color}
+                            placeholder="Value"
+                          />
+                        </div>
+                        <Button
+                          type="button"
+                          disabled={
+                            !industriesForm.value || !industriesForm.label
+                          }
+                          onClick={() => {
+                            setIndustriesData([
+                              ...industriesData,
+                              {
+                                label: industriesForm.label,
+                                value: +industriesForm.value,
+                                color: industriesForm.color,
+                              },
+                            ]);
+                          }}
+                          className="w-full mb-2"
+                        >
+                          Add sector
+                        </Button>
+                      </>
+                    )}
+                    <div>
+                      {(isGet
+                        ? calculateCharIndustriesData
+                        : industriesData
+                      ).map((elem) => (
+                        <div key={elem.label} className="flex gap-2 mb-4">
+                          <div
+                            className="w-[24px] h-[24px] rounded-sm"
+                            style={{ backgroundColor: elem.color }}
+                          ></div>
+                          <div>{elem.label}</div>
+                          <div className="ml-auto flex items-center">
+                            {elem.value}%
                           </div>
-                        ))}
-                      </div>
+                          {!isGet && (
+                            <button
+                              type="button"
+                              onClick={() =>
+                                setIndustriesData((data) =>
+                                  data.filter(
+                                    (item) => item.label !== elem.label
+                                  )
+                                )
+                              }
+                            >
+                              <TrashIcon />
+                            </button>
+                          )}
+                        </div>
+                      ))}
                     </div>
                   </div>
-                </TabsContent>
-              </Tabs>
-            </div>
-          </div>
-
-          <SendDataToPartnerDialog
-            trigger={
-              <button
-                disabled={!isGet}
-                type="button"
-                className="animate-button-ping transition-shadow bg-primaryOrange
-             mx-auto rounded-md text-white text-center py-4 px-20 hover:opacity-90
-            cursor-pointer font-medium mb-[104px]"
-              >
-                GET A FREE QUOTATION
-              </button>
-            }
-          />
-
-          {!isGet ? (
-            <PlaceIdMap
-              onChangePlaceId={(placeId: string) =>
-                form.setValue("placementId", placeId)
-              }
-              placeId={isEdit ? form.getValues("placementId") : undefined}
-            />
-          ) : (
-            <>
-              {placeInfo && reviews && (
-                <>
-                  <GoogleRatingBunner placeInfo={placeInfo} />
-                  <div className="flex justify-between items-start gap-[43px] mt-10">
-                    {reviews.map((review) => (
-                      <Review review={review} key={review.time} />
-                    ))}
+                </div>
+              </TabsContent>
+              <TabsContent value={TabsEnum.CLIENT_TARGET}>
+                <div className="flex gap-[46px]">
+                  <div className="w-[280px] h-[280px]">
+                    <PieChart data={clientsTargetData} />
                   </div>
-                </>
-              )}
-            </>
-          )}
 
-          <div className="pt-[112px]" id={"awards"}>
-            <h3 className="text-[48px]/[57px] mb-8 text-black text-left">
-              <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
-                <span>Awarded</span>
-              </div>
-              <i className="font-normal">by:</i>
-            </h3>
-            <div className="grid grid-cols-[repeat(auto-fill,_minmax(290px,_4fr))] gap-10">
-              {!isGet && (
-                <FormField
-                  control={form?.control}
-                  name="awardedBy"
-                  render={({ field }) => (
-                    <FormItem className="min-w-[294px]">
-                      <FormControl>
-                        <Input
-                          className="hidden"
-                          type="file"
-                          accept="image/*"
-                          onChange={handleAwardUploadChange}
-                        />
-                      </FormControl>
-                      <FormLabel className="text-black border border-black font-normal text-[14px] rounded-sm py-2 flex justify-center items-center min-h-20">
-                        <Image
-                          width={16}
-                          height={16}
-                          className="mr-[8px]"
-                          src="/upload.svg"
-                          alt="upload"
-                        />
-                        Upload award
-                      </FormLabel>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              )}
+                  <div className="mt-[30px] flex-1">
+                    <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
+                      Services lines
+                    </div>
 
-              {isGet &&
-                partnerData?.awardsFiles.map((item) => (
-                  <Image
-                    key={item.path}
-                    width={293}
-                    height={400}
-                    className="h-auto w-full"
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
-                    unoptimized
-                    alt="award"
-                  />
-                ))}
-
-              {!isGet &&
-                awardedByBase64List.map((base, i) => (
-                  <div className="relative" key={base}>
-                    <button
-                      onClick={() => handleAwardDelete(i)}
-                      type="button"
-                      className="absolute z-10 top-0 right-0 rounded-full border-solid bg-orangePrimary color-red -translate-y-1/2 translate-x-1/2"
-                    >
-                      <X color="white" />
-                    </button>
-                    <Image
-                      width={294}
-                      height={200}
-                      src={base}
-                      className="w-full"
-                      alt="award"
-                    />
+                    <div>
+                      {clientsTargetData.map((elem) => (
+                        <div key={elem.name} className="flex gap-2 mb-4">
+                          <div
+                            className="w-[24px] h-[24px] rounded-sm"
+                            style={{ backgroundColor: elem.color }}
+                          ></div>
+                          <div>{elem.name}</div>
+                          <div className="ml-auto flex items-center">
+                            {!isGet ? (
+                              <FormField
+                                control={form?.control}
+                                name={elem.key as any}
+                                render={({ field }) => (
+                                  <FormItem>
+                                    <FormControl>
+                                      <Input
+                                        type="number"
+                                        className="text-black max-w-[50px]"
+                                        onInput={(e: any) =>
+                                          setChartData({
+                                            ...charData,
+                                            [elem.key]: +e.target.value,
+                                          })
+                                        }
+                                        {...field}
+                                      />
+                                    </FormControl>
+                                  </FormItem>
+                                )}
+                              />
+                            ) : (
+                              elem.value
+                            )}
+                            %
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                ))}
-            </div>
+                </div>
+              </TabsContent>
+            </Tabs>
           </div>
         </div>
-      </section>
+
+        <SendDataToPartnerDialog
+          trigger={
+            <button
+              disabled={!isGet}
+              type="button"
+              className="animate-button-ping transition-shadow bg-primaryOrange
+             mx-auto rounded-md text-white text-center py-4 px-20 hover:opacity-90
+            cursor-pointer font-medium mb-[104px]"
+            >
+              GET A FREE QUOTATION
+            </button>
+          }
+        />
+
+        {!isGet ? (
+          <PlaceIdMap
+            onChangePlaceId={(placeId: string) =>
+              form.setValue("placementId", placeId)
+            }
+            placeId={isEdit ? form.getValues("placementId") : undefined}
+          />
+        ) : (
+          <>
+            {placeInfo && reviews && (
+              <>
+                <GoogleRatingBunner placeInfo={placeInfo} />
+                <div className="flex justify-between items-start gap-[43px] mt-10">
+                  {reviews.map((review) => (
+                    <Review review={review} key={review.time} />
+                  ))}
+                </div>
+              </>
+            )}
+          </>
+        )}
+
+        <div className="pt-[112px]" id={"awards"}>
+          <h3 className="text-[48px]/[57px] mb-8 text-black text-left">
+            <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
+              <span>Awarded</span>
+            </div>
+            <i className="font-normal">by:</i>
+          </h3>
+          <div className="grid grid-cols-[repeat(auto-fill,_minmax(290px,_4fr))] gap-10">
+            {!isGet && (
+              <FormField
+                control={form?.control}
+                name="awardedBy"
+                render={({ field }) => (
+                  <FormItem className="min-w-[294px]">
+                    <FormControl>
+                      <Input
+                        className="hidden"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleAwardUploadChange}
+                      />
+                    </FormControl>
+                    <FormLabel className="text-black border border-black font-normal text-[14px] rounded-sm py-2 flex justify-center items-center min-h-20">
+                      <Image
+                        width={16}
+                        height={16}
+                        className="mr-[8px]"
+                        src="/upload.svg"
+                        alt="upload"
+                      />
+                      Upload award
+                    </FormLabel>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            )}
+
+            {isGet &&
+              partnerData?.awardsFiles.map((item) => (
+                <Image
+                  key={item.path}
+                  width={293}
+                  height={400}
+                  className="h-auto w-full"
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
+                  unoptimized
+                  alt="award"
+                />
+              ))}
+
+            {!isGet &&
+              awardedByBase64List.map((base, i) => (
+                <div className="relative" key={base}>
+                  <button
+                    onClick={() => handleAwardDelete(i)}
+                    type="button"
+                    className="absolute z-10 top-0 right-0 rounded-full border-solid bg-orangePrimary color-red -translate-y-1/2 translate-x-1/2"
+                  >
+                    <X color="white" />
+                  </button>
+                  <Image
+                    width={294}
+                    height={200}
+                    src={base}
+                    className="w-full"
+                    alt="award"
+                  />
+                </div>
+              ))}
+          </div>
+        </div>
+      </div>
 
       {isCreate && isHasAnyErrors && (
         <div className="fixed top-2 right-2 bg-white rounded-xl w-[300px] h-[140px] overflow-y-scroll p-2 shadow-md">
@@ -988,6 +980,6 @@ const PartnerDataPage = ({
       </FormProvider>
     );
 
-  return <LoyaltAllWrapper>{content()}</LoyaltAllWrapper>;
+  return <>{content()}</>;
 };
 export default PartnerDataPage;
