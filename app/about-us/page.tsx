@@ -13,7 +13,9 @@ Company
 Trust
 "
       >
-        <AboutUs />
+        <Suspense>
+          <AboutUs />
+        </Suspense>
       </BigLayout>
     </LoyaltAllWrapper>
   );
