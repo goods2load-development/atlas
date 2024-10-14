@@ -302,6 +302,15 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 
+.white-gradient {
+  background: rgb(255, 103, 32);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 103, 32, 1) 25%,
+    rgba(255, 255, 255, 1) 100%
+  );
+}
+
 /* Firefox */
 input[type="number"] {
   -moz-appearance: textfield;
