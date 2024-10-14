@@ -77,6 +77,7 @@ const incotermsList: Incoterms = {
     { name: "FCA", description: "Free Carrier" },
   ],
   ferry: [
+    { name: "Unknown", description: "In case if You don't know." },
     { name: "CFR", description: "Cost and Freight" },
     { name: "CIF", description: "Cost, Insurance and Freight" },
     { name: "CPT", description: "Carriage Paid To" },
@@ -85,6 +86,7 @@ const incotermsList: Incoterms = {
     { name: "FCA", description: "Free Carrier" },
   ],
   truck: [
+    { name: "Unknown", description: "In case if You don't know." },
     { name: "FCL", description: "Full Container Load" },
     { name: "LCL", description: "Less Than Container Load" },
   ],
