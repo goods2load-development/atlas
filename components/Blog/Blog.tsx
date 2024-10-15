@@ -74,43 +74,31 @@ const BlogPage = ({
   }, [takeBlogs, filter, selectedCategory]);
 
   return (
-    <>
-      <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white sm:mt-[-75px] pb-[104px] overflow-hidden">
-        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] sm:bg-hero-pattern bg-cover bg-bottom text-white sm:pb-[240px] md:pb-[230px] pb-[80px] h-[350px] sm:h-[540px] relative -z-10">
-          <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-8 sm:mb-2 sm:pt-[120px]">
-            Blog
-          </h1>
-          <div className="sm:hidden absolute w-full h-[425px] bg-primaryOrange bg-hero-pattern-mobile bg-cover bg-no-repeat -z-10"></div>
-          <div className="md:hidden 2xl:block absolute bottom-0 w-full h-[150px] bg-bgWhiteGradient"></div>
-        </div>
-
-        <div className="mx-auto md:py-8 text-black w-full">
-          {blogs.length > 0 && (
-            <FeaturedBlog blog={blogs[0]} categories={categories} />
-          )}
-          <div className="container max-w-[1320px] px-4">
-            <BlogFilter
-              filter={filter}
-              setFilter={setFilter}
-              selectedCategory={selectedCategory}
-              setSelectedCategory={setSelectedCategory}
-              categories={categories}
-            />
-            <BlogList blogs={blogs} categories={categories} />
-            {blogsMeta && blogsMeta.hasNextPage && (
-              <div className="text-center pb-5 mt-8">
-                <UIButton
-                  onClick={() => setTakeBlogs((take) => take + 2)}
-                  secondary
-                >
-                  Show more results
-                </UIButton>
-              </div>
-            )}
+    <div className="mx-auto md:py-8 text-black w-full">
+      {blogs.length > 0 && (
+        <FeaturedBlog blog={blogs[0]} categories={categories} />
+      )}
+      <div className="container max-w-[1320px] px-4">
+        <BlogFilter
+          filter={filter}
+          setFilter={setFilter}
+          selectedCategory={selectedCategory}
+          setSelectedCategory={setSelectedCategory}
+          categories={categories}
+        />
+        <BlogList blogs={blogs} categories={categories} />
+        {blogsMeta && blogsMeta.hasNextPage && (
+          <div className="text-center pb-5 mt-8">
+            <UIButton
+              onClick={() => setTakeBlogs((take) => take + 2)}
+              secondary
+            >
+              Show more results
+            </UIButton>
           </div>
-        </div>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 

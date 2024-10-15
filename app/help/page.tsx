@@ -2,7 +2,8 @@ import { Suspense } from "react";
 import { Metadata } from "next";
 import { type FC, memo } from "react";
 import Help from "@/components/Help/Help";
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import Footer from "@/components/Footer";
+import BigLayout from "@/components/BigLayout";
 
 export const metadata: Metadata = {
   title: "Help",
@@ -10,11 +11,15 @@ export const metadata: Metadata = {
 
 const HelpPage: FC = () => {
   return (
-    <LoyaltAllWrapper>
+    <BigLayout
+      title="How we can help you?"
+      description="Doing business has never been easier."
+    >
       <Suspense>
         <Help />
       </Suspense>
-    </LoyaltAllWrapper>
+      <Footer />
+    </BigLayout>
   );
 };
 

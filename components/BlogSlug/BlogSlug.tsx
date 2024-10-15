@@ -138,6 +138,7 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
 
           {/* Related Blogs Section */}
           <RelatedBlogs
+            blogSectionType="related"
             categoriesName={blog.blogTypeName}
             excludeBlogId={blog?.id}
           />

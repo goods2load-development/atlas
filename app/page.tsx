@@ -1,6 +1,5 @@
 import React from "react";
 
-import Header from "@/components/Header/Header";
 import Footer from "@/components/Footer";
 import SearchMain from "@/components/SearchMain";
 import SubHeaderMain from "@/components/SubHeaderMain";
@@ -9,6 +8,9 @@ import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
 import TailoredServices from "@/components/TailoredServices";
 import Analytics from "@/components/Dashboard/Analytics";
 import ConsentPopup from "@/components/common/ConsentPopup";
+import MainImageLayout from "@/components/MainLayout";
+import HeaderClient from "@/components/Header/HeaderClient";
+import DynamicMenu from "@/components/Header/DynamicMenu";
 
 const questionsContent = [
   {
@@ -90,7 +92,9 @@ const questionsContent = [
 export default function Home() {
   return (
     <>
-      <Header variant="primary">
+      <MainImageLayout>
+        <HeaderClient variant="transparent" />
+        <DynamicMenu variant="transparent" />
         <div className="px-[16px] max-w-[1328px] mx-auto">
           <h1 className="pt-[32px] sm:pt-16 pb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1265px] text-center sm:text-left">
             Unlock countless <i className="font-normal">high-quality</i>{" "}
@@ -100,7 +104,7 @@ export default function Home() {
             Doing business has never been easier.
           </span>
         </div>
-      </Header>
+      </MainImageLayout>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main max-w-full">
         <div className="mt-[-170px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
           <SearchMain main />

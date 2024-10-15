@@ -66,7 +66,7 @@ type Incoterms = {
 
 const incotermsList: Incoterms = {
   plane: [
-    { name: "Unknown", description: "In case if You don't know." },
+    { name: "Unknown", description: `In case you’re unsure` },
     { name: "DDP", description: "Delivered Duty Paid" },
     { name: "DPU", description: "Delivered at Place Unloaded" },
     { name: "DAP", description: "Delivered At Place" },
@@ -77,6 +77,7 @@ const incotermsList: Incoterms = {
     { name: "FCA", description: "Free Carrier" },
   ],
   ferry: [
+    { name: "Unknown", description: `In case you’re unsure` },
     { name: "CFR", description: "Cost and Freight" },
     { name: "CIF", description: "Cost, Insurance and Freight" },
     { name: "CPT", description: "Carriage Paid To" },
@@ -85,6 +86,7 @@ const incotermsList: Incoterms = {
     { name: "FCA", description: "Free Carrier" },
   ],
   truck: [
+    { name: "Unknown", description: `In case you’re unsure` },
     { name: "FCL", description: "Full Container Load" },
     { name: "LCL", description: "Less Than Container Load" },
   ],
@@ -197,7 +199,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
     valid,
   } = useFilterStore((state: any) => state);
   const { goodsList, goodsListLoading, getGoodsList } = useGoodsStore(
-    (state: any) => state
+    (state: any) => state,
   );
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
   useEffect(() => {
@@ -720,7 +722,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                           </SelectItem>
                           <ToolTipComponent text={item.description} />
                         </div>
-                      )
+                      ),
                     )}
                   </SelectGroup>
                 </SelectContent>

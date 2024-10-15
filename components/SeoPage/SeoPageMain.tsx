@@ -48,6 +48,8 @@ import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDi
 import useBreakpoint from "@/app/hooks/useBreakpoint";
 import { formatToSlug } from "../Dashboard/BlogMain/utils";
 import "@/app/content.css";
+import HeaderClient from "../Header/HeaderClient";
+import MainLayout from "../MainLayout";
 
 type BlockFiles = "block1File" | "block2File";
 
@@ -296,105 +298,94 @@ export default function SeoPageMain({
 
   const content = () => (
     <>
-      <Header>
-        <div className="px-4 max-w-[1328px] mx-auto">
-          {!isView && (
-            <div className="">
-              <FormField
-                control={form?.control}
-                name="title"
-                render={({ field }) => (
-                  <FormItem className="mt-4 sm:mt-16">
-                    <FormLabel className="twxt-white text-[26px]/[30px] mt-6 mb-2">
-                      Title
+      {!isView && (
+        <MainLayout>
+          <div className="px-4 max-w-[1328px] mx-auto">
+            <FormField
+              control={form?.control}
+              name="title"
+              render={({ field }) => (
+                <FormItem className="pt-4 sm:pt-16">
+                  <FormLabel className="twxt-white text-[26px]/[30px] mt-6 mb-2">
+                    Title
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="text-[30px]/[36px] sm:text-[24px]/[28px] font-light py-9 bg-transparent border-transparent  text-black placeholder:text-gray-500 bg-white max-w-[400px]"
+                      placeholder="Title"
+                      {...field}
+                    />
+                  </FormControl>
+                  <br />
+                  <FormMessage className="text-white" />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form?.control}
+              name="description"
+              render={({ field }) => (
+                <FormItem className="mt-4 sm:mt-10">
+                  <FormLabel className="twxt-white text-[26px]/[30px] mt-6 mb-2">
+                    Description
+                  </FormLabel>
+                  <FormControl>
+                    <Input
+                      className="text-[30px]/[36px] sm:text-[24px]/[28px] font-light py-9 bg-transparent border-transparent  text-black placeholder:text-gray-500 bg-white max-w-[650px]"
+                      placeholder="description"
+                      {...field}
+                    />
+                  </FormControl>
+                  <br />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="flex items-center gap-1">
+                    <FormLabel className="text-white text-[26px]/[30px]">
+                      Category
                     </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="text-[30px]/[36px] sm:text-[24px]/[28px] font-light py-9 bg-transparent border-transparent  text-black placeholder:text-gray-500 bg-white max-w-[400px]"
-                        placeholder="Title"
-                        {...field}
-                      />
+
+                    <TemplateCategoryDialog type="create">
+                      <Button
+                        type="button"
+                        className="bg-transparent text-white hover:bg-transparent hover:opacity-80 transition-all p-0"
+                      >
+                        <Plus />
+                      </Button>
+                    </TemplateCategoryDialog>
+                  </div>
+                  <Select value={field.value} onValueChange={field.onChange}>
+                    <FormControl className="max-w-[526px] min-w-60 w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
+                      <SelectTrigger>
+                        <SelectValue placeholder="Category" />
+                      </SelectTrigger>
                     </FormControl>
-                    <br />
-                    <FormMessage className="text-white" />
-                  </FormItem>
-                )}
-              />
+                    <SelectContent>
+                      {categories?.map((item: SeoPageCategory) => {
+                        return (
+                          <SelectItem key={item.id} value={item.id}>
+                            {item.name}
+                          </SelectItem>
+                        );
+                      })}
+                    </SelectContent>
+                  </Select>
 
-              <FormField
-                control={form?.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem className="mt-4 sm:mt-10">
-                    <FormLabel className="twxt-white text-[26px]/[30px] mt-6 mb-2">
-                      Description
-                    </FormLabel>
-                    <FormControl>
-                      <Input
-                        className="text-[30px]/[36px] sm:text-[24px]/[28px] font-light py-9 bg-transparent border-transparent  text-black placeholder:text-gray-500 bg-white max-w-[650px]"
-                        placeholder="description"
-                        {...field}
-                      />
-                    </FormControl>
-                    <br />
-                  </FormItem>
-                )}
-              />
+                  <FormMessage className="text-white" />
+                </FormItem>
+              )}
+            />
+          </div>
+        </MainLayout>
+      )}
 
-              <FormField
-                control={form.control}
-                name="category"
-                render={({ field }) => (
-                  <FormItem>
-                    <div className="flex items-center gap-1">
-                      <FormLabel className="text-white text-[26px]/[30px]">
-                        Category
-                      </FormLabel>
-
-                      <TemplateCategoryDialog type="create">
-                        <Button
-                          type="button"
-                          className="bg-transparent text-white hover:bg-transparent hover:opacity-80 transition-all p-0"
-                        >
-                          <Plus />
-                        </Button>
-                      </TemplateCategoryDialog>
-                    </div>
-                    <Select value={field.value} onValueChange={field.onChange}>
-                      <FormControl className="max-w-[526px] min-w-60 w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
-                        <SelectTrigger>
-                          <SelectValue placeholder="Category" />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {categories?.map((item: SeoPageCategory) => {
-                          return (
-                            <SelectItem key={item.id} value={item.id}>
-                              {item.name}
-                            </SelectItem>
-                          );
-                        })}
-                      </SelectContent>
-                    </Select>
-
-                    <FormMessage className="text-white" />
-                  </FormItem>
-                )}
-              />
-            </div>
-          )}
-          {isView && (
-            <>
-              <h1 className="mt-8 sm:mt-16 mb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1265px] text-center sm:text-left">
-                {data?.title}
-              </h1>
-              <p className="font-light max-w-[916px] text-lg text-center block sm:text-left">
-                {data?.description}
-              </p>
-            </>
-          )}
-        </div>
-      </Header>
       <div className="mt-[-130px] sm-[-180px] lg:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
         {isView && <SearchMain main />}
       </div>
