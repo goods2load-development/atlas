@@ -95,10 +95,10 @@ const PartnerDataPage = ({
   const { push } = useRouter();
 
   const { isPartnersLoading, createPartnerPage } = usePartnersStore(
-    (state) => state,
+    (state) => state
   );
   const [activeTab, setActiveTab] = useState<TabsEnum>(
-    TabsEnum.SERVICES_PROVIDED,
+    TabsEnum.SERVICES_PROVIDED
   );
   const [chartItem, setChartItem] = useState<TabsEnum>(
     TabsEnum.SERVICES_PROVIDED
@@ -160,7 +160,7 @@ const PartnerDataPage = ({
         value: +item.value,
         name: item.label,
         color: (item as any).color || getRandomHexColor(),
-      }),
+      })
     );
   }, [partnerData, industriesData]);
 
@@ -221,6 +221,19 @@ const PartnerDataPage = ({
       key: "enterprises",
     },
   ];
+  const currentData = useMemo(() => {
+    switch (chartItem) {
+      case TabsEnum.SERVICES_PROVIDED:
+        return servicesProvidedData;
+      case TabsEnum.FOCUS:
+        return calculateCharFocusData;
+      case TabsEnum.INDUSTRIES:
+        return calculateCharIndustriesData;
+      case TabsEnum.CLIENT_TARGET:
+        return clientsTargetData;
+    }
+  }, [chartItem]);
+
   const isHasAnyErrors = !!Object.values(form?.formState?.errors || {})?.length;
   const awardedByValues = form?.getValues("awardedBy");
 
@@ -230,7 +243,7 @@ const PartnerDataPage = ({
       focusData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any,
+      })) as any
     );
   }, [focusData]);
 
@@ -240,7 +253,7 @@ const PartnerDataPage = ({
       industriesData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any,
+      })) as any
     );
   }, [industriesData]);
 
@@ -249,8 +262,8 @@ const PartnerDataPage = ({
     (async () => {
       const fileList = await urlsToFileList(
         partnerData?.awardsFiles.map(
-          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
-        ),
+          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`
+        )
       );
 
       form?.setValue("awardedBy", fileList);
@@ -260,7 +273,7 @@ const PartnerDataPage = ({
           const base = await fileToBase64(file);
 
           return base;
-        }),
+        })
       );
 
       setAwardedByBase64List(listBase64);
@@ -284,7 +297,7 @@ const PartnerDataPage = ({
 
       const updatedFileList = addToFileList(
         awardedByValues as FileList,
-        newFile,
+        newFile
       );
       form?.setValue("awardedBy", updatedFileList);
       const list = await Promise.all(
@@ -292,7 +305,7 @@ const PartnerDataPage = ({
           const base = await fileToBase64(file);
 
           return base;
-        }),
+        })
       );
 
       setAwardedByBase64List(list);
@@ -309,7 +322,7 @@ const PartnerDataPage = ({
 
     const updatedFileList = removeFileFromFileList(
       index,
-      form?.getValues("awardedBy") as FileList,
+      form?.getValues("awardedBy") as FileList
     );
     form?.setValue("awardedBy", updatedFileList);
   };
@@ -349,7 +362,7 @@ const PartnerDataPage = ({
       const typedKey = key as keyof typeof body.serviceProvided;
       formData.append(
         `serviceProvided[${typedKey}]`,
-        body.serviceProvided[typedKey],
+        body.serviceProvided[typedKey]
       );
     });
 
@@ -359,7 +372,7 @@ const PartnerDataPage = ({
     });
 
     Array.from(body.files).forEach((file) =>
-      formData.append("awardedFiles", file),
+      formData.append("awardedFiles", file)
     );
 
     createPartnerPage(formData as any, id.toString()).then(() => {
@@ -374,7 +387,7 @@ const PartnerDataPage = ({
 
   const content = () => (
     <>
-      <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center sm:mt-[-75px] z-0">
+      <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center z-0">
         <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 bg-primaryOrange sm:bg-transparent sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] realtive">
           {!isGet ? (
             <FormField
@@ -525,20 +538,7 @@ const PartnerDataPage = ({
                   </SelectContent>
                 </Select>
                 <div className="w-[280px] h-[280px] mx-auto">
-                  <PieChart
-                    data={(() => {
-                      switch (chartItem) {
-                        case TabsEnum.SERVICES_PROVIDED:
-                          return servicesProvidedData;
-                        case TabsEnum.FOCUS:
-                          return calculateCharFocusData;
-                        case TabsEnum.INDUSTRIES:
-                          return calculateCharIndustriesData;
-                        case TabsEnum.CLIENT_TARGET:
-                          return clientsTargetData;
-                      }
-                    })()}
-                  />
+                  <PieChart data={currentData} />
                 </div>
 
                 <div className="mt-[30px] flex-1">
@@ -546,8 +546,8 @@ const PartnerDataPage = ({
                     Services lines
                   </div>
 
-                  <div>
-                    {clientsTargetData.map((elem) => (
+                  <div className="text-black">
+                    {currentData.map((elem) => (
                       <div key={elem.name} className="flex gap-2 mb-4">
                         <div
                           className="w-[24px] h-[24px] rounded-sm"
@@ -555,32 +555,7 @@ const PartnerDataPage = ({
                         ></div>
                         <div>{elem.name}</div>
                         <div className="ml-auto flex items-center">
-                          {!isGet ? (
-                            <FormField
-                              control={form?.control}
-                              name={elem.key as any}
-                              render={({ field }) => (
-                                <FormItem>
-                                  <FormControl>
-                                    <Input
-                                      type="number"
-                                      className="text-black max-w-[50px]"
-                                      onInput={(e: any) =>
-                                        setChartData({
-                                          ...charData,
-                                          [elem.key]: +e.target.value,
-                                        })
-                                      }
-                                      {...field}
-                                    />
-                                  </FormControl>
-                                </FormItem>
-                              )}
-                            />
-                          ) : (
-                            elem.value
-                          )}
-                          %
+                          {elem.value}%
                         </div>
                       </div>
                     ))}
@@ -902,8 +877,8 @@ const PartnerDataPage = ({
                                   onClick={() =>
                                     setIndustriesData((data) =>
                                       data.filter(
-                                        (item) => item.label !== elem.label,
-                                      ),
+                                        (item) => item.label !== elem.label
+                                      )
                                     )
                                   }
                                 >

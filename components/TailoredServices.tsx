@@ -61,7 +61,7 @@ export default function TailoredServices({
             {referrals.map((referral: ReferralItemType, index: number) => (
               <div
                 className={clsx(
-                  "min-h-[360px] min-w-0 md:pr-10 flex-[0_0_100%]",
+                  "min-h-[360px] min-w-0 flex-[0_0_100%]",
                   {
                     "md:flex-[0_0_33.3333%]": slicePerReferals === 3,
                     "md:flex-[0_0_50%]": slicePerReferals === 2,

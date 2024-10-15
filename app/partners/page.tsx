@@ -14,26 +14,26 @@ import CareerForm from "../_components/Career/CareerForm/CareerForm";
 const Partners = () => {
   return (
     <LoyaltAllWrapper>
-      <div className="flex flex-col w-full items-center justify-center text-white text-center pb-[100px] sm:mt-[-75px]">
-        <div className="flex flex-col w-full items-center justify-center bg-primaryOrange sm:bg-transparent bg-partners-mobile sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:max-h-[700px] -z-10 relative">
-          <div className="flex flex-col w-full items-center justify-center pt-10 sm:pt-[47px] text-white text-center pb-[20px] sm:pb-[100px]">
-            <h1 className="text-[30px]/[34px] sm:text-[48px]/[57px] font-light sm:pt-[150px] mb-[40px] max-w-[1000px]">
+      <div className="flex flex-col w-full items-center justify-center text-white text-center pb-[100px] md:mt-[-75px]">
+        <div className="flex flex-col w-full items-center justify-center bg-primaryOrange md:bg-transparent bg-partners-mobile md:bg-hero-pattern bg-cover bg-center text-white text-center md:max-h-[700px] -z-10 relative">
+          <div className="flex flex-col w-full items-center justify-center pt-10 md:pt-[47px] text-white text-center pb-[20px] md:pb-[100px]">
+            <h1 className="text-[30px]/[34px] md:text-[48px]/[57px] font-light md:pt-[150px] mb-[40px] max-w-[1000px]">
               Engage with businesses throughout their journey of envisioning,
               strategizing, <span className="italic">and</span>{" "}
               <span className="italic">arranging bookings</span>
             </h1>
-            <h2 className="mb-[20px] sm:mb-[68px] text-[17px]/[28px] font-light leading-[28px]">
+            <h2 className="mb-[20px] md:mb-[68px] text-[17px]/[28px] font-light leading-[28px]">
               We help reduce costs, increase efficiency and offer improved
               customer service
             </h2>
           </div>
         </div>
 
-        <div className="w-full bg-gradient-to-b from-primaryOrange to-white relative h-[50px] sm:hidden -top-[10px]"></div>
+        <div className="w-full bg-gradient-to-b from-primaryOrange to-white relative h-[50px] md:hidden -top-[10px]"></div>
 
         <div className="w-full flex flex-col justify-center items-center">
           <PartnersStartingFrom />
-          <section className="max-w-[1440px] w-full justify-center items-center gap-[40px] py-[40px] sm:py-[104px] px-5 m-auto">
+          <section className="max-w-[1440px] w-full justify-center items-center gap-[40px] py-[40px] md:py-[104px] px-5 m-auto">
             <JoinOurTeam />
             <CareerForm />
           </section>
