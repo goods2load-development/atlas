@@ -12,6 +12,9 @@ export interface IPartnerInfo {
   partnerId: string;
   services: IProductServices[];
   awards: boolean;
+  rating: number;
+  totalReviews: number;
+  placementId: string;
 }
 
 export interface IProduct {
@@ -28,18 +31,3 @@ export interface IProduct {
   placementOfGoods: string;
   partnerInfo: IPartnerInfo;
 }
-
-export const googleRatingMocks: GoogleRatingProps[] = [
-  {
-    value: 4.6,
-    reviewsCount: 34,
-  },
-  {
-    value: 3.1,
-    reviewsCount: 45,
-  },
-  {
-    value: 5,
-    reviewsCount: 94,
-  },
-];

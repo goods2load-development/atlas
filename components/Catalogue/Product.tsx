@@ -6,7 +6,6 @@ import SaveIcon from "@/assets/save.svg";
 import SaveIconFilled from "@/assets/save-filled.svg";
 import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
-import { googleRatingMocks } from "./MOCK";
 import { useUserStore } from "@/lib/store";
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -26,7 +25,7 @@ import recognationIcon from "@/assets/industryRecognations.svg";
 interface Props extends IProduct {
   deliveryBy: string;
   currency: any;
-  index: number; 
+  index: number;
 }
 
 function Icon(type: string) {
@@ -118,27 +117,33 @@ export default function Product(props: Props) {
             className="mx-auto mt-3"
           />
         </div>
-        {props.partnerInfo?.services?.map(({ label, items }: any) => {
-          return (
-            <div key={label} className="border-r">
-              <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap min-w-[200px]">
-                {label}
-              </div>
+        {props.partnerInfo?.services
+          ?.sort((a, b) => a.label.localeCompare(b.label))
+          .map(({ label, items }: any) => {
+            return (
+              <div key={label} className="border-r">
+                <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap min-w-[200px]">
+                  {label}
+                </div>
 
-              <div className="mt-4 px-[17.5px]">
-                {items.slice(0, 3).map((item: string) => {
-                  return (
-                    <ToolTipComponent className="block" key={item} text={item}>
-                      <div className="text-center text-[14px]/[21px] pl-2 pr-1 border border-[#FF672080] rounded-[5px] text-primaryOrange w-max mb-2 max-w-[146px] overflow-hidden text-ellipsis whitespace-nowrap">
-                        {item}
-                      </div>
-                    </ToolTipComponent>
-                  );
-                })}
+                <div className="mt-4 px-[17.5px]">
+                  {items.slice(0, 3).map((item: string) => {
+                    return (
+                      <ToolTipComponent
+                        className="block"
+                        key={item}
+                        text={item}
+                      >
+                        <div className="text-center text-[14px]/[21px] pl-2 pr-1 border border-[#FF672080] rounded-[5px] text-primaryOrange w-max mb-2 max-w-[146px] overflow-hidden text-ellipsis whitespace-nowrap">
+                          {item}
+                        </div>
+                      </ToolTipComponent>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
         <div className="flex items-center justify-center flex-1">
           <SendDataToPartnerDialog
             trigger={
@@ -157,9 +162,14 @@ export default function Product(props: Props) {
       </div>
       <div className="md:flex justify-between py-2">
         <div className="py-[8px] md:py-0 border-t md:border-none md:pl-6 items-center justify-center md:justify-start flex sm:flex-row flex-col gap-2">
-          {googleRatingMocks[props.index] && (
-            <GoogleRating data={googleRatingMocks[props.index]} />
+          {!!props.partnerInfo?.rating && (
+            <GoogleRating
+              rating={props.partnerInfo?.rating}
+              totalReviews={props.partnerInfo?.totalReviews || 0}
+              placementId={props.partnerInfo?.placementId}
+            />
           )}
+
           {props.CO2EmissionControlled && (
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
               <LeafIcon />
