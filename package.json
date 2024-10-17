@@ -9,7 +9,8 @@
     "start": "generate-next-routes-list & next start",
     "lint": "next lint",
     "generate-next-routes-list": "generate-next-routes-list",
-    "format": "prettier --write \"**/*.js\" \"**/*.tsx\" \"**/*.ts\" \"**/*.scss\" \"**/*.json\" \"**/*.css\""
+    "format": "prettier --write \"**/*.js\" \"**/*.tsx\" \"**/*.ts\" \"**/*.json\" \"**/*.css\"",
+    "prepare": "husky"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",

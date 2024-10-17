@@ -3,7 +3,6 @@ import { WeglotProvider } from './weglot/WeglotProvider';
 import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 
 import type { Metadata } from 'next';
-
 import { Poppins } from 'next/font/google';
 
 import ToasterWrapper from '@/components/Interceptor';

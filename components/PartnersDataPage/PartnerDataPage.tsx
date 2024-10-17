@@ -1,12 +1,8 @@
-// @ts-nocheck
 'use client';
 
-import BigLayout from '../BigLayout';
-import SelectionPopup from '../Catalogue/SelectionPopup';
 import PieChart from '../Dashboard/Charts/PieChart';
 import { PartnerPageResponse } from '../Dashboard/PartnersMain/types';
 import HeaderClient from '../Header/HeaderClient';
-import MainLayout from '../MainLayout';
 import { Button } from '../ui/button';
 import { Input } from '../ui/input';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
@@ -16,7 +12,6 @@ import PlaceIdMap from './PlaceIdMap';
 import SendDataToPartnerDialog from './SendDataToPartnerDialog';
 import { formSchema } from './constants';
 import { PlaceDetails } from './types';
-import LoyaltAllWrapper from '@/app/_components/LoyaltAllWrapper/LoyaltAllWrapper';
 import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner/GoogleRatingBunner';
 import { Review } from '@/app/_components/Partner/Review/Review';
 import PartnerLogoDefault from '@/assets/Partners/partner-logo-default.jpg';
@@ -46,10 +41,6 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 
-// @ts-nocheck
-
-// @ts-nocheck
-
 enum TabsEnum {
   SERVICES_PROVIDED = 'Service provided',
   FOCUS = 'Focus',
@@ -65,7 +56,7 @@ const PartnerDataPage = ({
   isEdit = false,
 }: {
   companyPhoto: string;
-  partnerData?: PartnerPageResponse;
+  partnerData?: PartnerPageResponse | any;
   placeInfo?: PlaceDetails;
   isCreate?: boolean;
   isEdit?: boolean;
@@ -93,9 +84,7 @@ const PartnerDataPage = ({
   const { toast } = useToast();
   const { push } = useRouter();
 
-  const { isPartnersLoading, createPartnerPage } = usePartnersStore(
-    (state) => state,
-  );
+  const { createPartnerPage } = usePartnersStore((state) => state);
   const [activeTab, setActiveTab] = useState<TabsEnum>(
     TabsEnum.SERVICES_PROVIDED,
   );
@@ -111,9 +100,9 @@ const PartnerDataPage = ({
     color: '',
   });
   const [charData, setChartData] = useState({
-    airFreight: isEdit ? +partnerData?.serviceProvided.airFreight : 0,
-    seaFreight: isEdit ? +partnerData?.serviceProvided.seaFreight : 0,
-    roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
+    airFreight: isEdit ? +partnerData?.serviceProvided?.airFreight : 0,
+    seaFreight: isEdit ? +partnerData?.serviceProvided?.seaFreight : 0,
+    roadFreight: isEdit ? +partnerData?.serviceProvided?.roadFreight : 0,
     smallBusiness: isEdit ? +partnerData?.clientTarget?.smallBusiness : 0,
     midMarket: isEdit ? +partnerData?.clientTarget?.midMarket : 0,
     enterprises: isEdit ? +partnerData?.clientTarget?.enterprises : 0,
@@ -245,7 +234,7 @@ const PartnerDataPage = ({
     (async () => {
       const fileList = await urlsToFileList(
         partnerData?.awardsFiles.map(
-          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
+          (item: any) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
         ),
       );
 
@@ -653,7 +642,7 @@ const PartnerDataPage = ({
                     )}
                     <div>
                       {(isGet ? calculateCharFocusData : focusData).map(
-                        (elem) => (
+                        (elem: any) => (
                           <div key={elem.label} className="flex gap-2 mb-4">
                             <div
                               className="w-[24px] h-[24px] rounded-sm"
@@ -756,7 +745,7 @@ const PartnerDataPage = ({
                       {(isGet
                         ? calculateCharIndustriesData
                         : industriesData
-                      ).map((elem) => (
+                      ).map((elem: any) => (
                         <div key={elem.label} className="flex gap-2 mb-4">
                           <div
                             className="w-[24px] h-[24px] rounded-sm"
@@ -918,7 +907,7 @@ const PartnerDataPage = ({
             )}
 
             {isGet &&
-              partnerData?.awardsFiles.map((item) => (
+              partnerData?.awardsFiles.map((item: any) => (
                 <Image
                   key={item.path}
                   width={293}
