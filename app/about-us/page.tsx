@@ -8,10 +8,7 @@ export default function AboutUsPage() {
     <LoyaltAllWrapper>
       <BigLayout
         title="About us"
-        description="We help reduce costs, increase efficiency and offer improved customer service
-Company
-Trust
-"
+        description="We help reduce costs, increase efficiency and offer improved customer service Company Trust"
       >
         <Suspense>
           <AboutUs />
