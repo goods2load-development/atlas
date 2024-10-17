@@ -33,8 +33,6 @@ export enum DeliveryBy {
 interface FilterStoreProps {
   valid: boolean;
   partnersSelected: string[];
-  // priceMin: string | null;
-  // priceMax: string | null;
   deliveryBy: DeliveryBy;
   fromCountry: string;
   from: string;
@@ -81,7 +79,7 @@ interface FilterStoreProps {
   white_gloves_services: boolean;
   ecommerce_fullfillment: boolean;
   heavy_equipment_logistics: boolean;
-  cross_border_expansio: boolean;
+  cross_border_expansion: boolean;
 
   partners: any[];
   portsDepartureSelected: string[];
@@ -151,10 +149,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     white_gloves_services: false,
     ecommerce_fullfillment: false,
     heavy_equipment_logistics: false,
-    cross_border_expansio: false,
+    cross_border_expansion: false,
 
-    // priceMin: null,
-    // priceMax: null,
     partners: [],
     partnersSelected: [],
     portsDeparture: [],
@@ -259,8 +255,6 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         bestReviewed,
         carbonOffset,
         industryRecognition,
-        // priceMin,
-        // priceMax,
         partnersSelected,
         portsDepartureSelected,
         portsArrivalSelected,
@@ -272,6 +266,31 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         height,
         goodsValue,
         incoterms,
+
+        // Industry solutions
+        pharmaceuticals,
+        electronics,
+        automotive,
+        manufacturing_retail,
+        exhibition_interior_design,
+        apparel_fashion,
+        ecommerce,
+        food_beverage,
+        energy,
+
+        // Transport solutions
+        cold_chain,
+        dangerous_goods,
+        high_value_goods,
+        last_mile_delivery,
+        project_cargo,
+        general_solutions,
+
+        // Additional Services
+        white_gloves_services,
+        ecommerce_fullfillment,
+        heavy_equipment_logistics,
+        cross_border_expansion,
       } = get();
 
       localStorage.setItem(
@@ -331,19 +350,34 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             useCurrenciesStore.getState().selectedCurrency.rate,
 
           provider: {},
-          // price: {
-          //   min: priceMin
-          //     ? parseInt(priceMin) /
-          //       useCurrenciesStore.getState().selectedCurrency.rate
-          //     : undefined,
-          //   max: priceMax
-          //     ? parseInt(priceMax) /
-          //       useCurrenciesStore.getState().selectedCurrency.rate
-          //     : undefined,
-          // },
+          filters: {
+            pharmaceuticals: pharmaceuticals,
+            electronics: electronics,
+            automotive: automotive,
+            manufacturingRetail: manufacturing_retail,
+            exhibitionInteriorDesign: exhibition_interior_design,
+            apparelFashion: apparel_fashion,
+            ecommerce: ecommerce,
+            foodBeverage: food_beverage,
+            energy: energy,
+            coldChain: cold_chain,
+            dangerousGoods: dangerous_goods,
+            highValueGoods: high_value_goods,
+            lastMileDelivery: last_mile_delivery,
+            projectCargo: project_cargo,
+            generalSolutions: general_solutions,
+            whiteGlovesServices: white_gloves_services,
+            ecommerceFullfillment: ecommerce_fullfillment,
+            heavyEquipmentLogistics: heavy_equipment_logistics,
+            crossBorderExpansion: cross_border_expansion,
+
+            carbonOffset,
+            industryRecognition,
+            bestReviewed,
+          },
         },
       }).then((data: any) => {
-        const products = data?.partners?.data?.map((item: any) => ({
+        let products = data?.partners?.data?.map((item: any) => ({
           orderId: item.id,
           deliveryBy: item.transportation,
           estimatedTransit: item.transit,
@@ -366,6 +400,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           placementOfGoods: item.placementOfGoods, // Added for analytics avarge store when user select this product
           partnerInfo: item.partnerInfo,
         }));
+
         set(() => ({ products, pagination: data?.partners?.meta }));
       });
     },
