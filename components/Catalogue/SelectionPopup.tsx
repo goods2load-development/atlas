@@ -1,31 +1,32 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { postRequest } from "@/lib/utils";
+import CountryCode from '../common/CountryCode';
+import { useFilterStore } from '@/lib/filterStore';
+import { postRequest } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 
+import React, { useState } from 'react';
+
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import UIButton from '@/components/common/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { z } from "zod";
-
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import UIButton from "@/components/common/Button";
-import { useFilterStore } from "@/lib/filterStore";
-import CountryCode from "../common/CountryCode";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 interface SelectionPopupProps {
   orderId: string;
@@ -51,7 +52,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
     phone: z
       .string()
       .regex(
-        new RegExp("^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$")
+        new RegExp('^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$'),
       ),
     email: z.string().min(5).email(),
     companyName: z.string().min(2),
@@ -59,20 +60,20 @@ export default function SelectionPopup(props: SelectionPopupProps) {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      countryCode: "",
-      phone: "",
-      email: "",
-      companyName: "",
+      countryCode: '',
+      phone: '',
+      email: '',
+      companyName: '',
     },
   });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
-    const token = await executeRecaptcha("login");
+    const token = await executeRecaptcha('login');
     postRequest({
-      url: "orders/select-catalog",
+      url: 'orders/select-catalog',
       data: {
-        userId: localStorage.getItem("id"),
+        userId: localStorage.getItem('id'),
         orderId: props.orderId,
         transportation: deliveryBy,
         customerPhone: values.countryCode + values.phone,
@@ -99,7 +100,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
       <DialogContent className="max-w-[632px] p-[48px_52px] overflow-auto max-h-screen">
         <Form {...form}>
           <form
-            className={`flex flex-col justify-between ${step !== 0 && "hidden"}`}
+            className={`flex flex-col justify-between ${step !== 0 && 'hidden'}`}
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <DialogHeader>
@@ -197,7 +198,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
             </UIButton>
           </form>
         </Form>
-        <div className={`${step !== 1 && "hidden"}`}>
+        <div className={`${step !== 1 && 'hidden'}`}>
           <DialogHeader className="mb-[42px]">
             <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
               Your selection is being <i className="font-normal">processed</i>

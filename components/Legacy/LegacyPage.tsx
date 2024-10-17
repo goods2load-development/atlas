@@ -1,7 +1,7 @@
-import LegacyBG from "./LegacyBG";
-import { ILegacyPage } from "./types";
-import LegacyTitle from "./LegacyTitle";
-import LegacyData from "./LegacyData";
+import LegacyBG from './LegacyBG';
+import LegacyData from './LegacyData';
+import LegacyTitle from './LegacyTitle';
+import { ILegacyPage } from './types';
 
 export default function LegacyPage({ title, subTitle, bg, data }: ILegacyPage) {
   return (

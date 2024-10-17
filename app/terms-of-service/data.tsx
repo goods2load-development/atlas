@@ -1,13 +1,14 @@
+import bg from '@/assets/LegacyImages/termsOfService.png';
+
 import {
-  ILegacyPage,
   ILegacyDataBlock,
   ILegacyDataBlockBodyType,
-} from "@/components/Legacy/types";
-import bg from "@/assets/LegacyImages/termsOfService.png";
+  ILegacyPage,
+} from '@/components/Legacy/types';
 
 const data: ILegacyDataBlock[] = [
   {
-    title: "About Us: ",
+    title: 'About Us: ',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -24,7 +25,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Acceptance of Terms:",
+    title: 'Acceptance of Terms:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -68,7 +69,7 @@ will operate in place of or together with these Terms as appropriate.`,
     ],
   },
   {
-    title: "Eligibility:",
+    title: 'Eligibility:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -94,7 +95,7 @@ offer services that compete with those provided by Goods2Load.`,
     ],
   },
   {
-    title: "Restrictions on Use:",
+    title: 'Restrictions on Use:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -157,7 +158,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Sharing information with us:",
+    title: 'Sharing information with us:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -224,7 +225,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Communication:",
+    title: 'Communication:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -238,7 +239,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "User Conduct:",
+    title: 'User Conduct:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -253,7 +254,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Intellectual Property Rights (IPR):",
+    title: 'Intellectual Property Rights (IPR):',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -286,7 +287,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Currency:",
+    title: 'Currency:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -300,7 +301,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Limitations and exclusions of liability:",
+    title: 'Limitations and exclusions of liability:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -470,7 +471,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "General Provisions:",
+    title: 'General Provisions:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -591,7 +592,7 @@ epidemics, pandemics, natural disasters, or any other similar event.`,
     ],
   },
   {
-    title: "Contact us",
+    title: 'Contact us',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -612,7 +613,7 @@ epidemics, pandemics, natural disasters, or any other similar event.`,
 ];
 
 export const termsOfServicePageData: ILegacyPage = {
-  title: "Terms of Service",
+  title: 'Terms of Service',
   bg,
   data,
 };

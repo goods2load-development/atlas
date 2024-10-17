@@ -1,7 +1,7 @@
 import {
   StaticImageData,
   StaticImport,
-} from "next/dist/shared/lib/get-img-props";
+} from 'next/dist/shared/lib/get-img-props';
 
 interface ILeaderImg {
   blurDataURL: string;

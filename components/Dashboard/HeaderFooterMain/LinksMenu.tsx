@@ -1,31 +1,32 @@
-"use client";
+'use client';
 
-import { HeaderFooterData, FooterItem } from "./types";
-import {
-  DndContext,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  useSortable,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import { closestCorners } from "@dnd-kit/core";
-import { GripVertical, Trash } from "lucide-react";
+import LinkDialog from './LinkDialog';
+import { FooterItem, HeaderFooterData } from './types';
 import {
   addItemToChildrenByTitle,
   deleteItemByTitle,
   editItemByTitle,
   replaceChildrenByTitle,
-} from "./utils";
-import LinkDialog from "./LinkDialog";
+} from './utils';
+import {
+  DndContext,
+  DragEndEvent,
+  KeyboardSensor,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from '@dnd-kit/core';
+import { closestCorners } from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  sortableKeyboardCoordinates,
+  useSortable,
+  verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+import { GripVertical, Trash } from 'lucide-react';
 
 const LinksMenu = ({
   data,
@@ -38,7 +39,7 @@ const LinksMenu = ({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const onAddNewItem = (data: { href: string; title: string }, id: string) => {
@@ -46,7 +47,7 @@ const LinksMenu = ({
       const newItems = addItemToChildrenByTitle(
         [...(prev as HeaderFooterData).json],
         id,
-        data
+        data,
       );
 
       return {
@@ -61,7 +62,7 @@ const LinksMenu = ({
 
     if (over && active.id !== over?.id) {
       const activeIndex = data.json.findIndex(
-        ({ title }) => title === active.id
+        ({ title }) => title === active.id,
       );
       const overIndex = data.json.findIndex(({ title }) => title === over.id);
 
@@ -74,7 +75,7 @@ const LinksMenu = ({
 
   return (
     <ul className="bg-white shadow-lg rounded-lg p-4 space-y-2">
-      <LinkDialog type="create" addNewItem={(data) => onAddNewItem(data, "")} />
+      <LinkDialog type="create" addNewItem={(data) => onAddNewItem(data, '')} />
 
       <DndContext
         sensors={sensors}
@@ -119,7 +120,7 @@ const MenuItem = ({
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   const {
@@ -134,7 +135,7 @@ const MenuItem = ({
     id,
     transition: {
       duration: 150,
-      easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+      easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
     },
   });
 
@@ -142,14 +143,14 @@ const MenuItem = ({
     transform: CSS.Transform.toString(transform),
     transition,
     opacity: isDragging ? 0.5 : 1,
-    backgroundColor: isOver ? "orange" : "transparent",
+    backgroundColor: isOver ? 'orange' : 'transparent',
   };
 
   const onDeleteItem = () => {
     setHeaderDataDynamic((prev: HeaderFooterData | null) => {
       const newItems = deleteItemByTitle(
         [...(prev as HeaderFooterData).json],
-        id
+        id,
       );
 
       return {
@@ -164,7 +165,7 @@ const MenuItem = ({
       const newItems = editItemByTitle(
         [...(prev as HeaderFooterData).json],
         id,
-        data
+        data,
       );
 
       return {
@@ -181,10 +182,10 @@ const MenuItem = ({
 
     if (over && active.id !== over?.id) {
       const activeIndex = item.children.findIndex(
-        ({ title }) => title === active.id
+        ({ title }) => title === active.id,
       );
       const overIndex = item.children.findIndex(
-        ({ title }) => title === over.id
+        ({ title }) => title === over.id,
       );
 
       const result = arrayMove(item.children, activeIndex, overIndex);
@@ -193,7 +194,7 @@ const MenuItem = ({
         const newItems = replaceChildrenByTitle(
           [...(prev as HeaderFooterData).json],
           result[0].title,
-          result
+          result,
         );
 
         return {

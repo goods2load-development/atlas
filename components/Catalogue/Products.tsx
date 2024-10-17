@@ -1,12 +1,13 @@
-import Product from "./Product";
-import { IProduct } from "./MOCK";
-import { useFilterStore, useCurrenciesStore } from "@/lib/filterStore";
-import { useEffect } from "react";
-import UIButton from "../common/Button";
+import UIButton from '../common/Button';
+import { IProduct } from './MOCK';
+import Product from './Product';
+import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
+
+import { useEffect } from 'react';
 
 export default function Products() {
   const { products, pagination, getProducts } = useFilterStore(
-    (state: any) => state
+    (state: any) => state,
   );
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
   useEffect(() => {

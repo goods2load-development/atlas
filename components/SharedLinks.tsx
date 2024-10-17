@@ -1,18 +1,19 @@
-import Image from "next/image";
-import Link from "next/link";
-import React, { useEffect, useState } from "react";
-import fcIcon from "@/assets/fc.svg";
-import sharedIcon from "@/assets/shared-icon.svg";
-import xIcon from "@/assets/x-icon.svg";
-import inIcon from "@/assets/in-icon.svg";
-import { useToast } from "./ui/use-toast";
+import { useToast } from './ui/use-toast';
+import fcIcon from '@/assets/fc.svg';
+import inIcon from '@/assets/in-icon.svg';
+import sharedIcon from '@/assets/shared-icon.svg';
+import xIcon from '@/assets/x-icon.svg';
 
+import React, { useEffect, useState } from 'react';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
   FacebookShareButton,
-  TwitterShareButton,
   LinkedinShareButton,
-} from "react-share";
-import { usePathname } from "next/navigation";
+  TwitterShareButton,
+} from 'react-share';
 
 const SharedLinks: React.FC = () => {
   const currentUrl = usePathname().slice(1);
@@ -21,15 +22,15 @@ const SharedLinks: React.FC = () => {
   const handleShare = async () => {
     try {
       await navigator.clipboard.writeText(
-        `${process.env.NEXT_PUBLIC_CLIENT_URL}/${currentUrl}`
+        `${process.env.NEXT_PUBLIC_CLIENT_URL}/${currentUrl}`,
       );
       toast({
-        title: "Link copied",
-        variant: "default",
-        className: "bg-green-500 text-white",
+        title: 'Link copied',
+        variant: 'default',
+        className: 'bg-green-500 text-white',
       });
     } catch (error) {
-      console.error("Ошибка при копировании ссылки:", error);
+      console.error('Ошибка при копировании ссылки:', error);
     }
   };
 

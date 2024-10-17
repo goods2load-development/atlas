@@ -1,11 +1,16 @@
-"use client";
-import React, { useEffect } from "react";
-import { useCurrenciesStore } from "@/lib/filterStore";
-import { useCountriesStore } from "@/lib/store";
-import { useUserStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+'use client';
+
+import { useCurrenciesStore } from '@/lib/filterStore';
+import { useCountriesStore } from '@/lib/store';
+import { useUserStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import React, { useEffect } from 'react';
+
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import UIButton from '@/components/common/Button';
 import {
   Form,
   FormControl,
@@ -13,8 +18,7 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import UIButton from "@/components/common/Button";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
@@ -22,7 +26,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 interface CountriesProps {
   value: string;
@@ -38,32 +42,32 @@ interface AddressFormProps {
 
 const localization = [
   {
-    code: "en",
-    name: "English",
-    icon: "./",
+    code: 'en',
+    name: 'English',
+    icon: './',
     data: {
       header: {},
-      hello: "Hallo",
-      goodbye: "Auf Wiedersehen",
-      thank_you: "Danke schön",
+      hello: 'Hallo',
+      goodbye: 'Auf Wiedersehen',
+      thank_you: 'Danke schön',
     },
   },
   {
-    code: "de",
-    name: "Deutsche",
-    icon: "./",
+    code: 'de',
+    name: 'Deutsche',
+    icon: './',
     data: {
       header: {},
-      hello: "Hallo",
-      goodbye: "Auf Wiedersehen",
-      thank_you: "Danke schön",
+      hello: 'Hallo',
+      goodbye: 'Auf Wiedersehen',
+      thank_you: 'Danke schön',
     },
   },
 ];
 
 export default function RegionalSettingsForm(props: AddressFormProps) {
   const { selectedCurrency, currencies, setCurrency } = useCurrenciesStore(
-    (state: any) => state
+    (state: any) => state,
   );
   const formSchema = z.object({
     language: z.string(),
@@ -72,7 +76,7 @@ export default function RegionalSettingsForm(props: AddressFormProps) {
   });
 
   const { countriesList, getCountriesList } = useCountriesStore(
-    (state: any) => state
+    (state: any) => state,
   );
 
   const { user, updateUser } = useUserStore((state: any) => state);

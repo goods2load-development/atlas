@@ -1,5 +1,6 @@
-import React from "react";
-import { Editor as EditField } from "@tinymce/tinymce-react";
+import { Editor as EditField } from '@tinymce/tinymce-react';
+
+import React from 'react';
 
 const Editor = React.memo(
   ({
@@ -14,23 +15,23 @@ const Editor = React.memo(
       <EditField
         apiKey={process.env.NEXT_PUBLIC_TINY_KEY}
         init={{
-          width: "100%",
+          width: '100%',
           height: 400,
           block_unsupported_drop: false,
           automatic_uploads: true,
           image_title: true,
-          file_picker_types: "image",
+          file_picker_types: 'image',
           images_upload_url: `${process.env.NEXT_PUBLIC_BASE_URL}api/blogs/editor/upload`,
 
           images_upload_handler: (blobInfo: any, progress: any) => {
             return new Promise((resolve, reject) => {
               const formData = new FormData();
-              formData.append("file", blobInfo.blob(), blobInfo.filename());
+              formData.append('file', blobInfo.blob(), blobInfo.filename());
 
               const xhr = new XMLHttpRequest();
               xhr.open(
-                "POST",
-                `${process.env.NEXT_PUBLIC_BASE_URL}api/blogs/editor/upload`
+                'POST',
+                `${process.env.NEXT_PUBLIC_BASE_URL}api/blogs/editor/upload`,
               );
 
               xhr.upload.onprogress = (e) => {
@@ -44,7 +45,7 @@ const Editor = React.memo(
                   if (json) {
                     resolve(`${process.env.NEXT_PUBLIC_BASE_URL}/${json}`);
                   } else {
-                    reject("Invalid JSON response");
+                    reject('Invalid JSON response');
                   }
                 } else {
                   reject(`HTTP Error: ${xhr.status}`);
@@ -52,7 +53,7 @@ const Editor = React.memo(
               };
 
               xhr.onerror = () => {
-                reject("Image upload failed due to a network error.");
+                reject('Image upload failed due to a network error.');
               };
 
               xhr.send(formData);
@@ -60,9 +61,9 @@ const Editor = React.memo(
           },
 
           file_picker_callback: function (callback, value, meta) {
-            const input = document.createElement("input");
-            input.setAttribute("type", "file");
-            input.setAttribute("accept", "image/*");
+            const input = document.createElement('input');
+            input.setAttribute('type', 'file');
+            input.setAttribute('accept', 'image/*');
 
             input.onchange = function () {
               const file = (this as any).files[0];
@@ -80,35 +81,35 @@ const Editor = React.memo(
           },
 
           plugins: [
-            "image",
-            "table",
-            "anchor",
-            "autolink",
-            "charmap",
-            "directionality",
-            "emoticons",
-            "insertdatetime",
-            "link",
-            "lists",
-            "nonbreaking",
-            "pagebreak",
-            "preview",
-            "visualblocks",
-            "visualchars",
-            "fullscreen",
+            'image',
+            'table',
+            'anchor',
+            'autolink',
+            'charmap',
+            'directionality',
+            'emoticons',
+            'insertdatetime',
+            'link',
+            'lists',
+            'nonbreaking',
+            'pagebreak',
+            'preview',
+            'visualblocks',
+            'visualchars',
+            'fullscreen',
           ],
           toolbar: [
-            "undo redo | h1 h2 h3 h4 h5 h6 | formatselect | fontfamily fontsize | bold italic underline strikethrough |" +
-              "alignleft aligncenter alignright alignjustify | bullist numlist | indent outdent | lineheight |" +
-              "forecolor backcolor | removeformat | subscript superscript" +
-              "blockquote | hr |  paste | language |" +
-              "link unlink | image media | code | visualaid | selectall | remove print | pagebreak",
+            'undo redo | h1 h2 h3 h4 h5 h6 | formatselect | fontfamily fontsize | bold italic underline strikethrough |' +
+              'alignleft aligncenter alignright alignjustify | bullist numlist | indent outdent | lineheight |' +
+              'forecolor backcolor | removeformat | subscript superscript' +
+              'blockquote | hr |  paste | language |' +
+              'link unlink | image media | code | visualaid | selectall | remove print | pagebreak',
           ],
           font_family_formats:
-            "Avenir Black=Avenir Black; Avenir Heavy=Avenir Heavy; Avenir Medium=Avenir Medium;",
+            'Avenir Black=Avenir Black; Avenir Heavy=Avenir Heavy; Avenir Medium=Avenir Medium;',
           menubar: isMinimalize
-            ? ""
-            : "favs file edit view insert format tools table help",
+            ? ''
+            : 'favs file edit view insert format tools table help',
         }}
         onEditorChange={(v) => {
           onChange(v);
@@ -116,9 +117,9 @@ const Editor = React.memo(
         {...rest}
       />
     );
-  }
+  },
 );
 
-Editor.displayName = "Editor";
+Editor.displayName = 'Editor';
 
 export default Editor;

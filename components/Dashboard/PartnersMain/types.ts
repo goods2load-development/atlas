@@ -1,4 +1,4 @@
-export type PARTNER_STATUS = "APPROVED" | "IN REVIEW" | "NEW";
+export type PARTNER_STATUS = 'APPROVED' | 'IN REVIEW' | 'NEW';
 
 export interface ResponsePartner {
   id: string;

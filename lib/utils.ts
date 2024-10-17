@@ -1,16 +1,15 @@
-import { type ClassValue, clsx } from "clsx";
-import { twMerge } from "tailwind-merge";
-import Cookie from "js-cookie";
-import { format } from "date-fns";
+import axios from 'axios';
+import { type ClassValue, clsx } from 'clsx';
+import { format } from 'date-fns';
+import Cookie from 'js-cookie';
+import { signOut } from 'next-auth/react';
+import { twMerge } from 'tailwind-merge';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-import axios from "axios";
-import { signOut } from "next-auth/react";
-
-axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + "api/";
+axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + 'api/';
 axios.defaults.withCredentials = true;
 
 async function handleTokenRefresh(originalRequest: any) {
@@ -19,11 +18,11 @@ async function handleTokenRefresh(originalRequest: any) {
   try {
     const response = await axios.post(`/auth/refresh`);
     if (response.status === 201) {
-      Cookie.set("access_token", response.data.access_token, {
+      Cookie.set('access_token', response.data.access_token, {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
 
-      originalRequest.headers["Authorization"] =
+      originalRequest.headers['Authorization'] =
         `Bearer ${response.data.access_token}`;
 
       return axios(originalRequest);
@@ -45,14 +44,14 @@ axios.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 403 &&
-      error.response.data.message === "jwt expired" &&
+      error.response.data.message === 'jwt expired' &&
       !originalRequest._retry
     ) {
       return handleTokenRefresh(originalRequest);
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 axios.interceptors.response.use(
@@ -65,17 +64,17 @@ axios.interceptors.response.use(
     if (
       error.response &&
       error.response.status === 401 &&
-      error.response.data.message === "Invalid token" &&
+      error.response.data.message === 'Invalid token' &&
       !originalRequest._retry
     ) {
-      signOut({ callbackUrl: "/" });
-      localStorage.removeItem("id");
-      Cookie.remove("access_token");
+      signOut({ callbackUrl: '/' });
+      localStorage.removeItem('id');
+      Cookie.remove('access_token');
       return;
     }
 
     return Promise.reject(error);
-  }
+  },
 );
 
 axios.interceptors.response.use(
@@ -83,9 +82,9 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    window.dispatchEvent(new CustomEvent("errorHandler", { detail: error }));
+    window.dispatchEvent(new CustomEvent('errorHandler', { detail: error }));
     return error;
-  }
+  },
 );
 
 export function getRequest(params: any) {
@@ -128,9 +127,9 @@ export function deleteRequest(params: any) {
 
 export const generateBlockId = (title?: string) =>
   title
-    ?.replace(/ /g, "-")
-    .replace(/[\s’?*()]/g, "")
-    .toLowerCase() || "";
+    ?.replace(/ /g, '-')
+    .replace(/[\s’?*()]/g, '')
+    .toLowerCase() || '';
 
 export const fileToBase64 = (file: File): Promise<string> => {
   return new Promise((resolve, reject) => {
@@ -143,7 +142,7 @@ export const fileToBase64 = (file: File): Promise<string> => {
 
 export const removeEqualFields = <T extends Record<string, any>>(
   obj1: T,
-  obj2: T
+  obj2: T,
 ): T => {
   const result = { ...obj2 };
   for (const key in result) {
@@ -154,15 +153,15 @@ export const removeEqualFields = <T extends Record<string, any>>(
   return result;
 };
 
-export const isUserAdmin = (role: string) => role === "admin";
-export const isUser = (role: string) => role === "user";
-export const isUserProvider = (role: string) => role === "provider";
-export const isUserEditor = (role: string) => role === "editor";
+export const isUserAdmin = (role: string) => role === 'admin';
+export const isUser = (role: string) => role === 'user';
+export const isUserProvider = (role: string) => role === 'provider';
+export const isUserEditor = (role: string) => role === 'editor';
 
 export const toNormalText = (input: string) => {
-  const camelToSpace = input.replace(/([a-z])([A-Z])/g, "$1 $2");
+  const camelToSpace = input.replace(/([a-z])([A-Z])/g, '$1 $2');
 
-  const snakeToSpace = camelToSpace.replace(/_/g, " ");
+  const snakeToSpace = camelToSpace.replace(/_/g, ' ');
 
   return snakeToSpace.charAt(0).toUpperCase() + snakeToSpace.slice(1);
 };
@@ -174,7 +173,7 @@ export const countVolume = (width: number, length: number, height: number) => {
 export const filterByField = (arr: any[], field: string, value: string) => {
   if (!arr?.length) return arr;
   return arr.filter((item) =>
-    item[field].toString().toLowerCase().includes(value.toLowerCase())
+    item[field].toString().toLowerCase().includes(value.toLowerCase()),
   );
 };
 
@@ -205,12 +204,12 @@ export const removeFileFromFileList = (index: number, fileList: FileList) => {
 export const getRandomHexColor = () =>
   `#${Math.floor(Math.random() * 16777215)
     .toString(16)
-    .padStart(6, "0")}`;
+    .padStart(6, '0')}`;
 
 export const urlToFile = async (
   url: string,
   filename: string,
-  mimeType: string
+  mimeType: string,
 ) => {
   const response = await fetch(url);
   const blob = await response.blob();
@@ -223,13 +222,13 @@ export const urlToFile = async (
 export const urlsToFileList = async (urls: string[]) => {
   const filesArray = await Promise.all(
     urls.map(async (url, index) => {
-      const mimeType = `image/${url.split(".").at(-1)}`;
+      const mimeType = `image/${url.split('.').at(-1)}`;
       return await urlToFile(
         url,
-        `file${index + 1}.${mimeType.split("/")[1]}`,
-        mimeType
+        `file${index + 1}.${mimeType.split('/')[1]}`,
+        mimeType,
       );
-    })
+    }),
   );
 
   const dataTransfer = new DataTransfer();
@@ -239,5 +238,5 @@ export const urlsToFileList = async (urls: string[]) => {
 };
 
 export const formatDate = (dateString: string): string => {
-  return format(new Date(dateString), "dd MMM yyyy");
+  return format(new Date(dateString), 'dd MMM yyyy');
 };

@@ -1,8 +1,9 @@
-"use client";
+'use client';
 
-import { type Tab } from "./MarketTrendsMain";
-import Image from "next/image";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
+import { type Tab } from './MarketTrendsMain';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+
+import Image from 'next/image';
 
 interface MarketTrendsTabs {
   tabs: Tab[];
@@ -23,12 +24,12 @@ const MarketTrendsTabs = ({
             {tabs.map(({ id, text }, idx) => {
               return (
                 <li
-                  className={`p-2 whitespace-nowrap rounded-md flex gap-2 hover:bg-primaryOrange hover:opacity-80 cursor-pointer hover:text-white transition-all uppercase ${activeTab.id === id ? "font-semibold" : ""}`}
+                  className={`p-2 whitespace-nowrap rounded-md flex gap-2 hover:bg-primaryOrange hover:opacity-80 cursor-pointer hover:text-white transition-all uppercase ${activeTab.id === id ? 'font-semibold' : ''}`}
                   key={id}
                   style={{
-                    backgroundColor: activeTab.id === id ? "#FF6720" : "",
-                    color: activeTab.id === id ? "white" : "",
-                    pointerEvents: activeTab.id === id ? "none" : "all",
+                    backgroundColor: activeTab.id === id ? '#FF6720' : '',
+                    color: activeTab.id === id ? 'white' : '',
+                    pointerEvents: activeTab.id === id ? 'none' : 'all',
                   }}
                   onClick={() => onChangeTab(id)}
                 >
@@ -64,9 +65,9 @@ const MarketTrendsTabs = ({
             <ol className="flex flex-col gap-4 px-4">
               {tabs.map(({ id, text }, idx) => (
                 <DropdownMenu.Item
-                  className={`outline-none p-2 whitespace-nowrap rounded-md flex gap-2 hover:bg-primaryOrange hover:opacity-80 cursor-pointer hover:text-white transition-all font ${activeTab.id === id ? "font-semibold" : ""} ${
-                    activeTab.id === id ? "bg-primaryOrange text-white" : ""
-                  } ${activeTab.id === id ? "pointer-events-none" : ""}`}
+                  className={`outline-none p-2 whitespace-nowrap rounded-md flex gap-2 hover:bg-primaryOrange hover:opacity-80 cursor-pointer hover:text-white transition-all font ${activeTab.id === id ? 'font-semibold' : ''} ${
+                    activeTab.id === id ? 'bg-primaryOrange text-white' : ''
+                  } ${activeTab.id === id ? 'pointer-events-none' : ''}`}
                   key={id}
                   onSelect={() => onChangeTab(id)}
                   disabled={activeTab.id === id}

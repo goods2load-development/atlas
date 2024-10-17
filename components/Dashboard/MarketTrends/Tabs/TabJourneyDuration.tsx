@@ -1,4 +1,4 @@
-import BarChartGraph, { BarChartData } from "../../Charts/BarChart";
+import BarChartGraph, { BarChartData } from '../../Charts/BarChart';
 
 interface JourneyDurationCountriesData {
   country: string;
@@ -39,7 +39,7 @@ const TabJourneyDuration = ({
                 style={{ backgroundColor: elem.color }}
               ></div>
               <span className="text-blackSecondary whitespace-nowrap text-xs md:text-sm">
-                {country} -{" "}
+                {country} -{' '}
               </span>
               <span className="text-blackSecondary  whitespace-nowrap text-xs md:text-sm">
                 {elem.country}

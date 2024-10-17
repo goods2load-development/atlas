@@ -1,7 +1,8 @@
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import clsx from "clsx";
-import { IMenuItem } from "./types";
+import { IMenuItem } from './types';
+
+import clsx from 'clsx';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 const MenuItems = ({
   items,
@@ -39,7 +40,7 @@ const MenuItems = ({
         <div
           className={clsx(
             `min-w-[200px] absolute z-50 bg-white text-black w-max animate-in transition-opacity animate-opacity
-            rounded-xl py-2 px-4 shadow-md hidden group-hover:block`
+            rounded-xl py-2 px-4 shadow-md hidden group-hover:block`,
           )}
         >
           {(depth === 1 ? children : items)?.map(
@@ -47,8 +48,8 @@ const MenuItems = ({
               <div
                 key={title}
                 className={clsx(
-                  "relative",
-                  depth === 0 ? "group" : "group/sub"
+                  'relative',
+                  depth === 0 ? 'group' : 'group/sub',
                 )}
               >
                 {children?.length ? (
@@ -71,7 +72,7 @@ const MenuItems = ({
                   </div>
                 )}
               </div>
-            )
+            ),
           )}
         </div>
       )}
@@ -84,10 +85,10 @@ interface IMenuData {
   json: IMenuItem[];
 }
 
-const DynamicMenu = async ({ variant = "primary" }: any) => {
+const DynamicMenu = async ({ variant = 'primary' }: any) => {
   const menuData: IMenuData = await (
     await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/dynamic-menu/header`, {
-      cache: "no-store",
+      cache: 'no-store',
     })
   ).json();
 
@@ -98,10 +99,10 @@ const DynamicMenu = async ({ variant = "primary" }: any) => {
   return (
     <nav
       className={clsx(
-        "sm:py-2 text-white w-full relative z-19",
-        variant === "primary" && "bg-primaryOrange",
-        variant === "secondary" && "bg-[#FFB393]",
-        variant === "transparent" && "bg-[rgba(255,255,255,0.2)]"
+        'sm:py-2 text-white w-full relative z-19',
+        variant === 'primary' && 'bg-primaryOrange',
+        variant === 'secondary' && 'bg-[#FFB393]',
+        variant === 'transparent' && 'bg-[rgba(255,255,255,0.2)]',
       )}
     >
       <div className="sm:container sm:mx-auto sm:px-4 sm:flex flex-wrap  items-center justify-center sm:gap-x-10 sm:gap-y-4 relative flex-1 hidden">

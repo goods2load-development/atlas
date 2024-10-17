@@ -1,20 +1,22 @@
-"use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+'use client';
+
+import { useEffect, useState } from 'react';
+
+import Link from 'next/link';
 
 const categories = [
-  "home",
-  "blogs",
-  "about",
-  "faq",
-  "login",
-  "signUp",
-  "partners",
-  "career",
-  "legacy",
-  "sitemap",
-  "newsAndInsights",
-  "industriesWeServe",
+  'home',
+  'blogs',
+  'about',
+  'faq',
+  'login',
+  'signUp',
+  'partners',
+  'career',
+  'legacy',
+  'sitemap',
+  'newsAndInsights',
+  'industriesWeServe',
 ];
 
 function SubTitle(props: any) {
@@ -44,24 +46,24 @@ export default function Sitemap() {
       const response = await fetch(`/site-map.xml`);
       const xmlText = await response.text();
       const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+      const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
       const urls: any = {};
 
       categories.forEach((category) => {
         const categoryNode = xmlDoc.getElementsByTagName(category)[0];
         if (categoryNode) {
           urls[category] = Array.from(
-            categoryNode.getElementsByTagName("url")
+            categoryNode.getElementsByTagName('url'),
           ).map((urlNode) => ({
-            href: urlNode.getElementsByTagName("href")[0].textContent,
-            title: urlNode.getElementsByTagName("title")[0].textContent,
+            href: urlNode.getElementsByTagName('href')[0].textContent,
+            title: urlNode.getElementsByTagName('title')[0].textContent,
           }));
         }
       });
 
       setData(urls);
     } catch (error) {
-      console.error("Error fetching sitemap:", error);
+      console.error('Error fetching sitemap:', error);
     }
   };
 

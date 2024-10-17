@@ -1,37 +1,38 @@
-import React, { useEffect, useState } from "react";
-import "@/app/content.css";
+import '@/app/content.css';
+
+import React, { useEffect, useState } from 'react';
 
 interface BlogContentProps {
   content: string;
   onHeadingsParsed: (
-    headings: { id: string; text: string; level: number }[]
+    headings: { id: string; text: string; level: number }[],
   ) => void;
 }
 
-const replaceH1Duplicate = (html: string) => html.replace(/h1/g, "h2");
+const replaceH1Duplicate = (html: string) => html.replace(/h1/g, 'h2');
 
 const BlogContent: React.FC<BlogContentProps> = ({
   content,
   onHeadingsParsed,
 }) => {
-  const [parsedContent, setParsedContent] = useState<string>("");
+  const [parsedContent, setParsedContent] = useState<string>('');
 
   useEffect(() => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(
       replaceH1Duplicate(content),
-      "text/html"
+      'text/html',
     );
     const headings = Array.from(
-      doc.querySelectorAll("h1, h2, h3, h4, h5, h6")
+      doc.querySelectorAll('h1, h2, h3, h4, h5, h6'),
     ).map((heading, index) => {
       const id = `heading-${index}`;
-      heading.setAttribute("id", id);
+      heading.setAttribute('id', id);
       heading.classList.add(`heading-${heading.tagName.toLowerCase()}`);
       return {
         id,
-        text: heading.textContent || "",
-        level: parseInt(heading.tagName.replace("H", ""), 10),
+        text: heading.textContent || '',
+        level: parseInt(heading.tagName.replace('H', ''), 10),
       };
     });
 

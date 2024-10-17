@@ -1,50 +1,50 @@
-import BarChartGraph, { BarChartData } from "../Charts/BarChart";
-import Map, { MarkersCoordinates } from "../Map/Map";
+import BarChartGraph, { BarChartData } from '../Charts/BarChart';
+import Map, { MarkersCoordinates } from '../Map/Map';
 
 const MocksData: any = [
-  { name: "Underserved routes", value: 160, color: "#FF6720" },
-  { name: "Emerging trends", value: 195, color: "#BB4E1B" },
+  { name: 'Underserved routes', value: 160, color: '#FF6720' },
+  { name: 'Emerging trends', value: 195, color: '#BB4E1B' },
   {
-    name: "Customer Segmentation",
+    name: 'Customer Segmentation',
     value: 60,
-    color: "#FFEDE4",
+    color: '#FFEDE4',
   },
 ];
 
 const MockMarkers: MarkersCoordinates[] = [
   {
     from: {
-      name: "India",
+      name: 'India',
       coordinates: [76.4737, 27.2304],
     },
     to: {
-      name: "Vietnam",
+      name: 'Vietnam',
       coordinates: [104.4737, 16.2304],
     },
   },
   {
     from: {
-      name: "Dubai, UAE",
+      name: 'Dubai, UAE',
       coordinates: [53.4737, 25.2304],
     },
     to: {
-      name: "India",
+      name: 'India',
       coordinates: [76.4737, 27.2304],
     },
   },
   {
     from: {
-      name: "Saudi Arabia",
+      name: 'Saudi Arabia',
       coordinates: [40.4737, 25.2004],
     },
     to: {
-      name: "Dubai, UAE",
+      name: 'Dubai, UAE',
       coordinates: [53.4737, 25.2304],
     },
   },
   {
     from: {
-      name: "Vietnam",
+      name: 'Vietnam',
       coordinates: [104.4737, 16.2304],
     },
     to: null,

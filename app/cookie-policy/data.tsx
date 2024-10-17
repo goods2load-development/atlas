@@ -1,9 +1,10 @@
+import bg from '@/assets/LegacyImages/cookiePolicy.jpg';
+
 import {
-  ILegacyPage,
   ILegacyDataBlock,
   ILegacyDataBlockBodyType,
-} from "@/components/Legacy/types";
-import bg from "@/assets/LegacyImages/cookiePolicy.jpg";
+  ILegacyPage,
+} from '@/components/Legacy/types';
 
 const data: ILegacyDataBlock[] = [
   {
@@ -28,7 +29,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "What are cookies and similar technologies?",
+    title: 'What are cookies and similar technologies?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -75,7 +76,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "How do we use cookies and similar technologies?",
+    title: 'How do we use cookies and similar technologies?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -90,7 +91,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Purpose of essential cookies or similar technologies",
+    title: 'Purpose of essential cookies or similar technologies',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -137,7 +138,7 @@ const data: ILegacyDataBlock[] = [
   },
   {
     title:
-      "Purpose of personalised adverts (including third-party ad solutions) cookies or similar technologies",
+      'Purpose of personalised adverts (including third-party ad solutions) cookies or similar technologies',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -262,7 +263,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Who controls these cookies and similar technologies?",
+    title: 'Who controls these cookies and similar technologies?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -306,7 +307,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Learn more about cookies and similar technologies",
+    title: 'Learn more about cookies and similar technologies',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -318,7 +319,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Essential cookies and similar technologies:",
+    title: 'Essential cookies and similar technologies:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -330,88 +331,88 @@ const data: ILegacyDataBlock[] = [
       {
         type: ILegacyDataBlockBodyType.TABLE,
         tableContent: {
-          columns: ["Cookie Name", "Description", "Platform"],
+          columns: ['Cookie Name', 'Description', 'Platform'],
           rows: [
             [
-              "abgroup, ssab, ssaboverrides, experiment_allocation_i",
-              "Used to control product features and access to functionality",
-              "Web / webview / mWeb",
+              'abgroup, ssab, ssaboverrides, experiment_allocation_i',
+              'Used to control product features and access to functionality',
+              'Web / webview / mWeb',
             ],
             [
-              "Airport-transfers",
-              "Persists information between pages and display information requested",
-              "Web / webview / mWeb",
+              'Airport-transfers',
+              'Persists information between pages and display information requested',
+              'Web / webview / mWeb',
             ],
             [
-              "Auth_first_name",
-              "Track name changes in booking flows",
-              "Web / webview / mWeb",
+              'Auth_first_name',
+              'Track name changes in booking flows',
+              'Web / webview / mWeb',
             ],
             [
-              "Auth_last_name",
-              "Track name changes in booking flows",
-              "Web / webview / mWeb",
+              'Auth_last_name',
+              'Track name changes in booking flows',
+              'Web / webview / mWeb',
             ],
-            ["Authinfo", "Check logged in status", "Web / webview / mWeb"],
+            ['Authinfo', 'Check logged in status', 'Web / webview / mWeb'],
             [
-              "Carhire",
-              "Persists information between pages and display information requested",
-              "Web / webview / mWeb",
-            ],
-            [
-              "Exitstate",
-              "Support refreshed pages in booking flows",
-              "Web / webview / mWeb",
+              'Carhire',
+              'Persists information between pages and display information requested',
+              'Web / webview / mWeb',
             ],
             [
-              "gdpr",
+              'Exitstate',
+              'Support refreshed pages in booking flows',
+              'Web / webview / mWeb',
+            ],
+            [
+              'gdpr',
               "Controls the cookie banner behaviour and record the user's preferences (opt-in/opt-out states)",
-              "Web / webview / mWeb",
+              'Web / webview / mWeb',
             ],
             [
-              "Login_redirect",
-              "Redirects users to the correct page after logging in",
-              "Web / webview / mWeb",
+              'Login_redirect',
+              'Redirects users to the correct page after logging in',
+              'Web / webview / mWeb',
             ],
             [
-              "Preferences",
-              "Used to identify and attribute traffic to local domains",
-              "Web / webview / mWeb",
+              'Preferences',
+              'Used to identify and attribute traffic to local domains',
+              'Web / webview / mWeb',
             ],
             [
-              "g2ltag, goods2loadRedirectId",
-              "Used to track conversion rates and provide product functionality in app and web",
-              "Web / webview / mWeb",
+              'g2ltag, goods2loadRedirectId',
+              'Used to track conversion rates and provide product functionality in app and web',
+              'Web / webview / mWeb',
             ],
             [
-              "Scanner",
-              "Persists information between pages and display information requested",
-              "Web / webview / mWeb",
+              'Scanner',
+              'Persists information between pages and display information requested',
+              'Web / webview / mWeb',
             ],
             [
-              "Ssculture",
-              "Stores settings such as market, locale and currency",
-              "Web / webview / mWeb",
+              'Ssculture',
+              'Stores settings such as market, locale and currency',
+              'Web / webview / mWeb',
             ],
             [
-              "Secure-anon_token, Secure-anon_csrf_token, traveller_context, mobile access token",
-              "Functionality cookies which provide an identifier for non-authenticated users and supports anonymous user state",
-              "Web / webview / mWeb, iOS app and Android app",
+              'Secure-anon_token, Secure-anon_csrf_token, traveller_context, mobile access token',
+              'Functionality cookies which provide an identifier for non-authenticated users and supports anonymous user state',
+              'Web / webview / mWeb, iOS app and Android app',
             ],
             [
-              "sid_token, sid_refresh_token, sid_id_token, sid_session_token, sid_utid, __Secure-sid_csrf_token, mobile access token",
-              "Functionality cookies which provide an identifier for logged-in users and supports authenticated user state",
-              "Web / webview / mWeb, iOS app and Android app",
+              'sid_token, sid_refresh_token, sid_id_token, sid_session_token, sid_utid, __Secure-sid_csrf_token, mobile access token',
+              'Functionality cookies which provide an identifier for logged-in users and supports authenticated user state',
+              'Web / webview / mWeb, iOS app and Android app',
             ],
             [
-              "User_credentials",
-              "Used for authentication",
-              "Web / webview / mWeb",
+              'User_credentials',
+              'Used for authentication',
+              'Web / webview / mWeb',
             ],
             [
-              "userJourney",
-              "Track and monitor events and avoid duplication",
-              "Web / webview / mWeb",
+              'userJourney',
+              'Track and monitor events and avoid duplication',
+              'Web / webview / mWeb',
             ],
           ],
         },
@@ -419,102 +420,102 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Third party essential cookies and tracking technologies:",
+    title: 'Third party essential cookies and tracking technologies:',
     body: [
       {
         type: ILegacyDataBlockBodyType.TABLE,
         tableContent: {
           columns: [
-            "Cookie or Similar Technology",
-            "Description",
-            "Third Party Name",
-            "Privacy Policy",
-            "Platform",
+            'Cookie or Similar Technology',
+            'Description',
+            'Third Party Name',
+            'Privacy Policy',
+            'Platform',
           ],
           rows: [
             [
-              "Akamai RTakacd_mpulse_",
-              "Measures website performance",
-              "Akamai/Mpulse",
+              'Akamai RTakacd_mpulse_',
+              'Measures website performance',
+              'Akamai/Mpulse',
               "<a href='https://www.akamai.com/uk/en/privacy-policies/' target='_blank'>https://www.akamai.com/uk/en/privacy-policies/</a>",
-              "Web / webview / mWeb",
+              'Web / webview / mWeb',
             ],
             [
-              "Auth0",
-              "Authentication and traveller user",
-              "Auth0",
+              'Auth0',
+              'Authentication and traveller user',
+              'Auth0',
               "<a href='https://auth0.com/privacy' target='_blank'>https://auth0.com/privacy</a>",
-              "Web / webview / mWeb, iOS",
+              'Web / webview / mWeb, iOS',
             ],
             [
-              "Automattic VIP GO",
-              "Hosting for certain pages on Skyscanner sites collect operational",
-              "Automattic Inc",
+              'Automattic VIP GO',
+              'Hosting for certain pages on Skyscanner sites collect operational',
+              'Automattic Inc',
               "<a href='https://automattic.com/privacy/' target='_blank'>https://automattic.com/privacy/</a>",
-              "Web / webview / mWeb",
+              'Web / webview / mWeb',
             ],
             [
-              "Braintree",
-              "Payment processing and secure transfer of data",
-              "Braintree",
+              'Braintree',
+              'Payment processing and secure transfer of data',
+              'Braintree',
               "<a href='https://www.braintreepayments.com/gb/legal/braintree-privacy-policy' target='_blank'>https://www.braintreepayments.com/gb/legal/braintree-privacy-policy</a>",
-              "Web / webview / mWeb, iOS app and Android app",
+              'Web / webview / mWeb, iOS app and Android app',
             ],
             [
-              "Branch.io",
-              "Deeplinking into specific places in app",
-              "Branch Metrics",
+              'Branch.io',
+              'Deeplinking into specific places in app',
+              'Branch Metrics',
               "<a href='https://branch.io/policies/#privacy' target='_blank'>https://branch.io/policies/#privacy</a>",
-              "Web / webview / mWeb, iOS",
+              'Web / webview / mWeb, iOS',
             ],
             [
-              "Braze SDK",
-              "Delivery of multi-channel (push, email,  in app)",
-              "Braze",
+              'Braze SDK',
+              'Delivery of multi-channel (push, email,  in app)',
+              'Braze',
               "<a href='https://www.braze.com/privacy/' target='_blank'>https://www.braze.com/privacy/</a>",
-              "iOS app and Android app",
+              'iOS app and Android app',
             ],
             [
-              "Ctrip Fraud Detection",
-              "Service used to check for fraudulent transactions when booking with",
-              "Ctrip",
+              'Ctrip Fraud Detection',
+              'Service used to check for fraudulent transactions when booking with',
+              'Ctrip',
               "<a href='http://pages.english.ctrip.com/webhome/purehtml/en/public/PrivacyPolicy.html' target='_blank'>http://pages.english.ctrip.com/webhome/purehtml/en/public/PrivacyPolicy.html</a>",
-              "Web / webview / mWeb, iOS app and Android app",
+              'Web / webview / mWeb, iOS app and Android app',
             ],
             [
-              "Google Analytics",
-              "Business and financial reporting",
-              "Google",
+              'Google Analytics',
+              'Business and financial reporting',
+              'Google',
               "<a href='https://www.google.com/policies/privacy/' target='_blank'>https://www.google.com/policies/privacy/</a>",
-              "Web / webview / mWeb, iOS",
+              'Web / webview / mWeb, iOS',
             ],
             [
-              "PerimeterX _pxvid _pxhd _pxff",
-              "Security services for website protection",
-              "PerimeterX",
+              'PerimeterX _pxvid _pxhd _pxff',
+              'Security services for website protection',
+              'PerimeterX',
               "<a href='https://www.perimeterx.com/privacy/' target='_blank'>https://www.perimeterx.com/privacy/</a>",
-              "Web / webview / mWeb, iOS app and Android app",
+              'Web / webview / mWeb, iOS app and Android app',
             ],
             [
-              "Polyfill.io",
-              "Service for providing poly fills for functionality not present",
-              "The Financial Times",
+              'Polyfill.io',
+              'Service for providing poly fills for functionality not present',
+              'The Financial Times',
               "<a href='https://polyfill.io/v3/privacy-policy/' target='_blank'>https://polyfill.io/v3/privacy-policy/</a>",
-              "Web / webview / mWeb",
+              'Web / webview / mWeb',
             ],
             [
-              "Sentry",
-              "Used for identifying errors and crashes",
-              "Functional  Software",
+              'Sentry',
+              'Used for identifying errors and crashes',
+              'Functional  Software',
               "<a href='https://sentry.io/privacy/' target='_blank'>https://sentry.io/privacy/</a>",
-              "Web / webview / mWeb",
+              'Web / webview / mWeb',
             ],
             [
-              "Zendesk",
-              "Used for help and customer support services",
-              "Zendesk",
+              'Zendesk',
+              'Used for help and customer support services',
+              'Zendesk',
               "<a href='https://www.zendesk.co.uk/company/customers-partners/privacy-policy/' target='_blank'>https://www.zendesk.co.uk/company/customers-partners/privacy-policy/</a>",
-              "Web / webview / mWeb",
+              'Web / webview / mWeb',
             ],
           ],
         },
@@ -522,7 +523,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Improved experience (analytics) cookies and similar technologies",
+    title: 'Improved experience (analytics) cookies and similar technologies',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -538,45 +539,45 @@ const data: ILegacyDataBlock[] = [
         type: ILegacyDataBlockBodyType.TABLE,
         tableContent: {
           columns: [
-            "Cookie or Similar Technology",
-            "Description",
-            "Owner",
-            "Privacy Policy",
-            "Opt Out Methods",
-            "Platform",
+            'Cookie or Similar Technology',
+            'Description',
+            'Owner',
+            'Privacy Policy',
+            'Opt Out Methods',
+            'Platform',
           ],
           rows: [
             [
-              "AppsFlyer",
-              "Service used to identify the  source of app",
-              "AppsFlyer",
+              'AppsFlyer',
+              'Service used to identify the  source of app',
+              'AppsFlyer',
               "<a href='https://www.appsflyer.com/privacy-policy/' target='_blank'>https://www.appsflyer.com/privacy-policy/</a>",
               "Privacy Settings or via <a href='https://www.appsflyer.com' target='_blank'>https://www.appsflyer.com</a>",
-              "iOS app and Android app",
+              'iOS app and Android app',
             ],
             [
-              "Firebase Analytics",
-              "Used to collect  crash analytics  and adoption",
-              "Google",
+              'Firebase Analytics',
+              'Used to collect  crash analytics  and adoption',
+              'Google',
               "<a href='https://www.google.com/privacy.html' target='_blank'>www.google.com/privacy.html</a>",
-              "Privacy Settings",
-              "iOS app and Android app",
+              'Privacy Settings',
+              'iOS app and Android app',
             ],
             [
-              "Usabilla",
-              "Used to collect feedback from travelers",
-              "Usabilla BV",
+              'Usabilla',
+              'Used to collect feedback from travelers',
+              'Usabilla BV',
               "<a href='https://usabilla.com/privacy/' target='_blank'>https://usabilla.com/privacy/</a>",
-              "Privacy Settings",
-              "Web / Webview / mWeb",
+              'Privacy Settings',
+              'Web / Webview / mWeb',
             ],
             [
-              "Yandex Metrica",
-              "Used to collect analytics and monitor performance in the...",
-              "Yandex",
+              'Yandex Metrica',
+              'Used to collect analytics and monitor performance in the...',
+              'Yandex',
               "<a href='https://yandex.com/legal/privacy/' target='_blank'>https://yandex.com/legal/privacy/</a>",
               "Privacy Settings or <a href='https://yandex.com/support/metrica' target='_blank'>https://yandex.com/support/metrica</a>",
-              "Web / Webview / mWeb",
+              'Web / Webview / mWeb',
             ],
           ],
         },
@@ -584,7 +585,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Personalised Advertising cookies and similar technologies",
+    title: 'Personalised Advertising cookies and similar technologies',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -601,7 +602,7 @@ const data: ILegacyDataBlock[] = [
   },
   {
     title:
-      "How can I withdraw my consent to the use of cookies and similar technologies?",
+      'How can I withdraw my consent to the use of cookies and similar technologies?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -664,7 +665,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Contact us",
+    title: 'Contact us',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -678,8 +679,8 @@ const data: ILegacyDataBlock[] = [
 ];
 
 export const cookiePolicyPageData: ILegacyPage = {
-  title: "Goods2load cookie policy",
-  subTitle: "Thursday, 3 October 2024",
+  title: 'Goods2load cookie policy',
+  subTitle: 'Thursday, 3 October 2024',
   bg,
   data,
 };

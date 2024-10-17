@@ -1,9 +1,13 @@
-"use client";
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import CreateUpdateBlog from "@/components/Dashboard/BlogMain/CreateUpdateBlog";
-import { useBlogAdminStore } from "@/lib/store";
-import { useParams } from "next/navigation";
-import { useEffect } from "react";
+'use client';
+
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+import { useBlogAdminStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import { useParams } from 'next/navigation';
+
+import CreateUpdateBlog from '@/components/Dashboard/BlogMain/CreateUpdateBlog';
 
 export default function EditBlog() {
   const { blog, getBlog } = useBlogAdminStore();

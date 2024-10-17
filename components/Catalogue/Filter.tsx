@@ -1,14 +1,17 @@
-"use client";
-import React, { useEffect, useState } from "react";
+'use client';
+
+import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
+
+import React, { useEffect, useState } from 'react';
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { useFilterStore, useCurrenciesStore } from "@/lib/filterStore";
+} from '@/components/ui/accordion';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
 
 function GroupSelection({ selectAll, clearAll }: any) {
   return (
@@ -338,8 +341,8 @@ export default function Filter() {
         <AccordionTrigger>Logistic partner</AccordionTrigger>
         <AccordionContent>
           <GroupSelection
-            selectAll={() => selectAll(partners, "partners", true)}
-            clearAll={() => selectAll(partners, "partners")}
+            selectAll={() => selectAll(partners, 'partners', true)}
+            clearAll={() => selectAll(partners, 'partners')}
           />
           <FilterItemList
             items={partners}
@@ -349,18 +352,18 @@ export default function Filter() {
           />
         </AccordionContent>
       </AccordionItem>
-      {deliveryBy !== "truck" && (
+      {deliveryBy !== 'truck' && (
         <>
           <AccordionItem value="portsDeparture">
             <AccordionTrigger>
-              {deliveryBy === "plane" && "Air"}Port Departure
+              {deliveryBy === 'plane' && 'Air'}Port Departure
             </AccordionTrigger>
             <AccordionContent>
               <GroupSelection
                 selectAll={() =>
-                  selectAll(portsDeparture, "portsDeparture", true)
+                  selectAll(portsDeparture, 'portsDeparture', true)
                 }
-                clearAll={() => selectAll(portsDeparture, "portsDeparture")}
+                clearAll={() => selectAll(portsDeparture, 'portsDeparture')}
               />
               <FilterItemList
                 items={portsDeparture}
@@ -371,12 +374,12 @@ export default function Filter() {
           </AccordionItem>
           <AccordionItem value="portsArrival">
             <AccordionTrigger>
-              {deliveryBy === "plane" && "Air"}Port Arrival
+              {deliveryBy === 'plane' && 'Air'}Port Arrival
             </AccordionTrigger>
             <AccordionContent>
               <GroupSelection
-                selectAll={() => selectAll(portsArrival, "portsArrival", true)}
-                clearAll={() => selectAll(portsArrival, "portsArrival")}
+                selectAll={() => selectAll(portsArrival, 'portsArrival', true)}
+                clearAll={() => selectAll(portsArrival, 'portsArrival')}
               />
               <FilterItemList
                 items={portsArrival}

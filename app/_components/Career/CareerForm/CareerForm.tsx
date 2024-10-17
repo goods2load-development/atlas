@@ -1,34 +1,37 @@
-"use client";
-import * as z from "zod";
+'use client';
+
+import AttachSvg from '../../Svg/CareerSvg/Attach/AttachSvg';
+import { postRequest } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Label } from '@radix-ui/react-label';
+
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import AttachSvg from "../../Svg/CareerSvg/Attach/AttachSvg";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Label } from "@radix-ui/react-label";
-import { postRequest } from "@/lib/utils";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+} from '@/components/ui/select';
 
 const MAX_FILE_SIZE = 2000000;
 const ACCEPTED_IMAGE_TYPES = [
-  "image/jpeg",
-  "image/jpg",
-  "image/png",
-  "image/webp",
+  'image/jpeg',
+  'image/jpg',
+  'image/png',
+  'image/webp',
 ];
 
 const formSchema = z.object({
@@ -38,7 +41,7 @@ const formSchema = z.object({
   selectValue: z.string().min(3),
   currentFile: z
     .any()
-    .refine((file) => file?.length == 1, "File is required.")
+    .refine((file) => file?.length == 1, 'File is required.')
     .refine((file) => file[0]?.size <= 3000000, `Max file size is 5MB.`),
 });
 
@@ -47,19 +50,19 @@ const CareerForm: React.FC = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      emailAddress: "",
-      firstName: "",
-      lastName: "",
-      selectValue: "",
+      emailAddress: '',
+      firstName: '',
+      lastName: '',
+      selectValue: '',
       currentFile: undefined,
     },
   });
-  const fileRef = form.register("currentFile", { required: true });
+  const fileRef = form.register('currentFile', { required: true });
   const handleSubmit = async (data: z.infer<typeof formSchema>) => {
     if (!executeRecaptcha) return;
-    const token = await executeRecaptcha("login");
+    const token = await executeRecaptcha('login');
     postRequest({
-      url: "/careers",
+      url: '/careers',
       data: {
         ...data,
         recaptchaToken: token,
@@ -67,9 +70,9 @@ const CareerForm: React.FC = () => {
     });
   };
   const data: any = [
-    { placeHolder: "First name", type: "text", name: "firstName" },
-    { placeHolder: "Last name", type: "text", name: "lastName" },
-    { placeHolder: "Email", type: "email", name: "emailAddress" },
+    { placeHolder: 'First name', type: 'text', name: 'firstName' },
+    { placeHolder: 'Last name', type: 'text', name: 'lastName' },
+    { placeHolder: 'Email', type: 'email', name: 'emailAddress' },
   ];
 
   return (

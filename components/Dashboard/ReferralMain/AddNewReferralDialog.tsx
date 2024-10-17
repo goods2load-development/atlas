@@ -1,14 +1,17 @@
-"use client";
-import UIButton from "@/components/common/Button";
+'use client';
+
+import ReferralFormDialog from './ReferralFormDialog';
+
+import { useState } from 'react';
+
+import UIButton from '@/components/common/Button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import ReferralFormDialog from "./ReferralFormDialog";
+} from '@/components/ui/dialog';
 
 const AddNewReferralDialog = ({
   addNewReferral,

@@ -1,6 +1,7 @@
-import { PropsWithChildren } from "react";
-import HeaderClient from "./Header/HeaderClient";
-import DynamicMenu from "./Header/DynamicMenu";
+import DynamicMenu from './Header/DynamicMenu';
+import HeaderClient from './Header/HeaderClient';
+
+import { PropsWithChildren } from 'react';
 
 export interface IBigLayoutProps extends PropsWithChildren {
   title: string;
@@ -9,10 +10,10 @@ export interface IBigLayoutProps extends PropsWithChildren {
 
 export default function BigLayout({
   children,
-  title = "",
-  description = "",
+  title = '',
+  description = '',
 }: IBigLayoutProps) {
-  const titleParts = title.split(" ");
+  const titleParts = title.split(' ');
   const midIndex = Math.ceil(titleParts.length / 2);
 
   return (
@@ -23,10 +24,10 @@ export default function BigLayout({
           <DynamicMenu variant="transparent" />
           <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-2 sm:pt-[80px]">
             {titleParts.map((part, index) => (
-              <span key={index} className={index >= midIndex ? "italic" : ""}>
+              <span key={index} className={index >= midIndex ? 'italic' : ''}>
                 {part}
 
-                {index < titleParts.length - 1 && " "}
+                {index < titleParts.length - 1 && ' '}
               </span>
             ))}
           </h1>

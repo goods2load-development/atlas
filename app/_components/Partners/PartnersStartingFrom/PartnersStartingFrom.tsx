@@ -1,6 +1,8 @@
-import React from "react";
-import Image from "next/image";
-import menWithBox from "@/assets/PartnersImage/PartnersStartingFrom/menWithBox.png";
+import menWithBox from '@/assets/PartnersImage/PartnersStartingFrom/menWithBox.png';
+
+import React from 'react';
+
+import Image from 'next/image';
 
 const PartnersStartingFrom: React.FC = () => {
   return (

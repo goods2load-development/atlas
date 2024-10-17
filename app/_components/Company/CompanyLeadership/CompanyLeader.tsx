@@ -1,9 +1,14 @@
-import React, { FC, useState } from "react";
-import { ILeader } from "@/app/_components/Company/CompanyLeadership/CompanyLeadership";
-import Image from "next/image";
-import arrow from "@/assets/arrow.svg";
-import linkedin from "@/assets/linkedin.svg";
+import { ILeader } from '@/app/_components/Company/CompanyLeadership/CompanyLeadership';
+import { Leadership } from '@/app/interface/leaderShip';
+import arrow from '@/assets/arrow.svg';
+import close from '@/assets/close.svg';
+import linkedin from '@/assets/linkedin.svg';
 
+import React, { FC, useState } from 'react';
+
+import Image from 'next/image';
+
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -12,10 +17,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import close from "@/assets/close.svg";
-import { Leadership } from "@/app/interface/leaderShip";
+} from '@/components/ui/dialog';
 
 type TItem = {
   item: Leadership;
@@ -29,7 +31,7 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
           <Image src={item.img} alt={item.name} className="rounded-full" />
           <DialogTrigger asChild className="relative">
             <Button className="flex bg-primaryOrange sm:w-[64px] sm:h-[64px] w-[56px] h-[56px] justify-center items-center rounded-full right-0 hover:cursor-pointer transform translate-x-[110px] translate-y-[-55px] lg:translate-x-[190px] lg:translate-y-[-100px]">
-              <Image src={arrow} alt={"arrow"} />
+              <Image src={arrow} alt={'arrow'} />
             </Button>
           </DialogTrigger>
         </div>
@@ -46,12 +48,12 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
           <DialogHeader className="rounded-[32px]">
             <div className="max-w-[360px] sm:max-w-[800px] w-fit flex flex-col rounded-[32px] bg-white modal">
               <h1 className="text-black font-light sm:text-[30px]/[34px] lg:text-[48px]/[57.6px] flex flex-row items-center gap-[8px] text-center">
-                {" "}
-                <Image src={linkedin} alt={"linkedin"} />
-                {item.name.split(" ")[0]}{" "}
+                {' '}
+                <Image src={linkedin} alt={'linkedin'} />
+                {item.name.split(' ')[0]}{' '}
                 <span className="font-normal sm:text-[30px]/[34px] lg:text-[48px]/[57.6px] italic">
-                  {item.name.split(" ")[1]}
-                </span>{" "}
+                  {item.name.split(' ')[1]}
+                </span>{' '}
               </h1>
               <p className="text-primaryOrange sm:text-[18px]/[23.4px] font-normal pb-6">
                 {item.position}
@@ -70,7 +72,7 @@ const CompanyLeader: FC<TItem> = ({ item }) => {
                 <Image
                   className="right-10 hover:cursor-pointer"
                   src={close}
-                  alt={"close"}
+                  alt={'close'}
                 />
               </Button>
             </DialogClose>

@@ -1,8 +1,9 @@
-import { create } from "zustand";
-import { format } from "date-fns";
-import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
+import { deleteRequest, getRequest, patchRequest, postRequest } from './utils';
 
-export const LOCAL_STORAGE_SEARCH_FORM_KEY = "search-from";
+import { format } from 'date-fns';
+import { create } from 'zustand';
+
+export const LOCAL_STORAGE_SEARCH_FORM_KEY = 'search-from';
 
 function validate(requiredFields: any) {
   let isValid = true;
@@ -19,14 +20,14 @@ function validate(requiredFields: any) {
 }
 
 export enum ContainerLoad {
-  FCL = "FCL",
-  LCL = "LCL",
+  FCL = 'FCL',
+  LCL = 'LCL',
 }
 
 export enum DeliveryBy {
-  plane = "plane",
-  ferry = "ferry",
-  truck = "truck",
+  plane = 'plane',
+  ferry = 'ferry',
+  truck = 'truck',
 }
 
 interface FilterStoreProps {
@@ -93,7 +94,7 @@ interface FilterStoreProps {
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
   let savedSeachForm: any =
-    typeof window !== "undefined"
+    typeof window !== 'undefined'
       ? localStorage.getItem(LOCAL_STORAGE_SEARCH_FORM_KEY)
       : null;
 
@@ -104,21 +105,21 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
   return {
     valid: validate(savedSeachForm),
     deliveryBy: savedSeachForm?.deliveryBy || DeliveryBy.plane,
-    fromCountry: savedSeachForm?.fromCountry || "",
-    from: savedSeachForm?.from || "",
-    toCountry: savedSeachForm?.toCountry || "",
-    to: savedSeachForm?.to || "",
-    departure: savedSeachForm?.departure || "",
-    arrival: savedSeachForm?.arrival || "",
-    typeOfGoods: savedSeachForm?.typeOfGoods || "",
-    totalKg: savedSeachForm?.totalKg || "",
-    placementOfGoods: savedSeachForm?.placementOfGoods || "Pallets",
-    quantity: savedSeachForm?.quantity || "",
-    length: savedSeachForm?.length || "",
-    width: savedSeachForm?.width || "",
-    height: savedSeachForm?.height || "",
-    goodsValue: savedSeachForm?.goodsValue || "0",
-    incoterms: savedSeachForm?.incoterms || "DDP",
+    fromCountry: savedSeachForm?.fromCountry || '',
+    from: savedSeachForm?.from || '',
+    toCountry: savedSeachForm?.toCountry || '',
+    to: savedSeachForm?.to || '',
+    departure: savedSeachForm?.departure || '',
+    arrival: savedSeachForm?.arrival || '',
+    typeOfGoods: savedSeachForm?.typeOfGoods || '',
+    totalKg: savedSeachForm?.totalKg || '',
+    placementOfGoods: savedSeachForm?.placementOfGoods || 'Pallets',
+    quantity: savedSeachForm?.quantity || '',
+    length: savedSeachForm?.length || '',
+    width: savedSeachForm?.width || '',
+    height: savedSeachForm?.height || '',
+    goodsValue: savedSeachForm?.goodsValue || '0',
+    incoterms: savedSeachForm?.incoterms || 'DDP',
 
     // filter options
 
@@ -197,7 +198,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height,
           goodsValue,
         },
-        newFilter
+        newFilter,
       );
       set((state: FilterStoreProps) => ({
         ...state,
@@ -207,7 +208,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     },
     getPartners: async () => {
       const data = await getRequest({
-        url: "orders/partners",
+        url: 'orders/partners',
       });
       set(() => ({
         partners: data.data,
@@ -216,9 +217,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     },
     getPortsList: (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
-      const type = deliveryBy === "plane" ? "airport" : "seaport";
+      const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
-      if (deliveryBy !== "truck")
+      if (deliveryBy !== 'truck')
         getRequest({
           url: `https://port-api.com/${type}/search/${city}`,
           withCredentials: false,
@@ -229,7 +230,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
               label: item.properties.name,
             }));
             const selected: any[] = data?.features.map(
-              (item: any) => item.properties.name
+              (item: any) => item.properties.name,
             );
             if (departure) {
               set(() => ({
@@ -292,11 +293,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height,
           goodsValue,
           incoterms,
-        })
+        }),
       );
 
       postRequest({
-        url: "orders/search",
+        url: 'orders/search',
         params: { page, take: 10 },
         data: {
           transportation: deliveryBy,
@@ -304,7 +305,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           to: `${toCountry}, ${to}`,
           departure,
           arrival,
-          goods: typeOfGoods.split(" ")[0],
+          goods: typeOfGoods.split(' ')[0],
           kilogram: parseInt(totalKg),
           placementOfGoods,
           quantity: parseInt(quantity),
@@ -351,11 +352,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           },
           withdraw: format(
             new Date(item.withdraw).toDateString(),
-            "MM/dd/yyyy"
+            'MM/dd/yyyy',
           ),
           delivery: format(
             new Date(item.delivery).toDateString(),
-            "MM/dd/yyyy"
+            'MM/dd/yyyy',
           ),
           orderCost: item.price,
           CO2EmissionControlled: item.goGreen,
@@ -385,8 +386,8 @@ interface SelectedCurrencyProps {
 
 export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
   selectedCurrency: {
-    symbol: "$",
-    code: "USD",
+    symbol: '$',
+    code: 'USD',
     rate: 1,
   },
   currencies: [],
@@ -396,10 +397,10 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
     })),
   getCurrencies: async () => {
     const exchangeRates = await getRequest({
-      url: "/currencies",
+      url: '/currencies',
     });
     getRequest({
-      url: "https://www.wixapis.com/currency_converter/v1/currencies",
+      url: 'https://www.wixapis.com/currency_converter/v1/currencies',
       withCredentials: false,
     }).then((data) => {
       const currenciesSorted = data.currencies.sort((a: any, b: any) => {
@@ -412,20 +413,20 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
         }
       });
       const majorCurrencies = currenciesSorted.filter(
-        (i: any) => i.code === "USD" || i.code === "EUR" || i.code === "GBP"
+        (i: any) => i.code === 'USD' || i.code === 'EUR' || i.code === 'GBP',
       );
       set(() => ({
         currencies: majorCurrencies
           .concat(
             currenciesSorted.filter(
               (i: any) =>
-                !(i.code === "USD" || i.code === "EUR" || i.code === "GBP") &&
-                exchangeRates[i.code]
-            )
+                !(i.code === 'USD' || i.code === 'EUR' || i.code === 'GBP') &&
+                exchangeRates[i.code],
+            ),
           )
           .map((item: any) => ({ ...item, rate: exchangeRates[item.code] })),
         selectedCurrency: {
-          ...currenciesSorted.find((item: any) => item.code === "USD"),
+          ...currenciesSorted.find((item: any) => item.code === 'USD'),
           rate: 1,
         },
       }));

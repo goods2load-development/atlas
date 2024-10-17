@@ -1,18 +1,21 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import ListItem from "@/components/ui/list-item";
-import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
-import clsx from "clsx";
-import Link from "next/link";
-import { useCallback, useEffect, useState } from "react";
-import { useBlogAdminStore } from "@/lib/store";
-import { Edit, MessageCircle, Trash } from "lucide-react";
-import Pagination from "@/components/ui/pagination";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Input } from "@/components/ui/input";
-import debounce from "lodash/debounce";
+import { useBlogAdminStore } from '@/lib/store';
+
+import { useCallback, useEffect, useState } from 'react';
+
+import clsx from 'clsx';
+import debounce from 'lodash/debounce';
+import { Edit, MessageCircle, Trash } from 'lucide-react';
+import Link from 'next/link';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import ListItem from '@/components/ui/list-item';
+import Pagination from '@/components/ui/pagination';
+import Spinner from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/use-toast';
 
 const TAKE = 5;
 
@@ -27,11 +30,11 @@ const BlogMain = () => {
     searchBlogs,
   } = useBlogAdminStore();
   const searchParams = useSearchParams();
-  const page = Number(searchParams.get("page") || 1);
+  const page = Number(searchParams.get('page') || 1);
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const [searchValue, setSearchValue] = useState("");
+  const [searchValue, setSearchValue] = useState('');
   const isSearchMode = searchValue.length > 1;
 
   const blogsData = isSearchMode ? foundBlogs : blogs;
@@ -60,23 +63,23 @@ const BlogMain = () => {
         getBlogs({
           page,
           take: TAKE,
-        })
+        }),
       )
       .then(() =>
         toast({
-          title: "Blog deleted.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Blog deleted.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
   const handleSetPage = (page: number) => {
     const params = new URLSearchParams(searchParams);
     if (page) {
-      params.set("page", page.toString());
+      params.set('page', page.toString());
     } else {
-      params.delete("page");
+      params.delete('page');
     }
 
     replace(`${pathname}?${params.toString()}`);
@@ -86,7 +89,7 @@ const BlogMain = () => {
     debounce((value: string) => {
       setSearchValue(value);
     }, 200),
-    []
+    [],
   );
 
   return (
@@ -116,8 +119,8 @@ const BlogMain = () => {
         </Link>
       </div>
       <div
-        className={clsx("flex flex-col gap-4", {
-          "pointer-events-none": isBlogLoading,
+        className={clsx('flex flex-col gap-4', {
+          'pointer-events-none': isBlogLoading,
         })}
       >
         {!blogsData?.data?.length && !isBlogLoading && (

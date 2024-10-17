@@ -1,31 +1,33 @@
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
-import { postRequest } from "@/lib/utils";
+import CountryCode from '../common/CountryCode';
+import { Textarea } from '../ui/textarea';
+import { postRequest } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
 
+import React, { useState } from 'react';
+
+import { useParams } from 'next/navigation';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import UIButton from '@/components/common/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import UIButton from "@/components/common/Button";
-import CountryCode from "../common/CountryCode";
-import { Textarea } from "../ui/textarea";
-import { useParams } from "next/navigation";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
@@ -51,17 +53,17 @@ export default function SendDataToPartnerDialog({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      countryCode: "",
-      phone: "",
-      email: "",
-      companyName: "",
+      countryCode: '',
+      phone: '',
+      email: '',
+      companyName: '',
     },
   });
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!executeRecaptcha) return;
 
-    const token = await executeRecaptcha("pollVote");
+    const token = await executeRecaptcha('pollVote');
     const data = {
       ...values,
       phone: `${values.countryCode}${values.phone}`,
@@ -84,7 +86,7 @@ export default function SendDataToPartnerDialog({
       <DialogContent className="max-w-[632px] p-[48px_52px] overflow-auto max-h-screen">
         <Form {...form}>
           <form
-            className={`flex flex-col justify-between ${step !== 0 && "hidden"}`}
+            className={`flex flex-col justify-between ${step !== 0 && 'hidden'}`}
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <DialogHeader>
@@ -203,7 +205,7 @@ export default function SendDataToPartnerDialog({
             </UIButton>
           </form>
         </Form>
-        <div className={`${step !== 1 && "hidden"}`}>
+        <div className={`${step !== 1 && 'hidden'}`}>
           <DialogHeader className="mb-[42px]">
             <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
               Your selection is being <i className="font-normal">processed</i>

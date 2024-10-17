@@ -1,21 +1,22 @@
-"use client";
-import React, { FC, useEffect, useState } from "react";
-import Image from "next/image";
-
-import { createPortal } from "react-dom";
+'use client';
 
 import {
   ModalCareer,
   SalesChallenge,
-} from "@/app/interfaces/leaderShip/interface";
+} from '@/app/interfaces/leaderShip/interface';
+import close from '@/assets/close.svg';
 
-import close from "@/assets/close.svg";
+import React, { FC, useEffect, useState } from 'react';
+
+import Image from 'next/image';
+import { createPortal } from 'react-dom';
+
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from '@/components/ui/dialog';
 
 const CareerCard: React.FC<ModalCareer> = ({ pesonalInfo }) => {
   return (
@@ -59,7 +60,7 @@ const Popup: FC<IPopup> = ({ leader }) => {
           <h1 className="text-primaryOrange font-light  items-center gap-[8px] mb-[10px]">
             <span className="font-normal text-[20px] sm:text-[28px]">
               {leader.modalName}
-            </span>{" "}
+            </span>{' '}
           </h1>
           <p className="mb-[20px]">{leader.description}</p>
           <div className="w-fit max-w-[800px] justify-center">
@@ -72,12 +73,12 @@ const Popup: FC<IPopup> = ({ leader }) => {
                     onClick={() => onClick(i)}
                   >
                     <div
-                      className={`${index === i ? "text-primaryOrange" : "text-careerModalGrey"} w-full max-w-[961px] mb-[10px]`}
+                      className={`${index === i ? 'text-primaryOrange' : 'text-careerModalGrey'} w-full max-w-[961px] mb-[10px]`}
                     >
                       {it.optionName}
                     </div>
                     <div
-                      className={`${index === i ? `allDecorationUnderLink  h-[2px]` : "hidden"}`}
+                      className={`${index === i ? `allDecorationUnderLink  h-[2px]` : 'hidden'}`}
                     ></div>
                   </div>
                 );
@@ -87,11 +88,11 @@ const Popup: FC<IPopup> = ({ leader }) => {
               (it: { optionText: string; additionText: string }, i: number) => (
                 <div key={i}>
                   <div
-                    className={`${index === i ? "" : "hidden"} font-normal text-[16px] leading-[24px] mb-[20px]`}
+                    className={`${index === i ? '' : 'hidden'} font-normal text-[16px] leading-[24px] mb-[20px]`}
                   >
                     <p>
                       {it.optionText
-                        .split("\n")
+                        .split('\n')
                         .map((line: string, index: number) => (
                           <span key={index}>
                             {line}
@@ -101,19 +102,19 @@ const Popup: FC<IPopup> = ({ leader }) => {
                     </p>
                   </div>
                   <div
-                    className={`${index === i ? "" : "hidden"} font-normal text-[16px] leading-[24px] mb-[20px]`}
+                    className={`${index === i ? '' : 'hidden'} font-normal text-[16px] leading-[24px] mb-[20px]`}
                   >
                     {it.additionText}
                   </div>
                 </div>
-              )
+              ),
             )}
           </div>
           <DialogClose asChild>
             <Image
               className="absolute top-10 right-10 hover:cursor-pointer"
               src={close}
-              alt={"close"}
+              alt={'close'}
             />
           </DialogClose>
         </div>

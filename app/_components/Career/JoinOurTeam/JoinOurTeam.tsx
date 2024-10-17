@@ -1,14 +1,14 @@
-"use client";
+'use client';
 
-import CareerCard from "../CareerCard/CareerCard";
-import { careerData } from "../careerData";
+import CareerCard from '../CareerCard/CareerCard';
+import { careerData } from '../careerData';
 
 export const JoinOurTeam = () => {
   return (
     <>
       <div className="flex flex-col gap-[16px] justify-center text-center text-black mb-[20px]">
         <h1 className="font-light text-[34px]/[40px] sm:text-[48px]/[57.6px] text-center flex flex-row justify-center gap-[12px]">
-          Join our{" "}
+          Join our{' '}
           <div className="flex items-center justify-center font-normal not-italic bg-[#FEF1DF] rounded-md h-[40px] sm:h-[49px] px-[6px] mt-[5px]">
             <i>team</i>
           </div>

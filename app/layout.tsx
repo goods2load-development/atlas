@@ -1,20 +1,23 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import NextAuthProvider from "@/components/NextAuthProvider";
-import { WeglotProvider } from "./weglot/WeglotProvider";
-import { Toaster } from "@/components/ui/toaster";
-import ToasterWrapper from "@/components/Interceptor";
-import CaptchaProvider from "@/lib/providers/CaptchaProvider";
+import './globals.css';
+import { WeglotProvider } from './weglot/WeglotProvider';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
+
+import type { Metadata } from 'next';
+
+import { Poppins } from 'next/font/google';
+
+import ToasterWrapper from '@/components/Interceptor';
+import NextAuthProvider from '@/components/NextAuthProvider';
+import { Toaster } from '@/components/ui/toaster';
 
 const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
 export const metadata: Metadata = {
-  title: "Goods2load",
-  description: "no description",
+  title: 'Goods2load',
+  description: 'no description',
 };
 
 export default function RootLayout({

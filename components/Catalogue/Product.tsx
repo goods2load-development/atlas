@@ -1,44 +1,47 @@
-import { IProduct } from "./MOCK";
-import LeafIcon from "@/assets/Product/LeafIcon";
-import SelectionPopup from "./SelectionPopup";
-import { GoogleRating } from "./GoogleRating";
-import SaveIcon from "@/assets/save.svg";
-import SaveIconFilled from "@/assets/save-filled.svg";
-import Image from "next/image";
-import { useToast } from "@/components/ui/use-toast";
-import { googleRatingMocks } from "./MOCK";
-import { useUserStore } from "@/lib/store";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import SendDataToPartnerDialog from "../PartnersDataPage/SendDataToPartnerDialog";
-import { ToolTipComponent } from "../SearchMain";
+import SendDataToPartnerDialog from '../PartnersDataPage/SendDataToPartnerDialog';
+import { ToolTipComponent } from '../SearchMain';
+import { GoogleRating } from './GoogleRating';
+import { googleRatingMocks } from './MOCK';
+import { IProduct } from './MOCK';
+import SelectionPopup from './SelectionPopup';
+import LeafIcon from '@/assets/Product/LeafIcon';
+import defaultCompanyLogo from '@/assets/defaultCompanyLogo.svg';
+import recognationIcon from '@/assets/industryRecognations.svg';
+import InfoImg from '@/assets/info.svg';
+import SaveIconFilled from '@/assets/save-filled.svg';
+import SaveIcon from '@/assets/save.svg';
+import { useUserStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import InfoImg from "@/assets/info.svg";
-import defaultCompanyLogo from "@/assets/defaultCompanyLogo.svg";
-import Link from "next/link";
-import recognationIcon from "@/assets/industryRecognations.svg";
+} from '@/components/ui/tooltip';
+import { useToast } from '@/components/ui/use-toast';
 
 interface Props extends IProduct {
   deliveryBy: string;
   currency: any;
-  index: number; 
+  index: number;
 }
 
 function Icon(type: string) {
   switch (type) {
-    case "plane":
-      return "/productplane.svg";
+    case 'plane':
+      return '/productplane.svg';
 
-    case "ferry":
-      return "/productferry.svg";
+    case 'ferry':
+      return '/productferry.svg';
 
     default:
-      return "/producttruck.svg";
+      return '/producttruck.svg';
   }
 }
 
@@ -53,21 +56,21 @@ export default function Product(props: Props) {
 
   const onSavePartner = () => {
     if (!user?.id) {
-      router.push("/sign-in");
+      router.push('/sign-in');
     } else {
       onSaveUserPartner(props.company.name)
         .then((data: any) => {
           toast({
-            title: "Partner saved",
-            variant: "default",
-            className: "bg-green-500 text-white",
+            title: 'Partner saved',
+            variant: 'default',
+            className: 'bg-green-500 text-white',
           });
         })
         .catch((error: any) => {
           toast({
             title: error.message,
-            variant: "default",
-            className: "bg-red-500 text-white",
+            variant: 'default',
+            className: 'bg-red-500 text-white',
           });
         });
     }
@@ -75,7 +78,7 @@ export default function Product(props: Props) {
 
   const isAlreadySavedPartner = (
     userSavedPartners: any = null,
-    partnerName: string
+    partnerName: string,
   ) => {
     if (!userSavedPartners) {
       return false;

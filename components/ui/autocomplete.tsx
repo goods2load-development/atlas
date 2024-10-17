@@ -1,8 +1,10 @@
-import React, { InputHTMLAttributes, useEffect, useRef, useState } from "react";
-import * as Popover from "@radix-ui/react-popover";
-import { Input } from "./input";
-import { PopoverContent, PopoverTrigger } from "./popover";
-import clsx from "clsx";
+import { Input } from './input';
+import { PopoverContent, PopoverTrigger } from './popover';
+import * as Popover from '@radix-ui/react-popover';
+
+import React, { InputHTMLAttributes, useEffect, useRef, useState } from 'react';
+
+import clsx from 'clsx';
 
 const Autocomplete = ({
   className,
@@ -17,7 +19,7 @@ const Autocomplete = ({
   defaultValue?: string;
 } & InputHTMLAttributes<HTMLInputElement>) => {
   const [pick, setPick] = useState<string | null>(defaultValue || null);
-  const [value, setValue] = useState(defaultValue || "");
+  const [value, setValue] = useState(defaultValue || '');
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -42,7 +44,7 @@ const Autocomplete = ({
 
   const setFilteredData = (inputValue: string) => {
     const filteredSuggestions = data.filter((item) =>
-      item.toLowerCase().includes(inputValue.toLowerCase())
+      item.toLowerCase().includes(inputValue.toLowerCase()),
     );
 
     setSuggestions(filteredSuggestions);
@@ -53,7 +55,7 @@ const Autocomplete = ({
       <Popover.Root open>
         <PopoverTrigger asChild>
           <Input
-            className={clsx("bg-gray-2 border-0", className)}
+            className={clsx('bg-gray-2 border-0', className)}
             ref={inputRef}
             type="text"
             placeholder="Type to search..."
@@ -75,7 +77,7 @@ const Autocomplete = ({
         </PopoverTrigger>
 
         <PopoverContent
-          className={clsx("p-1 max-h-[170px] !overflow-y-scroll", {
+          className={clsx('p-1 max-h-[170px] !overflow-y-scroll', {
             hidden: !isOpen,
           })}
           style={{

@@ -1,22 +1,25 @@
-"use client";
+'use client';
+
+import { Partner } from './types';
+import { toNormalText } from '@/lib/utils';
+
+import { ViewIcon } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { ViewIcon } from "lucide-react";
-import { toNormalText } from "@/lib/utils";
-import { Partner } from "./types";
-import Link from "next/link";
-import Image from "next/image";
+} from '@/components/ui/dialog';
 
 const linkFields = [
-  "insuranceStatement",
-  "issuingAuthority",
-  "tradeLicenseNumber",
-  "companyPhoto",
+  'insuranceStatement',
+  'issuingAuthority',
+  'tradeLicenseNumber',
+  'companyPhoto',
 ];
 
 const ViewPartnerDialog = ({
@@ -34,7 +37,7 @@ const ViewPartnerDialog = ({
       onOpenChange={(isOpen) => {
         setIsOpen({
           isOpen,
-          id: isOpen ? partner.id : "",
+          id: isOpen ? partner.id : '',
         });
       }}
     >
@@ -48,7 +51,7 @@ const ViewPartnerDialog = ({
                 src={`${process.env.NEXT_PUBLIC_BASE_URL}${partner.companyPhoto}`}
                 alt="logo"
               />
-            )}{" "}
+            )}{' '}
             Partner data
           </DialogTitle>
           <hr />
@@ -57,10 +60,10 @@ const ViewPartnerDialog = ({
               {Object.entries(partner).map(([key, value]) => {
                 if (
                   value === null ||
-                  value === "" ||
-                  key === "id" ||
-                  key === "partnerId" ||
-                  key === "hasPage"
+                  value === '' ||
+                  key === 'id' ||
+                  key === 'partnerId' ||
+                  key === 'hasPage'
                 )
                   return null;
                 if (linkFields.includes(key))
@@ -80,7 +83,7 @@ const ViewPartnerDialog = ({
                 return (
                   <p key={key}>
                     <strong>{toNormalText(key as string)}: </strong>
-                    {value?.toString() || "-"}
+                    {value?.toString() || '-'}
                   </p>
                 );
               })}

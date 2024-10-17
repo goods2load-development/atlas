@@ -1,4 +1,4 @@
-import { SVGProps } from "react";
+import { SVGProps } from 'react';
 
 export default function GoogleIcon(props: SVGProps<SVGSVGElement>) {
   return (

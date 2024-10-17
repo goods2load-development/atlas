@@ -1,7 +1,8 @@
-import GoogleRatingIcon from "@/assets/google-rating.svg";
-import Image from "next/image";
-import { Stars } from "../ui/stars";
-import Link from "next/link";
+import { Stars } from '../ui/stars';
+import GoogleRatingIcon from '@/assets/google-rating.svg';
+
+import Image from 'next/image';
+import Link from 'next/link';
 
 export interface GoogleRatingProps {
   value: number;

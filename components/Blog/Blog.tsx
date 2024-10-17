@@ -1,10 +1,13 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import BlogList from "@/components/BlogList";
-import FeaturedBlog from "@/components/FeaturedBlog";
-import BlogFilter from "@/components/BlogFilter";
-import { getRequest } from "@/lib/utils";
-import UIButton from "@/components/common/Button";
+'use client';
+
+import { getRequest } from '@/lib/utils';
+
+import React, { useEffect, useState } from 'react';
+
+import BlogFilter from '@/components/BlogFilter';
+import BlogList from '@/components/BlogList';
+import FeaturedBlog from '@/components/FeaturedBlog';
+import UIButton from '@/components/common/Button';
 
 interface Blog {
   id: string;
@@ -31,8 +34,8 @@ interface BlogType {
 }
 
 enum BlogFilters {
-  NEWS = "Newest",
-  POPULAR = "Popular",
+  NEWS = 'Newest',
+  POPULAR = 'Popular',
 }
 
 const DEFAULT_BLOG_ITEMS = 5;
@@ -48,7 +51,7 @@ const BlogPage = ({
   };
 }) => {
   const [blogs, setBlogs] = useState<Blog[]>(blogData.data);
-  const [selectedCategory, setSelectedCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
   const [filter, setFilter] = useState<string>(BlogFilters.NEWS);
   const [takeBlogs, setTakeBlogs] = useState<number>(DEFAULT_BLOG_ITEMS);
   const [blogsMeta, setBlogsMeta] = useState<any>(blogData.meta);
@@ -63,10 +66,10 @@ const BlogPage = ({
           setBlogs(response.data);
           setBlogsMeta(response.meta);
         } else {
-          console.error("Unexpected data format:", response);
+          console.error('Unexpected data format:', response);
         }
       } catch (error) {
-        console.error("Failed to fetch blogs:", error);
+        console.error('Failed to fetch blogs:', error);
       }
     };
 

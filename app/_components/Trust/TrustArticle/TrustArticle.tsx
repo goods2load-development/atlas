@@ -1,10 +1,10 @@
-import React from "react";
+import React from 'react';
 
 const TrustArticle = () => {
   return (
     <section className="w-full flex flex-col items-center gap-[16px] py-20 sm:py-[84px] px-[16px] max-w-[1328px] mx-auto">
       <h1 className="text-black text-center font-light sm:text-[40px]/[48px] text-[34px]/[38px]">
-        We value your{" "}
+        We value your{' '}
         <i className="font-normal bg-[#FEF1DF] rounded-[6px] h-[49px] px-[8px]">
           input
         </i>

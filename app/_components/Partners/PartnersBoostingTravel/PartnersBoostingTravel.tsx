@@ -1,7 +1,7 @@
-import React from "react";
+import { dataTeamWork } from './dataTeamWork';
+import { PartnerBoostingTravel } from '@/app/interface/partnerBoostingTravel';
 
-import { dataTeamWork } from "./dataTeamWork";
-import { PartnerBoostingTravel } from "@/app/interface/partnerBoostingTravel";
+import React from 'react';
 
 const PartnersBoostingTravel: React.FC = () => {
   return (
@@ -27,7 +27,7 @@ const PartnersBoostingTravel: React.FC = () => {
         {dataTeamWork.map(
           (
             { descriptionMainData, mainData }: PartnerBoostingTravel,
-            i: number
+            i: number,
           ) => (
             <div
               key={i}
@@ -39,7 +39,7 @@ const PartnersBoostingTravel: React.FC = () => {
               <div className="flex flex-col gap-2 sm:gap-40px">
                 <div className="text-black text-[18px] sm:text-[20px] font-selium-bold mb-1 text-left pt-[5px]">
                   <span className="mr-1 text-primaryOrange sm:hidden">
-                    {" "}
+                    {' '}
                     {`0${i + 1}.`}
                   </span>
                   <span className="sm:text-[22px]/[28px]">{mainData}</span>
@@ -49,7 +49,7 @@ const PartnersBoostingTravel: React.FC = () => {
                 </div>
               </div>
             </div>
-          )
+          ),
         )}
       </div>
     </section>

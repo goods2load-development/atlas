@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import Footer from "@/components/Footer";
+import Footer from '@/components/Footer';
 
 interface RegistrationWrapperProps {
   children: any;

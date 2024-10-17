@@ -1,11 +1,11 @@
-import NextAuth from "next-auth";
-import { cookies } from "next/headers";
-import GoogleProvider from "next-auth/providers/google";
+import NextAuth from 'next-auth';
+import GoogleProvider from 'next-auth/providers/google';
+import { cookies } from 'next/headers';
 
 const {
-  GOOGLE_CLIENT_ID: clientId = "",
-  GOOGLE_CLIENT_SECRET: clientSecret = "",
-  AUTH_SECRET: secret = "",
+  GOOGLE_CLIENT_ID: clientId = '',
+  GOOGLE_CLIENT_SECRET: clientSecret = '',
+  AUTH_SECRET: secret = '',
 } = process.env;
 
 const authOptions = {
@@ -16,7 +16,7 @@ const authOptions = {
       clientSecret,
     }),
   ],
-  pages: { signIn: "/sign-in" },
+  pages: { signIn: '/sign-in' },
   callbacks: {
     async redirect({ url, baseUrl }: any) {
       // console.log({ url, baseUrl });
@@ -49,7 +49,7 @@ const authOptions = {
       session.accessToken = token.accessToken;
       session.idToken = token.idToken;
 
-      cookies().set("accessToken", token.accessToken);
+      cookies().set('accessToken', token.accessToken);
       return session;
     },
   },

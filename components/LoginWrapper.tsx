@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer";
+import Footer from '@/components/Footer';
+import Header from '@/components/Header/Header';
 
 interface LoginWrapperProps {
   children: string | JSX.Element | JSX.Element[];

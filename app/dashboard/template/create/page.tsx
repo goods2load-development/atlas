@@ -1,5 +1,5 @@
-import SeoPageMain from "@/components/SeoPage/SeoPageMain";
-import Footer from "@/components/Footer";
+import Footer from '@/components/Footer';
+import SeoPageMain from '@/components/SeoPage/SeoPageMain';
 
 export default async function SeoPage() {
   return (
