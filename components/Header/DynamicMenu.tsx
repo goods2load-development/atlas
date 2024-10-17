@@ -18,7 +18,7 @@ const MenuItems = ({
             <p className="py-2 px-3 hover:opacity-80 transition-opacity flex items-center gap-2 rounded hover:no-underline">
               <span className="pointer-events-none">{title}</span>
               {!!children?.length && (
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:rotate-90" />
+                <ChevronRight className="w-4 h-4 transition-transform group-hover:-rotate-90" />
               )}
             </p>
           ) : (
@@ -28,7 +28,7 @@ const MenuItems = ({
             >
               {title}
               {!!children?.length && (
-                <ChevronRight className="w-4 h-4 transition-transform group-hover:rotate-90" />
+                <ChevronRight className="w-4 h-4 transition-transform group-hover:-rotate-90" />
               )}
             </Link>
           )}
@@ -38,7 +38,7 @@ const MenuItems = ({
       {!!(depth === 1 ? children : items)?.length && (
         <div
           className={clsx(
-            `min-w-[200px] absolute z-50 bg-white text-black w-max animate-in transition-opacity animate-opacity
+            `min-w-[200px] absolute  z-50 bg-white text-black w-max animate-in transition-opacity animate-opacity
             rounded-xl py-2 px-4 shadow-md hidden group-hover:block`
           )}
         >
@@ -66,7 +66,7 @@ const MenuItems = ({
                 )}
 
                 {!!children?.length && (
-                  <div className="absolute right-0 top-0 hidden group-hover/sub:block">
+                  <div className="absolute left-0 md:left-[100%] top-[100%] md:top-0 hidden group-hover/sub:block">
                     <MenuItems depth={depth + 1} items={children} />
                   </div>
                 )}
@@ -98,13 +98,13 @@ const DynamicMenu = async ({ variant = "primary" }: any) => {
   return (
     <nav
       className={clsx(
-        "sm:py-2 text-white w-full relative z-19",
+        "sm:py-2 text-white w-full relative z-20",
         variant === "primary" && "bg-primaryOrange",
         variant === "secondary" && "bg-[#FFB393]",
         variant === "transparent" && "bg-[rgba(255,255,255,0.2)]"
       )}
     >
-      <div className="sm:container sm:mx-auto sm:px-4 sm:flex flex-wrap  items-center justify-center sm:gap-x-10 sm:gap-y-4 relative flex-1 hidden">
+      <div className="sm:container sm:mx-auto sm:px-4 flex flex-wrap items-center justify-center sm:gap-x-10 sm:gap-y-4 relative flex-1">
         {menuData && <MenuItems items={menuData.json} />}
       </div>
     </nav>
