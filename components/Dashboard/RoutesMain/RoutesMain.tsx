@@ -5,8 +5,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { RoutesTab } from "./RoutesTab";
-import PriceAlerts from "@/components/SolutionFinder";
-import { PriceAlertTab } from "./PriceAlertsTab";
+import { SolutionFinderTab } from "./SolutionFinderTab";
 
 const RoutesMain = () => {
   const searchParams = useSearchParams();
@@ -45,14 +44,14 @@ const RoutesMain = () => {
               value="price-alerts"
               className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
             >
-              Price alert
+              Solution Finder
             </TabsTrigger>
           </TabsList>
           <TabsContent value="routes">
             <RoutesTab />
           </TabsContent>
           <TabsContent value="price-alerts">
-            <PriceAlertTab />
+            <SolutionFinderTab />
           </TabsContent>
         </Tabs>
       </div>

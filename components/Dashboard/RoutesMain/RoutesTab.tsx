@@ -2,7 +2,6 @@
 
 import ListItem from "@/components/ui/list-item";
 import Pagination from "@/components/ui/pagination";
-import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import { useRoutesStore } from "@/lib/store";
 import clsx from "clsx";
@@ -102,7 +101,6 @@ export const RoutesTab = () => {
 
   return (
     <>
-      {isRoutesLoading && <Spinner />}
       <div
         className={clsx({
           "pointer-events-none": isRoutesLoading,
