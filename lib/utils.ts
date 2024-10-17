@@ -241,3 +241,36 @@ export const urlsToFileList = async (urls: string[]) => {
 export const formatDate = (dateString: string): string => {
   return format(new Date(dateString), "dd MMM yyyy");
 };
+
+export const filterRoutes = (routes: string[]) =>
+  routes.filter(
+    (route) =>
+      !route.includes("dashboard") && !route.includes("[") && route !== "/"
+  );
+
+export async function getAllRoutes() {
+  try {
+    const response = await fetch(`/sitemap.xml`);
+    const xmlText = await response.text();
+    const parser = new DOMParser();
+    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+
+    const urlNodes = xmlDoc.getElementsByTagName("url");
+
+    const routes = Array.from(urlNodes)
+      .map((urlNode) => {
+        const loc = urlNode.getElementsByTagName("loc")[0]?.textContent;
+        if (loc) {
+          const url = new URL(loc);
+          return url.pathname;
+        }
+        return null;
+      })
+      .filter(Boolean) as string[];
+
+    return filterRoutes(routes);
+  } catch (error) {
+    console.error("Error fetching sitemap:", error);
+    return [];
+  }
+}

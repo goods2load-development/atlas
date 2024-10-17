@@ -19,10 +19,9 @@ import { FormProvider, useForm } from "react-hook-form";
 import * as z from "zod";
 import { useEffect, useMemo, useState } from "react";
 import { CirclePlus, Edit } from "lucide-react";
-import { getAllRoutes } from "./utils";
 
 import Autocomplete from "@/components/ui/autocomplete";
-import { getRequest } from "@/lib/utils";
+import { getAllRoutes, getRequest } from "@/lib/utils";
 
 const formSchema = z
   .object({
