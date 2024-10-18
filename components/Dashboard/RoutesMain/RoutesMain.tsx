@@ -6,6 +6,8 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TabsContent } from "@radix-ui/react-tabs";
 import { RoutesTab } from "./RoutesTab";
 import { SolutionFinderTab } from "./SolutionFinderTab";
+import { Button } from "@/components/ui/button";
+import clsx from "clsx";
 
 const RoutesMain = () => {
   const searchParams = useSearchParams();
@@ -33,18 +35,26 @@ const RoutesMain = () => {
           value={tab}
           className="w-full mx-auto"
         >
-          <TabsList className="grid w-[290px] grid-cols-2 mx-auto mb-[28px]">
-            <TabsTrigger
-              className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-              value="routes"
-            >
-              Routes
+          <TabsList className="grid w-[290px] grid-cols-2 gap-4 mx-auto mb-[28px]">
+            <TabsTrigger className={`[all:unset]`} value="routes">
+              <Button
+                className={clsx("w-full cursor-pointer", {
+                  "pointer-events-none opacity-50": tab === "routes",
+                })}
+                tagName="span"
+              >
+                Routes
+              </Button>
             </TabsTrigger>
-            <TabsTrigger
-              value="price-alerts"
-              className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-            >
-              Solution Finder
+            <TabsTrigger value="price-alerts" className={`[all:unset]`}>
+              <Button
+                tagName="span"
+                className={clsx("cursor-pointer", {
+                  "pointer-events-none opacity-50": tab === "price-alerts",
+                })}
+              >
+                Solution Finder
+              </Button>
             </TabsTrigger>
           </TabsList>
           <TabsContent value="routes">
