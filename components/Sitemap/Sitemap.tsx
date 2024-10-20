@@ -139,14 +139,14 @@ export default function Sitemap() {
             );
           })}
         </div>
-        <SubTitle>Other</SubTitle>
+        {/* <SubTitle>Other</SubTitle>
         <div className="mb-[56px] grid grid-cols-1 md:grid-cols-2">
           {data.other.map(({ title, loc }) => (
             <StyledLink key={loc} href={loc}>
               {title}
             </StyledLink>
           ))}
-        </div>
+        </div> */}
       </main>
     </>
   );
