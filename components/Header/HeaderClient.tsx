@@ -39,9 +39,9 @@ export default function HeaderClient({
   return (
     <header
       className={clsx(
-        'flex items-center justify-between  sm:block mx-auto bg-orangePrimary py-6 sm:py-0',
+        'flex items-center justify-between  sm:block mx-auto bg-orangePrimary py-6 sm:py-0 relative z-30',
         open ? 'bg-orangePrimary' : '',
-        variant === 'transparent' && 'bg-transparent',
+        variant === 'transparent' && !open && 'bg-transparent',
         className,
       )}
     >
@@ -65,7 +65,7 @@ export default function HeaderClient({
           )}
         </div>
         <NavigationMenu
-          className={`${open ? 'border-b-2 border-white sm:border-none block' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
+          className={`${open ? 'border-b-2 border-white sm:border-none block pb-4' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
         >
           <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
             <NavigationMenuItem>

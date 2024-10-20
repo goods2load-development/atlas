@@ -30,7 +30,7 @@ const AboutUs: FC = () => {
   };
 
   return (
-    <div className="sm:mt-[-300px] mt-[-120px] w-full">
+    <div className="md:mt-[-240px] lg:mt-[-270px] sm:mt-[-200px] mt-[-150px] w-full">
       <Tabs value={activeTab} onValueChange={onTabChange}>
         <TabsList className="flex gap-8 sm:gap-32 md:gap-40 lg:gap-52 sm:mt-20">
           {tabs.map((tabText) => (
@@ -44,14 +44,14 @@ const AboutUs: FC = () => {
             </TabsTrigger>
           ))}
         </TabsList>
-        <div className="bg-gradient-to-b from-primaryOrange to-white relative top-[15px] h-[50px] sm:hidden"></div>
-        <TabsContent value="company" className="sm:mt-[250px]">
+
+        <TabsContent value="company" className="sm:mt-[200px]">
           <CompanyContainer />
         </TabsContent>
         <TabsContent value="trust" className="sm:mt-[200px]">
           <TrustContainer />
         </TabsContent>
-        <TabsContent className="mt-[80px] sm:mt-[240px]" value="media">
+        <TabsContent className="mt-[80px] sm:mt-[200px]" value="media">
           <MediaContainer />
         </TabsContent>
       </Tabs>
