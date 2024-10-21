@@ -1,10 +1,9 @@
-import { CardType, ICard } from '../../PerformanceCard';
-import PerformanceCards from '../../PerformanceCards';
+import PerformanceCards from "../../PerformanceCards";
+import { useEffect, useMemo, useState } from "react";
+import { ICard, CardType } from "../../PerformanceCard";
 import CompetitivenessChart, {
   ICompetitivnessChart,
-} from './CompetitivenessChart';
-
-import { useMemo, useState } from 'react';
+} from "./CompetitivenessChart";
 
 export interface ICompetitiveness {
   currentYearProfit: ICompetitivnessChart[];
@@ -13,16 +12,16 @@ export interface ICompetitiveness {
 
 const CompetitivenessTab = ({ data }: { data: any }) => {
   const cardsData = useMemo(() => {
-    const currentYearProfit = data?.competitiveness?.currentYearProfit || [];
-    const lastYearProfit = data?.competitiveness?.lastYearProfit || [];
+    const currentYearProfit = data?.competitiveness?.currentYear || [];
+    const lastYearProfit = data?.competitiveness?.lastYear || [];
 
     return currentYearProfit.map((current: any) => {
       const last = lastYearProfit?.find(
-        (last: any) => last.label === current.label,
+        (last: any) => last.label === current.label
       );
       return {
         label: current.label,
-        type: CardType.AVARAGE,
+        type: CardType.COMPETITIVENESS,
         data: {
           average: current.value,
           lastYear: last ? last.value : 0,
@@ -39,14 +38,8 @@ const CompetitivenessTab = ({ data }: { data: any }) => {
 
   return (
     <>
-      <PerformanceCards
-        data={cardsData}
-        activeCard={activeCard}
-        onChangeActiveCard={handleActiveCardChange}
-      />
-      <CompetitivenessChart
-        data={data?.competitiveness?.currentYearProfit || []}
-      />
+      <PerformanceCards data={cardsData} activeCard={activeCard} onChangeActiveCard={handleActiveCardChange}/>
+      <CompetitivenessChart data={data?.competitiveness?.currentYearProfit || []}/>
     </>
   );
 };

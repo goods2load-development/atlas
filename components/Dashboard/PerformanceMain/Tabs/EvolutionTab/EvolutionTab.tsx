@@ -1,23 +1,24 @@
-'use client';
+"use client";
 
-import { CardType, ICard } from '../../PerformanceCard';
-import PerformanceCardsList from '../../PerformanceCards';
-import EvolutionChart from './EvolutionChart';
+import { useState, useMemo, useEffect } from "react";
+import { ICard, CardType } from "../../PerformanceCard";
 
-import { useMemo, useState } from 'react';
+import PerformanceCardsList from "../../PerformanceCards";
+import EvolutionChart from "./EvolutionChart";
+import IndustryChart from "./IndustryChart";
 
 const PerformanceEvolutionTab = ({ data }: { data: any }) => {
   const cardsData = useMemo<ICard[]>(
     () => [
       {
-        label: 'Average fare per transport',
-        type: CardType.AVARAGE,
-        data: data?.fare || [],
+        label: "Industry solutions",
+        type: CardType.INDUSTRY_SOLUTION,
+        data: data?.industrySolutions || [],
       },
-      { label: 'Searchers', data: data?.searchers || [] },
-      { label: 'Redirects', data: data?.redirects || [] },
+      { label: "Searchers", data: data?.searchers || [] },
+      { label: "Redirects", data: data?.redirects || [] },
     ],
-    [data],
+    [data]
   );
 
   const [activeCard, setActiveCard] = useState<ICard>(cardsData[0]);
@@ -29,13 +30,13 @@ const PerformanceEvolutionTab = ({ data }: { data: any }) => {
   const renderActiveChart = () => {
     switch (activeCard.label) {
       case cardsData[0].label:
-        return data?.chartFare || [];
+        return <IndustryChart data={data?.industrySolutions || []} />;
       case cardsData[1].label:
-        return data?.chartSearchers || [];
+        return <EvolutionChart data={data?.chartSearchers || []} />;
       case cardsData[2].label:
-        return data?.chartRedirects || [];
+        return <EvolutionChart data={data?.chartRedirects || []} />;
       default:
-        return [];
+        return null;
     }
   };
 
@@ -46,7 +47,7 @@ const PerformanceEvolutionTab = ({ data }: { data: any }) => {
         onChangeActiveCard={handleActiveCardChange}
         data={cardsData}
       />
-      <EvolutionChart data={renderActiveChart()} />
+      {renderActiveChart()}
     </>
   );
 };

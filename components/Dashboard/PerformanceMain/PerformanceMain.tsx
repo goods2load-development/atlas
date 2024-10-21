@@ -1,20 +1,18 @@
 'use client';
 
-import { type IPerformanceTab, PerformaceTab } from './PerformanceTabs';
-import PerformanceTabs from './PerformanceTabs';
-import CompetitivenessTab from './Tabs/CompetitivenessTab/CompetitivenessTab';
-import EvolutionTab from './Tabs/EvolutionTab/EvolutionTab';
-import UserSegmentationTab from './Tabs/UserSegmentationaTab/UserSegmentationTab';
-import { type IAnalyticsStore } from '@/lib/analyticsStore';
-import { usePerformanceStore } from '@/lib/analyticsStore';
-
-import { useCallback, useEffect, useMemo, useState } from 'react';
-
+import { useEffect, useState, useMemo, useCallback } from "react";
+import PerformanceTabs from "./PerformanceTabs";
+import EvolutionTab from "./Tabs/EvolutionTab/EvolutionTab";
+import CompetitivenessTab from "./Tabs/CompetitivenessTab/CompetitivenessTab";
+import { useAnalyticsStore } from "@/lib/analyticsStore";
+import { PerformaceTab, type IPerformanceTab } from "./PerformanceTabs";
+import { type IAnalyticsStore } from "@/lib/analyticsStore";
+import UserSegmentationTab from "./Tabs/UserSegmentationaTab/UserSegmentationTab";
 // import UserSegmentationTab from "./Tabs/UserSegmentationTab";
 
 const PerformanceMain = () => {
   const { deliveryBy, performanceData, getPerformancedData }: IAnalyticsStore =
-    usePerformanceStore();
+    useAnalyticsStore();
   const [activeTab, setActiveTab] = useState<PerformaceTab>(
     PerformaceTab.EVOLUTION,
   );
@@ -32,6 +30,7 @@ const PerformanceMain = () => {
       {
         label: PerformaceTab.USER_SEGMENTATION,
         element: <UserSegmentationTab data={performanceData || []} />,
+
       },
     ],
     [performanceData],
@@ -62,3 +61,4 @@ const PerformanceMain = () => {
 };
 
 export default PerformanceMain;
+

@@ -1,20 +1,18 @@
-'use client';
+"use client";
 
-import { usePerformanceStore } from '@/lib/analyticsStore';
-
-import { useEffect } from 'react';
-
-import Cookies from 'js-cookie';
+import { useEffect } from "react";
+import { useAnalyticsStore } from "@/lib/analyticsStore";
+import Cookies from "js-cookie";
 
 const Analytics = () => {
   const { getGeolocationInformation, postGeolocationUser } =
-    usePerformanceStore();
+    useAnalyticsStore();
 
   useEffect(() => {
-    let isVisitedBefore = Cookies.get('isVisitedBefore');
+    let isVisitedBefore = Cookies.get("isVisitedBefore");
 
     if (!isVisitedBefore) {
-      Cookies.set('isVisitedBefore', 'true', { expires: 30 });
+      Cookies.set("isVisitedBefore", "true", { expires: 30 });
 
       getGeolocationInformation({}).then(({ country_name }: any) => {
         postGeolocationUser(country_name);

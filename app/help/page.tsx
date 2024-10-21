@@ -13,15 +13,17 @@ export const metadata: Metadata = {
 
 const HelpPage: FC = () => {
   return (
-    <BigLayout
-      title="How we can help you?"
-      description="Doing business has never been easier."
-    >
-      <Suspense>
-        <Help />
-      </Suspense>
+    <>
+      <BigLayout
+        title="How we can help you?"
+        description="Doing business has never been easier."
+      >
+        <Suspense>
+          <Help />
+        </Suspense>
+      </BigLayout>
       <Footer />
-    </BigLayout>
+    </>
   );
 };
 

@@ -85,7 +85,7 @@ const MobileSidebar: React.FC = () => {
           )}
         </Button>
       </div>
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-4 pt-6">
         {isProvider &&
           sideBar.map((it) => (
             <Link
