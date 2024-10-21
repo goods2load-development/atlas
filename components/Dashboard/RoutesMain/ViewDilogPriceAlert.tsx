@@ -1,21 +1,16 @@
 'use client';
 
-import { dateValues } from './constants';
-import { OrderRoute, UserRoute } from './types';
-import { countVolume, toNormalText } from '@/lib/utils';
-
 import { useMemo } from 'react';
-
-import { format } from 'date-fns';
-import { ViewIcon } from 'lucide-react';
-
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
+import { ViewIcon } from "lucide-react";
+import { countVolume } from "@/lib/utils";
+
 
 const ViewDialogPriceAlert = ({
   isOpen,
@@ -75,9 +70,7 @@ const ViewDialogPriceAlert = ({
                 {phoneNumber}
               </div>
             )}
-            <div>
-              <span className="font-semibold">Desire price:</span> {price}$
-            </div>
+
             <div>
               <span className="font-semibold">From:</span> {fromRoute}
             </div>

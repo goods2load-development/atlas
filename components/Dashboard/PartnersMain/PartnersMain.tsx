@@ -15,14 +15,15 @@ import {
   FilePlus,
   FileSymlink,
   TrashIcon,
-} from 'lucide-react';
-import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+} from "lucide-react";
 
-import { Input } from '@/components/ui/input';
-import ListItem from '@/components/ui/list-item';
-import Spinner from '@/components/ui/spinner';
-import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from '@/components/ui/use-toast';
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import Spinner from '@/components/ui/spinner';
+import ListItem from '@/components/ui/list-item';
+import { Input } from '@/components/ui/input';
 
 const PartnersMain = () => {
   const {
@@ -140,24 +141,36 @@ const PartnersMain = () => {
         placeholder="Search..."
       />
       <Tabs onValueChange={handleSetTab} value={tab} className="w-full mx-auto">
-        <TabsList className="grid w-[290px] grid-cols-3 mx-auto mb-[28px]">
-          <TabsTrigger
-            className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-            value="new"
-          >
-            New
+        <TabsList className="grid grid-cols-3 max-w-[400px] gap-8 mx-auto mb-[28px]">
+          <TabsTrigger className={`[all:unset]`} value="new">
+            <Button
+              tagName="span"
+              className={clsx("cursor-pointer w-full", {
+                "pointer-events-none opacity-50": tab === "new",
+              })}
+            >
+              New
+            </Button>
           </TabsTrigger>
-          <TabsTrigger
-            value="in-review"
-            className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-          >
-            In review
+          <TabsTrigger value="in-review" className={`[all:unset]`}>
+            <Button
+              tagName="span"
+              className={clsx("cursor-pointer w-full", {
+                "pointer-events-none opacity-50": tab === "in-review",
+              })}
+            >
+              In review
+            </Button>
           </TabsTrigger>
-          <TabsTrigger
-            value="active"
-            className={`data-[state="active"]:bg-orangeSecondary border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-          >
-            Active
+          <TabsTrigger value="active" className={`[all:unset]`}>
+            <Button
+              tagName="span"
+              className={clsx("cursor-pointer w-full", {
+                "pointer-events-none opacity-50": tab === "active",
+              })}
+            >
+              In review
+            </Button>
           </TabsTrigger>
         </TabsList>
       </Tabs>
