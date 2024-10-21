@@ -26,12 +26,11 @@ const PerformanceMain = () => {
       {
         label: PerformaceTab.COMPETITIVENESS,
         element: <CompetitivenessTab data={performanceData || []} />,
-        element: <CompetitivenessTab data={performanceData || []} />,
       },
       {
         label: PerformaceTab.USER_SEGMENTATION,
         element: <UserSegmentationTab data={performanceData || []} />,
-        element: <UserSegmentationTab data={performanceData || []} />,
+
       },
     ],
     [performanceData],
