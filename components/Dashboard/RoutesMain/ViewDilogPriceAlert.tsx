@@ -15,7 +15,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
+import { ViewIcon } from "lucide-react";
+import { countVolume } from "@/lib/utils";
+import { useMemo } from "react";
 
 const ViewDialogPriceAlert = ({
   isOpen,
@@ -75,9 +78,7 @@ const ViewDialogPriceAlert = ({
                 {phoneNumber}
               </div>
             )}
-            <div>
-              <span className="font-semibold">Desire price:</span> {price}$
-            </div>
+
             <div>
               <span className="font-semibold">From:</span> {fromRoute}
             </div>

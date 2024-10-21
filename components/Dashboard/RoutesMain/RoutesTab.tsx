@@ -105,7 +105,6 @@ export const RoutesTab = () => {
 
   return (
     <>
-      {isRoutesLoading && <Spinner />}
       <div
         className={clsx({
           'pointer-events-none': isRoutesLoading,
