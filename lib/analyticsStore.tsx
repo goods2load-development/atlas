@@ -38,7 +38,7 @@ export const useAnalyticsStore = create<IAnalyticsStore>((set) => ({
   deliveryBy: DeliveryBy.plane,
   performanceData: undefined,
   performanceDataIsLoading: false,
-  performanceDataError: "",
+  performanceDataError: '',
 
   getPerformancedData: async (deliveryBy: DeliveryBy) => {
     postRequest({

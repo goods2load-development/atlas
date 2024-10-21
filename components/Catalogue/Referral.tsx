@@ -1,8 +1,10 @@
-import { useEffect } from "react";
-import { useReferralsStore } from "@/lib/store";
-import Link from "next/link";
-import Image from "next/image";
-import clsx from "clsx";
+import { useReferralsStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import clsx from 'clsx';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export const Referal = ({
   className,
@@ -27,7 +29,7 @@ export const Referal = ({
   }
 
   return (
-    <div className={clsx("min-h-[360px] w-[279px]", className)}>
+    <div className={clsx('min-h-[360px] w-[279px]', className)}>
       {referals?.map((item: any, idx: number) => {
         if (idx + 1 > countOfDisplaying) {
           return;

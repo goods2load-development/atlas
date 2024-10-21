@@ -1,8 +1,10 @@
-"use client";
+'use client';
 
-import React, { FC, useEffect, useState } from "react";
-import { IBlock } from "@/app/_components/Company/CompanyStory/CompanyStory";
-import Image from "next/image";
+import { IBlock } from '@/app/_components/Company/CompanyStory/CompanyStory';
+
+import React, { FC, useEffect, useState } from 'react';
+
+import Image from 'next/image';
 
 type TItem = {
   item: IBlock;
@@ -14,7 +16,7 @@ const CompanyStoryBlock: FC<TItem> = ({ item }) => {
   return (
     <div className="max-w-[294px] flex flex-col gap-[24px] mx-auto sm:mx-0 sm:py-0">
       <div className="bg-primaryOrange w-[96px] h-[96px] flex justify-center items-center rounded-full border-2 border-white border-solid	outline-2	outline-[#FF6720] outline mx-auto md:ml-0">
-        <Image src={item.icon} alt={"icon"} width={50} height={50} />
+        <Image src={item.icon} alt={'icon'} width={50} height={50} />
       </div>
 
       <div className="flex flex-col items-center md:items-start text-black">
@@ -27,7 +29,7 @@ const CompanyStoryBlock: FC<TItem> = ({ item }) => {
           </p>
         ) : (
           <p
-            className={`font-normal text-[16px]/[22.4px] text-center sm:text-left ${!showMore && "max-h-[156px] text-story w-full"}`}
+            className={`font-normal text-[16px]/[22.4px] text-center sm:text-left ${!showMore && 'max-h-[156px] text-story w-full'}`}
           >
             {item.info}
           </p>
@@ -39,7 +41,7 @@ const CompanyStoryBlock: FC<TItem> = ({ item }) => {
               setShowMore(!showMore);
             }}
           >
-            {!showMore ? "Learn more" : "Hide"}
+            {!showMore ? 'Learn more' : 'Hide'}
           </p>
         )}
       </div>

@@ -1,7 +1,8 @@
-import Link from "next/link";
-import { ChevronRight } from "lucide-react";
-import clsx from "clsx";
-import { IMenuItem } from "./types";
+import { IMenuItem } from './types';
+
+import clsx from 'clsx';
+import { ChevronRight } from 'lucide-react';
+import Link from 'next/link';
 
 const MenuItems = ({
   items,
@@ -47,8 +48,8 @@ const MenuItems = ({
               <div
                 key={title}
                 className={clsx(
-                  "relative",
-                  depth === 0 ? "group" : "group/sub"
+                  'relative',
+                  depth === 0 ? 'group' : 'group/sub',
                 )}
               >
                 {children?.length ? (
@@ -71,7 +72,7 @@ const MenuItems = ({
                   </div>
                 )}
               </div>
-            )
+            ),
           )}
         </div>
       )}
@@ -84,14 +85,14 @@ interface IMenuData {
   json: IMenuItem[];
 }
 
-const DynamicMenu = async ({ variant = "primary" }: any) => {
+const DynamicMenu = async ({ variant = 'primary' }: any) => {
   const menuData: IMenuData = await (
     await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/dynamic-menu/header`, {
-      cache: "no-store",
+      cache: 'no-store',
     })
   ).json();
 
-  if (!menuData) {
+  if (!menuData || !menuData?.json?.length) {
     return <div className="h-14"></div>;
   }
 

@@ -1,19 +1,23 @@
-"use client";
-import React, { PropsWithChildren, useEffect, useState } from "react";
-import Link from "next/link";
-import Logo from "@/components/Logo";
+'use client';
+
+import Currencies from '../Currencies';
+import ErrorBoundary from '../ErrorBoundary';
+import LangSwitcher from '../LangSwicher';
+import { useUserStore } from '@/lib/store';
+
+import React, { PropsWithChildren, useEffect, useState } from 'react';
+
+import clsx from 'clsx';
+import Link from 'next/link';
+
+import Logo from '@/components/Logo';
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuList,
-} from "@/components/ui/navigation-menu";
-import { useUserStore } from "@/lib/store";
-import LangSwitcher from "../LangSwicher";
-import Currencies from "../Currencies";
-import ErrorBoundary from "../ErrorBoundary";
-import clsx from "clsx";
+} from '@/components/ui/navigation-menu';
 
-export type HeaderVariant = "primary" | "secondary" | "transparent";
+export type HeaderVariant = 'primary' | 'secondary' | 'transparent';
 
 interface HeaderProps extends PropsWithChildren {
   variant?: HeaderVariant;
@@ -22,8 +26,8 @@ interface HeaderProps extends PropsWithChildren {
 
 export default function HeaderClient({
   children,
-  variant = "primary",
-  className = "",
+  variant = 'primary',
+  className = '',
 }: HeaderProps) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [open, setOpen] = useState(false);
@@ -35,10 +39,10 @@ export default function HeaderClient({
   return (
     <header
       className={clsx(
-        "flex items-center justify-between  sm:block mx-auto bg-orangePrimary py-6 sm:py-0 relative z-30",
-        open ? "bg-orangePrimary" : "",
-        variant === "transparent" && !open && "bg-transparent",
-        className
+        'flex items-center justify-between  sm:block mx-auto bg-orangePrimary py-6 sm:py-0 relative z-30',
+        open ? 'bg-orangePrimary' : '',
+        variant === 'transparent' && !open && 'bg-transparent',
+        className,
       )}
     >
       <div className="flex items-center justify-between px-4 max-w-[1328px] sm:mx-auto flex-1">
@@ -61,7 +65,7 @@ export default function HeaderClient({
           )}
         </div>
         <NavigationMenu
-          className={`${open ? "border-b-2 border-white sm:border-none block pb-4" : "hidden"}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
+          className={`${open ? 'border-b-2 border-white sm:border-none block pb-4' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
         >
           <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
             <NavigationMenuItem>
@@ -73,7 +77,7 @@ export default function HeaderClient({
             {user?.id ? (
               <NavigationMenuItem>
                 <Link href="/account" className="flex items-center">
-                  <img src="/userwhite.svg" alt={"user-white"} />
+                  <img src="/userwhite.svg" alt={'user-white'} />
                 </Link>
               </NavigationMenuItem>
             ) : (

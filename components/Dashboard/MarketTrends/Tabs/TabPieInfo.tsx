@@ -1,4 +1,4 @@
-import PieChart, { PieData } from "../../Charts/PieChart";
+import PieChart, { PieData } from '../../Charts/PieChart';
 
 const TabPieInfo = ({ data }: { data: PieData[] }) => {
   return (

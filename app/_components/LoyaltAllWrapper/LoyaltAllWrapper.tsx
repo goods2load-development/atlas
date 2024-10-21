@@ -1,5 +1,5 @@
-import Header, { HeaderVariant } from "@/components/Header/Header";
-import Footer from "@/components/Footer";
+import Footer from '@/components/Footer';
+import Header, { HeaderVariant } from '@/components/Header/Header';
 
 interface LoyaltAllWrapper {
   children: string | JSX.Element | JSX.Element[];
@@ -8,7 +8,7 @@ interface LoyaltAllWrapper {
 
 export default function LoyaltAllWrapper({
   children,
-  headerVariant = "primary",
+  headerVariant = 'primary',
 }: LoyaltAllWrapper) {
   return (
     <>

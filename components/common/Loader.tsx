@@ -1,11 +1,13 @@
-"use client";
-import React, { ReactNode } from "react";
-import { Skeleton } from "@/components/ui/skeleton";
+'use client';
+
+import React, { ReactNode } from 'react';
+
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface ButtonProps {
   children: ReactNode;
   className?: string;
-  type?: "submit" | "reset";
+  type?: 'submit' | 'reset';
   onClick?: () => void;
   secondary?: boolean;
 }

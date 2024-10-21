@@ -1,5 +1,6 @@
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import FooterMain from "@/components/Dashboard/HeaderFooterMain/FooterMain";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+
+import FooterMain from '@/components/Dashboard/HeaderFooterMain/FooterMain';
 
 export default function Referral() {
   return (

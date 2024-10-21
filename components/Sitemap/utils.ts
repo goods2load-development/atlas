@@ -9,18 +9,18 @@ export type SitemapResult = {
 };
 
 export const parseSitemap = (xmlDoc: Document): SitemapResult => {
-  const urls = xmlDoc.getElementsByTagName("url");
+  const urls = xmlDoc.getElementsByTagName('url');
   const result: SitemapResult = {};
 
   for (let i = 0; i < urls.length; i++) {
     const urlElement = urls[i];
 
-    const loc = urlElement.getElementsByTagName("loc")[0]?.textContent;
-    const category = urlElement.getElementsByTagName("category")[0]
+    const loc = urlElement.getElementsByTagName('loc')[0]?.textContent;
+    const category = urlElement.getElementsByTagName('category')[0]
       ?.textContent as string;
-    const title = urlElement.getElementsByTagName("title")[0]
+    const title = urlElement.getElementsByTagName('title')[0]
       ?.textContent as string;
-    const subCategory = urlElement.getElementsByTagName("subcategory")[0]
+    const subCategory = urlElement.getElementsByTagName('subcategory')[0]
       ?.textContent as string;
 
     if (!result[category]) {
@@ -28,9 +28,9 @@ export const parseSitemap = (xmlDoc: Document): SitemapResult => {
     }
 
     result[category].push({
-      loc: loc ? removeDomainFromUrl(loc) : "",
-      title: title || "",
-      subCategory: subCategory || "",
+      loc: loc ? removeDomainFromUrl(loc) : '',
+      title: title || '',
+      subCategory: subCategory || '',
     });
   }
 
@@ -42,7 +42,7 @@ export const removeDomainFromUrl = (url: string): string => {
     const parsedUrl = new URL(url);
     return parsedUrl.pathname + parsedUrl.search + parsedUrl.hash;
   } catch (error) {
-    console.error("Invalid URL:", error);
+    console.error('Invalid URL:', error);
     return url;
   }
 };

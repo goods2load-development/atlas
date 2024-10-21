@@ -1,7 +1,8 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { PieChart, Pie, Sector, Cell, ResponsiveContainer } from "recharts";
+import React, { useEffect, useState } from 'react';
+
+import { Cell, Pie, PieChart, ResponsiveContainer, Sector } from 'recharts';
 
 export interface PieData {
   name: string;
@@ -43,7 +44,7 @@ const renderCustomizedLabel = ({
           x={positionX}
           y={y - 10}
           fill="white"
-          textAnchor={x > cx ? "start" : "end"}
+          textAnchor={x > cx ? 'start' : 'end'}
           dominantBaseline="central"
           className="text-[8px]"
         >
@@ -54,7 +55,7 @@ const renderCustomizedLabel = ({
         x={x}
         y={y}
         fill="white"
-        textAnchor={x > cx ? "start" : "end"}
+        textAnchor={x > cx ? 'start' : 'end'}
         dominantBaseline="central"
         className="text-[10px]"
       >
@@ -74,9 +75,9 @@ const CircleChart = ({ data }: { data: PieData[] }) => {
 
     handleResize();
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -91,7 +92,7 @@ const CircleChart = ({ data }: { data: PieData[] }) => {
           label={
             isMobile ? (...args) => renderCustomizedLabel(...args) : undefined
           }
-          outerRadius={"auto"}
+          outerRadius={'auto'}
           fill="#8884d8"
           dataKey="value"
           className="outline-none"

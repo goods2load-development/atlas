@@ -1,7 +1,10 @@
-"use client";
-import React, { useEffect } from "react";
-import { useUserStore } from "@/lib/store";
-import { useCurrenciesStore } from "@/lib/filterStore";
+'use client';
+
+import { useCurrenciesStore } from '@/lib/filterStore';
+import { useUserStore } from '@/lib/store';
+
+import React, { useEffect } from 'react';
+
 import {
   Select,
   SelectContent,
@@ -9,7 +12,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 export default function Currencies() {
   const { user, updateUser } = useUserStore((state: any) => state);

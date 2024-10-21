@@ -1,10 +1,13 @@
-"use client";
+'use client';
 
-import { useRouter, useSearchParams } from "next/navigation";
-import { useForgotPasswordStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { useForgotPasswordStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -12,15 +15,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function ResetPassword() {
   const searchParams = useSearchParams();
-  const id = searchParams.get("id");
-  const token = searchParams.get("token");
+  const id = searchParams.get('id');
+  const token = searchParams.get('token');
   const formSchema = z
     .object({
       password: z.string(),
@@ -28,20 +30,20 @@ export default function ResetPassword() {
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
-      path: ["confirmPassword"],
+      path: ['confirmPassword'],
     });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      password: "",
-      confirmPassword: "",
+      password: '',
+      confirmPassword: '',
     },
   });
   const router = useRouter();
   const { toast } = useToast();
   const { postResetPasswordData } = useForgotPasswordStore(
-    (state: any) => state
+    (state: any) => state,
   );
   function onSubmit(values: z.infer<typeof formSchema>) {
     const data = {
@@ -50,11 +52,11 @@ export default function ResetPassword() {
       token,
     };
     postResetPasswordData(data).then(() => {
-      router.push("/sign-in");
+      router.push('/sign-in');
       toast({
-        description: "Password changed successfully",
-        variant: "default",
-        className: "bg-green-500 text-white",
+        description: 'Password changed successfully',
+        variant: 'default',
+        className: 'bg-green-500 text-white',
       });
     });
   }

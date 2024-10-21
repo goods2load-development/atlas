@@ -10,7 +10,7 @@ const CommentInput: React.FC<CommentInputProps> = ({ onSubmit }) => {
   const handleSubmit = () => {
     if (comment.trim()) {
       onSubmit(comment);
-      setComment(''); 
+      setComment('');
     }
   };
 
@@ -22,7 +22,10 @@ const CommentInput: React.FC<CommentInputProps> = ({ onSubmit }) => {
         placeholder="Write a new comment..."
         className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring focus:ring-orange-200"
       />
-      <button onClick={handleSubmit} className="ml-2 flex items-center px-4 py-2 rounded-full bg-gray-100 border border-none">
+      <button
+        onClick={handleSubmit}
+        className="ml-2 flex items-center px-4 py-2 rounded-full bg-gray-100 border border-none"
+      >
         <span className="w-5 h-5 text-[#FF7A00]">&#x27A4;</span>
       </button>
     </div>

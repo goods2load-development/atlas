@@ -1,4 +1,4 @@
-import PieChartCustom from "../../Charts/PieChartCustom";
+import PieChartCustom from '../../Charts/PieChartCustom';
 
 export interface MapDetails {
   name: string;

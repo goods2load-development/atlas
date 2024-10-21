@@ -1,44 +1,44 @@
-import { PartnerBoostingTravel } from "@/app/interface/partnerBoostingTravel";
+import { PartnerBoostingTravel } from '@/app/interface/partnerBoostingTravel';
 
 export const dataTeamWork: PartnerBoostingTravel[] = [
   {
-    mainData: "Market Research",
+    mainData: 'Market Research',
     descriptionMainData:
-      "Identify underserved routes and emerging trends through market analysis.",
+      'Identify underserved routes and emerging trends through market analysis.',
   },
   {
-    mainData: "Customer Feedback",
+    mainData: 'Customer Feedback',
     descriptionMainData:
-      "Listen to customers to discover unmet needs and areas for expansion.",
+      'Listen to customers to discover unmet needs and areas for expansion.',
   },
   {
-    mainData: "Partnerships",
+    mainData: 'Partnerships',
     descriptionMainData:
-      "Collaborate with industry partners to access new markets and capabilities.",
+      'Collaborate with industry partners to access new markets and capabilities.',
   },
   {
-    mainData: "Competitor Analysis",
+    mainData: 'Competitor Analysis',
     descriptionMainData:
-      "Assess competitors’ weaknesses to find opportunities for differentiation.",
+      'Assess competitors’ weaknesses to find opportunities for differentiation.',
   },
   {
-    mainData: "Technology",
+    mainData: 'Technology',
     descriptionMainData:
-      "Embrace innovative technologies to stay ahead and meet evolving demands.",
+      'Embrace innovative technologies to stay ahead and meet evolving demands.',
   },
   {
-    mainData: "Infrastructure",
+    mainData: 'Infrastructure',
     descriptionMainData:
-      "Monitor infrastructure developments for opportunities to expand your network.",
+      'Monitor infrastructure developments for opportunities to expand your network.',
   },
   {
-    mainData: "Customer Segmentation",
+    mainData: 'Customer Segmentation',
     descriptionMainData:
-      "Target niche markets with specialized logistics solutions.",
+      'Target niche markets with specialized logistics solutions.',
   },
   {
-    mainData: "Risk Management",
+    mainData: 'Risk Management',
     descriptionMainData:
-      "Mitigate risks associated with expansion through thorough planning.",
+      'Mitigate risks associated with expansion through thorough planning.',
   },
 ];

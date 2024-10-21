@@ -1,14 +1,15 @@
-import React from "react";
+import React from 'react';
+
 import {
-  BarChart,
   Bar,
+  BarChart,
+  CartesianGrid,
+  Cell,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-  Cell,
-} from "recharts";
+} from 'recharts';
 
 export interface BarChartData {
   label: string;

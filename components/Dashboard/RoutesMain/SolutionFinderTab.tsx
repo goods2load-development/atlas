@@ -2,19 +2,18 @@
 
 import ListItem from "@/components/ui/list-item";
 import Pagination from "@/components/ui/pagination";
-import Spinner from "@/components/ui/spinner";
 import { useToast } from "@/components/ui/use-toast";
 import { usePriceAlertsStore } from "@/lib/store";
 import clsx from "clsx";
 import { useEffect, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Check, Reply, TrashIcon } from "lucide-react";
+import { Check, TrashIcon } from "lucide-react";
 import ViewDialogPriceAlert from "./ViewDilogPriceAlert";
 import PriceAlertReplyDialog from "./PriceAlertReplyDialog";
 
 const TAKE = 5;
 
-export const PriceAlertTab = () => {
+export const SolutionFinderTab = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState({
     isOpen: false,
     id: "",
@@ -97,7 +96,6 @@ export const PriceAlertTab = () => {
 
   return (
     <>
-      {isPriceAlertLoading && <Spinner />}
       <div
         className={clsx({
           "pointer-events-none": isPriceAlertLoading,

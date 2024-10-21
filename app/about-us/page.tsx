@@ -1,7 +1,9 @@
-import { Suspense } from "react";
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
-import AboutUs from "@/components/AboutUs/AboutUs";
-import BigLayout from "@/components/BigLayout";
+import LoyaltAllWrapper from '../_components/LoyaltAllWrapper/LoyaltAllWrapper';
+
+import { Suspense } from 'react';
+
+import AboutUs from '@/components/AboutUs/AboutUs';
+import BigLayout from '@/components/BigLayout';
 
 export default function AboutUsPage() {
   return (

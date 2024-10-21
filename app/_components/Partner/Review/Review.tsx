@@ -1,9 +1,11 @@
-import GoogleIcon from "@/assets/Partners/google-icon.svg";
-import GoogleCheck from "@/assets/Partners/google-check.svg";
-import User1Img from "@/assets/Partners/user-1.png";
-import Image from "next/image";
-import { Stars } from "../Stars/Stars";
-import { Review as ReviewType } from "@/components/PartnersDataPage/types";
+import { Stars } from '../Stars/Stars';
+import GoogleCheck from '@/assets/Partners/google-check.svg';
+import GoogleIcon from '@/assets/Partners/google-icon.svg';
+import User1Img from '@/assets/Partners/user-1.png';
+
+import Image from 'next/image';
+
+import { Review as ReviewType } from '@/components/PartnersDataPage/types';
 
 export const Review = ({ review }: { review: ReviewType }) => {
   return (

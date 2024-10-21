@@ -1,7 +1,8 @@
-import { subYears } from "date-fns";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
+
+import { subYears } from 'date-fns';
 import { Triangle } from "lucide-react";
 import clsx from "clsx";
 
@@ -51,7 +52,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
 
   const countVarianceBetweenIndicators = (
     oldValue: number,
-    newValue: number
+    newValue: number,
   ) => {
     if (oldValue === 0) {
       return newValue === 0 ? 0 : 100;
@@ -68,8 +69,8 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
     <li
       onClick={() => onChangeActiveCard()}
       className={cn(
-        "bg-[#FFF] lg:w-[351px] lg:h-[180px]  shadow-sm relative rounded-[9px] mt-3 cursor-pointer w-full",
-        isActive && "bg-[#FF6720] text-[#FFF]"
+        'bg-[#FFF] lg:w-[351px] lg:h-[180px]  shadow-sm relative rounded-[9px] mt-3 cursor-pointer w-full',
+        isActive && 'bg-[#FF6720] text-[#FFF]',
       )}
     >
       {type !== CardType.INDUSTRY_SOLUTION && (
@@ -204,8 +205,8 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
       )}
       <div
         className={cn(
-          "bg-[#FFF] absolute lg:-bottom-[-93%] -bottom-[-88%] lg:py-4 lg:px-6 p-2 rounded-[9px] lg:font-[500] leading-6 font-normal",
-          isActive && "lg:w-[351px] w-full bg-[#FF6720] text-[#FFF]"
+          'bg-[#FFF] absolute lg:-bottom-[-93%] -bottom-[-88%] lg:py-4 lg:px-6 p-2 rounded-[9px] lg:font-[500] leading-6 font-normal',
+          isActive && 'lg:w-[351px] w-full bg-[#FF6720] text-[#FFF]',
         )}
       >
         {title}

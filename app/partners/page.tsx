@@ -1,16 +1,16 @@
-import React from "react";
+import CareerForm from '../_components/Career/CareerForm/CareerForm';
+import { JoinOurTeam } from '../_components/Career/JoinOurTeam/JoinOurTeam';
+import LoyaltAllWrapper from '../_components/LoyaltAllWrapper/LoyaltAllWrapper';
+import PartnersAmplify from '../_components/Partners/PartnersAmplify/PartnersAmplify';
+import PartnersAudience from '../_components/Partners/PartnersAudience/PartnerAudience';
+import PartnersBoostingTravel from '../_components/Partners/PartnersBoostingTravel/PartnersBoostingTravel';
+import PartnersOurPartners from '../_components/Partners/PartnersOurPartners/PartnersOurPartners';
+import PartnersStartingFrom from '../_components/Partners/PartnersStartingFrom/PartnersStartingFrom';
+import PartnersVisibility from '../_components/Partners/PartnersVisibility/PartnersVisibility';
 
-import PartnersStartingFrom from "../_components/Partners/PartnersStartingFrom/PartnersStartingFrom";
-import PartnersAudience from "../_components/Partners/PartnersAudience/PartnerAudience";
-import PartnersVisibility from "../_components/Partners/PartnersVisibility/PartnersVisibility";
-import PartnersOurPartners from "../_components/Partners/PartnersOurPartners/PartnersOurPartners";
-import PartnersBoostingTravel from "../_components/Partners/PartnersBoostingTravel/PartnersBoostingTravel";
-import PartnersAmplify from "../_components/Partners/PartnersAmplify/PartnersAmplify";
+import React from 'react';
 
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
-import { JoinOurTeam } from "../_components/Career/JoinOurTeam/JoinOurTeam";
-import CareerForm from "../_components/Career/CareerForm/CareerForm";
-import BigLayout from "@/components/BigLayout";
+import BigLayout from '@/components/BigLayout';
 
 const Partners = () => {
   return (

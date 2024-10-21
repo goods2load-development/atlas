@@ -1,20 +1,24 @@
-"use client";
-import ListItem from "@/components/ui/list-item";
-import Spinner from "@/components/ui/spinner";
-import { useBlogAdminStore } from "@/lib/store";
-import { clsx } from "clsx";
-import { useEffect, useMemo } from "react";
-import ViewCommentDialog from "./ViewCommentDialog";
-import { Check, Trash } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
+'use client';
+
+import ViewCommentDialog from './ViewCommentDialog';
+import { BlogComment } from './types';
+import { useBlogAdminStore } from '@/lib/store';
+
+import { useEffect, useMemo } from 'react';
+
+import { clsx } from 'clsx';
+import { Check, Trash } from 'lucide-react';
+import Link from 'next/link';
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { BlogComment } from "./types";
-import Link from "next/link";
+} from '@/components/ui/accordion';
+import ListItem from '@/components/ui/list-item';
+import Spinner from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/use-toast';
 
 const ApproveComments = () => {
   const {
@@ -49,10 +53,10 @@ const ApproveComments = () => {
       .then(getUnapprovedComments)
       .then(() =>
         toast({
-          title: "Comment approved.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Comment approved.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
@@ -61,10 +65,10 @@ const ApproveComments = () => {
       .then(() => getUnapprovedComments())
       .then(() =>
         toast({
-          title: "Comment deleted.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Comment deleted.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
@@ -77,8 +81,8 @@ const ApproveComments = () => {
         {isBlogLoading && <Spinner />}
       </div>
       <div
-        className={clsx("flex flex-col gap-4", {
-          "pointer-events-none": isBlogLoading,
+        className={clsx('flex flex-col gap-4', {
+          'pointer-events-none': isBlogLoading,
         })}
       >
         {!unapprovedComments.length && !isBlogLoading && (

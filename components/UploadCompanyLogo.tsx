@@ -1,8 +1,10 @@
-"use client";
-import React from "react";
+'use client';
 
-import { Input } from "@/components/ui/input";
-import { useUserStore } from "@/lib/store";
+import { useUserStore } from '@/lib/store';
+
+import React from 'react';
+
+import { Input } from '@/components/ui/input';
 
 export default function UploadCompanyLogo() {
   const { user, uploadLogo } = useUserStore((state: any) => state);

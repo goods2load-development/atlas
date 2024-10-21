@@ -40,7 +40,7 @@ const CustomRadioGroupItem = ({ value, imageNumber }: any) => {
           alt={value}
           width={58}
           height={58}
-          className={"cursor-pointer text-black"}
+          className={'cursor-pointer text-black'}
         />
       </Label>
     </>

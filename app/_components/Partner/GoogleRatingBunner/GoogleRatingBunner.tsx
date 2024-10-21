@@ -1,8 +1,10 @@
-import Image from "next/image";
-import GoogleRatingSvg from "@/assets/Partners/google-rating.svg";
-import { Stars } from "../Stars/Stars";
-import Link from "next/link";
-import { PlaceDetails } from "@/components/PartnersDataPage/types";
+import { Stars } from '../Stars/Stars';
+import GoogleRatingSvg from '@/assets/Partners/google-rating.svg';
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+import { PlaceDetails } from '@/components/PartnersDataPage/types';
 
 export const GoogleRatingBunner = ({
   placeInfo,

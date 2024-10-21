@@ -1,12 +1,14 @@
-import { Suspense } from "react";
-import { Metadata } from "next";
-import { type FC, memo } from "react";
-import Help from "@/components/Help/Help";
-import Footer from "@/components/Footer";
-import BigLayout from "@/components/BigLayout";
+import { type FC, memo } from 'react';
+import { Suspense } from 'react';
+
+import { Metadata } from 'next';
+
+import BigLayout from '@/components/BigLayout';
+import Footer from '@/components/Footer';
+import Help from '@/components/Help/Help';
 
 export const metadata: Metadata = {
-  title: "Help",
+  title: 'Help',
 };
 
 const HelpPage: FC = () => {

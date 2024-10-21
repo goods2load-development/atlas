@@ -1,16 +1,19 @@
-"use client";
+'use client';
 
-import ListItem from "@/components/ui/list-item";
-import Pagination from "@/components/ui/pagination";
-import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
-import { useRoutesStore } from "@/lib/store";
-import clsx from "clsx";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Check, TrashIcon } from "lucide-react";
-import ReplyDialog from "./ReplyDialog";
-import ViewDialog from "./ViewDialog";
+import ReplyDialog from './ReplyDialog';
+import ViewDialog from './ViewDialog';
+import { useRoutesStore } from '@/lib/store';
+
+import { useEffect, useState } from 'react';
+
+import clsx from 'clsx';
+import { Check, TrashIcon } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import ListItem from '@/components/ui/list-item';
+import Pagination from '@/components/ui/pagination';
+import Spinner from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/use-toast';
 
 const TAKE = 5;
 
@@ -29,12 +32,12 @@ export const RoutesTab = () => {
   const { replace } = useRouter();
   const { toast } = useToast();
 
-  const page = Number(searchParams.get("routesPage") || 1);
+  const page = Number(searchParams.get('routesPage') || 1);
   const { meta } = routes;
 
   const [isViewModalOpen, setIsViewModalOpen] = useState({
     isOpen: false,
-    id: "",
+    id: '',
   });
 
   useEffect(() => {
@@ -52,10 +55,10 @@ export const RoutesTab = () => {
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
-          title: "Route deleted.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Route deleted.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
@@ -64,10 +67,10 @@ export const RoutesTab = () => {
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
-          title: "Route approved. All data sent to provider.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Route approved. All data sent to provider.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
@@ -76,25 +79,25 @@ export const RoutesTab = () => {
     data: {
       message: string;
       reasons?: string[];
-    }
+    },
   ) => {
     return replyRoute(id, data)
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
-          title: "Reply sent.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Reply sent.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
   const handleSetPage = (page: number) => {
     const params = new URLSearchParams(searchParams);
     if (page) {
-      params.set("routesPage", page.toString());
+      params.set('routesPage', page.toString());
     } else {
-      params.delete("routesPage");
+      params.delete('routesPage');
     }
 
     replace(`${pathname}?${params.toString()}`);
@@ -102,13 +105,12 @@ export const RoutesTab = () => {
 
   return (
     <>
-      {isRoutesLoading && <Spinner />}
       <div
         className={clsx({
-          "pointer-events-none": isRoutesLoading,
+          'pointer-events-none': isRoutesLoading,
         })}
       >
-        <div className={clsx("flex flex-col gap-4")}>
+        <div className={clsx('flex flex-col gap-4')}>
           {!isRoutesLoading && !routes?.data?.length && (
             <p className="font-bold text-red-600">
               There is no any routes at the moment

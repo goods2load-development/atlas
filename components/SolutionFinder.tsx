@@ -1,69 +1,73 @@
-"use client";
-import React, { useCallback, useEffect, useState } from "react";
-import { useCountriesStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFieldArray } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import UIButton from "@/components/common/Button";
-import Loader from "@/components/common/Loader";
+'use client';
+
+import { ToolTipComponent } from './SearchMain';
+import CountryCode from './common/CountryCode';
+import { useToast } from './ui/use-toast';
+import cnFlag from '@/assets/cn-flag.svg';
+import inFlag from '@/assets/in-flag.svg';
+import italyFlag from '@/assets/italy-flag.svg';
+import { useFilterStore } from '@/lib/filterStore';
+import { useCountriesStore } from '@/lib/store';
+import { postRequest } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+
+import React, { useCallback, useEffect, useState } from 'react';
+
+import { ChevronDown } from 'lucide-react';
+import { BellRing } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import UIButton from '@/components/common/Button';
+import Loader from '@/components/common/Loader';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
+} from '@/components/ui/command';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ChevronDown } from "lucide-react";
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { postRequest } from "@/lib/utils";
-import italyFlag from "@/assets/italy-flag.svg";
-import cnFlag from "@/assets/cn-flag.svg";
-import inFlag from "@/assets/in-flag.svg";
-import CountryCode from "./common/CountryCode";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { useFilterStore } from "@/lib/filterStore";
-import { ToolTipComponent } from "./SearchMain";
-import Link from "next/link";
-import { BellRing } from "lucide-react";
-import { useToast } from "./ui/use-toast";
+} from '@/components/ui/popover';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const phonesCode = [
   {
-    label: "+39",
+    label: '+39',
     icon: italyFlag,
   },
   {
-    label: "+86",
+    label: '+86',
     icon: cnFlag,
   },
   {
-    label: "+91",
+    label: '+91',
     icon: inFlag,
   },
 ];
@@ -103,7 +107,7 @@ export default function SolutionFinder() {
       sms: z.string(),
     })
     .refine((data) => data.email.length !== 0 || data.sms.length !== 0, {
-      path: ["email"],
+      path: ['email'],
     });
   const {
     countriesList,
@@ -126,14 +130,14 @@ export default function SolutionFinder() {
           to,
         },
       ],
-      email: "",
-      sms: "",
+      email: '',
+      sms: '',
     },
   });
   const { control, register, watch } = form;
   const { fields, append, update, remove } = useFieldArray({
     control,
-    name: "routes",
+    name: 'routes',
     rules: {
       minLength: 1,
     },
@@ -170,9 +174,9 @@ export default function SolutionFinder() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
-    const token = await executeRecaptcha("login");
+    const token = await executeRecaptcha('login');
     postRequest({
-      url: "alerts/price",
+      url: 'alerts/price',
       data: {
         contacts: {
           email: values.email?.length ? values.email : undefined,
@@ -216,22 +220,22 @@ export default function SolutionFinder() {
       <DialogContent
         className={`max-w-[465px] pt-[48px] px-1 overflow-auto max-h-screen sm:pl-10 ${
           step === 3
-            ? "sm:max-w-[632px] pb-[32px] sm:pl-8 px-8"
-            : "sm:max-w-[632px] p-[32px]"
+            ? 'sm:max-w-[632px] pb-[32px] sm:pl-8 px-8'
+            : 'sm:max-w-[632px] p-[32px]'
         }`}
       >
         <Form {...form}>
           <form
-            className={`flex flex-col justify-between ${step === 3 && "hidden"} ${step === 2 ? "h-[594px] md:h-[424px]" : null}`}
+            className={`flex flex-col justify-between ${step === 3 && 'hidden'} ${step === 2 ? 'h-[594px] md:h-[424px]' : null}`}
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <div>
               <DialogHeader
-                className={`sm:min-h-[300px] ${step !== 0 && "hidden"} items-center`}
+                className={`sm:min-h-[300px] ${step !== 0 && 'hidden'} items-center`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light">
                   <Image
-                    src={"/ring.svg"}
+                    src={'/ring.svg'}
                     className="filter grayscale contrast-200 mx-auto mb-8"
                     alt=""
                     width={54}
@@ -247,7 +251,7 @@ export default function SolutionFinder() {
                 </DialogDescription>
               </DialogHeader>
               <div
-                className={`${step === 1 && isSearchFilled() ? "sm:min-h-[272px]" : "hidden"} ${step === 2 ? "h-[424px]" : null}`}
+                className={`${step === 1 && isSearchFilled() ? 'sm:min-h-[272px]' : 'hidden'} ${step === 2 ? 'h-[424px]' : null}`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Desired <i className="font-normal">routes</i>
@@ -278,10 +282,10 @@ export default function SolutionFinder() {
                             className="justify-start truncate h-[44px] rounded-l-[8px] rounded-r-none px-1 border-none font-normal text-black bg-[#ffede4] whitespace-nowrap sm:w-1/2 w-[135px] text-left"
                           >
                             <ToolTipComponent
-                              text={item.fromCountry || "Country"}
+                              text={item.fromCountry || 'Country'}
                             >
                               <div className="block w-[115px] sm:w-[120px] truncate text-left pl-2">
-                                {item.fromCountry || "Contry"}
+                                {item.fromCountry || 'Contry'}
                               </div>
                             </ToolTipComponent>
                           </Button>
@@ -308,7 +312,7 @@ export default function SolutionFinder() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  )
+                                  ),
                                 )}
                               </CommandGroup>
                             )}
@@ -324,9 +328,9 @@ export default function SolutionFinder() {
                             role="combobox"
                             className="justify-start h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] overflow-hidden sm:w-1/2 w-[135px]"
                           >
-                            <ToolTipComponent text={item.from || "City"}>
+                            <ToolTipComponent text={item.from || 'City'}>
                               <div className="block truncate w-[115px] sm:w-[100px] text-left">
-                                {item.from || "City"}
+                                {item.from || 'City'}
                               </div>
                             </ToolTipComponent>
                           </Button>
@@ -402,10 +406,10 @@ export default function SolutionFinder() {
                             className="justify-start h-[44px] rounded-l-[8px] rounded-r-none border-none font-normal text-black bg-[#ffede4] sm:w-1/2 w-[135px]"
                           >
                             <ToolTipComponent
-                              text={item.toCountry || "Country"}
+                              text={item.toCountry || 'Country'}
                             >
                               <div className="block w-[115px] sm:w-[95px] truncate text-left">
-                                {item.toCountry || "Country"}
+                                {item.toCountry || 'Country'}
                               </div>
                             </ToolTipComponent>
                           </Button>
@@ -432,7 +436,7 @@ export default function SolutionFinder() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  )
+                                  ),
                                 )}
                               </CommandGroup>
                             )}
@@ -448,9 +452,9 @@ export default function SolutionFinder() {
                             role="combobox"
                             className="justify-start p-0 text-left h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] truncate pl-2 sm:w-1/2 w-[135px]"
                           >
-                            <ToolTipComponent text={item.to || "City"}>
+                            <ToolTipComponent text={item.to || 'City'}>
                               <div className="block w-[115px] sm:w-[100px] truncate text-left">
-                                {item.to || "City"}
+                                {item.to || 'City'}
                               </div>
                             </ToolTipComponent>
                           </Button>
@@ -487,7 +491,7 @@ export default function SolutionFinder() {
                 ))}
               </div>
               <div
-                className={`${step === 1 && !isSearchFilled() ? "sm:min-h-[172px]" : "hidden"}`}
+                className={`${step === 1 && !isSearchFilled() ? 'sm:min-h-[172px]' : 'hidden'}`}
               >
                 <DialogTitle className="text-center text-[24px]/[29px] sm:text-[40px]/[48px] font-light my-4">
                   Just a step away!
@@ -501,7 +505,7 @@ export default function SolutionFinder() {
                   partner.
                 </DialogTitle>
               </div>
-              <div className={step === 2 ? "" : "hidden"}>
+              <div className={step === 2 ? '' : 'hidden'}>
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Contact <i className="font-normal">information</i>
                 </DialogTitle>
@@ -588,24 +592,24 @@ export default function SolutionFinder() {
               <div className="sm:flex justify-between items-center pt-5 space-y-5">
                 <div className="flex space-x-1 order-2 justify-center w-full">
                   <div
-                    className={`shadow-2xl rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 0 ? "opacity-100" : "opacity-50"}`}
+                    className={`shadow-2xl rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 0 ? 'opacity-100' : 'opacity-50'}`}
                   />
                   <div
-                    className={`shadow-sm rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 1 ? "opacity-100" : "opacity-50"}`}
+                    className={`shadow-sm rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 1 ? 'opacity-100' : 'opacity-50'}`}
                   />
                   <div
-                    className={`shadow-sm rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 2 ? "opacity-100" : "opacity-50"}`}
+                    className={`shadow-sm rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 2 ? 'opacity-100' : 'opacity-50'}`}
                   />
                 </div>
                 <UIButton
                   secondary
                   onClick={() => setStep(step - 1)}
-                  className={`w-full sm:max-w-40 ${step === 0 ? "hidden sm:block invisible" : ""}`}
+                  className={`w-full sm:max-w-40 ${step === 0 ? 'hidden sm:block invisible' : ''}`}
                 >
                   Previous step
                 </UIButton>
                 <UIButton
-                  className={`w-full sm:max-w-40 order-3 ${step === 1 && !isSearchFilled() ? "hidden" : null}`}
+                  className={`w-full sm:max-w-40 order-3 ${step === 1 && !isSearchFilled() ? 'hidden' : null}`}
                   type="submit"
                   onClick={(e: any) => {
                     if (step !== 2) {
@@ -613,9 +617,9 @@ export default function SolutionFinder() {
 
                       if (step === 1 && !isFieldsFilled()) {
                         toast({
-                          title: "Fill out the fields",
-                          variant: "destructive",
-                          className: "bg-red-500 text-white",
+                          title: 'Fill out the fields',
+                          variant: 'destructive',
+                          className: 'bg-red-500 text-white',
                         });
                         return;
                       } else {
@@ -631,7 +635,7 @@ export default function SolutionFinder() {
             )}
           </form>
         </Form>
-        <div className={`${step !== 3 && "hidden"}`}>
+        <div className={`${step !== 3 && 'hidden'}`}>
           <DialogHeader className="mb-[42px]">
             <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
               Thank <i className="font-normal">you!</i>

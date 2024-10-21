@@ -9,6 +9,8 @@
     "postbuild": "node generate-sitemap.js",
     "start": "next start",
     "lint": "next lint",
+    "format": "prettier --write \"**/*.js\" \"**/*.tsx\" \"**/*.ts\" \"**/*.json\" \"**/*.css\"",
+    "prepare": "husky",
     "sitemap": "node generate-sitemap.js"
   },
   "dependencies": {
@@ -85,10 +87,20 @@
     "@types/react-simple-maps": "^3.0.4",
     "eslint": "^8",
     "eslint-config-next": "14.2.1",
+    "husky": "^9.1.6",
+    "lint-staged": "^15.2.10",
     "postcss": "^8",
-    "prettier": "3.2.5",
+    "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.5.14",
     "tailwindcss": "^3.4.1",
     "typescript": "^5"
+  },
+  "lint-staged": {
+    "*.{json,scss,css}": [
+      "yarn format"
+    ],
+    "*.{js,ts,tsx}": [
+      "yarn format"
+    ]
   }
 }

@@ -1,9 +1,8 @@
 export enum TabName {
-  PLANE = "plane",
-  SHIP = "ship",
-  TRUCK = "truck",
+  PLANE = 'plane',
+  SHIP = 'ship',
+  TRUCK = 'truck',
 }
-
 
 interface Tab {
   question: string;

@@ -1,13 +1,15 @@
-import React from "react";
-import location from "@/assets/CompanyLocation.png";
-import Image from "next/image";
+import location from '@/assets/CompanyLocation.png';
+
+import React from 'react';
+
+import Image from 'next/image';
 
 const CompanyLocation = () => {
   return (
     <section className="w-full flex flex-col sm:flex-row gap-[56px] py-20 sm:py-[104px] px-[16px] max-w-[1328px] mx-auto">
       <div className="sm:w-1/2 flex flex-col justify-center lg:order-2">
         <h1 className="font-normal text-[34px]/[38px] sm:text-[48px]/[57.6px] text-black flex justify-center sm:justify-start flex-row gap-[12px] mb-[24px] mt-8 sm:mt-0">
-          Our{" "}
+          Our{' '}
           <div className="font-light italic bg-[#FEF1DF] rounded-[6px] sm:h-[49px] px-[4px] flex justify-center items-center relative sm:bottom-[-5px]">
             locations
           </div>
@@ -22,7 +24,7 @@ const CompanyLocation = () => {
         </p>
       </div>
       <div className="sm:w-1/2 rounded-lg overflow-hidden grid items-center lg:order-1">
-        <Image className="w-full rounded-lg" src={location} alt={"location"} />
+        <Image className="w-full rounded-lg" src={location} alt={'location'} />
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import { useEffect, useState, useMemo, useCallback } from "react";
 import PerformanceTabs from "./PerformanceTabs";
@@ -14,7 +14,7 @@ const PerformanceMain = () => {
   const { deliveryBy, performanceData, getPerformancedData }: IAnalyticsStore =
     useAnalyticsStore();
   const [activeTab, setActiveTab] = useState<PerformaceTab>(
-    PerformaceTab.EVOLUTION
+    PerformaceTab.EVOLUTION,
   );
 
   const tabs = useMemo<IPerformanceTab[]>(
@@ -26,13 +26,15 @@ const PerformanceMain = () => {
       {
         label: PerformaceTab.COMPETITIVENESS,
         element: <CompetitivenessTab data={performanceData || []} />,
+        element: <CompetitivenessTab data={performanceData || []} />,
       },
       {
         label: PerformaceTab.USER_SEGMENTATION,
         element: <UserSegmentationTab data={performanceData || []} />,
+        element: <UserSegmentationTab data={performanceData || []} />,
       },
     ],
-    [performanceData]
+    [performanceData],
   );
 
   useEffect(() => {
@@ -44,7 +46,7 @@ const PerformanceMain = () => {
       const tab = tabs.filter((tab) => tab.label === label)[0];
       setActiveTab(tab.label);
     },
-    [tabs]
+    [tabs],
   );
 
   return (
@@ -60,3 +62,4 @@ const PerformanceMain = () => {
 };
 
 export default PerformanceMain;
+

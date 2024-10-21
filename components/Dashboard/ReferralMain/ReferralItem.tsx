@@ -1,11 +1,13 @@
-import { TrashIcon, ArrowUpRight, GripVertical } from "lucide-react";
-import type { ReferralItemType } from "./types";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import Link from "next/link";
-import EditReferralDialog from "./EditReferralDialog";
-import BannerPreview from "./BannerPreview";
-import ListItem from "@/components/ui/list-item";
+import BannerPreview from './BannerPreview';
+import EditReferralDialog from './EditReferralDialog';
+import type { ReferralItemType } from './types';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+import { ArrowUpRight, GripVertical, TrashIcon } from 'lucide-react';
+import Link from 'next/link';
+
+import ListItem from '@/components/ui/list-item';
 
 const ReferralItem = ({
   referralItem,
@@ -17,7 +19,7 @@ const ReferralItem = ({
   editReferral: (
     oldData: ReferralItemType,
     data: ReferralItemType,
-    id: string
+    id: string,
   ) => void;
 }) => {
   const { title, url, id, bigBanner, smallBanner } = referralItem;
@@ -26,7 +28,7 @@ const ReferralItem = ({
       id,
       transition: {
         duration: 150,
-        easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
       },
     });
 

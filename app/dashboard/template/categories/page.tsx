@@ -1,6 +1,6 @@
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
 
-import TemplateCategoriesMain from "@/components/Dashboard/TemplateMain/TemplateCategoriesMain";
+import TemplateCategoriesMain from '@/components/Dashboard/TemplateMain/TemplateCategoriesMain';
 
 export default function TemplcateCategoriesPage() {
   return (

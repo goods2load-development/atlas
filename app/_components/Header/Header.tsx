@@ -1,12 +1,12 @@
+import Logo from '@/assets/headerLogo.svg';
+
 import React from 'react';
-import Link from "next/link";
-import Image from "next/image";
-import Logo from "@/assets/headerLogo.svg"
+
+import Image from 'next/image';
+import Link from 'next/link';
 
 const Header = () => {
-    return (
-      <></>
-    );
+  return <></>;
 };
 
 export default Header;

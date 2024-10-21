@@ -1,14 +1,16 @@
-import Image from "next/image";
-import BarChartGraph, { BarChartData } from "../../../Charts/BarChart";
-import { ICompetitivenessiteItem } from "@/app/interface/dashboard";
-import { useEffect } from "react";
+import BarChartGraph, { BarChartData } from '../../../Charts/BarChart';
+import { ICompetitivenessiteItem } from '@/app/interface/dashboard';
+
+import { useEffect } from 'react';
+
+import Image from 'next/image';
 
 export interface ICompetitivnessChart {
   label: string;
   value: number;
 }
 
-const colors: string[] = ["#FFEDE4", "#FF6720", "#BB4E1B"];
+const colors: string[] = ['#FFEDE4', '#FF6720', '#BB4E1B'];
 
 const CompetitivenessChart = ({ data }: { data: any }) => {
   const dataWithColor = (data: any): BarChartData[] => {
@@ -52,13 +54,17 @@ const CompetitivenessChart = ({ data }: { data: any }) => {
           />
         </div>
         <div className="ml-auto flex-1 min-w-[800px] h-[200px] lg:h-[400px]">
-          {
-            data.length > 0 ? <BarChartGraph
-            data={dataWithColor(data)}
-            values={false}
-            barWidth={100}
-          /> : <div className=" text-center h-full flex items-center justify-center">Data not found</div>
-          }
+          {data.length > 0 ? (
+            <BarChartGraph
+              data={dataWithColor(data)}
+              values={false}
+              barWidth={100}
+            />
+          ) : (
+            <div className=" text-center h-full flex items-center justify-center">
+              Data not found
+            </div>
+          )}
         </div>
       </div>
     </div>

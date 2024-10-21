@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import PerformanceMain from "@/components/Dashboard/PerformanceMain/PerformanceMain";
 import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
@@ -10,7 +10,7 @@ import { IAnalyticsStore } from "@/lib/analyticsStore";
 
 export default function Performance({ params }: { params: { route: string } }) {
   const pathname = usePathname();
-  const colorClass = pathname === params.route ? "text-black" : "text-blue";
+  const colorClass = pathname === params.route ? 'text-black' : 'text-blue';
   const { deliveryBy, onChangeTransportation }: IAnalyticsStore =
     useAnalyticsStore();
 

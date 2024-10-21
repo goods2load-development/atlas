@@ -1,19 +1,22 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect } from "react";
-import Logo from "@/components/Logo";
-import Socials from "@/components/Socials";
-import { Input } from "./ui/input";
-import { useFooterHeaderStore } from "@/lib/store";
-import addressIcon from "@/assets/address.svg";
-import phoneIcon from "@/assets/phone.svg";
-import emailIcon from "@/assets/email.svg";
-import arrowRightIcon from "@/assets/arrow-right-input.svg";
-import ErrorBoundary from "./ErrorBoundary";
-import LangSwitcher from "./LangSwicher";
-import JoinOurNewsLetter from "./JoinOurNewsLetter";
+import ErrorBoundary from './ErrorBoundary';
+import JoinOurNewsLetter from './JoinOurNewsLetter';
+import LangSwitcher from './LangSwicher';
+import { Input } from './ui/input';
+import addressIcon from '@/assets/address.svg';
+import arrowRightIcon from '@/assets/arrow-right-input.svg';
+import emailIcon from '@/assets/email.svg';
+import phoneIcon from '@/assets/phone.svg';
+import { useFooterHeaderStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+import Logo from '@/components/Logo';
+import Socials from '@/components/Socials';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();

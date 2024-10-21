@@ -31,14 +31,14 @@ interface Props extends IProduct {
 
 function Icon(type: string) {
   switch (type) {
-    case "plane":
-      return "/productplane.svg";
+    case 'plane':
+      return '/productplane.svg';
 
-    case "ferry":
-      return "/productferry.svg";
+    case 'ferry':
+      return '/productferry.svg';
 
     default:
-      return "/producttruck.svg";
+      return '/producttruck.svg';
   }
 }
 
@@ -54,21 +54,21 @@ export default function Product(props: Props) {
 
   const onSavePartner = () => {
     if (!user?.id) {
-      router.push("/sign-in");
+      router.push('/sign-in');
     } else {
       onSaveUserPartner(props.company.name)
         .then((data: any) => {
           toast({
-            title: "Partner saved",
-            variant: "default",
-            className: "bg-green-500 text-white",
+            title: 'Partner saved',
+            variant: 'default',
+            className: 'bg-green-500 text-white',
           });
         })
         .catch((error: any) => {
           toast({
             title: error.message,
-            variant: "default",
-            className: "bg-red-500 text-white",
+            variant: 'default',
+            className: 'bg-red-500 text-white',
           });
         });
     }
@@ -76,7 +76,7 @@ export default function Product(props: Props) {
 
   const isAlreadySavedPartner = (
     userSavedPartners: any = null,
-    partnerName: string
+    partnerName: string,
   ) => {
     if (!userSavedPartners) {
       return false;

@@ -1,6 +1,8 @@
-import StarSvg from "@/assets/star.svg";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import StarSvg from '@/assets/star.svg';
+
+import { useEffect, useState } from 'react';
+
+import Image from 'next/image';
 
 export const Stars = ({
   value,

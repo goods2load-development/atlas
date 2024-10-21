@@ -1,15 +1,19 @@
-"use client";
+'use client';
+
+import ReferralFormDialog from './ReferralFormDialog';
+import { ReferralItemType } from './types';
+
+import { useState } from 'react';
+
+import { Pencil } from 'lucide-react';
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import ReferralFormDialog from "./ReferralFormDialog";
-import { Pencil } from "lucide-react";
-import { ReferralItemType } from "./types";
+} from '@/components/ui/dialog';
 
 const EditReferralDialog = ({
   referralItem,

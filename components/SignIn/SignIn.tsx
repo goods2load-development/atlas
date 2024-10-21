@@ -1,12 +1,23 @@
-"use client";
+'use client';
 
-import { useEffect } from "react";
-import { useCookies } from "react-cookie";
-import { redirect, useSearchParams } from "next/navigation";
-import { useUserStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import GoogleIcon from '@/assets/AuthProviderLogos/GoogleIcon';
+import { useUserStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect } from 'react';
+
+import { getSession, signIn } from 'next-auth/react';
+import Link from 'next/link';
+import { redirect, useSearchParams } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useForm } from 'react-hook-form';
+import { getCookie } from 'react-use-cookie';
+import { z } from 'zod';
+
+import Divider from '@/components/Divider';
+import InputPassword from '@/components/common/InputPassword';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -14,22 +25,14 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { getSession, signIn } from "next-auth/react";
-import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
-import Divider from "@/components/Divider";
-import { getCookie } from "react-use-cookie";
-import InputPassword from "@/components/common/InputPassword";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 export default function SignIn() {
-  const [cookies] = useCookies(["accessToken"]);
+  const [cookies] = useCookies(['accessToken']);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
+  const callbackUrl = searchParams.get('callbackUrl');
 
   const formSchema = z.object({
     email: z.string().email(),
@@ -39,22 +42,22 @@ export default function SignIn() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
   });
 
   const { user, postLoginData, authenticateUser } = useUserStore(
-    (state: any) => state
+    (state: any) => state,
   );
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
-    const token = await executeRecaptcha("login");
+    const token = await executeRecaptcha('login');
     postLoginData({ ...values, recaptchaToken: token });
   }
 
   const signInWithGoogle = () => {
-    signIn("google", {
+    signIn('google', {
       callbackUrl: callbackUrl || process.env.NEXT_PUBLIC_BASE_URL,
       redirect: true,
     });
@@ -63,7 +66,7 @@ export default function SignIn() {
   useEffect(() => {
     const fetchData = async () => {
       if (cookies.accessToken) {
-        const token = getCookie("accessToken");
+        const token = getCookie('accessToken');
         const decodedToken = await getSession({
           req: { headers: { cookie: `accessToken=${token}` } },
         });
@@ -78,7 +81,7 @@ export default function SignIn() {
   }, [cookies.accessToken]);
 
   useEffect(() => {
-    if (!!user?.id) redirect("/account");
+    if (!!user?.id) redirect('/account');
   }, [user?.id]);
 
   return (
@@ -139,7 +142,7 @@ export default function SignIn() {
             Sign in
           </Button>
           <p className="text-[12px]/[16px] text-center">
-            Don&apos;t have an account?{" "}
+            Don&apos;t have an account?{' '}
             <Link href="/registration" className="text-orangePrimary">
               Sign up for free
             </Link>
