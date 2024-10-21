@@ -92,7 +92,7 @@ const DynamicMenu = async ({ variant = 'primary' }: any) => {
     })
   ).json();
 
-  if (!menuData) {
+  if (!menuData || !menuData.json.length) {
     return <div className="h-14"></div>;
   }
 
