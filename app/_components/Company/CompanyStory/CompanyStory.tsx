@@ -1,17 +1,17 @@
-import React from "react";
-import Image, { StaticImageData } from "next/image";
+import { storyBlock } from './CompanyStoryData';
+import CompanyStoryBlock from '@/app/_components/Company/CompanyStory/CompanyStoryBlock';
+import line from '@/assets/line-dashed.svg';
 
-import { storyBlock } from "./CompanyStoryData";
-import CompanyStoryBlock from "@/app/_components/Company/CompanyStory/CompanyStoryBlock";
-import line from "@/assets/line-dashed.svg";
+import React from 'react';
+
+import Autoplay from 'embla-carousel-autoplay';
+import Image, { StaticImageData } from 'next/image';
 
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
-
-import Autoplay from "embla-carousel-autoplay";
+} from '@/components/ui/carousel';
 
 export interface IBlock {
   icon: string | StaticImageData;
@@ -25,7 +25,7 @@ const CompanyStory = () => {
     <section className="w-full flex flex-col gap-[40px] py-14 sm:py-[104px]">
       <div className="flex flex-col gap-[16px] text-start text-black px-[16px] w-full max-w-[1328px] mx-auto">
         <h2 className="font-normal sm:text-[48px]/[57.6px] text-[34px]/[38px] italic flex flex-row gap-[12px] justify-center sm:justify-start">
-          Our{" "}
+          Our{' '}
           <div className="font-light not-italic bg-[#FEF1DF] rounded-[6px] sm:h-[49px] px-[4px] flex justify-center items-center relative sm:bottom-[-5px]">
             story
           </div>
@@ -45,13 +45,13 @@ const CompanyStory = () => {
           >
             <CarouselContent className="-pl-1 flex items-center">
               <CarouselItem className="pl-1 basis-1/2 lg:basis-1/2 grid items-center">
-                <Image height={200} src={line} alt={"line"} />
+                <Image height={200} src={line} alt={'line'} />
               </CarouselItem>
               <CarouselItem className="pl-1 basis-1/2 lg:basis-1/2 grid items-center">
-                <Image className="" src={line} alt={"line"} />
+                <Image className="" src={line} alt={'line'} />
               </CarouselItem>
               <CarouselItem className="pl-1 basis-1/2 lg:basis-1/2 grid items-center">
-                <Image className="" src={line} alt={"line"} />
+                <Image className="" src={line} alt={'line'} />
               </CarouselItem>
             </CarouselContent>
           </Carousel>

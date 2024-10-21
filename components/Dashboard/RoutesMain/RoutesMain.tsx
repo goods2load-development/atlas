@@ -1,26 +1,27 @@
-"use client";
+'use client';
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { PriceAlertTab } from './PriceAlertsTab';
+import { RoutesTab } from './RoutesTab';
+import { TabsContent } from '@radix-ui/react-tabs';
 
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { TabsContent } from "@radix-ui/react-tabs";
-import { RoutesTab } from "./RoutesTab";
-import PriceAlerts from "@/components/SolutionFinder";
-import { PriceAlertTab } from "./PriceAlertsTab";
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import PriceAlerts from '@/components/SolutionFinder';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 const RoutesMain = () => {
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  const tab = searchParams.get("tab") || "routes";
+  const tab = searchParams.get('tab') || 'routes';
 
   const handleSetTab = (tab: string) => {
     const params = new URLSearchParams(searchParams);
     if (tab) {
-      params.set("tab", tab);
+      params.set('tab', tab);
     } else {
-      params.delete("tab");
+      params.delete('tab');
     }
 
     replace(`${pathname}?${params.toString()}`);

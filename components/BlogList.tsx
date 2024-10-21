@@ -1,6 +1,7 @@
-import Link from "next/link";
-import React, { useEffect } from "react";
-import { format } from "date-fns";
+import React, { useEffect } from 'react';
+
+import { format } from 'date-fns';
+import Link from 'next/link';
 
 interface Blog {
   id: string;
@@ -32,7 +33,7 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
       {blogsWithOutFirstElement.map((blog) => {
         const blogImg = blog.mainImageUrl
           ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
-          : "/default-image.jpg";
+          : '/default-image.jpg';
 
         return (
           <div
@@ -46,7 +47,7 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
                 alt={blog.title}
               />
               <div className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg">
-                {blog?.blogTypeName || "all"}
+                {blog?.blogTypeName || 'all'}
               </div>
             </div>
             <div className="p-4 flex flex-col h-full justify-between">
@@ -63,7 +64,7 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
                 <p className="text-gray-600 mb-4">{blog.description}</p>
               </div>
               <div className="text-gray-500 text-sm flex justify-between">
-                <span>{format(new Date(blog?.updatedAt), "dd MMM yyyy")}</span>
+                <span>{format(new Date(blog?.updatedAt), 'dd MMM yyyy')}</span>
                 <span>{`${blog.readingTime} min read`}</span>
               </div>
               <Link

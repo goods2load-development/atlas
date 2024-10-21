@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { GoogleReCaptchaProvider } from "react-google-recaptcha-v3";
+import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 
 const CaptchaProvider = ({ children }: { children: React.ReactNode }) => {
   return (

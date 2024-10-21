@@ -1,10 +1,10 @@
-import React from "react";
-import Image from "next/image";
+import { opportunitiesData } from './opportunitiesData';
+import { OpportunitiesData } from '@/app/interface/PartnersAmplify';
+import macBookImage from '@/assets/PartnersImage/PartnersAmplify/macbookProMockup.png';
 
-import { opportunitiesData } from "./opportunitiesData";
+import React from 'react';
 
-import macBookImage from "@/assets/PartnersImage/PartnersAmplify/macbookProMockup.png";
-import { OpportunitiesData } from "@/app/interface/PartnersAmplify";
+import Image from 'next/image';
 
 const PartnersAmplify: React.FC = () => {
   return (
@@ -41,7 +41,7 @@ const PartnersAmplify: React.FC = () => {
                     {opportunity}
                   </div>
                 </div>
-              )
+              ),
             )}
           </div>
         </div>

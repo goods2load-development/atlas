@@ -1,6 +1,16 @@
-"use client";
-import NextImage from "next/image";
-import { Button } from "@/components/ui/button";
+'use client';
+
+import { fileToBase64 } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect, useState } from 'react';
+
+import { X } from 'lucide-react';
+import NextImage from 'next/image';
+import { FormProvider, useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button } from '@/components/ui/button';
 import {
   FormControl,
   FormDescription,
@@ -8,14 +18,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import * as z from "zod";
-import { useEffect, useState } from "react";
-import { fileToBase64 } from "@/lib/utils";
-import { X } from "lucide-react";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const validateImageDimensions = (file: File, width: number, height: number) =>
   new Promise<boolean>((resolve) => {
@@ -27,22 +31,22 @@ const validateImageDimensions = (file: File, width: number, height: number) =>
   });
 
 const formSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  url: z.string().url("Enter a valid URL"),
+  title: z.string().min(1, 'Title is required'),
+  url: z.string().url('Enter a valid URL'),
 
   bigBanner: z.union([
     z.string(),
     z
       .unknown()
       .transform((value) => value as FileList)
-      .refine((files) => files?.length === 1, "You need to provide a file")
+      .refine((files) => files?.length === 1, 'You need to provide a file')
       .refine(
         async (files) => files?.[0]?.size <= 2000000,
-        "The file is too large, it should be less than 2MB"
+        'The file is too large, it should be less than 2MB',
       )
       .refine(
         async (files) => await validateImageDimensions(files[0], 1300, 360),
-        "The image must be 1300x360"
+        'The image must be 1300x360',
       ),
   ]),
   smallBanner: z.union([
@@ -50,14 +54,14 @@ const formSchema = z.object({
     z
       .unknown()
       .transform((value) => value as FileList)
-      .refine((files) => files?.length === 1, "You need to provide a file")
+      .refine((files) => files?.length === 1, 'You need to provide a file')
       .refine(
         async (files) => files?.[0]?.size <= 2000000,
-        "The file is too large, it should be less than 2MB"
+        'The file is too large, it should be less than 2MB',
       )
       .refine(
         async (files) => await validateImageDimensions(files[0], 400, 400),
-        "The image must be 400x400"
+        'The image must be 400x400',
       ),
   ]),
 });
@@ -73,7 +77,7 @@ const ReferralFormDialog = ({
   const [bigBannerSrc, setBigBannerSrc] = useState<string | null>(null);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "all",
+    mode: 'all',
     shouldUnregister: false,
     ...(!!defaultValues && {
       defaultValues: {
@@ -85,8 +89,8 @@ const ReferralFormDialog = ({
   });
 
   const { handleSubmit, control, reset, getValues, setValue } = form;
-  const bigBannerValue = getValues("bigBanner");
-  const smallBannerValue = getValues("smallBanner");
+  const bigBannerValue = getValues('bigBanner');
+  const smallBannerValue = getValues('smallBanner');
 
   useEffect(() => {
     (async () => {
@@ -102,7 +106,7 @@ const ReferralFormDialog = ({
       ];
 
       for (const { banner, setBanner } of bannerConfigs) {
-        if (typeof banner === "string") {
+        if (typeof banner === 'string') {
           setBanner(banner);
         } else if (banner?.length) {
           const base64 = await fileToBase64(banner[0]);
@@ -194,7 +198,7 @@ const ReferralFormDialog = ({
                   />
                   {field.value
                     ? (field.value as FileList)?.[0]?.name
-                    : "Upload banner"}
+                    : 'Upload banner'}
                 </FormLabel>
                 <FormMessage />
               </FormItem>
@@ -204,7 +208,7 @@ const ReferralFormDialog = ({
             <div className="w-1/3 relative inline-block">
               <button
                 onClick={() => {
-                  setValue("bigBanner", null as any);
+                  setValue('bigBanner', null as any);
                   setBigBannerSrc(null);
                 }}
                 type="button"
@@ -255,7 +259,7 @@ const ReferralFormDialog = ({
                   />
                   {field.value
                     ? (field.value as FileList)?.[0]?.name
-                    : "Upload banner"}
+                    : 'Upload banner'}
                 </FormLabel>
                 <FormMessage />
               </FormItem>
@@ -265,7 +269,7 @@ const ReferralFormDialog = ({
             <div className="w-1/3 relative inline-block">
               <button
                 onClick={() => {
-                  setValue("smallBanner", null as any);
+                  setValue('smallBanner', null as any);
                   setSmallBannerSrc(null);
                 }}
                 type="button"

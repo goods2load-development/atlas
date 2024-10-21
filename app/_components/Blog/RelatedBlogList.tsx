@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { format } from "date-fns";
+import { format } from 'date-fns';
+import Link from 'next/link';
 
 interface IRelatedBlogsList {
   blogs: any[];
@@ -13,7 +13,7 @@ export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
       {blogs.map((blog) => {
         const blogImg = blog.mainImageUrl
           ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
-          : "/default-image.jpg";
+          : '/default-image.jpg';
 
         return (
           <div
@@ -27,7 +27,7 @@ export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
                 alt={blog.title}
               />
               <div className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg">
-                {blog?.blogTypeName || "all"}
+                {blog?.blogTypeName || 'all'}
               </div>
             </div>
             <div className="p-4 flex flex-col h-full justify-between">
@@ -46,7 +46,7 @@ export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
                 </p>
               </div>
               <div className="text-gray-500 text-sm flex justify-between">
-                <span>{format(new Date(blog.updatedAt), "dd MMM yyyy")}</span>
+                <span>{format(new Date(blog.updatedAt), 'dd MMM yyyy')}</span>
                 <span>{`${blog.readingTime} min read`}</span>
               </div>
               <Link

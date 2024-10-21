@@ -1,13 +1,16 @@
-"use client";
+'use client';
 
-import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
-import clsx from "clsx";
-import { useEffect, useMemo, useState } from "react";
-import { useFooterHeaderStore } from "@/lib/store";
-import { HeaderFooterData } from "./types";
-import { Button } from "@/components/ui/button";
-import LinksMenu from "./LinksMenu";
+import LinksMenu from './LinksMenu';
+import { HeaderFooterData } from './types';
+import { useFooterHeaderStore } from '@/lib/store';
+
+import { useEffect, useMemo, useState } from 'react';
+
+import clsx from 'clsx';
+
+import { Button } from '@/components/ui/button';
+import Spinner from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/use-toast';
 
 const FooterMain = () => {
   const { toast } = useToast();
@@ -39,10 +42,10 @@ const FooterMain = () => {
       .then(getFooterData)
       .then(() =>
         toast({
-          title: "Footer updated.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Footer updated.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
@@ -63,8 +66,8 @@ const FooterMain = () => {
       </div>
 
       <div
-        className={clsx("flex flex-col gap-4", {
-          "pointer-events-none": isFooterLoading,
+        className={clsx('flex flex-col gap-4', {
+          'pointer-events-none': isFooterLoading,
         })}
       >
         {footerDataDynamic?.json?.length && (

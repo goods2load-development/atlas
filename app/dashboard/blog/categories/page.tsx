@@ -1,5 +1,6 @@
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import CategoriesMain from "@/components/Dashboard/BlogMain/CategoriesMain";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+
+import CategoriesMain from '@/components/Dashboard/BlogMain/CategoriesMain';
 
 export default function Referral() {
   return (

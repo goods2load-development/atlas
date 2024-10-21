@@ -1,10 +1,11 @@
+import bg from '@/assets/LegacyImages/privacyPolicy.png';
+import { generateBlockId } from '@/lib/utils';
+
 import {
-  ILegacyPage,
   ILegacyDataBlock,
   ILegacyDataBlockBodyType,
-} from "@/components/Legacy/types";
-import bg from "@/assets/LegacyImages/privacyPolicy.png";
-import { generateBlockId } from "@/lib/utils";
+  ILegacyPage,
+} from '@/components/Legacy/types';
 
 const data: ILegacyDataBlock[] = [
   {
@@ -85,7 +86,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Definitions:",
+    title: 'Definitions:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -142,7 +143,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Why do we use Personal Data?",
+    title: 'Why do we use Personal Data?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -156,11 +157,11 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "What Personal Data do we collect and where does it come from?",
+    title: 'What Personal Data do we collect and where does it come from?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: ["Personal Data is collected in three ways:"],
+        content: ['Personal Data is collected in three ways:'],
       },
       {
         type: ILegacyDataBlockBodyType.ULIST,
@@ -190,7 +191,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "The types of Personal Data we Process as a business.",
+    title: 'The types of Personal Data we Process as a business.',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -271,7 +272,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "We only use your Personal Data where:",
+    title: 'We only use your Personal Data where:',
     body: [
       {
         type: ILegacyDataBlockBodyType.ULIST,
@@ -286,11 +287,11 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "How and why we use your personal data.",
+    title: 'How and why we use your personal data.',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: ["We use your Personal Data to:"],
+        content: ['We use your Personal Data to:'],
       },
       {
         type: ILegacyDataBlockBodyType.OLIST,
@@ -330,7 +331,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Legitimate interests",
+    title: 'Legitimate interests',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -415,7 +416,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Consent",
+    title: 'Consent',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -472,7 +473,7 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "When is Personal Data shared with or collected by third parties?",
+    title: 'When is Personal Data shared with or collected by third parties?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -573,7 +574,7 @@ or pursuant to your Consent.`,
     ],
   },
   {
-    title: "Where do we Process Personal Data?",
+    title: 'Where do we Process Personal Data?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -616,7 +617,7 @@ or relying on the relevant third party's approved Binding Corporate Rules.`,
     ],
   },
   {
-    title: "How is Personal Data used for advertising?",
+    title: 'How is Personal Data used for advertising?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -632,7 +633,7 @@ or relying on the relevant third party's approved Binding Corporate Rules.`,
     ],
   },
   {
-    title: "Adverts on third-party platforms",
+    title: 'Adverts on third-party platforms',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -650,7 +651,7 @@ the third-party platform’s policies for information on their policies on user 
     ],
   },
   {
-    title: "Do we use cookies or similar technologies?",
+    title: 'Do we use cookies or similar technologies?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -665,7 +666,7 @@ the third-party platform’s policies for information on their policies on user 
     ],
   },
   {
-    title: "How long do we store Personal Data?",
+    title: 'How long do we store Personal Data?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -682,7 +683,7 @@ the third-party platform’s policies for information on their policies on user 
     ],
   },
   {
-    title: "How do we keep Personal Data secure?",
+    title: 'How do we keep Personal Data secure?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -713,7 +714,7 @@ protect their data with strong passwords, and to show vigilance against phishing
     ],
   },
   {
-    title: "What are your choices and rights?",
+    title: 'What are your choices and rights?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -771,7 +772,7 @@ Supervisory Authority.`,
     ],
   },
   {
-    title: "Applicable Laws:",
+    title: 'Applicable Laws:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -784,7 +785,7 @@ standards of data privacy and ensure compliance with the relevant legal framewor
     ],
   },
   {
-    title: "Who are we and how can you contact us?",
+    title: 'Who are we and how can you contact us?',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -803,8 +804,8 @@ Shohada Road, AL Hamra Industrial Zone-FZ, Ras Al Khaimah, United Arab Emirates.
 ];
 
 export const privacyPolicyPageData: ILegacyPage = {
-  title: "Goods2load Privacy Policy",
-  subTitle: "Thursday, 3 October 2024",
+  title: 'Goods2load Privacy Policy',
+  subTitle: 'Thursday, 3 October 2024',
   bg,
   data,
 };

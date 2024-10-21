@@ -1,11 +1,12 @@
-"use client";
+'use client';
 
-import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
-import { usePathname } from "next/navigation";
-import OpportunitiesMain from "@/components/Dashboard/OpportunitiesMain/OpportunitiesMain";
-import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
-import MobileSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
-import MobileFooter from "@/components/Dashboard/MobileFooter/MobileFooter";
+import { usePathname } from 'next/navigation';
+
+import MobileFooter from '@/components/Dashboard/MobileFooter/MobileFooter';
+import MobileSidebar from '@/components/Dashboard/MobileSidebar/MobileSidebar';
+import OpportunitiesMain from '@/components/Dashboard/OpportunitiesMain/OpportunitiesMain';
+import RadioGroupItems from '@/components/Dashboard/RadioGroupItems';
+import Sidebar from '@/components/Dashboard/Sidebar/Sidebar';
 
 export default function OpportunitiesPage({
   params,
@@ -13,7 +14,7 @@ export default function OpportunitiesPage({
   params: { route: string };
 }) {
   const pathname = usePathname();
-  const colorClass = pathname === params.route ? "text-black" : "text-blue";
+  const colorClass = pathname === params.route ? 'text-black' : 'text-blue';
 
   return (
     <div className="grid sm:grid-cols-[auto]">

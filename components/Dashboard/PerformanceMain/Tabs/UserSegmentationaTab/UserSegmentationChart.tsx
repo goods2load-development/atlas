@@ -1,13 +1,14 @@
-import Image from "next/image";
-import BarChartGraph, { BarChartData } from "../../../Charts/BarChart";
+import BarChartGraph, { BarChartData } from '../../../Charts/BarChart';
+
+import Image from 'next/image';
 
 const UserSegmentationChart = ({ data }: { data: any }) => {
   const dataWithColor = (data: any): BarChartData[] => {
     return data.map((elem: any, idx: number) => {
       return {
         ...elem,
-        color: "#FF6720",
-        name: elem.label
+        color: '#FF6720',
+        name: elem.label,
       };
     });
   };
@@ -24,13 +25,17 @@ const UserSegmentationChart = ({ data }: { data: any }) => {
           />
         </div>
         <div className="ml-auto flex-1 min-w-[800px] h-[200px] lg:h-[400px]">
-          {
-            data.length > 0 ? <BarChartGraph
-            data={dataWithColor(data)}
-            values={true}
-            barWidth={40}
-          /> : <div className=" text-center h-full flex items-center justify-center">Data not found</div>
-          }
+          {data.length > 0 ? (
+            <BarChartGraph
+              data={dataWithColor(data)}
+              values={true}
+              barWidth={40}
+            />
+          ) : (
+            <div className=" text-center h-full flex items-center justify-center">
+              Data not found
+            </div>
+          )}
         </div>
       </div>
     </div>

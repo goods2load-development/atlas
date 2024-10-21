@@ -1,64 +1,60 @@
+import BarChartGraph, { BarChartData } from '../../Charts/BarChart';
+import { PieData } from '../../Charts/PieChart';
+import Map, { MarkersCoordinates } from '../../Map/Map';
+import { type Tab } from '../MarketTrendsMain';
+import TabJourneyDuration, {
+  JourneyDurationData,
+} from '../Tabs/TabJourneyDuration';
+import { MapDetails } from '../Tabs/TabMapDetails';
+import TabMapDetails from '../Tabs/TabMapDetails';
+import TabPieInfo from '../Tabs/TabPieInfo';
+
 import {
   MarketTrendsTab,
   MarketTrendsTabData,
-} from "@/components/Dashboard/MarketTrends/MarketTrendsTab";
-
-import { type Tab } from "../MarketTrendsMain";
-
-import TabPieInfo from "../Tabs/TabPieInfo";
-
-import { PieData } from "../../Charts/PieChart";
-import BarChartGraph, { BarChartData } from "../../Charts/BarChart";
-import { MapDetails } from "../Tabs/TabMapDetails";
-
-import TabJourneyDuration, {
-  JourneyDurationData,
-} from "../Tabs/TabJourneyDuration";
-
-import Map, { MarkersCoordinates } from "../../Map/Map";
-import TabMapDetails from "../Tabs/TabMapDetails";
+} from '@/components/Dashboard/MarketTrends/MarketTrendsTab';
 
 const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: any } = {
   data: [
-    { name: "DUBAI-INDIA", value: 54, color: "#FF6720" },
-    { name: "DUBAI-VIETNAM", value: 26, color: "#834629" },
-    { name: "DUBAI-SAUDI ARABIA", value: 20, color: "#FDA074" },
+    { name: 'DUBAI-INDIA', value: 54, color: '#FF6720' },
+    { name: 'DUBAI-VIETNAM', value: 26, color: '#834629' },
+    { name: 'DUBAI-SAUDI ARABIA', value: 20, color: '#FDA074' },
   ],
-  title: "Most frequent route",
+  title: 'Most frequent route',
   markers: [
     {
       from: {
-        name: "India",
+        name: 'India',
         coordinates: [76.4737, 27.2304],
       },
       to: {
-        name: "Vietnam",
+        name: 'Vietnam',
         coordinates: [104.4737, 16.2304],
       },
     },
     {
       from: {
-        name: "Dubai, UAE",
+        name: 'Dubai, UAE',
         coordinates: [53.4737, 25.2304],
       },
       to: {
-        name: "India",
+        name: 'India',
         coordinates: [76.4737, 27.2304],
       },
     },
     {
       from: {
-        name: "Saudi Arabia",
+        name: 'Saudi Arabia',
         coordinates: [40.4737, 25.2004],
       },
       to: {
-        name: "Dubai, UAE",
+        name: 'Dubai, UAE',
         coordinates: [53.4737, 25.2304],
       },
     },
     {
       from: {
-        name: "Vietnam",
+        name: 'Vietnam',
         coordinates: [104.4737, 16.2304],
       },
       to: null,
@@ -68,149 +64,149 @@ const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: any } = {
 
 const tab2Data: MarketTrendsTabData<PieData[]> = {
   data: [
-    { name: "Raw material", value: 38, color: "#F4BE37" },
-    { name: "Furniture", value: 32, color: "#3F2011" },
+    { name: 'Raw material', value: 38, color: '#F4BE37' },
+    { name: 'Furniture', value: 32, color: '#3F2011' },
     {
-      name: "Electronics",
+      name: 'Electronics',
       value: 22,
-      color: "#FB5304",
+      color: '#FB5304',
     },
-    { name: "Cars parts and cars", value: 24, color: "#FF6720" },
-    { name: "Other", value: 2, color: "#692607" },
-    { name: "Clothes", value: 5, color: "#FF9F40" },
+    { name: 'Cars parts and cars', value: 24, color: '#FF6720' },
+    { name: 'Other', value: 2, color: '#692607' },
+    { name: 'Clothes', value: 5, color: '#FF9F40' },
   ],
-  title: "Top transported goods",
-  description: "the most popular goods transported by your company",
+  title: 'Top transported goods',
+  description: 'the most popular goods transported by your company',
 };
 
 const tab3Data: MarketTrendsTabData<any> = {
   data: [
     {
-      name: "MON",
+      name: 'MON',
       value: 52,
-      color: "#FFBD18",
+      color: '#FFBD18',
     },
     {
-      name: "TUE",
+      name: 'TUE',
       value: 75,
-      color: "#FFA800",
+      color: '#FFA800',
     },
     {
-      name: "WED",
+      name: 'WED',
       value: 40,
-      color: "#FF7F00",
+      color: '#FF7F00',
     },
     {
-      name: "THU",
+      name: 'THU',
       value: 110,
-      color: "#FF6720",
+      color: '#FF6720',
     },
     {
-      name: "FRI",
+      name: 'FRI',
       value: 80,
-      color: "#FF5620",
+      color: '#FF5620',
     },
     {
-      name: "SAT",
+      name: 'SAT',
       value: 40,
-      color: "#FB5304",
+      color: '#FB5304',
     },
     {
-      name: "SUN",
+      name: 'SUN',
       value: 20,
-      color: "#FB3004",
+      color: '#FB3004',
     },
   ],
-  title: "Most frequent day",
+  title: 'Most frequent day',
   description:
-    "demand for cargo transportation depending on the day of the week",
+    'demand for cargo transportation depending on the day of the week',
 };
 
 const tab4Data: MarketTrendsTabData<any> & JourneyDurationData = {
   data: [
     {
-      name: "Dubai",
+      name: 'Dubai',
       value: 43,
-      color: "#FFBD18",
+      color: '#FFBD18',
     },
     {
-      name: "India",
+      name: 'India',
       value: 125,
-      color: "#FF9F40",
+      color: '#FF9F40',
     },
     {
-      name: "Vietnam",
+      name: 'Vietnam',
       value: 13,
-      color: "#FF6720",
+      color: '#FF6720',
     },
     {
-      name: "Saudi Arabia",
+      name: 'Saudi Arabia',
       value: 50,
-      color: "#FB5304",
+      color: '#FB5304',
     },
   ],
-  title: "Journey duration",
-  description: "Past journey durations are depicted in the data chart.",
-  country: "DUBAI",
+  title: 'Journey duration',
+  description: 'Past journey durations are depicted in the data chart.',
+  country: 'DUBAI',
   countries: [
     {
-      country: "INDIA",
+      country: 'INDIA',
       days: 23,
-      color: "#FF6720",
+      color: '#FF6720',
     },
     {
-      country: "VIETNAM",
+      country: 'VIETNAM',
       days: 10,
-      color: "#FF6720",
+      color: '#FF6720',
     },
     {
-      country: "ITALY",
+      country: 'ITALY',
       days: 36,
-      color: "#834629",
+      color: '#834629',
     },
     {
-      country: "SHANGHAI",
+      country: 'SHANGHAI',
       days: 23,
-      color: "#834629",
+      color: '#834629',
     },
   ],
 };
 
 const tab5Data: MarketTrendsTabData<[]> & { markers: MarkersCoordinates[] } = {
   data: [],
-  title: "Top departure point",
+  title: 'Top departure point',
   markers: [
     {
       from: {
-        name: "Genoa, Italy",
+        name: 'Genoa, Italy',
         coordinates: [10.4737, 45.2304],
       },
       to: null,
     },
     {
       from: {
-        name: "Port Said, Egypt",
+        name: 'Port Said, Egypt',
         coordinates: [30.4737, -25.2304],
       },
       to: null,
     },
     {
       from: {
-        name: "Port of Durban, South Africa",
+        name: 'Port of Durban, South Africa',
         coordinates: [25.4737, 35.2304],
       },
       to: null,
     },
     {
       from: {
-        name: "Port of Jebel Ali, UAE",
+        name: 'Port of Jebel Ali, UAE',
         coordinates: [50.4737, 27.2304],
       },
       to: null,
     },
     {
       from: {
-        name: "Shanghai port, China",
+        name: 'Shanghai port, China',
         coordinates: [117.4737, 35.2304],
       },
       to: null,
@@ -220,74 +216,74 @@ const tab5Data: MarketTrendsTabData<[]> & { markers: MarkersCoordinates[] } = {
 
 const tab6Data: MarketTrendsTabData<PieData[]> = {
   data: [
-    { name: "10", value: 20, color: "#F4BE37" },
-    { name: "9-8", value: 20, color: "#692607" },
-    { name: "7-6", value: 20, color: "#FF6720" },
-    { name: "5-4", value: 20, color: "#3F2011" },
+    { name: '10', value: 20, color: '#F4BE37' },
+    { name: '9-8', value: 20, color: '#692607' },
+    { name: '7-6', value: 20, color: '#FF6720' },
+    { name: '5-4', value: 20, color: '#3F2011' },
     {
-      name: "3-2",
+      name: '3-2',
       value: 15,
-      color: "#FB5304",
+      color: '#FB5304',
     },
-    { name: "1", value: 5, color: "#FF9F40" },
+    { name: '1', value: 5, color: '#FF9F40' },
   ],
-  title: "Service satisfaction rate from 1 to 10",
-  description: "where 10 - excellent and 0 - unsatisfactory",
+  title: 'Service satisfaction rate from 1 to 10',
+  description: 'where 10 - excellent and 0 - unsatisfactory',
 };
 
 const tab7Data: MarketTrendsTabData<PieData[]> = {
   data: [
-    { name: "Last minute booking", value: 34, color: "#F4BE37" },
-    { name: "Dynamic Booking Changes", value: 32, color: "#FB5304" },
+    { name: 'Last minute booking', value: 34, color: '#F4BE37' },
+    { name: 'Dynamic Booking Changes', value: 32, color: '#FB5304' },
     {
-      name: "Multi-Modal Booking",
+      name: 'Multi-Modal Booking',
       value: 20,
-      color: "#FF9F40",
+      color: '#FF9F40',
     },
-    { name: "Advance booking", value: 15, color: "#3F2011" },
+    { name: 'Advance booking', value: 15, color: '#3F2011' },
   ],
-  title: "Booking behavior",
+  title: 'Booking behavior',
   description:
-    "Understanding booking behavior is crucial for optimizing logistics efficiency and meeting customer demands effectively.",
+    'Understanding booking behavior is crucial for optimizing logistics efficiency and meeting customer demands effectively.',
 };
 
 const tab9Data: MarketTrendsTabData<PieData[]> = {
   data: [
-    { name: "CPT", value: 20, color: "#F4BE37" },
-    { name: "CIP", value: 20, color: "#692607" },
+    { name: 'CPT', value: 20, color: '#F4BE37' },
+    { name: 'CIP', value: 20, color: '#692607' },
     {
-      name: "DAP",
+      name: 'DAP',
       value: 20,
-      color: "#FF6720",
+      color: '#FF6720',
     },
-    { name: "DDP", value: 20, color: "#3F2011" },
-    { name: "FCA", value: 15, color: "#FB5304" },
-    { name: "EXW", value: 5, color: "#FF9F40" },
+    { name: 'DDP', value: 20, color: '#3F2011' },
+    { name: 'FCA', value: 15, color: '#FB5304' },
+    { name: 'EXW', value: 5, color: '#FF9F40' },
   ],
-  title: "Preferred Incoterms",
+  title: 'Preferred Incoterms',
   description:
-    "Each Incoterms rule clarifies the tasks, costs, and risks to be borne by buyers and sellers in these transactions. Familiarizing yourself with Incoterms will help improve smoother transactions by clearly defining who is responsible for what and each step of the transaction.",
+    'Each Incoterms rule clarifies the tasks, costs, and risks to be borne by buyers and sellers in these transactions. Familiarizing yourself with Incoterms will help improve smoother transactions by clearly defining who is responsible for what and each step of the transaction.',
 };
 
 const tab10Data: MarketTrendsTabData<PieData[]> = {
   data: [
-    { name: "Summer", value: 34, color: "#F4BE37" },
-    { name: "Autumm", value: 32, color: "#FB5304" },
+    { name: 'Summer', value: 34, color: '#F4BE37' },
+    { name: 'Autumm', value: 32, color: '#FB5304' },
     {
-      name: "Winter",
+      name: 'Winter',
       value: 20,
-      color: "#FF9F40",
+      color: '#FF9F40',
     },
-    { name: "Spring", value: 15, color: "#3F2011" },
+    { name: 'Spring', value: 15, color: '#3F2011' },
   ],
-  title: "Seasonal variations",
-  description: "changes in demand for services depending on the time of year",
+  title: 'Seasonal variations',
+  description: 'changes in demand for services depending on the time of year',
 };
 
 export const Tabs: Tab[] = [
   {
     id: 1,
-    text: "Most frequent route",
+    text: 'Most frequent route',
     element: (
       <>
         <MarketTrendsTab title={tab1Data.title}>
@@ -301,7 +297,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 2,
-    text: "Top transported goods",
+    text: 'Top transported goods',
     element: (
       <MarketTrendsTab
         title={tab2Data.title}
@@ -313,7 +309,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 3,
-    text: "Most frequent day",
+    text: 'Most frequent day',
     element: (
       <MarketTrendsTab
         title={tab3Data.title}
@@ -327,7 +323,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 4,
-    text: "Journey duration",
+    text: 'Journey duration',
     element: (
       <MarketTrendsTab
         title={tab4Data.title}
@@ -343,7 +339,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 5,
-    text: "Top departure point",
+    text: 'Top departure point',
     element: (
       <MarketTrendsTab title={tab5Data.title}>
         <Map data={tab5Data.markers} />
@@ -352,7 +348,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 6,
-    text: "Service satisfaction",
+    text: 'Service satisfaction',
     element: (
       <MarketTrendsTab
         title={tab6Data.title}
@@ -364,7 +360,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 7,
-    text: "Booking behavior",
+    text: 'Booking behavior',
     element: (
       <MarketTrendsTab
         title={tab7Data.title}
@@ -376,7 +372,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 8,
-    text: "Geographical trends",
+    text: 'Geographical trends',
     element: (
       <MarketTrendsTab title={tab1Data.title}>
         <Map data={tab1Data.markers} />
@@ -385,7 +381,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 9,
-    text: "Preferred Incoterms",
+    text: 'Preferred Incoterms',
     element: (
       <MarketTrendsTab
         title={tab9Data.title}
@@ -397,7 +393,7 @@ export const Tabs: Tab[] = [
   },
   {
     id: 10,
-    text: "Seasonal variations",
+    text: 'Seasonal variations',
     element: (
       <MarketTrendsTab
         title={tab10Data.title}

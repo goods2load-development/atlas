@@ -1,6 +1,12 @@
-"use client";
-import React, { useCallback, useEffect, useState } from "react";
-import { ChevronRight, ChevronLeft } from "lucide-react";
+'use client';
+
+import CompanyStoryBlock from '../CompanyStoryBlock';
+import { storyBlock } from '../CompanyStoryData';
+
+import React, { useCallback, useEffect, useState } from 'react';
+
+import useEmblaCarousel from 'embla-carousel-react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 
 const useDotButton = (emblaApi: any, countItems: number) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -11,7 +17,7 @@ const useDotButton = (emblaApi: any, countItems: number) => {
       if (!emblaApi) return;
       setSelectedIndex(index);
     },
-    [emblaApi]
+    [emblaApi],
   );
 
   const onNextItem = () => {
@@ -43,9 +49,9 @@ const useDotButton = (emblaApi: any, countItems: number) => {
 
     onInit(emblaApi);
     onSelect(emblaApi);
-    emblaApi.on("reInit", onInit);
-    emblaApi.on("reInit", onSelect);
-    emblaApi.on("select", onSelect);
+    emblaApi.on('reInit', onInit);
+    emblaApi.on('reInit', onSelect);
+    emblaApi.on('select', onSelect);
   }, [emblaApi, onInit, onSelect]);
 
   return {
@@ -56,10 +62,6 @@ const useDotButton = (emblaApi: any, countItems: number) => {
     onPrevItem,
   };
 };
-
-import useEmblaCarousel from "embla-carousel-react";
-import { storyBlock } from "../CompanyStoryData";
-import CompanyStoryBlock from "../CompanyStoryBlock";
 
 export default function CompanyStoryMobileSlider() {
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -94,7 +96,7 @@ export default function CompanyStoryMobileSlider() {
             return (
               <div
                 key={i}
-                className={`embla__slide flex-[0_0_100%] pt-2 ${selectedIndex === i && "is-selected"}`}
+                className={`embla__slide flex-[0_0_100%] pt-2 ${selectedIndex === i && 'is-selected'}`}
               >
                 <CompanyStoryBlock item={item} />
               </div>
@@ -115,10 +117,10 @@ export default function CompanyStoryMobileSlider() {
             <DotButton
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px]".concat(
+              className={'embla__dot w-[12px] h-[12px] rounded-full mx-[6px]'.concat(
                 index === selectedIndex
-                  ? " bg-[#000] scale-[1.1]"
-                  : " bg-[#000] opacity-20"
+                  ? ' bg-[#000] scale-[1.1]'
+                  : ' bg-[#000] opacity-20',
               )}
             />
           ))}

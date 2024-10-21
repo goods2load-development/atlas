@@ -1,5 +1,6 @@
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import HeaderMain from "@/components/Dashboard/HeaderFooterMain/HeaderMain";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+
+import HeaderMain from '@/components/Dashboard/HeaderFooterMain/HeaderMain';
 
 export default function Footer() {
   return (

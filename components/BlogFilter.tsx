@@ -1,6 +1,8 @@
-import React from "react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ChevronDown } from "lucide-react";
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+
+import React from 'react';
+
+import { ChevronDown } from 'lucide-react';
 
 interface BlogFilterProps {
   filter: string;
@@ -25,11 +27,11 @@ const BlogFilter: React.FC<BlogFilterProps> = ({
     <div className="flex flex-wrap justify-center sm:justify-between items-center mt-20">
       <div className="flex flex-wrap justify-center sm:justify-start gap-2 py-4">
         <button
-          onClick={() => setSelectedCategory("all")}
+          onClick={() => setSelectedCategory('all')}
           className={`px-4 py-2 rounded-[8px] border text-[15px]/[22px] font-semibold ${
-            selectedCategory === "all"
-              ? "bg-primaryOrange text-white"
-              : "text-gray-600 border-gray-300"
+            selectedCategory === 'all'
+              ? 'bg-primaryOrange text-white'
+              : 'text-gray-600 border-gray-300'
           }`}
         >
           All Categories
@@ -40,8 +42,8 @@ const BlogFilter: React.FC<BlogFilterProps> = ({
             onClick={() => setSelectedCategory(category.name)}
             className={`px-4 py-2 rounded-[8px] border text-[15px]/[22px] font-semibold ${
               selectedCategory === category.name
-                ? "bg-primaryOrange text-white"
-                : "text-gray-600 border-gray-300"
+                ? 'bg-primaryOrange text-white'
+                : 'text-gray-600 border-gray-300'
             }`}
           >
             {category.name} {/* Render category name */}
@@ -54,7 +56,7 @@ const BlogFilter: React.FC<BlogFilterProps> = ({
           <ChevronDown />
         </DropdownMenu.Trigger>
         <DropdownMenu.Content className="bg-white rounded p-1 mt-1 z-50 shadow-lg right-0 ">
-          {["Newest", "Popular"].map((item) => (
+          {['Newest', 'Popular'].map((item) => (
             <DropdownMenu.Item
               key={item}
               className="cursor-pointer p-2 rounded hover:bg-orange-500 hover:text-white outline-none"

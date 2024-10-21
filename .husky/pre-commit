@@ -1,0 +1,14 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Format code
+yarn format
+
+# Check TypeScript types
+yarn tsc --noEmit
+
+# Build the project
+yarn build
+
+# Run lint-staged to lint only staged files
+npx lint-staged

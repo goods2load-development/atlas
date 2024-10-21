@@ -1,9 +1,10 @@
-import { Metadata } from "next";
-import LoginWrapper from "@/components/LoginWrapper";
-import ForgotPassword from "@/components/ForgotPassword/ForgotPassword";
+import { Metadata } from 'next';
+
+import ForgotPassword from '@/components/ForgotPassword/ForgotPassword';
+import LoginWrapper from '@/components/LoginWrapper';
 
 export const metadata: Metadata = {
-  title: "Forgot password",
+  title: 'Forgot password',
 };
 
 export default function Login() {

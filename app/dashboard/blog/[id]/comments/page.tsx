@@ -1,5 +1,6 @@
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import CommentsMain from "@/components/Dashboard/BlogMain/CommentsMain";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+
+import CommentsMain from '@/components/Dashboard/BlogMain/CommentsMain';
 
 export default function CommentsPage() {
   return (

@@ -1,53 +1,51 @@
-// @ts-nocheck
-"use client";
+'use client';
 
-import Image from "next/image";
-import PartnerLogoDefault from "@/assets/Partners/partner-logo-default.jpg";
-import { GoogleRatingBunner } from "@/app/_components/Partner/GoogleRatingBunner/GoogleRatingBunner";
-import { Review } from "@/app/_components/Partner/Review/Review";
+import PieChart from '../Dashboard/Charts/PieChart';
+import { PartnerPageResponse } from '../Dashboard/PartnersMain/types';
+import HeaderClient from '../Header/HeaderClient';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Textarea } from '../ui/textarea';
+import { useToast } from '../ui/use-toast';
+import PlaceIdMap from './PlaceIdMap';
+import SendDataToPartnerDialog from './SendDataToPartnerDialog';
+import { formSchema } from './constants';
+import { PlaceDetails } from './types';
+import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner/GoogleRatingBunner';
+import { Review } from '@/app/_components/Partner/Review/Review';
+import PartnerLogoDefault from '@/assets/Partners/partner-logo-default.jpg';
+import { usePartnersStore } from '@/lib/store';
+import {
+  addToFileList,
+  fileToBase64,
+  getRandomHexColor,
+  removeFileFromFileList,
+  urlsToFileList,
+} from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect, useMemo, useState } from 'react';
+
+import { TrashIcon, X } from 'lucide-react';
+import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "../ui/input";
-import { useEffect, useMemo, useState } from "react";
-import { Textarea } from "../ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import PieChart from "../Dashboard/Charts/PieChart";
-import { Button } from "../ui/button";
-import { TrashIcon, X } from "lucide-react";
-import {
-  addToFileList,
-  fileToBase64,
-  getRandomHexColor,
-  urlsToFileList,
-  removeFileFromFileList,
-} from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { formSchema } from "./constants";
-import { z } from "zod";
-import { useParams, useRouter } from "next/navigation";
-import { usePartnersStore } from "@/lib/store";
-import { PartnerPageResponse } from "../Dashboard/PartnersMain/types";
-import LoyaltAllWrapper from "@/app/_components/LoyaltAllWrapper/LoyaltAllWrapper";
-import { useToast } from "../ui/use-toast";
-import { PlaceDetails } from "./types";
-import SelectionPopup from "../Catalogue/SelectionPopup";
-import SendDataToPartnerDialog from "./SendDataToPartnerDialog";
-import PlaceIdMap from "./PlaceIdMap";
-import MainLayout from "../MainLayout";
-import BigLayout from "../BigLayout";
-import HeaderClient from "../Header/HeaderClient";
+} from '@/components/ui/form';
 
 enum TabsEnum {
-  SERVICES_PROVIDED = "Service provided",
-  FOCUS = "Focus",
-  INDUSTRIES = "Industries",
-  CLIENT_TARGET = "Clients target",
+  SERVICES_PROVIDED = 'Service provided',
+  FOCUS = 'Focus',
+  INDUSTRIES = 'Industries',
+  CLIENT_TARGET = 'Clients target',
 }
 
 const PartnerDataPage = ({
@@ -58,55 +56,53 @@ const PartnerDataPage = ({
   isEdit = false,
 }: {
   companyPhoto: string;
-  partnerData?: PartnerPageResponse;
+  partnerData?: PartnerPageResponse | any;
   placeInfo?: PlaceDetails;
   isCreate?: boolean;
   isEdit?: boolean;
 }) => {
   const isGet = !isCreate && !isEdit;
   const form = useForm<z.infer<typeof formSchema>>({
-    mode: "all",
+    mode: 'all',
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: isEdit ? partnerData?.name : "",
-      description: isEdit ? partnerData?.description : "",
-      mission: isEdit ? partnerData?.mission : "",
-      airFreight: isEdit ? partnerData?.serviceProvided?.airFreight : "",
-      seaFreight: isEdit ? partnerData?.serviceProvided?.seaFreight : "",
-      roadFreight: isEdit ? partnerData?.serviceProvided?.roadFreight : "",
-      smallBusiness: isEdit ? partnerData?.clientTarget?.smallBusiness : "",
-      midMarket: isEdit ? partnerData?.clientTarget?.midMarket : "",
-      enterprises: isEdit ? partnerData?.clientTarget?.enterprises : "",
+      name: isEdit ? partnerData?.name : '',
+      description: isEdit ? partnerData?.description : '',
+      mission: isEdit ? partnerData?.mission : '',
+      airFreight: isEdit ? partnerData?.serviceProvided?.airFreight : '',
+      seaFreight: isEdit ? partnerData?.serviceProvided?.seaFreight : '',
+      roadFreight: isEdit ? partnerData?.serviceProvided?.roadFreight : '',
+      smallBusiness: isEdit ? partnerData?.clientTarget?.smallBusiness : '',
+      midMarket: isEdit ? partnerData?.clientTarget?.midMarket : '',
+      enterprises: isEdit ? partnerData?.clientTarget?.enterprises : '',
       focus: [],
       industries: [],
-      placementId: isEdit ? partnerData?.placementId : "",
+      placementId: isEdit ? partnerData?.placementId : '',
     },
   });
   const { id } = useParams();
   const { toast } = useToast();
   const { push } = useRouter();
 
-  const { isPartnersLoading, createPartnerPage } = usePartnersStore(
-    (state) => state
-  );
+  const { createPartnerPage } = usePartnersStore((state) => state);
   const [activeTab, setActiveTab] = useState<TabsEnum>(
-    TabsEnum.SERVICES_PROVIDED
+    TabsEnum.SERVICES_PROVIDED,
   );
   const [awardedByBase64List, setAwardedByBase64List] = useState<string[]>([]);
   const [countryFocusForm, setCountryFocusForm] = useState({
-    label: "",
-    value: "",
-    color: "",
+    label: '',
+    value: '',
+    color: '',
   });
   const [industriesForm, setIndustriesForm] = useState({
-    label: "",
-    value: "",
-    color: "",
+    label: '',
+    value: '',
+    color: '',
   });
   const [charData, setChartData] = useState({
-    airFreight: isEdit ? +partnerData?.serviceProvided.airFreight : 0,
-    seaFreight: isEdit ? +partnerData?.serviceProvided.seaFreight : 0,
-    roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
+    airFreight: isEdit ? +partnerData?.serviceProvided?.airFreight : 0,
+    seaFreight: isEdit ? +partnerData?.serviceProvided?.seaFreight : 0,
+    roadFreight: isEdit ? +partnerData?.serviceProvided?.roadFreight : 0,
     smallBusiness: isEdit ? +partnerData?.clientTarget?.smallBusiness : 0,
     midMarket: isEdit ? +partnerData?.clientTarget?.midMarket : 0,
     enterprises: isEdit ? +partnerData?.clientTarget?.enterprises : 0,
@@ -149,12 +145,12 @@ const PartnerDataPage = ({
         value: +item.value,
         name: item.label,
         color: (item as any).color || getRandomHexColor(),
-      })
+      }),
     );
   }, [partnerData, industriesData]);
 
   const reviews = useMemo(() => {
-    if (placeInfo?.status !== "OK") return null;
+    if (placeInfo?.status !== 'OK') return null;
     const reviewsClone = [...((placeInfo?.result?.reviews as any[]) || [])];
     reviewsClone.sort((a, b) => b.rating - a.rating);
     return reviewsClone.slice(0, 3);
@@ -162,74 +158,74 @@ const PartnerDataPage = ({
 
   const servicesProvidedData = [
     {
-      name: "Air Freight",
+      name: 'Air Freight',
       value: isGet
         ? +partnerData.serviceProvided.airFreight
         : charData.airFreight,
-      color: "#3F2011",
-      key: "airFreight",
+      color: '#3F2011',
+      key: 'airFreight',
     },
     {
-      name: "Road Freight",
+      name: 'Road Freight',
       value: isGet
         ? +partnerData.serviceProvided.roadFreight
         : charData.roadFreight,
-      color: "#FB5304",
-      key: "roadFreight",
+      color: '#FB5304',
+      key: 'roadFreight',
     },
     {
-      name: "Sea Freight",
+      name: 'Sea Freight',
       value: isGet
         ? +partnerData.serviceProvided.seaFreight
         : charData.seaFreight,
-      color: "#F4BE37",
-      key: "seaFreight",
+      color: '#F4BE37',
+      key: 'seaFreight',
     },
   ];
   const clientsTargetData = [
     {
-      name: "Small business",
+      name: 'Small business',
       value: isGet
         ? +partnerData.clientTarget.smallBusiness
         : charData.smallBusiness,
-      color: "#3F2011",
-      key: "smallBusiness",
+      color: '#3F2011',
+      key: 'smallBusiness',
     },
     {
-      name: "Midd market",
+      name: 'Midd market',
       value: isGet ? +partnerData.clientTarget.midMarket : charData.midMarket,
-      color: "#FB5304",
-      key: "midMarket",
+      color: '#FB5304',
+      key: 'midMarket',
     },
     {
-      name: "Enterprises",
+      name: 'Enterprises',
       value: isGet
         ? +partnerData.clientTarget.enterprises
         : charData.enterprises,
-      color: "#F4BE37",
-      key: "enterprises",
+      color: '#F4BE37',
+      key: 'enterprises',
     },
   ];
   const isHasAnyErrors = !!Object.values(form?.formState?.errors || {})?.length;
-  const awardedByValues = form?.getValues("awardedBy");
+  const awardedByValues = form?.getValues('awardedBy');
 
   useEffect(() => {
     form?.setValue(
-      "focus",
+      'focus',
       focusData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any
+      })) as any,
     );
   }, [focusData]);
 
   useEffect(() => {
     form?.setValue(
-      "industries",
+      'industries',
       industriesData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any
+      })) as any,
     );
   }, [industriesData]);
 
@@ -238,18 +234,18 @@ const PartnerDataPage = ({
     (async () => {
       const fileList = await urlsToFileList(
         partnerData?.awardsFiles.map(
-          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`
-        )
+          (item: any) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
+        ),
       );
 
-      form?.setValue("awardedBy", fileList);
+      form?.setValue('awardedBy', fileList);
 
       const listBase64 = await Promise.all(
         Array.from(fileList).map(async (file) => {
           const base = await fileToBase64(file);
 
           return base;
-        })
+        }),
       );
 
       setAwardedByBase64List(listBase64);
@@ -263,7 +259,7 @@ const PartnerDataPage = ({
   const handleAwardUploadChange = (event: any) => {
     (async () => {
       if (!awardedByValues) {
-        form?.setValue("awardedBy", event.target.files);
+        form?.setValue('awardedBy', event.target.files);
         const file = await fileToBase64(event.target.files[0]);
         setAwardedByBase64List([file]);
 
@@ -273,15 +269,15 @@ const PartnerDataPage = ({
 
       const updatedFileList = addToFileList(
         awardedByValues as FileList,
-        newFile
+        newFile,
       );
-      form?.setValue("awardedBy", updatedFileList);
+      form?.setValue('awardedBy', updatedFileList);
       const list = await Promise.all(
         Array.from(updatedFileList).map(async (file) => {
           const base = await fileToBase64(file);
 
           return base;
-        })
+        }),
       );
 
       setAwardedByBase64List(list);
@@ -298,9 +294,9 @@ const PartnerDataPage = ({
 
     const updatedFileList = removeFileFromFileList(
       index,
-      form?.getValues("awardedBy") as FileList
+      form?.getValues('awardedBy') as FileList,
     );
-    form?.setValue("awardedBy", updatedFileList);
+    form?.setValue('awardedBy', updatedFileList);
   };
 
   const onCreatePageSubmit = (data: z.infer<typeof formSchema>) => {
@@ -326,10 +322,10 @@ const PartnerDataPage = ({
 
     const formData = new FormData();
 
-    formData.append("name", body.name);
-    formData.append("description", body.description);
-    formData.append("mission", body.mission);
-    formData.append("placementId", body.placementId);
+    formData.append('name', body.name);
+    formData.append('description', body.description);
+    formData.append('mission', body.mission);
+    formData.append('placementId', body.placementId);
 
     formData.append(`industries`, JSON.stringify(body.industries));
     formData.append(`focus`, JSON.stringify(body.focus));
@@ -338,7 +334,7 @@ const PartnerDataPage = ({
       const typedKey = key as keyof typeof body.serviceProvided;
       formData.append(
         `serviceProvided[${typedKey}]`,
-        body.serviceProvided[typedKey]
+        body.serviceProvided[typedKey],
       );
     });
 
@@ -348,15 +344,15 @@ const PartnerDataPage = ({
     });
 
     Array.from(body.files).forEach((file) =>
-      formData.append("awardedFiles", file)
+      formData.append('awardedFiles', file),
     );
 
     createPartnerPage(formData as any, id.toString()).then(() => {
-      push("/dashboard/partners?tab=active");
+      push('/dashboard/partners?tab=active');
       toast({
-        title: "Page successfully created.",
-        variant: "destructive",
-        className: "bg-green-500",
+        title: 'Page successfully created.',
+        variant: 'destructive',
+        className: 'bg-green-500',
       });
     });
   };
@@ -470,12 +466,12 @@ const PartnerDataPage = ({
                   style={{
                     backgroundColor:
                       TabsEnum.SERVICES_PROVIDED === activeTab
-                        ? "#FFEDE4"
-                        : "inherit",
+                        ? '#FFEDE4'
+                        : 'inherit',
                     color:
                       TabsEnum.SERVICES_PROVIDED === activeTab
-                        ? "#FF6720"
-                        : "#000",
+                        ? '#FF6720'
+                        : '#000',
                   }}
                 >
                   {TabsEnum.SERVICES_PROVIDED}
@@ -485,8 +481,8 @@ const PartnerDataPage = ({
                   value={TabsEnum.FOCUS}
                   style={{
                     backgroundColor:
-                      TabsEnum.FOCUS === activeTab ? "#FFEDE4" : "inherit",
-                    color: TabsEnum.FOCUS === activeTab ? "#FF6720" : "#000",
+                      TabsEnum.FOCUS === activeTab ? '#FFEDE4' : 'inherit',
+                    color: TabsEnum.FOCUS === activeTab ? '#FF6720' : '#000',
                   }}
                 >
                   {TabsEnum.FOCUS}
@@ -496,9 +492,9 @@ const PartnerDataPage = ({
                   value={TabsEnum.INDUSTRIES}
                   style={{
                     backgroundColor:
-                      TabsEnum.INDUSTRIES === activeTab ? "#FFEDE4" : "inherit",
+                      TabsEnum.INDUSTRIES === activeTab ? '#FFEDE4' : 'inherit',
                     color:
-                      TabsEnum.INDUSTRIES === activeTab ? "#FF6720" : "#000",
+                      TabsEnum.INDUSTRIES === activeTab ? '#FF6720' : '#000',
                   }}
                 >
                   {TabsEnum.INDUSTRIES}
@@ -509,10 +505,10 @@ const PartnerDataPage = ({
                   style={{
                     backgroundColor:
                       TabsEnum.CLIENT_TARGET === activeTab
-                        ? "#FFEDE4"
-                        : "inherit",
+                        ? '#FFEDE4'
+                        : 'inherit',
                     color:
-                      TabsEnum.CLIENT_TARGET === activeTab ? "#FF6720" : "#000",
+                      TabsEnum.CLIENT_TARGET === activeTab ? '#FF6720' : '#000',
                   }}
                 >
                   {TabsEnum.CLIENT_TARGET}
@@ -633,9 +629,9 @@ const PartnerDataPage = ({
                               },
                             ]);
                             setCountryFocusForm({
-                              label: "",
-                              value: "",
-                              color: "",
+                              label: '',
+                              value: '',
+                              color: '',
                             });
                           }}
                           className="w-full mb-2"
@@ -646,7 +642,7 @@ const PartnerDataPage = ({
                     )}
                     <div>
                       {(isGet ? calculateCharFocusData : focusData).map(
-                        (elem) => (
+                        (elem: any) => (
                           <div key={elem.label} className="flex gap-2 mb-4">
                             <div
                               className="w-[24px] h-[24px] rounded-sm"
@@ -662,8 +658,8 @@ const PartnerDataPage = ({
                                 onClick={() =>
                                   setFocusData((data) =>
                                     data.filter(
-                                      (item) => item.label !== elem.label
-                                    )
+                                      (item) => item.label !== elem.label,
+                                    ),
                                   )
                                 }
                               >
@@ -671,7 +667,7 @@ const PartnerDataPage = ({
                               </button>
                             )}
                           </div>
-                        )
+                        ),
                       )}
                     </div>
                   </div>
@@ -689,7 +685,7 @@ const PartnerDataPage = ({
                     </div>
                     {!isGet && (
                       <>
-                        {" "}
+                        {' '}
                         <div className="flex gap-1 mb-2">
                           <Input
                             onChange={(e) =>
@@ -749,7 +745,7 @@ const PartnerDataPage = ({
                       {(isGet
                         ? calculateCharIndustriesData
                         : industriesData
-                      ).map((elem) => (
+                      ).map((elem: any) => (
                         <div key={elem.label} className="flex gap-2 mb-4">
                           <div
                             className="w-[24px] h-[24px] rounded-sm"
@@ -765,8 +761,8 @@ const PartnerDataPage = ({
                               onClick={() =>
                                 setIndustriesData((data) =>
                                   data.filter(
-                                    (item) => item.label !== elem.label
-                                  )
+                                    (item) => item.label !== elem.label,
+                                  ),
                                 )
                               }
                             >
@@ -853,9 +849,9 @@ const PartnerDataPage = ({
         {!isGet ? (
           <PlaceIdMap
             onChangePlaceId={(placeId: string) =>
-              form.setValue("placementId", placeId)
+              form.setValue('placementId', placeId)
             }
-            placeId={isEdit ? form.getValues("placementId") : undefined}
+            placeId={isEdit ? form.getValues('placementId') : undefined}
           />
         ) : (
           <>
@@ -872,7 +868,7 @@ const PartnerDataPage = ({
           </>
         )}
 
-        <div className="pt-[112px]" id={"awards"}>
+        <div className="pt-[112px]" id={'awards'}>
           <h3 className="text-[48px]/[57px] mb-8 text-black text-left">
             <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
               <span>Awarded</span>
@@ -911,7 +907,7 @@ const PartnerDataPage = ({
             )}
 
             {isGet &&
-              partnerData?.awardsFiles.map((item) => (
+              partnerData?.awardsFiles.map((item: any) => (
                 <Image
                   key={item.path}
                   width={293}

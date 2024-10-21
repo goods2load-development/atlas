@@ -1,7 +1,10 @@
-"use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { groupBySubCategory, parseSitemap, SitemapResult } from "./utils";
+'use client';
+
+import { SitemapResult, groupBySubCategory, parseSitemap } from './utils';
+
+import { useEffect, useState } from 'react';
+
+import Link from 'next/link';
 
 function SubTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -30,11 +33,11 @@ export default function Sitemap() {
       const response = await fetch(`/sitemap.xml`);
       const xmlText = await response.text();
       const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+      const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
 
       setData(parseSitemap(xmlDoc));
     } catch (error) {
-      console.error("Error fetching sitemap:", error);
+      console.error('Error fetching sitemap:', error);
     }
   };
 
@@ -85,14 +88,14 @@ export default function Sitemap() {
         <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
           <div>
             <SubTitle>Log in</SubTitle>
-            <StyledLink href={`${data["sign-in"][0].loc}`}>Log in</StyledLink>
+            <StyledLink href={`${data['sign-in'][0].loc}`}>Log in</StyledLink>
           </div>
           <div>
             <SubTitle>Sign up</SubTitle>
-            <StyledLink href={`${data["sign-up"][0].loc}?provider`}>
+            <StyledLink href={`${data['sign-up'][0].loc}?provider`}>
               Sign Up for Logistic Provider
             </StyledLink>
-            <StyledLink href={`${data["sign-up"][0].loc}`}>
+            <StyledLink href={`${data['sign-up'][0].loc}`}>
               Sign Up for User
             </StyledLink>
           </div>
@@ -126,7 +129,7 @@ export default function Sitemap() {
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
-          {groupBySubCategory(data["seo-page"]).map((group) => {
+          {groupBySubCategory(data['seo-page']).map((group) => {
             return (
               <div key={group[0].title}>
                 <SubTitle>{group[0].subCategory}</SubTitle>

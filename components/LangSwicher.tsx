@@ -1,20 +1,22 @@
-import { useCallback, useEffect, useRef, useState } from "react";
-import Image from "next/image";
-import arFlag from "@/assets/ar-flag.svg";
-import cnFlag from "@/assets/cn-flag.svg";
-import inFlag from "@/assets/in-flag.svg";
-import enFlag from "@/assets/en-flag.svg";
-import { ChevronDown } from "lucide-react";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { useLangStore, useUserStore } from "@/lib/store";
+import arFlag from '@/assets/ar-flag.svg';
+import cnFlag from '@/assets/cn-flag.svg';
+import enFlag from '@/assets/en-flag.svg';
+import inFlag from '@/assets/in-flag.svg';
+import { useLangStore, useUserStore } from '@/lib/store';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
-export const LOCAL_STORAGE_KEY_LANG = "lang";
+import { useCallback, useEffect, useRef, useState } from 'react';
+
+import { ChevronDown } from 'lucide-react';
+import Image from 'next/image';
+
+export const LOCAL_STORAGE_KEY_LANG = 'lang';
 
 export enum Langs {
-  EN = "en",
-  AR = "ar",
-  IN = "hi",
-  CN = "zh",
+  EN = 'en',
+  AR = 'ar',
+  IN = 'hi',
+  CN = 'zh',
 }
 
 export interface ILang {

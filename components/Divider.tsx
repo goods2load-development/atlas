@@ -1,17 +1,18 @@
-import { cn } from "@/lib/utils";
-import { HTMLAttributes } from "react";
+import { cn } from '@/lib/utils';
+
+import { HTMLAttributes } from 'react';
 
 interface Props extends HTMLAttributes<HTMLDivElement> {
   dividerText?: string;
 }
 
-export default function Divider({ dividerText = "or", ...props }: Props) {
+export default function Divider({ dividerText = 'or', ...props }: Props) {
   return (
     <div
       {...props}
       className={cn(
-        "relative w-full h-[18px] opacity-50 my-8",
-        props.className
+        'relative w-full h-[18px] opacity-50 my-8',
+        props.className,
       )}
     >
       <i className="absolute top-1/2 -translate-y-1/2 h-[1px] bg-orangePrimary w-full" />

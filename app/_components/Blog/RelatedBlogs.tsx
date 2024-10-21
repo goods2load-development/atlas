@@ -1,10 +1,13 @@
-"use client";
-import { useEffect, useState } from "react";
-import { getRequest } from "@/lib/utils";
-import Link from "next/link";
-import { RelatedBlogList } from "./RelatedBlogList";
+'use client';
 
-export type BlogSectionsType = "related" | "default";
+import { RelatedBlogList } from './RelatedBlogList';
+import { getRequest } from '@/lib/utils';
+
+import { useEffect, useState } from 'react';
+
+import Link from 'next/link';
+
+export type BlogSectionsType = 'related' | 'default';
 
 export interface IReleatedBlogsProps {
   categoriesName?: string;
@@ -15,15 +18,15 @@ export interface IReleatedBlogsProps {
 const DEFAULT_RELATED_BLOG_ITEMS = 3;
 
 export const RelatedBlogs = ({
-  blogSectionType = "default",
-  categoriesName = "all",
+  blogSectionType = 'default',
+  categoriesName = 'all',
   excludeBlogId,
 }: IReleatedBlogsProps) => {
   const [relatedBlogs, setRelatedBlogs] = useState<any[]>([]);
 
   const fetchRelatedBlogs = async () => {
     const relatedData = await getRequest({
-      url: `/blogs?take=${DEFAULT_RELATED_BLOG_ITEMS}&category=${categoriesName}${excludeBlogId ? `&excludeId=${excludeBlogId}` : ""}`,
+      url: `/blogs?take=${DEFAULT_RELATED_BLOG_ITEMS}&category=${categoriesName}${excludeBlogId ? `&excludeId=${excludeBlogId}` : ''}`,
     });
     setRelatedBlogs(relatedData.data);
   };
@@ -39,19 +42,19 @@ export const RelatedBlogs = ({
   return (
     <div className="mt-12 max-w-[1328px] mx-auto text-black text-left">
       <div className="flex items-center justify-between">
-        {blogSectionType === "related" && (
+        {blogSectionType === 'related' && (
           <h2 className="text-[20px]/[24px] md:text-[40px]/[44px] flex items-center gap-2 font-light">
             <div className="py-1.5 px-2 bg-[#FEF1DF] rounded-[4px] font-normal">
               <i>Related</i>
-            </div>{" "}
+            </div>{' '}
             articles:
           </h2>
         )}
-        {blogSectionType === "default" && (
+        {blogSectionType === 'default' && (
           <h2 className="text-[20px]/[24px] md:text-[40px]/[44px] flex items-center gap-2 font-light">
             <div className="py-1.5 px-2 bg-[#FEF1DF] rounded-[4px] font-normal">
               <i>Logistics</i>
-            </div>{" "}
+            </div>{' '}
             insights:
           </h2>
         )}
@@ -62,7 +65,7 @@ export const RelatedBlogs = ({
           </button>
         </Link>
       </div>
-      {blogSectionType === "default" && (
+      {blogSectionType === 'default' && (
         <p className="text-[18px]/[22px] font-light mt-2">
           stay ahead with our blog.
         </p>

@@ -1,10 +1,22 @@
-"use client";
-import React, { useEffect, useState } from "react";
-import Image from "next/image";
-import { useBlogAdminStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+'use client';
+
+import CategoryDialog from './CategoryDialog';
+import { Blog } from './types';
+import { formatToSlug } from './utils';
+import { useBlogAdminStore } from '@/lib/store';
+import { fileToBase64 } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import React, { useEffect, useState } from 'react';
+
+import { X } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from '@/components/ui/button';
+import Editor from '@/components/ui/editor';
 import {
   Form,
   FormControl,
@@ -13,24 +25,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import Editor from "@/components/ui/editor";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { fileToBase64 } from "@/lib/utils";
-import { X } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
-import CategoryDialog from "./CategoryDialog";
-import { Blog } from "./types";
-import { formatToSlug } from "./utils";
+} from '@/components/ui/select';
+import { useToast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
   title: z.string().nonempty(),
@@ -39,7 +43,7 @@ const formSchema = z.object({
     .nonempty()
     .regex(
       /^[a-z]+(-[a-z]+)*$/,
-      "Slug must be in the format 'format-format-format'"
+      "Slug must be in the format 'format-format-format'",
     ),
   content: z.string().min(1),
   blogTypeId: z.string().nonempty(),
@@ -49,10 +53,10 @@ const formSchema = z.object({
     z
       .unknown()
       .transform((value) => value as FileList)
-      .refine((files) => files?.length === 1, "You need to provide a file")
+      .refine((files) => files?.length === 1, 'You need to provide a file')
       .refine(
         (files) => files?.[0]?.size <= 2000000,
-        "The file is too large, it should be less than 2MB"
+        'The file is too large, it should be less than 2MB',
       ),
   ]),
   authorName: z.string(),
@@ -62,11 +66,11 @@ const CreateUpdateBlog = ({
   type,
   post,
 }: {
-  type: "create" | "update";
+  type: 'create' | 'update';
   post?: Blog;
 }) => {
   // const isCreate = type === "create";
-  const isUpdate = type === "update";
+  const isUpdate = type === 'update';
 
   const { categories, createBlog, updateBlog, getBlogs, getBlogCategories } =
     useBlogAdminStore();
@@ -90,9 +94,9 @@ const CreateUpdateBlog = ({
   const [imgSrc, setImgSrc] = useState<string | null>(
     post?.mainImageUrl
       ? `${process.env.NEXT_PUBLIC_BASE_URL}${post.mainImageUrl}`
-      : null
+      : null,
   );
-  const [titleValue, setTitleValue] = useState("");
+  const [titleValue, setTitleValue] = useState('');
 
   const { toast } = useToast();
   const router = useRouter();
@@ -101,7 +105,7 @@ const CreateUpdateBlog = ({
     const processBanner = async () => {
       if (!banner) return;
 
-      if (typeof banner === "string") {
+      if (typeof banner === 'string') {
         setImgSrc(banner);
       } else if (banner?.length) {
         const base64 = await fileToBase64(banner[0] as File);
@@ -117,7 +121,7 @@ const CreateUpdateBlog = ({
   }, []);
 
   useEffect(() => {
-    if (titleValue) form.setValue("slug", formatToSlug(titleValue));
+    if (titleValue) form.setValue('slug', formatToSlug(titleValue));
   }, [titleValue]);
 
   const onSubmit = (data: z.infer<typeof formSchema>) => {
@@ -125,12 +129,12 @@ const CreateUpdateBlog = ({
       updateBlog(data, post.id)
         .then(() =>
           toast({
-            title: "Post updated.",
-            variant: "destructive",
-            className: "bg-green-500 text-white",
-          })
+            title: 'Post updated.',
+            variant: 'destructive',
+            className: 'bg-green-500 text-white',
+          }),
         )
-        .then(() => router.push("/dashboard/blog"))
+        .then(() => router.push('/dashboard/blog'))
         .then(() => setTimeout(() => window.location.reload(), 200));
 
       return;
@@ -140,12 +144,12 @@ const CreateUpdateBlog = ({
       .then(() => getBlogs({ page: 1, take: 5 }))
       .then(() =>
         toast({
-          title: "Post created.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Post created.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       )
-      .then(() => router.push("/dashboard/blog"));
+      .then(() => router.push('/dashboard/blog'));
   };
 
   if (!categories.length) return null;
@@ -188,7 +192,7 @@ const CreateUpdateBlog = ({
                   />
                   {field.value
                     ? (field.value as FileList)?.[0]?.name
-                    : "Upload banner"}
+                    : 'Upload banner'}
                 </FormLabel>
                 <FormMessage />
               </FormItem>
@@ -199,7 +203,7 @@ const CreateUpdateBlog = ({
             <div className="w-1/3 relative inline-block">
               <button
                 onClick={() => {
-                  form.setValue("mainImg", null as any);
+                  form.setValue('mainImg', null as any);
                   setBanner(null);
                   setImgSrc(null);
                 }}
@@ -323,7 +327,7 @@ const CreateUpdateBlog = ({
                 <FormItem className="min-w-[300px]">
                   <FormLabel>Category</FormLabel>
                   <Select
-                    value={form.getValues("blogTypeId")}
+                    value={form.getValues('blogTypeId')}
                     onValueChange={field.onChange}
                   >
                     <FormControl className="max-w-[526px] w-full h-[60px] bg-white border-none rounded-[8px] pl-[20px] text-black pr-[20px]">
@@ -351,7 +355,7 @@ const CreateUpdateBlog = ({
             disabled={form.formState.isSubmitting}
             className="bg-orangePrimary border-2 border-orangePrimary font-medium text-[16px]/[22px] w-full my-5"
           >
-            {isUpdate ? "Update post" : "Create post"}
+            {isUpdate ? 'Update post' : 'Create post'}
           </Button>
         </form>
       </Form>

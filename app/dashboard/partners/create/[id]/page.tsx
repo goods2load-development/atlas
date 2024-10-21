@@ -1,4 +1,4 @@
-import PartnerDataPage from "@/components/PartnersDataPage/PartnerDataPage";
+import PartnerDataPage from '@/components/PartnersDataPage/PartnerDataPage';
 
 export default async function CreatePartnerPage({
   params,
@@ -11,8 +11,8 @@ export default async function CreatePartnerPage({
     await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/${params.id}`,
       {
-        cache: "no-store",
-      }
+        cache: 'no-store',
+      },
     )
   ).json();
 

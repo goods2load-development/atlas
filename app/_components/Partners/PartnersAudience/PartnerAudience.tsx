@@ -1,7 +1,9 @@
-import React from "react";
-import Image from "next/image";
-import phone from "@/assets/PartnersImage/PartnersAudience/phone.png";
-import menWithPc from "@/assets/PartnersImage/PartnersAudience/menWithPc.png";
+import menWithPc from '@/assets/PartnersImage/PartnersAudience/menWithPc.png';
+import phone from '@/assets/PartnersImage/PartnersAudience/phone.png';
+
+import React from 'react';
+
+import Image from 'next/image';
 
 const PartnersAudience: React.FC = () => {
   return (
@@ -13,10 +15,10 @@ const PartnersAudience: React.FC = () => {
             The power of connection
           </div>
           <div className="text-black md:leading-[57px] font-light  mb-[30px] text-[34px]/[38px] sm:text-[40px]/[48px] text-center sm:text-left">
-            Reach your target{" "}
+            Reach your target{' '}
             <span className="font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               audience
-            </span>{" "}
+            </span>{' '}
             where they’re most active
           </div>
           <p className="md:text-[18px] text-black w-full text-center sm:text-left mb-8 sm:mb-0 md:pr-12">
@@ -35,7 +37,7 @@ const PartnersAudience: React.FC = () => {
             width={phone.width / 2}
             height={phone.height / 2}
             alt="phone"
-            className={"w-[90%] md:w-full"}
+            className={'w-[90%] md:w-full'}
           />
         </div>
         <Image

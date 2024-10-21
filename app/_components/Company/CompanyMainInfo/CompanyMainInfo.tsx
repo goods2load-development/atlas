@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 const CompanyMainInfo = () => {
   return (
@@ -7,7 +7,7 @@ const CompanyMainInfo = () => {
         <video
           muted
           autoPlay
-          src={"./companyVideo.mp4"}
+          src={'./companyVideo.mp4'}
           className="w-full rounded-lg mb-8 sm:mb-0"
         />
       </div>

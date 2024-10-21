@@ -1,19 +1,15 @@
-"use client";
-import React, { ReactNode } from "react";
+'use client';
 
-import { Button } from "@/components/ui/button";
+import React, { ReactNode } from 'react';
+
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/command';
 import {
   Form,
   FormControl,
@@ -21,7 +17,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
+} from '@/components/ui/form';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 
 interface ButtonProps {
   value: string;
@@ -30,7 +31,7 @@ interface ButtonProps {
 
   children: ReactNode;
   className?: string;
-  type?: "submit" | "reset";
+  type?: 'submit' | 'reset';
   onClick?: () => void;
   secondary?: boolean;
 }
@@ -45,7 +46,7 @@ export default function ComboBox(props: ButtonProps) {
             role="combobox"
             className="rounded-l-xl rounded-r-none border-none font-normal text-black w-full"
           >
-            {props.value || "Select country"}
+            {props.value || 'Select country'}
           </Button>
         </FormControl>
       </PopoverTrigger>

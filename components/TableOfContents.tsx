@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import SharedLinks from "@/components/SharedLinks";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import React, { useState } from 'react';
+
+import { ChevronDown, ChevronUp } from 'lucide-react';
+
+import SharedLinks from '@/components/SharedLinks';
 
 interface Heading {
   id: string;
@@ -28,7 +30,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
       const offsetY = window.scrollY + rect.top - window.innerHeight / 2;
       window.scrollTo({
         top: offsetY,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
       setActiveIndex(index);
     }
@@ -49,7 +51,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
       <hr className="border-orange-500 mb-4 border-t-4" />
       {isOpen && (
         <ul className="list-none space-y-2 max-h-[60vh]overflow-auto">
-          {" "}
+          {' '}
           {/* Scrollable on long content */}
           {headings.map((heading, index) => (
             <li
@@ -64,7 +66,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
               )}
               <span
                 className={`max-w-full px-1  ${
-                  activeIndex === index ? "font-medium" : ""
+                  activeIndex === index ? 'font-medium' : ''
                 }`}
                 style={{ marginLeft: `${(heading.level - 1) * 4}px` }}
                 title={heading.text}

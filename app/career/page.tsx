@@ -1,14 +1,15 @@
-import { Metadata } from "next";
-import CareerForm from "../_components/Career/CareerForm/CareerForm";
-import { JoinOurTeam } from "../_components/Career/JoinOurTeam/JoinOurTeam";
+import CareerForm from '../_components/Career/CareerForm/CareerForm';
+import { JoinOurTeam } from '../_components/Career/JoinOurTeam/JoinOurTeam';
+import LoyaltAllWrapper from '../_components/LoyaltAllWrapper/LoyaltAllWrapper';
 
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
-import Footer from "@/components/Footer";
-import HeaderClient from "@/components/Header/HeaderClient";
-import DynamicMenu from "@/components/Header/DynamicMenu";
+import { Metadata } from 'next';
+
+import Footer from '@/components/Footer';
+import DynamicMenu from '@/components/Header/DynamicMenu';
+import HeaderClient from '@/components/Header/HeaderClient';
 
 export const metadata: Metadata = {
-  title: "Career",
+  title: 'Career',
 };
 
 const Career = () => {

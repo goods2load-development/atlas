@@ -1,16 +1,20 @@
-"use client";
-import React, { useState, useEffect } from "react";
-import HeaderImage from "@/components/HeaderImage";
-import TableOfContents from "@/components/TableOfContents";
-import BlogContent from "@/components/BlogContent";
-import CommentSection from "@/components/CommentSection";
-import { postRequest } from "@/lib/utils";
-import Loader from "@/components/common/Loader";
-import { RelatedBlogs } from "@/app/_components/Blog/RelatedBlogs";
-import { format } from "date-fns";
-import SharedLinks from "@/components/SharedLinks";
-import { Referal } from "@/components/Catalogue/Referral";
-import ReferalsSlider from "@/components/Catalogue/ReferralsSlider";
+'use client';
+
+import { RelatedBlogs } from '@/app/_components/Blog/RelatedBlogs';
+import { postRequest } from '@/lib/utils';
+
+import React, { useEffect, useState } from 'react';
+
+import { format } from 'date-fns';
+
+import BlogContent from '@/components/BlogContent';
+import { Referal } from '@/components/Catalogue/Referral';
+import ReferalsSlider from '@/components/Catalogue/ReferralsSlider';
+import CommentSection from '@/components/CommentSection';
+import HeaderImage from '@/components/HeaderImage';
+import SharedLinks from '@/components/SharedLinks';
+import TableOfContents from '@/components/TableOfContents';
+import Loader from '@/components/common/Loader';
 
 interface BlogComment {
   id: string;
@@ -61,13 +65,13 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
         await postRequest({
           url: `/blogs/${blog.id}/increment-active-users`,
           data: {
-            userId: localStorage.getItem("id"),
+            userId: localStorage.getItem('id'),
           },
         }).then((data) => {
           setLocalActiveUsers(data);
         });
       } catch (error) {
-        console.error("Failed to fetch blog:", error);
+        console.error('Failed to fetch blog:', error);
       }
     };
 
@@ -78,7 +82,7 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
         postRequest({
           url: `/blogs/${blog?.id}/decrement-active-users`,
           data: {
-            userId: localStorage.getItem("id"),
+            userId: localStorage.getItem('id'),
           },
         });
       }
@@ -96,9 +100,9 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
           title={blog.title}
           mainImageUrl={blog.mainImageUrl}
           category={blog.blogTypeName}
-          authorName={blog.authorName || "Unknown Author"}
+          authorName={blog.authorName || 'Unknown Author'}
           readingTime={blog.readingTime}
-          publishDate={format(new Date(blog.createdAt), "dd MMM yyyy")}
+          publishDate={format(new Date(blog.createdAt), 'dd MMM yyyy')}
         />
 
         <div className="px-4 py-8">

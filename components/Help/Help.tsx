@@ -1,13 +1,16 @@
-"use client";
-import HelpContainer from "@/app/_components/Help/HelpContainer/HelpContainer";
-import { tabs } from "@/app/_components/Help/helpData";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+'use client';
+
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import HelpContainer from '@/app/_components/Help/HelpContainer/HelpContainer';
+import { tabs } from '@/app/_components/Help/helpData';
+
+import { useState } from 'react';
+
+import { useRouter, useSearchParams } from 'next/navigation';
 
 export default function Help() {
   const router = useRouter();
-  const tabParam = useSearchParams().toString().split("=")[0];
+  const tabParam = useSearchParams().toString().split('=')[0];
   const tabFromDataByParam = tabs.find(({ name }) => name === tabParam);
   const initTab = tabFromDataByParam || tabs[0];
   const [currentTab, setCurrentTab] = useState(initTab);
@@ -28,13 +31,13 @@ export default function Help() {
             <TabsTrigger
               key={name}
               value={name}
-              style={{ backgroundColor: "transparent", color: "white" }}
-              className={`flex items-center w-[260px] text-center italic capitalize text-[18px]/[22px] sm:text-[24px]/[31px] font-light h-[57px] hover:cursor-pointer ${currentTab.name === name ? "decorative-link text-white-500 hover:text-white-700" : "font-normal"}`}
+              style={{ backgroundColor: 'transparent', color: 'white' }}
+              className={`flex items-center w-[260px] text-center italic capitalize text-[18px]/[22px] sm:text-[24px]/[31px] font-light h-[57px] hover:cursor-pointer ${currentTab.name === name ? 'decorative-link text-white-500 hover:text-white-700' : 'font-normal'}`}
             >
               <img
                 src={icon}
                 className="w-[28px] min-w-[28px] h-[28px] min-h-[28px] sm:w-[40px] sm:min-w-[40px] sm:h-[40px] sm:min-h-[40px] mr-[8px] sm:mr-[16px]"
-                alt={"icon"}
+                alt={'icon'}
               />
               {name}
             </TabsTrigger>

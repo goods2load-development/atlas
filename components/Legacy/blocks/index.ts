@@ -1,4 +1,4 @@
-export { default as Paragraph } from "./Paragraph";
-export { default as OrderedList } from "./OrderedList";
-export { default as UnorderedList } from "./UnorderedList";
-export { default as Table } from "./LegacyTable";
+export { default as Paragraph } from './Paragraph';
+export { default as OrderedList } from './OrderedList';
+export { default as UnorderedList } from './UnorderedList';
+export { default as Table } from './LegacyTable';

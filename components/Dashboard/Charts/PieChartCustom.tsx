@@ -1,12 +1,14 @@
-import React from "react";
-import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip } from "recharts";
-import { MapDetails } from "../MarketTrends/Tabs/TabMapDetails";
+import { MapDetails } from '../MarketTrends/Tabs/TabMapDetails';
+
+import React from 'react';
+
+import { Cell, Pie, PieChart, ResponsiveContainer, Tooltip } from 'recharts';
 
 const PieChartCustom = ({ data }: { data: MapDetails[] }) => {
   const sortedData = [...data].sort((a, b) => a.value - b.value);
   const maxValue = sortedData.reduce(
     (max, item) => (item.value > max ? item.value : max),
-    0
+    0,
   );
 
   return (

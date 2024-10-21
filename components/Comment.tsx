@@ -1,21 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import ReplyComment from './ReplyComment';
+import pencilIcon from '@/assets/pencel.svg';
+import trushIcon from '@/assets/trush.svg';
+import userIcon from '@/assets/user.png';
 import {
-  patchRequest,
   deleteRequest,
-  postRequest,
   getRequest,
-} from "@/lib/utils";
-import ReplyComment from "./ReplyComment";
-import userIcon from "@/assets/user.png";
-import pencilIcon from "@/assets/pencel.svg";
-import trushIcon from "@/assets/trush.svg";
+  patchRequest,
+  postRequest,
+} from '@/lib/utils';
 
-import Image from "next/image";
-import { useRouter } from "next/navigation";
-import clsx from "clsx";
+import React, { useEffect, useState } from 'react';
 
-export type ActiveReaction = "like" | "dislike" | null;
+import clsx from 'clsx';
+import { ChevronDown, ChevronUp } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+export type ActiveReaction = 'like' | 'dislike' | null;
 
 export interface CommentData {
   id: string;
@@ -70,7 +71,7 @@ const Comment: React.FC<CommentProps> = ({
 }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [editedText, setEditedText] = useState(commentText);
-  const [replyText, setReplyText] = useState("");
+  const [replyText, setReplyText] = useState('');
   const [replies, setReplies] = useState<CommentData[]>([]);
 
   const [areRepliesVisible, setAreRepliesVisible] = useState(false);
@@ -102,7 +103,7 @@ const Comment: React.FC<CommentProps> = ({
       setIsEditing(false);
       setlocalIsCommentEdited(true);
     } catch (error) {
-      console.error("Error updating comment:", error);
+      console.error('Error updating comment:', error);
     }
   };
 
@@ -110,7 +111,7 @@ const Comment: React.FC<CommentProps> = ({
     try {
       onDelete && onDelete();
     } catch (error) {
-      console.error("Error deleting comment:", error);
+      console.error('Error deleting comment:', error);
     }
   };
 
@@ -126,10 +127,10 @@ const Comment: React.FC<CommentProps> = ({
         },
       });
       setReplies([newReply, ...replies]);
-      setReplyText("");
+      setReplyText('');
       setIsReplying(false);
     } catch (error) {
-      console.error("Error posting reply:", error);
+      console.error('Error posting reply:', error);
     }
   };
 
@@ -145,14 +146,14 @@ const Comment: React.FC<CommentProps> = ({
 
         return response;
       } catch (error) {
-        console.error("Error fetching replies:", error);
+        console.error('Error fetching replies:', error);
       }
     }
   };
 
   const handleLike = async () => {
     if (!currentUserId) {
-      router.push("/sign-in");
+      router.push('/sign-in');
       return;
     }
 
@@ -162,13 +163,13 @@ const Comment: React.FC<CommentProps> = ({
         data: {
           userId: currentUserId,
           commentId: id,
-          reaction: "LIKE",
+          reaction: 'LIKE',
         },
       }).then(({ likeCount, dislikeCount }) => {
         setLocalDislikesCount(dislikeCount);
 
         if (likeCount > localLikesCount) {
-          setActiveReaction("like");
+          setActiveReaction('like');
         } else {
           setActiveReaction(null);
         }
@@ -176,7 +177,7 @@ const Comment: React.FC<CommentProps> = ({
         setLocalLikesCount(likeCount);
       });
     } catch (error) {
-      console.error("Error liking comment:", error);
+      console.error('Error liking comment:', error);
     }
   };
 
@@ -195,7 +196,7 @@ const Comment: React.FC<CommentProps> = ({
 
   const handleDislike = async () => {
     if (!currentUserId) {
-      router.push("/sign-in");
+      router.push('/sign-in');
       return;
     }
 
@@ -205,11 +206,11 @@ const Comment: React.FC<CommentProps> = ({
         data: {
           userId: currentUserId,
           commentId: id,
-          reaction: "DISLIKE",
+          reaction: 'DISLIKE',
         },
       }).then(({ dislikeCount, likeCount }) => {
         if (dislikeCount > localDislikesCount) {
-          setActiveReaction("dislike");
+          setActiveReaction('dislike');
         } else {
           setActiveReaction(null);
         }
@@ -218,7 +219,7 @@ const Comment: React.FC<CommentProps> = ({
         setLocalDislikesCount(dislikeCount);
       });
     } catch (error) {
-      console.error("Error disliking comment:", error);
+      console.error('Error disliking comment:', error);
     }
   };
 
@@ -230,7 +231,7 @@ const Comment: React.FC<CommentProps> = ({
         setReplies((data) => [...data.filter((item) => item.id !== id)]);
       })
       .catch((error) => {
-        console.error("Error deleting comment", error);
+        console.error('Error deleting comment', error);
       });
   };
 
@@ -257,14 +258,14 @@ const Comment: React.FC<CommentProps> = ({
           )}
 
           <p className="font-medium ml-4 mr-6 text-gray-800">
-            {userName || "User"}
+            {userName || 'User'}
           </p>
           <p className="text-sm text-gray-500">
-            {Number(daysAgo) <= 0 ? "today" : `${daysAgo} days ago`}
+            {Number(daysAgo) <= 0 ? 'today' : `${daysAgo} days ago`}
           </p>
           {localIsCommentEdited && (
             <p className="text-sm ml-3">
-              {"("}Edited{")"}
+              {'('}Edited{')'}
             </p>
           )}
         </div>
@@ -333,10 +334,10 @@ const Comment: React.FC<CommentProps> = ({
         <button
           onClick={handleLike}
           className={clsx(
-            "flex items-center px-2 py-0.5 rounded-2xl border-primaryOrange border gap-0.5 hover:bg-lightOrange transition-all",
-            activeReaction === "like" && localLikesCount !== 0
-              ? "bg-[#FFC1A2]"
-              : null
+            'flex items-center px-2 py-0.5 rounded-2xl border-primaryOrange border gap-0.5 hover:bg-lightOrange transition-all',
+            activeReaction === 'like' && localLikesCount !== 0
+              ? 'bg-[#FFC1A2]'
+              : null,
           )}
         >
           <span className="text-gray-700">{localLikesCount}</span>
@@ -345,10 +346,10 @@ const Comment: React.FC<CommentProps> = ({
         <button
           onClick={handleDislike}
           className={clsx(
-            "flex items-center px-2 py-0.5 rounded-2xl gap-1 border-primaryOrange border hover:bg-lightOrange transition-all",
-            activeReaction === "dislike" && localDislikesCount !== 0
-              ? "bg-[#FFC1A2]"
-              : null
+            'flex items-center px-2 py-0.5 rounded-2xl gap-1 border-primaryOrange border hover:bg-lightOrange transition-all',
+            activeReaction === 'dislike' && localDislikesCount !== 0
+              ? 'bg-[#FFC1A2]'
+              : null,
           )}
         >
           <span className="text-gray-700">{localDislikesCount}</span>
@@ -359,7 +360,7 @@ const Comment: React.FC<CommentProps> = ({
           onClick={() => setIsReplying(!isReplying)}
           className="text-sm hover:no-underline underline"
         >
-          {isReplying ? "Cancel Reply" : "Reply"}
+          {isReplying ? 'Cancel Reply' : 'Reply'}
         </button>
       </div>
 
@@ -393,7 +394,7 @@ const Comment: React.FC<CommentProps> = ({
           onClick={onToggleIsReplies}
           className="text-sm hover:underline flex items-center gap-1 mt-6"
         >
-          {areRepliesVisible ? "Hide Replies" : "Replies"}
+          {areRepliesVisible ? 'Hide Replies' : 'Replies'}
           {areRepliesVisible ? (
             <ChevronUp className="w-4 h-6" />
           ) : (
@@ -414,7 +415,7 @@ const Comment: React.FC<CommentProps> = ({
               userPhoto={reply?.user?.companyPhoto}
               daysAgo={Math.floor(
                 (Date.now() - new Date(reply.date).getTime()) /
-                  (1000 * 60 * 60 * 24)
+                  (1000 * 60 * 60 * 24),
               ).toString()}
               commentText={reply.comment}
               likeCount={reply.likeCount}

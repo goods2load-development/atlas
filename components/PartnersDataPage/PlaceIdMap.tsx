@@ -1,16 +1,17 @@
-import React, { useState, useRef, useEffect } from "react";
+import Spinner from '../ui/spinner';
 import {
   GoogleMap,
   InfoWindow,
   LoadScript,
   StandaloneSearchBox,
   useJsApiLoader,
-} from "@react-google-maps/api";
-import Spinner from "../ui/spinner";
+} from '@react-google-maps/api';
+
+import React, { useEffect, useRef, useState } from 'react';
 
 const containerStyle = {
-  width: "100%",
-  height: "400px",
+  width: '100%',
+  height: '400px',
 };
 
 const center = {
@@ -26,12 +27,12 @@ const PlaceIdMap = ({
   onChangePlaceId: (placeId: string) => void;
 }) => {
   const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
+    id: 'google-map-script',
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_API_KEY as string,
-    libraries: ["places"],
+    libraries: ['places'],
   });
   const [place, setPlace] = useState<google.maps.places.PlaceResult | null>(
-    null
+    null,
   );
   const searchBoxRef = useRef<google.maps.places.SearchBox | null>(null);
   const [markerPosition, setMarkerPosition] = useState<null | any>(null);
@@ -104,11 +105,11 @@ const PlaceIdMap = ({
                 fontSize: `14px`,
                 outline: `none`,
                 textOverflow: `ellipses`,
-                position: "absolute",
-                left: "50%",
-                marginLeft: "-120px",
-                top: "10px",
-                color: "black",
+                position: 'absolute',
+                left: '50%',
+                marginLeft: '-120px',
+                top: '10px',
+                color: 'black',
               }}
             />
           </StandaloneSearchBox>
@@ -116,7 +117,7 @@ const PlaceIdMap = ({
             <InfoWindow position={markerPosition}>
               <div className="text-black">
                 <h4 className="font-bold">{place.name}</h4>
-                <p style={{ margin: "5px 0" }}>Place ID: {place.place_id}</p>
+                <p style={{ margin: '5px 0' }}>Place ID: {place.place_id}</p>
               </div>
             </InfoWindow>
           )}

@@ -1,25 +1,28 @@
-"use client";
+'use client';
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import ListItem from "@/components/ui/list-item";
-import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
-import { Input } from "@/components/ui/input";
-import { usePartnersStore } from "@/lib/store";
-import clsx from "clsx";
+import ReplyPartnerDialog from './ReplyPartnerDialog';
+import ViewPartnerDialog from './ViewPartnerDialog';
+import { usePartnersStore } from '@/lib/store';
+import { filterByField } from '@/lib/utils';
+
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import clsx from 'clsx';
+import debounce from 'lodash/debounce';
 import {
   Check,
   Edit2Icon,
   FilePlus,
   FileSymlink,
   TrashIcon,
-} from "lucide-react";
-import ViewPartnerDialog from "./ViewPartnerDialog";
-import debounce from "lodash/debounce";
-import { filterByField } from "@/lib/utils";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import ReplyPartnerDialog from "./ReplyPartnerDialog";
+} from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import { Input } from '@/components/ui/input';
+import ListItem from '@/components/ui/list-item';
+import Spinner from '@/components/ui/spinner';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/components/ui/use-toast';
 
 const PartnersMain = () => {
   const {
@@ -36,13 +39,13 @@ const PartnersMain = () => {
 
   const [isViewModalOpen, setIsViewModalOpen] = useState({
     isOpen: false,
-    id: "",
+    id: '',
   });
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace, push } = useRouter();
-  const tab = searchParams.get("tab") || "new";
-  const [searchValue, setSearchValue] = useState("");
+  const tab = searchParams.get('tab') || 'new';
+  const [searchValue, setSearchValue] = useState('');
   const filteredPartners = useMemo(
     () =>
       filterByField(
@@ -51,10 +54,10 @@ const PartnersMain = () => {
           partnerId: par.id,
           ...par.user,
         })),
-        "email",
-        searchValue
+        'email',
+        searchValue,
       ),
-    [searchValue, partners]
+    [searchValue, partners],
   );
 
   useEffect(() => {
@@ -62,17 +65,17 @@ const PartnersMain = () => {
   }, [tab]);
 
   const getPartners = () => {
-    if (tab === "new") return getPartnersNew();
-    if (tab === "in-review") return getPartnersInReview();
-    if (tab === "active") return getPartnersApproved();
+    if (tab === 'new') return getPartnersNew();
+    if (tab === 'in-review') return getPartnersInReview();
+    if (tab === 'active') return getPartnersApproved();
   };
 
   const handleSetTab = (tab: string) => {
     const params = new URLSearchParams(searchParams);
     if (tab) {
-      params.set("tab", tab);
+      params.set('tab', tab);
     } else {
-      params.delete("tab");
+      params.delete('tab');
     }
 
     replace(`${pathname}?${params.toString()}`);
@@ -83,10 +86,10 @@ const PartnersMain = () => {
       .then(getPartners)
       .then(() =>
         toast({
-          title: "Partner successfully confirmed.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Partner successfully confirmed.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
@@ -95,10 +98,10 @@ const PartnersMain = () => {
       .then(getPartners)
       .then(() =>
         toast({
-          title: "User rejected.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'User rejected.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
@@ -107,10 +110,10 @@ const PartnersMain = () => {
       .then(getPartners)
       .then(() =>
         toast({
-          title: "Reply sent.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Reply sent.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
@@ -118,7 +121,7 @@ const PartnersMain = () => {
     debounce((value: string) => {
       setSearchValue(value);
     }, 200),
-    []
+    [],
   );
 
   return (
@@ -160,10 +163,10 @@ const PartnersMain = () => {
       </Tabs>
       <div
         className={clsx({
-          "pointer-events-none": isPartnersLoading,
+          'pointer-events-none': isPartnersLoading,
         })}
       >
-        <div className={clsx("flex flex-col gap-4")}>
+        <div className={clsx('flex flex-col gap-4')}>
           {!isPartnersLoading && !partners?.length && (
             <p className="font-bold text-red-600">
               There is no any new partners at the moment.
@@ -192,14 +195,14 @@ const PartnersMain = () => {
                     setIsOpen={setIsViewModalOpen}
                     partner={partner}
                   />
-                  {tab === "new" && (
+                  {tab === 'new' && (
                     <ReplyPartnerDialog
                       onSubmitCallback={({ message }: any) =>
                         replyPartnerById(partner.partnerId, message)
                       }
                     />
                   )}
-                  {tab !== "active" && (
+                  {tab !== 'active' && (
                     <button
                       onClick={() => confirmPartner(partner.partnerId)}
                       title="Confirm"
@@ -213,7 +216,7 @@ const PartnersMain = () => {
                   >
                     <TrashIcon />
                   </button>
-                  {tab === "active" && !partner.hasPage && (
+                  {tab === 'active' && !partner.hasPage && (
                     <button
                       title="create page"
                       onClick={() =>
@@ -223,7 +226,7 @@ const PartnersMain = () => {
                       <FilePlus />
                     </button>
                   )}
-                  {tab === "active" && partner.hasPage && (
+                  {tab === 'active' && partner.hasPage && (
                     <button
                       title="visit page"
                       onClick={() => push(`/partner/${partner.partnerId}`)}
@@ -231,7 +234,7 @@ const PartnersMain = () => {
                       <FileSymlink />
                     </button>
                   )}
-                  {tab === "active" && partner.hasPage && (
+                  {tab === 'active' && partner.hasPage && (
                     <button
                       title="edit page"
                       onClick={() =>

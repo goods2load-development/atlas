@@ -1,13 +1,26 @@
-"use client";
+'use client';
+
+import { dateValues } from './constants';
+import { OrderRoute } from './types';
+import { toNormalText } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useState } from 'react';
+
+import { format } from 'date-fns';
+import { Reply } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import * as z from "zod";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -15,24 +28,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Reply } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { OrderRoute } from "./types";
-import { Checkbox } from "@/components/ui/checkbox";
-import { toNormalText } from "@/lib/utils";
-import { dateValues } from "./constants";
-import { format } from "date-fns";
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
   message: z.string().max(1000).min(3),
@@ -46,7 +50,7 @@ const PriceAlertReplyDialog = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      message: "",
+      message: '',
     },
   });
 

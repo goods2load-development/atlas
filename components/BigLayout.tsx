@@ -1,8 +1,10 @@
-import { PropsWithChildren } from "react";
-import HeaderClient from "./Header/HeaderClient";
-import DynamicMenu from "./Header/DynamicMenu";
-import Line from "@/assets/bg-decor-line.svg";
-import Image from "next/image";
+import DynamicMenu from './Header/DynamicMenu';
+import HeaderClient from './Header/HeaderClient';
+import Line from '@/assets/bg-decor-line.svg';
+
+import { PropsWithChildren } from 'react';
+
+import Image from 'next/image';
 
 export interface IBigLayoutProps extends PropsWithChildren {
   title: string;
@@ -11,10 +13,10 @@ export interface IBigLayoutProps extends PropsWithChildren {
 
 export default function BigLayout({
   children,
-  title = "",
-  description = "",
+  title = '',
+  description = '',
 }: IBigLayoutProps) {
-  const titleParts = title.split(" ");
+  const titleParts = title.split(' ');
   const midIndex = Math.ceil(titleParts.length / 2);
 
   return (
@@ -28,21 +30,21 @@ export default function BigLayout({
             src={Line}
             width={130}
             height={60}
-            alt={"line"}
+            alt={'line'}
           />
           <Image
             className="absolute -right-[30px] -top-[120px] transform -scale-x-100 sm:hidden rotate-20"
             src={Line}
             width={130}
             height={60}
-            alt={"line"}
+            alt={'line'}
           />
           <h1 className="text-[38px]/[42px] sm:text-[64px] font-light mb-4 mt-10 2xl:mt-28">
             {titleParts.map((part, index) => (
-              <span key={index} className={index >= midIndex ? "italic" : ""}>
+              <span key={index} className={index >= midIndex ? 'italic' : ''}>
                 {part}
 
-                {index < titleParts.length - 1 && " "}
+                {index < titleParts.length - 1 && ' '}
               </span>
             ))}
           </h1>

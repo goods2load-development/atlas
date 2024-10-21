@@ -1,4 +1,10 @@
-"use client";
+'use client';
+
+import useDotButton from '@/app/hooks/useDotButton';
+
+import Autoplay from 'embla-carousel-autoplay';
+import useEmblaCarousel from 'embla-carousel-react';
+import Link from 'next/link';
 
 const DotButton = (props: any) => {
   const { children, ...restProps } = props;
@@ -9,11 +15,6 @@ const DotButton = (props: any) => {
     </button>
   );
 };
-
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import Link from "next/link";
-import useDotButton from "@/app/hooks/useDotButton";
 
 export default function SliderMain() {
   const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true }, [
@@ -29,30 +30,30 @@ export default function SliderMain() {
     >
       <div className="embla__container flex">
         <div
-          className={`embla__slide flex-[0_0_100%] ${selectedIndex === 0 && "is-selected"}`}
+          className={`embla__slide flex-[0_0_100%] ${selectedIndex === 0 && 'is-selected'}`}
         >
           <img
             src="/slide1.png"
             className="w-full object-cover min-h-96"
-            alt={"slide10-bg"}
+            alt={'slide10-bg'}
           />
         </div>
         <div
-          className={`embla__slide flex-[0_0_100%] ${selectedIndex === 1 && "is-selected"}`}
+          className={`embla__slide flex-[0_0_100%] ${selectedIndex === 1 && 'is-selected'}`}
         >
           <img
             src="/slide2.png"
             className="w-full object-cover min-h-96"
-            alt={"slide2-bg"}
+            alt={'slide2-bg'}
           />
         </div>
         <div
-          className={`embla__slide flex-[0_0_100%] ${selectedIndex === 2 && "is-selected"}`}
+          className={`embla__slide flex-[0_0_100%] ${selectedIndex === 2 && 'is-selected'}`}
         >
           <img
             src="/slide3.png"
             className="w-full object-cover min-h-96"
-            alt={"slide3-bg"}
+            alt={'slide3-bg'}
           />
         </div>
       </div>
@@ -83,10 +84,10 @@ export default function SliderMain() {
             <DotButton
               key={index}
               onClick={() => onDotButtonClick(index)}
-              className={"embla__dot w-[12px] h-[12px] w rounded-full mx-[6px] border border-orangePrimary".concat(
+              className={'embla__dot w-[12px] h-[12px] w rounded-full mx-[6px] border border-orangePrimary'.concat(
                 index === selectedIndex
-                  ? " bg-orangePrimary"
-                  : " bg-transparent"
+                  ? ' bg-orangePrimary'
+                  : ' bg-transparent',
               )}
             />
           ))}

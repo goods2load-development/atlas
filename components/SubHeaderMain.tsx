@@ -12,21 +12,21 @@ export default function SubHeaderMain() {
         <div className="absolute inset-0 top-[30px] sm:top-[55px] w-full h-[2px] z-1 overflow-hidden flex flex-row gap-1">
           <div
             className="animate-infinite-scroll h-[1px] w-full absolute top-0 left-0"
-            style={{ backgroundImage: "url(/line-dashed-gray.svg)" }}
+            style={{ backgroundImage: 'url(/line-dashed-gray.svg)' }}
           ></div>
           <div
             className="animate-infinite-scroll h-[1px] w-full absolute top-0 left-[100%]"
-            style={{ backgroundImage: "url(/line-dashed-gray.svg)" }}
+            style={{ backgroundImage: 'url(/line-dashed-gray.svg)' }}
           ></div>
         </div>
         <div className="absolute inset-0 top-[210px] sm:top-[280px] w-full h-fit z-1 overflow-hidden flex flex-row gap-1">
           <div
             className="animate-infinite-scroll h-[1px] w-full absolute top-0 left-0"
-            style={{ backgroundImage: "url(/line-dashed-gray.svg)" }}
+            style={{ backgroundImage: 'url(/line-dashed-gray.svg)' }}
           ></div>
           <div
             className="w-full animate-infinite-scroll h-[1px] absolute top-0 left-[100%]"
-            style={{ backgroundImage: "url(/line-dashed-gray.svg)" }}
+            style={{ backgroundImage: 'url(/line-dashed-gray.svg)' }}
           ></div>
         </div>
         <div className="px-5 flex justify-around text-center text-grayCustom flex-wrap relative max-w-[1000px] mx-auto">
