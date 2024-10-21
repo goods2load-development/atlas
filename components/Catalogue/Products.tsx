@@ -13,6 +13,7 @@ export default function Products() {
   useEffect(() => {
     getProducts();
   }, []);
+
   return products?.length ? (
     <div className="bg-blue-000 space-y-[24px]">
       {products.map((product: any, index: number) => (
@@ -32,6 +33,20 @@ export default function Products() {
       )}
     </div>
   ) : (
-    <div className="text-center grid pap-6 items-center">No data found</div>
+    <div className="text-center pt-10">
+      <Image
+        className="mx-auto"
+        width={318}
+        height={296}
+        src={NotFound}
+        alt="not found"
+      />
+      <h3 className="font-medium text-3xl mb-6">That&apos;s a miss!</h3>
+      <p className="w-2/3 mx-auto">
+        Sorry, this filter combination has no results. Try different criteria,
+        or click on the Solution Finder command to let us help you track down
+        the solution you&apos;re looking for!
+      </p>
+    </div>
   );
 }
