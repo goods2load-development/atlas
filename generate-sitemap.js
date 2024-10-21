@@ -56,7 +56,7 @@ const getCategory = (url) => {
   } else if (url.includes('career')) {
     return 'career';
   } else {
-    return 'other';
+    return null;
   }
 };
 
