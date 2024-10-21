@@ -42,6 +42,7 @@ import PlaceIdMap from "./PlaceIdMap";
 import MainLayout from "../MainLayout";
 import BigLayout from "../BigLayout";
 import HeaderClient from "../Header/HeaderClient";
+import { useAnalyticsStore } from "@/lib/analyticsStore";
 
 enum TabsEnum {
   SERVICES_PROVIDED = "Service provided",
@@ -64,6 +65,7 @@ const PartnerDataPage = ({
   isEdit?: boolean;
 }) => {
   const isGet = !isCreate && !isEdit;
+  const { postInteractionWithPartner } = useAnalyticsStore();
   const form = useForm<z.infer<typeof formSchema>>({
     mode: "all",
     resolver: zodResolver(formSchema),
@@ -255,6 +257,10 @@ const PartnerDataPage = ({
       setAwardedByBase64List(listBase64);
     })();
   }, [isEdit]);
+
+  useEffect(() => {
+    isGet && postInteractionWithPartner(partnerData?.id);
+  }, []);
 
   const onTabChange = (value: string) => {
     setActiveTab(value as TabsEnum);
@@ -839,6 +845,9 @@ const PartnerDataPage = ({
         <SendDataToPartnerDialog
           trigger={
             <button
+              onClick={() => {
+                postInteractionWithPartner(partnerId);
+              }}
               disabled={!isGet}
               type="button"
               className="animate-button-ping transition-shadow bg-primaryOrange

@@ -21,6 +21,7 @@ import InfoImg from "@/assets/info.svg";
 import defaultCompanyLogo from "@/assets/defaultCompanyLogo.svg";
 import Link from "next/link";
 import recognationIcon from "@/assets/industryRecognations.svg";
+import { useAnalyticsStore } from "@/lib/analyticsStore";
 
 interface Props extends IProduct {
   deliveryBy: string;
@@ -45,6 +46,7 @@ export default function Product(props: Props) {
   const { toast } = useToast();
   const { user, getUser, onSaveUserPartner }: any = useUserStore();
   const router = useRouter();
+  const { postInteractionWithPartner } = useAnalyticsStore();
 
   useEffect(() => {
     if (!user?.id) getUser();
@@ -148,6 +150,9 @@ export default function Product(props: Props) {
           <SendDataToPartnerDialog
             trigger={
               <button
+                onClick={() =>
+                  postInteractionWithPartner(props.partnerInfo.partnerId)
+                }
                 disabled={false}
                 type="button"
                 className=" bg-primaryOrange

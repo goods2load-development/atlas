@@ -4,7 +4,7 @@ import PerformanceMain from "@/components/Dashboard/PerformanceMain/PerformanceM
 import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
 import { usePathname } from "next/navigation";
 import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import { usePerformanceStore } from "@/lib/analyticsStore";
+import { useAnalyticsStore } from "@/lib/analyticsStore";
 import { DeliveryBy } from "@/lib/filterStore";
 import { IAnalyticsStore } from "@/lib/analyticsStore";
 
@@ -12,7 +12,7 @@ export default function Performance({ params }: { params: { route: string } }) {
   const pathname = usePathname();
   const colorClass = pathname === params.route ? "text-black" : "text-blue";
   const { deliveryBy, onChangeTransportation }: IAnalyticsStore =
-    usePerformanceStore();
+    useAnalyticsStore();
 
   return (
     <DashboardLayout>

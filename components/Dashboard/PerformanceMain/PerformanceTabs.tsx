@@ -14,7 +14,6 @@ export enum PerformaceTab {
   USER_SEGMENTATION = "User segmentation",
 }
 
-
 interface PerformanceTabsProps {
   tabs: IPerformanceTab[];
   onChangeTab: (label: PerformaceTab) => void;

@@ -38,8 +38,8 @@ const MenuItems = ({
       {!!(depth === 1 ? children : items)?.length && (
         <div
           className={clsx(
-            `min-w-[200px] absolute  z-50 bg-white text-black w-max animate-in transition-opacity animate-opacity
-            rounded-xl py-2 px-4 shadow-md hidden group-hover:block`
+            `min-w-[200px] absolute z-50 text-black w-max animate-in transition-opacity animate-opacity
+            rounded-xl py-2 px-4 shadow-md hidden group-hover:block bg-white`
           )}
         >
           {(depth === 1 ? children : items)?.map(
@@ -98,7 +98,7 @@ const DynamicMenu = async ({ variant = "primary" }: any) => {
   return (
     <nav
       className={clsx(
-        "sm:py-2 text-white w-full relative z-20",
+        "sm:py-2 text-white w-full relative z-30",
         variant === "primary" && "bg-primaryOrange",
         variant === "secondary" && "bg-[#FFB393]",
         variant === "transparent" && "bg-[rgba(255,255,255,0.2)]"
