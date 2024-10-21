@@ -146,10 +146,11 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
 
       {type === CardType.INDUSTRY_SOLUTION && (
         <div className="flex gap-6 pt-4 pl-5">
-          <div className="flex flex-col gap-2">
-            {data?.slice(0, 3).map((item: any) => {
+          <div className="flex flex-col gap-2 pb-4">
+            {data?.slice(0, 3).map((item: any, i: number) => {
               return (
                 <div
+                  key={`${item.name}${i}`}
                   className={clsx(
                     "text-[14px]/[21px] font-normal px-2 border rounded-[5px] w-max",
                     isActive
