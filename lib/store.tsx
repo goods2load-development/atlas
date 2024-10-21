@@ -427,7 +427,7 @@ export const useRoutesStore = create((set) => ({
 
 export const usePriceAlertsStore = create((set) => ({
   priceAlerts: [],
-  isPriceAlertLoading: false,
+  isPriceAlertLoading: true,
 
   getPriceAlerts: ({ page = 1, take = 5 }) => {
     set({ isPriceAlertLoading: true });
