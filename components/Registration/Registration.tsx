@@ -56,6 +56,7 @@ function IsRequired() {
 }
 
 export default function Registration() {
+  const [step, setStep] = useState(1);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
@@ -74,10 +75,10 @@ export default function Registration() {
         parsedForm.communication = false;
       }
 
-      if (!parsedForm.provider) {
-        parsedForm.provider = !isUser;
-      }
+      parsedForm.provider = !isUser;
+      
 
+      console.log(parsedForm, '---');
       return parsedForm;
     }
 
@@ -128,6 +129,9 @@ export default function Registration() {
       ferry: z.boolean().optional(),
       truck: z.boolean().optional(),
       plane: z.boolean().optional(),
+       industriesServed: z
+      .array(z.string())
+      .min(1, 'At least one industry must be selected'),
       insuranceStatement: z
         .instanceof(File)
         .refine((file) => {
@@ -181,6 +185,7 @@ export default function Registration() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
+
     defaultValues: formState
       ? formState
       : {
@@ -189,7 +194,8 @@ export default function Registration() {
           plane: false,
         },
   });
-  // const { formState } = form;
+  const { watch } = form;
+  const isProvider = watch("provider");
   const { countriesList, getCountriesList } = useCountriesStore(
     (state: any) => state,
   );
@@ -252,7 +258,7 @@ export default function Registration() {
       <Divider />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          <div className="flex flex-wrap flex-col content-center mb-5">
+          {step === 1 && <><div className="flex flex-wrap flex-col content-center mb-5">
             <FormField
               control={form.control}
               name="provider"
@@ -761,9 +767,75 @@ export default function Registration() {
                 </FormLabel>
               </FormItem>
             )}
-          />
+          /></>}
+          {step === 2 && <FormField
+  control={form.control}
+  name="industriesServed"
+  render={({ field }) => (
+    <FormItem className="sm:w-6/12 mt-3 sm:mt-0">
+      <FormLabel className="font-light sm:font-normal">
+        Industries Served
+        <IsRequired />
+      </FormLabel>
+      <FormControl>
+        <div className="space-y-2">
+          <label className="flex items-center space-x-2">
+            <Checkbox 
+              value="Pharmaceuticals"
+              checked={field.value?.includes('Pharmaceuticals')}
+              onChange={(e: any) => {
+                const value = e.target.value;
+                const newValue = field?.value?.includes(value)
+                  ? field.value.filter((v: string) => v !== value)
+                  : [...field.value, value];
+                field.onChange(newValue);
+              }}
+            />
+            <span>Pharmaceuticals</span>
+          </label>
+          <label className="flex items-center space-x-2">
+            <Checkbox 
+              value="Electronics"
+              checked={field.value?.includes('Electronics')}
+              onChange={(e: any) => {
+                const value = e.target.value;
+                const newValue = field?.value?.includes(value)
+                  ? field.value.filter((v: string) => v !== value)
+                  : [...field.value, value];
+                field.onChange(newValue);
+              }}
+            />
+            <span>Electronics</span>
+          </label>
+          <label className="flex items-center space-x-2">
+            <Checkbox 
+              value="Automotive"
+              checked={field.value?.includes('Automotive')}
+              onChange={(e: any) => {
+                const value = e.target.value;
+                const newValue = field?.value?.includes(value)
+                  ? field.value.filter((v: string) => v !== value)
+                  : [...field.value, value];
+                field.onChange(newValue);
+              }}
+            />
+            <span>Automotive</span>
+          </label>
+        </div>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>}
           <Button
-            type="submit"
+          onClick={() => {
+            if(isProvider){
+              setStep(2)
+            }
+          }}
+            type={isProvider ? 
+              "button" : "submit"
+            }
             className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
           >
             Continue
