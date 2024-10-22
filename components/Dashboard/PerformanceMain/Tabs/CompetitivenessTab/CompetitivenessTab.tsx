@@ -39,7 +39,7 @@ const CompetitivenessTab = ({ data }: { data: any }) => {
   return (
     <>
       <PerformanceCards data={cardsData} activeCard={activeCard} onChangeActiveCard={handleActiveCardChange}/>
-      <CompetitivenessChart data={data?.competitiveness?.currentYearProfit || []}/>
+      <CompetitivenessChart data={data?.competitiveness?.currentYear || []}/>
     </>
   );
 };
