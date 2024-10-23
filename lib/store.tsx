@@ -16,6 +16,7 @@ import {
   HeaderFooterData,
 } from '@/components/Dashboard/HeaderFooterMain/types';
 import {
+  PartnerIndustry,
   PartnerPageResponse,
   ResponsePartner,
 } from '@/components/Dashboard/PartnersMain/types';
@@ -116,6 +117,7 @@ export const useRegistrationStore = create((set) => ({
     formData.append('issuingAuthority', data.issuingAuthority);
     formData.append('tradeLicenseNumber', data.tradeLicenseNumber);
     formData.append('companyPhoto', data.companyPhoto);
+    formData.append('industries', data.industries);
 
     delete data.confirmPassword;
     delete data.privacy;
@@ -468,10 +470,13 @@ export const usePriceAlertsStore = create((set) => ({
   },
 }));
 
+
+
 interface PartnersStoreState {
   partners: ResponsePartner[];
   partnerPage: PartnerPageResponse | null;
   isPartnersLoading: boolean;
+  partnersIndustriesData: PartnerIndustry[] | null;
   getPartnersApproved: () => Promise<void>;
   getPartnersInReview: () => Promise<void>;
   getPartnersNew: () => Promise<void>;
@@ -480,12 +485,15 @@ interface PartnersStoreState {
   replyPartner: (id: string, message: string) => Promise<void>;
   createPartnerPage: (data: any, id: string) => Promise<void>;
   getPartnersPage: (id: string) => Promise<void>;
+  getPartnersIndustries: () => Promise<void>;
 }
 
 export const usePartnersStore = create<PartnersStoreState>((set) => ({
   partners: [],
   partnerPage: null,
   isPartnersLoading: true,
+  partnersIndustriesData: null,
+  
   getPartnersApproved: () => {
     set({ isPartnersLoading: true });
     return getRequest({
@@ -553,6 +561,15 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
       .then((data) => set({ partnerPage: data }))
       .finally(() => set({ isPartnersLoading: false }));
   },
+  getPartnersIndustries: () => {
+    return getRequest({
+      url: `/partners/filters`
+    }).then(data => {
+      set({
+        partnersIndustriesData: data
+      })
+    })
+  }
 }));
 
 interface BlogAdminStoreState {

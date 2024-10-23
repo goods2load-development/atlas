@@ -2,11 +2,11 @@
 
 import RegistrationSuccessPopup from './RegistrationSuccessPopup';
 import GoogleIcon from '@/assets/AuthProviderLogos/GoogleIcon';
-import { useRegistrationStore } from '@/lib/store';
+import { usePartnersStore, useRegistrationStore } from '@/lib/store';
 import { useCountriesStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { getSession, signIn } from 'next-auth/react';
 import Link from 'next/link';
@@ -42,6 +42,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import clsx from 'clsx';
 
 interface CountriesProps {
   value: string;
@@ -56,6 +57,7 @@ function IsRequired() {
 }
 
 export default function Registration() {
+  const {partnersIndustriesData, getPartnersIndustries} = usePartnersStore();
   const [step, setStep] = useState(1);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
@@ -74,11 +76,7 @@ export default function Registration() {
       if (!parsedForm.communication) {
         parsedForm.communication = false;
       }
-
       parsedForm.provider = !isUser;
-      
-
-      console.log(parsedForm, '---');
       return parsedForm;
     }
 
@@ -106,6 +104,10 @@ export default function Registration() {
   };
 
   useEffect(() => {
+    getPartnersIndustries();
+  }, [])
+
+  useEffect(() => {
     localStorage.setItem('registrationForm', JSON.stringify(formState));
   }, [formState]);
 
@@ -129,9 +131,10 @@ export default function Registration() {
       ferry: z.boolean().optional(),
       truck: z.boolean().optional(),
       plane: z.boolean().optional(),
-       industriesServed: z
+      industries: z
       .array(z.string())
-      .min(1, 'At least one industry must be selected'),
+      .min(1, 'At least one industry must be selected')
+      .optional(),
       insuranceStatement: z
         .instanceof(File)
         .refine((file) => {
@@ -181,7 +184,11 @@ export default function Registration() {
     .refine((data) => !data.provider || data.tradeLicenseNumber, {
       message: 'No file uploaded',
       path: ['tradeLicenseNumber'],
-    });
+    })
+    .refine((data) => !data.provider || (Array.isArray(data.industries) && data.industries.length > 0), {
+      message: 'At least one industry must be selected',
+      path: ['industries'],
+    })
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -195,7 +202,11 @@ export default function Registration() {
         },
   });
   const { watch } = form;
+
   const isProvider = watch("provider");
+
+  const industryRef = useRef<HTMLHeadingElement | null>(null);
+  
   const { countriesList, getCountriesList } = useCountriesStore(
     (state: any) => state,
   );
@@ -258,7 +269,8 @@ export default function Registration() {
       <Divider />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)}>
-          {step === 1 && <><div className="flex flex-wrap flex-col content-center mb-5">
+          {step === 1 && <>
+          <div className="flex flex-wrap flex-col content-center mb-5">
             <FormField
               control={form.control}
               name="provider"
@@ -276,7 +288,7 @@ export default function Registration() {
 
                         !e
                           ? router.push('/registration?user')
-                          : router.push('/registration?provider'); // Change url depends on role user
+                          : router.push('/registration?provider');
                       }}
                     />
                   </FormControl>
@@ -766,83 +778,123 @@ export default function Registration() {
                   </Link>
                 </FormLabel>
               </FormItem>
+              
             )}
-          /></>}
-          {step === 2 && <FormField
-  control={form.control}
-  name="industriesServed"
-  render={({ field }) => (
-    <FormItem className="sm:w-6/12 mt-3 sm:mt-0">
-      <FormLabel className="font-light sm:font-normal">
-        Industries Served
-        <IsRequired />
-      </FormLabel>
-      <FormControl>
-        <div className="space-y-2">
-          <label className="flex items-center space-x-2">
-            <Checkbox 
-              value="Pharmaceuticals"
-              checked={field.value?.includes('Pharmaceuticals')}
-              onChange={(e: any) => {
-                const value = e.target.value;
-                const newValue = field?.value?.includes(value)
-                  ? field.value.filter((v: string) => v !== value)
-                  : [...field.value, value];
-                field.onChange(newValue);
+          />
+
+            {
+            isProvider && <Button
+              onClick={() => {
+                setTimeout(() => {
+                  industryRef?.current?.scrollIntoView({
+                  behavior: 'smooth', 
+                  block: 'start',
+                });
+                }, 100)
+                setStep(2)
               }}
-            />
-            <span>Pharmaceuticals</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <Checkbox 
-              value="Electronics"
-              checked={field.value?.includes('Electronics')}
-              onChange={(e: any) => {
-                const value = e.target.value;
-                const newValue = field?.value?.includes(value)
-                  ? field.value.filter((v: string) => v !== value)
-                  : [...field.value, value];
-                field.onChange(newValue);
-              }}
-            />
-            <span>Electronics</span>
-          </label>
-          <label className="flex items-center space-x-2">
-            <Checkbox 
-              value="Automotive"
-              checked={field.value?.includes('Automotive')}
-              onChange={(e: any) => {
-                const value = e.target.value;
-                const newValue = field?.value?.includes(value)
-                  ? field.value.filter((v: string) => v !== value)
-                  : [...field.value, value];
-                field.onChange(newValue);
-              }}
-            />
-            <span>Automotive</span>
-          </label>
-        </div>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>}
-          <Button
-          onClick={() => {
-            if(isProvider){
-              setStep(2)
+              type="button"
+              className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+            >
+              Next
+             </Button>
             }
-          }}
-            type={isProvider ? 
-              "button" : "submit"
+
+            {
+            !isProvider && <Button
+              type="submit"
+              className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+            >
+              Continue
+             </Button>
             }
-            className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
-          >
-            Continue
-          </Button>
+          </>
+          }
+            <div ref={industryRef} className={clsx("pt-6", step !== 2 && "hidden")}>
+              <FormStepTwo form={form} setStep={(value: number) => setStep(value)} />
+            </div>
         </form>
       </Form>
       <RegistrationSuccessPopup />
     </RegistrationWrapper>
   );
+}
+
+const FormStepTwo = ({form, setStep}: {form: any, setStep: any}) => {
+  const {partnersIndustriesData} = usePartnersStore();
+
+  return (
+    <>
+            <h3 className='mb-4 text-[20px]/[24px]'>Services Offered <IsRequired /></h3>
+            <p className='mb-4 text-[14px]/[17px]'>Please select the services your company specializes in (check all that apply):</p>
+              
+            <FormField
+              control={form.control}
+              name="industries"
+              render={({ field }) => (
+                <div className='flex flex-col gap-10 my-10'>
+      
+                {
+                  partnersIndustriesData && partnersIndustriesData.map(({label, items}) => {
+                    return (
+                      <FormItem key={label} className="mt-3 sm:mt-0">
+                  <FormLabel className="font-light sm:font-normal">
+                    {label}
+          
+                  </FormLabel>
+                  <FormControl>
+                    <div className="space-y-2">
+                      {
+                        items && items.map(item => {
+                          return <label key={item} className="flex items-center space-x-2">
+                                    <Checkbox 
+                                      value={item}
+                                      checked={field.value?.includes(item) || false}
+                                      onCheckedChange={(checked) => {
+                                        const value = item;
+                                        const newValue = checked
+                                          ? [...(field.value || []), value]
+                                          : field.value?.filter((v: string) => v !== value) || [];
+                                        field.onChange(newValue);
+                                      }}
+                                    />
+                                    <span>{item}</span>
+                                  </label>
+                        })
+                      }
+                    </div>
+                    </FormControl>
+                  </FormItem>
+                    )
+                  })
+                }</div>
+              )}
+            />
+
+
+            <div className='flex gap-2 items-center'>
+              <Button
+                onClick={() => {
+                  window.scroll({
+                    top: 0,
+                    behavior: "smooth"
+                  })
+                  setStep(1)
+                }}
+                type="button"
+                className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+              >
+                Previous step
+              </Button>
+              
+            
+              
+            <Button
+                type="submit"
+                className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+              >
+                Continue
+              </Button>
+            </div>
+          </> )
 }
