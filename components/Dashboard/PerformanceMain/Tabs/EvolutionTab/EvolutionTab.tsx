@@ -1,24 +1,24 @@
-"use client";
+'use client';
 
-import { useState, useMemo, useEffect } from "react";
-import { ICard, CardType } from "../../PerformanceCard";
+import { CardType, ICard } from '../../PerformanceCard';
+import PerformanceCardsList from '../../PerformanceCards';
+import EvolutionChart from './EvolutionChart';
+import IndustryChart from './IndustryChart';
 
-import PerformanceCardsList from "../../PerformanceCards";
-import EvolutionChart from "./EvolutionChart";
-import IndustryChart from "./IndustryChart";
+import { useEffect, useMemo, useState } from 'react';
 
 const PerformanceEvolutionTab = ({ data }: { data: any }) => {
   const cardsData = useMemo<ICard[]>(
     () => [
       {
-        label: "Industry solutions",
+        label: 'Industry solutions',
         type: CardType.INDUSTRY_SOLUTION,
         data: data?.industrySolutions || [],
       },
-      { label: "Searchers", data: data?.searchers || [] },
-      { label: "Redirects", data: data?.redirects || [] },
+      { label: 'Searchers', data: data?.searchers || [] },
+      { label: 'Redirects', data: data?.redirects || [] },
     ],
-    [data]
+    [data],
   );
 
   const [activeCard, setActiveCard] = useState<ICard>(cardsData[0]);

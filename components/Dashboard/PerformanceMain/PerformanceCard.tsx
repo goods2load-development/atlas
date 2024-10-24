@@ -2,9 +2,9 @@ import { cn } from '@/lib/utils';
 
 import { useEffect, useState } from 'react';
 
+import clsx from 'clsx';
 import { subYears } from 'date-fns';
-import { Triangle } from "lucide-react";
-import clsx from "clsx";
+import { Triangle } from 'lucide-react';
 
 export interface ICardData {
   average: string | number;
@@ -12,9 +12,9 @@ export interface ICardData {
 }
 
 export enum CardType {
-  INDUSTRY_SOLUTION = "industry_solutions",
-  COMPETITIVENESS = "Competitiveness",
-  USER_SEGMENTATION = "user_segmentation",
+  INDUSTRY_SOLUTION = 'industry_solutions',
+  COMPETITIVENESS = 'Competitiveness',
+  USER_SEGMENTATION = 'user_segmentation',
 }
 
 export interface ICard {
@@ -78,8 +78,8 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
           <div className="flex flex-col text-sm font-[500]">
             <span
               className={cn(
-                "text-[#666666] text-[32px] mt-3",
-                isActive && "text-[#FFF]"
+                'text-[#666666] text-[32px] mt-3',
+                isActive && 'text-[#FFF]',
               )}
             >
               {type === CardType.USER_SEGMENTATION && (
@@ -100,8 +100,8 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
                 <span className="font-[500] text-md">
                   {countVarianceBetweenIndicators(
                     Number(data?.average) || 0,
-                    Number(data?.lastYear) || 0
-                  )}{" "}
+                    Number(data?.lastYear) || 0,
+                  )}{' '}
                   %
                 </span>
 
@@ -111,22 +111,22 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
                     height={11}
                     fill="white"
                     stroke="white"
-                    className={`${isIncreasaIndicators ? "" : "rotate-180"}`}
+                    className={`${isIncreasaIndicators ? '' : 'rotate-180'}`}
                   />
                 ) : (
                   <Triangle
                     width={11}
                     height={11}
-                    fill={`${isIncreasaIndicators ? "#FF6720" : "#DD0000"}`}
-                    stroke={`${isIncreasaIndicators ? "#FF6720" : "#DD0000"}`}
-                    className={`${isIncreasaIndicators ? "" : "rotate-180"}`}
+                    fill={`${isIncreasaIndicators ? '#FF6720' : '#DD0000'}`}
+                    stroke={`${isIncreasaIndicators ? '#FF6720' : '#DD0000'}`}
+                    className={`${isIncreasaIndicators ? '' : 'rotate-180'}`}
                   />
                 )}
               </div>
               <div
                 className={cn(
-                  "text-[#666666] font-[400] text-[12px]",
-                  isActive && "text-[#FFF]"
+                  'text-[#666666] font-[400] text-[12px]',
+                  isActive && 'text-[#FFF]',
                 )}
               >
                 vs {getPreviousYear()}
@@ -136,7 +136,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
 
           <div className="flex flex-col gap-2 lg:gap-4 lg:w-full w-auto mr-5 lg:mr-0">
             <span>Last year</span>
-            <span className={cn("text-[#666666]", isActive && "text-[#FFF]")}>
+            <span className={cn('text-[#666666]', isActive && 'text-[#FFF]')}>
               {data?.lastYear || 0}
               {/* {type === CardType.AVARAGE && "$"} */}
               {/* {type === CardType.REDIRECTS && "%"} */}
@@ -153,10 +153,10 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
                 <div
                   key={`${item.name}${i}`}
                   className={clsx(
-                    "text-[14px]/[21px] font-normal px-2 border rounded-[5px] w-max",
+                    'text-[14px]/[21px] font-normal px-2 border rounded-[5px] w-max',
                     isActive
-                      ? "border-white text-white"
-                      : "text-primaryOrange border-primaryOrange"
+                      ? 'border-white text-white'
+                      : 'text-primaryOrange border-primaryOrange',
                   )}
                 >
                   {item.name}
@@ -169,8 +169,8 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
               <span className="font-[500] text-md">
                 {countVarianceBetweenIndicators(
                   Number(data?.average) || 0,
-                  Number(data?.lastYear) || 0
-                )}{" "}
+                  Number(data?.lastYear) || 0,
+                )}{' '}
                 %
               </span>
 
@@ -180,22 +180,22 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
                   height={11}
                   fill="white"
                   stroke="white"
-                  className={`${isIncreasaIndicators ? "" : "rotate-180"}`}
+                  className={`${isIncreasaIndicators ? '' : 'rotate-180'}`}
                 />
               ) : (
                 <Triangle
                   width={11}
                   height={11}
-                  fill={`${isIncreasaIndicators ? "#FF6720" : "#DD0000"}`}
-                  stroke={`${isIncreasaIndicators ? "#FF6720" : "#DD0000"}`}
-                  className={`${isIncreasaIndicators ? "" : "rotate-180"}`}
+                  fill={`${isIncreasaIndicators ? '#FF6720' : '#DD0000'}`}
+                  stroke={`${isIncreasaIndicators ? '#FF6720' : '#DD0000'}`}
+                  className={`${isIncreasaIndicators ? '' : 'rotate-180'}`}
                 />
               )}
             </div>
             <div
               className={cn(
-                "text-[#666666] font-[400] text-[12px]",
-                isActive && "text-[#FFF]"
+                'text-[#666666] font-[400] text-[12px]',
+                isActive && 'text-[#FFF]',
               )}
             >
               vs {getPreviousYear()}

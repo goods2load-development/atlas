@@ -117,7 +117,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     width: savedSeachForm?.width || '',
     height: savedSeachForm?.height || '',
     goodsValue: savedSeachForm?.goodsValue || '0',
-    incoterms: savedSeachForm?.incoterms || 'DDP',
+    incoterms: savedSeachForm?.incoterms || 'Unknown',
 
     // filter options
 
