@@ -50,7 +50,7 @@ export const removeDomainFromUrl = (url: string): string => {
 export const groupBySubCategory = (items: UrlEntry[]): UrlEntry[][] => {
   const grouped: { [key: string]: UrlEntry[] } = {};
 
-  items.forEach((item) => {
+  items?.forEach((item) => {
     const subCategory = item.subCategory as string;
 
     if (!grouped[subCategory]) {
