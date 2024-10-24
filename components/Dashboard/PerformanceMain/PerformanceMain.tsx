@@ -1,13 +1,15 @@
 'use client';
 
-import { useEffect, useState, useMemo, useCallback } from "react";
-import PerformanceTabs from "./PerformanceTabs";
-import EvolutionTab from "./Tabs/EvolutionTab/EvolutionTab";
-import CompetitivenessTab from "./Tabs/CompetitivenessTab/CompetitivenessTab";
-import { useAnalyticsStore } from "@/lib/analyticsStore";
-import { PerformaceTab, type IPerformanceTab } from "./PerformanceTabs";
-import { type IAnalyticsStore } from "@/lib/analyticsStore";
-import UserSegmentationTab from "./Tabs/UserSegmentationaTab/UserSegmentationTab";
+import PerformanceTabs from './PerformanceTabs';
+import { type IPerformanceTab, PerformaceTab } from './PerformanceTabs';
+import CompetitivenessTab from './Tabs/CompetitivenessTab/CompetitivenessTab';
+import EvolutionTab from './Tabs/EvolutionTab/EvolutionTab';
+import UserSegmentationTab from './Tabs/UserSegmentationaTab/UserSegmentationTab';
+import { useAnalyticsStore } from '@/lib/analyticsStore';
+import { type IAnalyticsStore } from '@/lib/analyticsStore';
+
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
 // import UserSegmentationTab from "./Tabs/UserSegmentationTab";
 
 const PerformanceMain = () => {
@@ -30,7 +32,6 @@ const PerformanceMain = () => {
       {
         label: PerformaceTab.USER_SEGMENTATION,
         element: <UserSegmentationTab data={performanceData || []} />,
-
       },
     ],
     [performanceData],
@@ -61,4 +62,3 @@ const PerformanceMain = () => {
 };
 
 export default PerformanceMain;
-

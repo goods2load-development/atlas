@@ -1,27 +1,30 @@
-import { IProduct } from "./MOCK";
-import LeafIcon from "@/assets/Product/LeafIcon";
-import SelectionPopup from "./SelectionPopup";
-import { GoogleRating } from "./GoogleRating";
-import SaveIcon from "@/assets/save.svg";
-import SaveIconFilled from "@/assets/save-filled.svg";
-import Image from "next/image";
-import { useToast } from "@/components/ui/use-toast";
-import { useUserStore } from "@/lib/store";
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import SendDataToPartnerDialog from "../PartnersDataPage/SendDataToPartnerDialog";
-import { ToolTipComponent } from "../SearchMain";
+import SendDataToPartnerDialog from '../PartnersDataPage/SendDataToPartnerDialog';
+import { ToolTipComponent } from '../SearchMain';
+import { GoogleRating } from './GoogleRating';
+import { IProduct } from './MOCK';
+import SelectionPopup from './SelectionPopup';
+import LeafIcon from '@/assets/Product/LeafIcon';
+import defaultCompanyLogo from '@/assets/defaultCompanyLogo.svg';
+import recognationIcon from '@/assets/industryRecognations.svg';
+import InfoImg from '@/assets/info.svg';
+import SaveIconFilled from '@/assets/save-filled.svg';
+import SaveIcon from '@/assets/save.svg';
+import { useAnalyticsStore } from '@/lib/analyticsStore';
+import { useUserStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import InfoImg from "@/assets/info.svg";
-import defaultCompanyLogo from "@/assets/defaultCompanyLogo.svg";
-import Link from "next/link";
-import recognationIcon from "@/assets/industryRecognations.svg";
-import { useAnalyticsStore } from "@/lib/analyticsStore";
+} from '@/components/ui/tooltip';
+import { useToast } from '@/components/ui/use-toast';
 
 interface Props extends IProduct {
   deliveryBy: string;

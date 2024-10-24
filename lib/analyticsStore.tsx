@@ -1,10 +1,12 @@
-import { create } from "zustand";
-import { getRequest, postRequest } from "./utils";
-import { DeliveryBy } from "./filterStore";
-import { ICardData } from "@/components/Dashboard/PerformanceMain/PerformanceCard";
-import { IEvolutionChart } from "@/components/Dashboard/PerformanceMain/Tabs/EvolutionTab/EvolutionChart";
-import { ICompetitiveness } from "@/components/Dashboard/PerformanceMain/Tabs/CompetitivenessTab/CompetitivenessTab";
-import { IGeolocation } from "@/components/Dashboard/PerformanceMain/Tabs/UserSegmentationaTab/UserSegmentationTab";
+import { DeliveryBy } from './filterStore';
+import { getRequest, postRequest } from './utils';
+
+import { create } from 'zustand';
+
+import { ICardData } from '@/components/Dashboard/PerformanceMain/PerformanceCard';
+import { ICompetitiveness } from '@/components/Dashboard/PerformanceMain/Tabs/CompetitivenessTab/CompetitivenessTab';
+import { IEvolutionChart } from '@/components/Dashboard/PerformanceMain/Tabs/EvolutionTab/EvolutionChart';
+import { IGeolocation } from '@/components/Dashboard/PerformanceMain/Tabs/UserSegmentationaTab/UserSegmentationTab';
 
 export interface IPerformanceData {
   fare: ICardData;
@@ -42,7 +44,7 @@ export const useAnalyticsStore = create<IAnalyticsStore>((set) => ({
 
   getPerformancedData: async (deliveryBy: DeliveryBy) => {
     postRequest({
-      url: `analytics?user_id=${localStorage.getItem("id")}`,
+      url: `analytics?user_id=${localStorage.getItem('id')}`,
       data: { transportation: deliveryBy },
     }).then((data) => {
       set(() => ({
@@ -57,11 +59,11 @@ export const useAnalyticsStore = create<IAnalyticsStore>((set) => ({
   getGeolocationInformation: async () => {
     try {
       const response = await fetch(
-        `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.NEXT_PUBLIC_KEY_GET_GEOLOCATION}`
+        `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.NEXT_PUBLIC_KEY_GET_GEOLOCATION}`,
       );
 
       if (!response.ok) {
-        throw new Error("Something went wrong");
+        throw new Error('Something went wrong');
       }
 
       return response.json();
