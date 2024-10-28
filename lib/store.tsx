@@ -71,7 +71,6 @@ export const useGoodsStore = create((set) => ({
   goodsListLoading: false,
   getGoodsList: async (term: string) => {
     set(() => ({ goodsListLoading: true }));
-    // console.log("term", term);
     const base = 'https://hs-code-harmonized-system.p.rapidapi.com/';
     const byCode = !!parseInt(term);
     const url = base + (byCode ? 'code' : 'search');

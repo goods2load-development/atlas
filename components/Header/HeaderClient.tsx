@@ -54,8 +54,6 @@ export default function HeaderClient({
 
   useLockBodyScroll(open && isBelowSm);
 
-  console.log({ headerData });
-
   return (
     <header
       className={clsx(
@@ -87,8 +85,8 @@ export default function HeaderClient({
         <NavigationMenu
           className={`${open && isBelowSm ? '!fixed left-0 right-0 bottom-0 top-[77px] pb-4' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
         >
-          <div className="flex flex-col px-10 w-full max-h-[calc(100vh-100px)]  overflow-y-scroll">
-            <NavigationMenuList className="sm:hidden flex-col items-start mb-8">
+          <div className="flex flex-col w-full max-h-[calc(100vh-100px)]  overflow-y-scroll">
+            <NavigationMenuList className="sm:hidden flex-col items-start px-10">
               <Accordion
                 type="single"
                 collapsible
@@ -112,7 +110,11 @@ export default function HeaderClient({
                 ))}
               </Accordion>
             </NavigationMenuList>
-            <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col items-start max-sm:gap-5 sm:flex-row sm:justify-end">
+            <hr className="w-full border-t border-white my-4 opacity-30 sm:hidden" />
+            <NavigationMenuList
+              className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col items-start
+             max-sm:gap-5 sm:flex-row sm:justify-end max-sm:px-10"
+            >
               <NavigationMenuItem>
                 <Link href="/help">FAQs</Link>
               </NavigationMenuItem>
