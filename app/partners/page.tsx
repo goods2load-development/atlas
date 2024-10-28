@@ -11,27 +11,31 @@ import PartnersVisibility from '../_components/Partners/PartnersVisibility/Partn
 import React from 'react';
 
 import BigLayout from '@/components/BigLayout';
+import Footer from '@/components/Footer';
 
 const Partners = () => {
   return (
-    <BigLayout
-      title="Engage with businesses throughout their journey of envisioning, strategizing, and arranging bookings"
-      description="We help reduce costs, increase efficiency and offer improved
+    <>
+      <BigLayout
+        title="Engage with businesses throughout their journey of envisioning, strategizing, and arranging bookings"
+        description="We help reduce costs, increase efficiency and offer improved
               customer service"
-    >
-      <div className="w-full flex flex-col justify-center items-center">
-        <PartnersStartingFrom />
-        <section className="max-w-[1440px] w-full justify-center items-center gap-[40px] py-[40px] sm:py-[104px] px-5 m-auto">
-          <JoinOurTeam />
-          <CareerForm />
-        </section>
-        <PartnersAudience />
-        <PartnersAmplify />
-        <PartnersVisibility />
-        <PartnersBoostingTravel />
-        <PartnersOurPartners />
-      </div>
-    </BigLayout>
+      >
+        <div className="w-full flex flex-col justify-center items-center pb-8">
+          <PartnersStartingFrom />
+          <section className="max-w-[1440px] w-full justify-center items-center gap-[40px] py-[40px] sm:py-[104px] px-5 m-auto">
+            <JoinOurTeam />
+            <CareerForm />
+          </section>
+          <PartnersAudience />
+          <PartnersAmplify />
+          <PartnersVisibility />
+          <PartnersBoostingTravel />
+          <PartnersOurPartners />
+        </div>
+      </BigLayout>
+      <Footer />
+    </>
   );
 };
 export default Partners;

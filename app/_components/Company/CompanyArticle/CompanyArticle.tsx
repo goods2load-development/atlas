@@ -20,15 +20,15 @@ const CompanyArticle = () => {
           <p className="text-black font-normal lg:text-[18px]/[25px] text-left">
             At GOODS2LOAD, we have developed a proprietary algorithm that offers
             a deep understanding of the logistics landscape. Our automated
-            platform swiftly compares thousands of quotes and services from
-            renowned international logistics companies in mere seconds,
-            presenting our clients with the most efficient and effective option
-            for their desired route and preferred service type.{' '}
+            platform swiftly compares thousands of services from renowned
+            international logistics companies in mere seconds, presenting our
+            clients with the most efficient and effective option for their
+            desired route and preferred service type.{' '}
           </p>
           <p className="text-black font-normal lg:text-[18px]/[25px] text-left">
             Moreover, we take pride in our prenegotiated quotes, meaning that we
-            have already undertaken the arduous task of securing the best rates
-            for our clients. Our digital booking system streamlines the entire
+            have already undertaken the arduous task of securing the best
+            partners for our clients. Our digital system streamlines the entire
             process with just few clicks.
           </p>
         </div>
