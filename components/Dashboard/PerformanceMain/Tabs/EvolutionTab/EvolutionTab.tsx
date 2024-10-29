@@ -30,7 +30,8 @@ const PerformanceEvolutionTab = ({ data }: { data: any }) => {
   const renderActiveChart = () => {
     switch (activeCard.label) {
       case cardsData[0].label:
-        return <IndustryChart data={data?.industrySolutions || []} />;
+        // return <IndustryChart data={data?.industrySolutions || []} />;
+        return <IndustryChart />;
       case cardsData[1].label:
         return <EvolutionChart data={data?.chartSearchers || []} />;
       case cardsData[2].label:
