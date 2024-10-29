@@ -10,6 +10,7 @@ import { useCountriesStore, useGoodsStore } from '@/lib/store';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
+import { Info } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -563,9 +564,10 @@ export default function SearchMain({ main }: { main?: boolean }) {
             <Popover open={open}>
               <PopoverTrigger className="w-full">
                 <ToolTipComponent asChild text={typeOfGoods}>
-                  <div>
+                  <div className="flex">
                     <Input
-                      className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none font-normal text-black w-full"
+                      className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-none 
+                      border-none font-normal text-black w-full"
                       onChange={handleChange}
                       onFocus={handleFocus}
                       onBlur={() => setOpen(false)}
@@ -605,6 +607,37 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 </Command>
               </PopoverContent>
             </Popover>
+          </div>
+          <div className="mr-[1px] sm:w-[24%] mb-5 sm:mb-0">
+            <label className="mb-2 flex items-end gap-2">
+              Take a photo{' '}
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <button type="button">
+                      <Info width={15} />
+                    </button>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    align="center"
+                    sideOffset={5}
+                    className="bg-primaryOrange text-white px-3 py-1 rounded-md shadow-lg"
+                  >
+                    You can upload photo of your item.
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </label>
+            <div>
+              <label
+                className="h-[60px] w-[150px] block rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none
+              bg-white font-normal text-black"
+              >
+                Upload
+                <input accept="image/*" className="hidden" type="file" />
+              </label>
+            </div>
           </div>
         </div>
         <div className="sm:flex justify-stretch items-end w-full">
