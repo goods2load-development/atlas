@@ -169,7 +169,7 @@ const PartnersMain = () => {
                 'pointer-events-none opacity-50': tab === 'active',
               })}
             >
-              In review
+              Approved
             </Button>
           </TabsTrigger>
         </TabsList>
