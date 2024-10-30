@@ -6,7 +6,6 @@ import {
   putRequest,
 } from './utils';
 
-import { url } from 'inspector';
 import Cookie from 'js-cookie';
 import { create } from 'zustand';
 
@@ -65,6 +64,41 @@ export const useCountriesStore = create((set) => ({
       set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
+  getCitiesByCountry: async (country: string) => {
+    const data = await getRequest({
+      url: 'http://api.geonames.org/searchJSON',
+      params: {
+        country,
+        maxRows: 10,
+        orderBy: 'population',
+        userName: 'vovk22_', // Needs to change USER_NAME
+      },
+      withCredentials: false,
+    });
+
+    return data.geonames;
+  },
+  getCountriesByRegions: async (region: string) => {
+    const data = await getRequest({
+      url: `https://restcountries.com/v3.1/region/${region}?fields=name,subregion,cca2`,
+    });
+    return data;
+  },
+}));
+
+export const usePortsStore = create((set) => ({
+  getAirportsByCountry: async (countryCode: string) => {
+    const response = await fetch(
+      `https://aviation-edge.com/v2/public/airportDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&type=Cargo&codeIso2Country=${countryCode}`,
+    );
+    return response.json();
+  },
+  getSeaPortsByCountry: async (countryCode: string) => {
+    const response = await fetch(
+      `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&country_iso=${countryCode}&port_type=Port`,
+    );
+    return response.json();
+  },
 }));
 
 export const useGoodsStore = create((set) => ({
@@ -72,7 +106,7 @@ export const useGoodsStore = create((set) => ({
   goodsListLoading: false,
   getGoodsList: async (term: string) => {
     set(() => ({ goodsListLoading: true }));
-    // console.log("term", term);
+
     const base = 'https://hs-code-harmonized-system.p.rapidapi.com/';
     const byCode = !!parseInt(term);
     const url = base + (byCode ? 'code' : 'search');
@@ -117,7 +151,15 @@ export const useRegistrationStore = create((set) => ({
     formData.append('issuingAuthority', data.issuingAuthority);
     formData.append('tradeLicenseNumber', data.tradeLicenseNumber);
     formData.append('companyPhoto', data.companyPhoto);
-    formData.append('industries', data.industries);
+    formData.append('industryProofFile', data.industryProofFile);
+    formData.append(
+      'industryProofFileSecondary',
+      data.industryProofFileSecondary,
+    );
+    formData.append(
+      'sustainabilityCertificationFile',
+      data.sustainabilityCertificationFile,
+    );
 
     delete data.confirmPassword;
     delete data.privacy;
@@ -126,6 +168,10 @@ export const useRegistrationStore = create((set) => ({
     delete data.issuingAuthority;
     delete data.tradeLicenseNumber;
     delete data.companyPhoto;
+    delete data.industryProofFile;
+    delete data.industryProofFileSecondary;
+    delete data.sustainabilityCertificationFile;
+    delete data.finalAgreement;
 
     delete data.license;
     postRequest({
@@ -470,8 +516,6 @@ export const usePriceAlertsStore = create((set) => ({
   },
 }));
 
-
-
 interface PartnersStoreState {
   partners: ResponsePartner[];
   partnerPage: PartnerPageResponse | null;
@@ -493,7 +537,7 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
   partnerPage: null,
   isPartnersLoading: true,
   partnersIndustriesData: null,
-  
+
   getPartnersApproved: () => {
     set({ isPartnersLoading: true });
     return getRequest({
@@ -563,13 +607,13 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
   },
   getPartnersIndustries: () => {
     return getRequest({
-      url: `/partners/filters`
-    }).then(data => {
+      url: `/partners/filters`,
+    }).then((data) => {
       set({
-        partnersIndustriesData: data
-      })
-    })
-  }
+        partnersIndustriesData: data,
+      });
+    });
+  },
 }));
 
 interface BlogAdminStoreState {

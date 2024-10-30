@@ -1,9 +1,10 @@
-import PerformanceCards from "../../PerformanceCards";
-import { useEffect, useMemo, useState } from "react";
-import { ICard, CardType } from "../../PerformanceCard";
+import { CardType, ICard } from '../../PerformanceCard';
+import PerformanceCards from '../../PerformanceCards';
 import CompetitivenessChart, {
   ICompetitivnessChart,
-} from "./CompetitivenessChart";
+} from './CompetitivenessChart';
+
+import { useEffect, useMemo, useState } from 'react';
 
 export interface ICompetitiveness {
   currentYearProfit: ICompetitivnessChart[];
@@ -17,7 +18,7 @@ const CompetitivenessTab = ({ data }: { data: any }) => {
 
     return currentYearProfit.map((current: any) => {
       const last = lastYearProfit?.find(
-        (last: any) => last.label === current.label
+        (last: any) => last.label === current.label,
       );
       return {
         label: current.label,
@@ -38,8 +39,14 @@ const CompetitivenessTab = ({ data }: { data: any }) => {
 
   return (
     <>
-      <PerformanceCards data={cardsData} activeCard={activeCard} onChangeActiveCard={handleActiveCardChange}/>
-      <CompetitivenessChart data={data?.competitiveness?.currentYearProfit || []}/>
+      <PerformanceCards
+        data={cardsData}
+        activeCard={activeCard}
+        onChangeActiveCard={handleActiveCardChange}
+      />
+      <CompetitivenessChart
+        data={data?.competitiveness?.currentYearProfit || []}
+      />
     </>
   );
 };

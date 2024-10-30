@@ -89,24 +89,23 @@ const ViewPartnerDialog = ({
                 );
               })}
 
+              <hr></hr>
+              <strong className="text-center text-[18px]">
+                Services Offered
+              </strong>
+              {partner.industries.map(({ label, items }) => {
+                return (
+                  <div key={label} className="mt-3">
+                    <strong>{label}</strong>
 
-               <hr></hr> 
-              <strong className='text-center text-[18px]'>Services Offered</strong>
-              {
-                partner.industries.map(({label, items}) => {
-                  return (
-                    <div key={label} className='mt-3'>
-                      <strong>{label}</strong>
-
-                      <div>
-                        {items.map((item: string) => {
-                          return <div key={item}>{item}</div>
-                        })}
-                      </div>
+                    <div>
+                      {items.map((item: string) => {
+                        return <div key={item}>{item}</div>;
+                      })}
                     </div>
-                  )
-                })
-              }
+                  </div>
+                );
+              })}
             </div>
           </div>
         </DialogHeader>

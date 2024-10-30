@@ -13,8 +13,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      NEXT_PUBLIC_BASE_URL: "https://api.dev.goods2load.com/"
-      NEXT_PUBLIC_CLIENT_URL: "http://localhost:3000"
+      NEXT_PUBLIC_BASE_URL: 'https://api.dev.goods2load.com/'
+      NEXT_PUBLIC_CLIENT_URL: 'http://localhost:3000'
 
     steps:
       - name: Checkout code
@@ -23,7 +23,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: "20"
+          node-version: '20'
 
       - name: Install dependencies
         run: npm install

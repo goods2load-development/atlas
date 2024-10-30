@@ -1,46 +1,46 @@
 'use client';
 
+import PieChart from '../Dashboard/Charts/PieChart';
+import { PartnerPageResponse } from '../Dashboard/PartnersMain/types';
+import HeaderClient from '../Header/HeaderClient';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Textarea } from '../ui/textarea';
+import { useToast } from '../ui/use-toast';
+import PlaceIdMap from './PlaceIdMap';
+import SendDataToPartnerDialog from './SendDataToPartnerDialog';
+import { formSchema } from './constants';
+import { PlaceDetails } from './types';
 import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner/GoogleRatingBunner';
 import { Review } from '@/app/_components/Partner/Review/Review';
 import PartnerLogoDefault from '@/assets/Partners/partner-logo-default.jpg';
+import { useAnalyticsStore } from '@/lib/analyticsStore';
+import { usePartnersStore } from '@/lib/store';
+import {
+  addToFileList,
+  fileToBase64,
+  getRandomHexColor,
+  removeFileFromFileList,
+  urlsToFileList,
+} from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect, useMemo, useState } from 'react';
+
+import { TrashIcon, X } from 'lucide-react';
 import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "../ui/input";
-import { useEffect, useMemo, useState } from "react";
-import { Textarea } from "../ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import PieChart from "../Dashboard/Charts/PieChart";
-import { Button } from "../ui/button";
-import { TrashIcon, X } from "lucide-react";
-import {
-  addToFileList,
-  fileToBase64,
-  getRandomHexColor,
-  urlsToFileList,
-  removeFileFromFileList,
-} from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { formSchema } from "./constants";
-import { z } from "zod";
-import { useParams, useRouter } from "next/navigation";
-import { usePartnersStore } from "@/lib/store";
-import { PartnerPageResponse } from "../Dashboard/PartnersMain/types";
-
-import { useToast } from "../ui/use-toast";
-import { PlaceDetails } from "./types";
-
-import SendDataToPartnerDialog from "./SendDataToPartnerDialog";
-import PlaceIdMap from "./PlaceIdMap";
-
-import HeaderClient from "../Header/HeaderClient";
-import { useAnalyticsStore } from "@/lib/analyticsStore";
+} from '@/components/ui/form';
 
 enum TabsEnum {
   SERVICES_PROVIDED = 'Service provided',

@@ -1,10 +1,11 @@
 import UIButton from '../common/Button';
-import Image from 'next/image';
 import Product from './Product';
-import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
 import NotFound from '@/assets/Catalogue/no-products-found.png';
+import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
 
 import { useEffect } from 'react';
+
+import Image from 'next/image';
 
 export default function Products() {
   const { products, pagination, getProducts } = useFilterStore(

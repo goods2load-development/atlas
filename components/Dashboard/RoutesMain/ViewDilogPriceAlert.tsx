@@ -1,16 +1,18 @@
 'use client';
 
+import { countVolume } from '@/lib/utils';
+
 import { useMemo } from 'react';
+
+import { ViewIcon } from 'lucide-react';
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { ViewIcon } from "lucide-react";
-import { countVolume } from "@/lib/utils";
-
+} from '@/components/ui/dialog';
 
 const ViewDialogPriceAlert = ({
   isOpen,

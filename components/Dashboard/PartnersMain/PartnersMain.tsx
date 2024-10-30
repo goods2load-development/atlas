@@ -15,15 +15,15 @@ import {
   FilePlus,
   FileSymlink,
   TrashIcon,
-} from "lucide-react";
+} from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import { useToast } from '@/components/ui/use-toast';
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import Spinner from '@/components/ui/spinner';
-import ListItem from '@/components/ui/list-item';
+import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import ListItem from '@/components/ui/list-item';
+import Spinner from '@/components/ui/spinner';
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { useToast } from '@/components/ui/use-toast';
 
 const PartnersMain = () => {
   const {
@@ -145,8 +145,8 @@ const PartnersMain = () => {
           <TabsTrigger className={`[all:unset]`} value="new">
             <Button
               tagName="span"
-              className={clsx("cursor-pointer w-full", {
-                "pointer-events-none opacity-50": tab === "new",
+              className={clsx('cursor-pointer w-full', {
+                'pointer-events-none opacity-50': tab === 'new',
               })}
             >
               New
@@ -155,8 +155,8 @@ const PartnersMain = () => {
           <TabsTrigger value="in-review" className={`[all:unset]`}>
             <Button
               tagName="span"
-              className={clsx("cursor-pointer w-full", {
-                "pointer-events-none opacity-50": tab === "in-review",
+              className={clsx('cursor-pointer w-full', {
+                'pointer-events-none opacity-50': tab === 'in-review',
               })}
             >
               In review
@@ -165,8 +165,8 @@ const PartnersMain = () => {
           <TabsTrigger value="active" className={`[all:unset]`}>
             <Button
               tagName="span"
-              className={clsx("cursor-pointer w-full", {
-                "pointer-events-none opacity-50": tab === "active",
+              className={clsx('cursor-pointer w-full', {
+                'pointer-events-none opacity-50': tab === 'active',
               })}
             >
               Approved

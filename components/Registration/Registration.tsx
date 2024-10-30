@@ -1,13 +1,22 @@
 'use client';
 
+import { FormStepAirFreight } from './ProviderStepsRegistration/ProviderStepAirFreight';
+import { FormStepFinalAgreement } from './ProviderStepsRegistration/ProviderStepFinalAgreement';
+import { FormStepGeneral } from './ProviderStepsRegistration/ProviderStepGeneral';
+import { FormStepIndustries } from './ProviderStepsRegistration/ProviderStepIndustries';
+import { FormStepIndustryRecognition } from './ProviderStepsRegistration/ProviderStepIndustryRecognition';
+import { FormStepIndustryRecognitionSecondary } from './ProviderStepsRegistration/ProviderStepIndustryRecognitionSecondary';
+import { FormStepRoadFreight } from './ProviderStepsRegistration/ProviderStepRoadFreight';
+import { FormStepSeaFreight } from './ProviderStepsRegistration/ProviderStepSeaFreight';
 import RegistrationSuccessPopup from './RegistrationSuccessPopup';
 import GoogleIcon from '@/assets/AuthProviderLogos/GoogleIcon';
 import { usePartnersStore, useRegistrationStore } from '@/lib/store';
 import { useCountriesStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
+import clsx from 'clsx';
 import { getSession, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -42,22 +51,43 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
-import clsx from 'clsx';
 
-interface CountriesProps {
-  value: string;
-  label: string;
+enum RegistrationErrors {
+  COMPANY_PHOTO = 'companyPhoto',
+  PASSWORD = 'password',
+  CONFIRM_PASSWORD = 'confirmPassword',
+  PRIVACY = 'privacy',
+  PHONE_NUMBER = 'phoneNumber',
+  COUNTRY = 'contry',
+  GOOGLE_BUSINESS_PROFILE = 'googleBusinessProfile',
+  INDUSTRY_RECOGNITION_SECONDARY = 'industryRecognitionsSecondary',
+  INDUSTRY_PROOF_FILE_SECONDARY = 'industryProofFileSecondary',
+  FINAL_AGREEMENT = 'finalAgreement',
+  INDUSTRIES = 'industries',
 }
+
+const ERRORS_ON_STEPS: Record<string, number> = {
+  [RegistrationErrors.COMPANY_PHOTO]: 1,
+  [RegistrationErrors.PASSWORD]: 1,
+  [RegistrationErrors.CONFIRM_PASSWORD]: 1,
+  [RegistrationErrors.PRIVACY]: 1,
+  [RegistrationErrors.COUNTRY]: 1,
+  [RegistrationErrors.GOOGLE_BUSINESS_PROFILE]: 2,
+  [RegistrationErrors.INDUSTRY_PROOF_FILE_SECONDARY]: 4,
+  [RegistrationErrors.INDUSTRY_RECOGNITION_SECONDARY]: 4,
+  [RegistrationErrors.INDUSTRIES]: 5,
+  [RegistrationErrors.FINAL_AGREEMENT]: 9,
+};
 
 const MAX_UPLOAD_SIZE = 2000000;
 const ACCEPTED_FILE_TYPES = ['application/pdf'];
 
-function IsRequired() {
+export function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
 }
 
 export default function Registration() {
-  const {partnersIndustriesData, getPartnersIndustries} = usePartnersStore();
+  const { getPartnersIndustries } = usePartnersStore();
   const [step, setStep] = useState(1);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
@@ -93,6 +123,7 @@ export default function Registration() {
       city: '',
       communication: false,
       provider: !isUser,
+      branches: false,
     };
   });
 
@@ -105,7 +136,7 @@ export default function Registration() {
 
   useEffect(() => {
     getPartnersIndustries();
-  }, [])
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('registrationForm', JSON.stringify(formState));
@@ -128,13 +159,51 @@ export default function Registration() {
       city: z.string().optional(),
       country: z.string(),
       provider: z.boolean().optional(),
-      ferry: z.boolean().optional(),
-      truck: z.boolean().optional(),
-      plane: z.boolean().optional(),
+      googleBusinessProfile: z
+        .string()
+        .min(3, 'This field is required')
+        .optional(),
+      sustainability: z.boolean().optional(),
+      finalAgreement: z.boolean().optional(),
+      sustainabilityCertificationFile: z
+        .instanceof(File)
+        .refine((file) => {
+          return !file || file.size <= MAX_UPLOAD_SIZE;
+        }, 'File size must be less than 2MB')
+        .refine((file) => {
+          return file && ACCEPTED_FILE_TYPES.includes(file.type);
+        }, 'File must be a PDF')
+        .optional(),
       industries: z
-      .array(z.string())
-      .min(1, 'At least one industry must be selected')
-      .optional(),
+        .array(z.string())
+        .min(1, 'At least one industry must be selected')
+        .optional(),
+      industryRecognitions: z.array(z.string()).optional(),
+      industryProofFile: z
+        .instanceof(File)
+        .refine((file) => {
+          return !file || file.size <= MAX_UPLOAD_SIZE;
+        }, 'File size must be less than 2MB')
+        .refine((file) => {
+          return file && ACCEPTED_FILE_TYPES.includes(file.type);
+        }, 'File must be a PDF')
+        .optional(),
+      industryProofFileSecondary: z
+        .instanceof(File)
+        .refine((file) => {
+          return !file || file.size <= MAX_UPLOAD_SIZE;
+        }, 'File size must be less than 2MB')
+        .refine((file) => {
+          return file && ACCEPTED_FILE_TYPES.includes(file.type);
+        }, 'File must be a PDF')
+        .optional(),
+      industryRecognitionsSecondary: z
+        .array(z.string())
+        .min(1, 'At least one industry recognition must be selected')
+        .optional(),
+      cities: z.array(z.string()).optional(),
+      airports: z.array(z.string()).optional(),
+      seaports: z.array(z.string()).optional(),
       insuranceStatement: z
         .instanceof(File)
         .refine((file) => {
@@ -185,10 +254,48 @@ export default function Registration() {
       message: 'No file uploaded',
       path: ['tradeLicenseNumber'],
     })
-    .refine((data) => !data.provider || (Array.isArray(data.industries) && data.industries.length > 0), {
-      message: 'At least one industry must be selected',
-      path: ['industries'],
+    .refine((data) => !data.provider || data.industryProofFileSecondary, {
+      message: 'No file uploaded',
+      path: ['industryProofFileSecondary'],
     })
+    .refine(
+      (data) =>
+        !data.provider ||
+        (Array.isArray(data.industries) && data.industries.length > 0),
+      {
+        message: 'At least one industry must be selected',
+        path: ['industries'],
+      },
+    )
+    .refine(
+      (data) =>
+        !data.provider ||
+        (Array.isArray(data.industryRecognitionsSecondary) &&
+          data.industryRecognitionsSecondary.length > 0),
+      {
+        message: 'At least one industry recognition must be selected',
+        path: ['industryRecognitionsSecondary'],
+      },
+    )
+    .refine(
+      (data) => !data.provider || data.googleBusinessProfile,
+
+      {
+        message: 'This field is required',
+        path: ['googleBusinessProfile'],
+      },
+    )
+    .refine((data) => !data.provider || data.finalAgreement, {
+      message: 'You need to accept this agreement',
+      path: ['finalAgreement'],
+    })
+    .refine(
+      (data) =>
+        false || {
+          message: 'You need to accept this agreement',
+          path: ['industryProofFile'],
+        },
+    );
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -203,10 +310,10 @@ export default function Registration() {
   });
   const { watch } = form;
 
-  const isProvider = watch("provider");
+  const isProvider = watch('provider');
 
-  const industryRef = useRef<HTMLHeadingElement | null>(null);
-  
+  const industryRecognitions = watch('industryRecognitions');
+
   const { countriesList, getCountriesList } = useCountriesStore(
     (state: any) => state,
   );
@@ -216,8 +323,15 @@ export default function Registration() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
+
+    const { seaports, googleBusinessProfile, ...rest } = values;
+
     postUserRegistrationData({
-      ...values,
+      ...rest,
+      airports: values?.airports || [],
+      ports: seaports || [],
+      cities: values?.cities || [],
+      bussinessProfileUrl: googleBusinessProfile,
       recaptchaToken: token,
     });
   }
@@ -234,6 +348,20 @@ export default function Registration() {
       fillFields();
     }
   }, [cookies.accessToken]);
+
+  const handleOnFormErrors = (errors: any) => {
+    console.log(errors, 'ERRORS');
+    Object.keys(errors).map((item: string) => {
+      // Change step on error field
+      if (step !== ERRORS_ON_STEPS[item]) {
+        window.scroll({
+          top: 300,
+          behavior: 'smooth',
+        });
+        setStep(ERRORS_ON_STEPS[item] || 1);
+      }
+    });
+  };
 
   async function fillFields() {
     const token = getCookie('accessToken');
@@ -268,70 +396,95 @@ export default function Registration() {
       </Button>
       <Divider />
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          {step === 1 && <>
-          <div className="flex flex-wrap flex-col content-center mb-5">
-            <FormField
-              control={form.control}
-              name="provider"
-              render={({ field }) => (
-                <FormItem className="flex space-x-4 space-y-0">
-                  <FormLabel className="text-[14px]/[24px]">
-                    I <b>order</b> services
-                  </FormLabel>
-                  <FormControl>
-                    <Switch
-                      checked={field.value}
-                      onCheckedChange={(e) => {
-                        field.onChange(e);
-                        setUserRegistration(!e);
-
-                        !e
-                          ? router.push('/registration?user')
-                          : router.push('/registration?provider');
-                      }}
-                    />
-                  </FormControl>
-                  <FormLabel className="text-[14px]/[24px]">
-                    I <b>provide</b> services
-                  </FormLabel>
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="sm:flex mb-5">
-            <div className="sm:w-6/12 sm:mr-2">
-              <FormLabel className="font-light sm:font-normal">
-                Company phone number
-                <IsRequired />
-              </FormLabel>
-              <div className="flex mt-2 w-full">
+        <form onSubmit={form.handleSubmit(onSubmit, handleOnFormErrors)}>
+          {step === 1 && (
+            <>
+              <div className="flex flex-wrap flex-col content-center mb-5">
                 <FormField
                   control={form.control}
-                  name="countryCode"
+                  name="provider"
                   render={({ field }) => (
-                    <FormItem className="sm:w-5/12 sm:mr-2">
+                    <FormItem className="flex space-x-4 space-y-0">
+                      <FormLabel className="text-[14px]/[24px]">
+                        I <b>order</b> services
+                      </FormLabel>
                       <FormControl>
-                        <CountryCode
-                          onChange={field.onChange}
-                          className="bg-gray-2 border-transparent outline-none"
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={(e) => {
+                            field.onChange(e);
+                            setUserRegistration(!e);
+
+                            !e
+                              ? router.push('/registration?user')
+                              : router.push('/registration?provider');
+                          }}
                         />
                       </FormControl>
-                      <FormMessage />
+                      <FormLabel className="text-[14px]/[24px]">
+                        I <b>provide</b> services
+                      </FormLabel>
                     </FormItem>
                   )}
                 />
+              </div>
+              <div className="sm:flex mb-5">
+                <div className="sm:w-6/12 sm:mr-2">
+                  <FormLabel className="font-light sm:font-normal">
+                    Company phone number
+                    <IsRequired />
+                  </FormLabel>
+                  <div className="flex mt-2 w-full">
+                    <FormField
+                      control={form.control}
+                      name="countryCode"
+                      render={({ field }) => (
+                        <FormItem className="sm:w-5/12 sm:mr-2">
+                          <FormControl>
+                            <CountryCode
+                              onChange={field.onChange}
+                              className="bg-gray-2 border-transparent outline-none"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="phoneNumber"
+                      render={({ field }) => (
+                        <FormItem className="sm:w-7/12 w-full">
+                          <FormControl>
+                            <Input
+                              className="bg-gray-2 border-0"
+                              {...field}
+                              onBlur={handleChange}
+                              placeholder="12345678"
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
                 <FormField
                   control={form.control}
-                  name="phoneNumber"
+                  name="email"
                   render={({ field }) => (
-                    <FormItem className="sm:w-7/12 w-full">
+                    <FormItem className="sm:w-6/12 mt-3 sm:mt-0">
+                      <FormLabel className="font-light sm:font-normal">
+                        Business Email
+                        <IsRequired />
+                      </FormLabel>
                       <FormControl>
                         <Input
                           className="bg-gray-2 border-0"
+                          placeholder="email@efgh.com"
                           {...field}
                           onBlur={handleChange}
-                          placeholder="12345678"
+                          disabled={isRegisteredWithGoogle}
                         />
                       </FormControl>
                       <FormMessage />
@@ -339,562 +492,449 @@ export default function Registration() {
                   )}
                 />
               </div>
-            </div>
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem className="sm:w-6/12 mt-3 sm:mt-0">
-                  <FormLabel className="font-light sm:font-normal">
-                    Business Email
-                    <IsRequired />
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-2 border-0"
-                      placeholder="email@efgh.com"
-                      {...field}
-                      onBlur={handleChange}
-                      disabled={isRegisteredWithGoogle}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={form.control}
-            name="companyName"
-            render={({ field }) => (
-              <FormItem className="w-full mb-5">
-                <FormLabel className="font-light sm:font-normal">
-                  Company name
-                  <IsRequired />
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    placeholder="EFGH FZ LLC"
-                    {...field}
-                    onBlur={handleChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="companyPhoto"
-            render={({ field }) => (
-              <>
-                <FormItem className="w-full mb-5 flex gap-4 items-center justify-between">
-                  <FormLabel className="font-light sm:font-normal">
-                    Company logo
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="hidden"
-                      name="companyPhoto"
-                      type="file"
-                      accept="image/png, image/gif, image/jpeg, image/webp"
-                      onChange={(e) => {
-                        field.onChange(
-                          e.target.files ? e.target.files[0] : null,
-                        );
-                      }}
-                    />
-                  </FormControl>
-                  <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                    <img className="mr-[8px]" src="/upload.svg" />
-                    {field.value ? field.value.name : 'Upload logo'}
-                  </FormLabel>
-                </FormItem>
-                <FormMessage />
-              </>
-            )}
-          />
-          <div className="sm:flex mb-5">
-            <FormField
-              control={form.control}
-              name="address"
-              render={({ field }) => (
-                <FormItem className="sm:w-8/12 sm:mr-3">
-                  <FormLabel className="font-light sm:font-normal">
-                    Business Address
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-2 border-0"
-                      placeholder="Name of street, 234"
-                      {...field}
-                      onBlur={handleChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="postalCode"
-              render={({ field }) => (
-                <FormItem className="sm:w-4/12">
-                  <FormLabel className="font-light sm:font-normal">
-                    Postal / ZIP code
-                  </FormLabel>
-                  <FormControl>
-                    <Input
-                      className="bg-gray-2 border-0"
-                      placeholder="000 000"
-                      {...field}
-                      onBlur={handleChange}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <FormField
-            control={form.control}
-            name="country"
-            render={({ field }) => (
-              <FormItem className="w-full mb-5">
-                <FormLabel className="font-light sm:font-normal">
-                  Country
-                  <IsRequired />
-                </FormLabel>
-                <FormControl>
-                  <Select onValueChange={field.onChange}>
-                    <SelectTrigger className="bg-gray-2 border-transparent outline-none">
-                      <SelectValue placeholder="UAE" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {countriesList.map((item: any) => (
-                        <SelectItem key={item.value} value={item.label}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="city"
-            render={({ field }) => (
-              <FormItem className="w-full mb-5">
-                <FormLabel className="font-light sm:font-normal">
-                  City
-                </FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    placeholder="Dubai"
-                    {...field}
-                    onBlur={handleChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          {!userRegistration && (
-            <>
-              <FormLabel className="font-light sm:font-normal">
-                I provide logistic services by:
-              </FormLabel>
-              <div className="flex mb-5 space-x-8">
+              <FormField
+                control={form.control}
+                name="companyName"
+                render={({ field }) => (
+                  <FormItem className="w-full mb-5">
+                    <FormLabel className="font-light sm:font-normal">
+                      Company name
+                      <IsRequired />
+                    </FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-gray-2 border-0"
+                        placeholder="EFGH FZ LLC"
+                        {...field}
+                        onBlur={handleChange}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="companyPhoto"
+                render={({ field }) => (
+                  <>
+                    <FormItem className="w-full mb-5 flex gap-4 items-center justify-between">
+                      <FormLabel className="font-light sm:font-normal">
+                        Company logo
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="hidden"
+                          name="companyPhoto"
+                          type="file"
+                          accept="image/png, image/gif, image/jpeg, image/webp"
+                          onChange={(e) => {
+                            field.onChange(
+                              e.target.files ? e.target.files[0] : null,
+                            );
+                          }}
+                        />
+                      </FormControl>
+                      <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
+                        <img className="mr-[8px]" src="/upload.svg" />
+                        {field.value ? field.value.name : 'Upload logo'}
+                      </FormLabel>
+                    </FormItem>
+                    <FormMessage />
+                  </>
+                )}
+              />
+              <div className="sm:flex mb-5">
                 <FormField
                   control={form.control}
-                  name="ferry"
+                  name="address"
                   render={({ field }) => (
-                    <FormItem className="flex space-x-3">
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        id="ferry"
-                        className="mt-2"
-                      />
-                      <FormLabel
-                        htmlFor="ferry"
-                        className="text-sm font-medium"
-                      >
-                        Ferry
+                    <FormItem className="sm:w-8/12 sm:mr-3">
+                      <FormLabel className="font-light sm:font-normal">
+                        Business Address
                       </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="bg-gray-2 border-0"
+                          placeholder="Name of street, 234"
+                          {...field}
+                          onBlur={handleChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
                 <FormField
                   control={form.control}
-                  name="plane"
+                  name="postalCode"
                   render={({ field }) => (
-                    <FormItem className="flex space-x-3">
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        id="plane"
-                        className="mt-2"
-                      />
-                      <FormLabel
-                        htmlFor="plane"
-                        className="text-sm font-medium"
-                      >
-                        Plane
+                    <FormItem className="sm:w-4/12">
+                      <FormLabel className="font-light sm:font-normal">
+                        Postal / ZIP code
                       </FormLabel>
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="truck"
-                  render={({ field }) => (
-                    <FormItem className="flex space-x-3">
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        id="truck"
-                        className="mt-2"
-                      />
-                      <FormLabel
-                        htmlFor="truck"
-                        className="text-sm font-medium"
-                      >
-                        Truck
-                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          className="bg-gray-2 border-0"
+                          placeholder="000 000"
+                          {...field}
+                          onBlur={handleChange}
+                        />
+                      </FormControl>
+                      <FormMessage />
                     </FormItem>
                   )}
                 />
               </div>
               <FormField
                 control={form.control}
-                name="insuranceStatement"
+                name="country"
                 render={({ field }) => (
-                  <FormItem className="w-full mb-5 sm:flex flex-wrap">
-                    <div className="sm:w-1/2 sm:pr-2">
-                      <FormLabel className="text-[14px]/[18px] font-normal">
-                        Insurance statement, license to be fill in
-                      </FormLabel>
-                      <FormDescription className="text-[12px]">
-                        *Attachments not bigger than 2MB
-                      </FormDescription>
-                    </div>
-                    <FormControl>
-                      <Input
-                        className="hidden"
-                        type="file"
-                        accept="application/pdf"
-                        onChange={(e) => {
-                          field.onChange(
-                            e.target.files ? e.target.files[0] : null,
-                          );
-                        }}
-                      />
-                    </FormControl>
-                    <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                      <img className="mr-[8px]" src="/upload.svg" />
-                      {field.value
-                        ? field.value.name
-                        : 'Upload PDF(front&back)'}
+                  <FormItem className="w-full mb-5">
+                    <FormLabel className="font-light sm:font-normal">
+                      Country
+                      <IsRequired />
                     </FormLabel>
+                    <FormControl>
+                      <Select onValueChange={field.onChange}>
+                        <SelectTrigger className="bg-gray-2 border-transparent outline-none">
+                          <SelectValue placeholder="UAE" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {countriesList.map((item: any) => (
+                            <SelectItem key={item.value} value={item.label}>
+                              {item.label}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
-                name="issuingAuthority"
+                name="city"
                 render={({ field }) => (
-                  <FormItem className="w-full mb-5 sm:flex flex-wrap">
-                    <div className="sm:w-1/2 sm:pr-2">
-                      <FormLabel className="text-[14px]/[18px] font-normal">
-                        Issuing authority, form to be fill in
-                      </FormLabel>
-                      <FormDescription className="text-[12px]">
-                        *Attachments not bigger than 2MB
-                      </FormDescription>
-                    </div>
+                  <FormItem className="w-full mb-5">
+                    <FormLabel className="font-light sm:font-normal">
+                      City
+                    </FormLabel>
                     <FormControl>
                       <Input
-                        className="hidden"
-                        placeholder="temp"
-                        type="file"
-                        accept="application/pdf"
-                        onChange={(e) => {
-                          field.onChange(
-                            e.target.files ? e.target.files[0] : null,
-                          );
-                        }}
+                        className="bg-gray-2 border-0"
+                        placeholder="Dubai"
+                        {...field}
+                        onBlur={handleChange}
                       />
                     </FormControl>
-                    <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                      <img className="mr-[8px]" src="/upload.svg" />
-                      {field.value
-                        ? field.value.name
-                        : 'Upload PDF(front&back)'}
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              {!userRegistration && (
+                <>
+                  <FormLabel className="font-light sm:font-normal my-2 block">
+                    <strong>I provide logistic services by:</strong>
+                  </FormLabel>
+                  <FormField
+                    control={form.control}
+                    name="insuranceStatement"
+                    render={({ field }) => (
+                      <FormItem className="w-full mb-5 sm:flex flex-wrap">
+                        <div className="sm:w-1/2 sm:pr-2">
+                          <FormLabel className="text-[14px]/[18px] font-normal">
+                            Insurance statement, license to be fill in
+                          </FormLabel>
+                          <FormDescription className="text-[12px]">
+                            *Attachments not bigger than 2MB
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Input
+                            className="hidden"
+                            type="file"
+                            accept="application/pdf"
+                            onChange={(e) => {
+                              field.onChange(
+                                e.target.files ? e.target.files[0] : null,
+                              );
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
+                          <img className="mr-[8px]" src="/upload.svg" />
+                          {field.value
+                            ? field.value.name
+                            : 'Upload PDF(front&back)'}
+                        </FormLabel>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="issuingAuthority"
+                    render={({ field }) => (
+                      <FormItem className="w-full mb-5 sm:flex flex-wrap">
+                        <div className="sm:w-1/2 sm:pr-2">
+                          <FormLabel className="text-[14px]/[18px] font-normal">
+                            Issuing authority, form to be fill in
+                          </FormLabel>
+                          <FormDescription className="text-[12px]">
+                            *Attachments not bigger than 2MB
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Input
+                            className="hidden"
+                            placeholder="temp"
+                            type="file"
+                            accept="application/pdf"
+                            onChange={(e) => {
+                              field.onChange(
+                                e.target.files ? e.target.files[0] : null,
+                              );
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
+                          <img className="mr-[8px]" src="/upload.svg" />
+                          {field.value
+                            ? field.value.name
+                            : 'Upload PDF(front&back)'}
+                        </FormLabel>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="tradeLicenseNumber"
+                    render={({ field }) => (
+                      <FormItem className="w-full mb-5 sm:flex flex-wrap">
+                        <div className="sm:w-1/2 sm:pr-2">
+                          <FormLabel className="text-[14px]/[18px] font-normal">
+                            Trade license number, form to be fill in
+                          </FormLabel>
+                          <FormDescription className="text-[12px]">
+                            *Attachments not bigger than 2MB
+                          </FormDescription>
+                        </div>
+                        <FormControl>
+                          <Input
+                            className="hidden"
+                            placeholder="temp"
+                            type="file"
+                            accept="application/pdf"
+                            onChange={(e) => {
+                              field.onChange(
+                                e.target.files ? e.target.files[0] : null,
+                              );
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 sm:w-1/2 flex justify-center items-center">
+                          <img className="mr-[8px]" src="/upload.svg" />
+                          {field.value
+                            ? field.value.name
+                            : 'Upload PDF(front&back)'}
+                        </FormLabel>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </>
+              )}
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem className="w-full mb-5">
+                    <FormLabel>
+                      Password
+                      <IsRequired />
                     </FormLabel>
+                    <FormControl>
+                      <InputPassword
+                        placeholder=""
+                        className="bg-gray-2 border-0"
+                        {...field}
+                      />
+                    </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
               <FormField
                 control={form.control}
-                name="tradeLicenseNumber"
+                name="confirmPassword"
                 render={({ field }) => (
-                  <FormItem className="w-full mb-5 sm:flex flex-wrap">
-                    <div className="sm:w-1/2 sm:pr-2">
-                      <FormLabel className="text-[14px]/[18px] font-normal">
-                        Trade license number, form to be fill in
-                      </FormLabel>
-                      <FormDescription className="text-[12px]">
-                        *Attachments not bigger than 2MB
-                      </FormDescription>
-                    </div>
+                  <FormItem className="w-full mb-5">
+                    <FormLabel>
+                      Confirm password
+                      <IsRequired />
+                    </FormLabel>
                     <FormControl>
-                      <Input
-                        className="hidden"
-                        placeholder="temp"
-                        type="file"
-                        accept="application/pdf"
-                        onChange={(e) => {
-                          field.onChange(
-                            e.target.files ? e.target.files[0] : null,
-                          );
-                        }}
+                      <InputPassword
+                        placeholder=""
+                        className="bg-gray-2 border-0"
+                        {...field}
                       />
                     </FormControl>
-                    <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 sm:w-1/2 flex justify-center items-center">
-                      <img className="mr-[8px]" src="/upload.svg" />
-                      {field.value
-                        ? field.value.name
-                        : 'Upload PDF(front&back)'}
-                    </FormLabel>
                     <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="privacy"
+                render={({ field }) => (
+                  <FormItem className="mb-1 flex space-x-3">
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      id="privacy"
+                      className="mt-2"
+                    />
+                    <FormLabel
+                      htmlFor="privacy"
+                      className="text-[12px]/[16px] font-normal"
+                    >
+                      I have read and agree to the{' '}
+                      <Link
+                        href="/privacy-policy"
+                        className="underline hover:no-underline"
+                      >
+                        Privacy Terms
+                      </Link>{' '}
+                      and{' '}
+                      <Link
+                        href="/terms-of-service"
+                        className="underline hover:no-underline"
+                      >
+                        Terms of use
+                      </Link>{' '}
+                      of the website.
+                    </FormLabel>
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="communication"
+                render={({ field }) => (
+                  <FormItem className="mb-5 flex space-x-3">
+                    <Checkbox
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      id="communication"
+                      className="mt-2"
+                    />
+                    <FormLabel
+                      htmlFor="communication"
+                      className="text-[12px]/[16px] font-normal"
+                    >
+                      Yes, I would like to receive communication from{' '}
+                      <Link
+                        href="/terms-of-service"
+                        className="underline hover:no-underline"
+                      >
+                        GOODS2LOAD
+                      </Link>
+                    </FormLabel>
                   </FormItem>
                 )}
               />
             </>
           )}
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem className="w-full mb-5">
-                <FormLabel>
-                  Password
-                  <IsRequired />
-                </FormLabel>
-                <FormControl>
-                  <InputPassword
-                    placeholder=""
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="confirmPassword"
-            render={({ field }) => (
-              <FormItem className="w-full mb-5">
-                <FormLabel>
-                  Confirm password
-                  <IsRequired />
-                </FormLabel>
-                <FormControl>
-                  <InputPassword
-                    placeholder=""
-                    className="bg-gray-2 border-0"
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="privacy"
-            render={({ field }) => (
-              <FormItem className="mb-1 flex space-x-3">
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  id="privacy"
-                  className="mt-2"
-                />
-                <FormLabel
-                  htmlFor="privacy"
-                  className="text-[12px]/[16px] font-normal"
-                >
-                  I have read and agree to the{' '}
-                  <Link
-                    href="/privacy-policy"
-                    className="underline hover:no-underline"
-                  >
-                    Privacy Terms
-                  </Link>{' '}
-                  and{' '}
-                  <Link
-                    href="/terms-of-service"
-                    className="underline hover:no-underline"
-                  >
-                    Terms of use
-                  </Link>{' '}
-                  of the website.
-                </FormLabel>
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="communication"
-            render={({ field }) => (
-              <FormItem className="mb-5 flex space-x-3">
-                <Checkbox
-                  checked={field.value}
-                  onCheckedChange={field.onChange}
-                  id="communication"
-                  className="mt-2"
-                />
-                <FormLabel
-                  htmlFor="communication"
-                  className="text-[12px]/[16px] font-normal"
-                >
-                  Yes, I would like to receive communication from{' '}
-                  <Link
-                    href="/terms-of-service"
-                    className="underline hover:no-underline"
-                  >
-                    GOODS2LOAD
-                  </Link>
-                </FormLabel>
-              </FormItem>
-              
-            )}
-          />
+          <div className={clsx('pt-6 mb-10', step !== 2 && 'hidden')}>
+            <FormStepGeneral form={form} />
+          </div>
 
-            {
-            isProvider && <Button
-              onClick={() => {
-                setTimeout(() => {
-                  industryRef?.current?.scrollIntoView({
-                  behavior: 'smooth', 
-                  block: 'start',
-                });
-                }, 100)
-                setStep(2)
-              }}
-              type="button"
-              className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
-            >
-              Next
-             </Button>
-            }
+          <div className={clsx('pt-6 mb-10', step !== 3 && 'hidden')}>
+            <FormStepIndustryRecognition form={form} />
+          </div>
 
-            {
-            !isProvider && <Button
-              type="submit"
-              className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
-            >
-              Continue
-             </Button>
-            }
-          </>
-          }
-            <div ref={industryRef} className={clsx("pt-6", step !== 2 && "hidden")}>
-              <FormStepTwo form={form} setStep={(value: number) => setStep(value)} />
-            </div>
-        </form>
-      </Form>
-      <RegistrationSuccessPopup />
-    </RegistrationWrapper>
-  );
-}
+          <div className={clsx('pt-6 mb-10', step !== 4 && 'hidden')}>
+            <FormStepIndustryRecognitionSecondary form={form} />
+          </div>
 
-const FormStepTwo = ({form, setStep}: {form: any, setStep: any}) => {
-  const {partnersIndustriesData} = usePartnersStore();
+          <div className={clsx('pt-6', step !== 5 && 'hidden')}>
+            <FormStepIndustries form={form} />
+          </div>
 
-  return (
-    <>
-            <h3 className='mb-4 text-[20px]/[24px]'>Services Offered <IsRequired /></h3>
-            <p className='mb-4 text-[14px]/[17px]'>Please select the services your company specializes in (check all that apply):</p>
-              
-            <FormField
-              control={form.control}
-              name="industries"
-              render={({ field }) => (
-                <div className='flex flex-col gap-10 my-10'>
-      
-                {
-                  partnersIndustriesData && partnersIndustriesData.map(({label, items}) => {
-                    return (
-                      <FormItem key={label} className="mt-3 sm:mt-0">
-                  <FormLabel className="font-light sm:font-normal">
-                    {label}
-          
-                  </FormLabel>
-                  <FormControl>
-                    <div className="space-y-2">
-                      {
-                        items && items.map(item => {
-                          return <label key={item} className="flex items-center space-x-2">
-                                    <Checkbox 
-                                      value={item}
-                                      checked={field.value?.includes(item) || false}
-                                      onCheckedChange={(checked) => {
-                                        const value = item;
-                                        const newValue = checked
-                                          ? [...(field.value || []), value]
-                                          : field.value?.filter((v: string) => v !== value) || [];
-                                        field.onChange(newValue);
-                                      }}
-                                    />
-                                    <span>{item}</span>
-                                  </label>
-                        })
-                      }
-                    </div>
-                    </FormControl>
-                  </FormItem>
-                    )
-                  })
-                }</div>
-              )}
-            />
+          <div className={clsx('pt-6', step !== 6 && 'hidden')}>
+            <FormStepAirFreight form={form} />
+          </div>
 
+          <div className={clsx('pt-6', step !== 7 && 'hidden')}>
+            <FormStepSeaFreight form={form} />
+          </div>
 
-            <div className='flex gap-2 items-center'>
+          <div className={clsx('pt-6', step !== 8 && 'hidden')}>
+            <FormStepRoadFreight form={form} />
+          </div>
+
+          <div className={clsx('pt-6', step !== 9 && 'hidden')}>
+            <FormStepFinalAgreement form={form} />
+          </div>
+
+          <div className="flex gap-2 items-center">
+            {isProvider && step !== 1 && (
               <Button
                 onClick={() => {
                   window.scroll({
-                    top: 0,
-                    behavior: "smooth"
-                  })
-                  setStep(1)
+                    top: 300,
+                    behavior: 'smooth',
+                  });
+                  setStep((step) => step - 1);
                 }}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
                 Previous step
               </Button>
-              
-            
-              
-            <Button
+            )}
+
+            {isProvider && step !== 9 && (
+              <Button
+                onClick={() => {
+                  window.scroll({
+                    top: 300,
+                    behavior: 'smooth',
+                  });
+                  setStep((step) => step + 1);
+                }}
+                type="button"
+                className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+              >
+                Next
+              </Button>
+            )}
+
+            {!isProvider && (
+              <Button
                 type="submit"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
-                Continue
+                Countinue
               </Button>
-            </div>
-          </> )
+            )}
+
+            {isProvider && step === 9 && (
+              <Button
+                type="submit"
+                className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+              >
+                Submit
+              </Button>
+            )}
+          </div>
+        </form>
+      </Form>
+      <RegistrationSuccessPopup />
+    </RegistrationWrapper>
+  );
 }

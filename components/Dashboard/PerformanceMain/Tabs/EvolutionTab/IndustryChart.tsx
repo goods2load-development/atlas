@@ -1,15 +1,16 @@
-import React from "react";
-import Image from "next/image";
+import React from 'react';
+
+import Image from 'next/image';
 import {
-  LineChart,
+  CartesianGrid,
+  Legend,
   Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
   XAxis,
   YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
-} from "recharts";
+} from 'recharts';
 
 export interface IIndustryChart {
   name: string;
