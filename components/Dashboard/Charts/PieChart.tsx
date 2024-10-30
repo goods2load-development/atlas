@@ -39,7 +39,7 @@ const renderCustomizedLabel = ({
 
   return (
     <>
-      {percent >= 5 && (
+      {/* {percent >= 5 && (
         <text
           x={positionX}
           y={y - 10}
@@ -50,8 +50,8 @@ const renderCustomizedLabel = ({
         >
           {name}
         </text>
-      )}
-      <text
+      )} */}
+      {/* <text
         x={x}
         y={y}
         fill="white"
@@ -60,7 +60,7 @@ const renderCustomizedLabel = ({
         className="text-[10px]"
       >
         {`${percent}%`}
-      </text>
+      </text> */}
     </>
   );
 };

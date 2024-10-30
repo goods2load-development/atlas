@@ -49,8 +49,6 @@ export default function Sitemap() {
     return;
   }
 
-  console.log({ data });
-
   return (
     <>
       <main className="min-h-screen colored-main max-w-[1328px] mx-auto py-10 sm:py-[72px] px-4">

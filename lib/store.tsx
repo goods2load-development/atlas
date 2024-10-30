@@ -1,3 +1,4 @@
+import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from './types';
 import {
   deleteRequest,
   getRequest,
@@ -19,7 +20,6 @@ import {
   PartnerPageResponse,
   ResponsePartner,
 } from '@/components/Dashboard/PartnersMain/types';
-import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from '@/components/LangSwicher';
 import { SeoPageCategory } from '@/components/SeoPage/types';
 
 export const useCountriesStore = create((set) => ({
