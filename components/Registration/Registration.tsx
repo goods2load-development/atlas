@@ -43,11 +43,6 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 
-interface CountriesProps {
-  value: string;
-  label: string;
-}
-
 const MAX_UPLOAD_SIZE = 2000000;
 const ACCEPTED_FILE_TYPES = ['application/pdf'];
 
@@ -189,7 +184,7 @@ export default function Registration() {
           plane: false,
         },
   });
-  // const { formState } = form;
+
   const { countriesList, getCountriesList } = useCountriesStore(
     (state: any) => state,
   );
