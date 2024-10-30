@@ -57,7 +57,7 @@ export default function HeaderClient({
   return (
     <header
       className={clsx(
-        'flex items-center justify-between  sm:block mx-auto bg-orangePrimary py-6 sm:py-0 relative z-30',
+        'flex items-center justify-between  sm:block mx-auto bg-orangePrimary py-6 sm:py-0 relative z-40',
         open ? 'bg-orangePrimary' : '',
         variant === 'transparent' && !open && 'bg-transparent',
         className,

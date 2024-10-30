@@ -7,6 +7,10 @@ export interface ResponsePartner {
   user: Partner;
 }
 
+export interface PartnerIndustry {
+  label: string;
+  items: string[];
+}
 export interface Partner {
   address: string;
   city: string | null;
@@ -31,6 +35,7 @@ export interface Partner {
   role: string | null;
   tradeLicenseNumber: string;
   truck: boolean;
+  industries: PartnerIndustry[];
 }
 
 interface FocusItem {

@@ -39,6 +39,6 @@ export const dataTeamWork: PartnerBoostingTravel[] = [
   {
     mainData: 'Risk Management',
     descriptionMainData:
-      'Mitigate risks associated with expansion through thorough planning.',
+      'Mitigate risks associated with expansion through planning.',
   },
 ];
