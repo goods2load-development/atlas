@@ -1,25 +1,29 @@
-"use client";
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useState } from 'react';
+
+import { Reply } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import * as z from "zod";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Reply } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
+} from '@/components/ui/form';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
   message: z.string().max(1000),

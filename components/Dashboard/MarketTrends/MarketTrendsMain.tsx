@@ -1,6 +1,7 @@
-import { type ReactNode, useState } from "react";
-import MarketTrendsTabs from "./MarketTrendsTabs";
-import { Tabs } from "./mocks/tabs";
+import MarketTrendsTabs from './MarketTrendsTabs';
+import { Tabs } from './mocks/tabs';
+
+import { type ReactNode, useState } from 'react';
 
 export interface Tab {
   id: number;

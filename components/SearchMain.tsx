@@ -1,21 +1,38 @@
-"use client";
-import React, { useEffect, useState, useMemo, useRef } from "react";
-import Image from "next/image";
-import { Calendar } from "@/components/ui/calendar";
-import Loader from "@/components/common/Loader";
-import { format } from "date-fns";
+'use client';
+
+import {
+  DeliveryBy,
+  useCurrenciesStore,
+  useFilterStore,
+} from '@/lib/filterStore';
+import { useCountriesStore, useGoodsStore } from '@/lib/store';
+
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+
+import { format } from 'date-fns';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
+
+import UIButton from '@/components/common/Button';
+import Loader from '@/components/common/Loader';
+import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
+} from '@/components/ui/command';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
+} from '@/components/ui/popover';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
   SelectContent,
@@ -23,36 +40,23 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import UIButton from "@/components/common/Button";
-import { useCountriesStore, useGoodsStore } from "@/lib/store";
-import {
-  useFilterStore,
-  useCurrenciesStore,
-  DeliveryBy,
-} from "@/lib/filterStore";
-import { useRouter } from "next/navigation";
+} from '@/components/ui/tooltip';
 
 const placementOfGoodsOptions = [
-  "Pallets",
-  "Tanks",
-  "Drums",
-  "Big Bags",
-  "ULDs",
-  "Bulk Cargo",
-  "Ro-Ro ",
-  "Other",
+  'Pallets',
+  'Tanks',
+  'Drums',
+  'Big Bags',
+  'ULDs',
+  'Bulk Cargo',
+  'Ro-Ro ',
+  'Other',
 ];
 
 interface IncotermsItem {
@@ -66,27 +70,29 @@ type Incoterms = {
 
 const incotermsList: Incoterms = {
   plane: [
-    { name: "Unknown", description: "In case if You don't know." },
-    { name: "DDP", description: "Delivered Duty Paid" },
-    { name: "DPU", description: "Delivered at Place Unloaded" },
-    { name: "DAP", description: "Delivered At Place" },
-    { name: "DDU", description: "Delivered Duty Unpaid" },
-    { name: "CPT", description: "Carriage Paid To" },
-    { name: "CIP", description: "Carriage and Insurance Paid to" },
-    { name: "EXW", description: "Ex Works" },
-    { name: "FCA", description: "Free Carrier" },
+    { name: 'Unknown', description: `In case you’re unsure` },
+    { name: 'DDP', description: 'Delivered Duty Paid' },
+    { name: 'DPU', description: 'Delivered at Place Unloaded' },
+    { name: 'DAP', description: 'Delivered At Place' },
+    { name: 'DDU', description: 'Delivered Duty Unpaid' },
+    { name: 'CPT', description: 'Carriage Paid To' },
+    { name: 'CIP', description: 'Carriage and Insurance Paid to' },
+    { name: 'EXW', description: 'Ex Works' },
+    { name: 'FCA', description: 'Free Carrier' },
   ],
   ferry: [
-    { name: "CFR", description: "Cost and Freight" },
-    { name: "CIF", description: "Cost, Insurance and Freight" },
-    { name: "CPT", description: "Carriage Paid To" },
-    { name: "CIP", description: "Carriage and Insurance Paid" },
-    { name: "FOB", description: "Free on Board" },
-    { name: "FCA", description: "Free Carrier" },
+    { name: 'Unknown', description: `In case you’re unsure` },
+    { name: 'CFR', description: 'Cost and Freight' },
+    { name: 'CIF', description: 'Cost, Insurance and Freight' },
+    { name: 'CPT', description: 'Carriage Paid To' },
+    { name: 'CIP', description: 'Carriage and Insurance Paid' },
+    { name: 'FOB', description: 'Free on Board' },
+    { name: 'FCA', description: 'Free Carrier' },
   ],
   truck: [
-    { name: "FCL", description: "Full Container Load" },
-    { name: "LCL", description: "Less Than Container Load" },
+    { name: 'Unknown', description: `In case you’re unsure` },
+    { name: 'FCL', description: 'Full Container Load' },
+    { name: 'LCL', description: 'Less Than Container Load' },
   ],
 };
 
@@ -140,7 +146,7 @@ export function ToolTipComponent({
         </TooltipTrigger>
         {!!text.length && (
           <TooltipContent
-            side={!!children ? "top" : "right"}
+            side={!!children ? 'top' : 'right'}
             className="text-[14px]/[18px] font-normal bg-[#FEF1DF] rounded-[16px] p-[16px_24px] overflow-visible relative"
           >
             {!children && (
@@ -149,9 +155,9 @@ export function ToolTipComponent({
                 style={{
                   width: 0,
                   height: 0,
-                  borderTop: "10px solid transparent",
-                  borderBottom: "10px solid transparent",
-                  borderRight: "10px solid #FEF1DF  ",
+                  borderTop: '10px solid transparent',
+                  borderBottom: '10px solid transparent',
+                  borderRight: '10px solid #FEF1DF  ',
                 }}
               />
             )}
@@ -197,7 +203,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
     valid,
   } = useFilterStore((state: any) => state);
   const { goodsList, goodsListLoading, getGoodsList } = useGoodsStore(
-    (state: any) => state
+    (state: any) => state,
   );
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
   useEffect(() => {
@@ -245,7 +251,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
 
     if (valid) {
       getProducts();
-      if (main) router.push("/catalogue");
+      if (main) router.push('/catalogue');
     }
   }
 
@@ -269,7 +275,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
           });
         }}
         defaultValue={deliveryBy}
-        className={`flex justify-center lg:justify-start custom-radio ${!main && "catalogue"} pb-5 lg:pb-0`}
+        className={`flex justify-center sm:justify-start custom-radio ${!main && 'catalogue'} pb-5 sm:pb-0`}
       >
         <CustomRadioGroupItem value={DeliveryBy.plane} imageNumber={1} />
         <CustomRadioGroupItem value={DeliveryBy.ferry} imageNumber={2} />
@@ -501,12 +507,12 @@ export default function SearchMain({ main }: { main?: boolean }) {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={'outline'}
                     type="button"
                     className="justify-start h-[60px] text-black font-normal lg:rounded-none rounded-l-[16px] rounded-r-none hover:bg-white border-0 w-full"
                   >
                     {departure ? (
-                      format(departure, "MM/dd/yyyy")
+                      format(departure, 'MM/dd/yyyy')
                     ) : (
                       <span className="text-gray-500">Pick a date</span>
                     )}
@@ -527,12 +533,12 @@ export default function SearchMain({ main }: { main?: boolean }) {
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
-                    variant={"outline"}
+                    variant={'outline'}
                     type="button"
                     className="justify-start h-[60px] text-black font-normal lg:rounded-none hover:bg-white border-0 w-full rounded-r-[16px] rounded-l-none"
                   >
                     {arrival ? (
-                      format(arrival, "MM/dd/yyyy")
+                      format(arrival, 'MM/dd/yyyy')
                     ) : (
                       <span className="text-gray-500">Pick a date</span>
                     )}
@@ -720,7 +726,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                           </SelectItem>
                           <ToolTipComponent text={item.description} />
                         </div>
-                      )
+                      ),
                     )}
                   </SelectGroup>
                 </SelectContent>

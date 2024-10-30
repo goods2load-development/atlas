@@ -1,6 +1,8 @@
-import React, { FC } from "react";
-import { IMedia } from "@/app/_components/MediaContainer/MediaContainer";
-import Image from "next/image";
+import { IMedia } from '@/app/_components/MediaContainer/MediaContainer';
+
+import React, { FC } from 'react';
+
+import Image from 'next/image';
 
 type TMedia = {
   item: IMedia;

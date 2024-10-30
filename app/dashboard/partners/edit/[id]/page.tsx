@@ -1,5 +1,6 @@
-import PartnerDataPage from "@/components/PartnersDataPage/PartnerDataPage";
-import { redirect } from "next/navigation";
+import { redirect } from 'next/navigation';
+
+import PartnerDataPage from '@/components/PartnersDataPage/PartnerDataPage';
 
 export default async function EditPartnerPage({
   params,
@@ -15,16 +16,16 @@ export default async function EditPartnerPage({
     fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/${params.id}/information`,
       {
-        cache: "no-store",
-      }
+        cache: 'no-store',
+      },
     ).then((res) => res.json()),
     fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/partners/${params.id}`, {
-      cache: "no-store",
+      cache: 'no-store',
     }).then((res) => res.json()),
   ]);
 
   if (!partnerData.hasPage) {
-    redirect("/");
+    redirect('/');
   }
 
   return (

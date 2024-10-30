@@ -1,8 +1,9 @@
-import { create } from "zustand";
-import { format } from "date-fns";
-import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
+import { deleteRequest, getRequest, patchRequest, postRequest } from './utils';
 
-export const LOCAL_STORAGE_SEARCH_FORM_KEY = "search-from";
+import { format } from 'date-fns';
+import { create } from 'zustand';
+
+export const LOCAL_STORAGE_SEARCH_FORM_KEY = 'search-from';
 
 function validate(requiredFields: any) {
   let isValid = true;
@@ -19,21 +20,19 @@ function validate(requiredFields: any) {
 }
 
 export enum ContainerLoad {
-  FCL = "FCL",
-  LCL = "LCL",
+  FCL = 'FCL',
+  LCL = 'LCL',
 }
 
 export enum DeliveryBy {
-  plane = "plane",
-  ferry = "ferry",
-  truck = "truck",
+  plane = 'plane',
+  ferry = 'ferry',
+  truck = 'truck',
 }
 
 interface FilterStoreProps {
   valid: boolean;
   partnersSelected: string[];
-  // priceMin: string | null;
-  // priceMax: string | null;
   deliveryBy: DeliveryBy;
   fromCountry: string;
   from: string;
@@ -80,7 +79,7 @@ interface FilterStoreProps {
   white_gloves_services: boolean;
   ecommerce_fullfillment: boolean;
   heavy_equipment_logistics: boolean;
-  cross_border_expansio: boolean;
+  cross_border_expansion: boolean;
 
   partners: any[];
   portsDepartureSelected: string[];
@@ -93,7 +92,7 @@ interface FilterStoreProps {
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
   let savedSeachForm: any =
-    typeof window !== "undefined"
+    typeof window !== 'undefined'
       ? localStorage.getItem(LOCAL_STORAGE_SEARCH_FORM_KEY)
       : null;
 
@@ -104,21 +103,21 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
   return {
     valid: validate(savedSeachForm),
     deliveryBy: savedSeachForm?.deliveryBy || DeliveryBy.plane,
-    fromCountry: savedSeachForm?.fromCountry || "",
-    from: savedSeachForm?.from || "",
-    toCountry: savedSeachForm?.toCountry || "",
-    to: savedSeachForm?.to || "",
-    departure: savedSeachForm?.departure || "",
-    arrival: savedSeachForm?.arrival || "",
-    typeOfGoods: savedSeachForm?.typeOfGoods || "",
-    totalKg: savedSeachForm?.totalKg || "",
-    placementOfGoods: savedSeachForm?.placementOfGoods || "Pallets",
-    quantity: savedSeachForm?.quantity || "",
-    length: savedSeachForm?.length || "",
-    width: savedSeachForm?.width || "",
-    height: savedSeachForm?.height || "",
-    goodsValue: savedSeachForm?.goodsValue || "0",
-    incoterms: savedSeachForm?.incoterms || "DDP",
+    fromCountry: savedSeachForm?.fromCountry || '',
+    from: savedSeachForm?.from || '',
+    toCountry: savedSeachForm?.toCountry || '',
+    to: savedSeachForm?.to || '',
+    departure: savedSeachForm?.departure || '',
+    arrival: savedSeachForm?.arrival || '',
+    typeOfGoods: savedSeachForm?.typeOfGoods || '',
+    totalKg: savedSeachForm?.totalKg || '',
+    placementOfGoods: savedSeachForm?.placementOfGoods || 'Pallets',
+    quantity: savedSeachForm?.quantity || '',
+    length: savedSeachForm?.length || '',
+    width: savedSeachForm?.width || '',
+    height: savedSeachForm?.height || '',
+    goodsValue: savedSeachForm?.goodsValue || '0',
+    incoterms: savedSeachForm?.incoterms || 'Unknown',
 
     // filter options
 
@@ -150,10 +149,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     white_gloves_services: false,
     ecommerce_fullfillment: false,
     heavy_equipment_logistics: false,
-    cross_border_expansio: false,
+    cross_border_expansion: false,
 
-    // priceMin: null,
-    // priceMax: null,
     partners: [],
     partnersSelected: [],
     portsDeparture: [],
@@ -197,7 +194,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height,
           goodsValue,
         },
-        newFilter
+        newFilter,
       );
       set((state: FilterStoreProps) => ({
         ...state,
@@ -207,7 +204,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     },
     getPartners: async () => {
       const data = await getRequest({
-        url: "orders/partners",
+        url: 'orders/partners',
       });
       set(() => ({
         partners: data.data,
@@ -216,9 +213,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     },
     getPortsList: (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
-      const type = deliveryBy === "plane" ? "airport" : "seaport";
+      const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
-      if (deliveryBy !== "truck")
+      if (deliveryBy !== 'truck')
         getRequest({
           url: `https://port-api.com/${type}/search/${city}`,
           withCredentials: false,
@@ -229,7 +226,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
               label: item.properties.name,
             }));
             const selected: any[] = data?.features.map(
-              (item: any) => item.properties.name
+              (item: any) => item.properties.name,
             );
             if (departure) {
               set(() => ({
@@ -258,8 +255,6 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         bestReviewed,
         carbonOffset,
         industryRecognition,
-        // priceMin,
-        // priceMax,
         partnersSelected,
         portsDepartureSelected,
         portsArrivalSelected,
@@ -271,6 +266,31 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         height,
         goodsValue,
         incoterms,
+
+        // Industry solutions
+        pharmaceuticals,
+        electronics,
+        automotive,
+        manufacturing_retail,
+        exhibition_interior_design,
+        apparel_fashion,
+        ecommerce,
+        food_beverage,
+        energy,
+
+        // Transport solutions
+        cold_chain,
+        dangerous_goods,
+        high_value_goods,
+        last_mile_delivery,
+        project_cargo,
+        general_solutions,
+
+        // Additional Services
+        white_gloves_services,
+        ecommerce_fullfillment,
+        heavy_equipment_logistics,
+        cross_border_expansion,
       } = get();
 
       localStorage.setItem(
@@ -292,11 +312,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height,
           goodsValue,
           incoterms,
-        })
+        }),
       );
 
       postRequest({
-        url: "orders/search",
+        url: 'orders/search',
         params: { page, take: 10 },
         data: {
           transportation: deliveryBy,
@@ -304,7 +324,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           to: `${toCountry}, ${to}`,
           departure,
           arrival,
-          goods: typeOfGoods.split(" ")[0],
+          goods: typeOfGoods.split(' ')[0],
           kilogram: parseInt(totalKg),
           placementOfGoods,
           quantity: parseInt(quantity),
@@ -330,19 +350,34 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             useCurrenciesStore.getState().selectedCurrency.rate,
 
           provider: {},
-          // price: {
-          //   min: priceMin
-          //     ? parseInt(priceMin) /
-          //       useCurrenciesStore.getState().selectedCurrency.rate
-          //     : undefined,
-          //   max: priceMax
-          //     ? parseInt(priceMax) /
-          //       useCurrenciesStore.getState().selectedCurrency.rate
-          //     : undefined,
-          // },
+          filters: {
+            pharmaceuticals: pharmaceuticals,
+            electronics: electronics,
+            automotive: automotive,
+            manufacturingRetail: manufacturing_retail,
+            exhibitionInteriorDesign: exhibition_interior_design,
+            apparelFashion: apparel_fashion,
+            ecommerce: ecommerce,
+            foodBeverage: food_beverage,
+            energy: energy,
+            coldChain: cold_chain,
+            dangerousGoods: dangerous_goods,
+            highValueGoods: high_value_goods,
+            lastMileDelivery: last_mile_delivery,
+            projectCargo: project_cargo,
+            generalSolutions: general_solutions,
+            whiteGlovesServices: white_gloves_services,
+            ecommerceFullfillment: ecommerce_fullfillment,
+            heavyEquipmentLogistics: heavy_equipment_logistics,
+            crossBorderExpansion: cross_border_expansion,
+
+            carbonOffset,
+            industryRecognition,
+            bestReviewed,
+          },
         },
       }).then((data: any) => {
-        const products = data?.partners?.data?.map((item: any) => ({
+        let products = data?.partners?.data?.map((item: any) => ({
           orderId: item.id,
           deliveryBy: item.transportation,
           estimatedTransit: item.transit,
@@ -351,11 +386,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           },
           withdraw: format(
             new Date(item.withdraw).toDateString(),
-            "MM/dd/yyyy"
+            'MM/dd/yyyy',
           ),
           delivery: format(
             new Date(item.delivery).toDateString(),
-            "MM/dd/yyyy"
+            'MM/dd/yyyy',
           ),
           orderCost: item.price,
           CO2EmissionControlled: item.goGreen,
@@ -365,6 +400,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           placementOfGoods: item.placementOfGoods, // Added for analytics avarge store when user select this product
           partnerInfo: item.partnerInfo,
         }));
+
         set(() => ({ products, pagination: data?.partners?.meta }));
       });
     },
@@ -385,8 +421,8 @@ interface SelectedCurrencyProps {
 
 export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
   selectedCurrency: {
-    symbol: "$",
-    code: "USD",
+    symbol: '$',
+    code: 'USD',
     rate: 1,
   },
   currencies: [],
@@ -396,10 +432,10 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
     })),
   getCurrencies: async () => {
     const exchangeRates = await getRequest({
-      url: "/currencies",
+      url: '/currencies',
     });
     getRequest({
-      url: "https://www.wixapis.com/currency_converter/v1/currencies",
+      url: 'https://www.wixapis.com/currency_converter/v1/currencies',
       withCredentials: false,
     }).then((data) => {
       const currenciesSorted = data.currencies.sort((a: any, b: any) => {
@@ -412,20 +448,20 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
         }
       });
       const majorCurrencies = currenciesSorted.filter(
-        (i: any) => i.code === "USD" || i.code === "EUR" || i.code === "GBP"
+        (i: any) => i.code === 'USD' || i.code === 'EUR' || i.code === 'GBP',
       );
       set(() => ({
         currencies: majorCurrencies
           .concat(
             currenciesSorted.filter(
               (i: any) =>
-                !(i.code === "USD" || i.code === "EUR" || i.code === "GBP") &&
-                exchangeRates[i.code]
-            )
+                !(i.code === 'USD' || i.code === 'EUR' || i.code === 'GBP') &&
+                exchangeRates[i.code],
+            ),
           )
           .map((item: any) => ({ ...item, rate: exchangeRates[item.code] })),
         selectedCurrency: {
-          ...currenciesSorted.find((item: any) => item.code === "USD"),
+          ...currenciesSorted.find((item: any) => item.code === 'USD'),
           rate: 1,
         },
       }));

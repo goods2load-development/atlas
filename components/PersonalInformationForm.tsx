@@ -1,9 +1,14 @@
-"use client";
-import React from "react";
-import { useUserStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+'use client';
+
+import { useUserStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import React from 'react';
+
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import UIButton from '@/components/common/Button';
 import {
   Form,
   FormControl,
@@ -11,9 +16,8 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import UIButton from "@/components/common/Button";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 export default function PersonalInformationForm(props: any) {
   // TODO finalize validation schema

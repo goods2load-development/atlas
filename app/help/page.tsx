@@ -1,20 +1,29 @@
-import { Suspense } from "react";
-import { Metadata } from "next";
-import { type FC, memo } from "react";
-import Help from "@/components/Help/Help";
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import { type FC, memo } from 'react';
+import { Suspense } from 'react';
+
+import { Metadata } from 'next';
+
+import BigLayout from '@/components/BigLayout';
+import Footer from '@/components/Footer';
+import Help from '@/components/Help/Help';
 
 export const metadata: Metadata = {
-  title: "Help",
+  title: 'Help',
 };
 
 const HelpPage: FC = () => {
   return (
-    <LoyaltAllWrapper>
-      <Suspense>
-        <Help />
-      </Suspense>
-    </LoyaltAllWrapper>
+    <>
+      <BigLayout
+        title="How we can help you?"
+        description="Doing business has never been easier."
+      >
+        <Suspense>
+          <Help />
+        </Suspense>
+      </BigLayout>
+      <Footer />
+    </>
   );
 };
 

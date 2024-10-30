@@ -1,27 +1,31 @@
-"use client";
-import React, { useState } from "react";
-import Link from "next/link";
-import Image from "next/image";
-import { signOut } from "next-auth/react";
-import UIButton from "@/components/common/Button";
+'use client';
+
+import LogoutIcon from '@/assets/logout.svg';
+import { useUserStore } from '@/lib/store';
+
+import React, { useState } from 'react';
+
+import { TrendingUp } from 'lucide-react';
+import { Bookmark } from 'lucide-react';
+import { CircleX } from 'lucide-react';
+import { signOut } from 'next-auth/react';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import AddressForm from '@/components/AddressForm';
+import DeleteAccount from '@/components/DeleteAccount';
+import PersonalInformationForm from '@/components/PersonalInformationForm';
+import RegionalSettingsForm from '@/components/RegionalSettingsForm';
+import SolutionFinder from '@/components/SolutionFinder';
+import UploadCompanyLogo from '@/components/UploadCompanyLogo';
+import UIButton from '@/components/common/Button';
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card";
-import { useUserStore } from "@/lib/store";
-import DeleteAccount from "@/components/DeleteAccount";
-import PersonalInformationForm from "@/components/PersonalInformationForm";
-import AddressForm from "@/components/AddressForm";
-import UploadCompanyLogo from "@/components/UploadCompanyLogo";
-import RegionalSettingsForm from "@/components/RegionalSettingsForm";
-import SolutionFinder from "@/components/SolutionFinder";
-import LogoutIcon from "@/assets/logout.svg";
-import { TrendingUp } from "lucide-react";
-import { Bookmark } from "lucide-react";
-import { CircleX } from "lucide-react";
+} from '@/components/ui/card';
 
 function RenderUserData({ data }: any) {
   return (
@@ -43,7 +47,7 @@ export default function Account() {
     (state: any) => state,
   );
   const [edit, setEdit] = useState<
-    "info" | "address" | "regional" | "partners" | null
+    'info' | 'address' | 'regional' | 'partners' | null
   >(null);
 
   const onDeletePartner = (id: string) => {
@@ -52,57 +56,57 @@ export default function Account() {
 
   const onLogout = async () => {
     logoutUser().then(() => {
-      signOut({ callbackUrl: "/" });
+      signOut({ callbackUrl: '/' });
     });
   };
 
   const info = [
     {
-      title: "",
+      title: '',
       value: `User ${user?.id}`,
     },
     {
-      title: "Email address",
+      title: 'Email address',
       value: user?.email,
     },
     {
-      title: "Phone",
+      title: 'Phone',
       value: user?.phoneNumber,
     },
   ];
   const address = [
     {
-      title: "Country",
+      title: 'Country',
       value: user?.country,
     },
     {
-      title: "City",
+      title: 'City',
       value: user?.city,
     },
     {
-      title: "Company name",
+      title: 'Company name',
       value: user?.companyName,
     },
     {
-      title: "Postal / ZIP Code",
+      title: 'Postal / ZIP Code',
       value: user?.postalCode,
     },
     {
-      title: "Street Address / Number",
+      title: 'Street Address / Number',
       value: user?.address,
     },
   ];
   const region = [
     {
-      title: "Language",
+      title: 'Language',
       value: user?.language,
     },
     {
-      title: "Currency",
+      title: 'Currency',
       value: user?.currency,
     },
     {
-      title: "Country / Region",
+      title: 'Country / Region',
       value: user?.country,
     },
   ];
@@ -115,9 +119,9 @@ export default function Account() {
             Account
           </i>
           <div className="mt-5 md:mt-0 gap-4 flex items-center flex-wrap md:flex-nowrap">
-            {user?.role === "admin" && (
+            {user?.role === 'admin' && (
               <Link
-                href={`${user?.role === "admin" ? "/dashboard/referral" : "/dashboard/performance"}`}
+                href={`${user?.role === 'admin' ? '/dashboard/referral' : '/dashboard/performance'}`}
               >
                 <UIButton secondary className="w-full sm:w-[224px]">
                   <TrendingUp className="w-4 h-4 mr-[6px]" />
@@ -125,17 +129,17 @@ export default function Account() {
                 </UIButton>
               </Link>
             )}
-            {user?.role === "editor" && (
-              <Link href={"/dashboard/template"}>
+            {user?.role === 'editor' && (
+              <Link href={'/dashboard/template'}>
                 <UIButton secondary className="w-full sm:w-[224px]">
                   <TrendingUp className="w-4 h-4 mr-[6px]" />
                   Editor
                 </UIButton>
               </Link>
             )}
-            {user?.role === "provider" && (
+            {user?.role === 'provider' && (
               <Link
-                href={`${user?.role === "admin" ? "/dashboard/referral" : "/dashboard/performance"}`}
+                href={`${user?.role === 'admin' ? '/dashboard/referral' : '/dashboard/performance'}`}
               >
                 <UIButton secondary className="w-full sm:w-[224px]">
                   <TrendingUp className="mr-[6px] w-4 h-4" />
@@ -143,12 +147,12 @@ export default function Account() {
                 </UIButton>
               </Link>
             )}
-            {user?.role === "user" && (
+            {user?.role === 'user' && (
               <div className="w-full sm:w-[224px]">
                 <SolutionFinder />
               </div>
             )}
-            {user?.role !== "editor" && <DeleteAccount />}
+            {user?.role !== 'editor' && <DeleteAccount />}
             <button
               onClick={onLogout}
               className="flex items-center gap-3 text-[14px]/[17px] font-medium cursor-pointer hover:opacity-50 transition-all mx-auto"
@@ -179,9 +183,9 @@ export default function Account() {
             <CardTitle className="font-medium text-[18px]/[22px] flex justify-between">
               <span>Business information</span>
               <UIButton
-                onClick={() => setEdit("info")}
+                onClick={() => setEdit('info')}
                 secondary
-                className={`${edit === "info" && "hidden"} rounded-full`}
+                className={`${edit === 'info' && 'hidden'} rounded-full`}
               >
                 Edit
                 <img src="/edit.svg" />
@@ -189,7 +193,7 @@ export default function Account() {
             </CardTitle>
           </CardHeader>
           <CardContent className="sm:flex justify-between">
-            {edit === "info" ? (
+            {edit === 'info' ? (
               <PersonalInformationForm
                 {...user}
                 onCancel={() => setEdit(null)}
@@ -204,9 +208,9 @@ export default function Account() {
             <CardTitle className="font-medium text-[18px]/[22px] flex justify-between">
               <span>Business Address</span>
               <UIButton
-                onClick={() => setEdit("address")}
+                onClick={() => setEdit('address')}
                 secondary
-                className={`${edit === "address" && "hidden"} rounded-full`}
+                className={`${edit === 'address' && 'hidden'} rounded-full`}
               >
                 Edit
                 <img src="/edit.svg" />
@@ -214,7 +218,7 @@ export default function Account() {
             </CardTitle>
           </CardHeader>
           <CardContent className="sm:flex justify-between">
-            {edit === "address" ? (
+            {edit === 'address' ? (
               <AddressForm {...user} onCancel={() => setEdit(null)} />
             ) : (
               <RenderUserData data={address} />
@@ -237,9 +241,9 @@ export default function Account() {
                 </span>
               </div>
               <UIButton
-                onClick={() => setEdit("regional")}
+                onClick={() => setEdit('regional')}
                 secondary
-                className={`${edit === "regional" && "hidden"} rounded-full`}
+                className={`${edit === 'regional' && 'hidden'} rounded-full`}
               >
                 Edit
                 <img src="/edit.svg" />
@@ -247,7 +251,7 @@ export default function Account() {
             </CardTitle>
           </CardHeader>
           <CardContent className="sm:flex justify-between">
-            {edit === "regional" ? (
+            {edit === 'regional' ? (
               <RegionalSettingsForm {...user} onCancel={() => setEdit(null)} />
             ) : (
               <RenderUserData data={region} />
@@ -276,12 +280,12 @@ export default function Account() {
                       style={{
                         backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${photo})`,
 
-                        backgroundSize: "contain",
-                        backgroundPositionX: "center",
-                        backgroundRepeat: "no-repeat",
+                        backgroundSize: 'contain',
+                        backgroundPositionX: 'center',
+                        backgroundRepeat: 'no-repeat',
                       }}
                     />
-                    {edit === "partners" && (
+                    {edit === 'partners' && (
                       <button
                         onClick={(e) => {
                           e.preventDefault();
@@ -296,9 +300,9 @@ export default function Account() {
                 );
               })}
             </div>
-            {edit !== "partners" ? (
+            {edit !== 'partners' ? (
               <UIButton
-                onClick={() => setEdit("partners")}
+                onClick={() => setEdit('partners')}
                 secondary
                 className={`rounded-full`}
               >

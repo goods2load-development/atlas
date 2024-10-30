@@ -1,5 +1,6 @@
-"use client";
-import React, { useCallback, useEffect, useState } from "react";
+'use client';
+
+import React, { useCallback, useEffect, useState } from 'react';
 
 const useDotButton = (emblaApi: any) => {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -10,7 +11,7 @@ const useDotButton = (emblaApi: any) => {
       if (!emblaApi) return;
       emblaApi.scrollTo(index);
     },
-    [emblaApi]
+    [emblaApi],
   );
 
   const onInit = useCallback((emblaApi: any) => {
@@ -26,9 +27,9 @@ const useDotButton = (emblaApi: any) => {
 
     onInit(emblaApi);
     onSelect(emblaApi);
-    emblaApi.on("reInit", onInit);
-    emblaApi.on("reInit", onSelect);
-    emblaApi.on("select", onSelect);
+    emblaApi.on('reInit', onInit);
+    emblaApi.on('reInit', onSelect);
+    emblaApi.on('select', onSelect);
   }, [emblaApi, onInit, onSelect]);
 
   return {

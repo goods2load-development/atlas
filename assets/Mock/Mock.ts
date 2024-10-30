@@ -1,56 +1,68 @@
 export const mockBlogs = [
   {
     id: 1,
-    title: "LocaLand at BLU Dubai",
-    description: "Experience the thrill of LocaLand at BLU Dubai, the ultimate party destination.",
-    date: "29 Aug 2024",
-    readingTime: "6 min read",
-    imageUrl: "https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp",
-    category: "Parties",
+    title: 'LocaLand at BLU Dubai',
+    description:
+      'Experience the thrill of LocaLand at BLU Dubai, the ultimate party destination.',
+    date: '29 Aug 2024',
+    readingTime: '6 min read',
+    imageUrl:
+      'https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp',
+    category: 'Parties',
   },
   {
     id: 2,
-    title: "Lorem ipsum dolor sit amet consectetur",
-    description: "Amet venenatis aliquam nunc enim massa ac. Leo eu diam quam amet ornare justo bibendum.",
-    date: "03 Apr 2024",
-    readingTime: "9 min read",
-    imageUrl: "https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp",
-    category: "Category Title",
+    title: 'Lorem ipsum dolor sit amet consectetur',
+    description:
+      'Amet venenatis aliquam nunc enim massa ac. Leo eu diam quam amet ornare justo bibendum.',
+    date: '03 Apr 2024',
+    readingTime: '9 min read',
+    imageUrl:
+      'https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp',
+    category: 'Category Title',
   },
   {
     id: 3,
-    title: "Retro at Vault Dubai",
-    description: "Step back in time with Retro at Vault Dubai, featuring classic hits and vibes.",
-    date: "29 Aug 2024",
-    readingTime: "4 min read",
-    imageUrl: "https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp",
-    category: "Retro",
+    title: 'Retro at Vault Dubai',
+    description:
+      'Step back in time with Retro at Vault Dubai, featuring classic hits and vibes.',
+    date: '29 Aug 2024',
+    readingTime: '4 min read',
+    imageUrl:
+      'https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp',
+    category: 'Retro',
   },
   {
     id: 4,
-    title: "Afro Dose at SOT Dubai",
-    description: "Feel the rhythm with Afro Dose at SOT Dubai, where Afro beats take center stage.",
-    date: "29 Aug 2024",
-    readingTime: "4 min read",
-    imageUrl: "https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp",
-    category: "Cultural",
+    title: 'Afro Dose at SOT Dubai',
+    description:
+      'Feel the rhythm with Afro Dose at SOT Dubai, where Afro beats take center stage.',
+    date: '29 Aug 2024',
+    readingTime: '4 min read',
+    imageUrl:
+      'https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp',
+    category: 'Cultural',
   },
   {
     id: 5,
-    title: "Moonlight Sessions by Cloud 22 Dubai",
-    description: "Enjoy the enchanting Moonlight Sessions by Cloud 22 in Dubai.",
-    date: "29 Aug 2024",
-    readingTime: "5 min read",
-    imageUrl: "https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp",
-    category: "Sessions",
+    title: 'Moonlight Sessions by Cloud 22 Dubai',
+    description:
+      'Enjoy the enchanting Moonlight Sessions by Cloud 22 in Dubai.',
+    date: '29 Aug 2024',
+    readingTime: '5 min read',
+    imageUrl:
+      'https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp',
+    category: 'Sessions',
   },
   {
     id: 6,
-    title: "Simone Vitullo Live at Cavo Dubai",
-    description: "Enjoy a mesmerizing night with Simone Vitullo live at Cavo in Dubai.",
-    date: "29 Aug 2024",
-    readingTime: "7 min read",
-    imageUrl: "https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp",
-    category: "Events",
+    title: 'Simone Vitullo Live at Cavo Dubai',
+    description:
+      'Enjoy a mesmerizing night with Simone Vitullo live at Cavo in Dubai.',
+    date: '29 Aug 2024',
+    readingTime: '7 min read',
+    imageUrl:
+      'https://production-dubainight.s3.me-south-1.amazonaws.com/region_dubai/misc/Bailando-at-Tatel-Dubai.webp-4327-2024-08-29.webp',
+    category: 'Events',
   },
 ];

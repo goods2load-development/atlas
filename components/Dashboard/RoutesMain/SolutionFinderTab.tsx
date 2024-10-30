@@ -1,23 +1,25 @@
-"use client";
+'use client';
 
-import ListItem from "@/components/ui/list-item";
-import Pagination from "@/components/ui/pagination";
-import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
-import { usePriceAlertsStore } from "@/lib/store";
-import clsx from "clsx";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Check, Reply, TrashIcon } from "lucide-react";
-import ViewDialogPriceAlert from "./ViewDilogPriceAlert";
-import PriceAlertReplyDialog from "./PriceAlertReplyDialog";
+import PriceAlertReplyDialog from './PriceAlertReplyDialog';
+import ViewDialogPriceAlert from './ViewDilogPriceAlert';
+import { usePriceAlertsStore } from '@/lib/store';
+
+import { useEffect, useState } from 'react';
+
+import clsx from 'clsx';
+import { Check, TrashIcon } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import ListItem from '@/components/ui/list-item';
+import Pagination from '@/components/ui/pagination';
+import { useToast } from '@/components/ui/use-toast';
 
 const TAKE = 5;
 
-export const PriceAlertTab = () => {
+export const SolutionFinderTab = () => {
   const [isViewModalOpen, setIsViewModalOpen] = useState({
     isOpen: false,
-    id: "",
+    id: '',
   });
 
   const {
@@ -34,7 +36,7 @@ export const PriceAlertTab = () => {
   const { replace } = useRouter();
   const { toast } = useToast();
 
-  const page = Number(searchParams.get("priceAlertPage") || 1);
+  const page = Number(searchParams.get('priceAlertPage') || 1);
   const meta = priceAlerts?.meta;
 
   useEffect(() => {
@@ -51,9 +53,9 @@ export const PriceAlertTab = () => {
   const handleSetPage = (page: number) => {
     const params = new URLSearchParams(searchParams);
     if (page) {
-      params.set("priceAlertPage", page.toString());
+      params.set('priceAlertPage', page.toString());
     } else {
-      params.delete("priceAlertPage");
+      params.delete('priceAlertPage');
     }
 
     replace(`${pathname}?${params.toString()}`);
@@ -64,10 +66,10 @@ export const PriceAlertTab = () => {
       .then(() => getPriceAlertsForPage(page))
       .then(() =>
         toast({
-          title: "Price alert was sended",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Price alert was sended',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
@@ -76,10 +78,10 @@ export const PriceAlertTab = () => {
       .then(() => getPriceAlertsForPage(page))
       .then(() =>
         toast({
-          title: "Price Alert deleted.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Price Alert deleted.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
@@ -88,22 +90,21 @@ export const PriceAlertTab = () => {
       .then(() => getPriceAlertsForPage(page))
       .then(() =>
         toast({
-          title: "Reply sent.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Reply sent.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
   return (
     <>
-      {isPriceAlertLoading && <Spinner />}
       <div
         className={clsx({
-          "pointer-events-none": isPriceAlertLoading,
+          'pointer-events-none': isPriceAlertLoading,
         })}
       >
-        <div className={clsx("flex flex-col gap-4")}>
+        <div className={clsx('flex flex-col gap-4')}>
           {!isPriceAlertLoading && !priceAlerts?.data?.length && (
             <p className="font-bold text-red-600">
               There is no any routes at the moment

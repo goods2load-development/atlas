@@ -1,25 +1,29 @@
-"use client";
+'use client';
+
+import { dateValues } from './constants';
+import { OrderRoute, UserRoute } from './types';
+import { countVolume, toNormalText } from '@/lib/utils';
+
+import { useMemo } from 'react';
+
+import { format } from 'date-fns';
+import { ViewIcon } from 'lucide-react';
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { ViewIcon } from "lucide-react";
-import { OrderRoute, UserRoute } from "./types";
-import { countVolume, toNormalText } from "@/lib/utils";
-import { useMemo } from "react";
-import { format } from "date-fns";
-import { dateValues } from "./constants";
+} from '@/components/ui/dialog';
 
 const listOfUserData = [
-  "companyName",
-  "phoneNumber",
-  "email",
-  "address",
-  "country",
-  "postalCode",
+  'companyName',
+  'phoneNumber',
+  'email',
+  'address',
+  'country',
+  'postalCode',
 ];
 
 const ViewDialog = ({
@@ -37,7 +41,7 @@ const ViewDialog = ({
 }) => {
   const volume = useMemo(
     () => countVolume(order.width, order.length, order.height),
-    [order]
+    [order],
   );
 
   return (
@@ -46,7 +50,7 @@ const ViewDialog = ({
       onOpenChange={(isOpen) => {
         setIsOpen({
           isOpen,
-          id: isOpen ? id : "",
+          id: isOpen ? id : '',
         });
       }}
     >
@@ -72,19 +76,19 @@ const ViewDialog = ({
             <hr className="block mt-4" />
             <h2 className="font-bold text-xl my-4">Order data</h2>
             <div className="flex flex-col gap-2">
-              {[...Object.entries(order), ["volume", volume]].map(
+              {[...Object.entries(order), ['volume', volume]].map(
                 ([key, value]) => {
-                  if (key === "id") return null;
+                  if (key === 'id') return null;
                   const val = dateValues.includes(key as string)
-                    ? format(value, "MM/dd/yyyy")
+                    ? format(value, 'MM/dd/yyyy')
                     : value;
                   return (
                     <p key={key}>
                       <strong>{toNormalText(key as string)}: </strong>
-                      {val?.toString() || "-"}
+                      {val?.toString() || '-'}
                     </p>
                   );
-                }
+                },
               )}
             </div>
           </div>

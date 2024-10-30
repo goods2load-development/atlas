@@ -1,6 +1,8 @@
-"use client";
-import React, { useEffect } from "react";
-import { useToast } from "@/components/ui/use-toast";
+'use client';
+
+import React, { useEffect } from 'react';
+
+import { useToast } from '@/components/ui/use-toast';
 
 export default function ToasterWrapper({
   children,
@@ -11,28 +13,28 @@ export default function ToasterWrapper({
   useEffect(() => {
     const handleErrorEvent = (event: any) => {
       const message = event?.detail?.response?.data?.message;
-      if (typeof message === "string") {
+      if (typeof message === 'string') {
         toast({
-          title: "Error",
+          title: 'Error',
           description: message,
-          variant: "destructive",
-          className: "bg-red-500",
+          variant: 'destructive',
+          className: 'bg-red-500',
         });
       } else {
         event?.detail?.response?.data?.message.map((m: string) =>
           toast({
-            title: "Error",
+            title: 'Error',
             description: m,
-            variant: "destructive",
-            className: "bg-red-500",
-          })
+            variant: 'destructive',
+            className: 'bg-red-500',
+          }),
         );
       }
     };
 
-    window.addEventListener("errorHandler", handleErrorEvent);
+    window.addEventListener('errorHandler', handleErrorEvent);
     return () => {
-      window.removeEventListener("errorHandler", handleErrorEvent);
+      window.removeEventListener('errorHandler', handleErrorEvent);
     };
   }, []);
 

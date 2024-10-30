@@ -1,6 +1,6 @@
-import React from "react";
+import type { CompanyLeaderShipCard } from '@/app/interfaces/leaderShip/interface';
 
-import type { CompanyLeaderShipCard } from "@/app/interfaces/leaderShip/interface";
+import React from 'react';
 
 const CompanyLeaderShipCard = ({ pesonalInfo }: CompanyLeaderShipCard) => {
   return (

@@ -1,10 +1,11 @@
-"use client";
+'use client';
 
-import { format } from "date-fns";
-import { useFilterStore, useCurrenciesStore } from "@/lib/filterStore";
-import Image from "next/image";
-import { ToolTipComponent } from "./SearchMain";
-import { countVolume } from "@/lib/utils";
+import { ToolTipComponent } from './SearchMain';
+import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
+import { countVolume } from '@/lib/utils';
+
+import { format } from 'date-fns';
+import Image from 'next/image';
 
 export default function SelectedSearch() {
   const {
@@ -28,31 +29,31 @@ export default function SelectedSearch() {
 
   const renderIcon = (deliveryBy: string) => {
     switch (deliveryBy) {
-      case "plane": {
+      case 'plane': {
         return (
           <Image
             src={`/filtericon-plane.svg`}
-            alt={"plane"}
+            alt={'plane'}
             width={58}
             height={58}
           />
         );
       }
-      case "ferry": {
+      case 'ferry': {
         return (
           <Image
             src={`/filtericon-ship.svg`}
-            alt={"ferry"}
+            alt={'ferry'}
             width={58}
             height={58}
           />
         );
       }
-      case "truck": {
+      case 'truck': {
         return (
           <Image
             src={`/filtericon-truck.svg`}
-            alt={"truck"}
+            alt={'truck'}
             width={58}
             height={58}
           />
@@ -63,7 +64,7 @@ export default function SelectedSearch() {
 
   return (
     <div
-      className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] sm:p-[24px] p-4 px-1 mt-[10px] relative z-40 max-w-[1400px] xl:mx-auto`}
+      className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] sm:p-[24px] p-4 px-1 mt-[10px] relative z-20 max-w-[1400px] xl:mx-auto`}
     >
       <div className="flex lg:justify-start justify-center xl:justify-center items-center overflow-x-scroll pb-4 hide-scrollbar">
         <div className="flex flex-wrap lg:flex-nowrap items-end justify-center lg:justify-start">
@@ -105,7 +106,7 @@ export default function SelectedSearch() {
                 Departure
               </label>
               <div className="h-[60px] rounded-l-[16px] lg:rounded-l-none border-none font-normal text-black justify-start bg-white flex items-center whitespace-nowrap px-[16px] text-sm">
-                {format(departure, "dd/MM/yyyy")}
+                {format(departure, 'dd/MM/yyyy')}
               </div>
             </div>
           )}
@@ -115,7 +116,7 @@ export default function SelectedSearch() {
                 Arrival
               </label>
               <div className="h-[60px] lg:rounded-r-none border-none font-normal rounded-r-[16px] text-black justify-start bg-white flex items-center whitespace-nowrap px-[16px] text-sm">
-                {format(arrival, "dd/MM/yyyy")}
+                {format(arrival, 'dd/MM/yyyy')}
               </div>
             </div>
           )}
@@ -178,7 +179,7 @@ export default function SelectedSearch() {
               </label>
               <div className="h-[60px]  w-full rounded-r-none border-none font-normal text-black  justify-start bg-white flex items-center whitespace-nowrap px-[16px] text-sm pr-2">
                 <div className="h-full flex items-center overflow-x-scroll hide-scrollbar">
-                  {selectedCurrency.symbol}{" "}
+                  {selectedCurrency.symbol}{' '}
                   {Math.round(goodsValue * selectedCurrency.rate)}
                 </div>
               </div>

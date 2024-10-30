@@ -1,10 +1,11 @@
-import { getRequest } from "./utils";
-import { create } from "zustand";
+import { getRequest } from './utils';
+
+import { create } from 'zustand';
 
 export const usPartnerStore = create((set) => ({
   partnerData: null,
   partnerDataIsLoading: false,
-  partnerDataError: "",
+  partnerDataError: '',
 
   getPartnerData: async (id: string) => {
     getRequest({

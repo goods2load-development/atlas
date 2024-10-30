@@ -1,6 +1,9 @@
-import { notFound } from "next/navigation";
-import SeoPageMain from "@/components/SeoPage/SeoPageMain";
-import Footer from "@/components/Footer";
+import { notFound } from 'next/navigation';
+
+import Footer from '@/components/Footer';
+import DynamicMenu from '@/components/Header/DynamicMenu';
+import HeaderClient from '@/components/Header/HeaderClient';
+import SeoPageMain from '@/components/SeoPage/SeoPageMain';
 
 export default async function SeoPage({
   params: { slug },
@@ -10,8 +13,8 @@ export default async function SeoPage({
   const res = await fetch(
     `${process.env.NEXT_PUBLIC_BASE_URL}api/seo-pages/${slug}`,
     {
-      cache: "no-store",
-    }
+      cache: 'no-store',
+    },
   );
 
   if (!res.ok) {
@@ -26,6 +29,8 @@ export default async function SeoPage({
 
   return (
     <>
+      <HeaderClient />
+      <DynamicMenu variant="secondary" />
       <SeoPageMain type="edit" data={data} />
       <Footer />
     </>

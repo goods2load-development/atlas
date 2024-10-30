@@ -1,7 +1,9 @@
-"use client";
-import Image from "next/image";
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
-import { Eye } from "lucide-react";
+'use client';
+
+import { Eye } from 'lucide-react';
+import Image from 'next/image';
+
+import { Dialog, DialogContent, DialogTrigger } from '@/components/ui/dialog';
 
 const BannerPreview = ({
   bigBanner,

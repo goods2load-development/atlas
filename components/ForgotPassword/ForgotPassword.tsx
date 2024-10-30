@@ -1,9 +1,14 @@
-"use client";
-import React from "react";
-import { useForgotPasswordStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+'use client';
+
+import { useForgotPasswordStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import React from 'react';
+
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,10 +16,9 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/components/ui/use-toast";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 export default function ForgotPassword() {
   const { toast } = useToast();
@@ -26,21 +30,21 @@ export default function ForgotPassword() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      email: "",
+      email: '',
     },
   });
   const { postForgotPasswordData } = useForgotPasswordStore(
-    (state: any) => state
+    (state: any) => state,
   );
   function onSubmit(values: z.infer<typeof formSchema>) {
     postForgotPasswordData(values).then(() =>
       toast({
-        title: "Reset password",
+        title: 'Reset password',
         description:
           "We've sent you an email. Please check your Inbox to reset your password",
-        variant: "default",
-        className: "bg-green-500 text-white",
-      })
+        variant: 'default',
+        className: 'bg-green-500 text-white',
+      }),
     );
   }
   return (

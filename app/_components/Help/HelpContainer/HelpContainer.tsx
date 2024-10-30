@@ -1,6 +1,7 @@
-import React from "react";
-import HelpAccordion from "../HelpAccordion/HelpAccordion";
-import { TabName } from "@/app/interface/helpData";
+import HelpAccordion from '../HelpAccordion/HelpAccordion';
+import { TabName } from '@/app/interface/helpData';
+
+import React from 'react';
 
 interface HelpContainer {
   answearCondition: TabName;

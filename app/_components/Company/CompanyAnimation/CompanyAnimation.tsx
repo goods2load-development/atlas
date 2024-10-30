@@ -1,6 +1,8 @@
-"use client";
-import Image from "next/image";
-import line from "@/assets/line-dashed.svg";
+'use client';
+
+import line from '@/assets/line-dashed.svg';
+
+import Image from 'next/image';
 
 const CompanyAnimationLine: React.FC = () => {
   return (
@@ -8,12 +10,12 @@ const CompanyAnimationLine: React.FC = () => {
       <Image
         className="w-full animate-infinite-scroll"
         src={line}
-        alt={"line"}
+        alt={'line'}
       />
       <Image
         className="w-full animate-infinite-scroll"
         src={line}
-        alt={"line"}
+        alt={'line'}
       />
     </div>
   );

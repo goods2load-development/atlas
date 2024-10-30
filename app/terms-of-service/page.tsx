@@ -1,11 +1,17 @@
-import { termsOfServicePageData } from "./data";
-import LegacyPage from "@/components/Legacy/LegacyPage";
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import { termsOfServicePageData } from './data';
+
+import Footer from '@/components/Footer';
+import DynamicMenu from '@/components/Header/DynamicMenu';
+import HeaderClient from '@/components/Header/HeaderClient';
+import LegacyPage from '@/components/Legacy/LegacyPage';
 
 export default function TermsOfServicePage() {
   return (
-    <LoyaltAllWrapper headerVariant="secondary">
+    <>
+      <HeaderClient />
+      <DynamicMenu />
       <LegacyPage {...termsOfServicePageData} />
-    </LoyaltAllWrapper>
+      <Footer />
+    </>
   );
 }

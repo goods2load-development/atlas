@@ -1,5 +1,5 @@
-import LegacyBlock from "../LegacyBlock";
-import { ILegacyDataBlockBody } from "../types";
+import LegacyBlock from '../LegacyBlock';
+import { ILegacyDataBlockBody } from '../types';
 
 export default function OrderedList({
   content,

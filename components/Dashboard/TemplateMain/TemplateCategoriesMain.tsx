@@ -1,12 +1,16 @@
-"use client";
-import ListItem from "@/components/ui/list-item";
-import Spinner from "@/components/ui/spinner";
-import { useBlogAdminStore, useTemplatesStore } from "@/lib/store";
-import { clsx } from "clsx";
-import { useEffect } from "react";
-import { Trash } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import TemplateCategoryDialog from "./TemplateCategoryDialog";
+'use client';
+
+import TemplateCategoryDialog from './TemplateCategoryDialog';
+import { useBlogAdminStore, useTemplatesStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import { clsx } from 'clsx';
+import { Trash } from 'lucide-react';
+
+import ListItem from '@/components/ui/list-item';
+import Spinner from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/use-toast';
 
 const TemplateCategoriesMain = () => {
   const {
@@ -26,9 +30,9 @@ const TemplateCategoriesMain = () => {
       if (data) {
         getTemplateCategories();
         toast({
-          title: "Category deleted.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
+          title: 'Category deleted.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
         });
       }
     });
@@ -46,8 +50,8 @@ const TemplateCategoriesMain = () => {
         <TemplateCategoryDialog type="create" />
       </div>
       <div
-        className={clsx("flex flex-col gap-4", {
-          "pointer-events-none": isTemplateCategoriesLoading,
+        className={clsx('flex flex-col gap-4', {
+          'pointer-events-none': isTemplateCategoriesLoading,
         })}
       >
         {!categories?.length && !isTemplateCategoriesLoading && (

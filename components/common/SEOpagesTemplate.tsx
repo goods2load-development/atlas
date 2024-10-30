@@ -1,7 +1,7 @@
-"use client";
+'use client';
 
-import Header from "@/components/Header/Header";
-import Footer from "@/components/Footer";
+import Footer from '@/components/Footer';
+import Header from '@/components/Header/Header';
 
 export function Quote(props: any) {
   return (
@@ -15,7 +15,7 @@ export function Quote(props: any) {
 export function SubTitle(props: any) {
   return (
     <h3
-      className={`text-[24px]/[28px] md:text-[28px]/[34px] font-medium mb-[16px] ${props.colored && "text-orangePrimary"}`}
+      className={`text-[24px]/[28px] md:text-[28px]/[34px] font-medium mb-[16px] ${props.colored && 'text-orangePrimary'}`}
       dangerouslySetInnerHTML={{ __html: props.children }}
     />
   );

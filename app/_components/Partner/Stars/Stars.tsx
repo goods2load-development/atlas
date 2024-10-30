@@ -1,7 +1,9 @@
-import StarSvg from "@/assets/Partners/star.svg";
-import StarSvgNone from "@/assets/Partners/star-none.svg";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import StarSvgNone from '@/assets/Partners/star-none.svg';
+import StarSvg from '@/assets/Partners/star.svg';
+
+import { useEffect, useState } from 'react';
+
+import Image from 'next/image';
 
 export const Stars = ({
   value,

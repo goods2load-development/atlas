@@ -1,14 +1,29 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import { useCookies } from "react-cookie";
-import { useRouter } from "next/navigation";
-import { useCountriesStore } from "@/lib/store";
-import { useRegistrationStore } from "@/lib/store";
-import Link from "next/link";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import RegistrationSuccessPopup from './RegistrationSuccessPopup';
+import GoogleIcon from '@/assets/AuthProviderLogos/GoogleIcon';
+import { useRegistrationStore } from '@/lib/store';
+import { useCountriesStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect, useState } from 'react';
+
+import { getSession, signIn } from 'next-auth/react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
+import { useCookies } from 'react-cookie';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useForm } from 'react-hook-form';
+import { getCookie } from 'react-use-cookie';
+import { z } from 'zod';
+
+import Divider from '@/components/Divider';
+import RegistrationWrapper from '@/components/RegistrationWrapper';
+import CountryCode from '@/components/common/CountryCode';
+import InputPassword from '@/components/common/InputPassword';
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Form,
   FormControl,
@@ -17,28 +32,16 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
-import { Checkbox } from "@/components/ui/checkbox";
-import RegistrationWrapper from "@/components/RegistrationWrapper";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
-import Divider from "@/components/Divider";
-import { getSession, signIn } from "next-auth/react";
-import { getCookie } from "react-use-cookie";
-import InputPassword from "@/components/common/InputPassword";
-import RegistrationSuccessPopup from "./RegistrationSuccessPopup";
-import CountryCode from "@/components/common/CountryCode";
-import { useSearchParams } from "next/navigation";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
+} from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 
 interface CountriesProps {
   value: string;
@@ -46,7 +49,7 @@ interface CountriesProps {
 }
 
 const MAX_UPLOAD_SIZE = 2000000;
-const ACCEPTED_FILE_TYPES = ["application/pdf"];
+const ACCEPTED_FILE_TYPES = ['application/pdf'];
 
 function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
@@ -55,13 +58,13 @@ function IsRequired() {
 export default function Registration() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
-  const [cookies] = useCookies(["accessToken"]);
-  const isUser = useSearchParams().toString().split("=")[0] !== "provider";
+  const [cookies] = useCookies(['accessToken']);
+  const isUser = useSearchParams().toString().split('=')[0] !== 'provider';
   const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
   const [formState, setFormState] = useState(() => {
     const savedFormState =
-      typeof window !== "undefined"
-        ? localStorage.getItem("registrationForm")
+      typeof window !== 'undefined'
+        ? localStorage.getItem('registrationForm')
         : null;
 
     if (savedFormState) {
@@ -79,16 +82,16 @@ export default function Registration() {
     }
 
     return {
-      firstName: "",
-      lastName: "",
-      countryCode: "",
-      phoneNumber: "",
-      email: "",
-      companyName: "",
-      companyPhoto: "",
-      address: "",
-      postalCode: "",
-      city: "",
+      firstName: '',
+      lastName: '',
+      countryCode: '',
+      phoneNumber: '',
+      email: '',
+      companyName: '',
+      companyPhoto: '',
+      address: '',
+      postalCode: '',
+      city: '',
       communication: false,
       provider: !isUser,
     };
@@ -102,13 +105,13 @@ export default function Registration() {
   };
 
   useEffect(() => {
-    localStorage.setItem("registrationForm", JSON.stringify(formState));
+    localStorage.setItem('registrationForm', JSON.stringify(formState));
   }, [formState]);
 
   const formSchema = z
     .object({
       countryCode: z.string(),
-      phoneNumber: z.string().regex(new RegExp("^[0-9]{4,10}$")),
+      phoneNumber: z.string().regex(new RegExp('^[0-9]{4,10}$')),
       email: z.string().min(5).email(),
       companyName: z.string().min(2),
       companyPhoto: z
@@ -116,9 +119,9 @@ export default function Registration() {
         .optional()
         .refine((file) => {
           return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, "File size must be less than 2MB"),
+        }, 'File size must be less than 2MB'),
       address: z.string().optional(),
-      postalCode: z.string().length(6).regex(new RegExp("^[0-9]*$")).optional(),
+      postalCode: z.string().length(6).regex(new RegExp('^[0-9]*$')).optional(),
       city: z.string().optional(),
       country: z.string(),
       provider: z.boolean().optional(),
@@ -129,31 +132,31 @@ export default function Registration() {
         .instanceof(File)
         .refine((file) => {
           return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, "File size must be less than 2MB")
+        }, 'File size must be less than 2MB')
         .refine((file) => {
           return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, "File must be a PDF")
+        }, 'File must be a PDF')
         .optional(),
       issuingAuthority: z
         .instanceof(File)
         .refine((file) => {
           return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, "File size must be less than 2MB")
+        }, 'File size must be less than 2MB')
         .refine((file) => {
           return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, "File must be a PDF")
+        }, 'File must be a PDF')
         .optional(),
       tradeLicenseNumber: z
         .instanceof(File)
         .refine((file) => {
           return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, "File size must be less than 2MB")
+        }, 'File size must be less than 2MB')
         .refine((file) => {
           return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, "File must be a PDF")
+        }, 'File must be a PDF')
         .optional(),
       password: z.string().min(8, {
-        message: "Password must be at least 8 characters.",
+        message: 'Password must be at least 8 characters.',
       }),
       confirmPassword: z.string(),
       privacy: z.boolean(),
@@ -161,19 +164,19 @@ export default function Registration() {
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
-      path: ["confirmPassword"],
+      path: ['confirmPassword'],
     })
     .refine((data) => !data.provider || data.insuranceStatement, {
-      message: "No file uploaded",
-      path: ["insuranceStatement"],
+      message: 'No file uploaded',
+      path: ['insuranceStatement'],
     })
     .refine((data) => !data.provider || data.issuingAuthority, {
-      message: "No file uploaded",
-      path: ["issuingAuthority"],
+      message: 'No file uploaded',
+      path: ['issuingAuthority'],
     })
     .refine((data) => !data.provider || data.tradeLicenseNumber, {
-      message: "No file uploaded",
-      path: ["tradeLicenseNumber"],
+      message: 'No file uploaded',
+      path: ['tradeLicenseNumber'],
     });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -188,14 +191,14 @@ export default function Registration() {
   });
   // const { formState } = form;
   const { countriesList, getCountriesList } = useCountriesStore(
-    (state: any) => state
+    (state: any) => state,
   );
   const { postUserRegistrationData } = useRegistrationStore(
-    (state: any) => state
+    (state: any) => state,
   );
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
-    const token = await executeRecaptcha("login");
+    const token = await executeRecaptcha('login');
     postUserRegistrationData({
       ...values,
       recaptchaToken: token,
@@ -206,7 +209,7 @@ export default function Registration() {
   });
   const [userRegistration, setUserRegistration] = useState(isUser);
   async function fillFieldsWithGoogle() {
-    signIn("google", { redirect: true });
+    signIn('google', { redirect: true });
   }
 
   useEffect(() => {
@@ -216,7 +219,7 @@ export default function Registration() {
   }, [cookies.accessToken]);
 
   async function fillFields() {
-    const token = getCookie("accessToken");
+    const token = getCookie('accessToken');
     const decodedToken = await getSession({
       req: { headers: { cookie: `accessToken=${token}` } },
     });
@@ -228,7 +231,7 @@ export default function Registration() {
         companyName: user?.company,
         address: user?.address,
       };
-      localStorage.setItem("registrationForm", JSON.stringify(formattedUser));
+      localStorage.setItem('registrationForm', JSON.stringify(formattedUser));
       // refresh default values for form
       form.reset(formattedUser);
       setIsRegisteredWithGoogle(true);
@@ -266,8 +269,8 @@ export default function Registration() {
                         setUserRegistration(!e);
 
                         !e
-                          ? router.push("/registration?user")
-                          : router.push("/registration?provider"); // Change url depends on role user
+                          ? router.push('/registration?user')
+                          : router.push('/registration?provider'); // Change url depends on role user
                       }}
                     />
                   </FormControl>
@@ -380,14 +383,14 @@ export default function Registration() {
                       accept="image/png, image/gif, image/jpeg, image/webp"
                       onChange={(e) => {
                         field.onChange(
-                          e.target.files ? e.target.files[0] : null
+                          e.target.files ? e.target.files[0] : null,
                         );
                       }}
                     />
                   </FormControl>
                   <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
                     <img className="mr-[8px]" src="/upload.svg" />
-                    {field.value ? field.value.name : "Upload logo"}
+                    {field.value ? field.value.name : 'Upload logo'}
                   </FormLabel>
                 </FormItem>
                 <FormMessage />
@@ -570,7 +573,7 @@ export default function Registration() {
                         accept="application/pdf"
                         onChange={(e) => {
                           field.onChange(
-                            e.target.files ? e.target.files[0] : null
+                            e.target.files ? e.target.files[0] : null,
                           );
                         }}
                       />
@@ -579,7 +582,7 @@ export default function Registration() {
                       <img className="mr-[8px]" src="/upload.svg" />
                       {field.value
                         ? field.value.name
-                        : "Upload PDF(front&back)"}
+                        : 'Upload PDF(front&back)'}
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
@@ -606,7 +609,7 @@ export default function Registration() {
                         accept="application/pdf"
                         onChange={(e) => {
                           field.onChange(
-                            e.target.files ? e.target.files[0] : null
+                            e.target.files ? e.target.files[0] : null,
                           );
                         }}
                       />
@@ -615,7 +618,7 @@ export default function Registration() {
                       <img className="mr-[8px]" src="/upload.svg" />
                       {field.value
                         ? field.value.name
-                        : "Upload PDF(front&back)"}
+                        : 'Upload PDF(front&back)'}
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
@@ -642,7 +645,7 @@ export default function Registration() {
                         accept="application/pdf"
                         onChange={(e) => {
                           field.onChange(
-                            e.target.files ? e.target.files[0] : null
+                            e.target.files ? e.target.files[0] : null,
                           );
                         }}
                       />
@@ -651,7 +654,7 @@ export default function Registration() {
                       <img className="mr-[8px]" src="/upload.svg" />
                       {field.value
                         ? field.value.name
-                        : "Upload PDF(front&back)"}
+                        : 'Upload PDF(front&back)'}
                     </FormLabel>
                     <FormMessage />
                   </FormItem>
@@ -714,20 +717,20 @@ export default function Registration() {
                   htmlFor="privacy"
                   className="text-[12px]/[16px] font-normal"
                 >
-                  I have read and agree to the{" "}
+                  I have read and agree to the{' '}
                   <Link
                     href="/privacy-policy"
                     className="underline hover:no-underline"
                   >
                     Privacy Terms
-                  </Link>{" "}
-                  and{" "}
+                  </Link>{' '}
+                  and{' '}
                   <Link
                     href="/terms-of-service"
                     className="underline hover:no-underline"
                   >
                     Terms of use
-                  </Link>{" "}
+                  </Link>{' '}
                   of the website.
                 </FormLabel>
               </FormItem>
@@ -748,7 +751,7 @@ export default function Registration() {
                   htmlFor="communication"
                   className="text-[12px]/[16px] font-normal"
                 >
-                  Yes, I would like to receive communication from{" "}
+                  Yes, I would like to receive communication from{' '}
                   <Link
                     href="/terms-of-service"
                     className="underline hover:no-underline"

@@ -1,16 +1,19 @@
-"use client";
-import UIButton from "@/components/common/Button";
+'use client';
+
+import { useRegistrationStore } from '@/lib/store';
+
+import { useRouter } from 'next/navigation';
+
+import UIButton from '@/components/common/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { useRouter } from "next/navigation";
-import { useRegistrationStore } from "@/lib/store";
+} from '@/components/ui/dialog';
 
 export default function RegistrationSuccessPopup() {
   const router = useRouter();
@@ -21,7 +24,7 @@ export default function RegistrationSuccessPopup() {
       open={registered}
       onOpenChange={(e) => {
         setRegistrationDefaults();
-        router.push(provider ? "/" : "/sign-in");
+        router.push(provider ? '/' : '/sign-in');
       }}
     >
       <DialogContent className="p-8">

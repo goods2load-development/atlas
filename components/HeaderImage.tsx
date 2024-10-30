@@ -1,6 +1,8 @@
-import React from "react";
-import Image from "next/image";
-import { formatDate } from "@/lib/utils";
+import { formatDate } from '@/lib/utils';
+
+import React from 'react';
+
+import Image from 'next/image';
 
 interface HeaderImageProps {
   title: string;
@@ -21,7 +23,7 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
 }) => {
   const imageUrl = mainImageUrl
     ? `${process.env.NEXT_PUBLIC_BASE_URL}${mainImageUrl}`
-    : "/default-image.jpg";
+    : '/default-image.jpg';
 
   return (
     <div className="relative h-80 md:h-[350px] overflow-hidden">

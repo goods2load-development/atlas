@@ -1,38 +1,41 @@
-"use client";
+'use client';
+
+import { getAllRoutes } from './utils';
+import { getRequest } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect, useMemo, useState } from 'react';
+
+import { CirclePlus, Edit } from 'lucide-react';
+import { FormProvider, useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import Autocomplete from '@/components/ui/autocomplete';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog';
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import * as z from "zod";
-import { useEffect, useMemo, useState } from "react";
-import { CirclePlus, Edit } from "lucide-react";
-import { getAllRoutes } from "./utils";
-
-import Autocomplete from "@/components/ui/autocomplete";
-import { getRequest } from "@/lib/utils";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 
 const formSchema = z
   .object({
-    title: z.string().min(1, "Title is required"),
+    title: z.string().min(1, 'Title is required'),
     innerLink: z.string().optional(),
     outerLink: z.string().optional(),
   })
   .refine((data) => !(data.innerLink && data.outerLink), {
-    message: "Only one of inner link or outer link must be provided, not both.",
-    path: ["link"], // Specifies where the error relates
+    message: 'Only one of inner link or outer link must be provided, not both.',
+    path: ['link'], // Specifies where the error relates
   });
 
 const LinkDialog = ({
@@ -41,7 +44,7 @@ const LinkDialog = ({
   editItem,
   data,
 }: {
-  type: "create" | "edit";
+  type: 'create' | 'edit';
   addNewItem?: (data: { title: string; href: string }) => void;
   editItem?: (data: { title: string; href: string }) => void;
   data?: {
@@ -55,15 +58,15 @@ const LinkDialog = ({
 
   const availableRoutes = useMemo(() => [...pages, ...routes], [routes, pages]);
 
-  const isCreate = type === "create";
-  const isEdit = type === "edit";
+  const isCreate = type === 'create';
+  const isEdit = type === 'edit';
 
   useEffect(() => {
     (async () => {
       const [routes, pages] = await Promise.all([
         getAllRoutes(),
         getRequest({
-          url: "seo-pages/urls",
+          url: 'seo-pages/urls',
         }),
       ]);
       setRoutes(routes);
@@ -73,10 +76,10 @@ const LinkDialog = ({
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "all",
+    mode: 'all',
     shouldUnregister: false,
     defaultValues: {
-      title: isEdit && data ? data.title : "",
+      title: isEdit && data ? data.title : '',
       innerLink:
         isEdit && data && routes.includes(data.href) ? data.href : undefined,
       outerLink:
@@ -109,7 +112,7 @@ const LinkDialog = ({
       >
         <DialogHeader>
           <DialogTitle className="text-center text-[40px]/[48px] mb-3 uppercase font-bold">
-            {isCreate ? "Add new link" : "Edit link"}
+            {isCreate ? 'Add new link' : 'Edit link'}
           </DialogTitle>
         </DialogHeader>
         <FormProvider {...form}>
@@ -141,10 +144,10 @@ const LinkDialog = ({
                       <Autocomplete
                         data={availableRoutes}
                         placeholder="Internal link"
-                        defaultValue={form.getValues("innerLink") || undefined}
+                        defaultValue={form.getValues('innerLink') || undefined}
                         {...field}
                         setOuterPick={(pick) =>
-                          form.setValue("innerLink", pick || undefined)
+                          form.setValue('innerLink', pick || undefined)
                         }
                       />
                     </FormControl>
@@ -172,11 +175,11 @@ const LinkDialog = ({
               </FormMessage>
 
               <Button
-                onClick={(e) => e.stopPropagation()}
+                onClick={(e: any) => e.stopPropagation()}
                 type="submit"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
-                {isCreate ? "Add" : "Edit"}
+                {isCreate ? 'Add' : 'Edit'}
               </Button>
             </div>
           </form>

@@ -1,8 +1,8 @@
-import { FooterItem } from "./types";
+import { FooterItem } from './types';
 
 export const deleteItemByTitle = (
   footerData: FooterItem[],
-  title: string
+  title: string,
 ): FooterItem[] => {
   return footerData.reduce<FooterItem[]>((acc, item) => {
     if (item.title === title) {
@@ -21,7 +21,7 @@ export const deleteItemByTitle = (
 export const addItemToChildrenByTitle = (
   footerData: FooterItem[],
   parentTitle: string,
-  newItem: { href: string; title: string }
+  newItem: { href: string; title: string },
 ): FooterItem[] => {
   if (!parentTitle) {
     return [...footerData, newItem];
@@ -49,7 +49,7 @@ export const addItemToChildrenByTitle = (
 export const editItemByTitle = (
   footerData: FooterItem[],
   title: string,
-  updatedData: { href?: string; title?: string }
+  updatedData: { href?: string; title?: string },
 ): FooterItem[] => {
   return footerData.map((item) => {
     if (item.title === title) {
@@ -73,7 +73,7 @@ export const editItemByTitle = (
 export const replaceChildrenByTitle = (
   items: FooterItem[],
   targetTitle: string,
-  newChildren: FooterItem[]
+  newChildren: FooterItem[],
 ): FooterItem[] => {
   const isHasTitle = items.find((item) => item.title === targetTitle);
 
@@ -86,7 +86,7 @@ export const replaceChildrenByTitle = (
         children: replaceChildrenByTitle(
           link.children,
           targetTitle,
-          newChildren
+          newChildren,
         ),
       };
     }
@@ -98,7 +98,7 @@ export const replaceChildrenByTitle = (
 export const filterRoutes = (routes: string[]) =>
   routes.filter(
     (route) =>
-      !route.includes("dashboard") && !route.includes("[") && route !== "/"
+      !route.includes('dashboard') && !route.includes('[') && route !== '/',
   );
 
 export async function getAllRoutes() {
@@ -106,13 +106,13 @@ export async function getAllRoutes() {
     const response = await fetch(`/dynamic-sitemap-0.xml`);
     const xmlText = await response.text();
     const parser = new DOMParser();
-    const xmlDoc = parser.parseFromString(xmlText, "application/xml");
+    const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
 
-    const urlNodes = xmlDoc.getElementsByTagName("url");
+    const urlNodes = xmlDoc.getElementsByTagName('url');
 
     const routes = Array.from(urlNodes)
       .map((urlNode) => {
-        const loc = urlNode.getElementsByTagName("loc")[0]?.textContent;
+        const loc = urlNode.getElementsByTagName('loc')[0]?.textContent;
         if (loc) {
           const url = new URL(loc);
           return url.pathname;
@@ -123,7 +123,7 @@ export async function getAllRoutes() {
 
     return filterRoutes(routes);
   } catch (error) {
-    console.error("Error fetching sitemap:", error);
+    console.error('Error fetching sitemap:', error);
     return [];
   }
 }

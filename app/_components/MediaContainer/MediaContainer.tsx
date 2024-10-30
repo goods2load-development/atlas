@@ -1,8 +1,12 @@
-import React from "react";
-import { media } from "@/app/_components/MediaContainer/MediaData";
-import MediaContainerItem from "@/app/_components/MediaContainer/MediaContainerItem";
-import LogisticInsights from "@/components/LogisticInsights";
-import { StaticImageData } from "next/image";
+import { RelatedBlogs } from '../Blog/RelatedBlogs';
+import MediaContainerItem from '@/app/_components/MediaContainer/MediaContainerItem';
+import { media } from '@/app/_components/MediaContainer/MediaData';
+
+import React from 'react';
+
+import { StaticImageData } from 'next/image';
+
+import LogisticInsights from '@/components/LogisticInsights';
 
 export interface IMedia {
   img: StaticImageData;
@@ -19,7 +23,9 @@ const MediaContainer = () => {
           <MediaContainerItem key={item.date} item={item} />
         ))}
       </div>
-      <LogisticInsights />
+      <div className="pb-[104px]">
+        <RelatedBlogs />
+      </div>
     </div>
   );
 };

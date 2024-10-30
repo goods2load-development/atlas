@@ -32,12 +32,12 @@ const Pagination = ({
           onClick={() => handlePageClick(i)}
           className={`px-4 py-2 rounded-lg text-sm font-medium ${
             page === i
-              ? "bg-orange-600 text-white"
-              : "bg-white text-orange-600 hover:bg-orange-100"
+              ? 'bg-orange-600 text-white'
+              : 'bg-white text-orange-600 hover:bg-orange-100'
           }`}
         >
           {i}
-        </button>
+        </button>,
       );
     }
 
@@ -45,7 +45,7 @@ const Pagination = ({
       pageNumbers.unshift(
         <span key="start-ellipsis" className="px-2">
           ...
-        </span>
+        </span>,
       );
     }
 
@@ -53,7 +53,7 @@ const Pagination = ({
       pageNumbers.push(
         <span key="end-ellipsis" className="px-2">
           ...
-        </span>
+        </span>,
       );
     }
 

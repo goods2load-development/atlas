@@ -1,6 +1,7 @@
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import ApproveComments from "@/components/Dashboard/BlogMain/ApproveComments";
-import CreateUpdateBlog from "@/components/Dashboard/BlogMain/CreateUpdateBlog";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+
+import ApproveComments from '@/components/Dashboard/BlogMain/ApproveComments';
+import CreateUpdateBlog from '@/components/Dashboard/BlogMain/CreateUpdateBlog';
 
 export default function EditBlog() {
   return (

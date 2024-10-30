@@ -1,10 +1,17 @@
-import { Suspense } from "react";
-import Registration from "@/components/Registration/Registration";
+import { Suspense } from 'react';
+
+import DynamicMenu from '@/components/Header/DynamicMenu';
+import HeaderClient from '@/components/Header/HeaderClient';
+import Registration from '@/components/Registration/Registration';
 
 export default function RegistrationPage() {
   return (
-    <Suspense>
-      <Registration />
-    </Suspense>
+    <>
+      <HeaderClient />
+      <DynamicMenu />
+      <Suspense>
+        <Registration />
+      </Suspense>
+    </>
   );
 }
