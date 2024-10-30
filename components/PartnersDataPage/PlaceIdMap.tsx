@@ -63,7 +63,6 @@ const PlaceIdMap = ({
 
   const onPlacesChanged = () => {
     const places = searchBoxRef.current?.getPlaces();
-    console.log({ places });
     if (places && places.length > 0) {
       const place = places[0];
       if (place) {

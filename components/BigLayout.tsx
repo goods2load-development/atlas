@@ -49,9 +49,9 @@ export default function BigLayout({
             ))}
           </h1>
           {description && (
-            <h2 className="sm:mb-[68px] text-[17px]/[25px] font-light max-w-[323px] sm:max-w-[100%] pb-40 sm:pb-0">
+            <p className="sm:mb-[68px] text-[17px]/[25px] font-light max-w-[323px] sm:max-w-[100%] pb-40 sm:pb-0">
               {description}
-            </h2>
+            </p>
           )}
         </div>
 

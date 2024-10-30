@@ -1,59 +1,63 @@
-// @ts-nocheck
-"use client";
+'use client';
 
-import Image from "next/image";
-import PartnerLogoDefault from "@/assets/Partners/partner-logo-default.jpg";
-import { GoogleRatingBunner } from "@/app/_components/Partner/GoogleRatingBunner/GoogleRatingBunner";
-import { Review } from "@/app/_components/Partner/Review/Review";
+import PieChart from '../Dashboard/Charts/PieChart';
+import { PartnerPageResponse } from '../Dashboard/PartnersMain/types';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '../ui/tabs';
+import { Textarea } from '../ui/textarea';
+import { useToast } from '../ui/use-toast';
+import PlaceIdMap from './PlaceIdMap';
+import SendDataToPartnerDialog from './SendDataToPartnerDialog';
+import { formSchema } from './constants';
+import { PlaceDetails } from './types';
+import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner/GoogleRatingBunner';
+import { Review } from '@/app/_components/Partner/Review/Review';
+import useBreakpoint from '@/app/hooks/useBreakpoint';
+import useDotButton from '@/app/hooks/useDotButton';
+import PartnerLogoDefault from '@/assets/Partners/partner-logo-default.jpg';
+import bgDecorline from '@/assets/bg-decor-line.svg';
+import { useAnalyticsStore } from '@/lib/analyticsStore';
+import { usePartnersStore } from '@/lib/store';
+import {
+  addToFileList,
+  fileToBase64,
+  getRandomHexColor,
+  removeFileFromFileList,
+  urlsToFileList,
+} from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect, useMemo, useState } from 'react';
+
+import Fade from 'embla-carousel-fade';
+import useEmblaCarousel from 'embla-carousel-react';
+import { TrashIcon, X } from 'lucide-react';
+import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "../ui/input";
-import { useEffect, useMemo, useState } from "react";
-import { Textarea } from "../ui/textarea";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
-import PieChart from "../Dashboard/Charts/PieChart";
-import { Button } from "../ui/button";
-import { TrashIcon, X } from "lucide-react";
-import {
-  addToFileList,
-  fileToBase64,
-  getRandomHexColor,
-  urlsToFileList,
-  removeFileFromFileList,
-} from "@/lib/utils";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import { formSchema } from "./constants";
-import { z } from "zod";
-import { useParams, useRouter } from "next/navigation";
-import { usePartnersStore } from "@/lib/store";
-import { PartnerPageResponse } from "../Dashboard/PartnersMain/types";
-import LoyaltAllWrapper from "@/app/_components/LoyaltAllWrapper/LoyaltAllWrapper";
-import { useToast } from "../ui/use-toast";
-import { PlaceDetails } from "./types";
-import SelectionPopup from "../Catalogue/SelectionPopup";
-import SendDataToPartnerDialog from "./SendDataToPartnerDialog";
-import PlaceIdMap from "./PlaceIdMap";
-import bgDecorline from "@/assets/bg-decor-line.svg";
-import useBreakpoint from "@/app/hooks/useBreakpoint";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 enum TabsEnum {
-  SERVICES_PROVIDED = "Service provided",
-  FOCUS = "Focus",
-  INDUSTRIES = "Industries",
-  CLIENT_TARGET = "Clients target",
+  SERVICES_PROVIDED = 'Service provided',
+  FOCUS = 'Focus',
+  INDUSTRIES = 'Industries',
+  CLIENT_TARGET = 'Clients target',
 }
 
 const PartnerDataPage = ({
@@ -64,30 +68,33 @@ const PartnerDataPage = ({
   isEdit = false,
 }: {
   companyPhoto: string;
-  partnerData?: PartnerPageResponse;
+  partnerData?: PartnerPageResponse | any;
   placeInfo?: PlaceDetails;
   isCreate?: boolean;
   isEdit?: boolean;
 }) => {
   const isGet = !isCreate && !isEdit;
-  const { isAboveMd, isBelowMd } = useBreakpoint("md");
+  const { postInteractionWithPartner } = useAnalyticsStore();
+
+  const { isAboveLg, isBelowLg } = useBreakpoint('lg');
+  const { isAboveMd } = useBreakpoint('md');
 
   const form = useForm<z.infer<typeof formSchema>>({
-    mode: "all",
+    mode: 'all',
     resolver: zodResolver(formSchema),
     defaultValues: {
-      name: isEdit ? partnerData?.name : "",
-      description: isEdit ? partnerData?.description : "",
-      mission: isEdit ? partnerData?.mission : "",
-      airFreight: isEdit ? partnerData?.serviceProvided?.airFreight : "",
-      seaFreight: isEdit ? partnerData?.serviceProvided?.seaFreight : "",
-      roadFreight: isEdit ? partnerData?.serviceProvided?.roadFreight : "",
-      smallBusiness: isEdit ? partnerData?.clientTarget?.smallBusiness : "",
-      midMarket: isEdit ? partnerData?.clientTarget?.midMarket : "",
-      enterprises: isEdit ? partnerData?.clientTarget?.enterprises : "",
+      name: isEdit ? partnerData?.name : '',
+      description: isEdit ? partnerData?.description : '',
+      mission: isEdit ? partnerData?.mission : '',
+      airFreight: isEdit ? partnerData?.serviceProvided?.airFreight : '',
+      seaFreight: isEdit ? partnerData?.serviceProvided?.seaFreight : '',
+      roadFreight: isEdit ? partnerData?.serviceProvided?.roadFreight : '',
+      smallBusiness: isEdit ? partnerData?.clientTarget?.smallBusiness : '',
+      midMarket: isEdit ? partnerData?.clientTarget?.midMarket : '',
+      enterprises: isEdit ? partnerData?.clientTarget?.enterprises : '',
       focus: [],
       industries: [],
-      placementId: isEdit ? partnerData?.placementId : "",
+      placementId: isEdit ? partnerData?.placementId : '',
     },
   });
   const { id } = useParams();
@@ -95,24 +102,24 @@ const PartnerDataPage = ({
   const { push } = useRouter();
 
   const { isPartnersLoading, createPartnerPage } = usePartnersStore(
-    (state) => state
+    (state) => state,
   );
   const [activeTab, setActiveTab] = useState<TabsEnum>(
-    TabsEnum.SERVICES_PROVIDED
+    TabsEnum.SERVICES_PROVIDED,
   );
   const [chartItem, setChartItem] = useState<TabsEnum>(
-    TabsEnum.SERVICES_PROVIDED
+    TabsEnum.SERVICES_PROVIDED,
   );
   const [awardedByBase64List, setAwardedByBase64List] = useState<string[]>([]);
   const [countryFocusForm, setCountryFocusForm] = useState({
-    label: "",
-    value: "",
-    color: "",
+    label: '',
+    value: '',
+    color: '',
   });
   const [industriesForm, setIndustriesForm] = useState({
-    label: "",
-    value: "",
-    color: "",
+    label: '',
+    value: '',
+    color: '',
   });
   const [charData, setChartData] = useState({
     airFreight: isEdit ? +partnerData?.serviceProvided.airFreight : 0,
@@ -160,12 +167,12 @@ const PartnerDataPage = ({
         value: +item.value,
         name: item.label,
         color: (item as any).color || getRandomHexColor(),
-      })
+      }),
     );
   }, [partnerData, industriesData]);
 
   const reviews = useMemo(() => {
-    if (placeInfo?.status !== "OK") return null;
+    if (placeInfo?.status !== 'OK') return null;
     const reviewsClone = [...((placeInfo?.result?.reviews as any[]) || [])];
     reviewsClone.sort((a, b) => b.rating - a.rating);
     return reviewsClone.slice(0, 3);
@@ -173,52 +180,52 @@ const PartnerDataPage = ({
 
   const servicesProvidedData = [
     {
-      name: "Air Freight",
+      name: 'Air Freight',
       value: isGet
         ? +partnerData.serviceProvided.airFreight
         : charData.airFreight,
-      color: "#3F2011",
-      key: "airFreight",
+      color: '#3F2011',
+      key: 'airFreight',
     },
     {
-      name: "Road Freight",
+      name: 'Road Freight',
       value: isGet
         ? +partnerData.serviceProvided.roadFreight
         : charData.roadFreight,
-      color: "#FB5304",
-      key: "roadFreight",
+      color: '#FB5304',
+      key: 'roadFreight',
     },
     {
-      name: "Sea Freight",
+      name: 'Sea Freight',
       value: isGet
         ? +partnerData.serviceProvided.seaFreight
         : charData.seaFreight,
-      color: "#F4BE37",
-      key: "seaFreight",
+      color: '#F4BE37',
+      key: 'seaFreight',
     },
   ];
   const clientsTargetData = [
     {
-      name: "Small business",
+      name: 'Small business',
       value: isGet
         ? +partnerData.clientTarget.smallBusiness
         : charData.smallBusiness,
-      color: "#3F2011",
-      key: "smallBusiness",
+      color: '#3F2011',
+      key: 'smallBusiness',
     },
     {
-      name: "Midd market",
+      name: 'Midd market',
       value: isGet ? +partnerData.clientTarget.midMarket : charData.midMarket,
-      color: "#FB5304",
-      key: "midMarket",
+      color: '#FB5304',
+      key: 'midMarket',
     },
     {
-      name: "Enterprises",
+      name: 'Enterprises',
       value: isGet
         ? +partnerData.clientTarget.enterprises
         : charData.enterprises,
-      color: "#F4BE37",
-      key: "enterprises",
+      color: '#F4BE37',
+      key: 'enterprises',
     },
   ];
   const currentData = useMemo(() => {
@@ -234,26 +241,37 @@ const PartnerDataPage = ({
     }
   }, [chartItem]);
 
+  const [emblaRef, emblaApi] = useEmblaCarousel(
+    { loop: true, slidesToScroll: 'auto' },
+    [Fade()],
+  );
+  const { selectedIndex, scrollSnaps, onDotButtonClick } =
+    useDotButton(emblaApi);
+
   const isHasAnyErrors = !!Object.values(form?.formState?.errors || {})?.length;
-  const awardedByValues = form?.getValues("awardedBy");
+  const awardedByValues = form?.getValues('awardedBy');
+
+  useEffect(() => {
+    isGet && postInteractionWithPartner(partnerData?.id);
+  }, []);
 
   useEffect(() => {
     form?.setValue(
-      "focus",
+      'focus',
       focusData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any
+      })) as any,
     );
   }, [focusData]);
 
   useEffect(() => {
     form?.setValue(
-      "industries",
+      'industries',
       industriesData.map(({ label, value }) => ({
         label,
         value: value.toString(),
-      })) as any
+      })) as any,
     );
   }, [industriesData]);
 
@@ -262,18 +280,18 @@ const PartnerDataPage = ({
     (async () => {
       const fileList = await urlsToFileList(
         partnerData?.awardsFiles.map(
-          (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`
-        )
+          (item: any) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
+        ),
       );
 
-      form?.setValue("awardedBy", fileList);
+      form?.setValue('awardedBy', fileList);
 
       const listBase64 = await Promise.all(
         Array.from(fileList).map(async (file) => {
           const base = await fileToBase64(file);
 
           return base;
-        })
+        }),
       );
 
       setAwardedByBase64List(listBase64);
@@ -287,7 +305,7 @@ const PartnerDataPage = ({
   const handleAwardUploadChange = (event: any) => {
     (async () => {
       if (!awardedByValues) {
-        form?.setValue("awardedBy", event.target.files);
+        form?.setValue('awardedBy', event.target.files);
         const file = await fileToBase64(event.target.files[0]);
         setAwardedByBase64List([file]);
 
@@ -297,15 +315,15 @@ const PartnerDataPage = ({
 
       const updatedFileList = addToFileList(
         awardedByValues as FileList,
-        newFile
+        newFile,
       );
-      form?.setValue("awardedBy", updatedFileList);
+      form?.setValue('awardedBy', updatedFileList);
       const list = await Promise.all(
         Array.from(updatedFileList).map(async (file) => {
           const base = await fileToBase64(file);
 
           return base;
-        })
+        }),
       );
 
       setAwardedByBase64List(list);
@@ -322,9 +340,9 @@ const PartnerDataPage = ({
 
     const updatedFileList = removeFileFromFileList(
       index,
-      form?.getValues("awardedBy") as FileList
+      form?.getValues('awardedBy') as FileList,
     );
-    form?.setValue("awardedBy", updatedFileList);
+    form?.setValue('awardedBy', updatedFileList);
   };
 
   const onCreatePageSubmit = (data: z.infer<typeof formSchema>) => {
@@ -350,10 +368,10 @@ const PartnerDataPage = ({
 
     const formData = new FormData();
 
-    formData.append("name", body.name);
-    formData.append("description", body.description);
-    formData.append("mission", body.mission);
-    formData.append("placementId", body.placementId);
+    formData.append('name', body.name);
+    formData.append('description', body.description);
+    formData.append('mission', body.mission);
+    formData.append('placementId', body.placementId);
 
     formData.append(`industries`, JSON.stringify(body.industries));
     formData.append(`focus`, JSON.stringify(body.focus));
@@ -362,7 +380,7 @@ const PartnerDataPage = ({
       const typedKey = key as keyof typeof body.serviceProvided;
       formData.append(
         `serviceProvided[${typedKey}]`,
-        body.serviceProvided[typedKey]
+        body.serviceProvided[typedKey],
       );
     });
 
@@ -372,15 +390,15 @@ const PartnerDataPage = ({
     });
 
     Array.from(body.files).forEach((file) =>
-      formData.append("awardedFiles", file)
+      formData.append('awardedFiles', file),
     );
 
     createPartnerPage(formData as any, id.toString()).then(() => {
-      push("/dashboard/partners?tab=active");
+      push('/dashboard/partners?tab=active');
       toast({
-        title: "Page successfully created.",
-        variant: "destructive",
-        className: "bg-green-500",
+        title: 'Page successfully created.',
+        variant: 'destructive',
+        className: 'bg-green-500',
       });
     });
   };
@@ -388,8 +406,8 @@ const PartnerDataPage = ({
   const content = () => (
     <>
       <section className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center z-0">
-        <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 bg-primaryOrange sm:bg-transparent sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] realtive">
-          {!isGet ? (
+        {!isGet && (
+          <div className="flex flex-col w-full items-center justify-center sm:pt-[47px] pt-10 bg-primaryOrange sm:bg-transparent sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] realtive">
             <FormField
               control={form?.control}
               name="name"
@@ -406,22 +424,17 @@ const PartnerDataPage = ({
                 </FormItem>
               )}
             />
-          ) : (
-            <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-2 sm:pt-[120px]">
-              {partnerData?.name}
-            </h1>
-          )}
 
-          <div className="sm:hidden absolute -top-32 left-0">
-            <Image src={bgDecorline} />
-          </div>
+            <div className="sm:hidden absolute -top-32 left-0">
+              <Image src={bgDecorline} alt="background" />
+            </div>
 
-          <div className="sm:hidden absolute -top-32 right-0 scale-x-[-1]">
-            <Image src={bgDecorline} />
+            <div className="sm:hidden absolute -top-32 right-0 scale-x-[-1]">
+              <Image src={bgDecorline} alt="background" />
+            </div>
           </div>
-        </div>
-        <div className="sm:hidden h-16 white-gradient w-full"></div>
-        <div className="max-w-[1295px] w-full mx-auto md:pt-[72px] pt-6 pb-[250px] px-4">
+        )}
+        <div className="max-w-[1295px] w-full mx-auto md:pt-[72px] pt-6 pb-[104px] px-4">
           <div className="lg:flex gap-14 justify-between mb-10 sm:mb-[104px]">
             <div
               className="md:basis-1/2 px-20 rounded-2xl border border-solid border-primaryOrange 
@@ -430,7 +443,7 @@ const PartnerDataPage = ({
             >
               <div className="relative mx-auto w-2/3 sm:w-[40%] h-full rotate-180 md:rotate-0">
                 <Image
-                  alt="Image Alt"
+                  alt="Company"
                   src={
                     companyPhoto
                       ? `${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`
@@ -471,7 +484,7 @@ const PartnerDataPage = ({
             </div>
           </div>
 
-          <div className="md:flex gap-14 justify-between mb-4 md:mb-14">
+          <div className="lg:flex gap-14 justify-between mb-4 md:mb-14">
             <div className="text-black text-left text-[18px]/[26px] sm:max-w-[532px] w-full">
               <h5 className="text-[28px]/[33px] sm:text-[24px]/[28px] font-medium mb-4">
                 Our mission
@@ -500,9 +513,12 @@ const PartnerDataPage = ({
               )}
             </div>
 
-            {isBelowMd && (
-              <div className="p-4 border border-lightOrange">
-                <Select value={chartItem} onValueChange={setChartItem}>
+            {isBelowLg && (
+              <div className="p-4 border border-lightOrange mb-10">
+                <Select
+                  value={chartItem}
+                  onValueChange={(val) => setChartItem(val as any)}
+                >
                   <SelectTrigger className="border-none bg-lightOrange rounded-none text-orangePrimary font-bold">
                     <SelectValue />
                   </SelectTrigger>
@@ -547,7 +563,7 @@ const PartnerDataPage = ({
                   </div>
 
                   <div className="text-black">
-                    {currentData.map((elem) => (
+                    {currentData.map((elem: any) => (
                       <div key={elem.name} className="flex gap-2 mb-4">
                         <div
                           className="w-[24px] h-[24px] rounded-sm"
@@ -564,7 +580,7 @@ const PartnerDataPage = ({
               </div>
             )}
 
-            {isAboveMd && (
+            {isAboveLg && (
               <div className="text-black text-left p-4 border border-lightOrange basis-1/2">
                 <Tabs value={activeTab} onValueChange={onTabChange}>
                   <TabsList>
@@ -574,12 +590,12 @@ const PartnerDataPage = ({
                       style={{
                         backgroundColor:
                           TabsEnum.SERVICES_PROVIDED === activeTab
-                            ? "#FFEDE4"
-                            : "inherit",
+                            ? '#FFEDE4'
+                            : 'inherit',
                         color:
                           TabsEnum.SERVICES_PROVIDED === activeTab
-                            ? "#FF6720"
-                            : "#000",
+                            ? '#FF6720'
+                            : '#000',
                       }}
                     >
                       {TabsEnum.SERVICES_PROVIDED}
@@ -589,9 +605,9 @@ const PartnerDataPage = ({
                       value={TabsEnum.FOCUS}
                       style={{
                         backgroundColor:
-                          TabsEnum.FOCUS === activeTab ? "#FFEDE4" : "inherit",
+                          TabsEnum.FOCUS === activeTab ? '#FFEDE4' : 'inherit',
                         color:
-                          TabsEnum.FOCUS === activeTab ? "#FF6720" : "#000",
+                          TabsEnum.FOCUS === activeTab ? '#FF6720' : '#000',
                       }}
                     >
                       {TabsEnum.FOCUS}
@@ -602,12 +618,12 @@ const PartnerDataPage = ({
                       style={{
                         backgroundColor:
                           TabsEnum.INDUSTRIES === activeTab
-                            ? "#FFEDE4"
-                            : "inherit",
+                            ? '#FFEDE4'
+                            : 'inherit',
                         color:
                           TabsEnum.INDUSTRIES === activeTab
-                            ? "#FF6720"
-                            : "#000",
+                            ? '#FF6720'
+                            : '#000',
                       }}
                     >
                       {TabsEnum.INDUSTRIES}
@@ -618,12 +634,12 @@ const PartnerDataPage = ({
                       style={{
                         backgroundColor:
                           TabsEnum.CLIENT_TARGET === activeTab
-                            ? "#FFEDE4"
-                            : "inherit",
+                            ? '#FFEDE4'
+                            : 'inherit',
                         color:
                           TabsEnum.CLIENT_TARGET === activeTab
-                            ? "#FF6720"
-                            : "#000",
+                            ? '#FF6720'
+                            : '#000',
                       }}
                     >
                       {TabsEnum.CLIENT_TARGET}
@@ -745,9 +761,9 @@ const PartnerDataPage = ({
                                   },
                                 ]);
                                 setCountryFocusForm({
-                                  label: "",
-                                  value: "",
-                                  color: "",
+                                  label: '',
+                                  value: '',
+                                  color: '',
                                 });
                               }}
                               className="w-full mb-2"
@@ -758,7 +774,7 @@ const PartnerDataPage = ({
                         )}
                         <div>
                           {(isGet ? calculateCharFocusData : focusData).map(
-                            (elem) => (
+                            (elem: any) => (
                               <div key={elem.label} className="flex gap-2 mb-4">
                                 <div
                                   className="w-[24px] h-[24px] rounded-sm"
@@ -774,8 +790,8 @@ const PartnerDataPage = ({
                                     onClick={() =>
                                       setFocusData((data) =>
                                         data.filter(
-                                          (item) => item.label !== elem.label
-                                        )
+                                          (item) => item.label !== elem.label,
+                                        ),
                                       )
                                     }
                                   >
@@ -783,7 +799,7 @@ const PartnerDataPage = ({
                                   </button>
                                 )}
                               </div>
-                            )
+                            ),
                           )}
                         </div>
                       </div>
@@ -801,7 +817,7 @@ const PartnerDataPage = ({
                         </div>
                         {!isGet && (
                           <>
-                            {" "}
+                            {' '}
                             <div className="flex gap-1 mb-2">
                               <Input
                                 onChange={(e) =>
@@ -861,7 +877,7 @@ const PartnerDataPage = ({
                           {(isGet
                             ? calculateCharIndustriesData
                             : industriesData
-                          ).map((elem) => (
+                          ).map((elem: any) => (
                             <div key={elem.label} className="flex gap-2 mb-4">
                               <div
                                 className="w-[24px] h-[24px] rounded-sm"
@@ -877,8 +893,8 @@ const PartnerDataPage = ({
                                   onClick={() =>
                                     setIndustriesData((data) =>
                                       data.filter(
-                                        (item) => item.label !== elem.label
-                                      )
+                                        (item) => item.label !== elem.label,
+                                      ),
                                     )
                                   }
                                 >
@@ -949,44 +965,97 @@ const PartnerDataPage = ({
             )}
           </div>
 
-          {/* <SendDataToPartnerDialog
+          <SendDataToPartnerDialog
             trigger={
               <button
                 disabled={!isGet}
+                onClick={() => {
+                  postInteractionWithPartner(partnerData?.id);
+                }}
                 type="button"
-                className="animate-button-ping transition-shadow bg-primaryOrange
-             mx-auto rounded-md text-white text-center py-4 px-20 hover:opacity-90
-            cursor-pointer font-medium mb-[104px]"
+                className="w-full max-w-[343px] animate-button-ping transition-shadow bg-primaryOrange
+          mx-auto rounded-md text-white text-center py-4 hover:opacity-90
+          cursor-pointer font-medium mb-10 md:mb-[104px]"
               >
                 GET A FREE QUOTATION
               </button>
             }
-          /> */}
+          />
 
-          {/* {!isGet ? (
+          {!isGet ? (
             <PlaceIdMap
               onChangePlaceId={(placeId: string) =>
-                form.setValue("placementId", placeId)
+                form.setValue('placementId', placeId)
               }
-              placeId={isEdit ? form.getValues("placementId") : undefined}
+              placeId={isEdit ? form.getValues('placementId') : undefined}
             />
           ) : (
             <>
               {placeInfo && reviews && (
                 <>
                   <GoogleRatingBunner placeInfo={placeInfo} />
-                  <div className="flex justify-between items-start gap-[43px] mt-10">
-                    {reviews.map((review) => (
-                      <Review review={review} key={review.time} />
-                    ))}
-                  </div>
+                  {isAboveMd ? (
+                    <>
+                      <div className="flex justify-between items-start gap-[43px] mt-10">
+                        {reviews.map((review) => (
+                          <Review review={review} key={review.time} />
+                        ))}
+                      </div>
+                    </>
+                  ) : (
+                    <div
+                      className="mx-auto overflow-hidden mt-4"
+                      ref={emblaRef}
+                    >
+                      <div className="flex">
+                        {reviews.map((review) => (
+                          <div className="flex-[0_0_100%]" key={review.time}>
+                            <Review review={review} />
+                            <div className="flex gap-8 mt-6 justify-center">
+                              <button className="w-[44px] h-[44px] flex items-center justify-center bg-orangePrimary rounded-full">
+                                <Image
+                                  onClick={() => emblaApi?.scrollPrev()}
+                                  width={8}
+                                  height={16}
+                                  src="/arrow-slider-left.svg"
+                                  alt="prev"
+                                />
+                              </button>
+                              <div className="embla__dots self-center">
+                                {scrollSnaps.map((_, index) => (
+                                  <button
+                                    key={index}
+                                    onClick={() => onDotButtonClick(index)}
+                                    className={`embla__dot w-2 h-2 rounded-full mx-[6px] border ${
+                                      index === selectedIndex
+                                        ? 'bg-black scale-[1.5]'
+                                        : 'bg-gray-400 scale-100'
+                                    } transition-transform border-gray-400`}
+                                  />
+                                ))}
+                              </div>
+                              <button className="w-[44px] h-[44px] flex items-center justify-center bg-orangePrimary rounded-full">
+                                <Image
+                                  onClick={() => emblaApi?.scrollNext()}
+                                  width={8}
+                                  height={16}
+                                  src="/arrow-slider-right.svg"
+                                  alt="next"
+                                />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </>
               )}
             </>
-          )} */}
-          {/* 
-          <div className="mt-[112px]">
-            <h3 className="text-[48px]/[57px] mb-8 text-black text-left">
+          )}
+
+          <div className="mt-10 md:mt-[112px]">
+            <h3 className="text-4xl md:text-[48px] mb-8 text-black text-center md:text-left">
               <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
                 <span>Awarded</span>
               </div>
@@ -1024,7 +1093,7 @@ const PartnerDataPage = ({
               )}
 
               {isGet &&
-                partnerData?.awardsFiles.map((item) => (
+                partnerData?.awardsFiles.map((item: any) => (
                   <Image
                     key={item.path}
                     width={293}
@@ -1056,11 +1125,11 @@ const PartnerDataPage = ({
                   </div>
                 ))}
             </div>
-          </div> */}
+          </div>
         </div>
       </section>
 
-      {/* {isCreate && isHasAnyErrors && (
+      {isCreate && isHasAnyErrors && (
         <div className="fixed top-2 right-2 bg-white rounded-xl w-[300px] h-[140px] overflow-y-scroll p-2 shadow-md">
           <h3 className="text-2xl font-bold">Error list:</h3>
           {Object.values(form?.formState?.errors || {}).map((error, i) => {
@@ -1081,7 +1150,7 @@ const PartnerDataPage = ({
         >
           Submit
         </Button>
-      )} */}
+      )}
     </>
   );
 
@@ -1094,6 +1163,6 @@ const PartnerDataPage = ({
       </FormProvider>
     );
 
-  return <LoyaltAllWrapper>{content()}</LoyaltAllWrapper>;
+  return content();
 };
 export default PartnerDataPage;
