@@ -1,6 +1,6 @@
 import { getRandomHexColor } from '@/lib/utils';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import {
@@ -32,30 +32,7 @@ interface TransformedData {
   month: string;
 }
 
-const IndustryChart: React.FC = ({ data }: any) => {
-  const initialData: IndustryData[] = [
-    {
-      industry: 'Industry_1',
-      months: [13, 2, 2, 20, 4, 17, 19, 20, 11, 3, 12, 20],
-    },
-    {
-      industry: 'Industry_2',
-      months: [17, 9, 2, 2, 20, 7, 9, 19, 11, 11, 1, 6],
-    },
-    {
-      industry: 'Industry_3',
-      months: [9, 18, 18, 20, 3, 9, 11, 11, 16, 12, 13, 13],
-    },
-    {
-      industry: 'Industry_4',
-      months: [11, 11, 20, 8, 13, 8, 4, 9, 6, 14, 9, 14],
-    },
-    {
-      industry: 'Industry_5',
-      months: [1, 14, 17, 12, 12, 19, 12, 7, 15, 3, 10, 19],
-    },
-  ];
-
+const IndustryChart = ({ data }: { data: IndustryData[] }) => {
   const months: string[] = [
     'Jan',
     'Feb',
@@ -73,11 +50,19 @@ const IndustryChart: React.FC = ({ data }: any) => {
 
   const [selectedIndustries, setSelectedIndustries] = useState<
     Record<string, boolean>
-  >(initialData.reduce((acc, item) => ({ ...acc, [item.industry]: true }), {}));
+  >(data.reduce((acc, item) => ({ ...acc, [item.industry]: true }), {}));
+
+  useEffect(() => {
+    if (data) {
+      setSelectedIndustries(
+        data.reduce((acc, item) => ({ ...acc, [item.industry]: true }), {}),
+      );
+    }
+  }, [data]);
 
   const transformedData: TransformedData[] = months.map((month, index) => {
     const monthData: TransformedData = { month };
-    initialData.forEach((item) => {
+    data.forEach((item) => {
       if (selectedIndustries[item.industry]) {
         monthData[item.industry] = item.months[index];
       }
@@ -115,7 +100,7 @@ const IndustryChart: React.FC = ({ data }: any) => {
       </div>
 
       <div className="flex flex-wrap mb-4 gap-4">
-        {initialData.map((item) => (
+        {data.map((item) => (
           <label
             key={item.industry}
             className="flex items-center gap-2 text-[#29292A]"
@@ -145,13 +130,13 @@ const IndustryChart: React.FC = ({ data }: any) => {
               <XAxis interval={0} dataKey="month" />
               <YAxis
                 domain={[
-                  Math.min(...initialData.flatMap((item) => item.months)),
-                  Math.max(...initialData.flatMap((item) => item.months)),
+                  Math.min(...data.flatMap((item) => item.months)),
+                  Math.max(...data.flatMap((item) => item.months)),
                 ]}
               />
               <Tooltip />
 
-              {initialData.map(
+              {data.map(
                 (item, index) =>
                   selectedIndustries[item.industry] && (
                     <Line

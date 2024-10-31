@@ -38,8 +38,7 @@ const PerformanceMain = () => {
   );
 
   useEffect(() => {
-    console.log({ deliveryBy });
-    // getPerformancedData(deliveryBy);
+    getPerformancedData(deliveryBy);
   }, []);
 
   const onChangeTab = useCallback(
