@@ -56,6 +56,8 @@ const placementOfGoodsOptions = [
   'ULDs',
   'Bulk Cargo',
   'Ro-Ro ',
+  '20’ Container',
+  '40’ Container',
   'Other',
 ];
 
@@ -78,6 +80,10 @@ type Incoterms = {
 const incotermsList: Incoterms = {
   plane: [
     { name: 'Unknown', description: `In case you’re unsure` },
+    { name: 'CFR', description: 'Cost and Freight' },
+    { name: 'CIF', description: 'Cost, Insurance, and Freight' },
+    { name: 'FOB', description: 'Free on Board' },
+    { name: 'FAS', description: 'Free Alongside Ship' },
     { name: 'DDP', description: 'Delivered Duty Paid' },
     { name: 'DPU', description: 'Delivered at Place Unloaded' },
     { name: 'DAP', description: 'Delivered At Place' },
@@ -655,7 +661,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
               onChange={(e) => setFilter({ totalKg: e.target.value })}
             />
           </div>
-          <div className="lg:w-[22%] flex">
+          <div className="lg:w-[25%] flex">
             <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
               <label className="mb-2 block">Placement</label>
               <Select
