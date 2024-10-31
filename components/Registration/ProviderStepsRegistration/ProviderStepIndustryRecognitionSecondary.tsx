@@ -31,6 +31,8 @@ export const FormStepIndustryRecognitionSecondary = ({
 }: {
   form: any;
 }) => {
+  const { clearErrors } = form;
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6 font-semibold">
@@ -113,7 +115,12 @@ export const FormStepIndustryRecognitionSecondary = ({
                   type="file"
                   accept="application/pdf"
                   onChange={(e) => {
-                    field.onChange(e.target.files ? e.target.files[0] : null);
+                    if (e.target.files?.length) {
+                      field.onChange(e.target.files ? e.target.files[0] : null);
+                      clearErrors('industryProofFileSecondary');
+                    } else {
+                      field.onChange(null);
+                    }
                   }}
                 />
               </FormControl>
@@ -127,22 +134,16 @@ export const FormStepIndustryRecognitionSecondary = ({
       </div>
 
       <div className="mt-12 text-[14px]">
-        <strong className="text-[16px]">Sastainability Certification</strong>
+        <strong className="text-[16px]">Sastainability</strong>
 
-        <p className="block mb-2 mt-6">
-          This certification is a significant recognition of our commitment to
-          environmentally responsible practices and sustainable operations. It
-          demonstrates our dedication to reducing our ecological footprint and
-          promoting sustainability within the logistics industry.
-        </p>
-
-        <p>
-          Having this badge is crucial for our brand reputation, as it not only
-          highlights our compliance with recognized environmental standards but
-          also enhances customer trust and loyalty. By showcasing our
-          Sustainability Certification, we reinforce our position as a
-          forward-thinking company that prioritizes both service excellence and
-          environmental stewardship.
+        <p className="block my-4">
+          This certification is essential for companies we engage with,
+          reflecting a commitment to sustainable, eco-friendly practices.
+          Partnering with certified companies strengthens our brand reputation,
+          assures compliance with environmental standards, and builds customer
+          trust. By prioritizing sustainability, we position ourselves as a
+          forward-thinking company dedicated to excellence and environmental
+          responsibility.
         </p>
 
         <FormField

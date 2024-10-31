@@ -52,31 +52,23 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 
-enum RegistrationErrors {
-  COMPANY_PHOTO = 'companyPhoto',
-  PASSWORD = 'password',
-  CONFIRM_PASSWORD = 'confirmPassword',
-  PRIVACY = 'privacy',
-  PHONE_NUMBER = 'phoneNumber',
-  COUNTRY = 'contry',
-  GOOGLE_BUSINESS_PROFILE = 'googleBusinessProfile',
-  INDUSTRY_RECOGNITION_SECONDARY = 'industryRecognitionsSecondary',
-  INDUSTRY_PROOF_FILE_SECONDARY = 'industryProofFileSecondary',
-  FINAL_AGREEMENT = 'finalAgreement',
-  INDUSTRIES = 'industries',
-}
-
-const ERRORS_ON_STEPS: Record<string, number> = {
-  [RegistrationErrors.COMPANY_PHOTO]: 1,
-  [RegistrationErrors.PASSWORD]: 1,
-  [RegistrationErrors.CONFIRM_PASSWORD]: 1,
-  [RegistrationErrors.PRIVACY]: 1,
-  [RegistrationErrors.COUNTRY]: 1,
-  [RegistrationErrors.GOOGLE_BUSINESS_PROFILE]: 2,
-  [RegistrationErrors.INDUSTRY_PROOF_FILE_SECONDARY]: 4,
-  [RegistrationErrors.INDUSTRY_RECOGNITION_SECONDARY]: 4,
-  [RegistrationErrors.INDUSTRIES]: 5,
-  [RegistrationErrors.FINAL_AGREEMENT]: 9,
+const ERRORS_ON_STEPS: Record<number, string[]> = {
+  // 0: [
+  //   'email',
+  //   'companyPhoto',
+  //   'companyName',
+  //   'password',
+  //   'confirmPassword',
+  //   'privacy',
+  //   'phoneNumber',
+  //   'country',
+  //   'insuranceStatement',
+  //   'issuingAuthority',
+  //   'tradeLicenseNumber',
+  // ],
+  // 1: ['googleBusinessProfile'],
+  // 3: ['industryProofFileSecondary', 'industryRecognitionsSecondary'],
+  // 4: ['industries'],
 };
 
 const MAX_UPLOAD_SIZE = 2000000;
@@ -88,12 +80,13 @@ export function IsRequired() {
 
 export default function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
   const isUser = useSearchParams().toString().split('=')[0] !== 'provider';
   const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
+
   const [formState, setFormState] = useState(() => {
     const savedFormState =
       typeof window !== 'undefined'
@@ -299,7 +292,6 @@ export default function Registration() {
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: formState
       ? formState
       : {
@@ -308,10 +300,9 @@ export default function Registration() {
           plane: false,
         },
   });
-  const { watch } = form;
+  const { watch, trigger, clearErrors } = form;
 
   const isProvider = watch('provider');
-
   const industryRecognitions = watch('industryRecognitions');
 
   const { countriesList, getCountriesList } = useCountriesStore(
@@ -335,9 +326,11 @@ export default function Registration() {
       recaptchaToken: token,
     });
   }
+
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
+
   const [userRegistration, setUserRegistration] = useState(isUser);
   async function fillFieldsWithGoogle() {
     signIn('google', { redirect: true });
@@ -350,17 +343,33 @@ export default function Registration() {
   }, [cookies.accessToken]);
 
   const handleOnFormErrors = (errors: any) => {
+    // Need to remove after tests
     console.log(errors, 'ERRORS');
-    Object.keys(errors).map((item: string) => {
-      // Change step on error field
-      if (step !== ERRORS_ON_STEPS[item]) {
-        window.scroll({
-          top: 300,
-          behavior: 'smooth',
-        });
-        setStep(ERRORS_ON_STEPS[item] || 1);
-      }
+  };
+
+  const onSmoothScroll = () => {
+    window.scroll({
+      top: 300,
+      behavior: 'smooth',
     });
+  };
+
+  const onNextStep = async () => {
+    if (!ERRORS_ON_STEPS[step]) {
+      onSmoothScroll();
+      setStep((step) => step + 1);
+      return;
+    }
+
+    if (await trigger(ERRORS_ON_STEPS[step] as any)) {
+      onSmoothScroll();
+      setStep((step) => step + 1);
+    }
+  };
+
+  const onPrevStep = () => {
+    onSmoothScroll();
+    setStep((step) => step - 1);
   };
 
   async function fillFields() {
@@ -397,7 +406,7 @@ export default function Registration() {
       <Divider />
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit, handleOnFormErrors)}>
-          {step === 1 && (
+          {step === 0 && (
             <>
               <div className="flex flex-wrap flex-col content-center mb-5">
                 <FormField
@@ -459,7 +468,10 @@ export default function Registration() {
                             <Input
                               className="bg-gray-2 border-0"
                               {...field}
-                              onBlur={handleChange}
+                              onBlur={(value) => {
+                                clearErrors('phoneNumber');
+                                handleChange(value);
+                              }}
                               placeholder="12345678"
                             />
                           </FormControl>
@@ -483,7 +495,10 @@ export default function Registration() {
                           className="bg-gray-2 border-0"
                           placeholder="email@efgh.com"
                           {...field}
-                          onBlur={handleChange}
+                          onBlur={(value) => {
+                            handleChange(value);
+                            trigger('email');
+                          }}
                           disabled={isRegisteredWithGoogle}
                         />
                       </FormControl>
@@ -506,7 +521,10 @@ export default function Registration() {
                         className="bg-gray-2 border-0"
                         placeholder="EFGH FZ LLC"
                         {...field}
-                        onBlur={handleChange}
+                        onBlur={(value) => {
+                          handleChange(value);
+                          trigger('companyName');
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -529,9 +547,14 @@ export default function Registration() {
                           type="file"
                           accept="image/png, image/gif, image/jpeg, image/webp"
                           onChange={(e) => {
-                            field.onChange(
-                              e.target.files ? e.target.files[0] : null,
-                            );
+                            if (e.target.files?.length) {
+                              field.onChange(
+                                e.target.files ? e.target.files[0] : null,
+                              );
+                              clearErrors('companyPhoto');
+                            } else {
+                              field.onChange(null);
+                            }
                           }}
                         />
                       </FormControl>
@@ -596,9 +619,17 @@ export default function Registration() {
                       <IsRequired />
                     </FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="bg-gray-2 border-transparent outline-none">
-                          <SelectValue placeholder="UAE" />
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          trigger('country');
+                        }}
+                      >
+                        <SelectTrigger className="bg-gray-2 border-transparent outline-none placeholder:text-gray-500">
+                          <SelectValue
+                            className="placeholder:text-gray-500"
+                            placeholder="Country"
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           {countriesList.map((item: any) => (
@@ -657,9 +688,14 @@ export default function Registration() {
                             type="file"
                             accept="application/pdf"
                             onChange={(e) => {
-                              field.onChange(
-                                e.target.files ? e.target.files[0] : null,
-                              );
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('insuranceStatement');
+                              } else {
+                                field.onChange(null);
+                              }
                             }}
                           />
                         </FormControl>
@@ -693,9 +729,14 @@ export default function Registration() {
                             type="file"
                             accept="application/pdf"
                             onChange={(e) => {
-                              field.onChange(
-                                e.target.files ? e.target.files[0] : null,
-                              );
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('issuingAuthority');
+                              } else {
+                                field.onChange(null);
+                              }
                             }}
                           />
                         </FormControl>
@@ -729,9 +770,14 @@ export default function Registration() {
                             type="file"
                             accept="application/pdf"
                             onChange={(e) => {
-                              field.onChange(
-                                e.target.files ? e.target.files[0] : null,
-                              );
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('tradeLicenseNumber');
+                              } else {
+                                field.onChange(null);
+                              }
                             }}
                           />
                         </FormControl>
@@ -761,6 +807,9 @@ export default function Registration() {
                         placeholder=""
                         className="bg-gray-2 border-0"
                         {...field}
+                        onBlur={() => {
+                          trigger('password');
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -781,6 +830,9 @@ export default function Registration() {
                         placeholder=""
                         className="bg-gray-2 border-0"
                         {...field}
+                        onBlur={() => {
+                          trigger('confirmPassword');
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -794,7 +846,10 @@ export default function Registration() {
                   <FormItem className="mb-1 flex space-x-3">
                     <Checkbox
                       checked={field.value}
-                      onCheckedChange={field.onChange}
+                      onCheckedChange={(value) => {
+                        field.onChange(value);
+                        trigger('privacy');
+                      }}
                       id="privacy"
                       className="mt-2"
                     />
@@ -849,48 +904,42 @@ export default function Registration() {
               />
             </>
           )}
-          <div className={clsx('pt-6 mb-10', step !== 2 && 'hidden')}>
+          <div className={clsx('pt-6 mb-10', step !== 1 && 'hidden')}>
             <FormStepGeneral form={form} />
           </div>
 
-          <div className={clsx('pt-6 mb-10', step !== 3 && 'hidden')}>
+          <div className={clsx('pt-6 mb-10', step !== 2 && 'hidden')}>
             <FormStepIndustryRecognition form={form} />
           </div>
 
-          <div className={clsx('pt-6 mb-10', step !== 4 && 'hidden')}>
+          <div className={clsx('pt-6 mb-10', step !== 3 && 'hidden')}>
             <FormStepIndustryRecognitionSecondary form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 5 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 4 && 'hidden')}>
             <FormStepIndustries form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 6 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 5 && 'hidden')}>
             <FormStepAirFreight form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 7 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 6 && 'hidden')}>
             <FormStepSeaFreight form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 8 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 7 && 'hidden')}>
             <FormStepRoadFreight form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 9 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 8 && 'hidden')}>
             <FormStepFinalAgreement form={form} />
           </div>
 
           <div className="flex gap-2 items-center">
-            {isProvider && step !== 1 && (
+            {isProvider && step !== 0 && (
               <Button
-                onClick={() => {
-                  window.scroll({
-                    top: 300,
-                    behavior: 'smooth',
-                  });
-                  setStep((step) => step - 1);
-                }}
+                onClick={onPrevStep}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
@@ -898,15 +947,9 @@ export default function Registration() {
               </Button>
             )}
 
-            {isProvider && step !== 9 && (
+            {isProvider && step !== 8 && (
               <Button
-                onClick={() => {
-                  window.scroll({
-                    top: 300,
-                    behavior: 'smooth',
-                  });
-                  setStep((step) => step + 1);
-                }}
+                onClick={onNextStep}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
@@ -923,7 +966,7 @@ export default function Registration() {
               </Button>
             )}
 
-            {isProvider && step === 9 && (
+            {isProvider && step === 8 && (
               <Button
                 type="submit"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
