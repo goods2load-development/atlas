@@ -71,6 +71,10 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
               sortedData[region].map(async (item: any) => {
                 const cities: any = await getCitiesByCountry(item.cca2); // TO DO API
 
+                if (!Array.isArray(cities) || cities.length === 0) {
+                  return;
+                }
+
                 return {
                   ...item,
                   cities: cities.filter(
@@ -110,93 +114,96 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
           <strong className="block font-bold mb-2">{label}</strong>
           {values.map((item: any, idx: number) => {
             return (
-              <div key={item.name.common + idx}>
-                <label className="flex items-center gap-2">
-                  <Checkbox
-                    value={item.name.common}
-                    checked={activeCountries.includes(item.cca2)}
-                    onCheckedChange={(isChecked) => {
-                      setActiveCountries((prev: any) => {
-                        if (isChecked) {
-                          return [...prev, item.cca2];
-                        } else {
-                          const alreadyChoosingCities =
-                            form.getValues('cities') || [];
-                          form.setValue(
-                            'cities',
-                            alreadyChoosingCities.filter(
-                              (currentCity: string) =>
-                                item.cities.includes(
-                                  (item: any) => item.name !== currentCity,
-                                ),
-                            ),
-                          );
+              item && (
+                <div key={item.name.common + idx}>
+                  <label className="flex items-center gap-2">
+                    <Checkbox
+                      value={item.name.common}
+                      checked={activeCountries.includes(item.cca2)}
+                      onCheckedChange={(isChecked) => {
+                        setActiveCountries((prev: any) => {
+                          if (isChecked) {
+                            return [...prev, item.cca2];
+                          } else {
+                            const alreadyChoosingCities =
+                              form.getValues('cities') || [];
+                            form.setValue(
+                              'cities',
+                              alreadyChoosingCities.filter(
+                                (currentCity: string) =>
+                                  item.cities.includes(
+                                    (item: any) => item.name !== currentCity,
+                                  ),
+                              ),
+                            );
 
-                          return prev.filter(
-                            (activeCountry: string) =>
-                              activeCountry !== item.cca2,
-                          );
-                        }
-                      });
-                    }}
-                  />
-                  <span className="font-normal">{item.name.common}</span>
-                  <ChevronDown
-                    className={clsx(
-                      'w-4 h-4',
-                      activeCountries.includes(item.cca2) ? 'rotate-180' : '',
-                    )}
-                  />
-                </label>
+                            return prev.filter(
+                              (activeCountry: string) =>
+                                activeCountry !== item.cca2,
+                            );
+                          }
+                        });
+                      }}
+                    />
+                    <span className="font-normal">{item.name.common}</span>
+                    <ChevronDown
+                      className={clsx(
+                        'w-4 h-4',
+                        activeCountries.includes(item.cca2) ? 'rotate-180' : '',
+                      )}
+                    />
+                  </label>
 
-                {activeCountries.includes(item.cca2) && (
-                  <FormField
-                    control={form.control}
-                    name="cities"
-                    render={({ field }) => (
-                      <FormItem className="">
-                        <FormControl>
-                          <div className="pl-6 my-2">
-                            {item.cities.map((item: any, idx: number) => {
-                              return (
-                                <label
-                                  key={item.name + idx}
-                                  className="flex items-center gap-2"
-                                >
-                                  <Checkbox
-                                    value={item.name}
-                                    checked={
-                                      field.value?.includes(item.name) || false
-                                    }
-                                    onCheckedChange={(checked) => {
-                                      const value = item.name;
-                                      const newValue = checked
-                                        ? [...(field.value || []), value]
-                                        : field.value?.filter(
-                                            (v: string) => v !== value,
-                                          ) || [];
-                                      field.onChange(newValue);
-                                    }}
-                                  />
-                                  <span className="text-[14px] font-medium">
-                                    {item.name}
-                                  </span>
-                                </label>
-                              );
-                            })}
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                )}
-              </div>
+                  {activeCountries.includes(item.cca2) && (
+                    <FormField
+                      control={form.control}
+                      name="cities"
+                      render={({ field }) => (
+                        <FormItem className="">
+                          <FormControl>
+                            <div className="pl-6 my-2">
+                              {item.cities.map((item: any, idx: number) => {
+                                return (
+                                  <label
+                                    key={item.nameCity + idx}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <Checkbox
+                                      value={item.nameCity}
+                                      checked={
+                                        field.value?.includes(item.nameCity) ||
+                                        false
+                                      }
+                                      onCheckedChange={(checked) => {
+                                        const value = item.nameCity;
+                                        const newValue = checked
+                                          ? [...(field.value || []), value]
+                                          : field.value?.filter(
+                                              (v: string) => v !== value,
+                                            ) || [];
+                                        field.onChange(newValue);
+                                      }}
+                                    />
+                                    <span className="text-[14px] font-medium">
+                                      {item.nameCity}
+                                    </span>
+                                  </label>
+                                );
+                              })}
+                            </div>
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                  )}
+                </div>
+              )
             );
           })}
         </div>
       );
     });
-  }, [countriesData, activeCountries]);
+  }, [activeAccord, countriesData, activeCountries]);
 
   return (
     <>
