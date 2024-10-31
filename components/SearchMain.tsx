@@ -59,6 +59,13 @@ const placementOfGoodsOptions = [
   'Other',
 ];
 
+enum FIELD_NAMES {
+  FROM_COUNTRY_OPEN = 'FROM_COUNTRY_OPEN',
+  FROM_CITY_OPEN = 'FROM_CITY_OPEN',
+  TO_COUNTRY_OPEN = 'TO_COUNTRY_OPEN',
+  TO_CITY_OPEN = 'TO_CITY_OPEN',
+}
+
 interface IncotermsItem {
   name: string;
   description: string;
@@ -206,6 +213,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
     (state: any) => state,
   );
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
+
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
@@ -260,10 +268,14 @@ export default function SearchMain({ main }: { main?: boolean }) {
     else return 0;
   }
 
-  const [fromCountryOpen, setFromCountryOpen] = useState(false);
-  const [fromCityOpen, setFromCityOpen] = useState(false);
-  const [toCountryOpen, setToCountryOpen] = useState(false);
-  const [toCityOpen, setToCityOpen] = useState(false);
+  // const [fromCountryOpen, setFromCountryOpen] = useState(false);
+  // const [fromCityOpen, setFromCityOpen] = useState(false);
+  // const [toCountryOpen, setToCountryOpen] = useState(false);
+  // const [toCityOpen, setToCityOpen] = useState(false);
+
+  const [popoverOpen, setPopoverOpen] = useState<
+    null | keyof typeof FIELD_NAMES
+  >(null);
 
   return (
     <form onSubmit={onSubmit}>
@@ -288,13 +300,19 @@ export default function SearchMain({ main }: { main?: boolean }) {
           <div className="flex lg:w-[26%] items-end">
             <div className="mr-[1px] w-1/2">
               <label className="mb-2 block">From</label>
-              <Popover open={fromCountryOpen}>
+              <Popover open={popoverOpen === FIELD_NAMES.FROM_COUNTRY_OPEN}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
-                    onClick={() => setFromCountryOpen(!fromCountryOpen)}
+                    onClick={() =>
+                      setPopoverOpen(
+                        popoverOpen === FIELD_NAMES.FROM_COUNTRY_OPEN
+                          ? null
+                          : FIELD_NAMES.FROM_COUNTRY_OPEN,
+                      )
+                    }
                   >
                     <ToolTipComponent asChild text={fromCountry}>
                       {fromCountry ? (
@@ -323,7 +341,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               onSelect={() => {
                                 setFilter({ fromCountry: country.value });
                                 getCitiesList(country.value);
-                                setFromCountryOpen(false);
+                                setPopoverOpen(null);
                               }}
                             >
                               {country.label}
@@ -337,13 +355,19 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Popover>
             </div>
             <div className="w-1/2">
-              <Popover open={fromCityOpen}>
+              <Popover open={popoverOpen === FIELD_NAMES.FROM_CITY_OPEN}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
-                    onClick={() => setFromCityOpen(!fromCityOpen)}
+                    onClick={() =>
+                      setPopoverOpen(
+                        popoverOpen === FIELD_NAMES.FROM_CITY_OPEN
+                          ? null
+                          : FIELD_NAMES.FROM_CITY_OPEN,
+                      )
+                    }
                   >
                     <ToolTipComponent asChild text={from}>
                       {from ? (
@@ -369,7 +393,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               key={index}
                               onSelect={() => {
                                 setFilter({ from: item.label });
-                                setFromCityOpen(false);
+                                setPopoverOpen(null);
                               }}
                             >
                               {item.label}
@@ -406,13 +430,19 @@ export default function SearchMain({ main }: { main?: boolean }) {
           <div className="flex lg:w-[26%] items-end mb-5 lg:mb-0">
             <div className="mr-[1px] w-1/2">
               <label className="mb-2 block">To</label>
-              <Popover open={toCountryOpen}>
+              <Popover open={popoverOpen === FIELD_NAMES.TO_COUNTRY_OPEN}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="pl-[26px] h-[60px] lg:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
-                    onClick={() => setToCountryOpen(!toCountryOpen)}
+                    onClick={() =>
+                      setPopoverOpen(
+                        popoverOpen === FIELD_NAMES.TO_COUNTRY_OPEN
+                          ? null
+                          : FIELD_NAMES.TO_COUNTRY_OPEN,
+                      )
+                    }
                   >
                     <ToolTipComponent asChild text={toCountry}>
                       {toCountry ? (
@@ -441,7 +471,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               onSelect={() => {
                                 setFilter({ toCountry: item.value });
                                 getCitiesList(item.value, true);
-                                setToCountryOpen(false);
+                                setPopoverOpen(null);
                               }}
                             >
                               {item.label}
@@ -455,13 +485,19 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Popover>
             </div>
             <div className="mr-[1px] w-1/2">
-              <Popover open={toCityOpen}>
+              <Popover open={popoverOpen === FIELD_NAMES.TO_CITY_OPEN}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="h-[60px] w-full lg:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
-                    onClick={() => setToCityOpen(!toCityOpen)}
+                    onClick={() =>
+                      setPopoverOpen(
+                        popoverOpen === FIELD_NAMES.TO_CITY_OPEN
+                          ? null
+                          : FIELD_NAMES.TO_CITY_OPEN,
+                      )
+                    }
                   >
                     <ToolTipComponent asChild text={to}>
                       {to ? (
@@ -487,7 +523,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               key={index}
                               onSelect={() => {
                                 setFilter({ to: item.label });
-                                setToCityOpen(false);
+                                setPopoverOpen(null);
                               }}
                             >
                               {item.label}
