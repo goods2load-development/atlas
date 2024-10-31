@@ -545,7 +545,7 @@ export default function Registration() {
                           className="hidden"
                           name="companyPhoto"
                           type="file"
-                          accept="image/png, image/gif, image/jpeg, image/webp"
+                          accept="image/*"
                           onChange={(e) => {
                             if (e.target.files?.length) {
                               field.onChange(

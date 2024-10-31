@@ -134,7 +134,7 @@ export const FormStepIndustryRecognitionSecondary = ({
       </div>
 
       <div className="mt-12 text-[14px]">
-        <strong className="text-[16px]">Sastainability</strong>
+        <strong className="text-[16px]">Sustainability</strong>
 
         <p className="block my-4">
           This certification is essential for companies we engage with,
