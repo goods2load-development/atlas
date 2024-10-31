@@ -12,7 +12,7 @@ export const GoogleRatingBunner = ({
   placeInfo: PlaceDetails;
 }) => {
   return (
-    <div className="rounded-md bg-[#FEF1DF] p-6 flex justify-between items-center">
+    <div className="rounded-md bg-[#FEF1DF] p-6 flex max-md:flex-col max-md:gap-4 justify-between items-center">
       <div>
         <Image
           width={195}
@@ -30,9 +30,17 @@ export const GoogleRatingBunner = ({
           </div>
         </div>
       </div>
-      <Link href={placeInfo.result?.url} target="_blank">
-        <button className="min-w-[205px] border-2 border-primaryOrange rounded-md text-primaryOrange font-medium bg-white py-3 transition-all hover:bg-primaryOrange hover:text-white">
-          Write comment
+      <Link
+        className="max-md:w-full"
+        href={placeInfo.result?.url}
+        target="_blank"
+      >
+        <button
+          className="w-full border-2 border-primaryOrange rounded-md
+         text-primaryOrange font-medium bg-white py-3 px-2 transition-all hover:bg-primaryOrange
+         hover:text-white"
+        >
+          Write a comment
         </button>
       </Link>
     </div>

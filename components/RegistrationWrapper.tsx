@@ -27,7 +27,7 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
               {children}
             </div>
           </div>
-          <div className="min-h-[320px] sm:w-6/12 max-h-full">
+          <div className="min-h-[320px] sm:w-6/12 max-h-[1092px]">
             {userRegistration ? (
               <img
                 alt="User Registration Image"
