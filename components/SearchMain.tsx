@@ -631,10 +631,10 @@ export default function SearchMain({ main }: { main?: boolean }) {
             </label>
             <div>
               <label
-                className="h-[60px] w-[150px] block rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none
-              bg-white font-normal text-black"
+                className="h-[60px] w-[150px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none
+              bg-white font-normal text-black flex items-center justify-center"
               >
-                Upload
+                <Image width={50} height={50} src="/ai.svg" alt="AI upload" />
                 <input accept="image/*" className="hidden" type="file" />
               </label>
             </div>
