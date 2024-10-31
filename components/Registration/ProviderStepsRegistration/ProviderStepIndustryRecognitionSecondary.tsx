@@ -113,10 +113,11 @@ export const FormStepIndustryRecognitionSecondary = ({
                 <Input
                   className="hidden"
                   type="file"
-                  accept="application/pdf"
+                  multiple
+                  accept="application/pdf, image/*"
                   onChange={(e) => {
                     if (e.target.files?.length) {
-                      field.onChange(e.target.files ? e.target.files[0] : null);
+                      field.onChange(e.target.files || null);
                       clearErrors('industryProofFileSecondary');
                     } else {
                       field.onChange(null);
@@ -126,7 +127,9 @@ export const FormStepIndustryRecognitionSecondary = ({
               </FormControl>
               <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
                 <img className="" src="/upload.svg" />
-                {field.value ? field.value.name : 'Upload PDF(front&back)'}
+                {field.value
+                  ? `(${field.value?.length}) Files`
+                  : `Upload ${field?.value?.length || ''} Files(front&back)`}
               </FormLabel>
             </FormItem>
           )}
