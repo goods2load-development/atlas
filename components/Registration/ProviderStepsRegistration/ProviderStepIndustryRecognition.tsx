@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -9,6 +10,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Switch } from '@/components/ui/switch';
@@ -154,7 +156,7 @@ export const FormStepIndustryRecognition = ({ form }: { form: any }) => {
                         <Checkbox
                           disabled={!isProvideRecognition}
                           value={item.name}
-                          checked={field.value?.includes(item.name) || false}
+                          checked={field.value?.includes(item.name)}
                           onCheckedChange={(checked) => {
                             const value = item.name;
                             const newValue = checked
@@ -199,15 +201,18 @@ export const FormStepIndustryRecognition = ({ form }: { form: any }) => {
                 <Input
                   className="hidden"
                   type="file"
-                  accept="application/pdf"
+                  multiple
+                  accept="application/pdf, image/*"
                   onChange={(e) => {
-                    field.onChange(e.target.files ? e.target.files[0] : null);
+                    field.onChange(e.target.files || null);
                   }}
                 />
               </FormControl>
               <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                <img className="" src="/upload.svg" />
-                {field.value ? field.value.name : 'Upload PDF(front&back)'}
+                <Image width={5} height={5} src="/upload.svg" alt="upload" />
+                {field.value
+                  ? `(${field.value.length}) Files`
+                  : `Upload ${field?.value?.length || ''} Files(front&back)`}
               </FormLabel>
             </FormItem>
           )}

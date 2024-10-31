@@ -80,7 +80,7 @@ export function IsRequired() {
 
 export default function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
-  const [step, setStep] = useState(7);
+  const [step, setStep] = useState(3);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
@@ -173,23 +173,19 @@ export default function Registration() {
         .optional(),
       industryRecognitions: z.array(z.string()).optional(),
       industryProofFile: z
-        .instanceof(File)
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB')
-        .refine((file) => {
-          return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, 'File must be a PDF')
-        .optional(),
+        .unknown()
+        .transform((value) => Array.from(value as FileList))
+        .refine(
+          (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
+          { message: 'File size must be less than 2MB' },
+        ),
       industryProofFileSecondary: z
-        .instanceof(File)
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB')
-        .refine((file) => {
-          return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, 'File must be a PDF')
-        .optional(),
+        .unknown()
+        .transform((value) => Array.from(value as FileList))
+        .refine(
+          (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
+          { message: 'File size must be less than 2MB' },
+        ),
       industryRecognitionsSecondary: z
         .array(z.string())
         .min(1, 'At least one industry recognition must be selected')
@@ -231,6 +227,20 @@ export default function Registration() {
       privacy: z.boolean(),
       communication: z.boolean().optional(),
     })
+    .refine(
+      (data) => {
+        // not working!!!
+        return (
+          !data.industryRecognitions ||
+          !data.industryProofFile ||
+          data.industryRecognitions.length === data.industryProofFile.length
+        );
+      },
+      {
+        message: 'not working',
+        path: ['industryProofFile'],
+      },
+    )
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
       path: ['confirmPassword'],
@@ -281,14 +291,7 @@ export default function Registration() {
     .refine((data) => !data.provider || data.finalAgreement, {
       message: 'You need to accept this agreement',
       path: ['finalAgreement'],
-    })
-    .refine(
-      (data) =>
-        false || {
-          message: 'You need to accept this agreement',
-          path: ['industryProofFile'],
-        },
-    );
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -545,7 +548,7 @@ export default function Registration() {
                           className="hidden"
                           name="companyPhoto"
                           type="file"
-                          accept="image/png, image/gif, image/jpeg, image/webp"
+                          accept="image/*"
                           onChange={(e) => {
                             if (e.target.files?.length) {
                               field.onChange(
