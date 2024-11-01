@@ -14,7 +14,7 @@ export const FormStepIndustries = ({ form }: { form: any }) => {
 
   return (
     <>
-      <h3 className="mb-4 text-[20px]/[24px]">
+      <h3 className="mb-4 tracking-wide text-[24px]/[27px] font-bold">
         Services Offered <IsRequired />
       </h3>
       <p className="mb-4 text-[14px]/[17px]">
@@ -31,9 +31,7 @@ export const FormStepIndustries = ({ form }: { form: any }) => {
               partnersIndustriesData.map(({ label, items }) => {
                 return (
                   <FormItem key={label} className="mt-3 sm:mt-0">
-                    <FormLabel className="font-light sm:font-normal">
-                      {label}
-                    </FormLabel>
+                    <FormLabel className="font-bold">{label}</FormLabel>
                     <FormControl>
                       <div className="space-y-2">
                         {items &&

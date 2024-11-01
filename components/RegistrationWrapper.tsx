@@ -15,7 +15,7 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
         <div className="sm:flex w-full relative">
           <div className="w-full sm:w-6/12 p-[16px] sm:py-16">
             <div className="max-w-[600px] mx-auto">
-              <div className="text-center mb-10">
+              {/* <div className="text-center mb-10">
                 <span className="text-[40px]/[60px] italic font-normal">
                   Welcome!
                 </span>
@@ -23,7 +23,7 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
                 <span className="text-[16px]/[20px] font-normal">
                   Please enter your details
                 </span>
-              </div>
+              </div> */}
               {children}
             </div>
           </div>

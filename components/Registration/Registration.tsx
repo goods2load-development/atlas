@@ -1,5 +1,6 @@
 'use client';
 
+import { FormAboutUs } from './ProviderStepsRegistration/ProviderAboutUs';
 import { FormStepAirFreight } from './ProviderStepsRegistration/ProviderStepAirFreight';
 import { FormStepFinalAgreement } from './ProviderStepsRegistration/ProviderStepFinalAgreement';
 import { FormStepGeneral } from './ProviderStepsRegistration/ProviderStepGeneral';
@@ -156,7 +157,7 @@ export default function Registration() {
         .string()
         .min(3, 'This field is required')
         .optional(),
-      sustainability: z.boolean().optional(),
+      // sustainability: z.boolean().optional(),
       finalAgreement: z.boolean().optional(),
       sustainabilityCertificationFile: z
         .instanceof(File)
@@ -174,14 +175,14 @@ export default function Registration() {
       industryRecognitions: z.array(z.string()).optional(),
       industryProofFile: z
         .unknown()
-        .transform((value) => Array.from(value as FileList))
+        .transform((value) => (value ? Array.from(value as FileList) : []))
         .refine(
           (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
           { message: 'File size must be less than 2MB' },
         ),
       industryProofFileSecondary: z
         .unknown()
-        .transform((value) => Array.from(value as FileList))
+        .transform((value) => (value ? Array.from(value as FileList) : []))
         .refine(
           (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
           { message: 'File size must be less than 2MB' },
@@ -226,6 +227,14 @@ export default function Registration() {
       confirmPassword: z.string(),
       privacy: z.boolean(),
       communication: z.boolean().optional(),
+      aboutUs: z.string().min(80).max(150),
+      ourMission: z
+        .string()
+        .min(80)
+        .max(150)
+        .refine((val) => /#\w+/.test(val), {
+          message: 'Must include at least one hashtag, e.g., #insurance',
+        }),
     })
     .refine(
       (data) => {
@@ -398,7 +407,7 @@ export default function Registration() {
 
   return (
     <RegistrationWrapper userRegistration={userRegistration}>
-      <Button
+      {/* <Button
         variant="outline"
         onClick={fillFieldsWithGoogle}
         className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
@@ -406,7 +415,7 @@ export default function Registration() {
         <GoogleIcon />
         <span>Sign in with Google </span>
       </Button>
-      <Divider />
+      <Divider /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit, handleOnFormErrors)}>
           {step === 0 && (
@@ -548,7 +557,7 @@ export default function Registration() {
                           className="hidden"
                           name="companyPhoto"
                           type="file"
-                          accept="image/*"
+                          accept="image/png, image/svg"
                           onChange={(e) => {
                             if (e.target.files?.length) {
                               field.onChange(
@@ -936,6 +945,10 @@ export default function Registration() {
           </div>
 
           <div className={clsx('pt-6', step !== 8 && 'hidden')}>
+            <FormAboutUs form={form} />
+          </div>
+
+          <div className={clsx('pt-6', step !== 9 && 'hidden')}>
             <FormStepFinalAgreement form={form} />
           </div>
 
@@ -950,7 +963,7 @@ export default function Registration() {
               </Button>
             )}
 
-            {isProvider && step !== 8 && (
+            {isProvider && step !== 9 && (
               <Button
                 onClick={onNextStep}
                 type="button"
@@ -969,7 +982,7 @@ export default function Registration() {
               </Button>
             )}
 
-            {isProvider && step === 8 && (
+            {isProvider && step === 9 && (
               <Button
                 type="submit"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
