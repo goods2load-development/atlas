@@ -1,5 +1,6 @@
 'use client';
 
+import { FormAboutUs } from './ProviderStepsRegistration/ProviderAboutUs';
 import { FormStepAirFreight } from './ProviderStepsRegistration/ProviderStepAirFreight';
 import { FormStepFinalAgreement } from './ProviderStepsRegistration/ProviderStepFinalAgreement';
 import { FormStepGeneral } from './ProviderStepsRegistration/ProviderStepGeneral';
@@ -52,31 +53,24 @@ import {
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 
-enum RegistrationErrors {
-  COMPANY_PHOTO = 'companyPhoto',
-  PASSWORD = 'password',
-  CONFIRM_PASSWORD = 'confirmPassword',
-  PRIVACY = 'privacy',
-  PHONE_NUMBER = 'phoneNumber',
-  COUNTRY = 'contry',
-  GOOGLE_BUSINESS_PROFILE = 'googleBusinessProfile',
-  INDUSTRY_RECOGNITION_SECONDARY = 'industryRecognitionsSecondary',
-  INDUSTRY_PROOF_FILE_SECONDARY = 'industryProofFileSecondary',
-  FINAL_AGREEMENT = 'finalAgreement',
-  INDUSTRIES = 'industries',
-}
-
-const ERRORS_ON_STEPS: Record<string, number> = {
-  [RegistrationErrors.COMPANY_PHOTO]: 1,
-  [RegistrationErrors.PASSWORD]: 1,
-  [RegistrationErrors.CONFIRM_PASSWORD]: 1,
-  [RegistrationErrors.PRIVACY]: 1,
-  [RegistrationErrors.COUNTRY]: 1,
-  [RegistrationErrors.GOOGLE_BUSINESS_PROFILE]: 2,
-  [RegistrationErrors.INDUSTRY_PROOF_FILE_SECONDARY]: 4,
-  [RegistrationErrors.INDUSTRY_RECOGNITION_SECONDARY]: 4,
-  [RegistrationErrors.INDUSTRIES]: 5,
-  [RegistrationErrors.FINAL_AGREEMENT]: 9,
+const ERRORS_ON_STEPS: Record<number, string[]> = {
+  0: [
+    'email',
+    'companyPhoto',
+    'companyName',
+    'password',
+    'confirmPassword',
+    'privacy',
+    'phoneNumber',
+    'country',
+    'insuranceStatement',
+    'issuingAuthority',
+    'tradeLicenseNumber',
+  ],
+  1: ['googleBusinessProfile'],
+  2: ['industryRecognitions', 'industryProofFile'],
+  3: ['industryProofFileSecondary', 'industryRecognitionsSecondary'],
+  4: ['industries'],
 };
 
 const MAX_UPLOAD_SIZE = 2000000;
@@ -88,12 +82,13 @@ export function IsRequired() {
 
 export default function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
   const isUser = useSearchParams().toString().split('=')[0] !== 'provider';
   const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
+
   const [formState, setFormState] = useState(() => {
     const savedFormState =
       typeof window !== 'undefined'
@@ -163,16 +158,15 @@ export default function Registration() {
         .string()
         .min(3, 'This field is required')
         .optional(),
-      sustainability: z.boolean().optional(),
+      // sustainability: z.boolean().optional(),
       finalAgreement: z.boolean().optional(),
       sustainabilityCertificationFile: z
-        .instanceof(File)
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB')
-        .refine((file) => {
-          return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, 'File must be a PDF')
+        .unknown()
+        .transform((value) => (value ? Array.from(value as FileList) : []))
+        .refine(
+          (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
+          { message: 'File size must be less than 2MB' },
+        )
         .optional(),
       industries: z
         .array(z.string())
@@ -180,23 +174,19 @@ export default function Registration() {
         .optional(),
       industryRecognitions: z.array(z.string()).optional(),
       industryProofFile: z
-        .instanceof(File)
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB')
-        .refine((file) => {
-          return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, 'File must be a PDF')
-        .optional(),
+        .unknown()
+        .transform((value) => (value ? Array.from(value as FileList) : []))
+        .refine(
+          (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
+          { message: 'File size must be less than 2MB' },
+        ),
       industryProofFileSecondary: z
-        .instanceof(File)
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB')
-        .refine((file) => {
-          return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, 'File must be a PDF')
-        .optional(),
+        .unknown()
+        .transform((value) => (value ? Array.from(value as FileList) : []))
+        .refine(
+          (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
+          { message: 'File size must be less than 2MB' },
+        ),
       industryRecognitionsSecondary: z
         .array(z.string())
         .min(1, 'At least one industry recognition must be selected')
@@ -237,6 +227,14 @@ export default function Registration() {
       confirmPassword: z.string(),
       privacy: z.boolean(),
       communication: z.boolean().optional(),
+      aboutUs: z.string().min(80).max(150),
+      ourMission: z
+        .string()
+        .min(80)
+        .max(150)
+        .refine((val) => /#\w+/.test(val), {
+          message: 'Must include at least one hashtag, e.g., #insurance',
+        }),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
@@ -268,6 +266,21 @@ export default function Registration() {
       },
     )
     .refine(
+      (data) => {
+        return (
+          !data.industryRecognitions ||
+          (data.industryRecognitions &&
+            data.industryProofFile &&
+            data.industryRecognitions.length === data.industryProofFile.length)
+        );
+      },
+      (data) => ({
+        message: `You need to provide ${data?.industryRecognitions?.length} proof ${data!.industryRecognitions!.length <= 1 ? 'file' : 'files'}`,
+        path: ['industryRecognitions'],
+      }),
+    )
+
+    .refine(
       (data) =>
         !data.provider ||
         (Array.isArray(data.industryRecognitionsSecondary) &&
@@ -277,29 +290,43 @@ export default function Registration() {
         path: ['industryRecognitionsSecondary'],
       },
     )
-    .refine(
-      (data) => !data.provider || data.googleBusinessProfile,
 
-      {
-        message: 'This field is required',
-        path: ['googleBusinessProfile'],
+    .refine(
+      (data) => {
+        return (
+          data?.industryRecognitionsSecondary &&
+          data?.industryProofFileSecondary &&
+          data.industryRecognitionsSecondary.length ===
+            data.industryProofFileSecondary.length
+        );
+      },
+      (data) => {
+        let errorMessage;
+
+        if (Array.isArray(data.industryRecognitionsSecondary)) {
+          errorMessage = `You need to provide ${data?.industryRecognitionsSecondary?.length} proof ${data!.industryRecognitionsSecondary!.length <= 1 ? 'file' : 'files'}`;
+        } else {
+          errorMessage = 'At least one industry recognition must be selected';
+        }
+
+        return {
+          message: errorMessage,
+          path: ['industryRecognitionsSecondary'],
+        };
       },
     )
+
+    .refine((data) => !data.provider || data.googleBusinessProfile, {
+      message: 'This field is required',
+      path: ['googleBusinessProfile'],
+    })
     .refine((data) => !data.provider || data.finalAgreement, {
       message: 'You need to accept this agreement',
       path: ['finalAgreement'],
-    })
-    .refine(
-      (data) =>
-        false || {
-          message: 'You need to accept this agreement',
-          path: ['industryProofFile'],
-        },
-    );
+    });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-
     defaultValues: formState
       ? formState
       : {
@@ -308,11 +335,9 @@ export default function Registration() {
           plane: false,
         },
   });
-  const { watch } = form;
+  const { watch, trigger, clearErrors } = form;
 
   const isProvider = watch('provider');
-
-  const industryRecognitions = watch('industryRecognitions');
 
   const { countriesList, getCountriesList } = useCountriesStore(
     (state: any) => state,
@@ -335,9 +360,11 @@ export default function Registration() {
       recaptchaToken: token,
     });
   }
+
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
+
   const [userRegistration, setUserRegistration] = useState(isUser);
   async function fillFieldsWithGoogle() {
     signIn('google', { redirect: true });
@@ -350,17 +377,33 @@ export default function Registration() {
   }, [cookies.accessToken]);
 
   const handleOnFormErrors = (errors: any) => {
+    // Need to remove after tests
     console.log(errors, 'ERRORS');
-    Object.keys(errors).map((item: string) => {
-      // Change step on error field
-      if (step !== ERRORS_ON_STEPS[item]) {
-        window.scroll({
-          top: 300,
-          behavior: 'smooth',
-        });
-        setStep(ERRORS_ON_STEPS[item] || 1);
-      }
+  };
+
+  const onSmoothScroll = () => {
+    window.scroll({
+      top: 300,
+      behavior: 'smooth',
     });
+  };
+
+  const onNextStep = async () => {
+    if (!ERRORS_ON_STEPS[step]) {
+      onSmoothScroll();
+      setStep((step) => step + 1);
+      return;
+    }
+
+    if (await trigger(ERRORS_ON_STEPS[step] as any)) {
+      onSmoothScroll();
+      setStep((step) => step + 1);
+    }
+  };
+
+  const onPrevStep = () => {
+    onSmoothScroll();
+    setStep((step) => step - 1);
   };
 
   async function fillFields() {
@@ -386,7 +429,7 @@ export default function Registration() {
 
   return (
     <RegistrationWrapper userRegistration={userRegistration}>
-      <Button
+      {/* <Button
         variant="outline"
         onClick={fillFieldsWithGoogle}
         className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
@@ -394,10 +437,10 @@ export default function Registration() {
         <GoogleIcon />
         <span>Sign in with Google </span>
       </Button>
-      <Divider />
+      <Divider /> */}
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit, handleOnFormErrors)}>
-          {step === 1 && (
+          {step === 0 && (
             <>
               <div className="flex flex-wrap flex-col content-center mb-5">
                 <FormField
@@ -459,7 +502,10 @@ export default function Registration() {
                             <Input
                               className="bg-gray-2 border-0"
                               {...field}
-                              onBlur={handleChange}
+                              onBlur={(value) => {
+                                clearErrors('phoneNumber');
+                                handleChange(value);
+                              }}
                               placeholder="12345678"
                             />
                           </FormControl>
@@ -483,7 +529,10 @@ export default function Registration() {
                           className="bg-gray-2 border-0"
                           placeholder="email@efgh.com"
                           {...field}
-                          onBlur={handleChange}
+                          onBlur={(value) => {
+                            handleChange(value);
+                            trigger('email');
+                          }}
                           disabled={isRegisteredWithGoogle}
                         />
                       </FormControl>
@@ -506,7 +555,10 @@ export default function Registration() {
                         className="bg-gray-2 border-0"
                         placeholder="EFGH FZ LLC"
                         {...field}
-                        onBlur={handleChange}
+                        onBlur={(value) => {
+                          handleChange(value);
+                          trigger('companyName');
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -522,23 +574,34 @@ export default function Registration() {
                       <FormLabel className="font-light sm:font-normal">
                         Company logo
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          className="hidden"
-                          name="companyPhoto"
-                          type="file"
-                          accept="image/png, image/gif, image/jpeg, image/webp"
-                          onChange={(e) => {
-                            field.onChange(
-                              e.target.files ? e.target.files[0] : null,
-                            );
-                          }}
-                        />
-                      </FormControl>
-                      <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                        <img className="mr-[8px]" src="/upload.svg" />
-                        {field.value ? field.value.name : 'Upload logo'}
-                      </FormLabel>
+                      <div className="flex flex-col">
+                        <FormDescription className="text-[12px]">
+                          *Attachments not bigger than 2MB. Only .png or .svg
+                          images.
+                        </FormDescription>
+                        <FormControl>
+                          <Input
+                            className="hidden"
+                            name="companyPhoto"
+                            type="file"
+                            accept="image/png, image/svg+xml"
+                            onChange={(e) => {
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('companyPhoto');
+                              } else {
+                                field.onChange(null);
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 flex justify-center items-center">
+                          <img className="mr-[8px]" src="/upload.svg" />
+                          {field.value ? field.value.name : 'Upload logo'}
+                        </FormLabel>
+                      </div>
                     </FormItem>
                     <FormMessage />
                   </>
@@ -596,9 +659,17 @@ export default function Registration() {
                       <IsRequired />
                     </FormLabel>
                     <FormControl>
-                      <Select onValueChange={field.onChange}>
-                        <SelectTrigger className="bg-gray-2 border-transparent outline-none">
-                          <SelectValue placeholder="UAE" />
+                      <Select
+                        onValueChange={(value) => {
+                          field.onChange(value);
+                          trigger('country');
+                        }}
+                      >
+                        <SelectTrigger className="bg-gray-2 border-transparent outline-none placeholder:text-gray-500">
+                          <SelectValue
+                            className="placeholder:text-gray-500"
+                            placeholder="Country"
+                          />
                         </SelectTrigger>
                         <SelectContent>
                           {countriesList.map((item: any) => (
@@ -657,9 +728,14 @@ export default function Registration() {
                             type="file"
                             accept="application/pdf"
                             onChange={(e) => {
-                              field.onChange(
-                                e.target.files ? e.target.files[0] : null,
-                              );
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('insuranceStatement');
+                              } else {
+                                field.onChange(null);
+                              }
                             }}
                           />
                         </FormControl>
@@ -693,9 +769,14 @@ export default function Registration() {
                             type="file"
                             accept="application/pdf"
                             onChange={(e) => {
-                              field.onChange(
-                                e.target.files ? e.target.files[0] : null,
-                              );
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('issuingAuthority');
+                              } else {
+                                field.onChange(null);
+                              }
                             }}
                           />
                         </FormControl>
@@ -729,9 +810,14 @@ export default function Registration() {
                             type="file"
                             accept="application/pdf"
                             onChange={(e) => {
-                              field.onChange(
-                                e.target.files ? e.target.files[0] : null,
-                              );
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('tradeLicenseNumber');
+                              } else {
+                                field.onChange(null);
+                              }
                             }}
                           />
                         </FormControl>
@@ -761,6 +847,9 @@ export default function Registration() {
                         placeholder=""
                         className="bg-gray-2 border-0"
                         {...field}
+                        onBlur={() => {
+                          trigger('password');
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -781,6 +870,9 @@ export default function Registration() {
                         placeholder=""
                         className="bg-gray-2 border-0"
                         {...field}
+                        onBlur={() => {
+                          trigger('confirmPassword');
+                        }}
                       />
                     </FormControl>
                     <FormMessage />
@@ -794,7 +886,10 @@ export default function Registration() {
                   <FormItem className="mb-1 flex space-x-3">
                     <Checkbox
                       checked={field.value}
-                      onCheckedChange={field.onChange}
+                      onCheckedChange={(value) => {
+                        field.onChange(value);
+                        trigger('privacy');
+                      }}
                       id="privacy"
                       className="mt-2"
                     />
@@ -849,32 +944,36 @@ export default function Registration() {
               />
             </>
           )}
-          <div className={clsx('pt-6 mb-10', step !== 2 && 'hidden')}>
+          <div className={clsx('pt-6 mb-10', step !== 1 && 'hidden')}>
             <FormStepGeneral form={form} />
           </div>
 
-          <div className={clsx('pt-6 mb-10', step !== 3 && 'hidden')}>
+          <div className={clsx('pt-6 mb-10', step !== 2 && 'hidden')}>
             <FormStepIndustryRecognition form={form} />
           </div>
 
-          <div className={clsx('pt-6 mb-10', step !== 4 && 'hidden')}>
+          <div className={clsx('pt-6 mb-10', step !== 3 && 'hidden')}>
             <FormStepIndustryRecognitionSecondary form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 5 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 4 && 'hidden')}>
             <FormStepIndustries form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 6 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 5 && 'hidden')}>
             <FormStepAirFreight form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 7 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 6 && 'hidden')}>
             <FormStepSeaFreight form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 8 && 'hidden')}>
+          <div className={clsx('pt-6', step !== 7 && 'hidden')}>
             <FormStepRoadFreight form={form} />
+          </div>
+
+          <div className={clsx('pt-6', step !== 8 && 'hidden')}>
+            <FormAboutUs form={form} />
           </div>
 
           <div className={clsx('pt-6', step !== 9 && 'hidden')}>
@@ -882,15 +981,9 @@ export default function Registration() {
           </div>
 
           <div className="flex gap-2 items-center">
-            {isProvider && step !== 1 && (
+            {isProvider && step !== 0 && (
               <Button
-                onClick={() => {
-                  window.scroll({
-                    top: 300,
-                    behavior: 'smooth',
-                  });
-                  setStep((step) => step - 1);
-                }}
+                onClick={onPrevStep}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
@@ -900,13 +993,7 @@ export default function Registration() {
 
             {isProvider && step !== 9 && (
               <Button
-                onClick={() => {
-                  window.scroll({
-                    top: 300,
-                    behavior: 'smooth',
-                  });
-                  setStep((step) => step + 1);
-                }}
+                onClick={onNextStep}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >

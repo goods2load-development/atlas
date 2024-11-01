@@ -11,6 +11,8 @@ import {
 import { Input } from '@/components/ui/input';
 
 export const FormStepGeneral = ({ form }: { form: any }) => {
+  const { trigger } = form;
+
   return (
     <>
       <h4 className="mb-10">
@@ -36,6 +38,9 @@ export const FormStepGeneral = ({ form }: { form: any }) => {
                 className="bg-gray-2 border-0"
                 placeholder="Short answer text"
                 {...field}
+                onBlur={() => {
+                  trigger('googleBusinessProfile');
+                }}
               />
             </FormControl>
           </FormItem>

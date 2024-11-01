@@ -31,16 +31,40 @@ export const FormStepIndustryRecognitionSecondary = ({
 }: {
   form: any;
 }) => {
+  const { clearErrors } = form;
+  const [isProvideRecognition, setIsProvideRecognition] = useState(true);
+  const [isProvideSustainability, setIsProvideSustainability] = useState(true);
+
+  useEffect(() => {
+    if (!isProvideRecognition) {
+      form.setValue('industryRecognitionsSecondary', []);
+      form.setValue('industryProofFileSecondary', undefined);
+    }
+  }, [isProvideRecognition]);
+
+  useEffect(() => {
+    if (!isProvideSustainability)
+      form.setValue('sustainabilityCertificationFile', undefined);
+  }, [isProvideSustainability]);
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6 font-semibold">
         <h4 className={clsx('tracking-wide text-[24px]/[27px]')}>
-          Industry Recognition
+          Additional Validations
           <IsRequired />
         </h4>
+        <Switch
+          checked={isProvideRecognition}
+          onCheckedChange={() => setIsProvideRecognition((prev) => !prev)}
+        />
       </div>
 
-      <div className={clsx('my-4')}>
+      <div
+        className={clsx('my-4', {
+          'opacity-40 pointer-events-none': !isProvideRecognition,
+        })}
+      >
         <FormField
           control={form.control}
           name="industryRecognitionsSecondary"
@@ -50,10 +74,10 @@ export const FormStepIndustryRecognitionSecondary = ({
                 <div className="mt-4 mb-2 flex flex-col gap-2 text-[14px]">
                   <FormMessage className="mb-2" />
                   <p className={clsx('text-[14px]')}>
-                    <strong className="">
+                    <span>
                       Please select the industry recognition your complany has
                       received (check all the apply)
-                    </strong>
+                    </span>
                     <i className="block mt-2">
                       Note: Providing inaccurate information may negatively
                       impact both our platform and your bussiness&apos;s
@@ -111,15 +135,23 @@ export const FormStepIndustryRecognitionSecondary = ({
                 <Input
                   className="hidden"
                   type="file"
-                  accept="application/pdf"
+                  multiple
+                  accept="application/pdf, image/*"
                   onChange={(e) => {
-                    field.onChange(e.target.files ? e.target.files[0] : null);
+                    if (e.target.files?.length) {
+                      field.onChange(e.target.files || null);
+                      clearErrors('industryProofFileSecondary');
+                    } else {
+                      field.onChange(null);
+                    }
                   }}
                 />
               </FormControl>
               <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
                 <img className="" src="/upload.svg" />
-                {field.value ? field.value.name : 'Upload PDF(front&back)'}
+                {field.value
+                  ? `(${field.value?.length}) Files`
+                  : `Upload ${field?.value?.length || ''} Files(front&back)`}
               </FormLabel>
             </FormItem>
           )}
@@ -127,25 +159,27 @@ export const FormStepIndustryRecognitionSecondary = ({
       </div>
 
       <div className="mt-12 text-[14px]">
-        <strong className="text-[16px]">Sastainability Certification</strong>
-
-        <p className="block mb-2 mt-6">
-          This certification is a significant recognition of our commitment to
-          environmentally responsible practices and sustainable operations. It
-          demonstrates our dedication to reducing our ecological footprint and
-          promoting sustainability within the logistics industry.
+        <div className="flex items-center justify-between mb-6 font-semibold">
+          <h4 className={clsx('tracking-wide text-[24px]/[27px]')}>
+            Sustainability
+            <IsRequired />
+          </h4>
+          <Switch
+            checked={isProvideSustainability}
+            onCheckedChange={() => setIsProvideSustainability((prev) => !prev)}
+          />
+        </div>
+        <p className="block my-4">
+          This certification is essential for companies we engage with,
+          reflecting a commitment to sustainable, eco-friendly practices.
+          Partnering with certified companies strengthens our brand reputation,
+          assures compliance with environmental standards, and builds customer
+          trust. By prioritizing sustainability, we position ourselves as a
+          forward-thinking company dedicated to excellence and environmental
+          responsibility.
         </p>
 
-        <p>
-          Having this badge is crucial for our brand reputation, as it not only
-          highlights our compliance with recognized environmental standards but
-          also enhances customer trust and loyalty. By showcasing our
-          Sustainability Certification, we reinforce our position as a
-          forward-thinking company that prioritizes both service excellence and
-          environmental stewardship.
-        </p>
-
-        <FormField
+        {/* <FormField
           control={form.control}
           name="sustainability"
           render={({ field }) => (
@@ -209,9 +243,13 @@ export const FormStepIndustryRecognitionSecondary = ({
               </FormControl>
             </FormItem>
           )}
-        />
+        /> */}
 
-        <div className={clsx('mt-8')}>
+        <div
+          className={clsx('mt-8', {
+            'opacity-40 pointer-events-none': !isProvideSustainability,
+          })}
+        >
           <div className="font-bold">Proof of recognition</div>
           <p className="mt-2 text-[14px]">
             Please upload any relevan documents that provide proof of
@@ -232,15 +270,18 @@ export const FormStepIndustryRecognitionSecondary = ({
                   <Input
                     className="hidden"
                     type="file"
-                    accept="application/pdf"
+                    multiple
+                    accept="application/pdf, image/*"
                     onChange={(e) => {
-                      field.onChange(e.target.files ? e.target.files[0] : null);
+                      field.onChange(e.target.files || null);
                     }}
                   />
                 </FormControl>
                 <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
                   <img className="" src="/upload.svg" />
-                  {field.value ? field.value.name : 'Upload PDF(front&back)'}
+                  {field.value
+                    ? `(${field.value?.length}) Files`
+                    : `Upload ${field?.value?.length || ''} Files(front&back)`}
                 </FormLabel>
               </FormItem>
             )}

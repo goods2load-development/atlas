@@ -64,19 +64,11 @@ export const useCountriesStore = create((set) => ({
       set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
-  getCitiesByCountry: async (country: string) => {
-    const data = await getRequest({
-      url: 'http://api.geonames.org/searchJSON',
-      params: {
-        country,
-        maxRows: 10,
-        orderBy: 'population',
-        userName: 'vovk22_', // Needs to change USER_NAME
-      },
-      withCredentials: false,
-    });
-
-    return data.geonames;
+  getCitiesByCountry: async (countryCode: string) => {
+    const data = await fetch(
+      `https://aviation-edge.com/v2/public/cityDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&codeIso2Country=${countryCode}`,
+    );
+    return data.json();
   },
   getCountriesByRegions: async (region: string) => {
     const data = await getRequest({
