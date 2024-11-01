@@ -78,11 +78,7 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
 
                 return {
                   ...item,
-                  airports: airports?.filter(
-                    (airport: any) =>
-                      airport.nameAirport.includes('International') ||
-                      airport.nameAirport.includes('Airport'),
-                  ),
+                  airports,
                 };
               }),
             );
