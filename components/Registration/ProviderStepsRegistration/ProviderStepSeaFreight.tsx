@@ -102,7 +102,7 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
     if (!isProvideServices) {
       setActiveAccord(undefined);
       setActiveCountries([]);
-      form.setValue('cities', []);
+      form.setValue('seaports', []);
     }
   }, [isProvideServices]);
 
