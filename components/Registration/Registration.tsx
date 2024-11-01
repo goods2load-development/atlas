@@ -71,6 +71,7 @@ const ERRORS_ON_STEPS: Record<number, string[]> = {
   2: ['industryRecognitions', 'industryProofFile'],
   3: ['industryProofFileSecondary', 'industryRecognitionsSecondary'],
   4: ['industries'],
+  8: ['aboutUs', 'ourMission'],
 };
 
 const MAX_UPLOAD_SIZE = 2000000;
@@ -188,10 +189,7 @@ export default function Registration() {
           (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
           { message: 'File size must be less than 2MB' },
         ),
-      industryRecognitionsSecondary: z
-        .array(z.string())
-        .min(1, 'At least one industry recognition must be selected')
-        .optional(),
+      industryRecognitionsSecondary: z.array(z.string()).optional(),
       cities: z.array(z.string()).optional(),
       airports: z.array(z.string()).optional(),
       seaports: z.array(z.string()).optional(),
@@ -228,14 +226,15 @@ export default function Registration() {
       confirmPassword: z.string(),
       privacy: z.boolean(),
       communication: z.boolean().optional(),
-      aboutUs: z.string().min(80).max(150),
+      aboutUs: z.string().min(80).max(150).optional(),
       ourMission: z
         .string()
         .min(80)
         .max(150)
         .refine((val) => /#\w+/.test(val), {
           message: 'Must include at least one hashtag, e.g., #insurance',
-        }),
+        })
+        .optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
@@ -280,41 +279,20 @@ export default function Registration() {
         path: ['industryRecognitions'],
       }),
     )
-
-    .refine(
-      (data) =>
-        !data.provider ||
-        (Array.isArray(data.industryRecognitionsSecondary) &&
-          data.industryRecognitionsSecondary.length > 0),
-      {
-        message: 'At least one industry recognition must be selected',
-        path: ['industryRecognitionsSecondary'],
-      },
-    )
-
     .refine(
       (data) => {
         return (
-          data?.industryRecognitionsSecondary &&
-          data?.industryProofFileSecondary &&
-          data.industryRecognitionsSecondary.length ===
-            data.industryProofFileSecondary.length
+          !data.industryRecognitionsSecondary ||
+          (data.industryRecognitionsSecondary &&
+            data.industryProofFileSecondary &&
+            data.industryRecognitionsSecondary.length ===
+              data.industryProofFileSecondary.length)
         );
       },
-      (data) => {
-        let errorMessage;
-
-        if (Array.isArray(data.industryRecognitionsSecondary)) {
-          errorMessage = `You need to provide ${data?.industryRecognitionsSecondary?.length} proof ${data!.industryRecognitionsSecondary!.length <= 1 ? 'file' : 'files'}`;
-        } else {
-          errorMessage = 'At least one industry recognition must be selected';
-        }
-
-        return {
-          message: errorMessage,
-          path: ['industryRecognitionsSecondary'],
-        };
-      },
+      (data) => ({
+        message: `You need to provide ${data?.industryRecognitionsSecondary?.length} proof ${data!.industryRecognitionsSecondary!.length <= 1 ? 'file' : 'files'}`,
+        path: ['industryRecognitionsSecondary'],
+      }),
     )
 
     .refine(
@@ -328,6 +306,14 @@ export default function Registration() {
     .refine((data) => !data.provider || data.finalAgreement, {
       message: 'You need to accept this agreement',
       path: ['finalAgreement'],
+    })
+    .refine((data) => !data.provider || !!data.aboutUs, {
+      message: 'This field is require',
+      path: ['aboutUs'],
+    })
+    .refine((data) => !data.provider || !!data.ourMission, {
+      message: 'This field is require',
+      path: ['ourMission'],
     });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -399,6 +385,9 @@ export default function Registration() {
       setStep((step) => step + 1);
       return;
     }
+
+    console.log(ERRORS_ON_STEPS[step], 'ERROR');
+    console.log(await trigger(ERRORS_ON_STEPS[step] as any), 'TRIGGER');
 
     if (await trigger(ERRORS_ON_STEPS[step] as any)) {
       onSmoothScroll();
