@@ -32,17 +32,33 @@ export const FormStepIndustryRecognitionSecondary = ({
   form: any;
 }) => {
   const { clearErrors } = form;
+  const [isProvideRecognition, setIsProvideRecognition] = useState(true);
+
+  useEffect(() => {
+    if (!isProvideRecognition) {
+      form.setValue('industryRecognitionsSecondary', []);
+      form.setValue('industryProofFileSecondary', undefined);
+    }
+  }, [isProvideRecognition]);
 
   return (
     <div>
       <div className="flex items-center justify-between mb-6 font-semibold">
         <h4 className={clsx('tracking-wide text-[24px]/[27px]')}>
-          Industry Recognition
+          Additional Validations
           <IsRequired />
         </h4>
+        <Switch
+          checked={isProvideRecognition}
+          onCheckedChange={() => setIsProvideRecognition((prev) => !prev)}
+        />
       </div>
 
-      <div className={clsx('my-4')}>
+      <div
+        className={clsx('my-4', {
+          'opacity-40 pointer-events-none': isProvideRecognition,
+        })}
+      >
         <FormField
           control={form.control}
           name="industryRecognitionsSecondary"
@@ -52,10 +68,10 @@ export const FormStepIndustryRecognitionSecondary = ({
                 <div className="mt-4 mb-2 flex flex-col gap-2 text-[14px]">
                   <FormMessage className="mb-2" />
                   <p className={clsx('text-[14px]')}>
-                    <strong className="">
+                    <span>
                       Please select the industry recognition your complany has
                       received (check all the apply)
-                    </strong>
+                    </span>
                     <i className="block mt-2">
                       Note: Providing inaccurate information may negatively
                       impact both our platform and your bussiness&apos;s
@@ -149,7 +165,7 @@ export const FormStepIndustryRecognitionSecondary = ({
           responsibility.
         </p>
 
-        <FormField
+        {/* <FormField
           control={form.control}
           name="sustainability"
           render={({ field }) => (
@@ -213,7 +229,7 @@ export const FormStepIndustryRecognitionSecondary = ({
               </FormControl>
             </FormItem>
           )}
-        />
+        /> */}
 
         <div className={clsx('mt-8')}>
           <div className="font-bold">Proof of recognition</div>
