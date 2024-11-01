@@ -5,6 +5,8 @@ import { postRequest } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@radix-ui/react-label';
 
+import { useState } from 'react';
+
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -35,10 +37,10 @@ const ACCEPTED_IMAGE_TYPES = [
 ];
 
 const formSchema = z.object({
-  emailAddress: z.string().email(),
+  email: z.string().email(),
   firstName: z.string().min(3),
   lastName: z.string().min(3),
-  selectValue: z.string().min(3),
+  vacancy: z.string().min(3),
   currentFile: z
     .any()
     .refine((file) => file?.length == 1, 'File is required.')
@@ -50,30 +52,37 @@ const CareerForm: React.FC = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      emailAddress: '',
+      email: '',
       firstName: '',
       lastName: '',
-      selectValue: '',
+      vacancy: '',
       currentFile: undefined,
     },
   });
-  const fileRef = form.register('currentFile', { required: true });
-  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+  const handleSubmit = async (data: any) => {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
+    const formData = new FormData();
+    formData.append('email', data.email);
+    formData.append('firstName', data.firstName);
+    formData.append('lastName', data.lastName);
+    formData.append('vacancy', data.vacancy);
+    formData.append('currentFile', data.currentFile[0]);
+    formData.append('recaptchaToken', token);
+
     postRequest({
-      url: '/careers',
-      data: {
-        ...data,
-        recaptchaToken: token,
-      },
+      url: 'careers',
+      headers: { 'Content-Type': 'multipart/form-data' },
+      data: formData,
     });
   };
   const data: any = [
     { placeHolder: 'First name', type: 'text', name: 'firstName' },
     { placeHolder: 'Last name', type: 'text', name: 'lastName' },
-    { placeHolder: 'Email', type: 'email', name: 'emailAddress' },
+    { placeHolder: 'Email', type: 'email', name: 'email' },
   ];
+
+  const [fileName, setFileName] = useState('Choose your file');
 
   return (
     <section className="max-w-[1440px] flex gap-[40px] flex-col w-full items-center career bg-career-mobile md:bg-bgCareer  pt-[56px] pb-[88px] px-5">
@@ -107,7 +116,7 @@ const CareerForm: React.FC = () => {
           <div className="mb-[40px]">
             <FormField
               control={form.control}
-              name="selectValue"
+              name="vacancy"
               render={({ field }) => (
                 <FormItem>
                   <Select onValueChange={field.onChange}>
@@ -147,16 +156,22 @@ const CareerForm: React.FC = () => {
                 <FormField
                   control={form.control}
                   name="currentFile"
-                  render={() => (
+                  render={({ field }) => (
                     <FormItem>
                       <FormControl>
                         <Label className="rounded-md text-black cursor-pointer">
-                          Choose your file
+                          {fileName}
                           <Input
                             type="file"
                             className="hidden"
-                            accept="application/pdf, application/msword, .rtf"
-                            {...fileRef}
+                            accept=".pdf,.doc,.docx,.rtf"
+                            onChange={(e) => {
+                              if (e.target.files && e.target.files.length > 0) {
+                                const file = e.target.files[0];
+                                setFileName(file.name);
+                                field.onChange(e.target.files);
+                              }
+                            }}
                           />
                         </Label>
                       </FormControl>
