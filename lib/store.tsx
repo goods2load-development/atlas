@@ -138,15 +138,23 @@ export const useRegistrationStore = create((set) => ({
   postUserRegistrationData: async (data: any) => {
     const isProvider = data.provider;
     const formData = new FormData();
+
+    if (Array.isArray(data.industryProofFile)) {
+      data.industryProofFile.map((item: File) => {
+        formData.append('industryProofFile', item);
+      });
+    }
+
+    if (Array.isArray(data.industryProofFileSecondary)) {
+      data.industryProofFile.map((item: File) => {
+        formData.append('industryProofFileSecondary', item);
+      });
+    }
+
     formData.append('insuranceStatement', data.insuranceStatement);
     formData.append('issuingAuthority', data.issuingAuthority);
     formData.append('tradeLicenseNumber', data.tradeLicenseNumber);
     formData.append('companyPhoto', data.companyPhoto);
-    formData.append('industryProofFile', data.industryProofFile);
-    formData.append(
-      'industryProofFileSecondary',
-      data.industryProofFileSecondary,
-    );
     formData.append(
       'sustainabilityCertificationFile',
       data.sustainabilityCertificationFile,

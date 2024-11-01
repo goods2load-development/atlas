@@ -71,6 +71,7 @@ const ERRORS_ON_STEPS: Record<number, string[]> = {
   2: ['industryRecognitions', 'industryProofFile'],
   3: ['industryProofFileSecondary', 'industryRecognitionsSecondary'],
   4: ['industries'],
+  8: ['aboutUs', 'ourMission'],
 };
 
 const MAX_UPLOAD_SIZE = 2000000;
@@ -143,12 +144,19 @@ export default function Registration() {
       phoneNumber: z.string().regex(new RegExp('^[0-9]{4,10}$')),
       email: z.string().min(5).email(),
       companyName: z.string().min(2),
-      companyPhoto: z
-        .instanceof(File)
-        .optional()
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB'),
+      companyPhoto: z.custom(
+        (file) => {
+          return (
+            file &&
+            typeof file.size === 'number' &&
+            file.size <= MAX_UPLOAD_SIZE &&
+            file.type.includes('image')
+          );
+        },
+        {
+          message: 'Company logo required and must be less than 2MB',
+        },
+      ),
       address: z.string().optional(),
       postalCode: z.string().length(6).regex(new RegExp('^[0-9]*$')).optional(),
       city: z.string().optional(),
@@ -156,6 +164,7 @@ export default function Registration() {
       provider: z.boolean().optional(),
       googleBusinessProfile: z
         .string()
+        .url('This field must be a valid URL') // Ensures the input is a valid URL
         .min(3, 'This field is required')
         .optional(),
       // sustainability: z.boolean().optional(),
@@ -187,10 +196,7 @@ export default function Registration() {
           (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
           { message: 'File size must be less than 2MB' },
         ),
-      industryRecognitionsSecondary: z
-        .array(z.string())
-        .min(1, 'At least one industry recognition must be selected')
-        .optional(),
+      industryRecognitionsSecondary: z.array(z.string()).optional(),
       cities: z.array(z.string()).optional(),
       airports: z.array(z.string()).optional(),
       seaports: z.array(z.string()).optional(),
@@ -227,14 +233,15 @@ export default function Registration() {
       confirmPassword: z.string(),
       privacy: z.boolean(),
       communication: z.boolean().optional(),
-      aboutUs: z.string().min(80).max(150),
+      aboutUs: z.string().min(80).max(150).optional(),
       ourMission: z
         .string()
         .min(80)
         .max(150)
         .refine((val) => /#\w+/.test(val), {
           message: 'Must include at least one hashtag, e.g., #insurance',
-        }),
+        })
+        .optional(),
     })
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
@@ -279,41 +286,20 @@ export default function Registration() {
         path: ['industryRecognitions'],
       }),
     )
-
-    .refine(
-      (data) =>
-        !data.provider ||
-        (Array.isArray(data.industryRecognitionsSecondary) &&
-          data.industryRecognitionsSecondary.length > 0),
-      {
-        message: 'At least one industry recognition must be selected',
-        path: ['industryRecognitionsSecondary'],
-      },
-    )
-
     .refine(
       (data) => {
         return (
-          data?.industryRecognitionsSecondary &&
-          data?.industryProofFileSecondary &&
-          data.industryRecognitionsSecondary.length ===
-            data.industryProofFileSecondary.length
+          !data.industryRecognitionsSecondary ||
+          (data.industryRecognitionsSecondary &&
+            data.industryProofFileSecondary &&
+            data.industryRecognitionsSecondary.length ===
+              data.industryProofFileSecondary.length)
         );
       },
-      (data) => {
-        let errorMessage;
-
-        if (Array.isArray(data.industryRecognitionsSecondary)) {
-          errorMessage = `You need to provide ${data?.industryRecognitionsSecondary?.length} proof ${data!.industryRecognitionsSecondary!.length <= 1 ? 'file' : 'files'}`;
-        } else {
-          errorMessage = 'At least one industry recognition must be selected';
-        }
-
-        return {
-          message: errorMessage,
-          path: ['industryRecognitionsSecondary'],
-        };
-      },
+      (data) => ({
+        message: `You need to provide ${data?.industryRecognitionsSecondary?.length} proof ${data!.industryRecognitionsSecondary!.length <= 1 ? 'file' : 'files'}`,
+        path: ['industryRecognitionsSecondary'],
+      }),
     )
 
     .refine((data) => !data.provider || data.googleBusinessProfile, {
@@ -323,6 +309,14 @@ export default function Registration() {
     .refine((data) => !data.provider || data.finalAgreement, {
       message: 'You need to accept this agreement',
       path: ['finalAgreement'],
+    })
+    .refine((data) => !data.provider || !!data.aboutUs, {
+      message: 'This field is require',
+      path: ['aboutUs'],
+    })
+    .refine((data) => !data.provider || !!data.ourMission, {
+      message: 'This field is require',
+      path: ['ourMission'],
     });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -395,6 +389,9 @@ export default function Registration() {
       return;
     }
 
+    console.log(ERRORS_ON_STEPS[step], 'ERROR');
+    console.log(await trigger(ERRORS_ON_STEPS[step] as any), 'TRIGGER');
+
     if (await trigger(ERRORS_ON_STEPS[step] as any)) {
       onSmoothScroll();
       setStep((step) => step + 1);
@@ -442,6 +439,15 @@ export default function Registration() {
         <form onSubmit={form.handleSubmit(onSubmit, handleOnFormErrors)}>
           {step === 0 && (
             <>
+              <div className="text-center mb-10">
+                <span className="text-[40px]/[60px] italic font-normal">
+                  Welcome!
+                </span>
+                <br />
+                <span className="text-[16px]/[20px] font-normal">
+                  Please enter your details
+                </span>
+              </div>
               <div className="flex flex-wrap flex-col content-center mb-5">
                 <FormField
                   control={form.control}
