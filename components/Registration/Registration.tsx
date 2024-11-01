@@ -144,12 +144,19 @@ export default function Registration() {
       phoneNumber: z.string().regex(new RegExp('^[0-9]{4,10}$')),
       email: z.string().min(5).email(),
       companyName: z.string().min(2),
-      companyPhoto: z
-        .instanceof(File)
-        .optional()
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB'),
+      companyPhoto: z.custom(
+        (file) => {
+          return (
+            file &&
+            typeof file.size === 'number' &&
+            file.size <= MAX_UPLOAD_SIZE &&
+            file.type.includes('image')
+          );
+        },
+        {
+          message: 'Company logo required and must be less than 2MB',
+        },
+      ),
       address: z.string().optional(),
       postalCode: z.string().length(6).regex(new RegExp('^[0-9]*$')).optional(),
       city: z.string().optional(),
@@ -157,18 +164,18 @@ export default function Registration() {
       provider: z.boolean().optional(),
       googleBusinessProfile: z
         .string()
+        .url('This field must be a valid URL') // Ensures the input is a valid URL
         .min(3, 'This field is required')
         .optional(),
       // sustainability: z.boolean().optional(),
       finalAgreement: z.boolean().optional(),
       sustainabilityCertificationFile: z
-        .instanceof(File)
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB')
-        .refine((file) => {
-          return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, 'File must be a PDF')
+        .unknown()
+        .transform((value) => (value ? Array.from(value as FileList) : []))
+        .refine(
+          (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
+          { message: 'File size must be less than 2MB' },
+        )
         .optional(),
       industries: z
         .array(z.string())
@@ -295,14 +302,10 @@ export default function Registration() {
       }),
     )
 
-    .refine(
-      (data) => !data.provider || data.googleBusinessProfile,
-
-      {
-        message: 'This field is required',
-        path: ['googleBusinessProfile'],
-      },
-    )
+    .refine((data) => !data.provider || data.googleBusinessProfile, {
+      message: 'This field is required',
+      path: ['googleBusinessProfile'],
+    })
     .refine((data) => !data.provider || data.finalAgreement, {
       message: 'You need to accept this agreement',
       path: ['finalAgreement'],
@@ -436,6 +439,15 @@ export default function Registration() {
         <form onSubmit={form.handleSubmit(onSubmit, handleOnFormErrors)}>
           {step === 0 && (
             <>
+              <div className="text-center mb-10">
+                <span className="text-[40px]/[60px] italic font-normal">
+                  Welcome!
+                </span>
+                <br />
+                <span className="text-[16px]/[20px] font-normal">
+                  Please enter your details
+                </span>
+              </div>
               <div className="flex flex-wrap flex-col content-center mb-5">
                 <FormField
                   control={form.control}
@@ -568,28 +580,34 @@ export default function Registration() {
                       <FormLabel className="font-light sm:font-normal">
                         Company logo
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          className="hidden"
-                          name="companyPhoto"
-                          type="file"
-                          accept="image/png, image/svg"
-                          onChange={(e) => {
-                            if (e.target.files?.length) {
-                              field.onChange(
-                                e.target.files ? e.target.files[0] : null,
-                              );
-                              clearErrors('companyPhoto');
-                            } else {
-                              field.onChange(null);
-                            }
-                          }}
-                        />
-                      </FormControl>
-                      <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                        <img className="mr-[8px]" src="/upload.svg" />
-                        {field.value ? field.value.name : 'Upload logo'}
-                      </FormLabel>
+                      <div className="flex flex-col">
+                        <FormDescription className="text-[12px]">
+                          *Attachments not bigger than 2MB. Only .png or .svg
+                          images.
+                        </FormDescription>
+                        <FormControl>
+                          <Input
+                            className="hidden"
+                            name="companyPhoto"
+                            type="file"
+                            accept="image/png, image/svg+xml"
+                            onChange={(e) => {
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('companyPhoto');
+                              } else {
+                                field.onChange(null);
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 flex justify-center items-center">
+                          <img className="mr-[8px]" src="/upload.svg" />
+                          {field.value ? field.value.name : 'Upload logo'}
+                        </FormLabel>
+                      </div>
                     </FormItem>
                     <FormMessage />
                   </>

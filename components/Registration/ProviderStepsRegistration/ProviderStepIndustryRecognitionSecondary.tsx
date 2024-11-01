@@ -33,6 +33,7 @@ export const FormStepIndustryRecognitionSecondary = ({
 }) => {
   const { clearErrors } = form;
   const [isProvideRecognition, setIsProvideRecognition] = useState(true);
+  const [isProvideSustainability, setIsProvideSustainability] = useState(true);
 
   useEffect(() => {
     if (!isProvideRecognition) {
@@ -40,6 +41,11 @@ export const FormStepIndustryRecognitionSecondary = ({
       form.setValue('industryProofFileSecondary', undefined);
     }
   }, [isProvideRecognition]);
+
+  useEffect(() => {
+    if (!isProvideSustainability)
+      form.setValue('sustainabilityCertificationFile', undefined);
+  }, [isProvideSustainability]);
 
   return (
     <div>
@@ -56,7 +62,7 @@ export const FormStepIndustryRecognitionSecondary = ({
 
       <div
         className={clsx('my-4', {
-          'opacity-40 pointer-events-none': isProvideRecognition,
+          'opacity-40 pointer-events-none': !isProvideRecognition,
         })}
       >
         <FormField
@@ -153,8 +159,16 @@ export const FormStepIndustryRecognitionSecondary = ({
       </div>
 
       <div className="mt-12 text-[14px]">
-        <strong className="text-[16px]">Sustainability</strong>
-
+        <div className="flex items-center justify-between mb-6 font-semibold">
+          <h4 className={clsx('tracking-wide text-[24px]/[27px]')}>
+            Sustainability
+            <IsRequired />
+          </h4>
+          <Switch
+            checked={isProvideSustainability}
+            onCheckedChange={() => setIsProvideSustainability((prev) => !prev)}
+          />
+        </div>
         <p className="block my-4">
           This certification is essential for companies we engage with,
           reflecting a commitment to sustainable, eco-friendly practices.
@@ -231,7 +245,11 @@ export const FormStepIndustryRecognitionSecondary = ({
           )}
         /> */}
 
-        <div className={clsx('mt-8')}>
+        <div
+          className={clsx('mt-8', {
+            'opacity-40 pointer-events-none': !isProvideSustainability,
+          })}
+        >
           <div className="font-bold">Proof of recognition</div>
           <p className="mt-2 text-[14px]">
             Please upload any relevan documents that provide proof of
@@ -252,15 +270,18 @@ export const FormStepIndustryRecognitionSecondary = ({
                   <Input
                     className="hidden"
                     type="file"
-                    accept="application/pdf"
+                    multiple
+                    accept="application/pdf, image/*"
                     onChange={(e) => {
-                      field.onChange(e.target.files ? e.target.files[0] : null);
+                      field.onChange(e.target.files || null);
                     }}
                   />
                 </FormControl>
                 <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
                   <img className="" src="/upload.svg" />
-                  {field.value ? field.value.name : 'Upload PDF(front&back)'}
+                  {field.value
+                    ? `(${field.value?.length}) Files`
+                    : `Upload ${field?.value?.length || ''} Files(front&back)`}
                 </FormLabel>
               </FormItem>
             )}
