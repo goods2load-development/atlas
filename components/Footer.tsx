@@ -102,7 +102,7 @@ export default function Footer() {
       <div className="text-orangePrimary font-semibold text-center py-[13px] font-[16px]/[24px] bg-white">
         GOODS2LOAD {currentYear} | All Rights Reserved
       </div>
-      <div className="bg-primaryOrange py-4">
+      <div className="bg-primaryOrange p-4">
         <div className="flex items-center justify-center max-w-[1328px] mx-auto">
           <nav className="text-sm flex items-center flex-wrap mx-auto">
             <Link

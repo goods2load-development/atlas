@@ -82,7 +82,7 @@ const getAppPages = async () => {
   const blogsUrls = blogs.data.map((post) => `blog/${post.slug}`);
   const seoPagesUrls = seoPages.map((item) => ({
     url: `/${item.slug}`,
-    updatedAt: new Date().toISOString(),
+    // updatedAt: new Date().toISOString(),
     category: 'seo-page',
     subCategory: item.category.name,
     title: item.title,
@@ -114,7 +114,6 @@ const generateSitemap = async () => {
             (page) => `
             <url>
                 <loc>${`https://goods2load.com${page.url}`}</loc>
-                <lastmod>${page.updatedAt}</lastmod>
                 ${page.category ? `<category>${page.category}</category>` : ''}
                 ${page.subCategory ? `<subcategory>${page.subCategory}</subcategory>` : ''}
                 ${page.title ? `<title>${page.title}</title>` : ''}

@@ -1,3 +1,4 @@
+import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from './types';
 import {
   deleteRequest,
   getRequest,
@@ -6,7 +7,6 @@ import {
   putRequest,
 } from './utils';
 
-import { url } from 'inspector';
 import Cookie from 'js-cookie';
 import { create } from 'zustand';
 
@@ -16,10 +16,10 @@ import {
   HeaderFooterData,
 } from '@/components/Dashboard/HeaderFooterMain/types';
 import {
+  PartnerIndustry,
   PartnerPageResponse,
   ResponsePartner,
 } from '@/components/Dashboard/PartnersMain/types';
-import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from '@/components/LangSwicher';
 import { SeoPageCategory } from '@/components/SeoPage/types';
 
 export const useCountriesStore = create((set) => ({
@@ -64,6 +64,49 @@ export const useCountriesStore = create((set) => ({
       set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
+  getCitiesByCountry: async (countryCode: string) => {
+    try {
+      const data = await fetch(
+        `https://aviation-edge.com/v2/public/cityDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&codeIso2Country=${countryCode}`,
+      );
+      return data.json();
+    } catch (error) {
+      return [];
+    }
+  },
+  getCountriesByRegions: async (region: string) => {
+    try {
+      const data = await getRequest({
+        url: `https://restcountries.com/v3.1/region/${region}?fields=name,subregion,cca2`,
+      });
+      return data;
+    } catch (error) {
+      return [];
+    }
+  },
+}));
+
+export const usePortsStore = create((set) => ({
+  getAirportsByCountry: async (countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://aviation-edge.com/v2/public/airportDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&type=Cargo&codeIso2Country=${countryCode}`,
+      );
+      return response.json();
+    } catch (error) {
+      return [];
+    }
+  },
+  getSeaPortsByCountry: async (countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&country_iso=${countryCode}&port_type=Port`,
+      );
+      return response.json();
+    } catch (error) {
+      return [];
+    }
+  },
 }));
 
 export const useGoodsStore = create((set) => ({
@@ -71,7 +114,6 @@ export const useGoodsStore = create((set) => ({
   goodsListLoading: false,
   getGoodsList: async (term: string) => {
     set(() => ({ goodsListLoading: true }));
-    // console.log("term", term);
     const base = 'https://hs-code-harmonized-system.p.rapidapi.com/';
     const byCode = !!parseInt(term);
     const url = base + (byCode ? 'code' : 'search');
@@ -112,10 +154,27 @@ export const useRegistrationStore = create((set) => ({
   postUserRegistrationData: async (data: any) => {
     const isProvider = data.provider;
     const formData = new FormData();
+
+    if (Array.isArray(data.industryProofFile)) {
+      data.industryProofFile.map((item: File) => {
+        formData.append('industryProofFile', item);
+      });
+    }
+
+    if (Array.isArray(data.industryProofFileSecondary)) {
+      data.industryProofFile.map((item: File) => {
+        formData.append('industryProofFileSecondary', item);
+      });
+    }
+
     formData.append('insuranceStatement', data.insuranceStatement);
     formData.append('issuingAuthority', data.issuingAuthority);
     formData.append('tradeLicenseNumber', data.tradeLicenseNumber);
     formData.append('companyPhoto', data.companyPhoto);
+    formData.append(
+      'sustainabilityCertificationFile',
+      data.sustainabilityCertificationFile,
+    );
 
     delete data.confirmPassword;
     delete data.privacy;
@@ -124,6 +183,10 @@ export const useRegistrationStore = create((set) => ({
     delete data.issuingAuthority;
     delete data.tradeLicenseNumber;
     delete data.companyPhoto;
+    delete data.industryProofFile;
+    delete data.industryProofFileSecondary;
+    delete data.sustainabilityCertificationFile;
+    delete data.finalAgreement;
 
     delete data.license;
 
@@ -482,6 +545,7 @@ interface PartnersStoreState {
   partners: ResponsePartner[];
   partnerPage: PartnerPageResponse | null;
   isPartnersLoading: boolean;
+  partnersIndustriesData: PartnerIndustry[] | null;
   getPartnersApproved: () => Promise<void>;
   getPartnersInReview: () => Promise<void>;
   getPartnersNew: () => Promise<void>;
@@ -490,12 +554,15 @@ interface PartnersStoreState {
   replyPartner: (id: string, message: string) => Promise<void>;
   createPartnerPage: (data: any, id: string) => Promise<void>;
   getPartnersPage: (id: string) => Promise<void>;
+  getPartnersIndustries: () => Promise<void>;
 }
 
 export const usePartnersStore = create<PartnersStoreState>((set) => ({
   partners: [],
   partnerPage: null,
   isPartnersLoading: true,
+  partnersIndustriesData: null,
+
   getPartnersApproved: () => {
     set({ isPartnersLoading: true });
     return getRequest({
@@ -562,6 +629,15 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     })
       .then((data) => set({ partnerPage: data }))
       .finally(() => set({ isPartnersLoading: false }));
+  },
+  getPartnersIndustries: () => {
+    return getRequest({
+      url: `/partners/filters`,
+    }).then((data) => {
+      set({
+        partnersIndustriesData: data,
+      });
+    });
   },
 }));
 

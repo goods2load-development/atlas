@@ -66,7 +66,6 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
   const isFetched = useRef(false);
 
   useEffect(() => {
-    console.log(userId, '123');
     return () => {
       setIsEditing(false);
     };

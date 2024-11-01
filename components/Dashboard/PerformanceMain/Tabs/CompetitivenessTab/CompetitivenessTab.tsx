@@ -19,6 +19,7 @@ const CompetitivenessTab = ({ data }: { data: any }) => {
     return currentYearProfit.map((current: any) => {
       const last = lastYearProfit?.find(
         (last: any) => last.label === current.label,
+        (last: any) => last.label === current.label,
       );
       return {
         label: current.label,
@@ -44,7 +45,9 @@ const CompetitivenessTab = ({ data }: { data: any }) => {
         activeCard={activeCard}
         onChangeActiveCard={handleActiveCardChange}
       />
-      <CompetitivenessChart data={data?.competitiveness?.currentYear || []} />
+      <CompetitivenessChart
+        data={data?.competitiveness?.currentYearProfit || []}
+      />
     </>
   );
 };
