@@ -163,6 +163,7 @@ export default function Registration() {
       provider: z.boolean().optional(),
       googleBusinessProfile: z
         .string()
+        .url('This field must be a valid URL') // Ensures the input is a valid URL
         .min(3, 'This field is required')
         .optional(),
       // sustainability: z.boolean().optional(),
