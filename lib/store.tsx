@@ -65,31 +65,47 @@ export const useCountriesStore = create((set) => ({
     }
   },
   getCitiesByCountry: async (countryCode: string) => {
-    const data = await fetch(
-      `https://aviation-edge.com/v2/public/cityDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&codeIso2Country=${countryCode}`,
-    );
-    return data.json();
+    try {
+      const data = await fetch(
+        `https://aviation-edge.com/v2/public/cityDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&codeIso2Country=${countryCode}`,
+      );
+      return data.json();
+    } catch (error) {
+      return [];
+    }
   },
   getCountriesByRegions: async (region: string) => {
-    const data = await getRequest({
-      url: `https://restcountries.com/v3.1/region/${region}?fields=name,subregion,cca2`,
-    });
-    return data;
+    try {
+      const data = await getRequest({
+        url: `https://restcountries.com/v3.1/region/${region}?fields=name,subregion,cca2`,
+      });
+      return data;
+    } catch (error) {
+      return [];
+    }
   },
 }));
 
 export const usePortsStore = create((set) => ({
   getAirportsByCountry: async (countryCode: string) => {
-    const response = await fetch(
-      `https://aviation-edge.com/v2/public/airportDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&type=Cargo&codeIso2Country=${countryCode}`,
-    );
-    return response.json();
+    try {
+      const response = await fetch(
+        `https://aviation-edge.com/v2/public/airportDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&type=Cargo&codeIso2Country=${countryCode}`,
+      );
+      return response.json();
+    } catch (error) {
+      return [];
+    }
   },
   getSeaPortsByCountry: async (countryCode: string) => {
-    const response = await fetch(
-      `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&country_iso=${countryCode}&port_type=Port`,
-    );
-    return response.json();
+    try {
+      const response = await fetch(
+        `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&country_iso=${countryCode}&port_type=Port`,
+      );
+      return response.json();
+    } catch (error) {
+      return [];
+    }
   },
 }));
 

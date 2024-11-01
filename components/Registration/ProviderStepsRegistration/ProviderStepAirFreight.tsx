@@ -1,7 +1,7 @@
 import { useCountriesStore, usePortsStore } from '@/lib/store';
 import { sortByRegion } from '@/lib/utils';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
@@ -57,46 +57,42 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
   const [isAccordLoading, setIsAccordLoading] = useState(false);
   const [isProvideServices, setIsProvideServices] = useState(true);
 
-  useEffect(() => {
-    const fetchCountriesData = async () => {
-      if (activeAccord) {
-        setIsAccordLoading(true);
-        try {
-          const regionsData = await getCountriesByRegions(activeAccord); // Get the countries by region Asia, Africa, e.t.c
-          const sortedData = sortByRegion(regionsData);
+  const fetchCountriesData = useCallback(async () => {
+    if (activeAccord) {
+      setIsAccordLoading(true);
+      try {
+        const regionsData = await getCountriesByRegions(activeAccord); // Get the countries by region Asia, Africa, e.t.c
+        const sortedData = sortByRegion(regionsData);
 
-          const countriesWithAirPorts: any = {};
+        const countriesWithAirPorts: any = {};
 
-          for (const region in sortedData) {
-            countriesWithAirPorts[region] = await Promise.all(
-              sortedData[region].map(async (item: any) => {
-                const airports: any[] = await getAirportsByCountry(item.cca2);
+        for (const region in sortedData) {
+          countriesWithAirPorts[region] = await Promise.all(
+            sortedData[region].map(async (item: any) => {
+              const airports: any[] = await getAirportsByCountry(item.cca2);
 
-                if (!Array.isArray(airports) || airports.length === 0) {
-                  return;
-                }
+              if (!Array.isArray(airports) || airports.length === 0) {
+                return;
+              }
 
-                return {
-                  ...item,
-                  airports: airports?.filter(
-                    (airport: any) =>
-                      airport.nameAirport.includes('International') ||
-                      airport.nameAirport.includes('Airport'),
-                  ),
-                };
-              }),
-            );
-          }
-
-          setCountriesData(countriesWithAirPorts);
-        } catch (error) {
-          console.error('Error fetching countries data:', error);
+              return {
+                ...item,
+                airports,
+              };
+            }),
+          );
         }
 
-        setIsAccordLoading(false);
+        setCountriesData(countriesWithAirPorts);
+      } catch (error) {
+        console.error('Error fetching countries data:', error);
       }
-    };
 
+      setIsAccordLoading(false);
+    }
+  }, [activeAccord]);
+
+  useEffect(() => {
     fetchCountriesData();
   }, [activeAccord, getCountriesByRegions]);
 
@@ -104,7 +100,7 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
     if (!isProvideServices) {
       setActiveAccord(undefined);
       setActiveCountries([]);
-      form.setValue('cities', []);
+      form.setValue('airports', []);
     }
   }, [isProvideServices]);
 
@@ -133,7 +129,7 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
                             'airports',
                             alreadyChoosingAirports.filter(
                               (currentAirport: string) =>
-                                item.cities.includes(
+                                item.airports.includes(
                                   (item: any) => item.name !== currentAirport,
                                 ),
                             ),
@@ -187,7 +183,9 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
                                     }}
                                   />
                                   <span className="text-[14px]f font-medium">
-                                    {item.nameAirport}
+                                    {item.nameAirport.includes('Airport')
+                                      ? item.nameAirport
+                                      : item.nameAirport + ' Airport'}
                                   </span>
                                 </label>
                               );
