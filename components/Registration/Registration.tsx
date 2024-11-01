@@ -53,22 +53,23 @@ import {
 import { Switch } from '@/components/ui/switch';
 
 const ERRORS_ON_STEPS: Record<number, string[]> = {
-  // 0: [
-  //   'email',
-  //   'companyPhoto',
-  //   'companyName',
-  //   'password',
-  //   'confirmPassword',
-  //   'privacy',
-  //   'phoneNumber',
-  //   'country',
-  //   'insuranceStatement',
-  //   'issuingAuthority',
-  //   'tradeLicenseNumber',
-  // ],
-  // 1: ['googleBusinessProfile'],
-  // 3: ['industryProofFileSecondary', 'industryRecognitionsSecondary'],
-  // 4: ['industries'],
+  0: [
+    'email',
+    'companyPhoto',
+    'companyName',
+    'password',
+    'confirmPassword',
+    'privacy',
+    'phoneNumber',
+    'country',
+    'insuranceStatement',
+    'issuingAuthority',
+    'tradeLicenseNumber',
+  ],
+  1: ['googleBusinessProfile'],
+  2: ['industryRecognitions', 'industryProofFile'],
+  3: ['industryProofFileSecondary', 'industryRecognitionsSecondary'],
+  4: ['industries'],
 };
 
 const MAX_UPLOAD_SIZE = 2000000;
@@ -80,7 +81,7 @@ export function IsRequired() {
 
 export default function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
@@ -174,14 +175,14 @@ export default function Registration() {
       industryRecognitions: z.array(z.string()).optional(),
       industryProofFile: z
         .unknown()
-        .transform((value) => Array.from(value as FileList))
+        .transform((value) => (value ? Array.from(value as FileList) : []))
         .refine(
           (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
           { message: 'File size must be less than 2MB' },
         ),
       industryProofFileSecondary: z
         .unknown()
-        .transform((value) => Array.from(value as FileList))
+        .transform((value) => (value ? Array.from(value as FileList) : []))
         .refine(
           (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
           { message: 'File size must be less than 2MB' },
@@ -227,20 +228,6 @@ export default function Registration() {
       privacy: z.boolean(),
       communication: z.boolean().optional(),
     })
-    .refine(
-      (data) => {
-        // not working!!!
-        return (
-          !data.industryRecognitions ||
-          !data.industryProofFile ||
-          data.industryRecognitions.length === data.industryProofFile.length
-        );
-      },
-      {
-        message: 'not working',
-        path: ['industryProofFile'],
-      },
-    )
     .refine((data) => data.password === data.confirmPassword, {
       message: "Passwords don't match",
       path: ['confirmPassword'],
@@ -271,6 +258,21 @@ export default function Registration() {
       },
     )
     .refine(
+      (data) => {
+        return (
+          !data.industryRecognitions ||
+          (data.industryRecognitions &&
+            data.industryProofFile &&
+            data.industryRecognitions.length === data.industryProofFile.length)
+        );
+      },
+      (data) => ({
+        message: `You need to provide ${data?.industryRecognitions?.length} proof ${data!.industryRecognitions!.length <= 1 ? 'file' : 'files'}`,
+        path: ['industryRecognitions'],
+      }),
+    )
+
+    .refine(
       (data) =>
         !data.provider ||
         (Array.isArray(data.industryRecognitionsSecondary) &&
@@ -280,6 +282,32 @@ export default function Registration() {
         path: ['industryRecognitionsSecondary'],
       },
     )
+
+    .refine(
+      (data) => {
+        return (
+          data?.industryRecognitionsSecondary &&
+          data?.industryProofFileSecondary &&
+          data.industryRecognitionsSecondary.length ===
+            data.industryProofFileSecondary.length
+        );
+      },
+      (data) => {
+        let errorMessage;
+
+        if (Array.isArray(data.industryRecognitionsSecondary)) {
+          errorMessage = `You need to provide ${data?.industryRecognitionsSecondary?.length} proof ${data!.industryRecognitionsSecondary!.length <= 1 ? 'file' : 'files'}`;
+        } else {
+          errorMessage = 'At least one industry recognition must be selected';
+        }
+
+        return {
+          message: errorMessage,
+          path: ['industryRecognitionsSecondary'],
+        };
+      },
+    )
+
     .refine(
       (data) => !data.provider || data.googleBusinessProfile,
 
@@ -306,7 +334,6 @@ export default function Registration() {
   const { watch, trigger, clearErrors } = form;
 
   const isProvider = watch('provider');
-  const industryRecognitions = watch('industryRecognitions');
 
   const { countriesList, getCountriesList } = useCountriesStore(
     (state: any) => state,

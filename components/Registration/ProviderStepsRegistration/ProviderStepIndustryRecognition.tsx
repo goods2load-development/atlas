@@ -175,6 +175,7 @@ export const FormStepIndustryRecognition = ({ form }: { form: any }) => {
                   })}
                 </div>
               </FormControl>
+              <FormMessage />
             </FormItem>
           )}
         />
