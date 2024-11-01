@@ -63,6 +63,7 @@ const ERRORS_ON_STEPS: Record<number, string[]> = {
     'privacy',
     'phoneNumber',
     'country',
+    'postalCode',
     'insuranceStatement',
     'issuingAuthority',
     'tradeLicenseNumber',
@@ -158,7 +159,10 @@ export default function Registration() {
         },
       ),
       address: z.string().optional(),
-      postalCode: z.string().length(6).regex(new RegExp('^[0-9]*$')).optional(),
+      postalCode: z
+        .string()
+        .regex(/^[0-9A-Za-z- ]{3,10}$/, 'Invalid postal code format')
+        .optional(),
       city: z.string().optional(),
       country: z.string(),
       provider: z.boolean().optional(),
@@ -233,11 +237,29 @@ export default function Registration() {
       confirmPassword: z.string(),
       privacy: z.boolean(),
       communication: z.boolean().optional(),
-      aboutUs: z.string().min(80).max(150).optional(),
+      aboutUs: z
+        .string()
+        .refine(
+          (val) => {
+            const wordCount = val ? val.trim().split(/\s+/).length : 0;
+            return wordCount >= 80 && wordCount <= 150;
+          },
+          {
+            message: 'The field must contain between 80 and 150 words',
+          },
+        )
+        .optional(),
       ourMission: z
         .string()
-        .min(80)
-        .max(150)
+        .refine(
+          (val) => {
+            const wordCount = val ? val.trim().split(/\s+/).length : 0;
+            return wordCount >= 80 && wordCount <= 150;
+          },
+          {
+            message: 'The field must contain between 80 and 150 words',
+          },
+        )
         .refine((val) => /#\w+/.test(val), {
           message: 'Must include at least one hashtag, e.g., #insurance',
         })
@@ -370,11 +392,6 @@ export default function Registration() {
     }
   }, [cookies.accessToken]);
 
-  const handleOnFormErrors = (errors: any) => {
-    // Need to remove after tests
-    console.log(errors, 'ERRORS');
-  };
-
   const onSmoothScroll = () => {
     window.scroll({
       top: 300,
@@ -388,9 +405,6 @@ export default function Registration() {
       setStep((step) => step + 1);
       return;
     }
-
-    console.log(ERRORS_ON_STEPS[step], 'ERROR');
-    console.log(await trigger(ERRORS_ON_STEPS[step] as any), 'TRIGGER');
 
     if (await trigger(ERRORS_ON_STEPS[step] as any)) {
       onSmoothScroll();
@@ -436,7 +450,7 @@ export default function Registration() {
       </Button>
       <Divider /> */}
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit, handleOnFormErrors)}>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
           {step === 0 && (
             <>
               <div className="text-center mb-10">
@@ -647,7 +661,10 @@ export default function Registration() {
                           className="bg-gray-2 border-0"
                           placeholder="000 000"
                           {...field}
-                          onBlur={handleChange}
+                          onBlur={(val) => {
+                            trigger('postalCode');
+                            handleChange(val);
+                          }}
                         />
                       </FormControl>
                       <FormMessage />

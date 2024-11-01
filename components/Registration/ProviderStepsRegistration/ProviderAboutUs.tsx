@@ -29,8 +29,6 @@ export const FormAboutUs = ({ form }: { form: any }) => {
               </FormDescription>
               <FormControl>
                 <Textarea
-                  maxLength={150}
-                  minLength={80}
                   className="bg-gray-2 border-0 min-h-[150px]"
                   {...field}
                   onBlur={() => form.trigger('aboutUs')}
@@ -57,8 +55,6 @@ export const FormAboutUs = ({ form }: { form: any }) => {
               </FormDescription>
               <FormControl>
                 <Textarea
-                  maxLength={150}
-                  minLength={80}
                   className="bg-gray-2 border-0 min-h-[150px]"
                   {...field}
                   onBlur={() => form.trigger('ourMission')}
