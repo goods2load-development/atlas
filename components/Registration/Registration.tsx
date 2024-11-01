@@ -143,12 +143,19 @@ export default function Registration() {
       phoneNumber: z.string().regex(new RegExp('^[0-9]{4,10}$')),
       email: z.string().min(5).email(),
       companyName: z.string().min(2),
-      companyPhoto: z
-        .instanceof(File)
-        .optional()
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB'),
+      companyPhoto: z.custom(
+        (file) => {
+          return (
+            file &&
+            typeof file.size === 'number' &&
+            file.size <= MAX_UPLOAD_SIZE &&
+            file.type.includes('image')
+          );
+        },
+        {
+          message: 'Company logo required and must be less than 2MB',
+        },
+      ),
       address: z.string().optional(),
       postalCode: z.string().length(6).regex(new RegExp('^[0-9]*$')).optional(),
       city: z.string().optional(),

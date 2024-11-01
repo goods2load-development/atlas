@@ -210,7 +210,7 @@ export const FormStepIndustryRecognition = ({ form }: { form: any }) => {
                 />
               </FormControl>
               <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                <Image width={5} height={5} src="/upload.svg" alt="upload" />
+                <Image width={16} height={16} src="/upload.svg" alt="upload" />
                 {field.value
                   ? `(${field.value.length}) Files`
                   : `Upload ${field?.value?.length || ''} Files(front&back)`}
