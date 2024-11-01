@@ -161,13 +161,12 @@ export default function Registration() {
       // sustainability: z.boolean().optional(),
       finalAgreement: z.boolean().optional(),
       sustainabilityCertificationFile: z
-        .instanceof(File)
-        .refine((file) => {
-          return !file || file.size <= MAX_UPLOAD_SIZE;
-        }, 'File size must be less than 2MB')
-        .refine((file) => {
-          return file && ACCEPTED_FILE_TYPES.includes(file.type);
-        }, 'File must be a PDF')
+        .unknown()
+        .transform((value) => (value ? Array.from(value as FileList) : []))
+        .refine(
+          (files) => files.every((file) => file.size <= MAX_UPLOAD_SIZE),
+          { message: 'File size must be less than 2MB' },
+        )
         .optional(),
       industries: z
         .array(z.string())
@@ -317,14 +316,10 @@ export default function Registration() {
       },
     )
 
-    .refine(
-      (data) => !data.provider || data.googleBusinessProfile,
-
-      {
-        message: 'This field is required',
-        path: ['googleBusinessProfile'],
-      },
-    )
+    .refine((data) => !data.provider || data.googleBusinessProfile, {
+      message: 'This field is required',
+      path: ['googleBusinessProfile'],
+    })
     .refine((data) => !data.provider || data.finalAgreement, {
       message: 'You need to accept this agreement',
       path: ['finalAgreement'],
@@ -579,28 +574,34 @@ export default function Registration() {
                       <FormLabel className="font-light sm:font-normal">
                         Company logo
                       </FormLabel>
-                      <FormControl>
-                        <Input
-                          className="hidden"
-                          name="companyPhoto"
-                          type="file"
-                          accept="image/png, image/svg"
-                          onChange={(e) => {
-                            if (e.target.files?.length) {
-                              field.onChange(
-                                e.target.files ? e.target.files[0] : null,
-                              );
-                              clearErrors('companyPhoto');
-                            } else {
-                              field.onChange(null);
-                            }
-                          }}
-                        />
-                      </FormControl>
-                      <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                        <img className="mr-[8px]" src="/upload.svg" />
-                        {field.value ? field.value.name : 'Upload logo'}
-                      </FormLabel>
+                      <div className="flex flex-col">
+                        <FormDescription className="text-[12px]">
+                          *Attachments not bigger than 2MB. Only .png or .svg
+                          images.
+                        </FormDescription>
+                        <FormControl>
+                          <Input
+                            className="hidden"
+                            name="companyPhoto"
+                            type="file"
+                            accept="image/png, image/svg+xml"
+                            onChange={(e) => {
+                              if (e.target.files?.length) {
+                                field.onChange(
+                                  e.target.files ? e.target.files[0] : null,
+                                );
+                                clearErrors('companyPhoto');
+                              } else {
+                                field.onChange(null);
+                              }
+                            }}
+                          />
+                        </FormControl>
+                        <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 flex justify-center items-center">
+                          <img className="mr-[8px]" src="/upload.svg" />
+                          {field.value ? field.value.name : 'Upload logo'}
+                        </FormLabel>
+                      </div>
                     </FormItem>
                     <FormMessage />
                   </>
