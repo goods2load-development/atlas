@@ -442,6 +442,15 @@ export default function Registration() {
         <form onSubmit={form.handleSubmit(onSubmit, handleOnFormErrors)}>
           {step === 0 && (
             <>
+              <div className="text-center mb-10">
+                <span className="text-[40px]/[60px] italic font-normal">
+                  Welcome!
+                </span>
+                <br />
+                <span className="text-[16px]/[20px] font-normal">
+                  Please enter your details
+                </span>
+              </div>
               <div className="flex flex-wrap flex-col content-center mb-5">
                 <FormField
                   control={form.control}
