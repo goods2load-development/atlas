@@ -769,22 +769,24 @@ export default function Registration() {
                             className="w-full bg-gray-2 border-transparent font-normal text-black justify-start"
                             disabled={!form.watch('country')}
                           >
-                            <ToolTipComponent asChild text={field.value || ''}>
-                              {field.value ? (
-                                <span className="text-start block w-full truncate">
-                                  {field.value}
-                                </span>
-                              ) : (
-                                <span className="text-start text-gray-500">
-                                  {form.watch('country')
-                                    ? 'Select city'
-                                    : 'Select country first'}
-                                </span>
-                              )}
-                            </ToolTipComponent>
+                            {field.value ? (
+                              <span className="text-start block w-full truncate">
+                                {field.value}
+                              </span>
+                            ) : (
+                              <span className="text-start text-gray-500">
+                                {form.watch('country')
+                                  ? 'Select city'
+                                  : 'Select country first'}
+                              </span>
+                            )}
                           </Button>
                         </PopoverTrigger>
-                        <PopoverContent className="w-[200px] p-0">
+                        <PopoverContent
+                          side="bottom"
+                          align="start"
+                          className="w-[200px] p-0"
+                        >
                           <Command filter={filter}>
                             <CommandInput placeholder="Search..." />
                             <CommandEmpty>Not found.</CommandEmpty>
