@@ -1,7 +1,5 @@
 import { IsRequired } from '../Registration';
 
-import clsx from 'clsx';
-
 import {
   FormControl,
   FormField,
@@ -10,6 +8,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { ToolTipComponent } from '@/components/ui/tooltip';
 
 export const FormStepGeneral = ({ form }: { form: any }) => {
   const { trigger } = form;
@@ -30,14 +29,30 @@ export const FormStepGeneral = ({ form }: { form: any }) => {
         name="googleBusinessProfile"
         render={({ field }) => (
           <FormItem className="w-full mb-5">
-            <FormLabel className="font-light sm:font-normal">
-              Google Business Profile
-              <IsRequired />
-            </FormLabel>
+            <div className="flex gap-2 items-center">
+              {' '}
+              <FormLabel className="font-light sm:font-normal">
+                Google Business Profile
+                <IsRequired />
+              </FormLabel>{' '}
+              <ToolTipComponent
+                text={
+                  <>
+                    How do I find my Google business profile link? <br />
+                    Log in using the Google account associated with your
+                    business. <br />
+                    Once logged in, you'll see your business dashboard. Look for
+                    the “Share your Business Profile” button on the <br />
+                    right side of the screen. Click this button to reveal your
+                    Google Business Profile URL.
+                  </>
+                }
+              />
+            </div>
             <FormControl>
               <Input
                 className="bg-gray-2 border-0"
-                placeholder="Short answer text"
+                placeholder="https://maps.app.goo.gl/XhPCaVAFQc7cPqg5A"
                 {...field}
                 onBlur={() => {
                   trigger('googleBusinessProfile');

@@ -10,12 +10,11 @@ import { FormStepIndustryRecognitionSecondary } from './ProviderStepsRegistratio
 import { FormStepRoadFreight } from './ProviderStepsRegistration/ProviderStepRoadFreight';
 import { FormStepSeaFreight } from './ProviderStepsRegistration/ProviderStepSeaFreight';
 import RegistrationSuccessPopup from './RegistrationSuccessPopup';
-import GoogleIcon from '@/assets/AuthProviderLogos/GoogleIcon';
 import { usePartnersStore, useRegistrationStore } from '@/lib/store';
 import { useCountriesStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import { getSession, signIn } from 'next-auth/react';
@@ -28,7 +27,6 @@ import { useForm } from 'react-hook-form';
 import { getCookie } from 'react-use-cookie';
 import { z } from 'zod';
 
-import Divider from '@/components/Divider';
 import RegistrationWrapper from '@/components/RegistrationWrapper';
 import CountryCode from '@/components/common/CountryCode';
 import InputPassword from '@/components/common/InputPassword';
@@ -242,10 +240,10 @@ export default function Registration() {
         .refine(
           (val) => {
             const wordCount = val ? val.trim().split(/\s+/).length : 0;
-            return wordCount >= 80 && wordCount <= 150;
+            return wordCount >= 50 && wordCount <= 80;
           },
           {
-            message: 'The field must contain between 80 and 150 words',
+            message: 'The field must contain between 50 and 80 words',
           },
         )
         .optional(),
@@ -254,10 +252,10 @@ export default function Registration() {
         .refine(
           (val) => {
             const wordCount = val ? val.trim().split(/\s+/).length : 0;
-            return wordCount >= 80 && wordCount <= 150;
+            return wordCount >= 50 && wordCount <= 80;
           },
           {
-            message: 'The field must contain between 80 and 150 words',
+            message: 'The field must contain between 50 and 80 words',
           },
         )
         .refine((val) => /#\w+/.test(val), {

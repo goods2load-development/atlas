@@ -1,7 +1,7 @@
 'use client';
 
-import { ToolTipComponent } from './SearchMain';
 import CountryCode from './common/CountryCode';
+import { ToolTipComponent } from './ui/tooltip';
 import { useToast } from './ui/use-toast';
 import cnFlag from '@/assets/cn-flag.svg';
 import inFlag from '@/assets/in-flag.svg';
