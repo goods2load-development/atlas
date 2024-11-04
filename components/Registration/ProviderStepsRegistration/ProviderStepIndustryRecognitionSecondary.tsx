@@ -52,7 +52,6 @@ export const FormStepIndustryRecognitionSecondary = ({
       <div className="flex items-center justify-between mb-6 font-semibold">
         <h4 className={clsx('tracking-wide text-[24px]/[27px]')}>
           Additional Validations
-          <IsRequired />
         </h4>
         <Switch
           checked={isProvideRecognition}
@@ -162,7 +161,6 @@ export const FormStepIndustryRecognitionSecondary = ({
         <div className="flex items-center justify-between mb-6 font-semibold">
           <h4 className={clsx('tracking-wide text-[24px]/[27px]')}>
             Sustainability
-            <IsRequired />
           </h4>
           <Switch
             checked={isProvideSustainability}

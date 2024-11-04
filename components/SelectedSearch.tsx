@@ -1,6 +1,6 @@
 'use client';
 
-import { ToolTipComponent } from './SearchMain';
+import { ToolTipComponent } from './ui/tooltip';
 import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
 import { countVolume } from '@/lib/utils';
 
