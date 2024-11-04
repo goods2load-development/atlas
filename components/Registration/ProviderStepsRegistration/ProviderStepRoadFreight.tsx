@@ -45,7 +45,7 @@ const regions = [
 ];
 
 export const FormStepRoadFreight = ({ form }: { form: any }) => {
-  const { getCountriesByRegions, getCitiesByCountry }: any =
+  const { getCountriesByRegions, getStatesByCountry }: any =
     useCountriesStore();
 
   const [activeAccord, setActiveAccord] = useState<string | undefined>(
@@ -69,7 +69,9 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
           for (const region in sortedData) {
             countriesWithCities[region] = await Promise.all(
               sortedData[region].map(async (item: any) => {
-                const cities: any = await getCitiesByCountry(item.cca2); // TO DO API
+                const cities: any = await getStatesByCountry(item.name.common); // TO DO API
+
+                console.log(cities, '123');
 
                 if (!Array.isArray(cities) || cities.length === 0) {
                   return;
@@ -165,17 +167,17 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
                               {item.cities.map((item: any, idx: number) => {
                                 return (
                                   <label
-                                    key={item.nameCity + idx}
+                                    key={item.name + idx}
                                     className="flex items-center gap-2"
                                   >
                                     <Checkbox
-                                      value={item.nameCity}
+                                      value={item.name}
                                       checked={
-                                        field.value?.includes(item.nameCity) ||
+                                        field.value?.includes(item.name) ||
                                         false
                                       }
                                       onCheckedChange={(checked) => {
-                                        const value = item.nameCity;
+                                        const value = item.name;
                                         const newValue = checked
                                           ? [...(field.value || []), value]
                                           : field.value?.filter(
@@ -185,7 +187,7 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
                                       }}
                                     />
                                     <span className="text-[14px] font-medium">
-                                      {item.nameCity}
+                                      {item.name}
                                     </span>
                                   </label>
                                 );

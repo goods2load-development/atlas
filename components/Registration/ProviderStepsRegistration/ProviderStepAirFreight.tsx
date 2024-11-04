@@ -182,11 +182,16 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
                                       field.onChange(newValue);
                                     }}
                                   />
-                                  <span className="text-[14px]f font-medium">
-                                    {item.nameAirport.includes('Airport')
-                                      ? item.nameAirport
-                                      : item.nameAirport + ' Airport'}
-                                  </span>
+                                  <div className="text-[14px]f font-medium flex gap-1 items-center">
+                                    <span className="text-[12px]">
+                                      ({item.codeIataAirport})
+                                    </span>
+                                    <span>
+                                      {item.nameAirport.includes(' Airport')
+                                        ? item.nameAirport
+                                        : item.nameAirport + ' Airport'}
+                                    </span>
+                                  </div>
                                 </label>
                               );
                             })}
