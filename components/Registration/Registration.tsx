@@ -52,6 +52,7 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
+import { useToast } from '@/components/ui/use-toast';
 
 const ERRORS_ON_STEPS: Record<number, string[]> = {
   0: [
@@ -352,6 +353,7 @@ export default function Registration() {
         },
   });
   const { watch, trigger, clearErrors } = form;
+  const { toast } = useToast();
 
   const isProvider = watch('provider');
 
@@ -377,7 +379,12 @@ export default function Registration() {
         recaptchaToken: token,
       });
     } catch {
-      alert('Failed to register.');
+      toast({
+        title: 'Error',
+        description: 'Failed to register.',
+        variant: 'destructive',
+        className: 'bg-red-500',
+      });
     }
   }
 
