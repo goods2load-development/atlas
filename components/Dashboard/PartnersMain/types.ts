@@ -11,6 +11,13 @@ export interface PartnerIndustry {
   label: string;
   items: string[];
 }
+
+interface IBusinessProfile {
+  id: string;
+  text: string;
+  userId: string;
+}
+
 export interface Partner {
   address: string;
   city: string | null;
@@ -36,6 +43,11 @@ export interface Partner {
   tradeLicenseNumber: string;
   truck: boolean;
   industries: PartnerIndustry[];
+  businessProfile: IBusinessProfile;
+  industryRecognitions: any;
+  airports: string[];
+  seaports: string[];
+  cities: string[];
 }
 
 interface FocusItem {
