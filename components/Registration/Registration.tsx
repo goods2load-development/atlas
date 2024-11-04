@@ -1,5 +1,16 @@
 'use client';
 
+import Loader from '../common/Loader';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from '../ui/command';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { ScrollArea } from '../ui/scroll-area';
+import { ToolTipComponent } from '../ui/tooltip';
 import { FormAboutUs } from './ProviderStepsRegistration/ProviderAboutUs';
 import { FormStepAirFreight } from './ProviderStepsRegistration/ProviderStepAirFreight';
 import { FormStepFinalAgreement } from './ProviderStepsRegistration/ProviderStepFinalAgreement';
@@ -355,9 +366,14 @@ export default function Registration() {
 
   const isProvider = watch('provider');
 
-  const { countriesList, getCountriesList } = useCountriesStore(
-    (state: any) => state,
-  );
+  const {
+    countriesList,
+    getCountriesList,
+    citiesList,
+    citiesListLoading,
+    getCitiesList,
+  } = useCountriesStore((state: any) => state);
+
   const { postUserRegistrationData } = useRegistrationStore(
     (state: any) => state,
   );
@@ -446,6 +462,22 @@ export default function Registration() {
       router.refresh();
     }
   }
+
+  const [cityPopoverOpen, setCityPopoverOpen] = useState(false);
+
+  // Add this helper function
+  function filter(value: string, search: string) {
+    if (value.includes(search.toLocaleLowerCase())) return 1;
+    else return 0;
+  }
+
+  // Add effect to load cities when country changes
+  useEffect(() => {
+    const country = form.watch('country');
+    if (country) {
+      getCitiesList(country);
+    }
+  }, [form.watch('country')]);
 
   return (
     <RegistrationWrapper userRegistration={userRegistration}>
@@ -694,6 +726,7 @@ export default function Registration() {
                       <Select
                         onValueChange={(value) => {
                           field.onChange(value);
+                          form.setValue('city', '');
                           trigger('country');
                         }}
                       >
@@ -725,12 +758,64 @@ export default function Registration() {
                       City
                     </FormLabel>
                     <FormControl>
-                      <Input
-                        className="bg-gray-2 border-0"
-                        placeholder="Dubai"
-                        {...field}
-                        onBlur={handleChange}
-                      />
+                      <Popover
+                        open={cityPopoverOpen}
+                        onOpenChange={setCityPopoverOpen}
+                      >
+                        <PopoverTrigger asChild>
+                          <Button
+                            variant="outline"
+                            role="combobox"
+                            className="w-full bg-gray-2 border-transparent font-normal text-black justify-start"
+                            disabled={!form.watch('country')}
+                          >
+                            {field.value ? (
+                              <span className="text-start block w-full truncate">
+                                {field.value}
+                              </span>
+                            ) : (
+                              <span className="text-start text-gray-500">
+                                {form.watch('country')
+                                  ? 'Select city'
+                                  : 'Select country first'}
+                              </span>
+                            )}
+                          </Button>
+                        </PopoverTrigger>
+                        <PopoverContent
+                          side="bottom"
+                          align="start"
+                          className="w-[200px] p-0"
+                        >
+                          <Command filter={filter}>
+                            <CommandInput placeholder="Search..." />
+                            <CommandEmpty>Not found.</CommandEmpty>
+                            {citiesListLoading ? (
+                              <Loader />
+                            ) : (
+                              <ScrollArea className="h-72 w-full">
+                                <CommandGroup>
+                                  {citiesList.map(
+                                    (item: any, index: number) => (
+                                      <CommandItem
+                                        value={`${item.value}`}
+                                        key={index}
+                                        onSelect={() => {
+                                          field.onChange(item.label);
+                                          setCityPopoverOpen(false);
+                                          trigger('city');
+                                        }}
+                                      >
+                                        {item.label}
+                                      </CommandItem>
+                                    ),
+                                  )}
+                                </CommandGroup>
+                              </ScrollArea>
+                            )}
+                          </Command>
+                        </PopoverContent>
+                      </Popover>
                     </FormControl>
                     <FormMessage />
                   </FormItem>
