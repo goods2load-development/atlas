@@ -711,32 +711,30 @@ export default function SeoPageMain({
                     })}
                     key={index}
                   >
-                    <div className="relative">
+                    <div className="relative w-full h-[360px]">
                       <Image
-                        width={405}
-                        height={360}
                         src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
                         alt={page.blocks[0].title}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-md"
                         unoptimized
-                        className="h-[360px] w-[405px]"
                       />
                     </div>
                     <div className="p-4 flex flex-col">
                       <div>
                         <Link
-                          className="text-xl font-bold mb-2  min-h-[56px] line-clamp-2"
+                          className="text-xl font-bold mb-2 min-h-[56px] line-clamp-2"
                           href={{
                             pathname: `/${page.slug}`,
                           }}
                         >
                           {page.title}
                         </Link>
-
                         <p className="text-gray-600 mb-4 max-h-40 line-clamp-3 min-h-[72px]">
                           {page.description}
                         </p>
                       </div>
-
                       <Link
                         href={{
                           pathname: `/${page.slug}`,
