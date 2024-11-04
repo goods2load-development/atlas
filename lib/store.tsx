@@ -190,30 +190,22 @@ export const useRegistrationStore = create((set) => ({
 
     delete data.license;
 
-    try {
-      const response = await postRequest({
-        url: 'auth/register',
-        data,
-      });
+    const response = await postRequest({
+      url: 'auth/register',
+      data,
+    });
 
-      if (isProvider) {
-        try {
-          await postRequest({
-            url: `users/${response.data.id}/upload/file`,
-            data: formData,
-            headers: { 'Content-Type': 'multipart/form-data' },
-          });
-          set(() => ({ registered: true, provider: true }));
-        } catch (error) {
-          console.error('File upload error:', error);
-          set(() => ({ registered: false }));
-        }
-      } else {
-        set(() => ({ registered: true }));
-      }
-    } catch (error) {
-      console.error('Registration error:', error);
-      set(() => ({ registered: false }));
+    if (!response) throw new Error();
+
+    if (isProvider) {
+      await postRequest({
+        url: `users/${response.data.id}/upload/file`,
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      set(() => ({ registered: true, provider: true }));
+    } else {
+      set(() => ({ registered: true }));
     }
   },
   setRegistrationDefaults: () => set({ registered: false, provider: false }),

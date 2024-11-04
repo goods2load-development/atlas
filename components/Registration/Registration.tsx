@@ -367,14 +367,18 @@ export default function Registration() {
 
     const { seaports, googleBusinessProfile, ...rest } = values;
 
-    postUserRegistrationData({
-      ...rest,
-      airports: values?.airports || [],
-      ports: seaports || [],
-      cities: values?.cities || [],
-      bussinessProfileUrl: googleBusinessProfile,
-      recaptchaToken: token,
-    });
+    try {
+      await postUserRegistrationData({
+        ...rest,
+        airports: values?.airports || [],
+        ports: seaports || [],
+        cities: values?.cities || [],
+        bussinessProfileUrl: googleBusinessProfile,
+        recaptchaToken: token,
+      });
+    } catch {
+      alert('Failed to register.');
+    }
   }
 
   useEffect(() => {
