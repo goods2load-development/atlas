@@ -41,8 +41,8 @@ export const FormStepGeneral = ({ form }: { form: any }) => {
                     How do I find my Google business profile link? <br />
                     Log in using the Google account associated with your
                     business. <br />
-                    Once logged in, you'll see your business dashboard. Look for
-                    the “Share your Business Profile” button on the <br />
+                    Once logged in, you will see your business dashboard. Look
+                    for the Share your Business Profile button on the <br />
                     right side of the screen. Click this button to reveal your
                     Google Business Profile URL.
                   </>
