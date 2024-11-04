@@ -3,7 +3,9 @@
 import { Partner } from './types';
 import { toNormalText } from '@/lib/utils';
 
-import { ViewIcon } from 'lucide-react';
+import { Dispatch, SetStateAction } from 'react';
+
+import { FileCode, ViewIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -22,26 +24,40 @@ const linkFields = [
   'companyPhoto',
 ];
 
+const excludedKeys = [
+  'id',
+  'partnerId',
+  'hasPage',
+  'industries',
+  'filters',
+  'partnerLocation',
+  'businessProfile',
+  'industryRecognitions',
+  'SustainabilityProof',
+  'sustainability',
+  'plane',
+  'ferry',
+  'truck',
+  'isConfirmed',
+];
+
 const ViewPartnerDialog = ({
   isOpen,
   setIsOpen,
   partner,
 }: {
   isOpen: boolean;
-  setIsOpen: (a: any) => void;
+  setIsOpen: Dispatch<SetStateAction<{ isOpen: boolean; id: string }>>;
   partner: Partner;
 }) => {
   return (
     <Dialog
       open={isOpen}
       onOpenChange={(isOpen) => {
-        setIsOpen({
-          isOpen,
-          id: isOpen ? partner.id : '',
-        });
+        setIsOpen({ isOpen, id: isOpen ? partner.id : '' });
       }}
     >
-      <DialogContent className="p-8">
+      <DialogContent className="p-8 max-w-[80vw]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-center gap-2 text-center text-[40px]/[48px] mb-3 uppercase font-bold">
             {partner.companyPhoto && (
@@ -51,61 +67,123 @@ const ViewPartnerDialog = ({
                 src={`${process.env.NEXT_PUBLIC_BASE_URL}${partner.companyPhoto}`}
                 alt="logo"
               />
-            )}{' '}
+            )}
             Partner data
           </DialogTitle>
           <hr />
-          <div className="max-h-[300px] overflow-y-scroll">
+          <div className="max-h-[700px] overflow-y-scroll">
             <div className="flex flex-col gap-2">
               {Object.entries(partner).map(([key, value]) => {
                 if (
                   value === null ||
                   value === '' ||
-                  key === 'id' ||
-                  key === 'partnerId' ||
-                  key === 'hasPage' ||
-                  key === 'industries'
+                  excludedKeys.includes(key)
                 )
                   return null;
-                if (linkFields.includes(key))
+
+                if (linkFields.includes(key)) {
                   return (
                     <p key={key}>
-                      <strong>{toNormalText(key as string)}: </strong>
-
+                      <strong>{toNormalText(key)}: </strong>
                       <Link
                         href={`${process.env.NEXT_PUBLIC_BASE_URL}${value}`}
                         target="_blank"
-                        key={key}
                       >
                         {value}
                       </Link>
                     </p>
                   );
+                }
+
                 return (
                   <p key={key}>
-                    <strong>{toNormalText(key as string)}: </strong>
+                    <strong>{toNormalText(key)}: </strong>
                     {value?.toString() || '-'}
                   </p>
                 );
               })}
 
-              <hr></hr>
+              {partner.businessProfile && (
+                <>
+                  <hr />
+                  <strong className="text-center text-[18px]">
+                    Business Profile
+                  </strong>
+                  <Link href={partner.businessProfile.text}>
+                    {partner.businessProfile.text}
+                  </Link>
+                </>
+              )}
+
+              {partner.industryRecognitions?.length > 0 && (
+                <>
+                  <hr />
+                  <strong className="text-center text-[18px]">
+                    Industry Recognitions
+                  </strong>
+                  <div className="flex flex-col gap-1">
+                    {partner.industryRecognitions.map((item) =>
+                      !item.isSecondary ? (
+                        <div key={item.name}>- {item.name}</div>
+                      ) : null,
+                    )}
+                    <strong className="mt-2 mb-1">
+                      Additional validations
+                    </strong>
+                    {partner.industryRecognitions.map((item) =>
+                      item.isSecondary ? (
+                        <div key={item.name}>- {item.name}</div>
+                      ) : null,
+                    )}
+                    <strong className="mt-2 mb-1">Proofs</strong>
+                    <div className="flex gap-1">
+                      {partner.industryRecognitions.flatMap((item) =>
+                        item.proofs.map((proof) => (
+                          <div key={proof.name}>
+                            <Link
+                              target="_blank"
+                              href={`${process.env.NEXT_PUBLIC_BASE_URL}${proof.path}`}
+                            >
+                              <FileCode className="hover:scale-110 transition-all" />
+                            </Link>
+                          </div>
+                        )),
+                      )}
+                    </div>
+                  </div>
+                </>
+              )}
+
+              <hr />
               <strong className="text-center text-[18px]">
                 Services Offered
               </strong>
-              {partner.industries.map(({ label, items }) => {
-                return (
-                  <div key={label} className="mt-3">
-                    <strong>{label}</strong>
-
-                    <div>
-                      {items.map((item: string) => {
-                        return <div key={item}>{item}</div>;
-                      })}
-                    </div>
+              {partner.industries.map(({ label, items }) => (
+                <div key={label} className="mt-3">
+                  <strong>{label}</strong>
+                  <div>
+                    {items.map((item) => (
+                      <div key={item}>{item}</div>
+                    ))}
                   </div>
-                );
-              })}
+                </div>
+              ))}
+
+              <hr />
+              <strong className="text-center text-[18px]">
+                Airports Locations
+              </strong>
+              <div>
+                {partner.airports?.length > 0 ? (
+                  partner.airports.map((item: any) => (
+                    <div key={item} className="mt-3">
+                      {item}
+                    </div>
+                  ))
+                ) : (
+                  <span>Not provided</span>
+                )}
+              </div>
             </div>
           </div>
         </DialogHeader>

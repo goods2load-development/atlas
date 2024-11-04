@@ -51,9 +51,9 @@ const PartnersMain = () => {
     () =>
       filterByField(
         partners.map((par) => ({
+          ...par.user,
           hasPage: par.hasPage,
           partnerId: par.id,
-          ...par.user,
         })),
         'email',
         searchValue,
