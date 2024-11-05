@@ -50,6 +50,7 @@ const ViewPartnerDialog = ({
   setIsOpen: Dispatch<SetStateAction<{ isOpen: boolean; id: string }>>;
   partner: Partner;
 }) => {
+  console.log({ partner });
   return (
     <Dialog
       open={isOpen}
@@ -155,6 +156,7 @@ const ViewPartnerDialog = ({
               )}
 
               <hr />
+
               <strong className="text-center text-[18px]">
                 Services Offered
               </strong>
@@ -170,20 +172,51 @@ const ViewPartnerDialog = ({
               ))}
 
               <hr />
-              <strong className="text-center text-[18px]">
-                Airports Locations
-              </strong>
-              <div>
-                {partner.airports?.length > 0 ? (
-                  partner.airports.map((item: any) => (
-                    <div key={item} className="mt-3">
-                      {item}
-                    </div>
-                  ))
-                ) : (
-                  <span>Not provided</span>
-                )}
-              </div>
+              {Object.values(partner.partnerLocation).some(
+                (item) => item.length,
+              ) && (
+                <div>
+                  <strong className="block text-center text-[18px]">
+                    Partner Locations
+                  </strong>
+                  <div>
+                    {!!partner.partnerLocation.airports?.length && (
+                      <>
+                        <strong>Airports</strong>
+                        {partner.partnerLocation.airports.map((item) => (
+                          <div key={item} className="mt-3">
+                            {item}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    {!!partner.partnerLocation.cities?.length && (
+                      <>
+                        <strong>Cities</strong>
+                        {partner.partnerLocation.cities.map((item) => (
+                          <div key={item} className="mt-3">
+                            {item}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                  <div>
+                    {!!partner.partnerLocation.ports?.length && (
+                      <>
+                        <strong>Ports</strong>
+                        {partner.partnerLocation.airports.map((item) => (
+                          <div key={item} className="mt-3">
+                            {item}
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         </DialogHeader>
