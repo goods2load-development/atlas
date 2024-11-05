@@ -5,17 +5,17 @@ import { cn, isUserAdmin, isUserEditor, isUserProvider } from '@/lib/utils';
 
 import React, { useEffect, useState } from 'react';
 
-import { signOut } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 
 import Logo from '@/components/Logo';
 import Socials from '@/components/Socials';
 
 const Sidebar: React.FC = () => {
+  const router = useRouter();
   const pathname = usePathname();
-  const { user, logoutUser, getUser } = useUserStore((state: any) => state);
+  const { user, getUser } = useUserStore((state: any) => state);
 
   const isAdmin = isUserAdmin(user?.role);
   const isProvider = isUserProvider(user?.role);
@@ -53,6 +53,14 @@ const Sidebar: React.FC = () => {
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div className="flex flex-col">
+          <button onClick={() => router.back()} className="p-4 pl-0 self-start">
+            <Image
+              width={15}
+              height={15}
+              src="/arrow-slider-left.svg"
+              alt="back"
+            />
+          </button>
           {isProvider && (
             <>
               <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
