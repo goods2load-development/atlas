@@ -43,7 +43,7 @@ const Editor = React.memo(
                   const json = JSON.parse(xhr.responseText);
 
                   if (json) {
-                    resolve(`${process.env.NEXT_PUBLIC_BASE_URL}/${json}`);
+                    resolve(`${process.env.NEXT_PUBLIC_BASE_URL}${json}`);
                   } else {
                     reject('Invalid JSON response');
                   }

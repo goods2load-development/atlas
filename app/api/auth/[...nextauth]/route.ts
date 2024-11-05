@@ -19,7 +19,6 @@ const authOptions = {
   pages: { signIn: '/sign-in' },
   callbacks: {
     async redirect({ url, baseUrl }: any) {
-      // console.log({ url, baseUrl });
       return url.startsWith(baseUrl) ? url : baseUrl;
     },
 
@@ -44,7 +43,6 @@ const authOptions = {
     },
 
     async session({ session, user, token }: any) {
-      // console.log({ session, user, token });
       session.user = token.user;
       session.accessToken = token.accessToken;
       session.idToken = token.idToken;

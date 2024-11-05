@@ -21,12 +21,12 @@ import {
 const CareerCard: React.FC<ModalCareer> = ({ pesonalInfo }) => {
   return (
     <Dialog>
-      <div className="card w-full max-w-[405px] flex flex-col justify-center items-center h-[229px] bg-lightOrange sm:p-10 p-6 rounded-[16px] text-center sm:mb-[50px]">
-        <div className="flex flex-col sm:h-full">
-          <h2 className="text-primaryOrange  text-[24px] sm:text-[26px]  w-[350px] leading-[31.2px]">
+      <div className="card w-full max-w-[405px] flex flex-col justify-center items-center h-[229px] bg-lightOrange md:p-10 p-6 rounded-[16px] text-center md:mb-[50px]">
+        <div className="flex flex-col md:h-full">
+          <h2 className="text-primaryOrange  text-[24px] md:text-[26px]  w-[350px] leading-[31.2px]">
             {pesonalInfo.challengeName}
           </h2>
-          <p className="text-black sm:text-[18px] leading-[31.2px] mb-[30px]">
+          <p className="text-black md:text-[18px] leading-[31.2px] mb-[30px]">
             {pesonalInfo.workingName}
           </p>
           <DialogTrigger asChild>
@@ -54,11 +54,11 @@ const Popup: FC<IPopup> = ({ leader }) => {
   }
 
   return (
-    <DialogContent className="max-w-[1025px] sm:h-[620px] h-[100%] text-transparent">
+    <DialogContent className="max-w-[1025px] md:h-[620px] h-[100%] text-transparent">
       <div className="w-full fixed h-full inset-0 bg-[rgba(0,0,0,0.2)] flex flex-col justify-center items-center rounded-[32px]">
-        <div className="z-10 max-w-[1035px] h-[100%] sm:h-[750px] overflow-y-scroll sm:max-h-[800px] w-fit p-10 flex flex-col sm:rounded-[32px] bg-white relative text-black">
+        <div className="z-10 max-w-[1035px] h-[100%] md:h-[750px] overflow-y-scroll md:max-h-[800px] w-fit p-10 flex flex-col md:rounded-[32px] bg-white relative text-black">
           <h1 className="text-primaryOrange font-light  items-center gap-[8px] mb-[10px]">
-            <span className="font-normal text-[20px] sm:text-[28px]">
+            <span className="font-normal text-[20px] md:text-[28px]">
               {leader.modalName}
             </span>{' '}
           </h1>

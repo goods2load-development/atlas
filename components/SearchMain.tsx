@@ -41,12 +41,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { ToolTipComponent } from '@/components/ui/tooltip';
 
 const placementOfGoodsOptions = [
   'Pallets',
@@ -56,8 +51,17 @@ const placementOfGoodsOptions = [
   'ULDs',
   'Bulk Cargo',
   'Ro-Ro ',
+  '20’ Container',
+  '40’ Container',
   'Other',
 ];
+
+enum FIELD_NAMES {
+  FROM_COUNTRY_OPEN = 'FROM_COUNTRY_OPEN',
+  FROM_CITY_OPEN = 'FROM_CITY_OPEN',
+  TO_COUNTRY_OPEN = 'TO_COUNTRY_OPEN',
+  TO_CITY_OPEN = 'TO_CITY_OPEN',
+}
 
 interface IncotermsItem {
   name: string;
@@ -74,9 +78,8 @@ const incotermsList: Incoterms = {
     { name: 'DDP', description: 'Delivered Duty Paid' },
     { name: 'DPU', description: 'Delivered at Place Unloaded' },
     { name: 'DAP', description: 'Delivered At Place' },
-    { name: 'DDU', description: 'Delivered Duty Unpaid' },
     { name: 'CPT', description: 'Carriage Paid To' },
-    { name: 'CIP', description: 'Carriage and Insurance Paid to' },
+    { name: 'CIP', description: 'Carriage and Insurance Paid To' },
     { name: 'EXW', description: 'Ex Works' },
     { name: 'FCA', description: 'Free Carrier' },
   ],
@@ -84,15 +87,21 @@ const incotermsList: Incoterms = {
     { name: 'Unknown', description: `In case you’re unsure` },
     { name: 'CFR', description: 'Cost and Freight' },
     { name: 'CIF', description: 'Cost, Insurance and Freight' },
-    { name: 'CPT', description: 'Carriage Paid To' },
-    { name: 'CIP', description: 'Carriage and Insurance Paid' },
     { name: 'FOB', description: 'Free on Board' },
+    { name: 'FAS', description: 'Free Alongside Ship' },
+    { name: 'CPT', description: 'Carriage Paid To' },
+    { name: 'CIP', description: 'Carriage and Insurance Paid To' },
     { name: 'FCA', description: 'Free Carrier' },
   ],
   truck: [
     { name: 'Unknown', description: `In case you’re unsure` },
-    { name: 'FCL', description: 'Full Container Load' },
-    { name: 'LCL', description: 'Less Than Container Load' },
+    { name: 'DDP', description: 'Delivered Duty Paid' },
+    { name: 'DPU', description: 'Delivered at Place Unloaded' },
+    { name: 'DAP', description: 'Delivered At Place' },
+    { name: 'CPT', description: 'Carriage Paid To' },
+    { name: 'CIP', description: 'Carriage and Insurance Paid To' },
+    { name: 'EXW', description: 'Ex Works' },
+    { name: 'FCA', description: 'Free Carrier' },
   ],
 };
 
@@ -116,56 +125,6 @@ function CustomRadioGroupItem({
         />
       </Label>
     </>
-  );
-}
-
-export function ToolTipComponent({
-  text,
-  children,
-  asChild,
-  className,
-}: {
-  text: string;
-  children?: any;
-  asChild?: boolean;
-  className?: string;
-}) {
-  return (
-    <TooltipProvider delayDuration={200}>
-      <Tooltip>
-        <TooltipTrigger asChild={asChild} className={className}>
-          {children ? (
-            children
-          ) : (
-            <div className="flex items-center">
-              <p className="rounded-full border-[1px] w-[20px] h-[20px] border-[#FFC1A2] text-[#FFC1A2] mr-[10px] text-center text-[12px]">
-                i
-              </p>
-            </div>
-          )}
-        </TooltipTrigger>
-        {!!text.length && (
-          <TooltipContent
-            side={!!children ? 'top' : 'right'}
-            className="text-[14px]/[18px] font-normal bg-[#FEF1DF] rounded-[16px] p-[16px_24px] overflow-visible relative"
-          >
-            {!children && (
-              <div
-                className="absolute top-[50%] right-[100%] mt-[-10px]"
-                style={{
-                  width: 0,
-                  height: 0,
-                  borderTop: '10px solid transparent',
-                  borderBottom: '10px solid transparent',
-                  borderRight: '10px solid #FEF1DF  ',
-                }}
-              />
-            )}
-            {text}
-          </TooltipContent>
-        )}
-      </Tooltip>
-    </TooltipProvider>
   );
 }
 
@@ -206,6 +165,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
     (state: any) => state,
   );
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
+
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
@@ -260,10 +220,14 @@ export default function SearchMain({ main }: { main?: boolean }) {
     else return 0;
   }
 
-  const [fromCountryOpen, setFromCountryOpen] = useState(false);
-  const [fromCityOpen, setFromCityOpen] = useState(false);
-  const [toCountryOpen, setToCountryOpen] = useState(false);
-  const [toCityOpen, setToCityOpen] = useState(false);
+  // const [fromCountryOpen, setFromCountryOpen] = useState(false);
+  // const [fromCityOpen, setFromCityOpen] = useState(false);
+  // const [toCountryOpen, setToCountryOpen] = useState(false);
+  // const [toCityOpen, setToCityOpen] = useState(false);
+
+  const [popoverOpen, setPopoverOpen] = useState<
+    null | keyof typeof FIELD_NAMES
+  >(null);
 
   return (
     <form onSubmit={onSubmit}>
@@ -284,17 +248,23 @@ export default function SearchMain({ main }: { main?: boolean }) {
       <div
         className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] items-end p-[24px] mt-[10px] `}
       >
-        <div className="sm:flex justify-stretch items-end w-full mb-[24px] sm:mb-[48px]">
-          <div className="flex sm:w-[26%] items-end">
+        <div className="lg:flex justify-stretch items-end w-full mb-[24px] lg:mb-[48px]">
+          <div className="flex lg:w-[26%] items-end">
             <div className="mr-[1px] w-1/2">
               <label className="mb-2 block">From</label>
-              <Popover open={fromCountryOpen}>
+              <Popover open={popoverOpen === FIELD_NAMES.FROM_COUNTRY_OPEN}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
                     className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
-                    onClick={() => setFromCountryOpen(!fromCountryOpen)}
+                    onClick={() =>
+                      setPopoverOpen(
+                        popoverOpen === FIELD_NAMES.FROM_COUNTRY_OPEN
+                          ? null
+                          : FIELD_NAMES.FROM_COUNTRY_OPEN,
+                      )
+                    }
                   >
                     <ToolTipComponent asChild text={fromCountry}>
                       {fromCountry ? (
@@ -323,7 +293,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               onSelect={() => {
                                 setFilter({ fromCountry: country.value });
                                 getCitiesList(country.value);
-                                setFromCountryOpen(false);
+                                setPopoverOpen(null);
                               }}
                             >
                               {country.label}
@@ -337,13 +307,19 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Popover>
             </div>
             <div className="w-1/2">
-              <Popover open={fromCityOpen}>
+              <Popover open={popoverOpen === FIELD_NAMES.FROM_CITY_OPEN}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
-                    onClick={() => setFromCityOpen(!fromCityOpen)}
+                    className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
+                    onClick={() =>
+                      setPopoverOpen(
+                        popoverOpen === FIELD_NAMES.FROM_CITY_OPEN
+                          ? null
+                          : FIELD_NAMES.FROM_CITY_OPEN,
+                      )
+                    }
                   >
                     <ToolTipComponent asChild text={from}>
                       {from ? (
@@ -369,7 +345,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               key={index}
                               onSelect={() => {
                                 setFilter({ from: item.label });
-                                setFromCityOpen(false);
+                                setPopoverOpen(null);
                               }}
                             >
                               {item.label}
@@ -386,7 +362,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
           <Button
             type="button"
             onClick={switchLocations}
-            className="mb-[-28px] block p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] mx-auto sm:mx-[-16px] sm:mb-[13px] relative z-10 hover:bg-transparent group"
+            className="mb-[-28px] block p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] mx-auto lg:mx-[-16px] lg:mb-[13px] relative z-10 hover:bg-transparent group"
           >
             <Image
               className="min-w-[34px] min-h-[34px] group-hover:hidden"
@@ -403,16 +379,22 @@ export default function SearchMain({ main }: { main?: boolean }) {
               src="/turnhover.svg"
             />
           </Button>
-          <div className="flex sm:w-[26%] items-end mb-5 sm:mb-0">
+          <div className="flex lg:w-[26%] items-end mb-5 lg:mb-0">
             <div className="mr-[1px] w-1/2">
               <label className="mb-2 block">To</label>
-              <Popover open={toCountryOpen}>
+              <Popover open={popoverOpen === FIELD_NAMES.TO_COUNTRY_OPEN}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="pl-[26px] h-[60px] sm:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
-                    onClick={() => setToCountryOpen(!toCountryOpen)}
+                    className="pl-[26px] h-[60px] lg:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                    onClick={() =>
+                      setPopoverOpen(
+                        popoverOpen === FIELD_NAMES.TO_COUNTRY_OPEN
+                          ? null
+                          : FIELD_NAMES.TO_COUNTRY_OPEN,
+                      )
+                    }
                   >
                     <ToolTipComponent asChild text={toCountry}>
                       {toCountry ? (
@@ -441,7 +423,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               onSelect={() => {
                                 setFilter({ toCountry: item.value });
                                 getCitiesList(item.value, true);
-                                setToCountryOpen(false);
+                                setPopoverOpen(null);
                               }}
                             >
                               {item.label}
@@ -455,13 +437,19 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Popover>
             </div>
             <div className="mr-[1px] w-1/2">
-              <Popover open={toCityOpen}>
+              <Popover open={popoverOpen === FIELD_NAMES.TO_CITY_OPEN}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
                     role="combobox"
-                    className="h-[60px] w-full sm:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
-                    onClick={() => setToCityOpen(!toCityOpen)}
+                    className="h-[60px] w-full lg:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
+                    onClick={() =>
+                      setPopoverOpen(
+                        popoverOpen === FIELD_NAMES.TO_CITY_OPEN
+                          ? null
+                          : FIELD_NAMES.TO_CITY_OPEN,
+                      )
+                    }
                   >
                     <ToolTipComponent asChild text={to}>
                       {to ? (
@@ -487,7 +475,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                               key={index}
                               onSelect={() => {
                                 setFilter({ to: item.label });
-                                setToCityOpen(false);
+                                setPopoverOpen(null);
                               }}
                             >
                               {item.label}
@@ -501,15 +489,15 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Popover>
             </div>
           </div>
-          <div className="flex sm:w-[24%]">
-            <div className="mr-[1px] mb-5 sm:mb-0 w-1/2">
+          <div className="flex lg:w-[24%]">
+            <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
               <label className="mb-2 block">Departure</label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={'outline'}
                     type="button"
-                    className="justify-start h-[60px] text-black font-normal sm:rounded-none rounded-l-[16px] rounded-r-none hover:bg-white border-0 w-full"
+                    className="justify-start h-[60px] text-black font-normal lg:rounded-none rounded-l-[16px] rounded-r-none hover:bg-white border-0 w-full"
                   >
                     {departure ? (
                       format(departure, 'MM/dd/yyyy')
@@ -528,14 +516,14 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 </PopoverContent>
               </Popover>
             </div>
-            <div className="mr-[1px] mb-5 sm:mb-0 w-1/2">
+            <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
               <label className="mb-2 block">Arrival</label>
               <Popover>
                 <PopoverTrigger asChild>
                   <Button
                     variant={'outline'}
                     type="button"
-                    className="justify-start h-[60px] text-black font-normal sm:rounded-none hover:bg-white border-0 w-full rounded-r-[16px] rounded-l-none"
+                    className="justify-start h-[60px] text-black font-normal lg:rounded-none hover:bg-white border-0 w-full rounded-r-[16px] rounded-l-none"
                   >
                     {arrival ? (
                       format(arrival, 'MM/dd/yyyy')
@@ -558,14 +546,14 @@ export default function SearchMain({ main }: { main?: boolean }) {
               </Popover>
             </div>
           </div>
-          <div className="mr-[1px] sm:w-[24%] mb-5 sm:mb-0">
+          <div className="mr-[1px] lg:w-[24%] mb-5 lg:mb-0">
             <label className="mb-2 block">Type of goods</label>
             <Popover open={open}>
               <PopoverTrigger className="w-full">
                 <ToolTipComponent asChild text={typeOfGoods}>
                   <div>
                     <Input
-                      className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none font-normal text-black w-full"
+                      className="h-[60px] rounded-[16px] lg:rounded-l-none lg:rounded-r-[16px]  border-none font-normal text-black w-full"
                       onChange={handleChange}
                       onFocus={handleFocus}
                       onBlur={() => setOpen(false)}
@@ -607,11 +595,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
             </Popover>
           </div>
         </div>
-        <div className="sm:flex justify-stretch items-end w-full">
-          <div className="mr-[1px] mb-5 sm:mb-0 sm:w-[14%]">
+        <div className="lg:flex justify-stretch items-end w-full">
+          <div className="mr-[1px] mb-5 lg:mb-0 lg:w-[14%]">
             <label className="mb-2 block">Total Weight(Kg)</label>
             <Input
-              className="h-[60px] rounded-[16px] sm:rounded-r-none sm:rounded-l-[16px] border-none font-normal text-black"
+              className="h-[60px] rounded-[16px] lg:rounded-r-none lg:rounded-l-[16px] border-none font-normal text-black"
               type="number"
               placeholder="e.g. 300"
               min="1"
@@ -619,14 +607,14 @@ export default function SearchMain({ main }: { main?: boolean }) {
               onChange={(e) => setFilter({ totalKg: e.target.value })}
             />
           </div>
-          <div className="sm:w-[22%] flex">
-            <div className="mr-[1px] mb-5 sm:mb-0 w-1/2">
+          <div className="lg:w-[25%] flex">
+            <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
               <label className="mb-2 block">Placement</label>
               <Select
                 defaultValue={placementOfGoods}
                 onValueChange={(e) => setFilter({ placementOfGoods: e })}
               >
-                <SelectTrigger className="h-[60px] rounded-l-[16px] rounded-r-none sm:rounded-none border-none font-normal text-black">
+                <SelectTrigger className="h-[60px] rounded-l-[16px] rounded-r-none lg:rounded-none border-none font-normal text-black">
                   <SelectValue placeholder="Placement" />
                 </SelectTrigger>
                 <SelectContent>
@@ -640,10 +628,10 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 </SelectContent>
               </Select>
             </div>
-            <div className="mr-[1px] mb-5 sm:mb-0 w-1/2">
+            <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
               <label className="mb-2 block">Quantity</label>
               <Input
-                className="h-[60px] rounded-l-none rounded-r-[16px] sm:rounded-none border-none font-normal text-black"
+                className="h-[60px] rounded-l-none rounded-r-[16px] lg:rounded-none border-none font-normal text-black"
                 type="number"
                 placeholder="e.g. 5"
                 value={quantity}
@@ -651,21 +639,21 @@ export default function SearchMain({ main }: { main?: boolean }) {
               />
             </div>
           </div>
-          <div className="flex sm:w-[30%] mb-5 sm:mb-0">
-            <div className="mr-[1px] sm:w-1/3">
-              <label className="mb-2 block text-center sm:text-left">
+          <div className="flex lg:w-[30%] mb-5 lg:mb-0">
+            <div className="mr-[1px] lg:w-1/3">
+              <label className="mb-2 block text-center lg:text-left">
                 Length (cm)
               </label>
               <Input
-                className="h-[60px] sm:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
+                className="h-[60px] lg:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
                 placeholder="e.g. 100"
                 type="number"
                 value={length}
                 onChange={(e) => setFilter({ length: e.target.value })}
               />
             </div>
-            <div className="mr-[1px] sm:w-1/3 ">
-              <label className="mb-2 block text-center sm:text-left">
+            <div className="mr-[1px] lg:w-1/3 ">
+              <label className="mb-2 block text-center lg:text-left">
                 Width (cm)
               </label>
               <Input
@@ -676,12 +664,12 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 onChange={(e) => setFilter({ width: e.target.value })}
               />
             </div>
-            <div className="mr-[1px] sm:w-1/3">
-              <label className="mb-2 block text-center sm:text-left">
+            <div className="mr-[1px] lg:w-1/3">
+              <label className="mb-2 block text-center lg:text-left">
                 Height (cm)
               </label>
               <Input
-                className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
+                className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
                 placeholder="e.g. 165"
                 type="number"
                 value={height}
@@ -689,15 +677,15 @@ export default function SearchMain({ main }: { main?: boolean }) {
               />
             </div>
           </div>
-          <div className="sm:w-[25%] flex">
+          <div className="lg:w-[25%] flex">
             <div className="mr-[1px] w-1/2">
-              <label className="mb-2 block text-center sm:text-left">
+              <label className="mb-2 block text-center lg:text-left">
                 Goods Value
               </label>
-              <div className="flex text-black items-center bg-white font-normal pl-[12px] sm:rounded-none rounded-l-[16px] rounded-r-none">
+              <div className="flex text-black items-center bg-white font-normal pl-[12px] lg:rounded-none rounded-l-[16px] rounded-r-none">
                 {selectedCurrency.symbol}
                 <Input
-                  className="h-[60px] sm:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black pl-[2px]"
+                  className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black pl-[2px]"
                   placeholder="11200"
                   type="number"
                   value={goodsValue}
@@ -705,7 +693,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 />
               </div>
             </div>
-            <div className="mr-[1px] w-1/2 mb-5 sm:mb-0">
+            <div className="mr-[1px] w-1/2 mb-5 lg:mb-0">
               <label className="mb-2 block">Incoterms*</label>
               <Select
                 value={incoterms}
@@ -734,11 +722,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
             </div>
           </div>
           <ToolTipComponent asChild text="Please fill out all fields">
-            <div className="sm:w-[10%] w-full">
+            <div className="lg:w-[10%] w-full">
               <UIButton
                 type="submit"
                 disabled={!valid}
-                className="mt-5 sm:mt-0 ml-0 sm:ml-[4px] self-end h-[60px] rounded-[16px] w-full pointer-events-auto"
+                className="mt-5 lg:mt-0 ml-0 lg:ml-[4px] self-end h-[60px] rounded-[16px] w-full pointer-events-auto"
               >
                 Explore
               </UIButton>

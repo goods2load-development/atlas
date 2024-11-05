@@ -1,3 +1,4 @@
+import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from './types';
 import {
   deleteRequest,
   getRequest,
@@ -20,7 +21,6 @@ import {
   PartnerPageResponse,
   ResponsePartner,
 } from '@/components/Dashboard/PartnersMain/types';
-import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from '@/components/LangSwicher';
 import { SeoPageCategory } from '@/components/SeoPage/types';
 
 export const useCountriesStore = create((set) => ({
@@ -120,7 +120,6 @@ export const useGoodsStore = create((set) => ({
   goodsListLoading: false,
   getGoodsList: async (term: string) => {
     set(() => ({ goodsListLoading: true }));
-
     const base = 'https://hs-code-harmonized-system.p.rapidapi.com/';
     const byCode = !!parseInt(term);
     const url = base + (byCode ? 'code' : 'search');
@@ -198,22 +197,24 @@ export const useRegistrationStore = create((set) => ({
     delete data.finalAgreement;
 
     delete data.license;
-    postRequest({
+
+    const response = await postRequest({
       url: 'auth/register',
       data,
-    }).then((response) => {
-      if (isProvider) {
-        postRequest({
-          url: `users/${response.data.id}/upload/file`,
-          data: formData,
-          headers: { 'Content-Type': 'multipart/form-data' },
-        }).then(() => {
-          set(() => ({ registered: true, provider: true }));
-        });
-      } else {
-        set(() => ({ registered: true }));
-      }
     });
+
+    if (!response) throw new Error();
+
+    if (isProvider) {
+      await postRequest({
+        url: `users/${response.data.id}/upload/file`,
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      set(() => ({ registered: true, provider: true }));
+    } else {
+      set(() => ({ registered: true }));
+    }
   },
   setRegistrationDefaults: () => set({ registered: false, provider: false }),
 }));
@@ -988,5 +989,29 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
     return deleteRequest({
       url: `seo-pages/categories/${id}`,
     });
+  },
+}));
+
+interface NewsletterStore {
+  isNewsletterLoading: boolean;
+  joinNewsletter: (email: string) => Promise<any>;
+}
+
+export const useNewsletterStore = create<NewsletterStore>((set) => ({
+  isNewsletterLoading: false,
+  joinNewsletter: (email: string) => {
+    set({
+      isNewsletterLoading: true,
+    });
+    return postRequest({
+      url: `email`,
+      data: {
+        email,
+      },
+    }).finally(() =>
+      set({
+        isNewsletterLoading: false,
+      }),
+    );
   },
 }));

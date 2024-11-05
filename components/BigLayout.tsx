@@ -39,7 +39,7 @@ export default function BigLayout({
             height={60}
             alt={'line'}
           />
-          <h1 className="text-[38px]/[42px] sm:text-[64px] font-light mb-4 mt-10 2xl:mt-28">
+          <h1 className="text-9 sm:text-[64px] font-light mb-4 mt-10 2xl:mt-28">
             {titleParts.map((part, index) => (
               <span key={index} className={index >= midIndex ? 'italic' : ''}>
                 {part}
@@ -49,9 +49,9 @@ export default function BigLayout({
             ))}
           </h1>
           {description && (
-            <h2 className="sm:mb-[68px] text-[17px]/[25px] font-light max-w-[323px] sm:max-w-[100%] pb-40 sm:pb-0">
+            <p className="sm:mb-[68px] text-[17px]/[25px] font-light max-w-[323px] sm:max-w-[100%] pb-40 sm:pb-0">
               {description}
-            </h2>
+            </p>
           )}
         </div>
 

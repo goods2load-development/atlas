@@ -3,12 +3,21 @@
 import Currencies from '../Currencies';
 import ErrorBoundary from '../ErrorBoundary';
 import LangSwitcher from '../LangSwicher';
-import { useUserStore } from '@/lib/store';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '../ui/accordion';
+import NavLinkMobile from './NavLinkMobile';
+import useBreakpoint from '@/app/hooks/useBreakpoint';
+import { useFooterHeaderStore, useUserStore } from '@/lib/store';
 
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import Link from 'next/link';
+import { useLockBodyScroll } from 'react-use';
 
 import Logo from '@/components/Logo';
 import {
@@ -25,16 +34,25 @@ interface HeaderProps extends PropsWithChildren {
 }
 
 export default function HeaderClient({
-  children,
   variant = 'primary',
   className = '',
 }: HeaderProps) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [open, setOpen] = useState(false);
 
+  const { isBelowSm } = useBreakpoint('sm');
+
+  const { headerData, getHeaderData } = useFooterHeaderStore();
+
+  useEffect(() => {
+    getHeaderData();
+  }, [getHeaderData]);
+
   useEffect(() => {
     if (!user?.id) getUser();
   }, [getUser, user?.id]);
+
+  useLockBodyScroll(open && isBelowSm);
 
   return (
     <header
@@ -65,42 +83,69 @@ export default function HeaderClient({
           )}
         </div>
         <NavigationMenu
-          className={`${open ? 'border-b-2 border-white sm:border-none block pb-4' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
+          className={`${open && isBelowSm ? '!fixed left-0 right-0 bottom-0 top-[77px] pb-4' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
         >
-          <NavigationMenuList className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col sm:flex-row sm:justify-end justify-center">
-            <NavigationMenuItem>
-              <Link href="/help">FAQs</Link>
-            </NavigationMenuItem>
-            <NavigationMenuItem>
-              <Currencies />
-            </NavigationMenuItem>
-            {user?.id ? (
+          <div className="flex flex-col w-full max-h-[calc(100vh-100px)]  overflow-y-scroll">
+            <NavigationMenuList className="sm:hidden flex-col items-start px-10">
+              <Accordion
+                type="single"
+                collapsible
+                className="w-full self-center flex flex-col justify-center"
+              >
+                {headerData?.json?.map((item, index) => (
+                  <AccordionItem
+                    key={index}
+                    value={`item-${index}`}
+                    className="sm:py-4 border-none"
+                  >
+                    <AccordionTrigger className="text-white font-light hover:no-underline md:ml-4 ml-0">
+                      <p className="text inline">{item.title}</p>
+                    </AccordionTrigger>
+                    <AccordionContent className="">
+                      {item.children?.map((childItem) => (
+                        <NavLinkMobile item={childItem} key={childItem.href} />
+                      ))}
+                    </AccordionContent>
+                  </AccordionItem>
+                ))}
+              </Accordion>
+            </NavigationMenuList>
+            <hr className="w-full border-t border-white my-4 opacity-30 sm:hidden" />
+            <NavigationMenuList
+              className="space-y-3 sm:space-y-0 sm:space-x-5 flex-col items-start
+             max-sm:gap-5 sm:flex-row sm:justify-end max-sm:px-10"
+            >
               <NavigationMenuItem>
-                <Link href="/account" className="flex items-center">
-                  <img src="/userwhite.svg" alt={'user-white'} />
-                </Link>
+                <Link href="/help">FAQs</Link>
               </NavigationMenuItem>
-            ) : (
-              <>
+              <NavigationMenuItem>
+                <Currencies />
+              </NavigationMenuItem>
+              {user?.id ? (
                 <NavigationMenuItem>
-                  <Link href="/sign-in">Log in</Link>
+                  <Link href="/account" className="flex items-center">
+                    <img src="/userwhite.svg" alt={'user-white'} />
+                  </Link>
                 </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link href="/registration?user">Sign up</Link>
-                </NavigationMenuItem>
-              </>
-            )}
-            <NavigationMenuItem>
-              <ErrorBoundary>
-                <LangSwitcher />
-              </ErrorBoundary>
-            </NavigationMenuItem>
-
-            {/* <div className="block sm:hidden w-full">{children}</div> */}
-          </NavigationMenuList>
+              ) : (
+                <>
+                  <NavigationMenuItem>
+                    <Link href="/sign-in">Log in</Link>
+                  </NavigationMenuItem>
+                  <NavigationMenuItem>
+                    <Link href="/registration?user">Sign up</Link>
+                  </NavigationMenuItem>
+                </>
+              )}
+              <NavigationMenuItem>
+                <ErrorBoundary>
+                  <LangSwitcher />
+                </ErrorBoundary>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </div>
         </NavigationMenu>
       </div>
-      {/* <div className="hidden sm:block">{children}</div> */}
     </header>
   );
 }

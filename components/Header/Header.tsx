@@ -3,7 +3,7 @@
 import DynamicMenu from './DynamicMenu';
 import HeaderClient from './HeaderClient';
 
-import React, { PropsWithChildren, useEffect, useState } from 'react';
+import { PropsWithChildren } from 'react';
 
 export type HeaderVariant = 'primary' | 'secondary';
 
@@ -12,9 +12,5 @@ interface HeaderProps extends PropsWithChildren {
 }
 
 export default function Header({ variant = 'primary' }: HeaderProps) {
-  return (
-    <HeaderClient variant={variant}>
-      <DynamicMenu />
-    </HeaderClient>
-  );
+  return <HeaderClient variant={variant}>{/* <DynamicMenu /> */}</HeaderClient>;
 }
