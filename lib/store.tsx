@@ -983,3 +983,27 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
     });
   },
 }));
+
+interface NewsletterStore {
+  isNewsletterLoading: boolean;
+  joinNewsletter: (email: string) => Promise<any>;
+}
+
+export const useNewsletterStore = create<NewsletterStore>((set) => ({
+  isNewsletterLoading: false,
+  joinNewsletter: (email: string) => {
+    set({
+      isNewsletterLoading: true,
+    });
+    return postRequest({
+      url: `email`,
+      data: {
+        email,
+      },
+    }).finally(() =>
+      set({
+        isNewsletterLoading: false,
+      }),
+    );
+  },
+}));

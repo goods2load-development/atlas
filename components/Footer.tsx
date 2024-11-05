@@ -3,9 +3,7 @@
 import ErrorBoundary from './ErrorBoundary';
 import JoinOurNewsLetter from './JoinOurNewsLetter';
 import LangSwitcher from './LangSwicher';
-import { Input } from './ui/input';
 import addressIcon from '@/assets/address.svg';
-import arrowRightIcon from '@/assets/arrow-right-input.svg';
 import emailIcon from '@/assets/email.svg';
 import phoneIcon from '@/assets/phone.svg';
 import { useFooterHeaderStore } from '@/lib/store';
