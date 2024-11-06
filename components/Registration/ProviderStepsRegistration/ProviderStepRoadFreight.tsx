@@ -45,16 +45,19 @@ const regions = [
 ];
 
 export const FormStepRoadFreight = ({ form }: { form: any }) => {
-  const { getCountriesByRegions, getStatesByCountry }: any =
+  const { getCountriesByRegions, getStatesByCountry, getInfoAboutState }: any =
     useCountriesStore();
 
   const [activeAccord, setActiveAccord] = useState<string | undefined>(
     undefined,
   );
   const [countriesData, setCountriesData] = useState<any>(null);
-  const [activeCountries, setActiveCountries] = useState<string[]>([]);
+  const [activeCountriesWithStates, setActiveCountriesWithStates] =
+    useState<any>([]);
+
   const [isAccordLoading, setIsAccordLoading] = useState(false);
   const [isProvideServices, setIsProvideServices] = useState(true);
+  const [isLoadingStates, setIsLoadingStates] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchCountriesData = async () => {
@@ -63,46 +66,77 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
         try {
           const regionsData = await getCountriesByRegions(activeAccord);
           const sortedData = sortByRegion(regionsData);
-
-          const countriesWithCities: any = {};
-
-          for (const region in sortedData) {
-            countriesWithCities[region] = await Promise.all(
-              sortedData[region].map(async (item: any) => {
-                const cities: any = await getStatesByCountry(item.name.common); // TO DO API
-
-                console.log(cities, '123');
-
-                if (!Array.isArray(cities) || cities.length === 0) {
-                  return;
-                }
-
-                return {
-                  ...item,
-                  cities: cities.filter(
-                    (currentCity: any) => currentCity.name !== item.name.common,
-                  ),
-                };
-              }),
-            );
-          }
-
-          setCountriesData(countriesWithCities);
+          setCountriesData(sortedData);
         } catch (error) {
           console.error('Error fetching countries data:', error);
         }
 
-        setIsAccordLoading(false);
+        const timeoutId = setTimeout(() => {
+          setIsAccordLoading(false);
+        }, 1000);
+
+        return () => clearTimeout(timeoutId);
       }
     };
 
     fetchCountriesData();
   }, [activeAccord, getCountriesByRegions]);
 
+  const onSelectActiveCountries = async (
+    isSelect: boolean,
+    codeCountry: string,
+  ) => {
+    if (isSelect) {
+      setIsLoadingStates(codeCountry);
+      const states = await getStatesByCountry(codeCountry);
+
+      const stateInfoPromises = states.map((state: any) =>
+        getInfoAboutState(state.name, codeCountry),
+      );
+
+      const stateInfos = await Promise.all(stateInfoPromises);
+
+      setIsLoadingStates(null);
+
+      const statesWithInfo = states.map((state: any, index: number) => ({
+        ...state,
+        locales: stateInfos[index].results[0]?.types,
+      }));
+
+      setActiveCountriesWithStates((prev: any) => {
+        const countryWithStates = {
+          codeCountry,
+          states: statesWithInfo.filter(
+            (item: any) =>
+              item.locales &&
+              (item.locales[0] === 'administrative_area_level_1' ||
+                item.locales[0] === 'administrative_area_level_2'),
+          ),
+        };
+
+        const countryExists = prev.some(
+          (country: any) => country.codeCountry === codeCountry,
+        );
+
+        if (countryExists) {
+          return prev;
+        }
+
+        return [...prev, countryWithStates];
+      });
+    } else {
+      setActiveCountriesWithStates((prev: any) => {
+        return prev.filter(
+          (activeCountryWithStates: any) =>
+            activeCountryWithStates.codeCountry !== codeCountry,
+        );
+      });
+    }
+  };
   useEffect(() => {
     if (!isProvideServices) {
       setActiveAccord(undefined);
-      setActiveCountries([]);
+      setActiveCountriesWithStates([]);
       form.setValue('cities', []);
     }
   }, [isProvideServices]);
@@ -115,87 +149,97 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
         <div key={label + idx} className="mb-4">
           <strong className="block font-bold mb-2">{label}</strong>
           {values.map((item: any, idx: number) => {
+            const currentCountry = activeCountriesWithStates.find(
+              (activeCountry: any) => {
+                return activeCountry.codeCountry == item.cca2;
+              },
+            );
+
             return (
               item && (
                 <div key={item.name.common + idx}>
                   <label className="flex items-center gap-2">
                     <Checkbox
                       value={item.name.common}
-                      checked={activeCountries.includes(item.cca2)}
-                      onCheckedChange={(isChecked) => {
-                        setActiveCountries((prev: any) => {
-                          if (isChecked) {
-                            return [...prev, item.cca2];
-                          } else {
-                            const alreadyChoosingCities =
-                              form.getValues('cities') || [];
-                            form.setValue(
-                              'cities',
-                              alreadyChoosingCities.filter(
-                                (currentCity: string) =>
-                                  item.cities.includes(
-                                    (item: any) => item.name !== currentCity,
-                                  ),
-                              ),
-                            );
-
-                            return prev.filter(
-                              (activeCountry: string) =>
-                                activeCountry !== item.cca2,
-                            );
-                          }
-                        });
+                      checked={activeCountriesWithStates.some(
+                        (activeCountry: any) =>
+                          activeCountry.codeCountry === item.cca2,
+                      )}
+                      onCheckedChange={(isChecked: boolean) => {
+                        onSelectActiveCountries(isChecked, item.cca2);
                       }}
                     />
                     <span className="font-normal">{item.name.common}</span>
-                    <ChevronDown
-                      className={clsx(
-                        'w-4 h-4',
-                        activeCountries.includes(item.cca2) ? 'rotate-180' : '',
-                      )}
-                    />
+                    {isLoadingStates === item.cca2 ? (
+                      <Spinner />
+                    ) : (
+                      <ChevronDown
+                        className={clsx(
+                          'w-4 h-4',
+                          currentCountry?.states.length > 0 ? 'rotate-180' : '',
+                        )}
+                      />
+                    )}
                   </label>
 
-                  {activeCountries.includes(item.cca2) && (
+                  {currentCountry && (
                     <FormField
                       control={form.control}
                       name="cities"
-                      render={({ field }) => (
-                        <FormItem className="">
-                          <FormControl>
-                            <div className="pl-6 my-2">
-                              {item.cities.map((item: any, idx: number) => {
-                                return (
-                                  <label
-                                    key={item.name + idx}
-                                    className="flex items-center gap-2"
-                                  >
-                                    <Checkbox
-                                      value={item.name}
-                                      checked={
-                                        field.value?.includes(item.name) ||
-                                        false
-                                      }
-                                      onCheckedChange={(checked) => {
-                                        const value = item.name;
-                                        const newValue = checked
-                                          ? [...(field.value || []), value]
-                                          : field.value?.filter(
-                                              (v: string) => v !== value,
-                                            ) || [];
-                                        field.onChange(newValue);
-                                      }}
-                                    />
-                                    <span className="text-[14px] font-medium">
-                                      {item.name}
-                                    </span>
-                                  </label>
-                                );
-                              })}
-                            </div>
-                          </FormControl>
-                        </FormItem>
-                      )}
+                      render={({ field }) => {
+                        return (
+                          <>
+                            <FormItem className="">
+                              <FormControl>
+                                <div className="pl-6">
+                                  {currentCountry?.states?.length &&
+                                  isLoadingStates !== item.cca2 ? (
+                                    currentCountry?.states?.map(
+                                      (state: any, idx: number) => {
+                                        return (
+                                          <label
+                                            key={state.name + idx}
+                                            className="flex items-center gap-2"
+                                          >
+                                            <Checkbox
+                                              value={state.name}
+                                              checked={
+                                                field.value?.includes(
+                                                  state.name,
+                                                ) || false
+                                              }
+                                              onCheckedChange={(checked) => {
+                                                const value = state.name;
+                                                const newValue = checked
+                                                  ? [
+                                                      ...(field.value || []),
+                                                      value,
+                                                    ]
+                                                  : field.value?.filter(
+                                                      (v: string) =>
+                                                        v !== value,
+                                                    ) || [];
+                                                field.onChange(newValue);
+                                              }}
+                                            />
+                                            <span className="text-[14px] font-medium">
+                                              {state.name}
+                                            </span>
+                                          </label>
+                                        );
+                                      },
+                                    )
+                                  ) : (
+                                    <strong className="text-[14px] font-semibold">
+                                      No States
+                                    </strong>
+                                  )}
+                                </div>
+                              </FormControl>
+                            </FormItem>
+                          </>
+                        );
+                      }}
                     />
                   )}
                 </div>
@@ -205,7 +249,7 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
         </div>
       );
     });
-  }, [activeAccord, countriesData, activeCountries]);
+  }, [activeAccord, countriesData, activeCountriesWithStates, isLoadingStates]);
 
   return (
     <>

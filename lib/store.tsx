@@ -65,27 +65,53 @@ export const useCountriesStore = create((set) => ({
       set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
-  getStatesByCountry: async (country: string) => {
-    try {
-      const data = await postRequest({
-        url: `https://countriesnow.space/api/v0.1/countries/states`,
-        data: {
-          country,
-        },
-        withCredentials: false,
-      });
+  // getStatesByCountry: async (country: string) => {
+  //   try {
+  //     const data = await postRequest({
+  //       url: `https://countriesnow.space/api/v0.1/countries/states`,
+  //       data: {
+  //         country,
+  //       },
+  //       withCredentials: false,
+  //     });
 
-      return data.data.states;
-    } catch (error) {
-      return [];
-    }
-  },
+  //     return data.data.states;
+  //   } catch (error) {
+  //     return [];
+  //   }
+  // },
   getCountriesByRegions: async (region: string) => {
     try {
       const data = await getRequest({
         url: `https://restcountries.com/v3.1/region/${region}?fields=name,subregion,cca2`,
       });
       return data;
+    } catch (error) {
+      return [];
+    }
+  },
+  getStatesByCountry: async (countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://api.countrystatecity.in/v1/countries/${countryCode}/states`,
+        {
+          headers: {
+            'X-CSCAPI-KEY':
+              'eGVsbmNxZXREeXVlN3RBZWVoMHR3ZXJReUNpUDhyT0NWeGJMTDg2Sw==',
+          },
+        },
+      );
+      return response.json();
+    } catch (error) {
+      return [];
+    }
+  },
+  getInfoAboutState: async (stateName: string, countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${stateName},${countryCode}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`,
+      );
+      return response.json();
     } catch (error) {
       return [];
     }
