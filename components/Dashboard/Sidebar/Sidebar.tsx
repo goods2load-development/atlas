@@ -53,7 +53,10 @@ const Sidebar: React.FC = () => {
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div className="flex flex-col">
-          <button onClick={() => router.back()} className="p-4 pl-0 self-start">
+          <button
+            onClick={() => router.push('/account')}
+            className="p-4 pl-0 self-start"
+          >
             <Image
               width={15}
               height={15}
