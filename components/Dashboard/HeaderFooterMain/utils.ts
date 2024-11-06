@@ -103,7 +103,7 @@ export const filterRoutes = (routes: string[]) =>
 
 export async function getAllRoutes() {
   try {
-    const response = await fetch(`/dynamic-sitemap-0.xml`);
+    const response = await fetch(`/sitemap.xml`);
     const xmlText = await response.text();
     const parser = new DOMParser();
     const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
@@ -127,3 +127,28 @@ export async function getAllRoutes() {
     return [];
   }
 }
+
+export const findDeepestItemsWithoutHref = (
+  footerData: FooterItem[],
+): { isValid: boolean; missingHrefItems: FooterItem[] } => {
+  const missingHrefItems: FooterItem[] = [];
+
+  const checkDeepestHref = (items: FooterItem[], depth: number = 1) => {
+    items.forEach((item) => {
+      if (item.children && item.children.length > 0) {
+        checkDeepestHref(item.children, depth + 1);
+      } else {
+        if (!item.href && depth !== 1) {
+          missingHrefItems.push(item);
+        }
+      }
+    });
+  };
+
+  checkDeepestHref(footerData);
+
+  return {
+    isValid: missingHrefItems.length === 0,
+    missingHrefItems,
+  };
+};
