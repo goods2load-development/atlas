@@ -50,7 +50,6 @@ const ViewPartnerDialog = ({
   setIsOpen: Dispatch<SetStateAction<{ isOpen: boolean; id: string }>>;
   partner: Partner;
 }) => {
-  console.log({ partner });
   return (
     <Dialog
       open={isOpen}
