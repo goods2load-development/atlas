@@ -1,10 +1,6 @@
 import { z } from 'zod';
 
-const focusItemSchema = z.object({
-  label: z.string(),
-  value: z.string(),
-});
-const industriesSchema = z.object({
+const schemaChart = z.object({
   label: z.string(),
   value: z.string(),
 });
@@ -17,15 +13,17 @@ export const formSchema = z
     airFreight: z.string().nonempty('Air Freight is required'),
     seaFreight: z.string().nonempty('Sea Freight is required'),
     roadFreight: z.string().nonempty('Road Freight is required'),
-    smallBusiness: z.string().nonempty('Small Business is required'),
-    midMarket: z.string().nonempty('Mid Market is required'),
-    enterprises: z.string().nonempty('Enterprises is required'),
-    focus: z
-      .array(focusItemSchema)
-      .nonempty('At least one focus item is required'),
+    focus: z.array(schemaChart).nonempty('At least one focus item is required'),
     industries: z
-      .array(industriesSchema)
+      .array(schemaChart)
       .nonempty('At least one industry item is required'),
+    missions: z
+      .array(
+        z.object({
+          label: z.string(),
+        }),
+      )
+      .nonempty('At least one mission item is required'),
     placementId: z.string().nonempty('Place ID is required'),
     awardedBy: z.union([
       z.string(),
@@ -51,20 +49,6 @@ export const formSchema = z
   )
   .refine(
     (data) => {
-      const total =
-        Number(data.smallBusiness) +
-        Number(data.midMarket) +
-        Number(data.enterprises);
-
-      return total === 100;
-    },
-    {
-      message:
-        'The sum of Small business, Mid market and enterprises must be 100%',
-    },
-  )
-  .refine(
-    (data) => {
       const total = data.industries.reduce((sum, item) => +item.value + sum, 0);
 
       return total === 100;
@@ -81,15 +65,5 @@ export const formSchema = z
     },
     {
       message: 'The sum of Focus fields must be 100%',
-    },
-  )
-  .refine(
-    (data) => {
-      const total = data.industries.reduce((sum, item) => +item.value + sum, 0);
-
-      return total === 100;
-    },
-    {
-      message: 'The sum of industries fields must be 100%',
     },
   );

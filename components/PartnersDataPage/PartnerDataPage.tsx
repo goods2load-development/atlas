@@ -89,9 +89,7 @@ const PartnerDataPage = ({
       airFreight: isEdit ? partnerData?.serviceProvided?.airFreight : '',
       seaFreight: isEdit ? partnerData?.serviceProvided?.seaFreight : '',
       roadFreight: isEdit ? partnerData?.serviceProvided?.roadFreight : '',
-      smallBusiness: isEdit ? partnerData?.clientTarget?.smallBusiness : '',
-      midMarket: isEdit ? partnerData?.clientTarget?.midMarket : '',
-      enterprises: isEdit ? partnerData?.clientTarget?.enterprises : '',
+      missions: [],
       focus: [],
       industries: [],
       placementId: isEdit ? partnerData?.placementId : '',
@@ -129,9 +127,6 @@ const PartnerDataPage = ({
     airFreight: isEdit ? +partnerData?.serviceProvided.airFreight : 0,
     seaFreight: isEdit ? +partnerData?.serviceProvided.seaFreight : 0,
     roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
-    smallBusiness: isEdit ? +partnerData?.clientTarget?.smallBusiness : 0,
-    midMarket: isEdit ? +partnerData?.clientTarget?.midMarket : 0,
-    enterprises: isEdit ? +partnerData?.clientTarget?.enterprises : 0,
   });
 
   const [focusData, setFocusData] = useState<
@@ -183,7 +178,7 @@ const PartnerDataPage = ({
       color: string;
       key?: string;
     }[]
-  >(isEdit ? partnerData?.missions : []);
+  >(isEdit ? partnerData.missions : []);
 
   const calculateCharMissionsData = useMemo(() => {
     const partnerDataMissions = Array.isArray(partnerData?.missions)
@@ -194,8 +189,8 @@ const PartnerDataPage = ({
       (item: any, _: unknown, arr: Array<unknown>) => ({
         ...item,
         value: 100 / arr.length,
-        name: item.label,
-        color: (item as any).color || getRandomHexColor(),
+        name: item?.label,
+        color: item?.color || getRandomHexColor(),
       }),
     );
   }, [partnerData, isGet, missionsData]);
@@ -259,7 +254,7 @@ const PartnerDataPage = ({
 
   useEffect(() => {
     isGet && postInteractionWithPartner(partnerData?.id);
-  }, []);
+  }, [isGet, partnerData?.id, postInteractionWithPartner]);
 
   useEffect(() => {
     form?.setValue(
@@ -274,12 +269,23 @@ const PartnerDataPage = ({
   useEffect(() => {
     form?.setValue(
       'industries',
-      industriesData.map(({ label, value }) => ({
+      industriesData.map(({ label, value, color }) => ({
         label,
         value: value.toString(),
+        color,
       })) as any,
     );
-  }, [industriesData]);
+  }, [form, industriesData]);
+
+  useEffect(() => {
+    form?.setValue(
+      'missions',
+      missionsData.map(({ label, color }) => ({
+        label,
+        color,
+      })) as any,
+    );
+  }, [form, missionsData]);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -363,12 +369,7 @@ const PartnerDataPage = ({
         roadFreight: data.roadFreight.toString(),
         seaFreight: data.seaFreight.toString(),
       },
-      // missions: data.missions,
-      clientTarget: {
-        smallBusiness: data.smallBusiness.toString(),
-        midMarket: data.midMarket.toString(),
-        enterprises: data.enterprises.toString(),
-      },
+      missions: data.missions,
       placementId: data.placementId,
       files: data.awardedBy as FileList,
     };
@@ -381,6 +382,7 @@ const PartnerDataPage = ({
     formData.append('placementId', body.placementId);
 
     formData.append(`industries`, JSON.stringify(body.industries));
+    formData.append(`missions`, JSON.stringify(body.missions));
     formData.append(`focus`, JSON.stringify(body.focus));
 
     Object.keys(body.serviceProvided).forEach((key) => {
@@ -389,11 +391,6 @@ const PartnerDataPage = ({
         `serviceProvided[${typedKey}]`,
         body.serviceProvided[typedKey],
       );
-    });
-
-    Object.keys(body.clientTarget).forEach((key) => {
-      const typedKey = key as keyof typeof body.clientTarget;
-      formData.append(`clientTarget[${typedKey}]`, body.clientTarget[typedKey]);
     });
 
     Array.from(body.files).forEach((file) =>
