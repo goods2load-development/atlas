@@ -85,7 +85,7 @@ export default function HeaderClient({
         <NavigationMenu
           className={`${open && isBelowSm ? '!fixed left-0 right-0 bottom-0 top-[77px] pb-4' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
         >
-          <div className="flex flex-col w-full max-h-[calc(100vh-100px)]  overflow-y-scroll">
+          <div className="flex flex-col w-full max-h-[calc(100vh-100px)]">
             <NavigationMenuList className="sm:hidden flex-col items-start px-10">
               <Accordion
                 type="single"
