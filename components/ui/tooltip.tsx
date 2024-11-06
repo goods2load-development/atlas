@@ -27,4 +27,60 @@ const TooltipContent = React.forwardRef<
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
-export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
+function ToolTipComponent({
+  text = null,
+  children,
+  asChild,
+  className,
+}: {
+  text: string | React.ReactNode;
+  children?: React.ReactNode;
+  asChild?: boolean;
+  className?: string;
+}) {
+  return (
+    <TooltipProvider delayDuration={200}>
+      <Tooltip>
+        <TooltipTrigger asChild={asChild} className={className}>
+          {children ? (
+            children
+          ) : (
+            <div className="flex items-center">
+              <p className="rounded-full border-[1px] w-[20px] h-[20px] border-[#FFC1A2] text-[#FFC1A2] mr-[10px] text-center text-[12px]">
+                i
+              </p>
+            </div>
+          )}
+        </TooltipTrigger>
+        {text && (
+          <TooltipContent
+            side={!!children ? 'top' : 'right'}
+            className="text-[14px]/[18px] font-normal bg-[#FEF1DF] rounded-[16px] p-[16px_24px] overflow-visible relative"
+          >
+            {!children && (
+              <div
+                className="absolute top-[50%] right-[100%] mt-[-10px]"
+                style={{
+                  width: 0,
+                  height: 0,
+                  borderTop: '10px solid transparent',
+                  borderBottom: '10px solid transparent',
+                  borderRight: '10px solid #FEF1DF  ',
+                }}
+              />
+            )}
+            {text}
+          </TooltipContent>
+        )}
+      </Tooltip>
+    </TooltipProvider>
+  );
+}
+
+export {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
+  ToolTipComponent,
+};

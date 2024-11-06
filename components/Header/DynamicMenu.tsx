@@ -11,8 +11,8 @@ const MenuItems = ({
   items: IMenuItem[];
   depth?: number;
 }) => {
-  return items?.map(({ title, href, children }) => (
-    <div key={title} className="relative group">
+  return items?.map(({ title, href, children }, idx) => (
+    <div key={title + href + idx} className="relative group">
       {depth === 1 && (
         <>
           {!href ? (
@@ -44,9 +44,9 @@ const MenuItems = ({
           )}
         >
           {(depth === 1 ? children : items)?.map(
-            ({ title, href, children }) => (
+            ({ title, href, children }, idx) => (
               <div
-                key={title}
+                key={title + href + idx}
                 className={clsx(
                   'relative',
                   depth === 0 ? 'group' : 'group/sub',
@@ -99,7 +99,7 @@ const DynamicMenu = async ({ variant = 'primary' }: any) => {
   return (
     <nav
       className={clsx(
-        'sm:py-2 text-white w-full relative z-30',
+        'sm:py-2 text-white w-full relative z-30 max-sm:hidden',
         variant === 'primary' && 'bg-primaryOrange',
         variant === 'secondary' && 'bg-[#FFB393]',
         variant === 'transparent' && 'bg-[rgba(255,255,255,0.2)]',

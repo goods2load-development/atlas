@@ -65,7 +65,7 @@ export default function QuestionsAndAnswers({
       <Accordion
         type="single"
         collapsible
-        className="max-w-[884px] w-full self-center"
+        className="max-w-[884px] w-full self-center z-20"
       >
         {data?.map((item) => <QuestionItem {...item} key={item.number} />)}
       </Accordion>

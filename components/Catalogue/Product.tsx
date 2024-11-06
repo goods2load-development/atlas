@@ -1,5 +1,4 @@
 import SendDataToPartnerDialog from '../PartnersDataPage/SendDataToPartnerDialog';
-import { ToolTipComponent } from '../SearchMain';
 import { GoogleRating } from './GoogleRating';
 import { IProduct } from './MOCK';
 import SelectionPopup from './SelectionPopup';
@@ -19,6 +18,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 import {
+  ToolTipComponent,
   Tooltip,
   TooltipContent,
   TooltipProvider,

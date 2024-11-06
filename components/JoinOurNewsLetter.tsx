@@ -1,6 +1,7 @@
 import { Input } from './ui/input';
 import { useToast } from './ui/use-toast';
 import arrowRightIcon from '@/assets/arrow-right-input.svg';
+import { useNewsletterStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import Image from 'next/image';
@@ -14,6 +15,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function JoinOurNewsLetter() {
+  const { joinNewsletter } = useNewsletterStore();
   const { toast } = useToast();
 
   const {
@@ -25,11 +27,13 @@ export default function JoinOurNewsLetter() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormValues) => {
-    toast({
-      description: 'You have successfully registered to our list',
-      className: 'bg-green-500 text-white',
-    });
+  const onSubmit = ({ email }: FormValues) => {
+    joinNewsletter(email).then(() =>
+      toast({
+        description: 'You have successfully joined our newsletter.',
+        className: 'bg-green-500 text-white',
+      }),
+    );
     reset();
   };
 
@@ -46,9 +50,6 @@ export default function JoinOurNewsLetter() {
           placeholder="Enter your email"
           {...register('email')}
         />
-        {errors.email && (
-          <p className="text-red-500">{errors.email?.message}</p>
-        )}{' '}
         <button
           type="submit"
           title="send"
@@ -57,6 +58,7 @@ export default function JoinOurNewsLetter() {
           <Image src={arrowRightIcon} width={24} height={24} alt="send" />
         </button>
       </div>
+      {errors.email && <p className="text-sm">{errors.email?.message}</p>}
     </form>
   );
 }

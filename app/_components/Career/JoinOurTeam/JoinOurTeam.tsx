@@ -15,13 +15,13 @@ export const JoinOurTeam = () => {
         </h1>
       </div>
       <div className="flex justify-center mb-[40px]">
-        <p className="max-w-[800px] text-center font-normal text-black sm:text-[18px]/[25px]">
+        <p className="max-w-[800px] text-center font-normal text-black md:text-[18px]/[25px]">
           Do you have what it takes to challenge the logistics industry with us?
           <br />
           Send your application right away
         </p>
       </div>
-      <div className="flex gap-5 sm:gap-[40px] flex-wrap justify-center mb-[40px]">
+      <div className="flex gap-5 md:gap-[40px] flex-wrap justify-center mb-[40px]">
         {careerData?.map((item, i) => (
           // eslint-disable-next-line react/jsx-key
           <CareerCard key={i} pesonalInfo={item} />

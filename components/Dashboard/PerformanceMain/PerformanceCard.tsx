@@ -151,7 +151,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
             {data?.slice(0, 3).map((item: any, i: number) => {
               return (
                 <div
-                  key={`${item.name}${i}`}
+                  key={`${item.industry}${i}`}
                   className={clsx(
                     'text-[14px]/[21px] font-normal px-2 border rounded-[5px] w-max',
                     isActive
@@ -159,7 +159,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
                       : 'text-primaryOrange border-primaryOrange',
                   )}
                 >
-                  {item.name}
+                  {item.industry}
                 </div>
               );
             })}

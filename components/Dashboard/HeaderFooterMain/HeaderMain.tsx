@@ -2,6 +2,7 @@
 
 import LinksMenu from './LinksMenu';
 import { HeaderFooterData } from './types';
+import { findDeepestItemsWithoutHref } from './utils';
 import { useFooterHeaderStore } from '@/lib/store';
 
 import { useEffect, useMemo, useState } from 'react';
@@ -37,6 +38,19 @@ const HeaderMain = () => {
 
   const updateHeader = () => {
     if (!headerDataDynamic) return;
+
+    const { isValid, missingHrefItems } = findDeepestItemsWithoutHref(
+      headerDataDynamic.json,
+    );
+
+    if (!isValid) {
+      toast({
+        title: `${missingHrefItems.map((item) => item.title).join(', ')} are missing it's link url.`,
+        variant: 'destructive',
+        className: 'bg-red-500 text-white',
+      });
+      return;
+    }
 
     updateHeaderFooterData(headerDataDynamic.id, headerDataDynamic?.json)
       .then(getHeaderData)

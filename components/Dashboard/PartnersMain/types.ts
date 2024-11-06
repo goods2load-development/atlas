@@ -7,30 +7,78 @@ export interface ResponsePartner {
   user: Partner;
 }
 
+export interface PartnerIndustry {
+  label: string;
+  items: string[];
+}
+
+interface IBusinessProfile {
+  id: string;
+  text: string;
+  userId: string;
+}
+
 export interface Partner {
+  SustainabilityProof: any[]; // Define further if structure is known
   address: string;
-  city: string | null;
-  communication: boolean;
+  businessProfile: {
+    id: string;
+    text: string;
+    userId: string;
+  };
+  city: string;
   companyName: string;
-  companyPhoto: string | null;
+  companyPhoto: string;
   country: string;
   currency: string;
   email: string;
   ferry: boolean;
-  firstName: string | null;
+  filters: {
+    partnerFilter: {
+      id: string;
+      partnerFilterCategory: {
+        id: string;
+      };
+      value: string;
+    };
+  }[];
+  hasPage: boolean;
   id: string;
+  industries: {
+    label: string;
+    items: string[];
+  }[];
+  industryRecognitions: {
+    id: string;
+    isSecondary: boolean;
+    name: string;
+    proofs: {
+      id: string;
+      path: string;
+      name: string;
+    }[];
+  }[];
   insuranceStatement: string;
   isConfirmed: boolean;
   issuingAuthority: string;
   language: string;
-  lastName: string | null;
+  partnerId: string;
+  partnerLocation: {
+    airLocations: {
+      id: string;
+      name: string;
+      country: string;
+    }[];
+    roadLocation: any[];
+    seaLocations: any[];
+  }[];
   phoneNumber: string;
   plane: boolean;
-  postalCode: string | null;
-  provider: boolean;
-  role: string | null;
+  postalCode: string;
+  sustainability: boolean;
   tradeLicenseNumber: string;
   truck: boolean;
+  airports: any;
 }
 
 interface FocusItem {

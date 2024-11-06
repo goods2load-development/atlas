@@ -273,3 +273,13 @@ export async function getAllRoutes() {
     return [];
   }
 }
+export function sortByRegion(countries: any) {
+  return countries.reduce((acc: any, country: any) => {
+    const region = country.subregion;
+    if (!acc[region]) {
+      acc[region] = [];
+    }
+    acc[region].push(country);
+    return acc;
+  }, {});
+}
