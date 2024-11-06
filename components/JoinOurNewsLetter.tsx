@@ -46,7 +46,7 @@ export default function JoinOurNewsLetter() {
       <div className="relative">
         <Input
           type="email"
-          className="pr-7 w-full text-black"
+          className="pr-9 w-full text-black"
           placeholder="Enter your email"
           {...register('email')}
         />

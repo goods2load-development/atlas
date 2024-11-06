@@ -123,7 +123,7 @@ const IndustryChart = ({ data }: { data: IndustryData[] }) => {
             src="/average-demand.svg"
           />
         </div>
-        <div className="ml-auto flex-1 min-w-[800px] h-[200px] lg:h-[400px] sm:min-w-full overflow-scroll">
+        <div className="ml-auto flex-1 lg:min-w-[800px] h-[200px] lg:h-[400px] w-full overflow-scroll">
           <ResponsiveContainer width="100%" height="100%">
             <LineChart data={transformedData}>
               <CartesianGrid strokeDasharray="3 3" />

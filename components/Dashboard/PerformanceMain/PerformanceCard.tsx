@@ -74,7 +74,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
       )}
     >
       {type !== CardType.INDUSTRY_SOLUTION && (
-        <div className="lg:mt-3 mb-6 flex items-start gap-6 ml-6 justify-start flex-wrap">
+        <div className="lg:mt-3 mb-6 flex items-start gap-6 ml-6 justify-start flex-wrap max-sm:p-4">
           <div className="flex flex-col text-sm font-[500]">
             <span
               className={cn(
@@ -146,7 +146,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
       )}
 
       {type === CardType.INDUSTRY_SOLUTION && (
-        <div className="flex gap-6 pt-4 pl-5">
+        <div className="flex gap-6 pt-4 pl-5 max-sm:p-4">
           <div className="flex flex-col gap-2 pb-4">
             {data?.slice(0, 3).map((item: any, i: number) => {
               return (
