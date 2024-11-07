@@ -45,8 +45,12 @@ const regions = [
 ];
 
 export const FormStepRoadFreight = ({ form }: { form: any }) => {
-  const { getCountriesByRegions, getStatesByCountry, getInfoAboutState }: any =
-    useCountriesStore();
+  const {
+    getCountriesByRegions,
+    getStatesByCountry,
+    getInfoAboutState,
+    getGeonameIdCountry,
+  }: any = useCountriesStore();
 
   const [activeAccord, setActiveAccord] = useState<string | undefined>(
     undefined,
@@ -88,29 +92,16 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
   ) => {
     if (isSelect) {
       setIsLoadingStates(codeCountry);
-      const states = await getStatesByCountry(codeCountry);
-
-      const stateInfoPromises = states.map((state: any) =>
-        getInfoAboutState(state.name, codeCountry),
-      );
-
-      const stateInfos = await Promise.all(stateInfoPromises);
+      const geoNameIdCountry = await getGeonameIdCountry(codeCountry);
+      const states = await getStatesByCountry(geoNameIdCountry);
 
       setIsLoadingStates(null);
-
-      const statesWithInfo = states.map((state: any, index: number) => ({
-        ...state,
-        locales: stateInfos[index].results[0]?.types,
-      }));
 
       setActiveCountriesWithStates((prev: any) => {
         const countryWithStates = {
           codeCountry,
-          states: statesWithInfo.filter(
-            (item: any) =>
-              item.locales &&
-              (item.locales[0] === 'administrative_area_level_1' ||
-                item.locales[0] === 'administrative_area_level_2'),
+          states: states?.sort((a: any, b: any) =>
+            a.toponymName.localeCompare(b.toponymName),
           ),
         };
 
@@ -176,7 +167,9 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
                       <ChevronDown
                         className={clsx(
                           'w-4 h-4',
-                          currentCountry?.states.length > 0 ? 'rotate-180' : '',
+                          currentCountry?.states?.length > 0
+                            ? 'rotate-180'
+                            : '',
                         )}
                       />
                     )}
@@ -198,18 +191,18 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
                                       (state: any, idx: number) => {
                                         return (
                                           <label
-                                            key={state.name + idx}
+                                            key={state.toponymName + idx}
                                             className="flex items-center gap-2"
                                           >
                                             <Checkbox
-                                              value={state.name}
+                                              value={state.toponymName}
                                               checked={
                                                 field.value?.includes(
-                                                  state.name,
+                                                  state.toponymName,
                                                 ) || false
                                               }
                                               onCheckedChange={(checked) => {
-                                                const value = state.name;
+                                                const value = state.toponymName;
                                                 const newValue = checked
                                                   ? [
                                                       ...(field.value || []),
@@ -223,7 +216,7 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
                                               }}
                                             />
                                             <span className="text-[14px] font-medium">
-                                              {state.name}
+                                              {state.toponymName}
                                             </span>
                                           </label>
                                         );

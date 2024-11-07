@@ -90,18 +90,45 @@ export const useCountriesStore = create((set) => ({
       return [];
     }
   },
-  getStatesByCountry: async (countryCode: string) => {
+  // getStatesByCountry: async (countryCode: string) => {
+  //   try {
+  //     const response = await fetch(
+  //       `https://api.countrystatecity.in/v1/countries/${countryCode}/states`,
+  //       {
+  //         headers: {
+  //           'X-CSCAPI-KEY':
+  //             'eGVsbmNxZXREeXVlN3RBZWVoMHR3ZXJReUNpUDhyT0NWeGJMTDg2Sw==',
+  //         },
+  //       },
+  //     );
+  //     return response.json();
+  //   } catch (error) {
+  //     return [];
+  //   }
+  // },
+
+  getGeonameIdCountry: async (countryCode: string) => {
     try {
       const response = await fetch(
-        `https://api.countrystatecity.in/v1/countries/${countryCode}/states`,
-        {
-          headers: {
-            'X-CSCAPI-KEY':
-              'eGVsbmNxZXREeXVlN3RBZWVoMHR3ZXJReUNpUDhyT0NWeGJMTDg2Sw==',
-          },
-        },
+        `https://secure.geonames.org/countryInfoJSON?country=${countryCode}&username=vovk22_`,
       );
-      return response.json();
+
+      const data = await response.json();
+
+      return data.geonames[0].geonameId;
+    } catch (error) {
+      return null;
+    }
+  },
+  getStatesByCountry: async (geonameId: string) => {
+    try {
+      const response = await fetch(
+        `https://secure.geonames.org/childrenJSON?geonameId=${geonameId}&username=vovk22_`,
+      );
+
+      const data = await response.json();
+
+      return data.geonames;
     } catch (error) {
       return [];
     }
@@ -117,7 +144,6 @@ export const useCountriesStore = create((set) => ({
     }
   },
 }));
-
 export const usePortsStore = create((set) => ({
   getAirportsByCountry: async (countryCode: string) => {
     try {
