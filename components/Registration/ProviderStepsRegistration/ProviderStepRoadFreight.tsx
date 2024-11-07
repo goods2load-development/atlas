@@ -48,7 +48,6 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
   const {
     getCountriesByRegions,
     getStatesByCountry,
-    getInfoAboutState,
     getGeonameIdCountry,
   }: any = useCountriesStore();
 
@@ -96,6 +95,17 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
       const states = await getStatesByCountry(geoNameIdCountry);
 
       setIsLoadingStates(null);
+
+      let selectedStates: string[] = [];
+
+      states.map((state: any) => {
+        selectedStates.push(state.name);
+      });
+
+      form.setValue('states', [
+        ...(form.getValues('states') || []),
+        ...selectedStates,
+      ]);
 
       setActiveCountriesWithStates((prev: any) => {
         const countryWithStates = {

@@ -123,6 +123,25 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
                       value={item.name.common}
                       checked={activeCountries.includes(item.cca2)}
                       onCheckedChange={(isChecked) => {
+                        if (isChecked) {
+                          let selectedSeaports: string[] = [];
+
+                          item.seaports?.map((seaport: any) => {
+                            if (!seaport.unlocode) {
+                              return;
+                            }
+
+                            selectedSeaports.push(
+                              `(${seaport.unlocode}) ${seaport.port_name}`,
+                            );
+                          });
+
+                          form.setValue('seaports', [
+                            ...(form.getValues('seaports') || []),
+                            ...selectedSeaports,
+                          ]);
+                        }
+
                         setActiveCountries((prev: any) => {
                           if (isChecked) {
                             return [...prev, item.cca2];
@@ -134,7 +153,8 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
                                   .getValues('seaports')
                                   ?.filter(
                                     (existSeaport: any) =>
-                                      existSeaport !== seaport.port_name,
+                                      existSeaport !==
+                                      `(${seaport.unlocode}) ${seaport.port_name}`,
                                   ),
                               );
                             });
@@ -165,39 +185,42 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
                           <FormControl>
                             <div className="pl-6 my-2">
                               {item.seaports.map((item: any, idx: number) => {
+                                if (!item.unlocode) {
+                                  return;
+                                }
+
+                                const portValue = `(${item.unlocode}) ${item.port_name}`;
+
                                 return (
-                                  item.unlocode && (
-                                    <label
-                                      key={item.port_name + idx}
-                                      className="flex items-center gap-2"
-                                    >
-                                      <Checkbox
-                                        value={item.port_name}
-                                        checked={
-                                          field.value?.includes(
-                                            item.port_name,
-                                          ) || false
-                                        }
-                                        onCheckedChange={(checked) => {
-                                          const value = item.port_name;
-                                          const newValue = checked
-                                            ? [...(field.value || []), value]
-                                            : field.value?.filter(
-                                                (v: string) => v !== value,
-                                              ) || [];
-                                          field.onChange(newValue);
-                                        }}
-                                      />
-                                      <div className="text-[14px]f font-medium flex gap-1 items-center">
-                                        <span className="text-[12px]">
-                                          ({item.unlocode})
-                                        </span>
-                                        <span className="capitalize">
-                                          {item.port_name} Port
-                                        </span>
-                                      </div>
-                                    </label>
-                                  )
+                                  <label
+                                    key={portValue}
+                                    className="flex items-center gap-2"
+                                  >
+                                    <Checkbox
+                                      value={portValue}
+                                      checked={
+                                        field.value?.includes(portValue) ||
+                                        false
+                                      }
+                                      onCheckedChange={(checked) => {
+                                        const value = portValue;
+                                        const newValue = checked
+                                          ? [...(field.value || []), value]
+                                          : field.value?.filter(
+                                              (v: string) => v !== value,
+                                            ) || [];
+                                        field.onChange(newValue);
+                                      }}
+                                    />
+                                    <div className="text-[14px]f font-medium flex gap-1 items-center">
+                                      <span className="text-[12px]">
+                                        ({item.unlocode})
+                                      </span>
+                                      <span className="capitalize">
+                                        {item.port_name} Port
+                                      </span>
+                                    </div>
+                                  </label>
                                 );
                               })}
                             </div>
