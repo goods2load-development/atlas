@@ -279,10 +279,6 @@ export default function Registration() {
       message: "Passwords don't match",
       path: ['confirmPassword'],
     })
-    .refine((data) => !data.provider || data.insuranceStatement, {
-      message: 'No file uploaded',
-      path: ['insuranceStatement'],
-    })
     .refine((data) => !data.provider || data.issuingAuthority, {
       message: 'No file uploaded',
       path: ['issuingAuthority'],

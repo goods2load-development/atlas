@@ -21,7 +21,7 @@ export const FormAboutUs = ({ form }: { form: any }) => {
             <FormItem className="w-full mb-10">
               <FormDescription>
                 Provide a brief description of your company and core services
-                (max 150 words). This will appear on your partner page, helping
+                (max 80 words). This will appear on your partner page, helping
                 SMEs and other visitors understand your expertise and strengths.
                 Use this opportunity to showcase what makes you a valuable
                 logistics partner and connect with potential clients on the
