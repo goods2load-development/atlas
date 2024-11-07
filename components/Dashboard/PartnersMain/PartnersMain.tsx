@@ -53,6 +53,8 @@ const PartnersMain = () => {
         partners.map((par) => ({
           ...par.user,
           hasPage: par.hasPage,
+          aboutUs: par.aboutUs,
+          ourMission: par.ourMission,
           partnerId: par.id,
         })),
         'email',

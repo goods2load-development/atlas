@@ -5,6 +5,8 @@ export interface ResponsePartner {
   status: PARTNER_STATUS;
   hasPage: boolean;
   user: Partner;
+  aboutUs: string;
+  ourMission: string;
 }
 
 export interface PartnerIndustry {
@@ -64,21 +66,16 @@ export interface Partner {
   language: string;
   partnerId: string;
   partnerLocation: {
-    airLocations: {
-      id: string;
-      name: string;
-      country: string;
-    }[];
-    roadLocation: any[];
-    seaLocations: any[];
-  }[];
+    airports: string[];
+    cities: string[];
+    ports: string[];
+  };
   phoneNumber: string;
   plane: boolean;
   postalCode: string;
   sustainability: boolean;
   tradeLicenseNumber: string;
   truck: boolean;
-  airports: any;
 }
 
 interface FocusItem {
