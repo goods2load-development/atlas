@@ -242,29 +242,27 @@ export default function SearchMain({ main }: { main?: boolean }) {
     setIsLoadingAI(true);
 
     try {
-      setTimeout(async () => {
-        setIsLoadingAI(false);
-        // const response = await fetch("https://hscode.vition.ai/get_hscode", {
-        //   method: "POST",
-        //   headers: {
-        //     "Authorization": "Bearer e509ff5e0f716f5418997f68bd665a8d"
-        //   },
-        //   body: formData,
-        // });
+      const response = await fetch('https://hscode.vition.ai/get_hscode', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer e509ff5e0f716f5418997f68bd665a8d',
+        },
+        body: formData,
+      });
 
-        // if (!response.ok) {
-        //   throw new Error(`Error: ${response.statusText}`);
-        // }
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
 
-        // const result = await response.json();
-        setFilter({
-          typeOfGoods: `8471.30.01.00 Portable automatic data processing machines`,
-        });
-      }, 3000);
+      const { hscode, object } = await response.json();
+
+      setFilter({
+        typeOfGoods: `${hscode} ${object}`,
+      });
     } catch (err) {
       console.error(err);
     } finally {
-      // setIsLoadingAI(false);
+      setIsLoadingAI(false);
     }
   };
 
