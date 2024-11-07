@@ -279,10 +279,6 @@ export default function Registration() {
       message: "Passwords don't match",
       path: ['confirmPassword'],
     })
-    .refine((data) => !data.provider || data.insuranceStatement, {
-      message: 'No file uploaded',
-      path: ['insuranceStatement'],
-    })
     .refine((data) => !data.provider || data.issuingAuthority, {
       message: 'No file uploaded',
       path: ['issuingAuthority'],
@@ -873,7 +869,7 @@ export default function Registration() {
                       <FormItem className="w-full mb-5 sm:flex flex-wrap">
                         <div className="sm:w-1/2 sm:pr-2">
                           <FormLabel className="text-[14px]/[18px] font-normal">
-                            Issuing authority, form to be fill in
+                            Vat registration, form to be fill
                           </FormLabel>
                           <FormDescription className="text-[12px]">
                             *Attachments not bigger than 2MB
