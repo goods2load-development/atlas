@@ -960,6 +960,10 @@ const PartnerDataPage = ({
                                     color: missionForm.color,
                                   },
                                 ]);
+                                setMissionForm({
+                                  label: '',
+                                  color: '',
+                                });
                               }}
                               className="w-full mb-2"
                             >
