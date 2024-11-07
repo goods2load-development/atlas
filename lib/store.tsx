@@ -65,21 +65,6 @@ export const useCountriesStore = create((set) => ({
       set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
-  // getStatesByCountry: async (country: string) => {
-  //   try {
-  //     const data = await postRequest({
-  //       url: `https://countriesnow.space/api/v0.1/countries/states`,
-  //       data: {
-  //         country,
-  //       },
-  //       withCredentials: false,
-  //     });
-
-  //     return data.data.states;
-  //   } catch (error) {
-  //     return [];
-  //   }
-  // },
   getCountriesByRegions: async (region: string) => {
     try {
       const data = await getRequest({
@@ -90,27 +75,10 @@ export const useCountriesStore = create((set) => ({
       return [];
     }
   },
-  // getStatesByCountry: async (countryCode: string) => {
-  //   try {
-  //     const response = await fetch(
-  //       `https://api.countrystatecity.in/v1/countries/${countryCode}/states`,
-  //       {
-  //         headers: {
-  //           'X-CSCAPI-KEY':
-  //             'eGVsbmNxZXREeXVlN3RBZWVoMHR3ZXJReUNpUDhyT0NWeGJMTDg2Sw==',
-  //         },
-  //       },
-  //     );
-  //     return response.json();
-  //   } catch (error) {
-  //     return [];
-  //   }
-  // },
-
   getGeonameIdCountry: async (countryCode: string) => {
     try {
       const response = await fetch(
-        `https://secure.geonames.org/countryInfoJSON?country=${countryCode}&username=vovk22_`,
+        `https://secure.geonames.org/countryInfoJSON?country=${countryCode}&username=${process.env.NEXT_PUBLIC_GEONAMES_API_KEY}`,
       );
 
       const data = await response.json();
@@ -123,22 +91,12 @@ export const useCountriesStore = create((set) => ({
   getStatesByCountry: async (geonameId: string) => {
     try {
       const response = await fetch(
-        `https://secure.geonames.org/childrenJSON?geonameId=${geonameId}&username=vovk22_`,
+        `https://secure.geonames.org/childrenJSON?geonameId=${geonameId}&username=${process.env.NEXT_PUBLIC_GEONAMES_API_KEY}`,
       );
 
       const data = await response.json();
 
       return data.geonames;
-    } catch (error) {
-      return [];
-    }
-  },
-  getInfoAboutState: async (stateName: string, countryCode: string) => {
-    try {
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${stateName},${countryCode}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`,
-      );
-      return response.json();
     } catch (error) {
       return [];
     }

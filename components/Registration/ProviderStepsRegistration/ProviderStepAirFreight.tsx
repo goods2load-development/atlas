@@ -123,18 +123,17 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
                         if (isChecked) {
                           return [...prev, item.cca2];
                         } else {
-                          const alreadyChoosingAirports =
-                            form.getValues('airports') || [];
-                          form.setValue(
-                            'airports',
-                            alreadyChoosingAirports.filter(
-                              (currentAirport: string) =>
-                                item.airports.includes(
-                                  (item: any) => item.name !== currentAirport,
+                          item?.airports?.map((airport: any) => {
+                            form.setValue(
+                              'airports',
+                              form
+                                .getValues('airports')
+                                ?.filter(
+                                  (existAirport: any) =>
+                                    existAirport !== airport.nameAirport,
                                 ),
-                            ),
-                          );
-
+                            );
+                          });
                           return prev.filter(
                             (activeCountry: string) =>
                               activeCountry !== item.cca2,

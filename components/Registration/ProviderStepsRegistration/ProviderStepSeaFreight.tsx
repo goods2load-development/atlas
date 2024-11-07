@@ -127,17 +127,17 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
                           if (isChecked) {
                             return [...prev, item.cca2];
                           } else {
-                            const alreadyChoosingSeaports =
-                              form.getValues('seaports') || [];
-                            form.setValue(
-                              'seaports',
-                              alreadyChoosingSeaports.filter(
-                                (currentSeaport: string) =>
-                                  item.seaports.includes(
-                                    (item: any) => item.name !== currentSeaport,
+                            item?.seaports?.map((seaport: any) => {
+                              form.setValue(
+                                'seaports',
+                                form
+                                  .getValues('seaports')
+                                  ?.filter(
+                                    (existSeaport: any) =>
+                                      existSeaport !== seaport.port_name,
                                   ),
-                              ),
-                            );
+                              );
+                            });
 
                             return prev.filter(
                               (activeCountry: string) =>

@@ -94,7 +94,7 @@ export function IsRequired() {
 
 export default function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
-  const [step, setStep] = useState(7);
+  const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
@@ -211,7 +211,7 @@ export default function Registration() {
           { message: 'File size must be less than 2MB' },
         ),
       industryRecognitionsSecondary: z.array(z.string()).optional(),
-      cities: z.array(z.string()).optional(),
+      states: z.array(z.string()).optional(),
       airports: z.array(z.string()).optional(),
       seaports: z.array(z.string()).optional(),
       insuranceStatement: z
@@ -388,7 +388,7 @@ export default function Registration() {
         ...rest,
         airports: values?.airports || [],
         ports: seaports || [],
-        cities: values?.cities || [],
+        states: values?.states || [],
         bussinessProfileUrl: googleBusinessProfile,
         recaptchaToken: token,
       });

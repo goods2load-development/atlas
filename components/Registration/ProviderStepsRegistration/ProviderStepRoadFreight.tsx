@@ -117,10 +117,20 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
       });
     } else {
       setActiveCountriesWithStates((prev: any) => {
-        return prev.filter(
-          (activeCountryWithStates: any) =>
-            activeCountryWithStates.codeCountry !== codeCountry,
-        );
+        return prev.filter((activeCountryWithStates: any) => {
+          if (activeCountryWithStates.codeCountry !== codeCountry) {
+            return true;
+          } else {
+            activeCountryWithStates?.states?.map((state: any) => {
+              form.setValue(
+                'states',
+                form
+                  .getValues('states')
+                  ?.filter((existState: any) => existState !== state.name),
+              );
+            });
+          }
+        });
       });
     }
   };
@@ -128,7 +138,7 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
     if (!isProvideServices) {
       setActiveAccord(undefined);
       setActiveCountriesWithStates([]);
-      form.setValue('cities', []);
+      form.setValue('states', []);
     }
   }, [isProvideServices]);
 
@@ -178,7 +188,7 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
                   {currentCountry && (
                     <FormField
                       control={form.control}
-                      name="cities"
+                      name="states"
                       render={({ field }) => {
                         return (
                           <>
@@ -191,18 +201,18 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
                                       (state: any, idx: number) => {
                                         return (
                                           <label
-                                            key={state.toponymName + idx}
+                                            key={state.name + idx}
                                             className="flex items-center gap-2"
                                           >
                                             <Checkbox
-                                              value={state.toponymName}
+                                              value={state.name}
                                               checked={
                                                 field.value?.includes(
-                                                  state.toponymName,
+                                                  state.name,
                                                 ) || false
                                               }
                                               onCheckedChange={(checked) => {
-                                                const value = state.toponymName;
+                                                const value = state.name;
                                                 const newValue = checked
                                                   ? [
                                                       ...(field.value || []),
