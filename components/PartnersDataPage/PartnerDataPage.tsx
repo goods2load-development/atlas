@@ -57,7 +57,7 @@ enum TabsEnum {
   SERVICES_PROVIDED = 'Service provided',
   FOCUS = 'Focus',
   INDUSTRIES = 'Industries',
-  CLIENT_TARGET = 'Clients target',
+  CLIENT_TARGET = 'Missions',
 }
 
 const PartnerDataPage = ({
@@ -89,9 +89,7 @@ const PartnerDataPage = ({
       airFreight: isEdit ? partnerData?.serviceProvided?.airFreight : '',
       seaFreight: isEdit ? partnerData?.serviceProvided?.seaFreight : '',
       roadFreight: isEdit ? partnerData?.serviceProvided?.roadFreight : '',
-      smallBusiness: isEdit ? partnerData?.clientTarget?.smallBusiness : '',
-      midMarket: isEdit ? partnerData?.clientTarget?.midMarket : '',
-      enterprises: isEdit ? partnerData?.clientTarget?.enterprises : '',
+      missions: [],
       focus: [],
       industries: [],
       placementId: isEdit ? partnerData?.placementId : '',
@@ -121,13 +119,14 @@ const PartnerDataPage = ({
     value: '',
     color: '',
   });
+  const [missionForm, setMissionForm] = useState({
+    label: '',
+    color: '',
+  });
   const [charData, setChartData] = useState({
     airFreight: isEdit ? +partnerData?.serviceProvided.airFreight : 0,
     seaFreight: isEdit ? +partnerData?.serviceProvided.seaFreight : 0,
     roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
-    smallBusiness: isEdit ? +partnerData?.clientTarget?.smallBusiness : 0,
-    midMarket: isEdit ? +partnerData?.clientTarget?.midMarket : 0,
-    enterprises: isEdit ? +partnerData?.clientTarget?.enterprises : 0,
   });
 
   const [focusData, setFocusData] = useState<
@@ -149,6 +148,7 @@ const PartnerDataPage = ({
       color: (item as any).color || getRandomHexColor(),
     }));
   }, [partnerData, focusData]);
+
   const [industriesData, setIndustriesData] = useState<
     {
       label: string;
@@ -157,6 +157,7 @@ const PartnerDataPage = ({
       key?: string;
     }[]
   >(isEdit ? partnerData?.industries : []);
+
   const calculateCharIndustriesData = useMemo(() => {
     const partnerDataindustries = Array.isArray(partnerData?.industries)
       ? partnerData.industries
@@ -170,6 +171,29 @@ const PartnerDataPage = ({
       }),
     );
   }, [partnerData, industriesData]);
+
+  const [missionsData, setMissionsData] = useState<
+    {
+      label: string;
+      color: string;
+      key?: string;
+    }[]
+  >(isEdit ? partnerData.missions : []);
+
+  const calculateCharMissionsData = useMemo(() => {
+    const partnerDataMissions = Array.isArray(partnerData?.missions)
+      ? partnerData.missions
+      : [partnerData?.missions];
+
+    return (isGet ? partnerDataMissions : missionsData).map(
+      (item: any, _: unknown, arr: Array<unknown>) => ({
+        ...item,
+        value: 100 / arr.length,
+        name: item?.label,
+        color: item?.color || getRandomHexColor(),
+      }),
+    );
+  }, [partnerData, isGet, missionsData]);
 
   const reviews = useMemo(() => {
     if (placeInfo?.status !== 'OK') return null;
@@ -204,30 +228,7 @@ const PartnerDataPage = ({
       key: 'seaFreight',
     },
   ];
-  const clientsTargetData = [
-    {
-      name: 'Small business',
-      value: isGet
-        ? +partnerData.clientTarget.smallBusiness
-        : charData.smallBusiness,
-      color: '#3F2011',
-      key: 'smallBusiness',
-    },
-    {
-      name: 'Midd market',
-      value: isGet ? +partnerData.clientTarget.midMarket : charData.midMarket,
-      color: '#FB5304',
-      key: 'midMarket',
-    },
-    {
-      name: 'Enterprises',
-      value: isGet
-        ? +partnerData.clientTarget.enterprises
-        : charData.enterprises,
-      color: '#F4BE37',
-      key: 'enterprises',
-    },
-  ];
+
   const currentData = useMemo(() => {
     switch (chartItem) {
       case TabsEnum.SERVICES_PROVIDED:
@@ -237,7 +238,7 @@ const PartnerDataPage = ({
       case TabsEnum.INDUSTRIES:
         return calculateCharIndustriesData;
       case TabsEnum.CLIENT_TARGET:
-        return clientsTargetData;
+        return calculateCharMissionsData;
     }
   }, [chartItem]);
 
@@ -253,7 +254,7 @@ const PartnerDataPage = ({
 
   useEffect(() => {
     isGet && postInteractionWithPartner(partnerData?.id);
-  }, []);
+  }, [isGet, partnerData?.id, postInteractionWithPartner]);
 
   useEffect(() => {
     form?.setValue(
@@ -268,12 +269,23 @@ const PartnerDataPage = ({
   useEffect(() => {
     form?.setValue(
       'industries',
-      industriesData.map(({ label, value }) => ({
+      industriesData.map(({ label, value, color }) => ({
         label,
         value: value.toString(),
+        color,
       })) as any,
     );
-  }, [industriesData]);
+  }, [form, industriesData]);
+
+  useEffect(() => {
+    form?.setValue(
+      'missions',
+      missionsData.map(({ label, color }) => ({
+        label,
+        color,
+      })) as any,
+    );
+  }, [form, missionsData]);
 
   useEffect(() => {
     if (!isEdit) return;
@@ -357,11 +369,7 @@ const PartnerDataPage = ({
         roadFreight: data.roadFreight.toString(),
         seaFreight: data.seaFreight.toString(),
       },
-      clientTarget: {
-        smallBusiness: data.smallBusiness.toString(),
-        midMarket: data.midMarket.toString(),
-        enterprises: data.enterprises.toString(),
-      },
+      missions: data.missions,
       placementId: data.placementId,
       files: data.awardedBy as FileList,
     };
@@ -374,6 +382,7 @@ const PartnerDataPage = ({
     formData.append('placementId', body.placementId);
 
     formData.append(`industries`, JSON.stringify(body.industries));
+    formData.append(`missions`, JSON.stringify(body.missions));
     formData.append(`focus`, JSON.stringify(body.focus));
 
     Object.keys(body.serviceProvided).forEach((key) => {
@@ -382,11 +391,6 @@ const PartnerDataPage = ({
         `serviceProvided[${typedKey}]`,
         body.serviceProvided[typedKey],
       );
-    });
-
-    Object.keys(body.clientTarget).forEach((key) => {
-      const typedKey = key as keyof typeof body.clientTarget;
-      formData.append(`clientTarget[${typedKey}]`, body.clientTarget[typedKey]);
     });
 
     Array.from(body.files).forEach((file) =>
@@ -549,7 +553,7 @@ const PartnerDataPage = ({
                       key="clients-target"
                       value={TabsEnum.CLIENT_TARGET}
                     >
-                      Clients target
+                      Missions
                     </SelectItem>
                   </SelectContent>
                 </Select>
@@ -910,7 +914,7 @@ const PartnerDataPage = ({
                   <TabsContent value={TabsEnum.CLIENT_TARGET}>
                     <div className="flex gap-[46px]">
                       <div className="w-[280px] h-[280px]">
-                        <PieChart data={clientsTargetData} />
+                        <PieChart data={calculateCharMissionsData} />
                       </div>
 
                       <div className="mt-[30px] flex-1">
@@ -918,42 +922,84 @@ const PartnerDataPage = ({
                           Services lines
                         </div>
 
+                        {!isGet && (
+                          <>
+                            {' '}
+                            <div className="flex gap-1 mb-2">
+                              <Input
+                                onChange={(e) =>
+                                  setMissionForm({
+                                    ...missionForm,
+                                    label: e.target.value,
+                                  })
+                                }
+                                value={missionForm.label}
+                                placeholder="Label"
+                              />
+
+                              <Input
+                                type="color"
+                                onChange={(e) =>
+                                  setMissionForm({
+                                    ...missionForm,
+                                    color: e.target.value,
+                                  })
+                                }
+                                value={missionForm.color}
+                                placeholder="Value"
+                              />
+                            </div>
+                            <Button
+                              type="button"
+                              disabled={!missionForm.label}
+                              onClick={() => {
+                                setMissionsData([
+                                  ...missionsData,
+                                  {
+                                    label: missionForm.label,
+                                    color: missionForm.color,
+                                  },
+                                ]);
+                                setMissionForm({
+                                  label: '',
+                                  color: '',
+                                });
+                              }}
+                              className="w-full mb-2"
+                            >
+                              Add sector
+                            </Button>
+                          </>
+                        )}
+
                         <div>
-                          {clientsTargetData.map((elem) => (
-                            <div key={elem.name} className="flex gap-2 mb-4">
+                          {(isGet
+                            ? calculateCharMissionsData
+                            : missionsData
+                          ).map((elem: any) => (
+                            <div
+                              key={elem.label}
+                              className="flex justify-between gap-2 mb-4"
+                            >
                               <div
                                 className="w-[24px] h-[24px] rounded-sm"
                                 style={{ backgroundColor: elem.color }}
                               ></div>
-                              <div>{elem.name}</div>
-                              <div className="ml-auto flex items-center">
-                                {!isGet ? (
-                                  <FormField
-                                    control={form?.control}
-                                    name={elem.key as any}
-                                    render={({ field }) => (
-                                      <FormItem>
-                                        <FormControl>
-                                          <Input
-                                            type="number"
-                                            className="text-black max-w-[50px]"
-                                            onInput={(e: any) =>
-                                              setChartData({
-                                                ...charData,
-                                                [elem.key]: +e.target.value,
-                                              })
-                                            }
-                                            {...field}
-                                          />
-                                        </FormControl>
-                                      </FormItem>
-                                    )}
-                                  />
-                                ) : (
-                                  elem.value
-                                )}
-                                %
-                              </div>
+                              <div>{elem.label}</div>
+                              {!isGet && (
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setMissionsData((data) =>
+                                      data.filter(
+                                        (item) => item.label !== elem.label,
+                                      ),
+                                    )
+                                  }
+                                >
+                                  <TrashIcon />
+                                </button>
+                              )}
                             </div>
                           ))}
                         </div>
