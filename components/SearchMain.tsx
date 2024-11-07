@@ -7,7 +7,7 @@ import {
 } from '@/lib/filterStore';
 import { useCountriesStore, useGoodsStore } from '@/lib/store';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
 import { Info } from 'lucide-react';
@@ -193,6 +193,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
   }
   const debounce = useRef();
   const [open, setOpen] = useState(false);
+  const [isLoadingAI, setIsLoadingAI] = useState(false);
 
   const handleChange = (e: any) => {
     const value = e.target.value;
@@ -227,14 +228,45 @@ export default function SearchMain({ main }: { main?: boolean }) {
     else return 0;
   }
 
-  // const [fromCountryOpen, setFromCountryOpen] = useState(false);
-  // const [fromCityOpen, setFromCityOpen] = useState(false);
-  // const [toCountryOpen, setToCountryOpen] = useState(false);
-  // const [toCityOpen, setToCityOpen] = useState(false);
-
   const [popoverOpen, setPopoverOpen] = useState<
     null | keyof typeof FIELD_NAMES
   >(null);
+
+  const onFileUploaded = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    setIsLoadingAI(true);
+
+    try {
+      setTimeout(async () => {
+        setIsLoadingAI(false);
+        // const response = await fetch("https://hscode.vition.ai/get_hscode", {
+        //   method: "POST",
+        //   headers: {
+        //     "Authorization": "Bearer e509ff5e0f716f5418997f68bd665a8d"
+        //   },
+        //   body: formData,
+        // });
+
+        // if (!response.ok) {
+        //   throw new Error(`Error: ${response.statusText}`);
+        // }
+
+        // const result = await response.json();
+        setFilter({
+          typeOfGoods: `8471.30.01.00 Portable automatic data processing machines`,
+        });
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+    } finally {
+      // setIsLoadingAI(false);
+    }
+  };
 
   return (
     <form onSubmit={onSubmit}>
@@ -628,8 +660,26 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 className="h-[60px] w-[150px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none
               bg-white font-normal text-black flex items-center justify-center"
               >
-                <Image width={50} height={50} src="/ai.svg" alt="AI upload" />
-                <input accept="image/*" className="hidden" type="file" />
+                {isLoadingAI ? (
+                  <span className="font-bold text-[10px] animate-color-cycle p-1">
+                    The response is generating. Wait 10 seconds...
+                  </span>
+                ) : (
+                  <>
+                    <Image
+                      width={50}
+                      height={50}
+                      src="/ai.svg"
+                      alt="AI upload"
+                    />
+                    <input
+                      onChange={onFileUploaded}
+                      accept="image/*"
+                      className="hidden"
+                      type="file"
+                    />
+                  </>
+                )}
               </label>
             </div>
           </div>
