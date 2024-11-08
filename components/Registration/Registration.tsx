@@ -211,7 +211,7 @@ export default function Registration() {
           { message: 'File size must be less than 2MB' },
         ),
       industryRecognitionsSecondary: z.array(z.string()).optional(),
-      cities: z.array(z.string()).optional(),
+      states: z.array(z.string()).optional(),
       airports: z.array(z.string()).optional(),
       seaports: z.array(z.string()).optional(),
       insuranceStatement: z
@@ -384,7 +384,7 @@ export default function Registration() {
         ...rest,
         airports: values?.airports || [],
         ports: seaports || [],
-        cities: values?.cities || [],
+        states: values?.states || [],
         bussinessProfileUrl: googleBusinessProfile,
         recaptchaToken: token,
       });

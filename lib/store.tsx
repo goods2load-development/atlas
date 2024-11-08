@@ -7,6 +7,7 @@ import {
   putRequest,
 } from './utils';
 
+import { url } from 'inspector';
 import Cookie from 'js-cookie';
 import { create } from 'zustand';
 
@@ -64,16 +65,6 @@ export const useCountriesStore = create((set) => ({
       set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
-  getCitiesByCountry: async (countryCode: string) => {
-    try {
-      const data = await fetch(
-        `https://aviation-edge.com/v2/public/cityDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&codeIso2Country=${countryCode}`,
-      );
-      return data.json();
-    } catch (error) {
-      return [];
-    }
-  },
   getCountriesByRegions: async (region: string) => {
     try {
       const data = await getRequest({
@@ -84,8 +75,33 @@ export const useCountriesStore = create((set) => ({
       return [];
     }
   },
-}));
+  getGeonameIdCountry: async (countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://secure.geonames.org/countryInfoJSON?country=${countryCode}&username=${process.env.NEXT_PUBLIC_GEONAMES_API_KEY}`,
+      );
 
+      const data = await response.json();
+
+      return data.geonames[0].geonameId;
+    } catch (error) {
+      return null;
+    }
+  },
+  getStatesByCountry: async (geonameId: string) => {
+    try {
+      const response = await fetch(
+        `https://secure.geonames.org/childrenJSON?geonameId=${geonameId}&username=${process.env.NEXT_PUBLIC_GEONAMES_API_KEY}`,
+      );
+
+      const data = await response.json();
+
+      return data.geonames;
+    } catch (error) {
+      return [];
+    }
+  },
+}));
 export const usePortsStore = create((set) => ({
   getAirportsByCountry: async (countryCode: string) => {
     try {
@@ -167,14 +183,16 @@ export const useRegistrationStore = create((set) => ({
       });
     }
 
+    if (Array.isArray(data.sustainabilityCertificationFile)) {
+      data.sustainabilityCertificationFile.map((item: File) => {
+        formData.append('sustainabilityCertificationFile', item);
+      });
+    }
+
     formData.append('insuranceStatement', data.insuranceStatement);
     formData.append('issuingAuthority', data.issuingAuthority);
     formData.append('tradeLicenseNumber', data.tradeLicenseNumber);
     formData.append('companyPhoto', data.companyPhoto);
-    formData.append(
-      'sustainabilityCertificationFile',
-      data.sustainabilityCertificationFile,
-    );
 
     delete data.confirmPassword;
     delete data.privacy;

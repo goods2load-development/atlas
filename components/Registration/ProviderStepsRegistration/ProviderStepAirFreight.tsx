@@ -119,22 +119,41 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
                     value={item.name.common}
                     checked={activeCountries.includes(item.cca2)}
                     onCheckedChange={(isChecked) => {
+                      if (isChecked) {
+                        let selectedAirports: string[] = [];
+
+                        item.airports?.map((airport: any) => {
+                          if (!airport.codeIataAirport) {
+                            return;
+                          }
+
+                          selectedAirports.push(
+                            `(${airport.codeIataAirport}) ${airport.nameAirport}`,
+                          );
+                        });
+
+                        form.setValue('airports', [
+                          ...(form.getValues('airports') || []),
+                          ...selectedAirports,
+                        ]);
+                      }
+
                       setActiveCountries((prev: any) => {
                         if (isChecked) {
                           return [...prev, item.cca2];
                         } else {
-                          const alreadyChoosingAirports =
-                            form.getValues('airports') || [];
-                          form.setValue(
-                            'airports',
-                            alreadyChoosingAirports.filter(
-                              (currentAirport: string) =>
-                                item.airports.includes(
-                                  (item: any) => item.name !== currentAirport,
+                          item?.airports?.map((airport: any) => {
+                            form.setValue(
+                              'airports',
+                              form
+                                .getValues('airports')
+                                ?.filter(
+                                  (existAirport: any) =>
+                                    existAirport !==
+                                    `(${airport.codeIataAirport}) ${airport.nameAirport}`,
                                 ),
-                            ),
-                          );
-
+                            );
+                          });
                           return prev.filter(
                             (activeCountry: string) =>
                               activeCountry !== item.cca2,
@@ -161,19 +180,25 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
                         <FormControl>
                           <div className="pl-6 my-2">
                             {item.airports.map((item: any, idx: number) => {
+                              if (!item.codeIataAirport) {
+                                return;
+                              }
+
+                              const airportValue = `(${item.codeIataAirport}) ${item.nameAirport}`;
+
                               return (
                                 <label
-                                  key={item.nameAirport + idx}
+                                  key={airportValue}
                                   className="flex items-center gap-2"
                                 >
                                   <Checkbox
-                                    value={item.nameAirport}
+                                    value={airportValue}
                                     checked={
-                                      field.value?.includes(item.nameAirport) ||
+                                      field.value?.includes(airportValue) ||
                                       false
                                     }
                                     onCheckedChange={(checked) => {
-                                      const value = item.nameAirport;
+                                      const value = airportValue;
                                       const newValue = checked
                                         ? [...(field.value || []), value]
                                         : field.value?.filter(
@@ -182,11 +207,16 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
                                       field.onChange(newValue);
                                     }}
                                   />
-                                  <span className="text-[14px]f font-medium">
-                                    {item.nameAirport.includes('Airport')
-                                      ? item.nameAirport
-                                      : item.nameAirport + ' Airport'}
-                                  </span>
+                                  <div className="text-[14px]f font-medium flex gap-1 items-center">
+                                    <span className="text-[12px]">
+                                      ({item.codeIataAirport})
+                                    </span>
+                                    <span>
+                                      {item.nameAirport.includes(' Airport')
+                                        ? item.nameAirport
+                                        : item.nameAirport + ' Airport'}
+                                    </span>
+                                  </div>
                                 </label>
                               );
                             })}

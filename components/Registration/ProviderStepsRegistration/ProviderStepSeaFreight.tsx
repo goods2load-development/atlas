@@ -123,21 +123,41 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
                       value={item.name.common}
                       checked={activeCountries.includes(item.cca2)}
                       onCheckedChange={(isChecked) => {
+                        if (isChecked) {
+                          let selectedSeaports: string[] = [];
+
+                          item.seaports?.map((seaport: any) => {
+                            if (!seaport.unlocode) {
+                              return;
+                            }
+
+                            selectedSeaports.push(
+                              `(${seaport.unlocode}) ${seaport.port_name}`,
+                            );
+                          });
+
+                          form.setValue('seaports', [
+                            ...(form.getValues('seaports') || []),
+                            ...selectedSeaports,
+                          ]);
+                        }
+
                         setActiveCountries((prev: any) => {
                           if (isChecked) {
                             return [...prev, item.cca2];
                           } else {
-                            const alreadyChoosingSeaports =
-                              form.getValues('seaports') || [];
-                            form.setValue(
-                              'seaports',
-                              alreadyChoosingSeaports.filter(
-                                (currentSeaport: string) =>
-                                  item.seaports.includes(
-                                    (item: any) => item.name !== currentSeaport,
+                            item?.seaports?.map((seaport: any) => {
+                              form.setValue(
+                                'seaports',
+                                form
+                                  .getValues('seaports')
+                                  ?.filter(
+                                    (existSeaport: any) =>
+                                      existSeaport !==
+                                      `(${seaport.unlocode}) ${seaport.port_name}`,
                                   ),
-                              ),
-                            );
+                              );
+                            });
 
                             return prev.filter(
                               (activeCountry: string) =>
@@ -165,19 +185,25 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
                           <FormControl>
                             <div className="pl-6 my-2">
                               {item.seaports.map((item: any, idx: number) => {
+                                if (!item.unlocode) {
+                                  return;
+                                }
+
+                                const portValue = `(${item.unlocode}) ${item.port_name}`;
+
                                 return (
                                   <label
-                                    key={item.port_name + idx}
+                                    key={portValue}
                                     className="flex items-center gap-2"
                                   >
                                     <Checkbox
-                                      value={item.port_name}
+                                      value={portValue}
                                       checked={
-                                        field.value?.includes(item.port_name) ||
+                                        field.value?.includes(portValue) ||
                                         false
                                       }
                                       onCheckedChange={(checked) => {
-                                        const value = item.port_name;
+                                        const value = portValue;
                                         const newValue = checked
                                           ? [...(field.value || []), value]
                                           : field.value?.filter(
@@ -186,9 +212,16 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
                                         field.onChange(newValue);
                                       }}
                                     />
-                                    <span className="text-[14px] font-medium">
-                                      {item.port_name} Port
-                                    </span>
+                                    <div className="text-[14px]f font-medium flex gap-1 items-center">
+                                      <span className="text-[12px]">
+                                        ({item.unlocode})
+                                      </span>
+                                      <span className="capitalize">
+                                        {item.port_name.includes('PORT')
+                                          ? item.port_name
+                                          : item.port_name + ' Port'}
+                                      </span>
+                                    </div>
                                   </label>
                                 );
                               })}
