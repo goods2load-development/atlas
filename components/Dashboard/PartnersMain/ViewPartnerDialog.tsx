@@ -183,8 +183,8 @@ const ViewPartnerDialog = ({
                       <>
                         <strong>Airports</strong>
                         {partner.partnerLocation.airports.map((item) => (
-                          <div key={item} className="mt-3">
-                            {item}
+                          <div key={item.name} className="mt-3">
+                            {item.name}({item.code})
                           </div>
                         ))}
                       </>
@@ -195,8 +195,8 @@ const ViewPartnerDialog = ({
                       <>
                         <strong>Cities</strong>
                         {partner.partnerLocation.cities.map((item) => (
-                          <div key={item} className="mt-3">
-                            {item}
+                          <div key={item.name} className="mt-3">
+                            {item.name}({item.code})
                           </div>
                         ))}
                       </>
@@ -207,8 +207,8 @@ const ViewPartnerDialog = ({
                       <>
                         <strong>Ports</strong>
                         {partner.partnerLocation.airports.map((item) => (
-                          <div key={item} className="mt-3">
-                            {item}
+                          <div key={item.name} className="mt-3">
+                            {item.name}({item.code})
                           </div>
                         ))}
                       </>

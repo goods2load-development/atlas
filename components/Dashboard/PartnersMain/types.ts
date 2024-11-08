@@ -66,9 +66,9 @@ export interface Partner {
   language: string;
   partnerId: string;
   partnerLocation: {
-    airports: string[];
-    cities: string[];
-    ports: string[];
+    airports: { name: string; code: string }[];
+    cities: { name: string; code: string }[];
+    ports: { name: string; code: string }[];
   };
   phoneNumber: string;
   plane: boolean;
