@@ -76,10 +76,6 @@ const PartnerDataPage = ({
   const isGet = !isCreate && !isEdit;
   const { postInteractionWithPartner } = useAnalyticsStore();
 
-  useEffect(() => {
-    console.log(partnerData, '123');
-  }, [partnerData]);
-
   const { isAboveLg, isBelowLg } = useBreakpoint('lg');
   const { isAboveMd } = useBreakpoint('md');
 
