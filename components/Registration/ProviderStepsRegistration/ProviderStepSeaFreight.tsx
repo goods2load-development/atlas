@@ -217,7 +217,9 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
                                         ({item.unlocode})
                                       </span>
                                       <span className="capitalize">
-                                        {item.port_name} Port
+                                        {item.port_name.includes('PORT')
+                                          ? item.port_name
+                                          : item.port_name + ' Port'}
                                       </span>
                                     </div>
                                   </label>
