@@ -410,6 +410,10 @@ export default function Registration() {
   }
 
   useEffect(() => {
+    if (![5, 6, 7].includes(step)) setIsFreightDisabled(false);
+  }, [step]);
+
+  useEffect(() => {
     if (cookies.accessToken) {
       fillFields();
     }
