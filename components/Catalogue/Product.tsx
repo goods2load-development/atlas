@@ -60,7 +60,7 @@ export default function Product(props: any) {
     if (!user?.id) {
       router.push('/sign-in');
     } else {
-      onSaveUserPartner(props.company.name)
+      onSaveUserPartner(props.companyName)
         .then((data: any) => {
           toast({
             title: 'Partner saved',
