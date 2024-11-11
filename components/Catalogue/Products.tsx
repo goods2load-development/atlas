@@ -41,7 +41,9 @@ export default function Products() {
       )}
     </div>
   ) : isPartnersLoading ? (
-    <Spinner />
+    <div className="mb-auto mt-20">
+      <Spinner />
+    </div>
   ) : (
     <div className="text-center pt-10">
       <Image
