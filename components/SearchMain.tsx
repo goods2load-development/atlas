@@ -1,6 +1,7 @@
 'use client';
 
 import { Dialog, DialogContent } from './ui/dialog';
+import Spinner from './ui/spinner';
 import {
   DeliveryBy,
   useCurrenciesStore,
@@ -194,7 +195,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
   }
   const debounce = useRef();
   const [open, setOpen] = useState(false);
-  const [isLoadingAI, setIsLoadingAI] = useState(false);
+  const [isLoadingAI, setIsLoadingAI] = useState({
+    response: false,
+    error: false,
+    loading: false,
+  });
 
   const handleChange = (e: any) => {
     const value = e.target.value;
@@ -240,7 +245,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
     const formData = new FormData();
     formData.append('file', file);
 
-    setIsLoadingAI(true);
+    setIsLoadingAI({
+      loading: true,
+      response: false,
+      error: false,
+    });
 
     try {
       const response = await fetch('https://hscode.vition.ai/get_hscode', {
@@ -260,10 +269,24 @@ export default function SearchMain({ main }: { main?: boolean }) {
       setFilter({
         typeOfGoods: `${hscode} ${object}`,
       });
+      setIsLoadingAI({
+        response: true,
+        error: false,
+        loading: true,
+      });
     } catch (err) {
-      console.error(err);
+      setIsLoadingAI({
+        response: false,
+        error: true,
+        loading: true,
+      });
     } finally {
-      setIsLoadingAI(false);
+      setTimeout(() => {
+        setIsLoadingAI({
+          ...isLoadingAI,
+          loading: false,
+        });
+      }, 2000);
     }
   };
 
@@ -805,21 +828,57 @@ export default function SearchMain({ main }: { main?: boolean }) {
           </div>
         </div>
       </form>
-      <Dialog open={isLoadingAI}>
+      <Dialog open={isLoadingAI.loading}>
         <DialogContent
           isCloseBtn={false}
           className="p-8 max-w-[400px] py-[80px]"
         >
-          <Image
-            className="mx-auto mb-6 animate-spin"
-            width={250}
-            height={250}
-            src="/ai.svg"
-            alt="AI upload"
-          />
-          <p className="font-bold text-center text-lg animate-color-cycle p-1">
-            The response is generating. <br /> Wait 10 seconds...
-          </p>
+          {!isLoadingAI.response && !isLoadingAI.error && (
+            <Spinner className="!w-10 !h-10" />
+          )}
+
+          {isLoadingAI.response && (
+            <div className="flex justify-center items-center mb-4">
+              {/* Success SVG Icon */}
+              <svg
+                className="w-[100px] h-[100px] text-orangePrimary"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+              </svg>
+            </div>
+          )}
+
+          {isLoadingAI.error && (
+            <div className="flex justify-center items-center mb-4">
+              <svg
+                className="w-[100px] h-[100px] text-red-500"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M11 15h2v2h-2zm0-8h2v6h-2zm1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+              </svg>
+            </div>
+          )}
+
+          {isLoadingAI.response && (
+            <p className="font-bold text-center text-lg p-1">
+              Image successfully converted.
+            </p>
+          )}
+
+          {isLoadingAI.error && (
+            <p className="font-bold text-center text-lg text-red-500 p-1">
+              Inappropriate type or size of image. Try again.
+            </p>
+          )}
+
+          {!isLoadingAI.response && !isLoadingAI.error && (
+            <p className="font-bold text-center text-lg animate-color-cycle p-1">
+              Converting image into hs-code.
+            </p>
+          )}
         </DialogContent>
       </Dialog>
     </>
