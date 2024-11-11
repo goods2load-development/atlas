@@ -266,6 +266,8 @@ export default function SearchMain({ main }: { main?: boolean }) {
 
       const { hscode, object } = await response.json();
 
+      if (hscode === 'Unavailable') throw new Error(`Error: Unavailable code.`);
+
       setFilter({
         typeOfGoods: `${hscode} ${object}`,
       });
