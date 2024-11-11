@@ -30,7 +30,7 @@ const data: ILegacyDataBlock[] = [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          `Any person who accesses and/or uses the Platforms in any manner (“user”,“you”or “your”) or uses any current or future Services or functionality or offer made available
+          `Any person who accesses and/or uses the Platforms in any manner (“user”,“you” or “your”) or uses any current or future Services or functionality or offer made available
 on the Platforms will be subject to and governed by these Terms for use of our Services
 and Platforms, together with our <a href="/privacy-policy">Privacy Policy</a>, <a href="/cookie-policy">Cookies Policy</a>  and community
 guidelines (collectively,
@@ -218,7 +218,7 @@ conditions in addition to these Terms.`,
           `<strong>Feedback</strong>: If you provide us with any suggestions, comments, improvements, ideas or
           other feedback (“Feedback”), you agree that such Feedback is provided voluntarily and
           will be deemed non-confidential and non-proprietary. You hereby irrevocably assign
-          ownership of all intellectual property rights subsisting in that Feedback to us and we
+          ownership of all intellectual property rights subsisting in that Feedback to us, and we
           reserve the right to use, reproduce, modify, and display the Feedback in any manner and
           for any purpose, including for improving the Platforms or Services and for marketing.
           Additionally, you grant us the right to associate your name or personal information
@@ -333,7 +333,7 @@ conditions in addition to these Terms.`,
           Provider, and it is the user’s responsibility to independently conduct verification
           before engaging with any Transportation Provider. Nevertheless, Goods2Load
           endeavours to procure that the content displayed on or via our Services and
-          Platforms is up to date and accurate.`,
+          Platforms is up-to-date and accurate.`,
           `<strong>Cannot guarantee</strong> that the information displayed on the Platforms are accurate
           or free from discrepancies as the information is based on data obtained from
           independent Transportation Providers or relevant third parties. Although
@@ -417,7 +417,7 @@ conditions in addition to these Terms.`,
           to third-party websites or resources, including advertisers, these are provided solely for
           informational purposes. We have no control over the contents of those sites or resources
           and accept no responsibility for them or for any loss or damage that may arise from
-          your use of them. Goods2Load has not reviewed all of the third-party websites linked to
+          your use of them. Goods2Load has not reviewed all the third-party websites linked to
           its Platforms and is not responsible for the content or accuracy of any off-site pages nor
           are we responsible for the availability of such external websites or resources, and do not
           endorse and are not responsible in any way for the privacy practices or the content of
