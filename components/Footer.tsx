@@ -28,7 +28,7 @@ export default function Footer() {
 
   return (
     <footer className="text-white min-h-[244px] bg-bgFooter bg-cover bg-center">
-      <div className="md:flex align-middle block px-4 py-10 max-w-[1328px] mx-auto row gap-16">
+      <div className="sm:flex align-middle block px-4 py-10 max-w-[1328px] mx-auto row gap-16">
         <div className="space-y-5 sm:space-y-10 max-sm:mb-10 max-sm:text-center max-sm:flex max-sm:flex-col max-sm:items-center">
           <div className="mb-6">
             <Logo width={205} height={31} />
@@ -102,7 +102,7 @@ export default function Footer() {
       </div>
       <div className="bg-primaryOrange p-4">
         <div className="flex items-center justify-center max-w-[1328px] mx-auto">
-          <nav className="text-sm flex items-center flex-wrap mx-auto">
+          <nav className="text-sm flex items-center justify-center flex-wrap mx-auto">
             <Link
               className="mr-8 md:mr-12 relative link-with-line"
               href="/terms-of-service"
