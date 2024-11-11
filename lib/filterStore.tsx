@@ -82,6 +82,7 @@ interface FilterStoreProps {
   cross_border_expansion: boolean;
 
   partners: any[];
+  filterPartners: any[];
   isPartnersLoading: boolean;
   portsDepartureSelected: string[];
   portsArrivalSelected: string[];
@@ -159,6 +160,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     portsDepartureSelected: [],
     portsArrival: [],
     portsArrivalSelected: [],
+    filterPartners: [],
 
     sortBy: null,
 
@@ -204,15 +206,18 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         valid: validate(requiredFields),
       }));
     },
-    // getPartners: async () => {
-    //   const data = await getRequest({
-    //     url: 'orders/partners',
-    //   });
-    //   set(() => ({
-    //     partners: data.data,
-    //     partnersSelected: data.data.map((item: any) => item.id),
-    //   }));
-    // },
+    getPartnersFilters: async () => {
+      const data = await getRequest({
+        url: 'partners/approved',
+      });
+      set(() => ({
+        filterPartners: data.map((item: any) => ({
+          id: item.id,
+          label: item.user.companyName,
+        })),
+        partnersSelected: data.map((item: any) => item.id),
+      }));
+    },
     getPortsList: (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
