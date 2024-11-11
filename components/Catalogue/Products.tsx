@@ -1,4 +1,5 @@
 import UIButton from '../common/Button';
+import Spinner from '../ui/spinner';
 import Product from './Product';
 import NotFound from '@/assets/Catalogue/no-products-found.png';
 import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
@@ -8,32 +9,39 @@ import { useEffect } from 'react';
 import Image from 'next/image';
 
 export default function Products() {
-  const { products, pagination, getProducts } = useFilterStore(
-    (state: any) => state,
-  );
+  const {
+    partners,
+    isPartnersLoading,
+    pagination,
+    getPartners,
+    clearPartners,
+  } = useFilterStore((state: any) => state);
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
   useEffect(() => {
-    getProducts();
+    clearPartners();
+    getPartners();
   }, []);
 
-  return products?.length ? (
+  return partners?.length ? (
     <div className="bg-blue-000 space-y-[24px]">
-      {products.map((product: any, index: number) => (
+      {partners.map((partner: any, index: number) => (
         <Product
           key={index}
-          {...product}
+          {...partner}
           currency={selectedCurrency}
           index={index}
         /> // index for mocks data (GoogleReview)
       ))}
       {pagination.hasNextPage && (
         <div className="text-center pb-5">
-          <UIButton onClick={() => getProducts(pagination.page + 1)} secondary>
+          <UIButton onClick={() => getPartners(pagination.page + 1)} secondary>
             Show more results
           </UIButton>
         </div>
       )}
     </div>
+  ) : isPartnersLoading ? (
+    <Spinner />
   ) : (
     <div className="text-center pt-10">
       <Image

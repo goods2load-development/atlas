@@ -82,9 +82,10 @@ interface FilterStoreProps {
   cross_border_expansion: boolean;
 
   partners: any[];
+  isPartnersLoading: boolean;
   portsDepartureSelected: string[];
   portsArrivalSelected: string[];
-  products: any[];
+  // products: any[];
   pagination: any;
   setFilter: (data: FilterStoreProps) => void;
   portsDeparture: string[];
@@ -152,6 +153,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     cross_border_expansion: false,
 
     partners: [],
+    isPartnersLoading: true,
     partnersSelected: [],
     portsDeparture: [],
     portsDepartureSelected: [],
@@ -160,7 +162,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
 
     sortBy: null,
 
-    products: [],
+    // products: [],
     pagination: {},
     setFilter: (newFilter: FilterStoreProps) => {
       const {
@@ -202,15 +204,15 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         valid: validate(requiredFields),
       }));
     },
-    getPartners: async () => {
-      const data = await getRequest({
-        url: 'orders/partners',
-      });
-      set(() => ({
-        partners: data.data,
-        partnersSelected: data.data.map((item: any) => item.id),
-      }));
-    },
+    // getPartners: async () => {
+    //   const data = await getRequest({
+    //     url: 'orders/partners',
+    //   });
+    //   set(() => ({
+    //     partners: data.data,
+    //     partnersSelected: data.data.map((item: any) => item.id),
+    //   }));
+    // },
     getPortsList: (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
@@ -242,7 +244,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           }
         });
     },
-    getProducts: async (page?: number) => {
+    clearPartners: () => {
+      set({ partners: [] });
+    },
+    getPartners: async (page?: number) => {
+      set({ isPartnersLoading: true });
       const {
         deliveryBy,
         fromCountry,
@@ -316,7 +322,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       );
 
       postRequest({
-        url: 'orders/search',
+        url: 'partners/search',
         params: { page, take: 10 },
         data: {
           transportation: deliveryBy,
@@ -376,33 +382,39 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             bestReviewed,
           },
         },
-      }).then((data: any) => {
-        let products = data?.partners?.data?.map((item: any) => ({
-          orderId: item.id,
-          deliveryBy: item.transportation,
-          estimatedTransit: item.transit,
-          company: {
-            name: item.companyName,
-          },
-          withdraw: format(
-            new Date(item.withdraw).toDateString(),
-            'MM/dd/yyyy',
-          ),
-          delivery: format(
-            new Date(item.delivery).toDateString(),
-            'MM/dd/yyyy',
-          ),
-          orderCost: item.price,
-          CO2EmissionControlled: item.goGreen,
-          portArrival: item.portArrival,
-          portDeparture: item.portDeparture,
-          price: item.price, // Added for analytics avarge store when user select this product
-          placementOfGoods: item.placementOfGoods, // Added for analytics avarge store when user select this product
-          partnerInfo: item.partnerInfo,
-        }));
+      })
+        .then((data: any) => {
+          let partners = data?.partners?.data;
 
-        set(() => ({ products, pagination: data?.partners?.meta }));
-      });
+          // let partners = data?.partners?.data?.map((item: any) => ({
+          //   orderId: item.id,
+          //   deliveryBy: item.transportation,
+          //   estimatedTransit: item.transit,
+          //   company: {
+          //     name: item.companyName,
+          //   },
+          //   withdraw: format(
+          //     new Date(item.withdraw).toDateString(),
+          //     'MM/dd/yyyy',
+          //   ),
+          //   delivery: format(
+          //     new Date(item.delivery).toDateString(),
+          //     'MM/dd/yyyy',
+          //   ),
+          //   orderCost: item.price,
+          //   CO2EmissionControlled: item.goGreen,
+          //   portArrival: item.portArrival,
+          //   portDeparture: item.portDeparture,
+          //   // price: item.price, // Added for analytics avarge store when user select this product
+          //   // placementOfGoods: item.placementOfGoods, // Added for analytics avarge store when user select this product
+          //   partnerInfo: item.partnerInfo,
+          // }));
+
+          set(() => ({ partners, pagination: data?.partners?.meta }));
+        })
+        .finally(() => {
+          set({ isPartnersLoading: false });
+        });
     },
   };
 });

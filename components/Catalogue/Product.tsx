@@ -11,11 +11,12 @@ import SaveIcon from '@/assets/save.svg';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
 import { useUserStore } from '@/lib/store';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { ReactSVG } from 'react-svg';
 
 import {
   ToolTipComponent,
@@ -26,11 +27,11 @@ import {
 } from '@/components/ui/tooltip';
 import { useToast } from '@/components/ui/use-toast';
 
-interface Props extends IProduct {
-  deliveryBy: string;
-  currency: any;
-  index: number;
-}
+// interface Props extends IProduct {
+//   deliveryBy: string;
+//   currency: any;
+//   index: number;
+// }
 
 function Icon(type: string) {
   switch (type) {
@@ -45,7 +46,7 @@ function Icon(type: string) {
   }
 }
 
-export default function Product(props: Props) {
+export default function Product(props: any) {
   const { toast } = useToast();
   const { user, getUser, onSaveUserPartner }: any = useUserStore();
   const router = useRouter();
@@ -92,10 +93,10 @@ export default function Product(props: Props) {
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
       <div className="md:flex justify-start md:border-b">
-        <div className="py-[37px] pl-[58px] pr-[35px] border-r">
+        <div className="w-[213px] py-[37px] px-[25px] border-r">
           <div className="flex items-center gap-3">
-            <div>{props.company.name}</div>
-            {!isAlreadySavedPartner(user?.savedPartners, props.company.name) ? (
+            <div>{props.companyName}</div>
+            {!isAlreadySavedPartner(user?.savedPartners, props.companyName) ? (
               <button
                 className="hover:opacity-60 transition-opacity"
                 onClick={onSavePartner}
@@ -114,16 +115,25 @@ export default function Product(props: Props) {
             )}
           </div>
 
-          <Image
-            width={33}
-            height={36}
-            src={defaultCompanyLogo}
-            alt="default company logo"
-            className="mx-auto mt-3"
-          />
+          {props.companyPhoto.endsWith('.svg') ? (
+            <ReactSVG
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
+              beforeInjection={(svg) => {
+                svg.setAttribute('style', 'width: 125px');
+              }}
+            />
+          ) : (
+            <Image
+              width={43}
+              height={46}
+              src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
+              alt="Logo"
+              className="mx-auto mt-3"
+            />
+          )}
         </div>
-        {props.partnerInfo?.services
-          ?.sort((a, b) => a.label.localeCompare(b.label))
+        {props?.services
+          ?.sort((a: any, b: any) => a.label.localeCompare(b.label))
           .map(({ label, items }: any) => {
             return (
               <div key={label} className="border-r">
@@ -149,17 +159,15 @@ export default function Product(props: Props) {
               </div>
             );
           })}
-        <div className="flex items-center justify-center flex-1">
+        <div className="flex items-center justify-center flex-1 px-2">
           <SendDataToPartnerDialog
             trigger={
               <button
-                onClick={() =>
-                  postInteractionWithPartner(props.partnerInfo.partnerId)
-                }
+                onClick={() => postInteractionWithPartner(props.partner.id)}
                 disabled={false}
                 type="button"
                 className=" bg-primaryOrange
-           text-white text-[16px]/[24px] font-semibold py-3 px-4 rounded-[16px]
+           text-white text-[14px]/[18px] font-semibold py-3 px-4 rounded-[16px]
             cursor-pointer hover:opacity-75 transition-opacity"
               >
                 Get a free quotation
@@ -170,21 +178,20 @@ export default function Product(props: Props) {
       </div>
       <div className="md:flex justify-between py-2">
         <div className="py-[8px] md:py-0 border-t md:border-none md:pl-6 items-center justify-center md:justify-start flex sm:flex-row flex-col gap-2">
-          {!!props.partnerInfo?.rating && (
+          {!!props.partner?.googleRataing && (
             <GoogleRating
-              rating={props.partnerInfo?.rating}
-              totalReviews={props.partnerInfo?.totalReviews || 0}
-              placementId={props.partnerInfo?.placementId}
+              rating={props.partner?.googleRataing}
+              totalReviews={props.parnter?.googleTotalReviews || 0}
+              placementId={props.partner?.placementId}
             />
           )}
+          {/* 
+          <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
+            <LeafIcon />
+            Carbon Offset
+          </div> */}
 
-          {props.CO2EmissionControlled && (
-            <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
-              <LeafIcon />
-              Carbon Offset
-            </div>
-          )}
-          {props.partnerInfo?.awards && (
+          {!!props.partner?.partnerAwards?.length && (
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E3F5F8] text-[#417FAE] w-fit flex">
               <Image
                 width={21}
@@ -194,7 +201,7 @@ export default function Product(props: Props) {
               />
               <Link
                 className="underline underline-offset-1 hover:no-underline"
-                href={`/partner/${props.partnerInfo?.partnerId}#awards`}
+                href={`/partner/${props.partner?.id}#awards`}
               >
                 Industry Recognition
               </Link>
