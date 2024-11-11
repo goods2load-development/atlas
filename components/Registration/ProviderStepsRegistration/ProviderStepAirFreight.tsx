@@ -44,7 +44,13 @@ const regions = [
   },
 ];
 
-export const FormStepAirFreight = ({ form }: { form: any }) => {
+export const FormStepAirFreight = ({
+  form,
+  setIsFreightDisabled,
+}: {
+  form: any;
+  setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { getCountriesByRegions }: any = useCountriesStore();
 
   const { getAirportsByCountry }: any = usePortsStore();
@@ -56,6 +62,14 @@ export const FormStepAirFreight = ({ form }: { form: any }) => {
   const [activeCountries, setActiveCountries] = useState<string[]>([]);
   const [isAccordLoading, setIsAccordLoading] = useState(false);
   const [isProvideServices, setIsProvideServices] = useState(true);
+
+  const airports = form.watch('airports');
+
+  useEffect(() => {
+    if (!isProvideServices) return setIsFreightDisabled(false);
+
+    setIsFreightDisabled(!airports?.length);
+  }, [airports, isProvideServices, setIsFreightDisabled]);
 
   const fetchCountriesData = useCallback(async () => {
     if (activeAccord) {

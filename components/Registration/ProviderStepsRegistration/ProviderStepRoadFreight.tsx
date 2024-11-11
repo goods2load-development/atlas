@@ -44,7 +44,13 @@ const regions = [
   },
 ];
 
-export const FormStepRoadFreight = ({ form }: { form: any }) => {
+export const FormStepRoadFreight = ({
+  form,
+  setIsFreightDisabled,
+}: {
+  form: any;
+  setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const {
     getCountriesByRegions,
     getStatesByCountry,
@@ -61,6 +67,14 @@ export const FormStepRoadFreight = ({ form }: { form: any }) => {
   const [isAccordLoading, setIsAccordLoading] = useState(false);
   const [isProvideServices, setIsProvideServices] = useState(true);
   const [isLoadingStates, setIsLoadingStates] = useState<string | null>(null);
+
+  const states = form.watch('states');
+
+  useEffect(() => {
+    if (!isProvideServices) return setIsFreightDisabled(false);
+
+    setIsFreightDisabled(!states?.length);
+  }, [states, isProvideServices, setIsFreightDisabled]);
 
   useEffect(() => {
     const fetchCountriesData = async () => {

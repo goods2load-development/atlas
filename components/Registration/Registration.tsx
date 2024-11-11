@@ -391,10 +391,11 @@ export default function Registration() {
     } catch {
       toast({
         title: 'Error',
-        description: 'Failed to register.',
+        description: 'User already found. Try another email or phone number.',
         variant: 'destructive',
         className: 'bg-red-500',
       });
+      setStep(0);
     }
   }
 
@@ -403,6 +404,7 @@ export default function Registration() {
   });
 
   const [userRegistration, setUserRegistration] = useState(isUser);
+  const [isFreightDisabled, setIsFreightDisabled] = useState(false);
   async function fillFieldsWithGoogle() {
     signIn('google', { redirect: true });
   }
@@ -1074,15 +1076,24 @@ export default function Registration() {
           </div>
 
           <div className={clsx('pt-6', step !== 5 && 'hidden')}>
-            <FormStepAirFreight form={form} />
+            <FormStepAirFreight
+              setIsFreightDisabled={setIsFreightDisabled}
+              form={form}
+            />
           </div>
 
           <div className={clsx('pt-6', step !== 6 && 'hidden')}>
-            <FormStepSeaFreight form={form} />
+            <FormStepSeaFreight
+              setIsFreightDisabled={setIsFreightDisabled}
+              form={form}
+            />
           </div>
 
           <div className={clsx('pt-6', step !== 7 && 'hidden')}>
-            <FormStepRoadFreight form={form} />
+            <FormStepRoadFreight
+              setIsFreightDisabled={setIsFreightDisabled}
+              form={form}
+            />
           </div>
 
           <div className={clsx('pt-6', step !== 8 && 'hidden')}>
@@ -1106,6 +1117,7 @@ export default function Registration() {
 
             {isProvider && step !== 9 && (
               <Button
+                disabled={isFreightDisabled}
                 onClick={onNextStep}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
