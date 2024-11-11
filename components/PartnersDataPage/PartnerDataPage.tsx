@@ -185,7 +185,7 @@ const PartnerDataPage = ({
       ? partnerData.missions
       : [partnerData?.missions];
 
-    return (isGet ? partnerDataMissions : missionsData).map(
+    return (isGet ? partnerDataMissions : missionsData)?.map(
       (item: any, _: unknown, arr: Array<unknown>) => ({
         ...item,
         value: 100 / arr.length,
@@ -280,10 +280,10 @@ const PartnerDataPage = ({
   useEffect(() => {
     form?.setValue(
       'missions',
-      missionsData.map(({ label, color }) => ({
+      (missionsData?.map(({ label, color }) => ({
         label,
         color,
-      })) as any,
+      })) as any) || [],
     );
   }, [form, missionsData]);
 
@@ -976,7 +976,7 @@ const PartnerDataPage = ({
                           {(isGet
                             ? calculateCharMissionsData
                             : missionsData
-                          ).map((elem: any) => (
+                          )?.map((elem: any) => (
                             <div
                               key={elem.label}
                               className="flex justify-between gap-2 mb-4"

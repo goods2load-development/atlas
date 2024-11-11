@@ -8,6 +8,7 @@ import { Dispatch, SetStateAction } from 'react';
 import { FileCode, ViewIcon } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { ReactSVG } from 'react-svg';
 
 import {
   Dialog,
@@ -60,14 +61,22 @@ const ViewPartnerDialog = ({
       <DialogContent className="p-8 max-w-[80vw]">
         <DialogHeader>
           <DialogTitle className="flex items-center justify-center gap-2 text-center text-[40px]/[48px] mb-3 uppercase font-bold">
-            {partner.companyPhoto && (
-              <Image
-                width={50}
-                height={50}
-                src={`${process.env.NEXT_PUBLIC_BASE_URL}${partner.companyPhoto}`}
-                alt="logo"
-              />
-            )}
+            {partner.companyPhoto &&
+              (partner.companyPhoto.endsWith('.svg') ? (
+                <ReactSVG
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${partner.companyPhoto}`}
+                  beforeInjection={(svg: any) => {
+                    svg.setAttribute('style', 'width: 125px');
+                  }}
+                />
+              ) : (
+                <Image
+                  width={43}
+                  height={46}
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${partner.companyPhoto}`}
+                  alt="Logo"
+                />
+              ))}
             Partner data
           </DialogTitle>
           <hr />
