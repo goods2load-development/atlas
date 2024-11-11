@@ -221,6 +221,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
+      const iso = getCountryIsoByName(departure ? fromCountry : toCountry);
 
       if (deliveryBy === 'truck') return;
 
@@ -230,10 +231,18 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           withCredentials: false,
         }).then((data: any) => {
           if (data?.features) {
-            const ports: any[] = data?.features.map((item: any) => ({
-              id: item.properties.iata,
-              label: `(${item.properties.iata || item.properties.local_code}) ${item.properties.name}`,
-            }));
+            const ports: any[] = data?.features
+              .filter((item: any) => {
+                return (
+                  item.properties.iata !== null &&
+                  item.properties.country.name ===
+                    (departure ? fromCountry : toCountry)
+                );
+              })
+              .map((item: any) => ({
+                id: item.properties.iata,
+                label: `(${item.properties.iata}) ${item.properties.name}`,
+              }));
             // const selected: any[] = data?.features.map(
             //   (item: any) => item.properties.iata,
             // );
@@ -253,8 +262,6 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       }
 
       if (type === 'seaport') {
-        const iso = getCountryIsoByName(departure ? fromCountry : toCountry);
-        console.log({ iso });
         const response = await fetch(
           `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&name=${encodeURIComponent(departure ? from : to)}&country_iso=${encodeURIComponent(iso as string)}&port_type=Port&fuzzy=1`,
         );
