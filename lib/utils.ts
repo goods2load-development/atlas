@@ -1,9 +1,12 @@
 import axios from 'axios';
 import { type ClassValue, clsx } from 'clsx';
 import { format } from 'date-fns';
+import countries from 'i18n-iso-countries';
 import Cookie from 'js-cookie';
 import { signOut } from 'next-auth/react';
 import { twMerge } from 'tailwind-merge';
+
+countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -337,4 +340,9 @@ export function checkAdministrativeDivision(name: string) {
     return `${name} Administrative division`;
   }
   return name;
+}
+
+export function getCountryIsoByName(countryName: string) {
+  const isoCode = countries.getAlpha2Code(countryName, 'en');
+  return isoCode || null;
 }

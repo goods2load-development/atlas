@@ -1,4 +1,10 @@
-import { deleteRequest, getRequest, patchRequest, postRequest } from './utils';
+import {
+  deleteRequest,
+  getCountryIsoByName,
+  getRequest,
+  patchRequest,
+  postRequest,
+} from './utils';
 
 import { format } from 'date-fns';
 import { create } from 'zustand';
@@ -211,36 +217,68 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         partnersSelected: data.data.map((item: any) => item.id),
       }));
     },
-    getPortsList: (departure: boolean = false) => {
+    getPortsList: async (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
-      if (deliveryBy !== 'truck')
+
+      if (deliveryBy === 'truck') return;
+
+      if (type === 'airport') {
         getRequest({
-          url: `https://port-api.com/${type}/search/${city}`,
+          url: `https://port-api.com/airport/search/${city}`,
           withCredentials: false,
         }).then((data: any) => {
           if (data?.features) {
             const ports: any[] = data?.features.map((item: any) => ({
-              id: item.properties.name,
-              label: item.properties.name,
+              id: item.properties.iata,
+              label: `(${item.properties.iata || item.properties.local_code}) ${item.properties.name}`,
             }));
-            const selected: any[] = data?.features.map(
-              (item: any) => item.properties.name,
-            );
+            // const selected: any[] = data?.features.map(
+            //   (item: any) => item.properties.iata,
+            // );
             if (departure) {
               set(() => ({
                 portsDeparture: ports,
-                portsDepartureSelected: selected,
+                // portsDepartureSelected: selected,
               }));
             } else {
               set(() => ({
                 portsArrival: ports,
-                portsArrivalSelected: selected,
+                // portsArrivalSelected: selected,
               }));
             }
           }
         });
+      }
+
+      if (type === 'seaport') {
+        const iso = getCountryIsoByName(departure ? fromCountry : toCountry);
+        console.log({ iso });
+        const response = await fetch(
+          `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&name=${encodeURIComponent(departure ? from : to)}&country_iso=${encodeURIComponent(iso as string)}&port_type=Port&fuzzy=1`,
+        );
+        const data = await response.json();
+
+        const ports = data.data
+          .filter((item: any) => item.unlocode)
+          .map((item: any) => ({
+            id: item.unlocode,
+            label: `(${item.unlocode}) ${item.port_name}`,
+          }));
+
+        if (departure) {
+          set(() => ({
+            portsDeparture: ports,
+            // portsDepartureSelected: selected,
+          }));
+        } else {
+          set(() => ({
+            portsArrival: ports,
+            // portsArrivalSelected: selected,
+          }));
+        }
+      }
     },
     getProducts: async (page?: number) => {
       const {
