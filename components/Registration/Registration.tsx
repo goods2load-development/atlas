@@ -636,6 +636,7 @@ export default function Registration() {
                     <FormItem className="w-full mb-5 flex gap-4 items-center justify-between">
                       <FormLabel className="font-light sm:font-normal">
                         Company logo
+                        <IsRequired />
                       </FormLabel>
                       <div className="flex flex-col">
                         <FormDescription className="text-[12px]">
@@ -678,6 +679,7 @@ export default function Registration() {
                     <FormItem className="sm:w-8/12 sm:mr-3">
                       <FormLabel className="font-light sm:font-normal">
                         Business Address
+                        <IsRequired />
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -698,6 +700,7 @@ export default function Registration() {
                     <FormItem className="sm:w-4/12">
                       <FormLabel className="font-light sm:font-normal">
                         Postal / ZIP code
+                        <IsRequired />
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -733,10 +736,7 @@ export default function Registration() {
                         }}
                       >
                         <SelectTrigger className="bg-gray-2 border-transparent outline-none placeholder:text-gray-500">
-                          <SelectValue
-                            className="placeholder:text-gray-500"
-                            placeholder="Country"
-                          />
+                          <SelectValue placeholder="UAE" />
                         </SelectTrigger>
                         <SelectContent>
                           {countriesList.map((item: any) => (
@@ -758,6 +758,7 @@ export default function Registration() {
                   <FormItem className="w-full mb-5">
                     <FormLabel className="font-light sm:font-normal">
                       City
+                      <IsRequired />
                     </FormLabel>
                     <FormControl>
                       <Popover
@@ -834,8 +835,8 @@ export default function Registration() {
                     render={({ field }) => (
                       <FormItem className="w-full mb-5 sm:flex flex-wrap">
                         <div className="sm:w-1/2 sm:pr-2">
-                          <FormLabel className="text-[14px]/[18px] font-normal">
-                            Insurance statement, license to be fill in
+                          <FormLabel className="text-[14px]/[14px] font-normal">
+                            Insurance statement, with supporting proof documents
                           </FormLabel>
                           <FormDescription className="text-[12px]">
                             *Attachments not bigger than 2MB
@@ -874,8 +875,10 @@ export default function Registration() {
                     render={({ field }) => (
                       <FormItem className="w-full mb-5 sm:flex flex-wrap">
                         <div className="sm:w-1/2 sm:pr-2">
-                          <FormLabel className="text-[14px]/[18px] font-normal">
-                            Vat registration, form to be fill
+                          <FormLabel className="text-[14px]/[2px] font-normal">
+                            Vat registration, with supporting proof documents
+                            attached
+                            <IsRequired />
                           </FormLabel>
                           <FormDescription className="text-[12px]">
                             *Attachments not bigger than 2MB
@@ -916,7 +919,9 @@ export default function Registration() {
                       <FormItem className="w-full mb-5 sm:flex flex-wrap">
                         <div className="sm:w-1/2 sm:pr-2">
                           <FormLabel className="text-[14px]/[18px] font-normal">
-                            Trade license number, form to be fill in
+                            Trade license number, with supporting proof
+                            documents attached
+                            <IsRequired />
                           </FormLabel>
                           <FormDescription className="text-[12px]">
                             *Attachments not bigger than 2MB
@@ -1031,6 +1036,7 @@ export default function Registration() {
                         Terms of use
                       </Link>{' '}
                       of the website.
+                      <IsRequired />
                     </FormLabel>
                   </FormItem>
                 )}
