@@ -39,7 +39,10 @@ const ConsentPopup = () => {
 
   return (
     <Dialog open={isVisible} onOpenChange={handleClose}>
-      <DialogContent className="max-w-4xl p-4 md:p-12 md:gap-9 w-[95%] max-h-[90vh] overflow-y-auto">
+      <DialogContent
+        isCloseBtn={false}
+        className="max-w-4xl p-4 md:p-12 md:gap-9 w-[95%] max-h-[90vh] overflow-y-auto"
+      >
         <DialogHeader className="flex flex-row items-center mx-auto gap-4">
           <Image src={CookiesImage} alt="Cookies" width={48} height={48} />
           <DialogTitle className="text-2xl md:text-5xl font-thin">

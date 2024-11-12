@@ -666,11 +666,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 Take a photo{' '}
                 <ToolTipComponent
                   text={
-                    <>
+                    <p className="max-w-[250px]">
                       Not sure about your HS code? <br /> Let us help! Just snap
                       a quick photo, and our AI system will identify the correct
-                      classification for your product in no tim
-                    </>
+                      classification for your product in no time.
+                    </p>
                   }
                 />
               </label>
