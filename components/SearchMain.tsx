@@ -879,8 +879,8 @@ export default function SearchMain({ main }: { main?: boolean }) {
 
           {!isLoadingAI.response && !isLoadingAI.error && (
             <div
-              className="mx-auto w-[15px] aspect-[1] shadow-[-60px_15px,-60px_15px,-60px_15px]
-             translate-y-[-15px] rounded-[50%] [clip-path:inset(-45px)] animate-dots-animate"
+              className="mx-auto scale-[350%] w-[15px] aspect-[1] shadow-[-60px_15px,-60px_15px,-60px_15px] translate-y-[-15px] rounded-[50%]
+             [clip-path:inset(-45px)] animate-dots-animate text-gray-500"
             ></div>
           )}
         </DialogContent>
