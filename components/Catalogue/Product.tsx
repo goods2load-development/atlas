@@ -185,12 +185,13 @@ export default function Product(props: any) {
               placementId={props.partner?.placementId}
             />
           )}
-          {/* 
-          <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
-            <LeafIcon />
-            Carbon Offset
-          </div> */}
 
+          {props.hasProof && (
+            <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
+              <LeafIcon />
+              Carbon Offset
+            </div>
+          )}
           {!!props.partner?.partnerAwards?.length && (
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E3F5F8] text-[#417FAE] w-fit flex">
               <Image

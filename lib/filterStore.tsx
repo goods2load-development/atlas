@@ -1,4 +1,10 @@
-import { deleteRequest, getRequest, patchRequest, postRequest } from './utils';
+import {
+  deleteRequest,
+  getCountryIsoByName,
+  getRequest,
+  patchRequest,
+  postRequest,
+} from './utils';
 
 import { format } from 'date-fns';
 import { create } from 'zustand';
@@ -218,36 +224,82 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         partnersSelected: data.map((item: any) => item.id),
       }));
     },
-    getPortsList: (departure: boolean = false) => {
+    getPortsList: async (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
-      if (deliveryBy !== 'truck')
+
+      let iso2;
+
+      try {
+        const reponse_iso2 = await fetch(
+          `https://restcountries.com/v3.1/name/${departure ? fromCountry : toCountry}`,
+        );
+        const data = await reponse_iso2.json();
+        iso2 = data[0]?.cca2 || 'Country not found';
+      } catch (error) {
+        iso2 = null;
+      }
+
+      if (deliveryBy === 'truck') return;
+
+      if (type === 'airport') {
         getRequest({
-          url: `https://port-api.com/${type}/search/${city}`,
+          url: `https://aviation-edge.com/v2/public/airportDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&type=Cargo&codeIso2Country=${iso2}`,
           withCredentials: false,
         }).then((data: any) => {
-          if (data?.features) {
-            const ports: any[] = data?.features.map((item: any) => ({
-              id: item.properties.name,
-              label: item.properties.name,
+          if (!!data.length) {
+            const ports: any[] = data.map((item: any) => ({
+              id: item.codeIataAirport,
+              label: `(${item.codeIataAirport}) ${
+                item.nameAirport.includes(' Airport')
+                  ? item.nameAirport
+                  : item.nameAirport + ' Airport'
+              }`,
             }));
-            const selected: any[] = data?.features.map(
-              (item: any) => item.properties.name,
-            );
+            // const selected: any[] = data?.features.map(
+            //   (item: any) => item.properties.iata,
+            // );
             if (departure) {
               set(() => ({
                 portsDeparture: ports,
-                portsDepartureSelected: selected,
+                // portsDepartureSelected: selected,
               }));
             } else {
               set(() => ({
                 portsArrival: ports,
-                portsArrivalSelected: selected,
+                // portsArrivalSelected: selected,
               }));
             }
           }
         });
+      }
+
+      if (type === 'seaport') {
+        const response = await fetch(
+          `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&name=${encodeURIComponent(departure ? from : to)}&country_iso=${encodeURIComponent(iso2 as string)}&port_type=Port&fuzzy=1`,
+        );
+        const data = await response.json();
+
+        const ports = data.data
+          .filter((item: any) => item.unlocode)
+          .map((item: any) => ({
+            id: item.unlocode,
+            label: `(${item.unlocode}) ${item.port_name}`,
+          }));
+
+        if (departure) {
+          set(() => ({
+            portsDeparture: ports,
+            // portsDepartureSelected: selected,
+          }));
+        } else {
+          set(() => ({
+            portsArrival: ports,
+            // portsArrivalSelected: selected,
+          }));
+        }
+      }
     },
     clearPartners: () => {
       set({ partners: [] });
