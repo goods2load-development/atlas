@@ -257,18 +257,18 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
                   : item.nameAirport + ' Airport'
               }`,
             }));
-            // const selected: any[] = data?.features.map(
-            //   (item: any) => item.properties.iata,
-            // );
+            const selected: any[] = data.map(
+              (item: any) => item.codeIataAirport,
+            );
             if (departure) {
               set(() => ({
                 portsDeparture: ports,
-                // portsDepartureSelected: selected,
+                portsDepartureSelected: selected,
               }));
             } else {
               set(() => ({
                 portsArrival: ports,
-                // portsArrivalSelected: selected,
+                portsArrivalSelected: selected,
               }));
             }
           }
