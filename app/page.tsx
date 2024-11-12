@@ -11,6 +11,7 @@ import SliderMain from '@/components/SliderMain';
 import SubHeaderMain from '@/components/SubHeaderMain';
 import TailoredServices from '@/components/TailoredServices';
 import ConsentPopup from '@/components/common/ConsentPopup';
+import GDPRAiPopup from '@/components/common/GDPRAiPopup';
 
 const questionsContent = [
   {
@@ -116,6 +117,7 @@ export default function Home() {
         <Analytics />
       </main>
       <Footer />
+      <GDPRAiPopup />
       <ConsentPopup />
     </>
   );

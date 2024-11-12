@@ -111,6 +111,7 @@ const config = {
         'button-ping': 'button-ping 1.5s infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
+        'color-cycle': 'colorCycle 4s linear infinite',
       },
       keyframes: {
         'button-ping': {
@@ -139,6 +140,12 @@ const config = {
         'accordion-up': {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
+        },
+        colorCycle: {
+          '0%, 100%': { color: '#ff0000' },
+          '25%': { color: '#00ff00' },
+          '50%': { color: '#0000ff' },
+          '75%': { color: '#ff00ff' },
         },
       },
     },

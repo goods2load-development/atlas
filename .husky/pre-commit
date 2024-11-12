@@ -3,6 +3,7 @@
 
 # Format code
 yarn format
+git add .
 
 # Check TypeScript types
 yarn tsc --noEmit
