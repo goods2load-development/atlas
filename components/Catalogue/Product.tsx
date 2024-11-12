@@ -178,10 +178,10 @@ export default function Product(props: any) {
       </div>
       <div className="md:flex justify-between py-2">
         <div className="py-[8px] md:py-0 border-t md:border-none md:pl-6 items-center justify-center md:justify-start flex sm:flex-row flex-col gap-2">
-          {!!props.partner?.googleRataing && (
+          {!!props.partner?.googleRating && (
             <GoogleRating
-              rating={props.partner?.googleRataing}
-              totalReviews={props.parnter?.googleTotalReviews || 0}
+              rating={props.partner?.googleRating}
+              totalReviews={props.partner?.googleTotalReviews || 0}
               placementId={props.partner?.placementId}
             />
           )}
