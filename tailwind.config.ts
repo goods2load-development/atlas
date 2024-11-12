@@ -111,7 +111,7 @@ const config = {
         'button-ping': 'button-ping 1.5s infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'color-cycle': 'colorCycle 4s linear infinite',
+        'dots-animate': 'dots-animate 1s infinite linear',
       },
       keyframes: {
         'button-ping': {
@@ -120,13 +120,11 @@ const config = {
           },
           '70%': {
             transform: 'scale(1)',
-            'box-shadow':
-              '0 0 10px 10px rgba(255, 103, 32, 0.5)' /* Added blur radius of 10px */,
+            'box-shadow': '0 0 10px 10px rgba(255, 103, 32, 0.5)',
           },
           '100%': {
             transform: 'scale(.9)',
-            'box-shadow':
-              '0 0 10px 0 rgba(255, 103, 32, 0.5)' /* Added blur radius of 10px */,
+            'box-shadow': '0 0 10px 0 rgba(255, 103, 32, 0.5)',
           },
         },
         'infinite-scroll': {
@@ -141,11 +139,13 @@ const config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        colorCycle: {
-          '0%, 100%': { color: '#ff0000' },
-          '25%': { color: '#00ff00' },
-          '50%': { color: '#0000ff' },
-          '75%': { color: '#ff00ff' },
+        'dots-animate': {
+          '16.67%': { boxShadow: '-60px 15px, -60px 15px, 19px 15px' },
+          '33.33%': { boxShadow: '-60px 15px, 0px 15px, 19px 15px' },
+          '40%, 60%': { boxShadow: '-19px 15px, 0px 15px, 19px 15px' },
+          '66.67%': { boxShadow: '-19px 15px, 0px 15px, 60px 15px' },
+          '83.33%': { boxShadow: '-19px 15px, 60px 15px, 60px 15px' },
+          '100%': { boxShadow: '60px 15px, 60px 15px, 60px 15px' },
         },
       },
     },
