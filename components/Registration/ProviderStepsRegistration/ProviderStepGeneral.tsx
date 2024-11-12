@@ -1,5 +1,7 @@
 import { IsRequired } from '../Registration';
 
+import Link from 'next/link';
+
 import {
   FormControl,
   FormField,
@@ -28,7 +30,7 @@ export const FormStepGeneral = ({ form }: { form: any }) => {
         control={form.control}
         name="googleBusinessProfile"
         render={({ field }) => (
-          <FormItem className="w-full mb-5">
+          <FormItem className="w-full mb-2">
             <div className="flex gap-2 items-center">
               {' '}
               <FormLabel className="font-light sm:font-normal">
@@ -63,6 +65,16 @@ export const FormStepGeneral = ({ form }: { form: any }) => {
           </FormItem>
         )}
       />
+      <FormLabel className="font-light sm:font-normal">
+        Don&apos;t know how?{' '}
+        <Link
+          className="underline"
+          href="https://youtu.be/6IRyW80cI9Y?si=ORj0T03IdyX9_0WB"
+          target="_blank"
+        >
+          Watch video!
+        </Link>
+      </FormLabel>
     </>
   );
 };

@@ -40,14 +40,21 @@ export const FormStepIndustryRecognitionSecondary = ({
   const industryRecognitionsSecondary = form.watch(
     'industryRecognitionsSecondary',
   );
+  const sustainabilityCertificationFile = form.watch(
+    'sustainabilityCertificationFile',
+  );
 
   useEffect(() => {
-    if (!isProvideRecognition) return setIsFreightDisabled(false);
+    const shouldDisableFreight =
+      (isProvideRecognition && !industryRecognitionsSecondary?.length) ||
+      (isProvideSustainability && !sustainabilityCertificationFile?.length);
 
-    setIsFreightDisabled(!industryRecognitionsSecondary?.length);
+    setIsFreightDisabled(shouldDisableFreight);
   }, [
     industryRecognitionsSecondary,
     isProvideRecognition,
+    isProvideSustainability,
+    sustainabilityCertificationFile,
     setIsFreightDisabled,
   ]);
 
