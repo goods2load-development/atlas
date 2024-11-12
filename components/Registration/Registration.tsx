@@ -10,7 +10,6 @@ import {
 } from '../ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { ScrollArea } from '../ui/scroll-area';
-import { ToolTipComponent } from '../ui/tooltip';
 import { FormAboutUs } from './ProviderStepsRegistration/ProviderAboutUs';
 import { FormStepAirFreight } from './ProviderStepsRegistration/ProviderStepAirFreight';
 import { FormStepFinalAgreement } from './ProviderStepsRegistration/ProviderStepFinalAgreement';
@@ -94,7 +93,7 @@ export function IsRequired() {
 
 export default function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
@@ -411,6 +410,7 @@ export default function Registration() {
 
   useEffect(() => {
     const isDisablingStep = [2, 3, 5, 6, 7].includes(step);
+
     setIsFreightDisabled(isDisablingStep);
   }, [step]);
 
@@ -1073,45 +1073,54 @@ export default function Registration() {
           <div className={clsx('pt-6 mb-10', step !== 1 && 'hidden')}>
             <FormStepGeneral form={form} />
           </div>
+          {step === 2 && (
+            <div className={clsx('pt-6 mb-10')}>
+              <FormStepIndustryRecognition
+                setIsFreightDisabled={setIsFreightDisabled}
+                form={form}
+              />
+            </div>
+          )}
 
-          <div className={clsx('pt-6 mb-10', step !== 2 && 'hidden')}>
-            <FormStepIndustryRecognition
-              setIsFreightDisabled={setIsFreightDisabled}
-              form={form}
-            />
-          </div>
-
-          <div className={clsx('pt-6 mb-10', step !== 3 && 'hidden')}>
-            <FormStepIndustryRecognitionSecondary
-              setIsFreightDisabled={setIsFreightDisabled}
-              form={form}
-            />
-          </div>
+          {step === 3 && (
+            <div className={clsx('pt-6 mb-10')}>
+              <FormStepIndustryRecognitionSecondary
+                setIsFreightDisabled={setIsFreightDisabled}
+                form={form}
+              />
+            </div>
+          )}
 
           <div className={clsx('pt-6', step !== 4 && 'hidden')}>
             <FormStepIndustries form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 5 && 'hidden')}>
-            <FormStepAirFreight
-              setIsFreightDisabled={setIsFreightDisabled}
-              form={form}
-            />
-          </div>
+          {step === 5 && (
+            <div className={clsx('pt-6')}>
+              <FormStepAirFreight
+                setIsFreightDisabled={setIsFreightDisabled}
+                form={form}
+              />
+            </div>
+          )}
 
-          <div className={clsx('pt-6', step !== 6 && 'hidden')}>
-            <FormStepSeaFreight
-              setIsFreightDisabled={setIsFreightDisabled}
-              form={form}
-            />
-          </div>
+          {step === 6 && (
+            <div className={clsx('pt-6')}>
+              <FormStepSeaFreight
+                setIsFreightDisabled={setIsFreightDisabled}
+                form={form}
+              />
+            </div>
+          )}
 
-          <div className={clsx('pt-6', step !== 7 && 'hidden')}>
-            <FormStepRoadFreight
-              setIsFreightDisabled={setIsFreightDisabled}
-              form={form}
-            />
-          </div>
+          {step === 7 && (
+            <div className={clsx('pt-6')}>
+              <FormStepRoadFreight
+                setIsFreightDisabled={setIsFreightDisabled}
+                form={form}
+              />
+            </div>
+          )}
 
           <div className={clsx('pt-6', step !== 8 && 'hidden')}>
             <FormAboutUs form={form} />
