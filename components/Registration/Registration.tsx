@@ -94,7 +94,7 @@ export function IsRequired() {
 
 export default function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
@@ -1148,7 +1148,7 @@ export default function Registration() {
                 type="submit"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
               >
-                Countinue
+                Continue
               </Button>
             )}
 
