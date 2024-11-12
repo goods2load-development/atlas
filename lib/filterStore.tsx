@@ -228,28 +228,35 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
-      const iso = getCountryIsoByName(departure ? fromCountry : toCountry);
+
+      let iso2;
+
+      try {
+        const reponse_iso2 = await fetch(
+          `https://restcountries.com/v3.1/name/${departure ? fromCountry : toCountry}`,
+        );
+        const data = await reponse_iso2.json();
+        iso2 = data[0]?.cca2 || 'Country not found';
+      } catch (error) {
+        iso2 = null;
+      }
 
       if (deliveryBy === 'truck') return;
 
       if (type === 'airport') {
         getRequest({
-          url: `https://port-api.com/airport/search/${city}`,
+          url: `https://aviation-edge.com/v2/public/airportDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&type=Cargo&codeIso2Country=${iso2}`,
           withCredentials: false,
         }).then((data: any) => {
-          if (data?.features) {
-            const ports: any[] = data?.features
-              .filter((item: any) => {
-                return (
-                  item.properties.iata !== null &&
-                  item.properties.country.name ===
-                    (departure ? fromCountry : toCountry)
-                );
-              })
-              .map((item: any) => ({
-                id: item.properties.iata,
-                label: `(${item.properties.iata}) ${item.properties.name}`,
-              }));
+          if (!!data.length) {
+            const ports: any[] = data.map((item: any) => ({
+              id: item.codeIataAirport,
+              label: `(${item.codeIataAirport}) ${
+                item.nameAirport.includes(' Airport')
+                  ? item.nameAirport
+                  : item.nameAirport + ' Airport'
+              }`,
+            }));
             // const selected: any[] = data?.features.map(
             //   (item: any) => item.properties.iata,
             // );
@@ -270,7 +277,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
 
       if (type === 'seaport') {
         const response = await fetch(
-          `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&name=${encodeURIComponent(departure ? from : to)}&country_iso=${encodeURIComponent(iso as string)}&port_type=Port&fuzzy=1`,
+          `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&name=${encodeURIComponent(departure ? from : to)}&country_iso=${encodeURIComponent(iso2 as string)}&port_type=Port&fuzzy=1`,
         );
         const data = await response.json();
 
