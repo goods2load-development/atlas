@@ -137,12 +137,13 @@ export default function Filter() {
   const {
     deliveryBy,
 
-    partners,
+    filterPartners,
     partnersSelected,
     portsDeparture,
     portsDepartureSelected,
     portsArrival,
     portsArrivalSelected,
+    getPartnersFilters,
     setFilter,
     getPortsList,
     getPartners,
@@ -175,7 +176,7 @@ export default function Filter() {
   } = useFilterStore((state: any) => state);
 
   useEffect(() => {
-    // getPartners();
+    getPartnersFilters();
     getPortsList(true);
     getPortsList();
   }, []);
@@ -186,6 +187,7 @@ export default function Filter() {
     partnersSelected.length,
     portsDepartureSelected.length,
     portsArrivalSelected.length,
+
     getPartners,
     bestReviewed,
     carbonOffset,
@@ -337,11 +339,11 @@ export default function Filter() {
         <AccordionTrigger>Logistic partner</AccordionTrigger>
         <AccordionContent>
           <GroupSelection
-            selectAll={() => selectAll(partners, 'partners', true)}
-            clearAll={() => selectAll(partners, 'partners')}
+            selectAll={() => selectAll(filterPartners, 'partners', true)}
+            clearAll={() => selectAll(filterPartners, 'partners')}
           />
           <FilterItemList
-            items={partners}
+            items={filterPartners}
             checkedList={partnersSelected}
             onChange={onCheckboxChange}
             label="name"
