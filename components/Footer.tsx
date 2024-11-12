@@ -45,7 +45,7 @@ export default function Footer() {
             <address className="not-italic flex flex-col gap-2 max-sm:items-center">
               <div className="flex gap-2 items-center">
                 <Image width={17} height={17} src={addressIcon} alt="address" />
-                <span>GOODS2LLOAD FZ LLC</span>
+                <span>GOODS2LOAD FZ LLC</span>
               </div>
               <div className="flex gap-2 items-center">
                 <Image width={17} height={19} src={phoneIcon} alt="phone" />
