@@ -44,7 +44,13 @@ const regions = [
   },
 ];
 
-export const FormStepSeaFreight = ({ form }: { form: any }) => {
+export const FormStepSeaFreight = ({
+  form,
+  setIsFreightDisabled,
+}: {
+  form: any;
+  setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const { getCountriesByRegions }: any = useCountriesStore();
   const { getSeaPortsByCountry }: any = usePortsStore();
 
@@ -55,6 +61,14 @@ export const FormStepSeaFreight = ({ form }: { form: any }) => {
   const [activeCountries, setActiveCountries] = useState<string[]>([]);
   const [isAccordLoading, setIsAccordLoading] = useState(false);
   const [isProvideServices, setIsProvideServices] = useState(true);
+
+  const seaports = form.watch('seaports');
+
+  useEffect(() => {
+    if (!isProvideServices) return setIsFreightDisabled(false);
+
+    setIsFreightDisabled(!seaports?.length);
+  }, [seaports, isProvideServices, setIsFreightDisabled]);
 
   useEffect(() => {
     const fetchCountriesData = async () => {

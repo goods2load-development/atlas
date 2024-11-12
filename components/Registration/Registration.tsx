@@ -391,10 +391,11 @@ export default function Registration() {
     } catch {
       toast({
         title: 'Error',
-        description: 'Failed to register.',
+        description: 'User already found. Try another email or phone number.',
         variant: 'destructive',
         className: 'bg-red-500',
       });
+      setStep(0);
     }
   }
 
@@ -403,9 +404,14 @@ export default function Registration() {
   });
 
   const [userRegistration, setUserRegistration] = useState(isUser);
+  const [isFreightDisabled, setIsFreightDisabled] = useState(false);
   async function fillFieldsWithGoogle() {
     signIn('google', { redirect: true });
   }
+
+  useEffect(() => {
+    if (![5, 6, 7].includes(step)) setIsFreightDisabled(false);
+  }, [step]);
 
   useEffect(() => {
     if (cookies.accessToken) {
@@ -630,6 +636,7 @@ export default function Registration() {
                     <FormItem className="w-full mb-5 flex gap-4 items-center justify-between">
                       <FormLabel className="font-light sm:font-normal">
                         Company logo
+                        <IsRequired />
                       </FormLabel>
                       <div className="flex flex-col">
                         <FormDescription className="text-[12px]">
@@ -672,6 +679,7 @@ export default function Registration() {
                     <FormItem className="sm:w-8/12 sm:mr-3">
                       <FormLabel className="font-light sm:font-normal">
                         Business Address
+                        <IsRequired />
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -692,6 +700,7 @@ export default function Registration() {
                     <FormItem className="sm:w-4/12">
                       <FormLabel className="font-light sm:font-normal">
                         Postal / ZIP code
+                        <IsRequired />
                       </FormLabel>
                       <FormControl>
                         <Input
@@ -727,10 +736,7 @@ export default function Registration() {
                         }}
                       >
                         <SelectTrigger className="bg-gray-2 border-transparent outline-none placeholder:text-gray-500">
-                          <SelectValue
-                            className="placeholder:text-gray-500"
-                            placeholder="Country"
-                          />
+                          <SelectValue placeholder="UAE" />
                         </SelectTrigger>
                         <SelectContent>
                           {countriesList.map((item: any) => (
@@ -752,6 +758,7 @@ export default function Registration() {
                   <FormItem className="w-full mb-5">
                     <FormLabel className="font-light sm:font-normal">
                       City
+                      <IsRequired />
                     </FormLabel>
                     <FormControl>
                       <Popover
@@ -828,8 +835,8 @@ export default function Registration() {
                     render={({ field }) => (
                       <FormItem className="w-full mb-5 sm:flex flex-wrap">
                         <div className="sm:w-1/2 sm:pr-2">
-                          <FormLabel className="text-[14px]/[18px] font-normal">
-                            Insurance statement, license to be fill in
+                          <FormLabel className="text-[14px]/[14px] font-normal">
+                            Insurance statement, with supporting proof documents
                           </FormLabel>
                           <FormDescription className="text-[12px]">
                             *Attachments not bigger than 2MB
@@ -868,8 +875,10 @@ export default function Registration() {
                     render={({ field }) => (
                       <FormItem className="w-full mb-5 sm:flex flex-wrap">
                         <div className="sm:w-1/2 sm:pr-2">
-                          <FormLabel className="text-[14px]/[18px] font-normal">
-                            Vat registration, form to be fill
+                          <FormLabel className="text-[14px]/[2px] font-normal">
+                            Vat registration, with supporting proof documents
+                            attached
+                            <IsRequired />
                           </FormLabel>
                           <FormDescription className="text-[12px]">
                             *Attachments not bigger than 2MB
@@ -910,7 +919,9 @@ export default function Registration() {
                       <FormItem className="w-full mb-5 sm:flex flex-wrap">
                         <div className="sm:w-1/2 sm:pr-2">
                           <FormLabel className="text-[14px]/[18px] font-normal">
-                            Trade license number, form to be fill in
+                            Trade license number, with supporting proof
+                            documents attached
+                            <IsRequired />
                           </FormLabel>
                           <FormDescription className="text-[12px]">
                             *Attachments not bigger than 2MB
@@ -1025,6 +1036,7 @@ export default function Registration() {
                         Terms of use
                       </Link>{' '}
                       of the website.
+                      <IsRequired />
                     </FormLabel>
                   </FormItem>
                 )}
@@ -1074,15 +1086,24 @@ export default function Registration() {
           </div>
 
           <div className={clsx('pt-6', step !== 5 && 'hidden')}>
-            <FormStepAirFreight form={form} />
+            <FormStepAirFreight
+              setIsFreightDisabled={setIsFreightDisabled}
+              form={form}
+            />
           </div>
 
           <div className={clsx('pt-6', step !== 6 && 'hidden')}>
-            <FormStepSeaFreight form={form} />
+            <FormStepSeaFreight
+              setIsFreightDisabled={setIsFreightDisabled}
+              form={form}
+            />
           </div>
 
           <div className={clsx('pt-6', step !== 7 && 'hidden')}>
-            <FormStepRoadFreight form={form} />
+            <FormStepRoadFreight
+              setIsFreightDisabled={setIsFreightDisabled}
+              form={form}
+            />
           </div>
 
           <div className={clsx('pt-6', step !== 8 && 'hidden')}>
@@ -1106,6 +1127,7 @@ export default function Registration() {
 
             {isProvider && step !== 9 && (
               <Button
+                disabled={isFreightDisabled}
                 onClick={onNextStep}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"

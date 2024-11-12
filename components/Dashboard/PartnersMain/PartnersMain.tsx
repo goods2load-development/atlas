@@ -50,7 +50,7 @@ const PartnersMain = () => {
   const filteredPartners = useMemo(
     () =>
       filterByField(
-        partners.map((par) => ({
+        partners?.map((par) => ({
           ...par.user,
           hasPage: par.hasPage,
           aboutUs: par.aboutUs,

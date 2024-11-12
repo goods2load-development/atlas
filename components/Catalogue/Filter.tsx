@@ -146,7 +146,6 @@ export default function Filter() {
     setFilter,
     getPortsList,
     getPartners,
-    getProducts,
 
     bestReviewed,
     carbonOffset,
@@ -176,18 +175,18 @@ export default function Filter() {
   } = useFilterStore((state: any) => state);
 
   useEffect(() => {
-    getPartners();
+    // getPartners();
     getPortsList(true);
     getPortsList();
   }, []);
 
   useEffect(() => {
-    getProducts();
+    getPartners();
   }, [
     partnersSelected.length,
     portsDepartureSelected.length,
     portsArrivalSelected.length,
-    getProducts,
+    getPartners,
     bestReviewed,
     carbonOffset,
     industryRecognition,

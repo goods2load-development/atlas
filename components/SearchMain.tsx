@@ -158,7 +158,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
     height,
     goodsValue,
     incoterms,
-    getProducts,
+    getPartners,
     valid,
   } = useFilterStore((state: any) => state);
   const { goodsList, goodsListLoading, getGoodsList } = useGoodsStore(
@@ -210,7 +210,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
     e.preventDefault();
 
     if (valid) {
-      getProducts();
+      getPartners();
       if (main) router.push('/catalogue');
     }
   }
