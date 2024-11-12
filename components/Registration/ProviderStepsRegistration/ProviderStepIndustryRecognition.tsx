@@ -105,8 +105,22 @@ const industryRecognitions = [
   { code: 'Other', name: 'Please specify which recognized association' },
 ];
 
-export const FormStepIndustryRecognition = ({ form }: { form: any }) => {
+export const FormStepIndustryRecognition = ({
+  form,
+  setIsFreightDisabled,
+}: {
+  form: any;
+  setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+}) => {
   const [isProvideRecognition, setIsProvideRecognition] = useState(true);
+
+  const industryRecognitionsWatch = form.watch('industryRecognitions');
+
+  useEffect(() => {
+    if (!isProvideRecognition) return setIsFreightDisabled(false);
+
+    setIsFreightDisabled(!industryRecognitionsWatch?.length);
+  }, [industryRecognitionsWatch, isProvideRecognition, setIsFreightDisabled]);
 
   useEffect(() => {
     if (!isProvideRecognition) {

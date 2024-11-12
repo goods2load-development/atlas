@@ -94,7 +94,7 @@ export function IsRequired() {
 
 export default function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(3);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const router = useRouter();
   const [cookies] = useCookies(['accessToken']);
@@ -410,7 +410,8 @@ export default function Registration() {
   }
 
   useEffect(() => {
-    if (![5, 6, 7].includes(step)) setIsFreightDisabled(false);
+    const isDisablingStep = [2, 3, 5, 6, 7].includes(step);
+    setIsFreightDisabled(isDisablingStep);
   }, [step]);
 
   useEffect(() => {
@@ -1074,11 +1075,17 @@ export default function Registration() {
           </div>
 
           <div className={clsx('pt-6 mb-10', step !== 2 && 'hidden')}>
-            <FormStepIndustryRecognition form={form} />
+            <FormStepIndustryRecognition
+              setIsFreightDisabled={setIsFreightDisabled}
+              form={form}
+            />
           </div>
 
           <div className={clsx('pt-6 mb-10', step !== 3 && 'hidden')}>
-            <FormStepIndustryRecognitionSecondary form={form} />
+            <FormStepIndustryRecognitionSecondary
+              setIsFreightDisabled={setIsFreightDisabled}
+              form={form}
+            />
           </div>
 
           <div className={clsx('pt-6', step !== 4 && 'hidden')}>

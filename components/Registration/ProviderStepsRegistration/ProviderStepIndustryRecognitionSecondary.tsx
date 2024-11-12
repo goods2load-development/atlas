@@ -28,12 +28,28 @@ const industryRecognitions = [
 
 export const FormStepIndustryRecognitionSecondary = ({
   form,
+  setIsFreightDisabled,
 }: {
   form: any;
+  setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { clearErrors } = form;
   const [isProvideRecognition, setIsProvideRecognition] = useState(true);
   const [isProvideSustainability, setIsProvideSustainability] = useState(true);
+
+  const industryRecognitionsSecondary = form.watch(
+    'industryRecognitionsSecondary',
+  );
+
+  useEffect(() => {
+    if (!isProvideRecognition) return setIsFreightDisabled(false);
+
+    setIsFreightDisabled(!industryRecognitionsSecondary?.length);
+  }, [
+    industryRecognitionsSecondary,
+    isProvideRecognition,
+    setIsFreightDisabled,
+  ]);
 
   useEffect(() => {
     if (!isProvideRecognition) {
