@@ -1,5 +1,7 @@
 'use client';
 
+import { Dialog, DialogContent } from './ui/dialog';
+import Spinner from './ui/spinner';
 import {
   DeliveryBy,
   useCurrenciesStore,
@@ -7,9 +9,10 @@ import {
 } from '@/lib/filterStore';
 import { useCountriesStore, useGoodsStore } from '@/lib/store';
 
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
+import { Info } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -41,7 +44,13 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { ToolTipComponent } from '@/components/ui/tooltip';
+import {
+  ToolTipComponent,
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
 
 const placementOfGoodsOptions = [
   'Pallets',
@@ -186,6 +195,11 @@ export default function SearchMain({ main }: { main?: boolean }) {
   }
   const debounce = useRef();
   const [open, setOpen] = useState(false);
+  const [isLoadingAI, setIsLoadingAI] = useState({
+    response: false,
+    error: false,
+    loading: false,
+  });
 
   const handleChange = (e: any) => {
     const value = e.target.value;
@@ -220,520 +234,655 @@ export default function SearchMain({ main }: { main?: boolean }) {
     else return 0;
   }
 
-  // const [fromCountryOpen, setFromCountryOpen] = useState(false);
-  // const [fromCityOpen, setFromCityOpen] = useState(false);
-  // const [toCountryOpen, setToCountryOpen] = useState(false);
-  // const [toCityOpen, setToCityOpen] = useState(false);
-
   const [popoverOpen, setPopoverOpen] = useState<
     null | keyof typeof FIELD_NAMES
   >(null);
 
+  const onFileUploaded = async (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    setIsLoadingAI({
+      loading: true,
+      response: false,
+      error: false,
+    });
+
+    try {
+      const response = await fetch('https://hscode.vition.ai/get_hscode', {
+        method: 'POST',
+        headers: {
+          Authorization: 'Bearer e509ff5e0f716f5418997f68bd665a8d',
+        },
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      const { hscode, object } = await response.json();
+
+      if (hscode === 'Unavailable') throw new Error(`Error: Unavailable code.`);
+
+      setFilter({
+        typeOfGoods: `${hscode} ${object}`,
+      });
+      setIsLoadingAI({
+        response: true,
+        error: false,
+        loading: true,
+      });
+    } catch (err) {
+      setIsLoadingAI({
+        response: false,
+        error: true,
+        loading: true,
+      });
+    } finally {
+      setTimeout(() => {
+        setIsLoadingAI({
+          ...isLoadingAI,
+          loading: false,
+        });
+      }, 2000);
+    }
+  };
+
   return (
-    <form onSubmit={onSubmit}>
-      <RadioGroup
-        onValueChange={(e) => {
-          setFilter({
-            deliveryBy: e,
-            incoterms: incotermsList[e as DeliveryBy][0].name,
-          });
-        }}
-        defaultValue={deliveryBy}
-        className={`flex justify-center sm:justify-start custom-radio ${!main && 'catalogue'} pb-5 sm:pb-0`}
-      >
-        <CustomRadioGroupItem value={DeliveryBy.plane} imageNumber={1} />
-        <CustomRadioGroupItem value={DeliveryBy.ferry} imageNumber={2} />
-        <CustomRadioGroupItem value={DeliveryBy.truck} imageNumber={3} />
-      </RadioGroup>
-      <div
-        className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] items-end p-[24px] mt-[10px] `}
-      >
-        <div className="lg:flex justify-stretch items-end w-full mb-[24px] lg:mb-[48px]">
-          <div className="flex lg:w-[26%] items-end">
-            <div className="mr-[1px] w-1/2">
-              <label className="mb-2 block">From</label>
-              <Popover open={popoverOpen === FIELD_NAMES.FROM_COUNTRY_OPEN}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
-                    onClick={() =>
-                      setPopoverOpen(
-                        popoverOpen === FIELD_NAMES.FROM_COUNTRY_OPEN
-                          ? null
-                          : FIELD_NAMES.FROM_COUNTRY_OPEN,
-                      )
-                    }
-                  >
-                    <ToolTipComponent asChild text={fromCountry}>
-                      {fromCountry ? (
-                        <span className="block w-full truncate">
-                          {fromCountry}
-                        </span>
+    <>
+      <form onSubmit={onSubmit}>
+        <RadioGroup
+          onValueChange={(e) => {
+            setFilter({
+              deliveryBy: e,
+              incoterms: incotermsList[e as DeliveryBy][0].name,
+            });
+          }}
+          defaultValue={deliveryBy}
+          className={`flex justify-center sm:justify-start custom-radio ${!main && 'catalogue'} pb-5 sm:pb-0`}
+        >
+          <CustomRadioGroupItem value={DeliveryBy.plane} imageNumber={1} />
+          <CustomRadioGroupItem value={DeliveryBy.ferry} imageNumber={2} />
+          <CustomRadioGroupItem value={DeliveryBy.truck} imageNumber={3} />
+        </RadioGroup>
+        <div
+          className={`bg-[#ffede4] rounded-xl font-bold text-[16px]/[20px] text-[#ff6720] items-end p-[24px] mt-[10px] `}
+        >
+          <div className="lg:flex justify-stretch items-end w-full mb-[24px] lg:mb-[48px]">
+            <div className="flex lg:w-[26%] items-end">
+              <div className="mr-[1px] w-1/2">
+                <label className="mb-2 block">From</label>
+                <Popover open={popoverOpen === FIELD_NAMES.FROM_COUNTRY_OPEN}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="h-[60px] rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                      onClick={() =>
+                        setPopoverOpen(
+                          popoverOpen === FIELD_NAMES.FROM_COUNTRY_OPEN
+                            ? null
+                            : FIELD_NAMES.FROM_COUNTRY_OPEN,
+                        )
+                      }
+                    >
+                      <ToolTipComponent asChild text={fromCountry}>
+                        {fromCountry ? (
+                          <span className="block w-full truncate">
+                            {fromCountry}
+                          </span>
+                        ) : (
+                          <span className="text-gray-500">Select country</span>
+                        )}
+                      </ToolTipComponent>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent side="bottom" className="w-[200px] p-0">
+                    <Command filter={filter}>
+                      <CommandInput placeholder="Search..." />
+                      <CommandEmpty>Not found.</CommandEmpty>
+                      {countriesListLoading ? (
+                        <Loader />
                       ) : (
-                        <span className="text-gray-500">Select country</span>
+                        <ScrollArea className="h-72 w-full">
+                          <CommandGroup>
+                            {countriesList.map(
+                              (country: any, index: number) => (
+                                <CommandItem
+                                  value={`${country.value}`}
+                                  key={index}
+                                  onSelect={() => {
+                                    setFilter({ fromCountry: country.value });
+                                    getCitiesList(country.value);
+                                    setPopoverOpen(null);
+                                  }}
+                                >
+                                  {country.label}
+                                </CommandItem>
+                              ),
+                            )}
+                          </CommandGroup>
+                        </ScrollArea>
                       )}
-                    </ToolTipComponent>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent side="bottom" className="w-[200px] p-0">
-                  <Command filter={filter}>
-                    <CommandInput placeholder="Search..." />
-                    <CommandEmpty>Not found.</CommandEmpty>
-                    {countriesListLoading ? (
-                      <Loader />
-                    ) : (
-                      <ScrollArea className="h-72 w-full">
-                        <CommandGroup>
-                          {countriesList.map((country: any, index: number) => (
-                            <CommandItem
-                              value={`${country.value}`}
-                              key={index}
-                              onSelect={() => {
-                                setFilter({ fromCountry: country.value });
-                                getCitiesList(country.value);
-                                setPopoverOpen(null);
-                              }}
-                            >
-                              {country.label}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </ScrollArea>
-                    )}
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div className="w-1/2">
-              <Popover open={popoverOpen === FIELD_NAMES.FROM_CITY_OPEN}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
-                    onClick={() =>
-                      setPopoverOpen(
-                        popoverOpen === FIELD_NAMES.FROM_CITY_OPEN
-                          ? null
-                          : FIELD_NAMES.FROM_CITY_OPEN,
-                      )
-                    }
-                  >
-                    <ToolTipComponent asChild text={from}>
-                      {from ? (
-                        <span className="block w-full truncate">{from}</span>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="w-1/2">
+                <Popover open={popoverOpen === FIELD_NAMES.FROM_CITY_OPEN}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none  border-none font-normal text-black justify-start w-full"
+                      onClick={() =>
+                        setPopoverOpen(
+                          popoverOpen === FIELD_NAMES.FROM_CITY_OPEN
+                            ? null
+                            : FIELD_NAMES.FROM_CITY_OPEN,
+                        )
+                      }
+                    >
+                      <ToolTipComponent asChild text={from}>
+                        {from ? (
+                          <span className="block w-full truncate">{from}</span>
+                        ) : (
+                          <span className="text-gray-500">Select city</span>
+                        )}
+                      </ToolTipComponent>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command filter={filter}>
+                      <CommandInput placeholder="Search..." />
+                      <CommandEmpty>Not found.</CommandEmpty>
+                      {citiesListLoading ? (
+                        <Loader />
                       ) : (
-                        <span className="text-gray-500">Select city</span>
+                        <ScrollArea className="h-72 w-full">
+                          <CommandGroup>
+                            {citiesList.map((item: any, index: number) => (
+                              <CommandItem
+                                value={`${item.value}`}
+                                key={index}
+                                onSelect={() => {
+                                  setFilter({ from: item.label });
+                                  setPopoverOpen(null);
+                                }}
+                              >
+                                {item.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </ScrollArea>
                       )}
-                    </ToolTipComponent>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command filter={filter}>
-                    <CommandInput placeholder="Search..." />
-                    <CommandEmpty>Not found.</CommandEmpty>
-                    {citiesListLoading ? (
-                      <Loader />
-                    ) : (
-                      <ScrollArea className="h-72 w-full">
-                        <CommandGroup>
-                          {citiesList.map((item: any, index: number) => (
-                            <CommandItem
-                              value={`${item.value}`}
-                              key={index}
-                              onSelect={() => {
-                                setFilter({ from: item.label });
-                                setPopoverOpen(null);
-                              }}
-                            >
-                              {item.label}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </ScrollArea>
-                    )}
-                  </Command>
-                </PopoverContent>
-              </Popover>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
-          </div>
-          <Button
-            type="button"
-            onClick={switchLocations}
-            className="mb-[-28px] block p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] mx-auto lg:mx-[-16px] lg:mb-[13px] relative z-10 hover:bg-transparent group"
-          >
-            <Image
-              className="min-w-[34px] min-h-[34px] group-hover:hidden"
-              width={34}
-              height={34}
-              alt="turn"
-              src="/turn.svg"
-            />
-            <Image
-              className="min-w-[34px] min-h-[34px] hidden group-hover:block"
-              width={34}
-              height={34}
-              alt="turn"
-              src="/turnhover.svg"
-            />
-          </Button>
-          <div className="flex lg:w-[26%] items-end mb-5 lg:mb-0">
-            <div className="mr-[1px] w-1/2">
-              <label className="mb-2 block">To</label>
-              <Popover open={popoverOpen === FIELD_NAMES.TO_COUNTRY_OPEN}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className="pl-[26px] h-[60px] lg:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
-                    onClick={() =>
-                      setPopoverOpen(
-                        popoverOpen === FIELD_NAMES.TO_COUNTRY_OPEN
-                          ? null
-                          : FIELD_NAMES.TO_COUNTRY_OPEN,
-                      )
-                    }
-                  >
-                    <ToolTipComponent asChild text={toCountry}>
-                      {toCountry ? (
-                        <span className="block w-full truncate">
-                          {toCountry}
-                        </span>
+            <Button
+              type="button"
+              onClick={switchLocations}
+              className="mb-[-28px] block p-0 rounded-full border-0 bg-transparent min-w-[34px] min-h-[34px] w-[34px] h-[34px] mx-auto lg:mx-[-16px] lg:mb-[13px] relative z-10 hover:bg-transparent group"
+            >
+              <Image
+                className="min-w-[34px] min-h-[34px] group-hover:hidden"
+                width={34}
+                height={34}
+                alt="turn"
+                src="/turn.svg"
+              />
+              <Image
+                className="min-w-[34px] min-h-[34px] hidden group-hover:block"
+                width={34}
+                height={34}
+                alt="turn"
+                src="/turnhover.svg"
+              />
+            </Button>
+            <div className="flex lg:w-[26%] items-end mb-5 lg:mb-0">
+              <div className="mr-[1px] w-1/2">
+                <label className="mb-2 block">To</label>
+                <Popover open={popoverOpen === FIELD_NAMES.TO_COUNTRY_OPEN}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="pl-[26px] h-[60px] lg:rounded-none rounded-l-[16px] rounded-r-none border-none font-normal text-black w-full justify-start"
+                      onClick={() =>
+                        setPopoverOpen(
+                          popoverOpen === FIELD_NAMES.TO_COUNTRY_OPEN
+                            ? null
+                            : FIELD_NAMES.TO_COUNTRY_OPEN,
+                        )
+                      }
+                    >
+                      <ToolTipComponent asChild text={toCountry}>
+                        {toCountry ? (
+                          <span className="block w-full truncate">
+                            {toCountry}
+                          </span>
+                        ) : (
+                          <span className="text-gray-500">Select country</span>
+                        )}
+                      </ToolTipComponent>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command filter={filter}>
+                      <CommandInput placeholder="Search..." />
+                      <CommandEmpty>Not found.</CommandEmpty>
+                      {countriesListLoading ? (
+                        <Loader />
                       ) : (
-                        <span className="text-gray-500">Select country</span>
+                        <ScrollArea className="h-72 w-full">
+                          <CommandGroup>
+                            {countriesList.map((item: any, index: number) => (
+                              <CommandItem
+                                value={`${item.value}`}
+                                key={index}
+                                onSelect={() => {
+                                  setFilter({ toCountry: item.value });
+                                  getCitiesList(item.value, true);
+                                  setPopoverOpen(null);
+                                }}
+                              >
+                                {item.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </ScrollArea>
                       )}
-                    </ToolTipComponent>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command filter={filter}>
-                    <CommandInput placeholder="Search..." />
-                    <CommandEmpty>Not found.</CommandEmpty>
-                    {countriesListLoading ? (
-                      <Loader />
-                    ) : (
-                      <ScrollArea className="h-72 w-full">
-                        <CommandGroup>
-                          {countriesList.map((item: any, index: number) => (
-                            <CommandItem
-                              value={`${item.value}`}
-                              key={index}
-                              onSelect={() => {
-                                setFilter({ toCountry: item.value });
-                                getCitiesList(item.value, true);
-                                setPopoverOpen(null);
-                              }}
-                            >
-                              {item.label}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </ScrollArea>
-                    )}
-                  </Command>
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div className="mr-[1px] w-1/2">
-              <Popover open={popoverOpen === FIELD_NAMES.TO_CITY_OPEN}>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant="outline"
-                    role="combobox"
-                    className="h-[60px] w-full lg:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
-                    onClick={() =>
-                      setPopoverOpen(
-                        popoverOpen === FIELD_NAMES.TO_CITY_OPEN
-                          ? null
-                          : FIELD_NAMES.TO_CITY_OPEN,
-                      )
-                    }
-                  >
-                    <ToolTipComponent asChild text={to}>
-                      {to ? (
-                        <span className="block w-full truncate">{to}</span>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="mr-[1px] w-1/2">
+                <Popover open={popoverOpen === FIELD_NAMES.TO_CITY_OPEN}>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className="h-[60px] w-full lg:rounded-none rounded-l-none rounded-r-[16px] border-none font-normal text-black justify-start"
+                      onClick={() =>
+                        setPopoverOpen(
+                          popoverOpen === FIELD_NAMES.TO_CITY_OPEN
+                            ? null
+                            : FIELD_NAMES.TO_CITY_OPEN,
+                        )
+                      }
+                    >
+                      <ToolTipComponent asChild text={to}>
+                        {to ? (
+                          <span className="block w-full truncate">{to}</span>
+                        ) : (
+                          <span className="text-gray-500">Select city</span>
+                        )}
+                      </ToolTipComponent>
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command filter={filter}>
+                      <CommandInput placeholder="Search..." />
+                      <CommandEmpty>Not found.</CommandEmpty>
+                      {citiesListToLoading ? (
+                        <Loader />
                       ) : (
-                        <span className="text-gray-500">Select city</span>
+                        <ScrollArea className="h-72 w-full">
+                          <CommandGroup>
+                            {citiesListTo.map((item: any, index: number) => (
+                              <CommandItem
+                                value={`${item.value}`}
+                                key={index}
+                                onSelect={() => {
+                                  setFilter({ to: item.label });
+                                  setPopoverOpen(null);
+                                }}
+                              >
+                                {item.label}
+                              </CommandItem>
+                            ))}
+                          </CommandGroup>
+                        </ScrollArea>
                       )}
-                    </ToolTipComponent>
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-[200px] p-0">
-                  <Command filter={filter}>
-                    <CommandInput placeholder="Search..." />
-                    <CommandEmpty>Not found.</CommandEmpty>
-                    {citiesListToLoading ? (
-                      <Loader />
-                    ) : (
-                      <ScrollArea className="h-72 w-full">
-                        <CommandGroup>
-                          {citiesListTo.map((item: any, index: number) => (
-                            <CommandItem
-                              value={`${item.value}`}
-                              key={index}
-                              onSelect={() => {
-                                setFilter({ to: item.label });
-                                setPopoverOpen(null);
-                              }}
-                            >
-                              {item.label}
-                            </CommandItem>
-                          ))}
-                        </CommandGroup>
-                      </ScrollArea>
-                    )}
-                  </Command>
-                </PopoverContent>
-              </Popover>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
-          </div>
-          <div className="flex lg:w-[24%]">
-            <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
-              <label className="mb-2 block">Departure</label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={'outline'}
-                    type="button"
-                    className="justify-start h-[60px] text-black font-normal lg:rounded-none rounded-l-[16px] rounded-r-none hover:bg-white border-0 w-full"
-                  >
-                    {departure ? (
-                      format(departure, 'MM/dd/yyyy')
-                    ) : (
-                      <span className="text-gray-500">Pick a date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={departure}
-                    onSelect={(e) => setFilter({ departure: e })}
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-            <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
-              <label className="mb-2 block">Arrival</label>
-              <Popover>
-                <PopoverTrigger asChild>
-                  <Button
-                    variant={'outline'}
-                    type="button"
-                    className="justify-start h-[60px] text-black font-normal lg:rounded-none hover:bg-white border-0 w-full rounded-r-[16px] rounded-l-none"
-                  >
-                    {arrival ? (
-                      format(arrival, 'MM/dd/yyyy')
-                    ) : (
-                      <span className="text-gray-500">Pick a date</span>
-                    )}
-                  </Button>
-                </PopoverTrigger>
-                <PopoverContent className="w-auto p-0" align="start">
-                  <Calendar
-                    mode="single"
-                    selected={arrival}
-                    onSelect={(e) => setFilter({ arrival: e })}
-                    // disabled={(date) =>
-                    //   date > new Date() || date < new Date("1900-01-01")
-                    // }
-                    initialFocus
-                  />
-                </PopoverContent>
-              </Popover>
-            </div>
-          </div>
-          <div className="mr-[1px] lg:w-[24%] mb-5 lg:mb-0">
-            <label className="mb-2 block">Type of goods</label>
-            <Popover open={open}>
-              <PopoverTrigger className="w-full">
-                <ToolTipComponent asChild text={typeOfGoods}>
-                  <div>
-                    <Input
-                      className="h-[60px] rounded-[16px] lg:rounded-l-none lg:rounded-r-[16px]  border-none font-normal text-black w-full"
-                      onChange={handleChange}
-                      onFocus={handleFocus}
-                      onBlur={() => setOpen(false)}
-                      value={typeOfGoods}
-                      placeholder="e.g. 48025620 - Uncoated A4 paper ..."
+            <div className="flex lg:w-[24%]">
+              <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
+                <label className="mb-2 block">Departure</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={'outline'}
+                      type="button"
+                      className="justify-start h-[60px] text-black font-normal lg:rounded-none rounded-l-[16px] rounded-r-none hover:bg-white border-0 w-full"
+                    >
+                      {departure ? (
+                        format(departure, 'MM/dd/yyyy')
+                      ) : (
+                        <span className="text-gray-500">Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={departure}
+                      onSelect={(e) => setFilter({ departure: e })}
+                      initialFocus
                     />
-                  </div>
-                </ToolTipComponent>
-              </PopoverTrigger>
-              <PopoverContent
-                className="md:w-[300px] w-[200px]  p-0 "
-                onOpenAutoFocus={(e) => e.preventDefault()}
-              >
-                <Command>
-                  {goodsListLoading ? (
-                    <Loader />
-                  ) : goodsList.length ? (
-                    <ScrollArea className="h-72 w-full">
-                      <CommandGroup>
-                        {goodsList.map((item: any, index: number) => (
-                          <CommandItem
-                            value={`${item.value}`}
-                            key={index}
-                            onSelect={() => {
-                              setFilter({ typeOfGoods: item.label });
-                              setOpen(false);
-                            }}
-                          >
-                            {item.label}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </ScrollArea>
-                  ) : (
-                    <CommandEmpty>Not found.</CommandEmpty>
-                  )}
-                </Command>
-              </PopoverContent>
-            </Popover>
-          </div>
-        </div>
-        <div className="lg:flex justify-stretch items-end w-full">
-          <div className="mr-[1px] mb-5 lg:mb-0 lg:w-[14%]">
-            <label className="mb-2 block">Total Weight(Kg)</label>
-            <Input
-              className="h-[60px] rounded-[16px] lg:rounded-r-none lg:rounded-l-[16px] border-none font-normal text-black"
-              type="number"
-              placeholder="e.g. 300"
-              min="1"
-              value={totalKg}
-              onChange={(e) => setFilter({ totalKg: e.target.value })}
-            />
-          </div>
-          <div className="lg:w-[25%] flex">
-            <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
-              <label className="mb-2 block">Placement</label>
-              <Select
-                defaultValue={placementOfGoods}
-                onValueChange={(e) => setFilter({ placementOfGoods: e })}
-              >
-                <SelectTrigger className="h-[60px] rounded-l-[16px] rounded-r-none lg:rounded-none border-none font-normal text-black">
-                  <SelectValue placeholder="Placement" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {placementOfGoodsOptions.map((item) => (
-                      <SelectItem key={item} value={item}>
-                        {item}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+                  </PopoverContent>
+                </Popover>
+              </div>
+              <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
+                <label className="mb-2 block">Arrival</label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant={'outline'}
+                      type="button"
+                      className="justify-start h-[60px] text-black font-normal lg:rounded-none hover:bg-white border-0 w-full rounded-r-[16px] rounded-l-none"
+                    >
+                      {arrival ? (
+                        format(arrival, 'MM/dd/yyyy')
+                      ) : (
+                        <span className="text-gray-500">Pick a date</span>
+                      )}
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-auto p-0" align="start">
+                    <Calendar
+                      mode="single"
+                      selected={arrival}
+                      onSelect={(e) => setFilter({ arrival: e })}
+                      // disabled={(date) =>
+                      //   date > new Date() || date < new Date("1900-01-01")
+                      // }
+                      initialFocus
+                    />
+                  </PopoverContent>
+                </Popover>
+              </div>
             </div>
-            <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
-              <label className="mb-2 block">Quantity</label>
-              <Input
-                className="h-[60px] rounded-l-none rounded-r-[16px] lg:rounded-none border-none font-normal text-black"
-                type="number"
-                placeholder="e.g. 5"
-                value={quantity}
-                onChange={(e) => setFilter({ quantity: e.target.value })}
-              />
+            <div className="mr-[1px] lg:w-[24%] mb-5 lg:mb-0">
+              <label className="mb-2 block">Type of goods</label>
+              <Popover open={open}>
+                <PopoverTrigger className="w-full">
+                  <ToolTipComponent asChild text={typeOfGoods}>
+                    <div className="flex">
+                      <Input
+                        className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-none 
+                      border-none font-normal text-black w-full"
+                        onChange={handleChange}
+                        onFocus={handleFocus}
+                        onBlur={() => setOpen(false)}
+                        value={typeOfGoods}
+                        placeholder="e.g. 48025620 - Uncoated A4 paper ..."
+                      />
+                    </div>
+                  </ToolTipComponent>
+                </PopoverTrigger>
+                <PopoverContent
+                  className="md:w-[300px] w-[200px]  p-0 "
+                  onOpenAutoFocus={(e) => e.preventDefault()}
+                >
+                  <Command>
+                    {goodsListLoading ? (
+                      <Loader />
+                    ) : goodsList.length ? (
+                      <ScrollArea className="h-72 w-full">
+                        <CommandGroup>
+                          {goodsList.map((item: any, index: number) => (
+                            <CommandItem
+                              value={`${item.value}`}
+                              key={index}
+                              onSelect={() => {
+                                setFilter({ typeOfGoods: item.label });
+                                setOpen(false);
+                              }}
+                            >
+                              {item.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </ScrollArea>
+                    ) : (
+                      <CommandEmpty>Not found.</CommandEmpty>
+                    )}
+                  </Command>
+                </PopoverContent>
+              </Popover>
             </div>
-          </div>
-          <div className="flex lg:w-[30%] mb-5 lg:mb-0">
-            <div className="mr-[1px] lg:w-1/3">
-              <label className="mb-2 block text-center lg:text-left">
-                Length (cm)
+            <div className="mr-[1px] sm:w-[24%] mb-5 sm:mb-0">
+              <label className="mb-2 flex items-end gap-2">
+                Take a photo{' '}
+                <ToolTipComponent
+                  text={
+                    <>
+                      Not sure about your HS code? <br /> Let us help! Just snap
+                      a quick photo, and our AI system will identify the correct
+                      classification for your product in no tim
+                    </>
+                  }
+                />
               </label>
-              <Input
-                className="h-[60px] lg:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
-                placeholder="e.g. 100"
-                type="number"
-                value={length}
-                onChange={(e) => setFilter({ length: e.target.value })}
-              />
-            </div>
-            <div className="mr-[1px] lg:w-1/3 ">
-              <label className="mb-2 block text-center lg:text-left">
-                Width (cm)
-              </label>
-              <Input
-                value={width}
-                className="h-[60px] rounded-none border-none font-normal text-black"
-                placeholder="e.g. 120"
-                type="number"
-                onChange={(e) => setFilter({ width: e.target.value })}
-              />
-            </div>
-            <div className="mr-[1px] lg:w-1/3">
-              <label className="mb-2 block text-center lg:text-left">
-                Height (cm)
-              </label>
-              <Input
-                className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
-                placeholder="e.g. 165"
-                type="number"
-                value={height}
-                onChange={(e) => setFilter({ height: e.target.value })}
-              />
+              <div>
+                <label
+                  className="h-[60px] w-[150px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none
+              bg-white font-normal text-black flex items-center justify-center"
+                >
+                  <Image width={50} height={50} src="/ai.svg" alt="AI upload" />
+                  <input
+                    onChange={onFileUploaded}
+                    accept="image/jpg, image/png"
+                    className="hidden"
+                    type="file"
+                  />
+                </label>
+              </div>
             </div>
           </div>
-          <div className="lg:w-[25%] flex">
-            <div className="mr-[1px] w-1/2">
-              <label className="mb-2 block text-center lg:text-left">
-                Goods Value
-              </label>
-              <div className="flex text-black items-center bg-white font-normal pl-[12px] lg:rounded-none rounded-l-[16px] rounded-r-none">
-                {selectedCurrency.symbol}
+          <div className="lg:flex justify-stretch items-end w-full">
+            <div className="mr-[1px] mb-5 lg:mb-0 lg:w-[14%]">
+              <label className="mb-2 block">Total Weight(Kg)</label>
+              <Input
+                className="h-[60px] rounded-[16px] lg:rounded-r-none lg:rounded-l-[16px] border-none font-normal text-black"
+                type="number"
+                placeholder="e.g. 300"
+                min="1"
+                value={totalKg}
+                onChange={(e) => setFilter({ totalKg: e.target.value })}
+              />
+            </div>
+            <div className="lg:w-[25%] flex">
+              <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
+                <label className="mb-2 block">Placement</label>
+                <Select
+                  defaultValue={placementOfGoods}
+                  onValueChange={(e) => setFilter({ placementOfGoods: e })}
+                >
+                  <SelectTrigger className="h-[60px] rounded-l-[16px] rounded-r-none lg:rounded-none border-none font-normal text-black">
+                    <SelectValue placeholder="Placement" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectGroup>
+                      {placementOfGoodsOptions.map((item) => (
+                        <SelectItem key={item} value={item}>
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
+                <label className="mb-2 block">Quantity</label>
                 <Input
-                  className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black pl-[2px]"
-                  placeholder="11200"
+                  className="h-[60px] rounded-l-none rounded-r-[16px] lg:rounded-none border-none font-normal text-black"
                   type="number"
-                  value={goodsValue}
-                  onChange={(e) => setFilter({ goodsValue: e.target.value })}
+                  placeholder="e.g. 5"
+                  value={quantity}
+                  onChange={(e) => setFilter({ quantity: e.target.value })}
                 />
               </div>
             </div>
-            <div className="mr-[1px] w-1/2 mb-5 lg:mb-0">
-              <label className="mb-2 block">Incoterms*</label>
-              <Select
-                value={incoterms}
-                onValueChange={(e) => {
-                  if (e && e.length) setFilter({ incoterms: e });
-                }}
-              >
-                <SelectTrigger className="h-[60px] rounded-l-none rounded-r-[16px] border-none font-normal text-black">
-                  <SelectValue placeholder="Select" />
-                </SelectTrigger>
-                <SelectContent className="overflow-visible">
-                  <SelectGroup>
-                    {incotermsList[deliveryBy as DeliveryBy].map(
-                      (item: IncotermsItem) => (
-                        <div className="flex" key={item.name}>
-                          <SelectItem value={item.name} key={item.name}>
-                            {item.name}
-                          </SelectItem>
-                          <ToolTipComponent text={item.description} />
-                        </div>
-                      ),
-                    )}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
+            <div className="flex lg:w-[30%] mb-5 lg:mb-0">
+              <div className="mr-[1px] lg:w-1/3">
+                <label className="mb-2 block text-center lg:text-left">
+                  Length (cm)
+                </label>
+                <Input
+                  className="h-[60px] lg:rounded-none border-none rounded-r-none rounded-l-[16px] font-normal text-black"
+                  placeholder="e.g. 100"
+                  type="number"
+                  value={length}
+                  onChange={(e) => setFilter({ length: e.target.value })}
+                />
+              </div>
+              <div className="mr-[1px] lg:w-1/3 ">
+                <label className="mb-2 block text-center lg:text-left">
+                  Width (cm)
+                </label>
+                <Input
+                  value={width}
+                  className="h-[60px] rounded-none border-none font-normal text-black"
+                  placeholder="e.g. 120"
+                  type="number"
+                  onChange={(e) => setFilter({ width: e.target.value })}
+                />
+              </div>
+              <div className="mr-[1px] lg:w-1/3">
+                <label className="mb-2 block text-center lg:text-left">
+                  Height (cm)
+                </label>
+                <Input
+                  className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black"
+                  placeholder="e.g. 165"
+                  type="number"
+                  value={height}
+                  onChange={(e) => setFilter({ height: e.target.value })}
+                />
+              </div>
             </div>
+            <div className="lg:w-[25%] flex">
+              <div className="mr-[1px] w-1/2">
+                <label className="mb-2 block text-center lg:text-left">
+                  Goods Value
+                </label>
+                <div className="flex text-black items-center bg-white font-normal pl-[12px] lg:rounded-none rounded-l-[16px] rounded-r-none">
+                  {selectedCurrency.symbol}
+                  <Input
+                    className="h-[60px] lg:rounded-none rounded-r-[16px] rounded-l-none border-none font-normal text-black pl-[2px]"
+                    placeholder="11200"
+                    type="number"
+                    value={goodsValue}
+                    onChange={(e) => setFilter({ goodsValue: e.target.value })}
+                  />
+                </div>
+              </div>
+              <div className="mr-[1px] w-1/2 mb-5 lg:mb-0">
+                <label className="mb-2 block">Incoterms*</label>
+                <Select
+                  value={incoterms}
+                  onValueChange={(e) => {
+                    if (e && e.length) setFilter({ incoterms: e });
+                  }}
+                >
+                  <SelectTrigger className="h-[60px] rounded-l-none rounded-r-[16px] border-none font-normal text-black">
+                    <SelectValue placeholder="Select" />
+                  </SelectTrigger>
+                  <SelectContent className="overflow-visible">
+                    <SelectGroup>
+                      {incotermsList[deliveryBy as DeliveryBy].map(
+                        (item: IncotermsItem) => (
+                          <div className="flex" key={item.name}>
+                            <SelectItem value={item.name} key={item.name}>
+                              {item.name}
+                            </SelectItem>
+                            <ToolTipComponent text={item.description} />
+                          </div>
+                        ),
+                      )}
+                    </SelectGroup>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+            <ToolTipComponent asChild text="Please fill out all fields">
+              <div className="lg:w-[10%] w-full">
+                <UIButton
+                  type="submit"
+                  disabled={!valid}
+                  className="mt-5 lg:mt-0 ml-0 lg:ml-[4px] self-end h-[60px] rounded-[16px] w-full pointer-events-auto"
+                >
+                  Explore
+                </UIButton>
+              </div>
+            </ToolTipComponent>
           </div>
-          <ToolTipComponent asChild text="Please fill out all fields">
-            <div className="lg:w-[10%] w-full">
-              <UIButton
-                type="submit"
-                disabled={!valid}
-                className="mt-5 lg:mt-0 ml-0 lg:ml-[4px] self-end h-[60px] rounded-[16px] w-full pointer-events-auto"
-              >
-                Explore
-              </UIButton>
-            </div>
-          </ToolTipComponent>
         </div>
-      </div>
-    </form>
+      </form>
+      <Dialog open={isLoadingAI.loading}>
+        <DialogContent
+          isCloseBtn={false}
+          className="p-8 max-w-[400px] py-[80px]"
+        >
+          {!isLoadingAI.response && !isLoadingAI.error && (
+            <Spinner className="!w-10 !h-10" />
+          )}
+
+          {isLoadingAI.response && (
+            <div className="flex justify-center items-center mb-4">
+              {/* Success SVG Icon */}
+              <svg
+                className="w-[100px] h-[100px] text-orangePrimary"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 15l-5-5 1.41-1.41L11 14.17l7.59-7.59L20 8l-9 9z" />
+              </svg>
+            </div>
+          )}
+
+          {isLoadingAI.error && (
+            <div className="flex justify-center items-center mb-4">
+              <svg
+                className="w-[100px] h-[100px] text-red-500"
+                viewBox="0 0 24 24"
+                fill="currentColor"
+              >
+                <path d="M11 15h2v2h-2zm0-8h2v6h-2zm1-5C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z" />
+              </svg>
+            </div>
+          )}
+
+          {isLoadingAI.response && (
+            <p className="font-bold text-center text-lg p-1">
+              Image successfully converted.
+            </p>
+          )}
+
+          {isLoadingAI.error && (
+            <p className="font-bold text-center text-lg text-red-500 p-1">
+              Inappropriate type or size of image. Try again.
+            </p>
+          )}
+
+          {!isLoadingAI.response && !isLoadingAI.error && (
+            <p className="font-bold text-center text-lg animate-color-cycle p-1">
+              Converting image into hs-code.
+            </p>
+          )}
+        </DialogContent>
+      </Dialog>
+    </>
   );
 }

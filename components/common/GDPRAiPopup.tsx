@@ -40,7 +40,8 @@ const GDPRAiPopup = () => {
         <DialogHeader className="flex flex-row items-center mx-auto gap-4">
           <Image src={CookiesImage} alt="Cookies" width={48} height={48} />
           <DialogTitle className="text-2xl md:text-5xl font-thin">
-            Cookie <span className="font-normal italic">Settings</span>
+            AI Usage <span className="font-normal italic">and</span> Disclaimer
+            Notice
           </DialogTitle>
         </DialogHeader>
         <DialogDescription className="text-center text-blackTertiary text-[14px] md:text-base">
