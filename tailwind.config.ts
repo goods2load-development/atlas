@@ -111,7 +111,8 @@ const config = {
         'button-ping': 'button-ping 1.5s infinite',
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
-        'dots-animate': 'dots-animate 1s infinite linear',
+        'ball-animation':
+          'ball-animation 3.5s cubic-bezier(0.95, 0.05, 0.05, 0.95) infinite',
       },
       keyframes: {
         'button-ping': {
@@ -139,13 +140,12 @@ const config = {
           from: { height: 'var(--radix-accordion-content-height)' },
           to: { height: '0' },
         },
-        'dots-animate': {
-          '16.67%': { boxShadow: '-60px 15px, -60px 15px, 19px 15px' },
-          '33.33%': { boxShadow: '-60px 15px, 0px 15px, 19px 15px' },
-          '40%, 60%': { boxShadow: '-19px 15px, 0px 15px, 19px 15px' },
-          '66.67%': { boxShadow: '-19px 15px, 0px 15px, 60px 15px' },
-          '83.33%': { boxShadow: '-19px 15px, 60px 15px, 60px 15px' },
-          '100%': { boxShadow: '60px 15px, 60px 15px, 60px 15px' },
+        'ball-animation': {
+          '0%': { transform: 'translateX(-100vw)', opacity: '1' },
+          '20%': { transform: 'translateX(0)', opacity: '1' },
+          '50%': { transform: 'translateX(0)', opacity: '1' },
+          '70%': { transform: 'translateX(100vw)', opacity: '0' },
+          '100%': { transform: 'translateX(100vw)', opacity: '0' },
         },
       },
     },

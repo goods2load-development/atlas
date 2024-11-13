@@ -1,7 +1,7 @@
 'use client';
 
 import { Dialog, DialogContent } from './ui/dialog';
-import Spinner from './ui/spinner';
+import LoadingBalls from './ui/loading-balls';
 import {
   DeliveryBy,
   useCurrenciesStore,
@@ -12,7 +12,6 @@ import { useCountriesStore, useGoodsStore } from '@/lib/store';
 import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
-import { Info } from 'lucide-react';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -44,13 +43,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import {
-  ToolTipComponent,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { ToolTipComponent } from '@/components/ui/tooltip';
 
 const placementOfGoodsOptions = [
   'Pallets',
@@ -877,12 +870,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
             </p>
           )}
 
-          {!isLoadingAI.response && !isLoadingAI.error && (
-            <div
-              className="mx-auto scale-[350%] w-[15px] aspect-[1] shadow-[-60px_15px,-60px_15px,-60px_15px] translate-y-[-15px] rounded-[50%]
-             [clip-path:inset(-45px)] animate-dots-animate text-gray-500"
-            ></div>
-          )}
+          {!isLoadingAI.response && !isLoadingAI.error && <LoadingBalls />}
         </DialogContent>
       </Dialog>
     </>
