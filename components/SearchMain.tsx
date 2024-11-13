@@ -281,7 +281,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
           ...isLoadingAI,
           loading: false,
         });
-      }, 2000);
+      }, 4000);
     }
   };
 
@@ -826,7 +826,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
       <Dialog open={isLoadingAI.loading}>
         <DialogContent
           isCloseBtn={false}
-          className="p-8 max-w-[400px] py-[80px] outline-none"
+          className="p-8 max-w-[500px] py-[80px] outline-none"
         >
           {isLoadingAI.response && (
             <div className="flex justify-center items-center mb-4">
