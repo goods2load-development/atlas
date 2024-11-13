@@ -276,15 +276,19 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             label: `(${item.unlocode}) ${item.port_name}`,
           }));
 
+        const selected: any[] = data.data
+          .filter((item: any) => item.unlocode)
+          .map((item: any) => item.unlocode);
+
         if (departure) {
           set(() => ({
             portsDeparture: ports,
-            // portsDepartureSelected: selected,
+            portsDepartureSelected: selected,
           }));
         } else {
           set(() => ({
             portsArrival: ports,
-            // portsArrivalSelected: selected,
+            portsArrivalSelected: selected,
           }));
         }
       }

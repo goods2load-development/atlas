@@ -59,15 +59,15 @@ export const Stars = ({
       </svg>
     );
 
-    const newStars = Array.from({ length: 5 }, (_, idx) => {
-      if (idx < fullStarsCount) {
-        return <span key={idx}>{fullStarSVG}</span>;
-      } else if (idx === fullStarsCount && hasHalfStar) {
-        return <span key={idx}>{halfStarSVG}</span>;
-      } else {
-        return <span key={idx}>{emptyStarSVG}</span>;
-      }
-    });
+    const newStars = Array.from({ length: 5 }, (_, idx) => (
+      <span key={idx}>
+        {idx < fullStarsCount
+          ? fullStarSVG
+          : idx === fullStarsCount && hasHalfStar
+            ? halfStarSVG
+            : emptyStarSVG}
+      </span>
+    ));
 
     setStars(newStars);
   }, [value, width, height]);
