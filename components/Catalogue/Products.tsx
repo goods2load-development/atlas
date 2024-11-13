@@ -4,7 +4,7 @@ import Product from './Product';
 import NotFound from '@/assets/Catalogue/no-products-found.png';
 import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -15,12 +15,21 @@ export default function Products() {
     pagination,
     getPartners,
     clearPartners,
+    setPartnersFilters,
   } = useFilterStore((state: any) => state);
+  const [isFirstRequest, setIsFirstRequest] = useState<boolean>(true);
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
   useEffect(() => {
     clearPartners();
     getPartners();
   }, []);
+
+  useEffect(() => {
+    if (!!partners?.length && isFirstRequest) {
+      setIsFirstRequest(false);
+      setPartnersFilters(partners);
+    }
+  }, [partners]);
 
   return partners?.length ? (
     <div className="bg-blue-000 space-y-[24px]">
