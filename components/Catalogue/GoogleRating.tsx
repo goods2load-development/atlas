@@ -23,7 +23,8 @@ export const GoogleRating = ({
         src={GoogleRatingIcon}
         alt="Google rating"
       />
-      <Stars value={Math.round(rating)} width={15} height={15} />
+      <div className="text-[12px]/[15px] text-gray-500 mt-0.5">{rating}</div>
+      <Stars value={rating} width={15} height={15} />
       <Link
         href={`https://www.google.com/maps/place/?q=place_id:${placementId}`}
         target="_blank"
