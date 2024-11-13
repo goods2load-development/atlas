@@ -176,7 +176,6 @@ export default function Filter() {
   } = useFilterStore((state: any) => state);
 
   useEffect(() => {
-    getPartnersFilters();
     getPortsList(true);
     getPortsList();
   }, []);

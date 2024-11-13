@@ -212,18 +212,6 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         valid: validate(requiredFields),
       }));
     },
-    getPartnersFilters: async () => {
-      const data = await getRequest({
-        url: 'partners/approved',
-      });
-      set(() => ({
-        filterPartners: data.map((item: any) => ({
-          id: item.id,
-          label: item.user.companyName,
-        })),
-        partnersSelected: data.map((item: any) => item.id),
-      }));
-    },
     getPortsList: async (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
@@ -288,15 +276,19 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             label: `(${item.unlocode}) ${item.port_name}`,
           }));
 
+        const selected: any[] = data.data
+          .filter((item: any) => item.unlocode)
+          .map((item: any) => item.unlocode);
+
         if (departure) {
           set(() => ({
             portsDeparture: ports,
-            // portsDepartureSelected: selected,
+            portsDepartureSelected: selected,
           }));
         } else {
           set(() => ({
             portsArrival: ports,
-            // portsArrivalSelected: selected,
+            portsArrivalSelected: selected,
           }));
         }
       }
@@ -443,35 +435,20 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         .then((data: any) => {
           let partners = data?.partners?.data;
 
-          // let partners = data?.partners?.data?.map((item: any) => ({
-          //   orderId: item.id,
-          //   deliveryBy: item.transportation,
-          //   estimatedTransit: item.transit,
-          //   company: {
-          //     name: item.companyName,
-          //   },
-          //   withdraw: format(
-          //     new Date(item.withdraw).toDateString(),
-          //     'MM/dd/yyyy',
-          //   ),
-          //   delivery: format(
-          //     new Date(item.delivery).toDateString(),
-          //     'MM/dd/yyyy',
-          //   ),
-          //   orderCost: item.price,
-          //   CO2EmissionControlled: item.goGreen,
-          //   portArrival: item.portArrival,
-          //   portDeparture: item.portDeparture,
-          //   // price: item.price, // Added for analytics avarge store when user select this product
-          //   // placementOfGoods: item.placementOfGoods, // Added for analytics avarge store when user select this product
-          //   partnerInfo: item.partnerInfo,
-          // }));
-
           set(() => ({ partners, pagination: data?.partners?.meta }));
         })
         .finally(() => {
           set({ isPartnersLoading: false });
         });
+    },
+    setPartnersFilters: async (data: any) => {
+      set(() => ({
+        filterPartners: data.map((item: any) => ({
+          id: item.partner.id,
+          label: item.companyName,
+        })),
+        partnersSelected: data.map((item: any) => item.partner.id),
+      }));
     },
   };
 });
