@@ -7,7 +7,6 @@ import {
   putRequest,
 } from './utils';
 
-import { url } from 'inspector';
 import Cookie from 'js-cookie';
 import { create } from 'zustand';
 

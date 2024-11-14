@@ -1,20 +1,17 @@
 'use client';
 
+import { IsRequired } from './Registration/Registration';
 import CountryCode from './common/CountryCode';
+import { Textarea } from './ui/textarea';
 import { ToolTipComponent } from './ui/tooltip';
 import { useToast } from './ui/use-toast';
-import cnFlag from '@/assets/cn-flag.svg';
-import inFlag from '@/assets/in-flag.svg';
-import italyFlag from '@/assets/italy-flag.svg';
 import { useFilterStore } from '@/lib/filterStore';
-import { useCountriesStore } from '@/lib/store';
+import { useCountriesStore, useUserStore } from '@/lib/store';
 import { postRequest } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { ChevronDown } from 'lucide-react';
 import { BellRing } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -55,22 +52,23 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-const phonesCode = [
-  {
-    label: '+39',
-    icon: italyFlag,
-  },
-  {
-    label: '+86',
-    icon: cnFlag,
-  },
-  {
-    label: '+91',
-    icon: inFlag,
-  },
-];
+const formSchema = (isLoggedIn: boolean) =>
+  z.object({
+    routes: z.array(
+      z.object({
+        fromCountry: z.string().optional(),
+        from: z.string().optional(),
+        toCountry: z.string().optional(),
+        to: z.string().optional(),
+      }),
+    ),
+    countryCode: isLoggedIn ? z.optional(z.string()) : z.string().min(1),
+    phone: isLoggedIn ? z.optional(z.string()) : z.string(),
+    email: isLoggedIn ? z.optional(z.string()) : z.string().min(5).email(),
+    companyName: isLoggedIn ? z.optional(z.string()) : z.string().min(2),
+    message: z.string().min(2),
+  });
 
 export default function SolutionFinder() {
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -92,23 +90,9 @@ export default function SolutionFinder() {
     incoterms,
   } = useFilterStore();
   const [step, setStep] = useState(0);
-  const formSchema = z
-    .object({
-      routes: z.array(
-        z.object({
-          fromCountry: z.string().optional(),
-          from: z.string().optional(),
-          toCountry: z.string().optional(),
-          to: z.string().optional(),
-        }),
-      ),
-      email: z.string(),
-      countryCode: z.string().optional(),
-      sms: z.string(),
-    })
-    .refine((data) => data.email.length !== 0 || data.sms.length !== 0, {
-      path: ['email'],
-    });
+  const { user } = useUserStore((state: any) => state);
+  const isLoggedIn = !!Object.values(user).length;
+
   const {
     countriesList,
     countriesListLoading,
@@ -119,8 +103,8 @@ export default function SolutionFinder() {
     getCountriesList,
     getCitiesList,
   } = useCountriesStore((state: any) => state);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<ReturnType<typeof formSchema>>>({
+    resolver: zodResolver(formSchema(isLoggedIn)),
     defaultValues: {
       routes: [
         {
@@ -131,7 +115,10 @@ export default function SolutionFinder() {
         },
       ],
       email: '',
-      sms: '',
+      countryCode: '',
+      phone: '',
+      companyName: '',
+      message: '',
     },
   });
   const { control, register, watch } = form;
@@ -172,17 +159,19 @@ export default function SolutionFinder() {
     );
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<ReturnType<typeof formSchema>>) {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
     postRequest({
       url: 'alerts/price',
       data: {
         contacts: {
-          email: values.email?.length ? values.email : undefined,
-          phoneNumber: values.sms?.length
-            ? values.countryCode + values.sms
-            : undefined,
+          phone: isLoggedIn
+            ? user.phoneNumber
+            : `${(values as any).countryCode}${(values as any).phone}`,
+          email: isLoggedIn ? user.email : values.email,
+          companyName: isLoggedIn ? user.companyName : values.companyName,
+          message: values.message,
         },
         routes: values.routes.map((item) => ({
           fromRoute: `${item.fromCountry}, ${item.from}`,
@@ -507,40 +496,94 @@ export default function SolutionFinder() {
               </div>
               <div className={step === 2 ? '' : 'hidden'}>
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
-                  Contact <i className="font-normal">information</i>
+                  Enter <i className="font-normal">your details</i>
                 </DialogTitle>
-                <DialogDescription className="text-center text-[18px]/[26px] mx-auto max-w-[490px]">
-                  Choose how you want to receive notifications (email or SMS)
-                  and share your contact information for this.
+                <DialogDescription className="text-center text-[14px] mx-auto max-w-[490px]">
+                  Please provide your company name, phone number, email address,
+                  and a message detailing why you need this partner&apos;s
+                  services. This will help us better understand your needs and
+                  communicate your requirements more effectively with the
+                  logistics provider.
                 </DialogDescription>
-                <Tabs
-                  defaultValue="email"
-                  className="w-full max-w-[396px] mx-auto mt-[40px]"
-                >
-                  <TabsList className="grid w-[290px] grid-cols-2 mx-auto mb-[24px] gap-4">
-                    <TabsTrigger
-                      className={`data-[state="active"]:bg-orange-50 data-[state="active"]:border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-                      value="email"
-                    >
-                      Email
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="sms"
-                      className={`data-[state="active"]:bg-orange-50 data-[state="active"]:border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-                    >
-                      SMS
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="email">
+
+                {/* Conditional rendering of fields based on isLoggedIn */}
+                {!isLoggedIn && (
+                  <>
+                    <div className="flex gap-2 mt-[32px]">
+                      <div>
+                        <label className="text-[14px]">
+                          Company phone number
+                          <IsRequired />
+                        </label>
+                        <div className="flex mt-2 gap-2">
+                          <FormField
+                            control={form.control}
+                            name="countryCode"
+                            render={({ field }) => (
+                              <FormItem className="w-4/12">
+                                <FormControl>
+                                  <CountryCode
+                                    onChange={field.onChange}
+                                    className="border-none bg-gray-2"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                              <FormItem className="flex-1">
+                                <FormControl>
+                                  <Input
+                                    className="border-none bg-gray-2"
+                                    placeholder="0000000"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <label className="text-[14px]">
+                              Email
+                              <IsRequired />
+                            </label>
+                            <FormControl>
+                              <Input
+                                className="border-none bg-gray-2"
+                                placeholder="email@abcd.com"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
                     <FormField
                       control={form.control}
-                      name="email"
+                      name="companyName"
                       render={({ field }) => (
-                        <FormItem className="mr-3 w-full">
+                        <FormItem className="mt-[16px]">
+                          <label className="text-[14px]">
+                            Company name
+                            <IsRequired />
+                          </label>
                           <FormControl>
                             <Input
-                              placeholder="Enter your email address"
-                              className="text-center border-orangePrimary"
+                              className="border-none bg-gray-2"
+                              placeholder="ABCD FZ LLC"
                               {...field}
                             />
                           </FormControl>
@@ -548,48 +591,33 @@ export default function SolutionFinder() {
                         </FormItem>
                       )}
                     />
-                  </TabsContent>
-                  <TabsContent
-                    value="sms"
-                    className="flex justify-center gap-2 items-end"
-                  >
-                    <FormField
-                      control={form.control}
-                      name="countryCode"
-                      render={({ field }) => (
-                        <FormItem className="w-1/4">
-                          <FormControl>
-                            <CountryCode
-                              onChange={field.onChange}
-                              className="border-orangePrimary"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="sms"
-                      render={({ field }) => (
-                        <FormItem className="w-3/4">
-                          <FormControl>
-                            <Input
-                              placeholder="Enter your phone number"
-                              className="text-center border-orangePrimary"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TabsContent>
-                </Tabs>
+                  </>
+                )}
+
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem className="mt-[16px]">
+                      <label className="text-[14px]">
+                        Message
+                        <IsRequired />
+                      </label>
+                      <FormControl>
+                        <Textarea
+                          className="border-none bg-gray-2 min-h-[200px]"
+                          placeholder="ABCD FZ LLC"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
             {step !== 3 && (
-              <div className="sm:flex justify-between items-center pt-5 space-y-5">
+              <div className="sm:flex justify-between items-center py-5 space-y-5">
                 <div className="flex space-x-1 order-2 justify-center w-full">
                   <div
                     className={`shadow-2xl rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 0 ? 'opacity-100' : 'opacity-50'}`}
