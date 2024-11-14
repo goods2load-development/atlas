@@ -1,5 +1,6 @@
 'use client';
 
+import { FreeQuotationsTab } from './FreeQuotationsTab';
 import { RoutesTab } from './RoutesTab';
 import { SolutionFinderTab } from './SolutionFinderTab';
 import { TabsContent } from '@radix-ui/react-tabs';
@@ -36,10 +37,10 @@ const RoutesMain = () => {
           value={tab}
           className="w-full mx-auto"
         >
-          <TabsList className="grid w-[290px] grid-cols-2 gap-4 mx-auto mb-[28px]">
+          <TabsList className="flex gap-4 mx-auto mb-[28px]">
             <TabsTrigger className={`[all:unset]`} value="routes">
               <Button
-                className={clsx('w-full cursor-pointer', {
+                className={clsx('w-full cursor-pointer min-w-[150px]', {
                   'pointer-events-none opacity-50': tab === 'routes',
                 })}
                 tagName="span"
@@ -50,11 +51,21 @@ const RoutesMain = () => {
             <TabsTrigger value="price-alerts" className={`[all:unset]`}>
               <Button
                 tagName="span"
-                className={clsx('cursor-pointer', {
+                className={clsx('cursor-pointer min-w-[150px]', {
                   'pointer-events-none opacity-50': tab === 'price-alerts',
                 })}
               >
                 Solution Finder
+              </Button>
+            </TabsTrigger>
+            <TabsTrigger value="free-quotations" className={`[all:unset]`}>
+              <Button
+                tagName="span"
+                className={clsx('cursor-pointer min-w-[150px]', {
+                  'pointer-events-none opacity-50': tab === 'free-quotations',
+                })}
+              >
+                Free quotations
               </Button>
             </TabsTrigger>
           </TabsList>
@@ -63,6 +74,9 @@ const RoutesMain = () => {
           </TabsContent>
           <TabsContent value="price-alerts">
             <SolutionFinderTab />
+          </TabsContent>
+          <TabsContent value="free-quotations">
+            <FreeQuotationsTab />
           </TabsContent>
         </Tabs>
       </div>
