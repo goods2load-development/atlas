@@ -134,50 +134,50 @@ export const FormStepIndustryRecognitionSecondary = ({
             </FormItem>
           )}
         />
-      </div>
 
-      <div className={clsx('mt-8')}>
-        <div className="font-bold">Proof of recognition</div>
-        <p className="mt-2 text-[14px]">
-          Please upload any relevan documents that provide proof of recognition,
-          such as badges, certificates or membership letters (expired
-          sertifications are not accepted)
-        </p>
-        <FormField
-          control={form.control}
-          name="industryProofFileSecondary"
-          render={({ field }) => (
-            <FormItem className="mt-2">
-              <div className="sm:w-1/2 sm:pr-2">
-                <FormDescription className="text-[12px]">
-                  *Attachments not bigger than 2MB
-                </FormDescription>
-              </div>
-              <FormControl>
-                <Input
-                  className="hidden"
-                  type="file"
-                  multiple
-                  accept="application/pdf, image/*"
-                  onChange={(e) => {
-                    if (e.target.files?.length) {
-                      field.onChange(e.target.files || null);
-                      clearErrors('industryProofFileSecondary');
-                    } else {
-                      field.onChange(null);
-                    }
-                  }}
-                />
-              </FormControl>
-              <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                <img className="" src="/upload.svg" />
-                {field.value
-                  ? `(${field.value?.length}) Files`
-                  : `Upload ${field?.value?.length || ''} Files(front&back)`}
-              </FormLabel>
-            </FormItem>
-          )}
-        />
+        <div className={clsx('mt-8')}>
+          <div className="font-bold">Proof of recognition</div>
+          <p className="mt-2 text-[14px]">
+            Please upload any relevan documents that provide proof of
+            recognition, such as badges, certificates or membership letters
+            (expired sertifications are not accepted)
+          </p>
+          <FormField
+            control={form.control}
+            name="industryProofFileSecondary"
+            render={({ field }) => (
+              <FormItem className="mt-2">
+                <div className="sm:w-1/2 sm:pr-2">
+                  <FormDescription className="text-[12px]">
+                    *Attachments not bigger than 2MB
+                  </FormDescription>
+                </div>
+                <FormControl>
+                  <Input
+                    className="hidden"
+                    type="file"
+                    multiple
+                    accept="application/pdf, image/*"
+                    onChange={(e) => {
+                      if (e.target.files?.length) {
+                        field.onChange(e.target.files || null);
+                        clearErrors('industryProofFileSecondary');
+                      } else {
+                        field.onChange(null);
+                      }
+                    }}
+                  />
+                </FormControl>
+                <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
+                  <img className="" src="/upload.svg" />
+                  {field.value
+                    ? `(${field.value?.length}) Files`
+                    : `Upload ${field?.value?.length || ''} Files(front&back)`}
+                </FormLabel>
+              </FormItem>
+            )}
+          />
+        </div>
       </div>
 
       <div className="mt-12 text-[14px]">
