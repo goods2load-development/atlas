@@ -9,6 +9,7 @@ import InfoImg from '@/assets/info.svg';
 import SaveIconFilled from '@/assets/save-filled.svg';
 import SaveIcon from '@/assets/save.svg';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
+import { useFilterStore } from '@/lib/filterStore';
 import { useUserStore } from '@/lib/store';
 
 import { useEffect, useState } from 'react';
@@ -160,7 +161,11 @@ export default function Product(props: any) {
             );
           })}
         <div className="flex items-center justify-center flex-1 px-2">
-          <SendDataToPartnerDialog
+          <SelectionPopup
+            partnerCompany={props.companyName}
+            carbonOffset={props.hasProof}
+          />
+          {/* <SendDataToPartnerDialog
             trigger={
               <button
                 onClick={() => postInteractionWithPartner(props.partner.id)}
@@ -173,7 +178,7 @@ export default function Product(props: any) {
                 Get a free quotation
               </button>
             }
-          />
+          /> */}
         </div>
       </div>
       <div className="md:flex justify-between py-2">
@@ -209,16 +214,6 @@ export default function Product(props: any) {
             </div>
           )}
         </div>
-        {/* <SelectionPopup
-          orderId={props.orderId}
-          company={props.company.name}
-          withdraw={props.withdraw}
-          delivery={props.delivery}
-          portArrival={props.portArrival}
-          portDeparture={props.portDeparture}
-          price={props.price}
-          placementOfGoods={props.placementOfGoods}
-        /> */}
       </div>
     </div>
   );
