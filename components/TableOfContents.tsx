@@ -1,6 +1,6 @@
 import useBreakpoint from '@/app/hooks/useBreakpoint';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 
 import { ChevronDown, ChevronUp } from 'lucide-react';
 
@@ -31,10 +31,15 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
     if (element) {
       const rect = element.getBoundingClientRect();
       const offsetY = window.scrollY + rect.top - window.innerHeight / 2;
-      window.scrollTo({
-        top: offsetY,
-        behavior: 'smooth',
-      });
+      if (isAboveSm) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({
+          top: offsetY,
+          behavior: 'smooth',
+        });
+      }
+
       setActiveIndex(index);
     }
   };

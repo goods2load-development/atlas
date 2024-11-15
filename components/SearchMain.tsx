@@ -697,7 +697,20 @@ export default function SearchMain({ main }: { main?: boolean }) {
             </div>
             <div className="lg:w-[25%] flex">
               <div className="mr-[1px] mb-5 lg:mb-0 w-1/2">
-                <label className="mb-2 block">Placement</label>
+                <label className="mb-2 flex gap-2">
+                  Placement{' '}
+                  <ToolTipComponent
+                    text={
+                      <p className="max-w-[250px]">
+                        We understand that your shipment may include a variety
+                        of product types, placements, and dimensions. To ensure
+                        optimal service, kindly share all relevant details
+                        directly with the selected logistics provider when you
+                        make contact.
+                      </p>
+                    }
+                  />
+                </label>
                 <Select
                   defaultValue={placementOfGoods}
                   onValueChange={(e) => setFilter({ placementOfGoods: e })}
