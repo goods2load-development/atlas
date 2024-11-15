@@ -41,7 +41,7 @@ function ToolTipComponent({
   return (
     <TooltipProvider delayDuration={200}>
       <Tooltip>
-        <TooltipTrigger asChild={asChild} className={className}>
+        <TooltipTrigger type="button" asChild={asChild} className={className}>
           {children ? (
             children
           ) : (
