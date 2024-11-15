@@ -1,3 +1,5 @@
+import useBreakpoint from '@/app/hooks/useBreakpoint';
+
 import React, { useState } from 'react';
 
 import { ChevronDown, ChevronUp } from 'lucide-react';
@@ -17,6 +19,8 @@ interface TableOfContentsProps {
 const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const [isOpen, setIsOpen] = useState<boolean>(true);
+
+  const { isAboveSm } = useBreakpoint('sm');
 
   const toggleTOC = () => {
     setIsOpen(!isOpen);
@@ -58,7 +62,7 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
               className="flex items-start cursor-pointer"
               onClick={() => {
                 handleClick(heading.id, index);
-                setIsOpen(false);
+                if (!isAboveSm) setIsOpen(false);
               }}
             >
               {activeIndex === index ? (
