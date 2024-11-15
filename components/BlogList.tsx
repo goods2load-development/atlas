@@ -51,12 +51,13 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
               </div>
             </div>
             <div className="p-4 flex flex-col h-full justify-between">
-              <div>
+              <div className="text-left">
                 <h3 className="text-xl font-bold mb-2">
                   <Link
                     href={{
                       pathname: `/blog/${blog.slug}`,
                     }}
+                    className="block"
                   >
                     {blog.title}
                   </Link>

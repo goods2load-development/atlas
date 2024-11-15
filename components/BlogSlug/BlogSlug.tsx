@@ -108,15 +108,13 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
         <div className="px-4 py-8">
           <div className="flex flex-col md:flex-row gap-8 max-w-[1328px] mx-auto">
             {/* Table of Contents */}
-            <div className="sticky top-0 z-50">
-              <div className="sticky top-0 z-50">
-                <TableOfContents headings={headings} />
-                <div className="mt-6 hidden md:block">
-                  <SharedLinks />
-                </div>
-                <div className="mt-10 hidden md:block">
-                  <Referal forceDisplaying={true} />
-                </div>
+            <div className="sticky top-0 z-50 max-h-[100vh] overflow-y-scroll">
+              <TableOfContents headings={headings} />
+              <div className="mt-6 hidden md:block">
+                <SharedLinks />
+              </div>
+              <div className="mt-10 hidden md:block">
+                <Referal forceDisplaying={true} />
               </div>
             </div>
 
