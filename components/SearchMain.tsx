@@ -52,7 +52,7 @@ const placementOfGoodsOptions = [
   'Big Bags',
   'ULDs',
   'Bulk Cargo',
-  'Ro-Ro ',
+  'Ro-Ro',
   '20’ Container',
   '40’ Container',
   'Other',

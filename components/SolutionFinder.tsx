@@ -171,8 +171,8 @@ export default function SolutionFinder() {
             : `${(values as any).countryCode}${(values as any).phone}`,
           email: isLoggedIn ? user.email : values.email,
           companyName: isLoggedIn ? user.companyName : values.companyName,
-          message: values.message,
         },
+        message: values.message,
         routes: values.routes.map((item) => ({
           fromRoute: `${item.fromCountry}, ${item.from}`,
           toRoute: `${item.toCountry}, ${item.to}`,

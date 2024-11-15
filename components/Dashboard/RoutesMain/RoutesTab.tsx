@@ -24,7 +24,7 @@ export const RoutesTab = () => {
     getRoutes,
     deleteRoute,
     applyRoute,
-    replyRoute,
+    rejectRoute,
   } = useRoutesStore((state: any) => state);
 
   const searchParams = useSearchParams();
@@ -74,14 +74,14 @@ export const RoutesTab = () => {
       );
   };
 
-  const replyRouteById = (
+  const rejectRouteById = (
     id: string,
     data: {
       message: string;
       reasons?: string[];
     },
   ) => {
-    return replyRoute(id, data)
+    return rejectRoute(id, data)
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
@@ -116,7 +116,7 @@ export const RoutesTab = () => {
               There is no any routes at the moment
             </p>
           )}
-          {routes?.data?.map(({ order, user, id }: any, i: number) => (
+          {routes?.data?.map(({ id, ...route }: any, i: number) => (
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
                 <p
@@ -128,7 +128,7 @@ export const RoutesTab = () => {
                   }
                   className="hover:underline hover:cursor-pointer"
                 >
-                  {user.email}
+                  {route.userEmail}
                 </p>
                 <div className="flex items-center gap-2">
                   <button onClick={() => applyRouteById(id)} title="Approve">
@@ -136,15 +136,16 @@ export const RoutesTab = () => {
                   </button>
                   <button title="Reply">
                     <ReplyDialog
-                      onSubmitCallback={(data: any) => replyRouteById(id, data)}
-                      order={order}
+                      onSubmitCallback={(data: any) =>
+                        rejectRouteById(id, data)
+                      }
+                      order={route}
                     />
                   </button>
                   <ViewDialog
                     isOpen={isViewModalOpen.id === id && isViewModalOpen.isOpen}
                     setIsOpen={setIsViewModalOpen}
-                    user={user}
-                    order={order}
+                    route={route}
                     id={id}
                   />
                   <button onClick={() => deleteRouteById(id)} title="Delete">

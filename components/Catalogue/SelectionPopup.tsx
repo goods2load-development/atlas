@@ -89,26 +89,26 @@ export default function SelectionPopup(props: SelectionPopupProps) {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
     postRequest({
-      url: 'orders/select-catalog',
+      url: '/selected-routes',
       data: {
         ...userData,
         typeOfFreight: deliveryBy,
         goGreen: props.carbonOffset,
         from: `${fromCountry}, ${from}`,
         to: `${toCountry}, ${to}`,
-        withdraw: format(departure, 'dd/MM/yyyy'),
-        delivery: format(arrival, 'dd/MM/yyyy'),
+        withdraw: departure,
+        delivery: arrival,
         hsCode: typeOfGoods.match(/^\d+/)?.[0] || '',
         typeOfGoods: typeOfGoods,
-        totalKg,
+        totalKg: Number(totalKg),
         placementOfGoods: placementOfGoods,
-        quantity: quantity,
-        height,
-        width,
-        length,
+        quantity: Number(quantity),
+        height: Number(height),
+        width: Number(width),
+        length: Number(length),
         volume: countVolume(Number(width), Number(length), Number(height)),
         partnerCompany: props.partnerCompany,
-        goodsValue,
+        goodsValue: Number(goodsValue),
         incoterms: incoterms,
         recaptchaToken: token,
       },
@@ -137,7 +137,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
             onPostData({
               userCompany: user.companyName,
               userEmail: user.email,
-              userPhone: user.phone,
+              userPhone: user.phoneNumber,
             });
           }
         }}
