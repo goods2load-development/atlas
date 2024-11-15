@@ -70,6 +70,10 @@ const ReplyDialog = ({
       );
   };
 
+  const { watch } = form;
+
+  const incorectFileds = watch('reasons');
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
     onSubmitCallback(data).then(() => {
       setIsOpen(false);
