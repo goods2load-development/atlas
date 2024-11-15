@@ -483,9 +483,11 @@ export const useRoutesStore = create((set) => ({
 
     const formData = {
       message: data.message,
-      ...(data.reasons.length && {
-        reasons: data.reasons,
-      }),
+      ...(data.reasons.length
+        ? {
+            reasons: data.reasons,
+          }
+        : []),
     };
 
     return postRequest({

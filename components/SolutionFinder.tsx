@@ -73,21 +73,22 @@ const formSchema = (isLoggedIn: boolean) =>
 export default function SolutionFinder() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const {
+    deliveryBy,
+    placementOfGoods,
+    arrival,
+    departure,
+    goodsValue,
     from,
     fromCountry,
     to,
     toCountry,
-    arrival,
-    departure,
-    length,
-    width,
-    height,
-    goodsValue,
     typeOfGoods,
-    placementOfGoods,
     quantity,
-    totalKg,
     incoterms,
+    width,
+    length,
+    totalKg,
+    height,
   } = useFilterStore();
   const [step, setStep] = useState(0);
   const { user } = useUserStore((state: any) => state);
@@ -174,6 +175,7 @@ export default function SolutionFinder() {
         },
         message: values.message,
         routes: values.routes.map((item) => ({
+          deliveryBy,
           fromRoute: `${item.fromCountry}, ${item.from}`,
           toRoute: `${item.toCountry}, ${item.to}`,
           arrival,

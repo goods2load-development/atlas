@@ -130,9 +130,9 @@ export const SolutionFinderTab = () => {
                   </button>
                   <button title="Reply">
                     <PriceAlertReplyDialog
-                      onSubmitCallback={(data: any) =>
-                        replyPriceAlertsById(item.id, data.message)
-                      }
+                      onSubmitCallback={(data: any) => {
+                        replyPriceAlertsById(item.id, data.message);
+                      }}
                     />
                   </button>
                   <ViewDialogPriceAlert

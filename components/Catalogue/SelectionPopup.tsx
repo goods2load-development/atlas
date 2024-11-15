@@ -41,10 +41,10 @@ function IsRequired() {
 
 export default function SelectionPopup(props: SelectionPopupProps) {
   const { user, getUser } = useUserStore((state: any) => state);
-  const { deliveryBy } = useFilterStore(); // required field for BE
   const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const {
+    deliveryBy,
     placementOfGoods,
     arrival,
     departure,
