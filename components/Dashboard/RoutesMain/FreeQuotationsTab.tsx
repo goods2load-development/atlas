@@ -1,7 +1,7 @@
 'use client';
 
-import ViewDialogPriceAlert from './ViewDilogPriceAlert';
-import { usePriceAlertsStore } from '@/lib/store';
+import ViewDialogQuotation from './ViewDialogQuotations';
+import { useQuotationsStore } from '@/lib/store';
 
 import { useEffect, useState } from 'react';
 
@@ -16,33 +16,30 @@ import { useToast } from '@/components/ui/use-toast';
 const TAKE = 5;
 
 export const FreeQuotationsTab = () => {
-  const [isViewModalOpen, setIsViewModalOpen] = useState({
-    isOpen: false,
-    id: '',
-  });
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
 
   const {
-    priceAlerts,
-    isPriceAlertLoading,
-    getPriceAlerts,
-    deletePriceAlert,
-    sendPriceAlert,
-  } = usePriceAlertsStore((state: any) => state);
+    isQuotationsLoading,
+    quotations,
+    getQuotations,
+    approveQuotation,
+    rejectQuotation,
+  } = useQuotationsStore();
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
   const { toast } = useToast();
 
-  const page = Number(searchParams.get('priceAlertPage') || 1);
-  const meta = priceAlerts?.meta;
+  const page = Number(searchParams.get('quotationsPage') || 1);
+  const meta = quotations?.meta;
 
   useEffect(() => {
-    getPriceAlertsForPage(page);
+    getQuotationsPerPage(page);
   }, [page]);
 
-  const getPriceAlertsForPage = (page: number) => {
-    getPriceAlerts({
+  const getQuotationsPerPage = (page: number) => {
+    getQuotations({
       page,
       take: TAKE,
     });
@@ -51,32 +48,32 @@ export const FreeQuotationsTab = () => {
   const handleSetPage = (page: number) => {
     const params = new URLSearchParams(searchParams);
     if (page) {
-      params.set('priceAlertPage', page.toString());
+      params.set('quotationsPage', page.toString());
     } else {
-      params.delete('priceAlertPage');
+      params.delete('quotationsPage');
     }
 
     replace(`${pathname}?${params.toString()}`);
   };
 
-  const sendPriceAlertById = (id: string) => {
-    sendPriceAlert(id)
-      .then(() => getPriceAlertsForPage(page))
+  const handleApprove = (id: string) => {
+    approveQuotation(id)
+      .then(() => getQuotationsPerPage(page))
       .then(() =>
         toast({
-          title: 'Price alert was sended',
+          title: 'Quotation has been approved',
           variant: 'destructive',
           className: 'bg-green-500 text-white',
         }),
       );
   };
 
-  const deletePriceAlertById = (id: string) => {
-    deletePriceAlert(id)
-      .then(() => getPriceAlertsForPage(page))
+  const handleReject = (id: string) => {
+    rejectQuotation(id)
+      .then(() => getQuotationsPerPage(page))
       .then(() =>
         toast({
-          title: 'Price Alert deleted.',
+          title: 'Quotation has been deleted.',
           variant: 'destructive',
           className: 'bg-green-500 text-white',
         }),
@@ -87,46 +84,38 @@ export const FreeQuotationsTab = () => {
     <>
       <div
         className={clsx({
-          'pointer-events-none': isPriceAlertLoading,
+          'pointer-events-none': isQuotationsLoading,
         })}
       >
         <div className={clsx('flex flex-col gap-4')}>
-          {!isPriceAlertLoading && !priceAlerts?.data?.length && (
+          {!isQuotationsLoading && !quotations?.data?.length && (
             <p className="font-bold text-red-600">
               There is no any routes at the moment
             </p>
           )}
-          {priceAlerts?.data?.map((item: any, i: number) => (
+          {quotations?.data?.map((item, i: number) => (
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
                 <p
                   className="hover:underline hover:cursor-pointer"
-                  onClick={() =>
-                    setIsViewModalOpen({ isOpen: true, id: item.id })
-                  }
+                  onClick={() => setIsViewModalOpen(true)}
                 >
-                  {item.email || item.phoneNumber}
+                  {item.email || item.phone}
                 </p>
                 <div className="flex items-center gap-2">
+                  <ViewDialogQuotation
+                    isOpen={isViewModalOpen}
+                    setIsOpen={setIsViewModalOpen}
+                    item={item}
+                  />
                   <button
-                    title="Send"
-                    onClick={() => sendPriceAlertById(item.id)}
+                    title="approve"
+                    onClick={() => handleApprove(item.id)}
                   >
                     <Check />
                   </button>
-                  <ViewDialogPriceAlert
-                    isOpen={
-                      isViewModalOpen.id === item.id && isViewModalOpen.isOpen
-                    }
-                    setIsOpen={setIsViewModalOpen}
-                    item={item}
-                    id={item.id}
-                  />
 
-                  <button
-                    title="Delete"
-                    onClick={() => deletePriceAlertById(item.id)}
-                  >
+                  <button title="reject" onClick={() => handleReject(item.id)}>
                     <TrashIcon />
                   </button>
                 </div>
