@@ -51,9 +51,12 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
         </div>
         <div className="p-2 md:p-8 w-full md:w-1/2 flex flex-col justify-center md:pt-[53px]">
           <div className="flex items-center">
-            <span className="bg-orange-500 text-white text-sm font-semibold mb-2 px-2 py-1 rounded-lg">
-              {blog.blogTypeName || 'All'}
-            </span>
+            <Link
+              href={`/blog-category/${blog.blogTypeName}`}
+              className="bg-orange-500 text-white text-sm font-semibold mb-2 px-2 py-1 rounded-lg"
+            >
+              {blog?.blogTypeName || 'all'}
+            </Link>
           </div>
           <h2 className="text-2xl font-bold mb-4">
             <Link

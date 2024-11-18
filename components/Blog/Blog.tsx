@@ -89,7 +89,7 @@ const BlogPage = ({
           setSelectedCategory={setSelectedCategory}
           categories={categories}
         />
-        <BlogList blogs={blogs} categories={categories} />
+        <BlogList blogs={blogs} />
         {blogsMeta && blogsMeta.hasNextPage && (
           <div className="text-center pb-5 mt-8">
             <UIButton

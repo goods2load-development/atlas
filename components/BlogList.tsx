@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-
 import { format } from 'date-fns';
 import Link from 'next/link';
 
@@ -15,22 +13,21 @@ interface Blog {
   blogTypeId: string;
   slug: string;
 }
-
-interface BlogType {
-  id: string;
-  name: string;
-}
-
 interface BlogListProps {
   blogs: Blog[];
-  categories: BlogType[];
+  withFirstElement?: boolean;
 }
 
-const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
+const BlogList: React.FC<BlogListProps> = ({
+  blogs,
+  withFirstElement = false,
+}) => {
   const blogsWithOutFirstElement = blogs.slice(1);
+  const list = withFirstElement ? blogs : blogsWithOutFirstElement;
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-8">
-      {blogsWithOutFirstElement.map((blog) => {
+      {list.map((blog) => {
         const blogImg = blog.mainImageUrl
           ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
           : '/default-image.jpg';
@@ -46,17 +43,21 @@ const BlogList: React.FC<BlogListProps> = ({ blogs, categories }) => {
                 src={blogImg}
                 alt={blog.title}
               />
-              <div className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg">
+              <Link
+                href={`/blog-category/${blog.blogTypeName}`}
+                className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg"
+              >
                 {blog?.blogTypeName || 'all'}
-              </div>
+              </Link>
             </div>
             <div className="p-4 flex flex-col h-full justify-between">
-              <div>
+              <div className="text-left">
                 <h3 className="text-xl font-bold mb-2">
                   <Link
                     href={{
                       pathname: `/blog/${blog.slug}`,
                     }}
+                    className="block"
                   >
                     {blog.title}
                   </Link>

@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild": "node generate-sitemap.js",
+    "prebuild": "node generate-sitemap.js",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write \"**/*.js\" \"**/*.tsx\" \"**/*.ts\" \"**/*.json\" \"**/*.css\"",
