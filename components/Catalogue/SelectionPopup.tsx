@@ -63,11 +63,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
   } = useFilterStore();
   const formSchema = z.object({
     countryCode: z.string(),
-    phone: z
-      .string()
-      .regex(
-        new RegExp('^[+]?[(]?[0-9]{3}[)]?[-s.]?[0-9]{3}[-s.]?[0-9]{4,6}$'),
-      ),
+    phone: z.string().regex(new RegExp('^[0-9]{4,15}$')),
     email: z.string().min(5).email(),
     companyName: z.string().min(2),
   });

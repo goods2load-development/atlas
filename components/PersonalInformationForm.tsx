@@ -20,9 +20,8 @@ import {
 import { Input } from '@/components/ui/input';
 
 export default function PersonalInformationForm(props: any) {
-  // TODO finalize validation schema
   const formSchema = z.object({
-    phoneNumber: z.string(),
+    phoneNumber: z.string().regex(new RegExp('^[0-9]{4,15}$')),
     email: z.string().email(),
   });
 
