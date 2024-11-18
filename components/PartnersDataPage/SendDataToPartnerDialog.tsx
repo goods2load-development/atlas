@@ -1,5 +1,6 @@
 import CountryCode from '../common/CountryCode';
 import { Textarea } from '../ui/textarea';
+import { useUserStore } from '@/lib/store';
 import { postRequest } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -33,42 +34,55 @@ function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
 }
 
-const formSchema = z.object({
-  countryCode: z.string().min(1),
-  phone: z.string(),
-  email: z.string().min(5).email(),
-  companyName: z.string().min(2),
-  message: z.string().min(2),
-});
+const formSchema = (isLoggedIn: boolean) =>
+  z.object({
+    countryCode: isLoggedIn ? z.optional(z.string()) : z.string().min(1),
+    phone: isLoggedIn ? z.optional(z.string()) : z.string(),
+    email: isLoggedIn ? z.optional(z.string()) : z.string().min(5).email(),
+    companyName: isLoggedIn ? z.optional(z.string()) : z.string().min(2),
+    message: z.string().min(2),
+  });
 
 export default function SendDataToPartnerDialog({
+  title,
   trigger,
 }: {
+  title?: React.ReactNode;
   trigger: React.ReactNode;
 }) {
   const { id } = useParams();
   const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const { user } = useUserStore((state: any) => state);
+  const isLoggedIn = !!Object.values(user).length;
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      countryCode: '',
-      phone: '',
-      email: '',
-      companyName: '',
-    },
+  const Title = title || (
+    <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
+      Enter your <i className="font-normal">details</i>
+    </DialogTitle>
+  );
+
+  const form = useForm<z.infer<ReturnType<typeof formSchema>>>({
+    resolver: zodResolver(formSchema(isLoggedIn)),
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<ReturnType<typeof formSchema>>) => {
     if (!executeRecaptcha) return;
 
     const token = await executeRecaptcha('pollVote');
-    const data = {
-      ...values,
-      phone: `${values.countryCode}${values.phone}`,
-      recaptchaToken: token,
-    };
+    const data = isLoggedIn
+      ? {
+          phone: user.phoneNumber,
+          email: user.email,
+          companyName: user.companyName,
+          message: values.message,
+          recaptchaToken: token,
+        }
+      : {
+          ...values,
+          phone: `${(values as any).countryCode}${(values as any).phone}`,
+          recaptchaToken: token,
+        };
 
     delete (data as any).countryCode;
 
@@ -90,45 +104,69 @@ export default function SendDataToPartnerDialog({
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <DialogHeader>
-              <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
-                Enter your <i className="font-normal">details</i>
-              </DialogTitle>
+              {Title}
               <p className="text-center text-[18px]/[26px]">
-                Please provide your email, company phone number and company name
-                below so we can contact you regarding your selection.
+                Please provide your email, company phone number, and company
+                name below so we can contact you regarding your selection.
               </p>
             </DialogHeader>
-            <div className="flex gap-2 mt-[32px]">
-              <div>
-                <label className="text-[14px]">
-                  Company phone number
-                  <IsRequired />
-                </label>
-                <div className="flex mt-2 gap-2">
+
+            {/* Conditional rendering of fields based on isLoggedIn */}
+            {!isLoggedIn && (
+              <>
+                <div className="flex gap-2 mt-[32px]">
+                  <div>
+                    <label className="text-[14px]">
+                      Company phone number
+                      <IsRequired />
+                    </label>
+                    <div className="flex mt-2 gap-2">
+                      <FormField
+                        control={form.control}
+                        name="countryCode"
+                        render={({ field }) => (
+                          <FormItem className="w-4/12">
+                            <FormControl>
+                              <CountryCode
+                                onChange={field.onChange}
+                                className="border-none bg-gray-2"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name="phone"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <FormControl>
+                              <Input
+                                className="border-none bg-gray-2"
+                                placeholder="0000000"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+                  </div>
                   <FormField
                     control={form.control}
-                    name="countryCode"
-                    render={({ field }) => (
-                      <FormItem className="w-4/12">
-                        <FormControl>
-                          <CountryCode
-                            onChange={field.onChange}
-                            className="border-none bg-gray-2"
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={form.control}
-                    name="phone"
+                    name="email"
                     render={({ field }) => (
                       <FormItem className="flex-1">
+                        <label className="text-[14px]">
+                          Email
+                          <IsRequired />
+                        </label>
                         <FormControl>
                           <Input
                             className="border-none bg-gray-2"
-                            placeholder="0000000"
+                            placeholder="email@abcd.com"
                             {...field}
                           />
                         </FormControl>
@@ -137,48 +175,30 @@ export default function SendDataToPartnerDialog({
                     )}
                   />
                 </div>
-              </div>
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="flex-1">
-                    <label className="text-[14px]">
-                      Email
-                      <IsRequired />
-                    </label>
-                    <FormControl>
-                      <Input
-                        className="border-none bg-gray-2"
-                        placeholder="email@abcd.com"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-            <FormField
-              control={form.control}
-              name="companyName"
-              render={({ field }) => (
-                <FormItem className="mt-[16px]">
-                  <label className="text-[14px]">
-                    Company name
-                    <IsRequired />
-                  </label>
-                  <FormControl>
-                    <Input
-                      className="border-none bg-gray-2"
-                      placeholder="ABCD FZ LLC"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+                <FormField
+                  control={form.control}
+                  name="companyName"
+                  render={({ field }) => (
+                    <FormItem className="mt-[16px]">
+                      <label className="text-[14px]">
+                        Company name
+                        <IsRequired />
+                      </label>
+                      <FormControl>
+                        <Input
+                          className="border-none bg-gray-2"
+                          placeholder="ABCD FZ LLC"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </>
+            )}
+
             <FormField
               control={form.control}
               name="message"
@@ -205,6 +225,7 @@ export default function SendDataToPartnerDialog({
             </UIButton>
           </form>
         </Form>
+
         <div className={`${step !== 1 && 'hidden'}`}>
           <DialogHeader className="mb-[42px]">
             <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
@@ -217,7 +238,7 @@ export default function SendDataToPartnerDialog({
           </DialogHeader>
           <DialogFooter className="sm:justify-start">
             <DialogClose asChild>
-              <UIButton className="mx-auto  w-[184px]">I got it</UIButton>
+              <UIButton className="mx-auto w-[184px]">I got it</UIButton>
             </DialogClose>
           </DialogFooter>
         </div>

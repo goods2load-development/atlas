@@ -5,7 +5,7 @@ import { OrderRoute } from './types';
 import { toNormalText } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { format } from 'date-fns';
 import { Reply } from 'lucide-react';
@@ -70,8 +70,15 @@ const ReplyDialog = ({
       );
   };
 
+  const { watch } = form;
+
+  const incorectFileds = watch('reasons');
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    onSubmitCallback(data).then(() => setIsOpen(false));
+    onSubmitCallback(data).then(() => {
+      setIsOpen(false);
+      form.reset();
+    });
   };
 
   return (
