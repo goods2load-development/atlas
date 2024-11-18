@@ -513,7 +513,28 @@ export const useRoutesStore = create((set) => ({
   },
 }));
 
-export const usePriceAlertsStore = create((set) => ({
+interface PriceAlert {
+  id: string;
+  message: string;
+  createdAt: string;
+  [key: string]: any;
+}
+
+interface GetPriceAlertsParams {
+  page?: number;
+  take?: number;
+}
+
+interface UsePriceAlertsStore {
+  priceAlerts: PriceAlert[];
+  isPriceAlertLoading: boolean;
+  getPriceAlerts: (params: GetPriceAlertsParams) => Promise<void>;
+  replyPriceAlerts: (id: string, message: string) => Promise<void>;
+  sendPriceAlert: (id: string) => Promise<void>;
+  deletePriceAlert: (id: string) => Promise<void>;
+}
+
+export const usePriceAlertsStore = create<UsePriceAlertsStore>((set) => ({
   priceAlerts: [],
   isPriceAlertLoading: true,
 
@@ -550,6 +571,67 @@ export const usePriceAlertsStore = create((set) => ({
     set({ isPriceAlertLoading: true });
     return deleteRequest({ url: `alerts/${id}` }).finally(() =>
       set({ isPriceAlertLoading: false }),
+    );
+  },
+}));
+
+export interface Quotation {
+  id: string;
+  companyName: string;
+  email: string;
+  message: string;
+  partnerId: string;
+  phone: string;
+}
+
+interface UseQuotationsStore {
+  quotations: {
+    data: Quotation[];
+    meta: {
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+      itemCount: number;
+      page: number;
+      pageCount: number;
+      take: number;
+    };
+  } | null;
+  isQuotationsLoading: boolean;
+  getQuotations: (params: { take?: number; page?: number }) => Promise<void>;
+  approveQuotation: (id: string) => Promise<void>;
+  rejectQuotation: (id: string) => Promise<void>;
+}
+
+export const useQuotationsStore = create<UseQuotationsStore>((set) => ({
+  quotations: null,
+  isQuotationsLoading: true,
+
+  getQuotations: ({ page = 1, take = 5 }) => {
+    set({ isQuotationsLoading: true });
+    return getRequest({
+      url: 'partners/quotations',
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((quotations) => {
+        set({ quotations });
+      })
+      .finally(() => set({ isQuotationsLoading: false }));
+  },
+
+  approveQuotation: (id: string) => {
+    set({ isQuotationsLoading: true });
+    return postRequest({
+      url: `partners/free-quotation/${id}/approve`,
+    }).finally(() => set({ isQuotationsLoading: false }));
+  },
+
+  rejectQuotation: (id: string) => {
+    set({ isQuotationsLoading: true });
+    return deleteRequest({ url: `partners/free-quotation/${id}` }).finally(() =>
+      set({ isQuotationsLoading: false }),
     );
   },
 }));

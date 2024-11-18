@@ -21,7 +21,12 @@ const ViewDialogPriceAlert = ({
   id,
 }: {
   isOpen: boolean;
-  setIsOpen: (a: any) => void;
+  setIsOpen: React.Dispatch<
+    React.SetStateAction<{
+      id: string;
+      isOpen: boolean;
+    }>
+  >;
   item: any;
   id: string;
 }) => {
