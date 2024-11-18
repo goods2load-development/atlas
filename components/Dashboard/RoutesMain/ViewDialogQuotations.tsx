@@ -13,7 +13,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 
-const includesList = ['id'];
+const includesList = ['id', 'partnerId'];
 
 const ViewDialogQuotation = ({
   isOpen,
