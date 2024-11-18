@@ -119,7 +119,7 @@ export const SolutionFinderTab = () => {
                     setIsViewModalOpen({ isOpen: true, id: item.id })
                   }
                 >
-                  {item.email || item.phoneNumber}
+                  {item.userEmail || item.phoneNumber}
                 </p>
                 <div className="flex items-center gap-2">
                   <button

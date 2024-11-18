@@ -31,7 +31,7 @@ const ViewDialogPriceAlert = ({
   );
 
   const {
-    email,
+    userEmail,
     phoneNumber,
     fromRoute,
     toRoute,
@@ -41,6 +41,7 @@ const ViewDialogPriceAlert = ({
     goodsValue,
     quantity,
     placementOfGoods,
+    message,
   } = item;
 
   return (
@@ -61,9 +62,10 @@ const ViewDialogPriceAlert = ({
           <hr />
 
           <div className="flex flex-col gap-2">
-            {email && (
+            {userEmail && (
               <div>
-                <span className="font-semibold">Customer email:</span> {email}
+                <span className="font-semibold">Customer email:</span>{' '}
+                {userEmail}
               </div>
             )}
             {phoneNumber && (
@@ -79,6 +81,12 @@ const ViewDialogPriceAlert = ({
             <div>
               <span className="font-semibold">To:</span> {toRoute}
             </div>
+
+            {message && (
+              <div>
+                <span className="font-semibold">Message:</span> {message}
+              </div>
+            )}
           </div>
           <hr />
 
