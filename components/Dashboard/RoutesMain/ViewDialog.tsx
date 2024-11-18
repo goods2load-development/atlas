@@ -18,30 +18,28 @@ import {
 } from '@/components/ui/dialog';
 
 const listOfUserData = [
-  'companyName',
-  'phoneNumber',
-  'email',
-  'address',
-  'country',
-  'postalCode',
+  'userCompany',
+  'userPhone',
+  'userEmail',
+  // 'address',
+  // 'country',
+  // 'postalCode',
 ];
 
 const ViewDialog = ({
   isOpen,
   setIsOpen,
-  user,
-  order,
+  route,
   id,
 }: {
   isOpen: boolean;
   setIsOpen: (a: any) => void;
-  user: UserRoute;
-  order: OrderRoute;
+  route: OrderRoute;
   id: string;
 }) => {
   const volume = useMemo(
-    () => countVolume(order.width, order.length, order.height),
-    [order],
+    () => countVolume(route.width, route.length, route.height),
+    [route],
   );
 
   return (
@@ -63,7 +61,7 @@ const ViewDialog = ({
           <div className="max-h-[300px] overflow-y-scroll">
             <h2 className="font-bold text-xl my-4">User data</h2>
             <div className="flex flex-col gap-2">
-              {Object.entries(user).map(([key, value]) => {
+              {Object.entries(route).map(([key, value]) => {
                 if (!value || !listOfUserData.includes(key)) return null;
                 return (
                   <p key={key}>
@@ -76,20 +74,22 @@ const ViewDialog = ({
             <hr className="block mt-4" />
             <h2 className="font-bold text-xl my-4">Order data</h2>
             <div className="flex flex-col gap-2">
-              {[...Object.entries(order), ['volume', volume]].map(
-                ([key, value]) => {
-                  if (key === 'id') return null;
-                  const val = dateValues.includes(key as string)
-                    ? format(value, 'MM/dd/yyyy')
-                    : value;
-                  return (
-                    <p key={key}>
-                      <strong>{toNormalText(key as string)}: </strong>
-                      {val?.toString() || '-'}
-                    </p>
-                  );
-                },
-              )}
+              {[...Object.entries(route)].map(([key, value]) => {
+                if (
+                  key === 'id' ||
+                  (typeof key === 'string' && listOfUserData.includes(key))
+                )
+                  return null;
+                const val = dateValues.includes(key as string)
+                  ? format(value, 'MM/dd/yyyy')
+                  : value;
+                return (
+                  <p key={key}>
+                    <strong>{toNormalText(key as string)}: </strong>
+                    {val?.toString() || '-'}
+                  </p>
+                );
+              })}
             </div>
           </div>
         </DialogHeader>

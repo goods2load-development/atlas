@@ -151,7 +151,7 @@ export default function Registration() {
   const formSchema = z
     .object({
       countryCode: z.string(),
-      phoneNumber: z.string().regex(new RegExp('^[0-9]{4,10}$')),
+      phoneNumber: z.string().regex(new RegExp('^[0-9]{4,15}$')),
       email: z.string().min(5).email(),
       companyName: z.string().min(2),
       companyPhoto: z.custom(
