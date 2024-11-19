@@ -4,6 +4,8 @@ import arrowRightIcon from '@/assets/arrow-right-input.svg';
 import { useNewsletterStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
+import { useEffect } from 'react';
+
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -15,7 +17,7 @@ const schema = z.object({
 type FormValues = z.infer<typeof schema>;
 
 export default function JoinOurNewsLetter() {
-  const { joinNewsletter } = useNewsletterStore();
+  const { joinNewsletter, isNewsletterLoading } = useNewsletterStore();
   const { toast } = useToast();
 
   const {
@@ -27,13 +29,20 @@ export default function JoinOurNewsLetter() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = ({ email }: FormValues) => {
-    joinNewsletter(email).then(() =>
-      toast({
-        description: 'You have successfully joined our newsletter.',
-        className: 'bg-green-500 text-white',
-      }),
-    );
+  const onSubmit = async ({ email }: FormValues) => {
+    try {
+      const data = await joinNewsletter(email);
+
+      if (data) {
+        toast({
+          description: 'You have successfully joined our newsletter',
+          className: 'bg-green-500 text-white',
+        });
+      }
+    } catch (error) {
+      throw new Error('Your email address is already on our magic list');
+    }
+
     reset();
   };
 

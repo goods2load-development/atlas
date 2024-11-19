@@ -90,7 +90,7 @@ export const FreeQuotationsTab = () => {
         <div className={clsx('flex flex-col gap-4')}>
           {!isQuotationsLoading && !quotations?.data?.length && (
             <p className="font-bold text-red-600">
-              There is no any routes at the moment
+              No quotation requests at the moment
             </p>
           )}
           {quotations?.data?.map((item, i: number) => (

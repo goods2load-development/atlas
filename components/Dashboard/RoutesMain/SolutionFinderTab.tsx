@@ -107,7 +107,7 @@ export const SolutionFinderTab = () => {
         <div className={clsx('flex flex-col gap-4')}>
           {!isPriceAlertLoading && !priceAlerts?.data?.length && (
             <p className="font-bold text-red-600">
-              There is no any routes at the moment
+              No solutions finder requests
             </p>
           )}
           {priceAlerts?.data?.map((item: any, i: number) => (
