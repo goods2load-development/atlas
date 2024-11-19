@@ -46,6 +46,11 @@ export const generateMetadata = ({
     alternates: {
       canonical,
     },
+    openGraph: {
+      title,
+      description,
+      url: canonical,
+    },
   };
 };
 

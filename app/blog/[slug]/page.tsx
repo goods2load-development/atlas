@@ -3,7 +3,6 @@ import { Metadata } from 'next';
 import BlogSlug from '@/components/BlogSlug/BlogSlug';
 import Footer from '@/components/Footer';
 import DynamicMenu from '@/components/Header/DynamicMenu';
-import Header from '@/components/Header/Header';
 import HeaderClient from '@/components/Header/HeaderClient';
 
 async function getBlogData(slug: string) {
@@ -32,6 +31,11 @@ export async function generateMetadata({
     keywords: blog.blogTypeName?.split(', '),
     alternates: {
       canonical,
+    },
+    openGraph: {
+      title: blog.title,
+      description: blog.description,
+      url: canonical,
     },
   };
 }

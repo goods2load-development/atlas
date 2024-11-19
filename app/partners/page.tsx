@@ -12,13 +12,21 @@ import { Metadata } from 'next';
 import BigLayout from '@/components/BigLayout';
 import Footer from '@/components/Footer';
 
+const title =
+  'Partners - GOODS2LOAD | Join Us in Revolutionizing the Logistics Industry';
+const description =
+  'Partner with GOODS2LOAD to drive innovation, reduce costs, and enhance efficiency in the logistics industry. Explore opportunities to collaborate with us and become part of our growing team dedicated to reshaping the future of logistics.';
+
 export const metadata: Metadata = {
-  title:
-    'Partners - GOODS2LOAD | Join Us in Revolutionizing the Logistics Industry',
-  description:
-    'Partner with GOODS2LOAD to drive innovation, reduce costs, and enhance efficiency in the logistics industry. Explore opportunities to collaborate with us and become part of our growing team dedicated to reshaping the future of logistics.',
+  title,
+  description,
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}/partners`,
+  },
+  openGraph: {
+    title,
+    description,
+    url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/partners`,
   },
 };
 

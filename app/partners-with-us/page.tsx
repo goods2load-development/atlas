@@ -8,13 +8,21 @@ import Footer from '@/components/Footer';
 import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
 
+const title =
+  'Partner With Us - GOODS2LOAD | Expand Your Reach and Grow Your Business';
+const description =
+  'Partner with GOODS2LOAD to connect with millions of businesses seeking efficient shipping solutions. Join us as a trusted copilot and grow your business while enhancing logistics services across the globe.';
+
 export const metadata: Metadata = {
-  title:
-    'Partner With Us - GOODS2LOAD | Expand Your Reach and Grow Your Business',
-  description:
-    'Partner with GOODS2LOAD to connect with millions of businesses seeking efficient shipping solutions. Join us as a trusted copilot and grow your business while enhancing logistics services across the globe.',
+  title,
+  description,
   alternates: {
     canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}/partners-with-us`,
+  },
+  openGraph: {
+    title,
+    description,
+    url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/partners-with-us`,
   },
 };
 
