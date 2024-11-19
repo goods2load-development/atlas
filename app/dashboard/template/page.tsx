@@ -1,6 +1,8 @@
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import TemplateMain from "@/components/Dashboard/TemplateMain/TemplateMain";
-import { Suspense } from "react";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+
+import { Suspense } from 'react';
+
+import TemplateMain from '@/components/Dashboard/TemplateMain/TemplateMain';
 
 export default function Template() {
   return (

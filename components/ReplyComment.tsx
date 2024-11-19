@@ -1,14 +1,16 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
-import { ChevronUp, ChevronDown, CornerLeftUp } from "lucide-react";
-import { patchRequest, postRequest } from "@/lib/utils";
-import Image from "next/image";
-import userIcon from "@/assets/user.png";
-import pencilIcon from "@/assets/pencel.svg";
-import trushIcon from "@/assets/trush.svg";
-import { ActiveReaction, CommentData } from "./Comment";
-import clsx from "clsx";
-import { useRouter } from "next/navigation";
-import { getRequest } from "@/lib/utils";
+import { ActiveReaction, CommentData } from './Comment';
+import pencilIcon from '@/assets/pencel.svg';
+import trushIcon from '@/assets/trush.svg';
+import userIcon from '@/assets/user.png';
+import { patchRequest, postRequest } from '@/lib/utils';
+import { getRequest } from '@/lib/utils';
+
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+
+import clsx from 'clsx';
+import { ChevronDown, ChevronUp, CornerLeftUp } from 'lucide-react';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 interface ReplyCommentProps {
   id: string;
@@ -49,7 +51,7 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
 }) => {
   const [isReplying, setIsReplying] = useState(false);
   const [editedText, setEditedText] = useState(commentText);
-  const [replyText, setReplyText] = useState("");
+  const [replyText, setReplyText] = useState('');
   const [localLikesCount, setLocalLikesCount] = useState(likeCount);
   const [localDislikeCount, setLocalDislikeCount] = useState(dislikeCount);
   const [activeReaction, setActiveReaction] = useState<ActiveReaction>(null);
@@ -64,7 +66,6 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
   const isFetched = useRef(false);
 
   useEffect(() => {
-    console.log(userId, "123");
     return () => {
       setIsEditing(false);
     };
@@ -80,7 +81,7 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
       setIsEditing(false);
       setLocalIsEditedComment(true);
     } catch (error) {
-      console.error("Error updating reply:", error);
+      console.error('Error updating reply:', error);
     }
   };
 
@@ -95,10 +96,10 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
           userId: currentUserId,
         },
       });
-      setReplyText("");
+      setReplyText('');
       setIsReplying(false);
     } catch (error) {
-      console.error("Error posting reply:", error);
+      console.error('Error posting reply:', error);
     }
   };
 
@@ -106,7 +107,7 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
     try {
       onDelete && onDelete(id);
     } catch (error) {
-      console.error("Error deleting comment:", error);
+      console.error('Error deleting comment:', error);
     }
   };
 
@@ -134,16 +135,16 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
             });
           }
         } catch (error) {
-          console.error("Error fetching replies:", error);
+          console.error('Error fetching replies:', error);
         }
       }
     },
-    [id]
+    [id],
   );
 
   const handleLike = async () => {
     if (!currentUserId) {
-      router.push("/registration?user");
+      router.push('/registration?user');
       return;
     }
 
@@ -153,11 +154,11 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
         data: {
           userId: currentUserId,
           commentId: id,
-          reaction: "LIKE",
+          reaction: 'LIKE',
         },
       }).then(({ likeCount, dislikeCount }) => {
         if (likeCount > localLikesCount) {
-          setActiveReaction("like");
+          setActiveReaction('like');
         } else {
           setActiveReaction(null);
         }
@@ -166,13 +167,13 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
         setLocalLikesCount(likeCount);
       });
     } catch (error) {
-      console.error("Error liking reply:", error);
+      console.error('Error liking reply:', error);
     }
   };
 
   const handleDislike = async () => {
     if (!currentUserId) {
-      router.push("/registration?user");
+      router.push('/registration?user');
       return;
     }
 
@@ -180,13 +181,13 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
       await patchRequest({
         url: `/blog-comments/${id}/reaction`,
         data: {
-          userId: localStorage.getItem("id"),
+          userId: localStorage.getItem('id'),
           commentId: id,
-          reaction: "DISLIKE",
+          reaction: 'DISLIKE',
         },
       }).then(({ likeCount, dislikeCount }) => {
         if (dislikeCount > localDislikeCount) {
-          setActiveReaction("dislike");
+          setActiveReaction('dislike');
         } else {
           setActiveReaction(null);
         }
@@ -195,7 +196,7 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
         setLocalDislikeCount(dislikeCount);
       });
     } catch (error) {
-      console.error("Error disliking reply:", error);
+      console.error('Error disliking reply:', error);
     }
   };
 
@@ -223,14 +224,14 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
           )}
 
           <p className="font-medium ml-4 mr-6 text-gray-800">
-            {userName || "User"}
+            {userName || 'User'}
           </p>
           <p className="text-sm text-gray-500 mr-3">
-            {Number(daysAgo) <= 0 ? "today" : `${daysAgo} days ago`}
+            {Number(daysAgo) <= 0 ? 'today' : `${daysAgo} days ago`}
           </p>
           {localIsEditedComment && (
             <p className="text-sm mr-3">
-              {"("}Edited{")"}
+              {'('}Edited{')'}
             </p>
           )}
           <div className="flex items-center space-x-2 gap-3">
@@ -299,10 +300,10 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
         <button
           onClick={handleLike}
           className={clsx(
-            "flex items-center px-2 py-0.5 rounded-2xl border-primaryOrange border gap-0.5 hover:bg-lightOrange transition-all",
-            activeReaction === "like" && localLikesCount !== 0
-              ? "bg-[#FFC1A2]"
-              : null
+            'flex items-center px-2 py-0.5 rounded-2xl border-primaryOrange border gap-0.5 hover:bg-lightOrange transition-all',
+            activeReaction === 'like' && localLikesCount !== 0
+              ? 'bg-[#FFC1A2]'
+              : null,
           )}
         >
           <span className="text-gray-700">{localLikesCount}</span>
@@ -311,10 +312,10 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
         <button
           onClick={handleDislike}
           className={clsx(
-            "flex items-center px-2 py-0.5 rounded-2xl gap-1 border-primaryOrange border hover:bg-lightOrange transition-all",
-            activeReaction === "dislike" && localDislikeCount !== 0
-              ? "bg-[#FFC1A2]"
-              : null
+            'flex items-center px-2 py-0.5 rounded-2xl gap-1 border-primaryOrange border hover:bg-lightOrange transition-all',
+            activeReaction === 'dislike' && localDislikeCount !== 0
+              ? 'bg-[#FFC1A2]'
+              : null,
           )}
         >
           <span className="text-gray-700">{localDislikeCount}</span>
@@ -325,7 +326,7 @@ const ReplyComment: React.FC<ReplyCommentProps> = ({
           onClick={() => setIsReplying(!isReplying)}
           className="text-sm hover:no-underline underline"
         >
-          {isReplying ? "Cancel Reply" : "Reply"}
+          {isReplying ? 'Cancel Reply' : 'Reply'}
         </button>
       </div>
 

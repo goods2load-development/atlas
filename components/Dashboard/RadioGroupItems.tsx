@@ -1,8 +1,10 @@
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
-import Image from "next/image";
-import { DeliveryBy } from "@/lib/filterStore";
-import { usePerformanceStore } from "@/lib/analyticsStore";
+import { useAnalyticsStore } from '@/lib/analyticsStore';
+import { DeliveryBy } from '@/lib/filterStore';
+
+import Image from 'next/image';
+
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 
 export interface RadioGroupItemsProps {
   onChangeValue?: (value: DeliveryBy) => void;
@@ -11,8 +13,7 @@ export interface RadioGroupItemsProps {
 export default function RadioGroupItems({
   onChangeValue,
 }: RadioGroupItemsProps) {
-
-  const {deliveryBy} = usePerformanceStore();
+  const { deliveryBy } = useAnalyticsStore();
 
   return (
     <form className="my-2 mb-4 lg:mb-10">
@@ -41,7 +42,7 @@ const CustomRadioGroupItem = ({ value, imageNumber }: any) => {
           alt={value}
           width={58}
           height={58}
-          className={"cursor-pointer text-black"}
+          className={'cursor-pointer text-black'}
         />
       </Label>
     </>

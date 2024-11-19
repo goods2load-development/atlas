@@ -1,7 +1,8 @@
-import { StaticImageData } from "next/image";
-import logoPlaceholder from "@/assets/Product/DP_World.png";
-import logoPlaceholder2 from "@/assets/Product/Hapag_Lloyd.png";
-import { GoogleRatingProps } from "./GoogleRating";
+import { GoogleRatingProps } from './GoogleRating';
+import logoPlaceholder from '@/assets/Product/DP_World.png';
+import logoPlaceholder2 from '@/assets/Product/Hapag_Lloyd.png';
+
+import { StaticImageData } from 'next/image';
 
 export interface IProductServices {
   label: string;
@@ -12,6 +13,9 @@ export interface IPartnerInfo {
   partnerId: string;
   services: IProductServices[];
   awards: boolean;
+  rating: number;
+  totalReviews: number;
+  placementId: string;
 }
 
 export interface IProduct {
@@ -28,18 +32,3 @@ export interface IProduct {
   placementOfGoods: string;
   partnerInfo: IPartnerInfo;
 }
-
-export const googleRatingMocks: GoogleRatingProps[] = [
-  {
-    value: 4.6,
-    reviewsCount: 34,
-  },
-  {
-    value: 3.1,
-    reviewsCount: 45,
-  },
-  {
-    value: 5,
-    reviewsCount: 94,
-  },
-];

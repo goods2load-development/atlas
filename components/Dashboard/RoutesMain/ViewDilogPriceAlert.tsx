@@ -1,17 +1,18 @@
-"use client";
+'use client';
+
+import { countVolume } from '@/lib/utils';
+
+import { useMemo } from 'react';
+
+import { ViewIcon } from 'lucide-react';
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { ViewIcon } from "lucide-react";
-import { OrderRoute, UserRoute } from "./types";
-import { countVolume, toNormalText } from "@/lib/utils";
-import { useMemo } from "react";
-import { format } from "date-fns";
-import { dateValues } from "./constants";
+} from '@/components/ui/dialog';
 
 const ViewDialogPriceAlert = ({
   isOpen,
@@ -20,17 +21,22 @@ const ViewDialogPriceAlert = ({
   id,
 }: {
   isOpen: boolean;
-  setIsOpen: (a: any) => void;
+  setIsOpen: React.Dispatch<
+    React.SetStateAction<{
+      id: string;
+      isOpen: boolean;
+    }>
+  >;
   item: any;
   id: string;
 }) => {
   const volume = useMemo(
     () => countVolume(item.width, item.length, item.height),
-    [item]
+    [item],
   );
 
   const {
-    email,
+    userEmail,
     phoneNumber,
     fromRoute,
     toRoute,
@@ -40,6 +46,7 @@ const ViewDialogPriceAlert = ({
     goodsValue,
     quantity,
     placementOfGoods,
+    message,
   } = item;
 
   return (
@@ -48,7 +55,7 @@ const ViewDialogPriceAlert = ({
       onOpenChange={(isOpen) => {
         setIsOpen({
           isOpen,
-          id: isOpen ? id : "",
+          id: isOpen ? id : '',
         });
       }}
     >
@@ -60,26 +67,31 @@ const ViewDialogPriceAlert = ({
           <hr />
 
           <div className="flex flex-col gap-2">
-            {email && (
+            {userEmail && (
               <div>
-                <span className="font-semibold">Customer email:</span> {email}
+                <span className="font-semibold">Customer email:</span>{' '}
+                {userEmail}
               </div>
             )}
             {phoneNumber && (
               <div>
-                <span className="font-semibold">Customer phone:</span>{" "}
+                <span className="font-semibold">Customer phone:</span>{' '}
                 {phoneNumber}
               </div>
             )}
-            <div>
-              <span className="font-semibold">Desire price:</span> {price}$
-            </div>
+
             <div>
               <span className="font-semibold">From:</span> {fromRoute}
             </div>
             <div>
               <span className="font-semibold">To:</span> {toRoute}
             </div>
+
+            {message && (
+              <div>
+                <span className="font-semibold">Message:</span> {message}
+              </div>
+            )}
           </div>
           <hr />
 
@@ -89,7 +101,7 @@ const ViewDialogPriceAlert = ({
             <span className="font-semibold">Type of Goods</span> {typeOfGoods}
           </div>
           <div>
-            <span className="font-semibold">Placement of Goods</span>{" "}
+            <span className="font-semibold">Placement of Goods</span>{' '}
             {placementOfGoods}
           </div>
 

@@ -1,9 +1,11 @@
-"use client";
+'use client';
 
-import MarketTrendsMain from "@/components/Dashboard/MarketTrends/MarketTrendsMain";
-import RadioGroupItems from "@/components/Dashboard/RadioGroupItems";
-import { usePathname } from "next/navigation";
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+
+import { usePathname } from 'next/navigation';
+
+import MarketTrendsMain from '@/components/Dashboard/MarketTrends/MarketTrendsMain';
+import RadioGroupItems from '@/components/Dashboard/RadioGroupItems';
 
 export default function MarketTrends({
   params,
@@ -11,7 +13,7 @@ export default function MarketTrends({
   params: { route: string };
 }) {
   const pathname = usePathname();
-  const colorClass = pathname === params.route ? "text-black" : "text-blue";
+  const colorClass = pathname === params.route ? 'text-black' : 'text-blue';
 
   return (
     <DashboardLayout>

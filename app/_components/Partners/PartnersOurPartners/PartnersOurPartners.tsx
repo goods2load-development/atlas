@@ -1,9 +1,12 @@
-"use client";
-import React, { useEffect } from "react";
-import Link from "next/link";
-import defaultLogo from "@/assets/default-logo-g2l.svg";
-import { usePartnersStore } from "@/lib/store";
-import clsx from "clsx";
+'use client';
+
+import defaultLogo from '@/assets/default-logo-g2l.svg';
+import { usePartnersStore } from '@/lib/store';
+
+import React, { useEffect } from 'react';
+
+import clsx from 'clsx';
+import Link from 'next/link';
 
 interface PartnersOurPartnersProps {
   className?: string;
@@ -22,8 +25,8 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
     <section
       id="our-partners"
       className={clsx(
-        "w-full items-center max-w-[1328px] mx-auto px-4",
-        className
+        'w-full items-center max-w-[1328px] mx-auto px-4',
+        className,
       )}
     >
       <div className="text-black text-center font-light md:text-[40px]/[48px] text-[34px]/[38px] flex mb-8 justify-center lg:justify-start">
@@ -45,9 +48,9 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
                   className="h-full"
                   style={{
                     backgroundImage: `url(${defaultLogo.src})`,
-                    backgroundSize: "contain",
-                    backgroundPosition: "center",
-                    backgroundRepeat: "no-repeat",
+                    backgroundSize: 'contain',
+                    backgroundPosition: 'center',
+                    backgroundRepeat: 'no-repeat',
                   }}
                 />
               </Link>

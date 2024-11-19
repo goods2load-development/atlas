@@ -1,14 +1,16 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { Button } from "../../ui/button";
-import Link from "next/link";
-import { cn, isUserAdmin, isUserEditor, isUserProvider } from "@/lib/utils";
-import closeSvg from "@/assets/close.svg";
-import { LogOut } from "lucide-react";
-import { useUserStore } from "@/lib/store";
+import { Button } from '../../ui/button';
+import closeSvg from '@/assets/close.svg';
+import { useUserStore } from '@/lib/store';
+import { cn, isUserAdmin, isUserEditor, isUserProvider } from '@/lib/utils';
+
+import React, { useEffect, useState } from 'react';
+
+import { LogOut } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 
 const MobileSidebar: React.FC = () => {
   const pathname = usePathname();
@@ -21,47 +23,47 @@ const MobileSidebar: React.FC = () => {
 
   const [sideBar, setSidebar] = useState([
     {
-      title: "Performance",
-      href: "/dashboard/performance",
+      title: 'Performance',
+      href: '/dashboard/performance',
       active: false,
     },
     {
-      title: "Market trends",
-      href: "/dashboard/market-trends",
+      title: 'Market trends',
+      href: '/dashboard/market-trends',
       active: false,
     },
     {
-      title: "Opportunity",
-      href: "/dashboard/opportunities",
+      title: 'Opportunity',
+      href: '/dashboard/opportunities',
       active: false,
     },
   ]);
 
   useEffect(() => {
-    const slug = pathname.split("/").pop();
+    const slug = pathname.split('/').pop();
     setSidebar(
       sideBar.map((it) => {
-        if (it.href.split("/").pop() === slug) {
+        if (it.href.split('/').pop() === slug) {
           return { ...it, active: true };
         }
         return { ...it, active: false };
-      })
+      }),
     );
   }, [pathname]);
 
   useEffect(() => {
     if (expanded) {
-      document.body.style.overflow = "hidden";
+      document.body.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = "auto";
+      document.body.style.overflow = 'auto';
     }
   }, [expanded]);
 
   return (
     <aside
       className={cn(
-        "sm:hidden fixed w-full bg-primaryOrange top-0 z-10 px-4 py-2 pb-4 text-white",
-        expanded ? "h-[auto] overflow-scroll" : "h-[56px] overflow-hidden"
+        'sm:hidden fixed w-full bg-primaryOrange top-0 z-10 px-4 py-2 pb-4 text-white',
+        expanded ? 'h-[auto] overflow-scroll' : 'h-[56px] overflow-hidden',
       )}
       style={{}}
     >
@@ -83,7 +85,7 @@ const MobileSidebar: React.FC = () => {
           )}
         </Button>
       </div>
-      <div className="flex flex-col items-center gap-4">
+      <div className="flex flex-col items-center gap-4 pt-6">
         {isProvider &&
           sideBar.map((it) => (
             <Link
@@ -94,7 +96,7 @@ const MobileSidebar: React.FC = () => {
                       return { ...el, active: true };
                     }
                     return { ...el, active: false };
-                  })
+                  }),
                 );
               }}
               id={it.title}
@@ -105,8 +107,8 @@ const MobileSidebar: React.FC = () => {
               {it.title}
               <div
                 className={cn(
-                  "absolute -left-3 border top-0 hidden",
-                  it.active && "h-[110%] flex hover:flex"
+                  'absolute -left-3 border top-0 hidden',
+                  it.active && 'h-[110%] flex hover:flex',
                 )}
               ></div>
             </Link>

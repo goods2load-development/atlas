@@ -1,19 +1,20 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import Link from "next/link";
-import { useEffect } from "react";
-import Logo from "@/components/Logo";
-import Socials from "@/components/Socials";
-import { Input } from "./ui/input";
-import { useFooterHeaderStore } from "@/lib/store";
-import addressIcon from "@/assets/address.svg";
-import phoneIcon from "@/assets/phone.svg";
-import emailIcon from "@/assets/email.svg";
-import arrowRightIcon from "@/assets/arrow-right-input.svg";
-import ErrorBoundary from "./ErrorBoundary";
-import LangSwitcher from "./LangSwicher";
-import JoinOurNewsLetter from "./JoinOurNewsLetter";
+import ErrorBoundary from './ErrorBoundary';
+import JoinOurNewsLetter from './JoinOurNewsLetter';
+import LangSwitcher from './LangSwicher';
+import addressIcon from '@/assets/address.svg';
+import emailIcon from '@/assets/email.svg';
+import phoneIcon from '@/assets/phone.svg';
+import { useFooterHeaderStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import Image from 'next/image';
+import Link from 'next/link';
+
+import Logo from '@/components/Logo';
+import Socials from '@/components/Socials';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -27,7 +28,7 @@ export default function Footer() {
 
   return (
     <footer className="text-white min-h-[244px] bg-bgFooter bg-cover bg-center">
-      <div className="md:flex align-middle block px-4 py-10 max-w-[1328px] mx-auto row gap-16">
+      <div className="sm:flex align-middle block px-4 py-10 max-w-[1328px] mx-auto row gap-16">
         <div className="space-y-5 sm:space-y-10 max-sm:mb-10 max-sm:text-center max-sm:flex max-sm:flex-col max-sm:items-center">
           <div className="mb-6">
             <Logo width={205} height={31} />
@@ -44,7 +45,7 @@ export default function Footer() {
             <address className="not-italic flex flex-col gap-2 max-sm:items-center">
               <div className="flex gap-2 items-center">
                 <Image width={17} height={17} src={addressIcon} alt="address" />
-                <span>GOODS2LLOAD FZ LLC</span>
+                <span>GOODS2LOAD FZ LLC</span>
               </div>
               <div className="flex gap-2 items-center">
                 <Image width={17} height={19} src={phoneIcon} alt="phone" />
@@ -99,14 +100,14 @@ export default function Footer() {
       <div className="text-orangePrimary font-semibold text-center py-[13px] font-[16px]/[24px] bg-white">
         GOODS2LOAD {currentYear} | All Rights Reserved
       </div>
-      <div className="bg-primaryOrange py-4">
+      <div className="bg-primaryOrange p-4">
         <div className="flex items-center justify-center max-w-[1328px] mx-auto">
-          <nav className="text-sm flex items-center flex-wrap mx-auto">
+          <nav className="text-sm flex items-center justify-center flex-wrap mx-auto">
             <Link
               className="mr-8 md:mr-12 relative link-with-line"
               href="/terms-of-service"
             >
-              Terms and conditions
+              Terms and Conditions
             </Link>
             <Link
               className="mr-8 md:mr-12 relative link-with-line"

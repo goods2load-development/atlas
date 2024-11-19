@@ -1,0 +1,16 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Format code
+yarn format
+git add .
+
+# Check TypeScript types
+yarn tsc --noEmit
+
+# Build the project
+yarn build
+git add public/sitemap.xml
+
+# Run lint-staged to lint only staged files
+npx lint-staged

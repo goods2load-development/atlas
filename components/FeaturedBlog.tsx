@@ -1,8 +1,10 @@
-import React from "react";
-import { format } from "date-fns";
-import Link from "next/link";
-import decorLine from "@/assets/Blog/blog-decor-line.svg";
-import Image from "next/image";
+import decorLine from '@/assets/Blog/blog-decor-line.svg';
+
+import React from 'react';
+
+import { format } from 'date-fns';
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface FeaturedBlogProps {
   blog: Blog;
@@ -36,7 +38,7 @@ interface BlogType {
 const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
   const imageUrl = blog.mainImageUrl
     ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
-    : "/default-image.jpg";
+    : '/default-image.jpg';
   return (
     <div className="mb-8 w-full mt-10 overflow-visible relative text-left">
       <div className="flex flex-col md:flex-row gap-6 items-start rounded-lg container max-w-[1320px] px-4 relative z-20">
@@ -49,9 +51,12 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
         </div>
         <div className="p-2 md:p-8 w-full md:w-1/2 flex flex-col justify-center md:pt-[53px]">
           <div className="flex items-center">
-            <span className="bg-orange-500 text-white text-sm font-semibold mb-2 px-2 py-1 rounded-lg">
-              {blog.blogTypeName || "All"}
-            </span>
+            <Link
+              href={`/blog-category/${blog.blogTypeName}`}
+              className="bg-orange-500 text-white text-sm font-semibold mb-2 px-2 py-1 rounded-lg"
+            >
+              {blog?.blogTypeName || 'all'}
+            </Link>
           </div>
           <h2 className="text-2xl font-bold mb-4">
             <Link
@@ -64,7 +69,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
           </h2>
           <p className="text-gray-600 mb-4">{blog.description}</p>
           <div className="flex justify-between text-gray-500 text-sm">
-            <span>{format(new Date(blog.updatedAt), "dd MMM yyyy")}</span>
+            <span>{format(new Date(blog.updatedAt), 'dd MMM yyyy')}</span>
             <span>{blog.readingTime} min read</span>
           </div>
         </div>

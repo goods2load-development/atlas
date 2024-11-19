@@ -1,29 +1,33 @@
-"use client";
+'use client';
+
+import { useTemplatesStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { ReactNode, useState } from 'react';
+
+import { Edit } from 'lucide-react';
+import { FormProvider, useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/dialog';
 import {
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
-import * as z from "zod";
-import { ReactNode, useState } from "react";
-import { Textarea } from "@/components/ui/textarea";
-import { useTemplatesStore } from "@/lib/store";
-import { Edit } from "lucide-react";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
-  name: z.string().min(1, "Title is required"),
+  name: z.string().min(1, 'Title is required'),
 });
 
 const TemplateCategoryDialog = ({
@@ -31,17 +35,17 @@ const TemplateCategoryDialog = ({
   category,
   children,
 }: {
-  type: "create" | "update";
+  type: 'create' | 'update';
   category?: any;
   children?: ReactNode;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const isCreate = type === "create";
-  const isUpdate = type === "update";
+  const isCreate = type === 'create';
+  const isUpdate = type === 'update';
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    mode: "all",
+    mode: 'all',
     shouldUnregister: false,
     ...(isUpdate && {
       defaultValues: {
@@ -85,7 +89,7 @@ const TemplateCategoryDialog = ({
       <DialogContent onCloseClick={() => setIsOpen(false)} className="p-8">
         <DialogHeader>
           <DialogTitle className="text-center text-[40px]/[48px] mb-3 uppercase font-bold">
-            {isCreate ? "Add new category" : "Edit category"}
+            {isCreate ? 'Add new category' : 'Edit category'}
           </DialogTitle>
         </DialogHeader>
         <FormProvider {...form}>

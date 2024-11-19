@@ -1,26 +1,15 @@
-"use client";
-import { useEffect, useState } from "react";
-import Link from "next/link";
+'use client';
 
-const categories = [
-  "home",
-  "blogs",
-  "about",
-  "faq",
-  "login",
-  "signUp",
-  "partners",
-  "career",
-  "legacy",
-  "sitemap",
-  "newsAndInsights",
-  "industriesWeServe",
-];
+import { SitemapResult, groupBySubCategory, parseSitemap } from './utils';
 
-function SubTitle(props: any) {
+import { useEffect, useState } from 'react';
+
+import Link from 'next/link';
+
+function SubTitle({ children }: { children: React.ReactNode }) {
   return (
     <h3 className="border-b-[2px] border-orangePrimary pb-[16px] mb-[32px] sm:text-[28px]/[34px] text-[24px]/[28px] font-medium">
-      {props.children}
+      {children}
     </h3>
   );
 }
@@ -37,31 +26,18 @@ function StyledLink(props: any) {
 }
 
 export default function Sitemap() {
-  const [data, setData] = useState<any>(undefined);
+  const [data, setData] = useState<null | SitemapResult>(null);
 
   const getRoutes = async () => {
     try {
-      const response = await fetch(`/site-map.xml`);
+      const response = await fetch(`/sitemap.xml`);
       const xmlText = await response.text();
       const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, "application/xml");
-      const urls: any = {};
+      const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
 
-      categories.forEach((category) => {
-        const categoryNode = xmlDoc.getElementsByTagName(category)[0];
-        if (categoryNode) {
-          urls[category] = Array.from(
-            categoryNode.getElementsByTagName("url")
-          ).map((urlNode) => ({
-            href: urlNode.getElementsByTagName("href")[0].textContent,
-            title: urlNode.getElementsByTagName("title")[0].textContent,
-          }));
-        }
-      });
-
-      setData(urls);
+      setData(parseSitemap(xmlDoc));
     } catch (error) {
-      console.error("Error fetching sitemap:", error);
+      console.error('Error fetching sitemap:', error);
     }
   };
 
@@ -79,119 +55,99 @@ export default function Sitemap() {
         <h1 className="text-center text-[48px]/[58px] mb-8">Site Map</h1>
         <SubTitle>Home page</SubTitle>
         <div className="mb-8 sm:mb-[56px]">
-          <StyledLink href={`${data.home[0].href}`}>
+          <StyledLink href={`${data.home[0].loc}`}>
             {data.home[0].title}
           </StyledLink>
         </div>
-        {/* <SubTitle>Blog</SubTitle>
-        <div className="mb-[56px] sm:flex flex-wrap justify-between">
-          {
-            data.blogs.map(({title, href}: any) => {
-              return <div key={title} className="w-[35%] md:w-[40%] lg:w-[43%]"><StyledLink href={`${href}`}>{title}</StyledLink></div>
-            })
-          }
-        </div> */}
-        <div className="mb-8 sm:mb-[56px] sm:grid grid-cols-2 gap-[200px]">
-          <div className="mb-8 sm:mb-0">
+        <SubTitle>Blog</SubTitle>
+        <div className="mb-[56px] grid grid-cols-1 md:grid-cols-2">
+          {data.blog.map(({ title, loc }) => (
+            <StyledLink key={loc} href={loc}>
+              {title}
+            </StyledLink>
+          ))}
+        </div>
+        <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
+          <div>
             <SubTitle>About Us</SubTitle>
-            {data.about.map(({ title, href }: any) => {
-              return (
-                <StyledLink key={title} href={`${href}`}>
-                  {title}
-                </StyledLink>
-              );
-            })}
+            <StyledLink href={`${data.about[0].loc}?company`}>
+              Company
+            </StyledLink>
+            <StyledLink href={`${data.about[0].loc}?trust`}>Trust</StyledLink>
+            <StyledLink href={`${data.about[0].loc}?media`}>Media</StyledLink>
           </div>
           <div>
             <SubTitle>FAQ</SubTitle>
-            {data.faq.map(({ title, href }: any) => {
-              return (
-                <StyledLink key={title} href={`${href}`}>
-                  {title}
-                </StyledLink>
-              );
-            })}
+            <StyledLink href={`${data.help[0].loc}?truck`}>Truck</StyledLink>
+            <StyledLink href={`${data.help[0].loc}?ship`}>Ship</StyledLink>
+            <StyledLink href={`${data.help[0].loc}?plane`}>Plane</StyledLink>
           </div>
         </div>
-        <div className="mb-8 sm:mb-[56px] sm:grid sm:grid-cols-2 gap-[200px]">
-          <div className="mb-8 sm:mb-0">
-            <SubTitle>Login In</SubTitle>
-            <StyledLink href={`${data.login[0].href}`}>
-              {data.login[0].title}
-            </StyledLink>
+        <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
+          <div>
+            <SubTitle>Log in</SubTitle>
+            <StyledLink href={`${data['sign-in'][0].loc}`}>Log in</StyledLink>
           </div>
           <div>
-            <SubTitle>Sign Up</SubTitle>
-            {data.signUp.map(({ title, href }: any) => {
-              return (
-                <StyledLink key={title} href={`${href}`}>
-                  {title}
-                </StyledLink>
-              );
-            })}
+            <SubTitle>Sign up</SubTitle>
+            <StyledLink href={`${data['sign-up'][0].loc}?provider`}>
+              Sign Up for Logistic Provider
+            </StyledLink>
+            <StyledLink href={`${data['sign-up'][0].loc}`}>
+              Sign Up for User
+            </StyledLink>
           </div>
         </div>
-
-        <div className="mb-8 sm:mb-[56px] sm:grid grid-cols-2 gap-[200px]">
-          <div className="mb-8 sm:mb-0">
+        <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
+          <div>
             <SubTitle>Partners</SubTitle>
-            {data.partners.map(({ title, href }: any) => {
-              return (
-                <StyledLink key={title} href={`${href}`}>
-                  {title}
-                </StyledLink>
-              );
-            })}
+            {data.partners.map(({ title, loc }) => (
+              <StyledLink key={loc} href={loc}>
+                {title}
+              </StyledLink>
+            ))}
           </div>
           <div>
             <SubTitle>Career</SubTitle>
-            <StyledLink href={`${data.career[0].href}`}>
-              {data.career[0].title}
-            </StyledLink>
+            <StyledLink href={`${data.career[0].loc}`}>Career</StyledLink>
           </div>
         </div>
-
-        <div className="mb-8 sm:mb-[56px] sm:grid grid-cols-2 gap-[200px]">
-          <div className="mb-8 sm:mb-0">
+        <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
+          <div>
             <SubTitle>Legacy</SubTitle>
-            {data.legacy.map(({ title, href }: any) => {
-              return (
-                <StyledLink key={title} href={`${href}`}>
-                  {title}
-                </StyledLink>
-              );
-            })}
+            {data.legacy.map(({ title, loc }) => (
+              <StyledLink key={loc} href={loc}>
+                {title}
+              </StyledLink>
+            ))}
           </div>
           <div>
-            <SubTitle>Site Map</SubTitle>
-            <StyledLink href={`${data.sitemap[0].href}`}>
-              {data.sitemap[0].title}
+            <SubTitle>Sitemap</SubTitle>
+            <StyledLink href={`${data.sitemap[0].loc}`}>Sitemap</StyledLink>
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
+          {groupBySubCategory(data['seo-page']).map((group) => {
+            return (
+              <div key={group[0].title}>
+                <SubTitle>{group[0].subCategory}</SubTitle>
+                {group.map(({ title, loc }) => (
+                  <StyledLink key={loc} href={loc}>
+                    {title}
+                  </StyledLink>
+                ))}
+              </div>
+            );
+          })}
+        </div>
+        {/* <SubTitle>Other</SubTitle>
+        <div className="mb-[56px] grid grid-cols-1 md:grid-cols-2">
+          {data.other.map(({ title, loc }) => (
+            <StyledLink key={loc} href={loc}>
+              {title}
             </StyledLink>
-          </div>
-        </div>
-
-        <div className="mb-8 sm:mb-[56px] sm:grid grid-cols-2 gap-[200px]">
-          <div className="mb-8 sm:mb-0">
-            <SubTitle>News and Insights</SubTitle>
-            {data.newsAndInsights.map(({ title, href }: any) => {
-              return (
-                <StyledLink key={title} href={`${href}`}>
-                  {title}
-                </StyledLink>
-              );
-            })}
-          </div>
-          <div>
-            <SubTitle>Industries we serve</SubTitle>
-            {data.industriesWeServe.map(({ title, href }: any) => {
-              return (
-                <StyledLink key={title} href={`${href}`}>
-                  {title}
-                </StyledLink>
-              );
-            })}
-          </div>
-        </div>
+          ))}
+        </div> */}
       </main>
     </>
   );

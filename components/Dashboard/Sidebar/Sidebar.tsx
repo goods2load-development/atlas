@@ -1,31 +1,34 @@
-"use client";
+'use client';
 
-import Logo from "@/components/Logo";
-import Socials from "@/components/Socials";
-import { cn, isUserAdmin, isUserProvider, isUserEditor } from "@/lib/utils";
-import Image from "next/image";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { useUserStore } from "@/lib/store";
-import { signOut } from "next-auth/react";
+import { useUserStore } from '@/lib/store';
+import { cn, isUserAdmin, isUserEditor, isUserProvider } from '@/lib/utils';
+
+import React, { useEffect, useState } from 'react';
+
+import Image from 'next/image';
+import Link from 'next/link';
+import { usePathname, useRouter } from 'next/navigation';
+
+import Logo from '@/components/Logo';
+import Socials from '@/components/Socials';
 
 const Sidebar: React.FC = () => {
+  const router = useRouter();
   const pathname = usePathname();
-  const { user, logoutUser, getUser } = useUserStore((state: any) => state);
+  const { user, getUser } = useUserStore((state: any) => state);
 
   const isAdmin = isUserAdmin(user?.role);
   const isProvider = isUserProvider(user?.role);
   const isEditor = isUserEditor(user?.role);
   const [sideBar, setSidebar] = useState([
     {
-      title: "Performance",
-      href: "/dashboard/performance",
+      title: 'Performance',
+      href: '/dashboard/performance',
       active: true,
     },
     {
-      title: "Market trends",
-      href: "/dashboard/market-trends",
+      title: 'Market trends',
+      href: '/dashboard/market-trends',
       active: false,
     },
   ]);
@@ -35,14 +38,14 @@ const Sidebar: React.FC = () => {
   }, [user?.id]);
 
   useEffect(() => {
-    const slug = pathname.split("/").pop();
+    const slug = pathname.split('/').pop();
     setSidebar(
       sideBar.map((it) => {
-        if (it.href.split("/").pop() === slug) {
+        if (it.href.split('/').pop() === slug) {
           return { ...it, active: true };
         }
         return { ...it, active: false };
-      })
+      }),
     );
   }, [pathname]);
 
@@ -50,6 +53,17 @@ const Sidebar: React.FC = () => {
     <aside className="hidden sm:flex justify-between flex-col bg-primary min-h-screen text-white p-6 min-w-[240px]">
       <div>
         <div className="flex flex-col">
+          <button
+            onClick={() => router.push('/account')}
+            className="p-4 pl-0 self-start"
+          >
+            <Image
+              width={15}
+              height={15}
+              src="/arrow-slider-left.svg"
+              alt="back"
+            />
+          </button>
           {isProvider && (
             <>
               <p className="font-semibold mt-8">COMPANY’S INSIGHT</p>
@@ -63,21 +77,21 @@ const Sidebar: React.FC = () => {
                             return { ...el, active: true };
                           }
                           return { ...el, active: false };
-                        })
+                        }),
                       );
                     }}
                     id={it.title}
                     key={it.href}
                     href={it.href}
                     className={cn(
-                      "font-light ml-3 mt-[16px] hover:no-underline relative"
+                      'font-light ml-3 mt-[16px] hover:no-underline relative',
                     )}
                   >
                     {it.title}
                     <div
                       className={cn(
-                        "absolute -left-3 border top-0 hidden",
-                        it.active && "h-[110%] flex hover:flex"
+                        'absolute -left-3 border top-0 hidden',
+                        it.active && 'h-[110%] flex hover:flex',
                       )}
                     ></div>
                   </Link>

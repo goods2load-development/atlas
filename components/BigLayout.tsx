@@ -1,6 +1,10 @@
-import { PropsWithChildren } from "react";
-import HeaderClient from "./Header/HeaderClient";
-import DynamicMenu from "./Header/DynamicMenu";
+import DynamicMenu from './Header/DynamicMenu';
+import HeaderClient from './Header/HeaderClient';
+import Line from '@/assets/bg-decor-line.svg';
+
+import { PropsWithChildren } from 'react';
+
+import Image from 'next/image';
 
 export interface IBigLayoutProps extends PropsWithChildren {
   title: string;
@@ -9,33 +13,46 @@ export interface IBigLayoutProps extends PropsWithChildren {
 
 export default function BigLayout({
   children,
-  title = "",
-  description = "",
+  title = '',
+  description = '',
 }: IBigLayoutProps) {
-  const titleParts = title.split(" ");
+  const titleParts = title.split(' ');
   const midIndex = Math.ceil(titleParts.length / 2);
 
   return (
     <>
-      <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center">
-        <div className="flex flex-col w-full items-center justify-center sm:bg-hero-pattern bg-cover bg-center text-white text-center sm:pb-[240px] md:pb-[230px] pb-[170px]">
+      <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center overflow-x-hidden">
+        <div className="flex flex-col w-full items-center justify-start bg-hero-pattern bg-cover bg-center text-white text-center bg-no-repeat min-h-[501px] 2xl:min-h-[651px]">
           <HeaderClient className="w-full" variant="transparent" />
           <DynamicMenu variant="transparent" />
-          <h1 className="text-[38px]/[42px] sm:text-[64px] sm:leading-[70px] font-light mb-2 sm:pt-[80px]">
+          <Image
+            className="absolute -left-[30px] -top-[120px] sm:hidden -rotate-20"
+            src={Line}
+            width={130}
+            height={60}
+            alt={'line'}
+          />
+          <Image
+            className="absolute -right-[30px] -top-[120px] transform -scale-x-100 sm:hidden rotate-20"
+            src={Line}
+            width={130}
+            height={60}
+            alt={'line'}
+          />
+          <h1 className="text-9 sm:text-[64px] font-light mb-4 mt-10 2xl:mt-28">
             {titleParts.map((part, index) => (
-              <span key={index} className={index >= midIndex ? "italic" : ""}>
+              <span key={index} className={index >= midIndex ? 'italic' : ''}>
                 {part}
 
-                {index < titleParts.length - 1 && " "}
+                {index < titleParts.length - 1 && ' '}
               </span>
             ))}
           </h1>
           {description && (
-            <h2 className="sm:mb-[68px] text-[17px]/[25px] font-light max-w-[323px] sm:max-w-[100%]">
+            <p className="sm:mb-[68px] text-[17px]/[25px] font-light max-w-[323px] sm:max-w-[100%] pb-40 sm:pb-0">
               {description}
-            </h2>
+            </p>
           )}
-          <div className="sm:hidden absolute w-full h-[337px] bg-primaryOrange bg-hero-pattern-mobile bg-cover -z-10"></div>
         </div>
 
         {children}

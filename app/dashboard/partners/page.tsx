@@ -1,6 +1,8 @@
-import DashboardLayout from "@/app/_components/DashboardLayout/DashboardLayout";
-import PartnersMain from "@/components/Dashboard/PartnersMain/PartnersMain";
-import { Suspense } from "react";
+import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+
+import { Suspense } from 'react';
+
+import PartnersMain from '@/components/Dashboard/PartnersMain/PartnersMain';
 
 export default function Referral() {
   return (

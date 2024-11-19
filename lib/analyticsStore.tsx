@@ -1,11 +1,12 @@
-import { create } from "zustand";
-import { getRequest, postRequest } from "./utils";
-import { DeliveryBy } from "./filterStore";
-import { ICardData } from "@/components/Dashboard/PerformanceMain/PerformanceCard";
-import { IEvolutionChart } from "@/components/Dashboard/PerformanceMain/Tabs/EvolutionTab/EvolutionChart";
-import { headers } from "next/headers";
-import { ICompetitiveness } from "@/components/Dashboard/PerformanceMain/Tabs/CompetitivenessTab/CompetitivenessTab";
-import { IGeolocation } from "@/components/Dashboard/PerformanceMain/Tabs/UserSegmentationaTab/UserSegmentationTab";
+import { DeliveryBy } from './filterStore';
+import { getRequest, postRequest } from './utils';
+
+import { create } from 'zustand';
+
+import { ICardData } from '@/components/Dashboard/PerformanceMain/PerformanceCard';
+import { ICompetitiveness } from '@/components/Dashboard/PerformanceMain/Tabs/CompetitivenessTab/CompetitivenessTab';
+import { IEvolutionChart } from '@/components/Dashboard/PerformanceMain/Tabs/EvolutionTab/EvolutionChart';
+import { IGeolocation } from '@/components/Dashboard/PerformanceMain/Tabs/UserSegmentationaTab/UserSegmentationTab';
 
 export interface IPerformanceData {
   fare: ICardData;
@@ -32,19 +33,19 @@ export interface IAnalyticsStore {
   onChangeTransportation: (deliveryBy: DeliveryBy) => void;
   getGeolocationInformation: (data: any) => any;
   postGeolocationUser: (data: any) => any;
+  postInteractionWithPartner: (partnerId: string) => void;
 }
 
-
-export const usePerformanceStore = create<IAnalyticsStore>((set) => ({
+export const useAnalyticsStore = create<IAnalyticsStore>((set) => ({
   deliveryBy: DeliveryBy.plane,
   performanceData: undefined,
   performanceDataIsLoading: false,
-  performanceDataError: "",
+  performanceDataError: '',
 
   getPerformancedData: async (deliveryBy: DeliveryBy) => {
     postRequest({
-      url: `analytics?user_id=${localStorage.getItem("id")}`,
-      data: { transportation: deliveryBy},
+      url: `analytics?user_id=${localStorage.getItem('id')}`,
+      data: { transportation: deliveryBy },
     }).then((data) => {
       set(() => ({
         performanceData: data,
@@ -57,10 +58,12 @@ export const usePerformanceStore = create<IAnalyticsStore>((set) => ({
 
   getGeolocationInformation: async () => {
     try {
-      const response = await fetch(`https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.NEXT_PUBLIC_KEY_GET_GEOLOCATION}`)
+      const response = await fetch(
+        `https://api.ipgeolocation.io/ipgeo?apiKey=${process.env.NEXT_PUBLIC_KEY_GET_GEOLOCATION}`,
+      );
 
-      if(!response.ok){
-        throw new Error('Something went wrong')
+      if (!response.ok) {
+        throw new Error('Something went wrong');
       }
 
       return response.json();
@@ -72,8 +75,14 @@ export const usePerformanceStore = create<IAnalyticsStore>((set) => ({
   postGeolocationUser: (data: any) => {
     postRequest({
       url: `users/geolocations?country=${data}`,
-      data
+      data,
     });
-  }
-}));
+  },
 
+  postInteractionWithPartner: (partnerId: string) => {
+    postRequest({
+      url: `analytics/competitiveness/trigger`,
+      data: { partnerId },
+    });
+  },
+}));

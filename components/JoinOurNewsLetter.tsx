@@ -1,18 +1,23 @@
-import arrowRightIcon from "@/assets/arrow-right-input.svg";
-import { Input } from "./ui/input";
-import Image from "next/image";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useToast } from "./ui/use-toast";
+import { Input } from './ui/input';
+import { useToast } from './ui/use-toast';
+import arrowRightIcon from '@/assets/arrow-right-input.svg';
+import { useNewsletterStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect } from 'react';
+
+import Image from 'next/image';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 
 const schema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().email('Invalid email address'),
 });
 
 type FormValues = z.infer<typeof schema>;
 
 export default function JoinOurNewsLetter() {
+  const { joinNewsletter, isNewsletterLoading } = useNewsletterStore();
   const { toast } = useToast();
 
   const {
@@ -24,30 +29,38 @@ export default function JoinOurNewsLetter() {
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: FormValues) => {
-    toast({
-      description: "You have successfully registered to our list",
-      className: "bg-green-500 text-white",
-    });
+  const onSubmit = async ({ email }: FormValues) => {
+    try {
+      const data = await joinNewsletter(email);
+
+      if (data) {
+        toast({
+          description: 'You have successfully joined our newsletter',
+          className: 'bg-green-500 text-white',
+        });
+      }
+    } catch (error) {
+      throw new Error('Your email address is already on our magic list');
+    }
+
     reset();
   };
 
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="max-w-[246px] w-full sm:ml-auto"
+      className="md:max-w-[246px] min-w-[320px] md:min-w-max ml-auto"
     >
-      <legend className="mb-4 font-semibold">Join our News Letter</legend>
+      <legend className="mb-4 font-semibold text-center sm:text-left">
+        Join our News Letter
+      </legend>
       <div className="relative">
         <Input
           type="email"
-          className="pr-7 w-full text-black"
+          className="pr-9 w-full text-black"
           placeholder="Enter your email"
-          {...register("email")}
+          {...register('email')}
         />
-        {errors.email && (
-          <p className="text-red-500">{errors.email?.message}</p>
-        )}{" "}
         <button
           type="submit"
           title="send"
@@ -56,6 +69,7 @@ export default function JoinOurNewsLetter() {
           <Image src={arrowRightIcon} width={24} height={24} alt="send" />
         </button>
       </div>
+      {errors.email && <p className="text-sm">{errors.email?.message}</p>}
     </form>
   );
 }

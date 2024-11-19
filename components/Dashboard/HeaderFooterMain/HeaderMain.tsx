@@ -1,13 +1,17 @@
-"use client";
+'use client';
 
-import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
-import clsx from "clsx";
-import { useEffect, useMemo, useState } from "react";
-import { useFooterHeaderStore } from "@/lib/store";
-import { HeaderFooterData } from "./types";
-import { Button } from "@/components/ui/button";
-import LinksMenu from "./LinksMenu";
+import LinksMenu from './LinksMenu';
+import { HeaderFooterData } from './types';
+import { findDeepestItemsWithoutHref } from './utils';
+import { useFooterHeaderStore } from '@/lib/store';
+
+import { useEffect, useMemo, useState } from 'react';
+
+import clsx from 'clsx';
+
+import { Button } from '@/components/ui/button';
+import Spinner from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/use-toast';
 
 const HeaderMain = () => {
   const { toast } = useToast();
@@ -35,14 +39,27 @@ const HeaderMain = () => {
   const updateHeader = () => {
     if (!headerDataDynamic) return;
 
+    const { isValid, missingHrefItems } = findDeepestItemsWithoutHref(
+      headerDataDynamic.json,
+    );
+
+    if (!isValid) {
+      toast({
+        title: `${missingHrefItems.map((item) => item.title).join(', ')} are missing it's link url.`,
+        variant: 'destructive',
+        className: 'bg-red-500 text-white',
+      });
+      return;
+    }
+
     updateHeaderFooterData(headerDataDynamic.id, headerDataDynamic?.json)
       .then(getHeaderData)
       .then(() =>
         toast({
-          title: "Header updated.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Header updated.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
@@ -63,8 +80,8 @@ const HeaderMain = () => {
       </div>
 
       <div
-        className={clsx("flex flex-col gap-4", {
-          "pointer-events-none": isHeaderLoading,
+        className={clsx('flex flex-col gap-4', {
+          'pointer-events-none': isHeaderLoading,
         })}
       >
         {headerDataDynamic?.json?.length && (

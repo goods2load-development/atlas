@@ -1,9 +1,12 @@
-import React from "react";
-import { media } from "@/app/_components/MediaContainer/MediaData";
-import MediaContainerItem from "@/app/_components/MediaContainer/MediaContainerItem";
-import LogisticInsights from "@/components/LogisticInsights";
-import { StaticImageData } from "next/image";
-import { RelatedBlogs } from "../Blog/RelatedBlogs";
+import { RelatedBlogs } from '../Blog/RelatedBlogs';
+import MediaContainerItem from '@/app/_components/MediaContainer/MediaContainerItem';
+import { media } from '@/app/_components/MediaContainer/MediaData';
+
+import React from 'react';
+
+import { StaticImageData } from 'next/image';
+
+import LogisticInsights from '@/components/LogisticInsights';
 
 export interface IMedia {
   img: StaticImageData;

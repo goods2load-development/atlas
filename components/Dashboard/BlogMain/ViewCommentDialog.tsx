@@ -1,22 +1,25 @@
-"use client";
+'use client';
+
+import { BlogComment } from './types';
+import { toNormalText } from '@/lib/utils';
+
+import { format } from 'date-fns';
+import { ViewIcon } from 'lucide-react';
+import Link from 'next/link';
+
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { ViewIcon } from "lucide-react";
-import { toNormalText } from "@/lib/utils";
-import { BlogComment } from "./types";
-import { format } from "date-fns";
-import Link from "next/link";
+} from '@/components/ui/dialog';
 
 const linkFields = [
-  "insuranceStatement",
-  "issuingAuthority",
-  "tradeLicenseNumber",
-  "companyPhoto",
+  'insuranceStatement',
+  'issuingAuthority',
+  'tradeLicenseNumber',
+  'companyPhoto',
 ];
 
 const ViewCommentDialog = ({ comment }: { comment: BlogComment }) => {
@@ -32,15 +35,15 @@ const ViewCommentDialog = ({ comment }: { comment: BlogComment }) => {
             <h2 className="font-bold text-xl my-4">Comment data</h2>
             <div className="flex flex-col gap-2">
               {Object.entries(comment).map(([key, val]) => {
-                if (["id", "userId", "user", "blog", "blogId"].includes(key))
+                if (['id', 'userId', 'user', 'blog', 'blogId'].includes(key))
                   return null;
 
-                const value = key === "date" ? format(val, "MM/dd/yyyy") : val;
+                const value = key === 'date' ? format(val, 'MM/dd/yyyy') : val;
 
                 return (
                   <p key={key}>
                     <strong>{toNormalText(key as string)}: </strong>
-                    {value?.toString() || "-"}
+                    {value?.toString() || '-'}
                   </p>
                 );
               })}

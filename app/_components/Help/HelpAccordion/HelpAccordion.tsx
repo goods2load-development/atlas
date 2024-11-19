@@ -1,17 +1,15 @@
-import React, { Fragment, useState } from "react";
+import { helpData } from '../helpData';
+import { TabName } from '@/app/interface/helpData';
+import { AccordionTrigger } from '@radix-ui/react-accordion';
 
+import React, { Fragment, useState } from 'react';
+
+import HelpArrowAccordionSvg from '@/components/ui/Svg/HelpSvg/HelpArrowAccordionSvg';
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
-} from "@/components/ui/accordion";
-
-import { AccordionTrigger } from "@radix-ui/react-accordion";
-
-import { helpData } from "../helpData";
-
-import HelpArrowAccordionSvg from "@/components/ui/Svg/HelpSvg/HelpArrowAccordionSvg";
-import { TabName } from "@/app/interface/helpData";
+} from '@/components/ui/accordion';
 
 interface HelpAccordion {
   curAnswearCondition: TabName;
@@ -19,7 +17,7 @@ interface HelpAccordion {
 
 const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
   const [currentHelpData, setcurrentHelpData] = useState(
-    helpData[curAnswearCondition].map((prev) => ({ ...prev, open: false }))
+    helpData[curAnswearCondition].map((prev) => ({ ...prev, open: false })),
   );
 
   return (
@@ -50,8 +48,8 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
                       onClick={() =>
                         setcurrentHelpData((cur) =>
                           cur.map((it, i: number) =>
-                            i === index ? { ...it, open: !it.open } : it
-                          )
+                            i === index ? { ...it, open: !it.open } : it,
+                          ),
                         )
                       }
                     >
@@ -62,7 +60,7 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
                         <span className="text-black text-left pb-6 sm:pb-[30px] pr-5 max-w-[85%]">
                           {question.toUpperCase()}
                           <div
-                            className={`absolute right-8 sm:right-[50px] top-2 transform translate-x-[30px] transition duration-300 ${open ? "-scale-y-100" : ""}`}
+                            className={`absolute right-8 sm:right-[50px] top-2 transform translate-x-[30px] transition duration-300 ${open ? '-scale-y-100' : ''}`}
                           >
                             <HelpArrowAccordionSvg />
                           </div>
@@ -75,7 +73,7 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
                   </AccordionItem>
                 </Fragment>
               );
-            }
+            },
           )}
         </Accordion>
       </div>

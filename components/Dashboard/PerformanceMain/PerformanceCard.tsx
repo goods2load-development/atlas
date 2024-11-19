@@ -1,29 +1,32 @@
-import { subYears } from "date-fns";
-import { cn } from "@/lib/utils";
+import { cn } from '@/lib/utils';
 
-import { useEffect, useState } from "react";
-import { Triangle } from "lucide-react";
+import { useEffect, useState } from 'react';
+
+import clsx from 'clsx';
+import { subYears } from 'date-fns';
+import { Triangle } from 'lucide-react';
 
 export interface ICardData {
-  average: string | number
-  lastYear: string | number
+  average: string | number;
+  lastYear: string | number;
 }
 
 export enum CardType {
-  AVARAGE = "avarage",
-  USER_SEGMENTATION = "user_segmentation"
+  INDUSTRY_SOLUTION = 'industry_solutions',
+  COMPETITIVENESS = 'Competitiveness',
+  USER_SEGMENTATION = 'user_segmentation',
 }
 
 export interface ICard {
   label: string;
   type?: CardType;
-  data: ICardData;
+  data: any; // ICardData
 }
 
 interface PerformanceCardProps {
   title: string;
   type?: CardType;
-  data: ICardData;
+  data: any; // ICardData
   isActive: boolean;
   onChangeActiveCard: () => void;
 }
@@ -35,7 +38,6 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
   isActive,
   onChangeActiveCard,
 }: PerformanceCardProps) => {
-
   const [isIncreasaIndicators, setIsIncreaseIndicators] = useState(false);
 
   const getPreviousYear = () => {
@@ -50,7 +52,7 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
 
   const countVarianceBetweenIndicators = (
     oldValue: number,
-    newValue: number
+    newValue: number,
   ) => {
     if (oldValue === 0) {
       return newValue === 0 ? 0 : 100;
@@ -67,78 +69,144 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
     <li
       onClick={() => onChangeActiveCard()}
       className={cn(
-        "bg-[#FFF] lg:w-[351px] lg:h-[180px]  shadow-sm relative rounded-[9px] mt-3 cursor-pointer w-full",
-        isActive && "bg-[#FF6720] text-[#FFF]"
+        'bg-[#FFF] lg:w-[351px] lg:h-[180px]  shadow-sm relative rounded-[9px] mt-3 cursor-pointer w-full',
+        isActive && 'bg-[#FF6720] text-[#FFF]',
       )}
     >
-      <div className="lg:mt-9 mt-8 mb-6 flex items-start gap-6 ml-6 justify-start flex-wrap">
-        <div className="flex flex-col gap-10 text-sm font-[500]">
-          <span
-            className={cn(
-              "text-[#666666] text-[32px] mt-3",
-              isActive && "text-[#FFF]"
-            )}
-          >
-            {type === CardType.USER_SEGMENTATION && <span className="text-[20px]/[24px]">Mostly: </span>}
-            {data?.average || 0}
-            {type === CardType.AVARAGE && "$"}
-            {/* {type === CardType.REDIRECTS && "%"} */}
-          </span>
-        </div>
-
-        {
-          type !== CardType.USER_SEGMENTATION && <div className="mr-auto">
-          <div className="flex items-center gap-4">
-            <span className="font-[500] text-md">
-              {countVarianceBetweenIndicators(
-                Number(data?.average) || 0,
-                Number(data?.lastYear) || 0
-              )}{" "}
-              %
+      {type !== CardType.INDUSTRY_SOLUTION && (
+        <div className="lg:mt-3 mb-6 flex items-start gap-6 ml-6 justify-start flex-wrap max-sm:p-4">
+          <div className="flex flex-col text-sm font-[500]">
+            <span
+              className={cn(
+                'text-[#666666] text-[32px] mt-3',
+                isActive && 'text-[#FFF]',
+              )}
+            >
+              {type === CardType.USER_SEGMENTATION && (
+                <span className="text-[20px]/[24px]">Mostly: </span>
+              )}
+              {data?.average || 0}
+              {/* {type === CardType.AVARAGE && "$"} */}
+              {/* {type === CardType.REDIRECTS && "%"} */}
             </span>
-
-            {isActive ? (
-              <Triangle
-                width={11}
-                height={11}
-                fill="white"
-                stroke="white"
-                className={`${isIncreasaIndicators ? "" : "rotate-180"}`}
-              />
-            ) : (
-              <Triangle
-                width={11}
-                height={11}
-                fill={`${isIncreasaIndicators ? "#FF6720" : "#DD0000"}`}
-                stroke={`${isIncreasaIndicators ? "#FF6720" : "#DD0000"}`}
-                className={`${isIncreasaIndicators ? "" : "rotate-180"}`}
-              />
+            {type === CardType.COMPETITIVENESS && (
+              <div className="text-[14px]/[21px] font-medium mt-3">click</div>
             )}
           </div>
-          <div
-            className={cn(
-              "text-[#666666] font-[400] text-[12px]",
-              isActive && "text-[#FFF]"
-            )}
-          >
-            vs {getPreviousYear()}
+
+          {type !== CardType.USER_SEGMENTATION && (
+            <div className="mr-auto">
+              <div className="flex items-center gap-4">
+                <span className="font-[500] text-md">
+                  {countVarianceBetweenIndicators(
+                    Number(data?.average) || 0,
+                    Number(data?.lastYear) || 0,
+                  )}{' '}
+                  %
+                </span>
+
+                {isActive ? (
+                  <Triangle
+                    width={11}
+                    height={11}
+                    fill="white"
+                    stroke="white"
+                    className={`${isIncreasaIndicators ? '' : 'rotate-180'}`}
+                  />
+                ) : (
+                  <Triangle
+                    width={11}
+                    height={11}
+                    fill={`${isIncreasaIndicators ? '#FF6720' : '#DD0000'}`}
+                    stroke={`${isIncreasaIndicators ? '#FF6720' : '#DD0000'}`}
+                    className={`${isIncreasaIndicators ? '' : 'rotate-180'}`}
+                  />
+                )}
+              </div>
+              <div
+                className={cn(
+                  'text-[#666666] font-[400] text-[12px]',
+                  isActive && 'text-[#FFF]',
+                )}
+              >
+                vs {getPreviousYear()}
+              </div>
+            </div>
+          )}
+
+          <div className="flex flex-col gap-2 lg:gap-4 lg:w-full w-auto mr-5 lg:mr-0">
+            <span>Last year</span>
+            <span className={cn('text-[#666666]', isActive && 'text-[#FFF]')}>
+              {data?.lastYear || 0}
+              {/* {type === CardType.AVARAGE && "$"} */}
+              {/* {type === CardType.REDIRECTS && "%"} */}
+            </span>
           </div>
         </div>
-        }
+      )}
 
-        <div className="flex flex-col gap-2 lg:gap-4 lg:w-full w-auto mr-5 lg:mr-0">
-          <span>Last year</span>
-          <span className={cn("text-[#666666]", isActive && "text-[#FFF]")}>
-            {data?.lastYear || 0}
-            {type === CardType.AVARAGE && "$"}
-            {/* {type === CardType.REDIRECTS && "%"} */}
-          </span>
+      {type === CardType.INDUSTRY_SOLUTION && (
+        <div className="flex gap-6 pt-4 pl-5 max-sm:p-4">
+          <div className="flex flex-col gap-2 pb-4">
+            {data?.slice(0, 3).map((item: any, i: number) => {
+              return (
+                <div
+                  key={`${item.industry}${i}`}
+                  className={clsx(
+                    'text-[14px]/[21px] font-normal px-2 border rounded-[5px] w-max',
+                    isActive
+                      ? 'border-white text-white'
+                      : 'text-primaryOrange border-primaryOrange',
+                  )}
+                >
+                  {item.industry}
+                </div>
+              );
+            })}
+          </div>
+          <div className="mr-auto">
+            <div className="flex items-center gap-4">
+              <span className="font-[500] text-md">
+                {countVarianceBetweenIndicators(
+                  Number(data?.average) || 0,
+                  Number(data?.lastYear) || 0,
+                )}{' '}
+                %
+              </span>
+
+              {isActive ? (
+                <Triangle
+                  width={11}
+                  height={11}
+                  fill="white"
+                  stroke="white"
+                  className={`${isIncreasaIndicators ? '' : 'rotate-180'}`}
+                />
+              ) : (
+                <Triangle
+                  width={11}
+                  height={11}
+                  fill={`${isIncreasaIndicators ? '#FF6720' : '#DD0000'}`}
+                  stroke={`${isIncreasaIndicators ? '#FF6720' : '#DD0000'}`}
+                  className={`${isIncreasaIndicators ? '' : 'rotate-180'}`}
+                />
+              )}
+            </div>
+            <div
+              className={cn(
+                'text-[#666666] font-[400] text-[12px]',
+                isActive && 'text-[#FFF]',
+              )}
+            >
+              vs {getPreviousYear()}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
       <div
         className={cn(
-          "bg-[#FFF] absolute lg:-bottom-[-93%] -bottom-[-88%] lg:py-4 lg:px-6 p-2 rounded-[9px] lg:font-[500] leading-6 font-normal",
-          isActive && "lg:w-[351px] w-full bg-[#FF6720] text-[#FFF]"
+          'bg-[#FFF] absolute lg:-bottom-[-93%] -bottom-[-88%] lg:py-4 lg:px-6 p-2 rounded-[9px] lg:font-[500] leading-6 font-normal',
+          isActive && 'lg:w-[351px] w-full bg-[#FF6720] text-[#FFF]',
         )}
       >
         {title}

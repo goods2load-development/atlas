@@ -1,13 +1,26 @@
-"use client";
+'use client';
+
+import { dateValues } from './constants';
+import { OrderRoute } from './types';
+import { toNormalText } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect, useState } from 'react';
+
+import { format } from 'date-fns';
+import { Reply } from 'lucide-react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import * as z from "zod";
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -15,24 +28,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Button } from "@/components/ui/button";
+} from '@/components/ui/form';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Reply } from "lucide-react";
-import { Textarea } from "@/components/ui/textarea";
-import { OrderRoute } from "./types";
-import { Checkbox } from "@/components/ui/checkbox";
-import { toNormalText } from "@/lib/utils";
-import { dateValues } from "./constants";
-import { format } from "date-fns";
+} from '@/components/ui/select';
+import { Textarea } from '@/components/ui/textarea';
 
 const formSchema = z.object({
   reasons: z.array(z.string()),
@@ -53,21 +57,28 @@ const ReplyDialog = ({
     },
   });
   const { setValue, getValues } = form;
-  const reasons = getValues("reasons");
+  const reasons = getValues('reasons');
   const [isOpen, setIsOpen] = useState(false);
   const [selectValue, setSelectValue] = useState<null | string>(null);
 
   const onChangeReason = (isChecked: boolean, field: string) => {
-    if (isChecked) return setValue("reasons", [...reasons, field]);
+    if (isChecked) return setValue('reasons', [...reasons, field]);
     if (!isChecked)
       setValue(
-        "reasons",
-        reasons.filter((item) => item !== field)
+        'reasons',
+        reasons.filter((item) => item !== field),
       );
   };
 
+  const { watch } = form;
+
+  const incorectFileds = watch('reasons');
+
   const onSubmit = (data: z.infer<typeof formSchema>) => {
-    onSubmitCallback(data).then(() => setIsOpen(false));
+    onSubmitCallback(data).then(() => {
+      setIsOpen(false);
+      form.reset();
+    });
   };
 
   return (
@@ -101,12 +112,12 @@ const ReplyDialog = ({
 
             {selectValue && (
               <>
-                {selectValue === "incorrect-fields" && (
+                {selectValue === 'incorrect-fields' && (
                   <div className="grid grid-cols-2 gap-1 mb-2">
                     {Object.entries(order).map(([key, value]) => {
-                      if (["id"].includes(key)) return null;
+                      if (['id'].includes(key)) return null;
                       const val = dateValues.includes(key as string)
-                        ? format(value, "MM/dd/yyyy")
+                        ? format(value, 'MM/dd/yyyy')
                         : value;
                       return (
                         <FormItem key={key} className="flex space-x-3">

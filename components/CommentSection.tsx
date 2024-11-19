@@ -1,9 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { useUserStore } from "@/lib/store";
-import Comment from "./Comment";
-import CommentInput from "./CommentInput";
-import { getRequest, postRequest, deleteRequest } from "@/lib/utils";
-import { UserRoute } from "./Dashboard/RoutesMain/types";
+import Comment from './Comment';
+import CommentInput from './CommentInput';
+import { UserRoute } from './Dashboard/RoutesMain/types';
+import { useUserStore } from '@/lib/store';
+import { deleteRequest, getRequest, postRequest } from '@/lib/utils';
+
+import React, { useEffect, useState } from 'react';
 
 interface CommentSectionProps {
   blogId: string;
@@ -43,7 +44,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 
       setComments(response);
     } catch (error) {
-      console.error("Error fetching comments:", error);
+      console.error('Error fetching comments:', error);
     }
   };
 
@@ -53,7 +54,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 
   const handleSubmitComment = async (commentText: string) => {
     if (!user?.id) {
-      console.error("User is not logged in");
+      console.error('User is not logged in');
       return;
     }
 
@@ -69,7 +70,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
 
       setComments([newComment, ...comments]);
     } catch (error) {
-      console.error("Error creating comment:", error);
+      console.error('Error creating comment:', error);
     }
   };
 
@@ -80,7 +81,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
       });
       setComments(comments.filter((comment) => comment.id !== commentId));
     } catch (error) {
-      console.error("Error deleting comment:", error);
+      console.error('Error deleting comment:', error);
     }
   };
 
@@ -118,7 +119,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
           blogId={comment.blogId}
           daysAgo={Math.floor(
             (Date.now() - new Date(comment.date).getTime()) /
-              (1000 * 60 * 60 * 24)
+              (1000 * 60 * 60 * 24),
           ).toString()}
           commentText={comment.comment}
           edited={comment.edited}

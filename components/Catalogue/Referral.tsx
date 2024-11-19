@@ -1,8 +1,10 @@
-import { useEffect } from "react";
-import { useReferralsStore } from "@/lib/store";
-import Link from "next/link";
-import Image from "next/image";
-import clsx from "clsx";
+import { useReferralsStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import clsx from 'clsx';
+import Image from 'next/image';
+import Link from 'next/link';
 
 export const Referal = ({
   className,
@@ -13,22 +15,24 @@ export const Referal = ({
   countOfDisplaying?: number;
   forceDisplaying?: boolean;
 }) => {
-  const {
-    getAllReferrals,
-    referrals: { referals, referalIsInCatalog },
-  } = useReferralsStore((state: any) => state);
+  const { getAllReferrals, referrals } = useReferralsStore(
+    (state: any) => state,
+  );
 
   useEffect(() => {
     getAllReferrals();
   }, []);
 
-  if (referals?.length === 0 || (!referalIsInCatalog && !forceDisplaying)) {
+  if (
+    referrals?.referals?.length === 0 ||
+    (!referrals?.referalIsInCatalog && !forceDisplaying)
+  ) {
     return;
   }
 
   return (
-    <div className={clsx("min-h-[360px] w-[279px]", className)}>
-      {referals?.map((item: any, idx: number) => {
+    <div className={clsx('min-h-[360px] w-[279px]', className)}>
+      {referrals?.referals?.map((item: any, idx: number) => {
         if (idx + 1 > countOfDisplaying) {
           return;
         }

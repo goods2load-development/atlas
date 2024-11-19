@@ -1,6 +1,10 @@
-import React, { useState } from "react";
-import SharedLinks from "@/components/SharedLinks";
-import { ChevronUp, ChevronDown } from "lucide-react";
+import useBreakpoint from '@/app/hooks/useBreakpoint';
+
+import { useState } from 'react';
+
+import { ChevronDown, ChevronUp } from 'lucide-react';
+
+import SharedLinks from '@/components/SharedLinks';
 
 interface Heading {
   id: string;
@@ -14,9 +18,10 @@ interface TableOfContentsProps {
 
 const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
-  const [isOpen, setIsOpen] = useState<boolean>(true); // Default open
+  const [isOpen, setIsOpen] = useState<boolean>(true);
 
-  // Toggle TOC content visibility
+  const { isAboveSm } = useBreakpoint('sm');
+
   const toggleTOC = () => {
     setIsOpen(!isOpen);
   };
@@ -26,10 +31,15 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
     if (element) {
       const rect = element.getBoundingClientRect();
       const offsetY = window.scrollY + rect.top - window.innerHeight / 2;
-      window.scrollTo({
-        top: offsetY,
-        behavior: "smooth",
-      });
+      if (isAboveSm) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        window.scrollTo({
+          top: offsetY,
+          behavior: 'smooth',
+        });
+      }
+
       setActiveIndex(index);
     }
   };
@@ -49,13 +59,16 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
       <hr className="border-orange-500 mb-4 border-t-4" />
       {isOpen && (
         <ul className="list-none space-y-2 max-h-[60vh]overflow-auto">
-          {" "}
+          {' '}
           {/* Scrollable on long content */}
           {headings.map((heading, index) => (
             <li
               key={heading.id}
               className="flex items-start cursor-pointer"
-              onClick={() => handleClick(heading.id, index)}
+              onClick={() => {
+                handleClick(heading.id, index);
+                if (!isAboveSm) setIsOpen(false);
+              }}
             >
               {activeIndex === index ? (
                 <span className="min-w-4 min-h-4 bg-orange-500 rounded-full mr-1 my-1"></span>
@@ -63,8 +76,8 @@ const TableOfContents: React.FC<TableOfContentsProps> = ({ headings }) => {
                 <span className="min-w-4 min-h-4 border-2 border-gray-400 rounded-full mr-1 my-0.5"></span>
               )}
               <span
-                className={`max-w-full px-1  ${
-                  activeIndex === index ? "font-medium" : ""
+                className={`max-w-full px-1 overflow-hidden text-ellipsis whitespace-nowrap ${
+                  activeIndex === index ? 'font-medium' : ''
                 }`}
                 style={{ marginLeft: `${(heading.level - 1) * 4}px` }}
                 title={heading.text}

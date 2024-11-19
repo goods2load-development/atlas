@@ -1,27 +1,28 @@
-import React from "react";
-import Image, { StaticImageData } from "next/image";
-import { CardContent } from "@/components/ui/card";
+import { sliderData } from './sliderData';
+import google from '@/assets/google.svg';
+import stars from '@/assets/stars.svg';
+import trustpilot from '@/assets/trustpilot.svg';
+
+import React from 'react';
+
+import Autoplay from 'embla-carousel-autoplay';
+import Image, { StaticImageData } from 'next/image';
+
+import { CardContent } from '@/components/ui/card';
 import {
   Carousel,
   CarouselContent,
   CarouselItem,
-} from "@/components/ui/carousel";
-
-import { sliderData } from "./sliderData";
-
-import stars from "@/assets/stars.svg";
-import trustpilot from "@/assets/trustpilot.svg";
-import google from "@/assets/google.svg";
-import Autoplay from "embla-carousel-autoplay";
+} from '@/components/ui/carousel';
 
 const TrustReputation = () => {
   return (
     <section className="w-full">
       <h1 className="text-black text-center font-light sm:text-[40px]/[48px] text-[34px]/[38px] pb-8">
-        Our{" "}
+        Our{' '}
         <i className="font-normal bg-[#FEF1DF] rounded-[6px] px-[8px]">
           reputation
-        </i>{" "}
+        </i>{' '}
         speaks for itself
       </h1>
 
@@ -54,16 +55,16 @@ const TrustReputation = () => {
 
       <div className="text-black text-[17px]/[23px] flex flex-row gap-[10px] font-medium py-8 justify-center">
         <div>1,000+</div>
-        <Image className="relative top-[-3px]" src={stars} alt={"stars"} />
+        <Image className="relative top-[-3px]" src={stars} alt={'stars'} />
         <div>reviews</div>
       </div>
       <div className="flex flex-row gap-4 justify-center">
         <Image
           className="relative top-[-3px]"
           src={trustpilot}
-          alt={"trustpilot"}
+          alt={'trustpilot'}
         />
-        <Image className="relative top-[-3px]" src={google} alt={"google"} />
+        <Image className="relative top-[-3px]" src={google} alt={'google'} />
       </div>
     </section>
   );

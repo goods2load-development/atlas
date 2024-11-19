@@ -1,24 +1,26 @@
-import { create } from "zustand";
+import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from './types';
 import {
-  getRequest,
-  postRequest,
-  patchRequest,
   deleteRequest,
+  getRequest,
+  patchRequest,
+  postRequest,
   putRequest,
-} from "./utils";
-import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from "@/components/LangSwicher";
-import Cookie from "js-cookie";
-import {
-  PartnerPageResponse,
-  ResponsePartner,
-} from "@/components/Dashboard/PartnersMain/types";
-import { Blog, BlogComment } from "@/components/Dashboard/BlogMain/types";
+} from './utils';
+
+import Cookie from 'js-cookie';
+import { create } from 'zustand';
+
+import { Blog, BlogComment } from '@/components/Dashboard/BlogMain/types';
 import {
   FooterItem,
   HeaderFooterData,
-} from "@/components/Dashboard/HeaderFooterMain/types";
-import { url } from "inspector";
-import { SeoPageCategory } from "@/components/SeoPage/types";
+} from '@/components/Dashboard/HeaderFooterMain/types';
+import {
+  PartnerIndustry,
+  PartnerPageResponse,
+  ResponsePartner,
+} from '@/components/Dashboard/PartnersMain/types';
+import { SeoPageCategory } from '@/components/SeoPage/types';
 
 export const useCountriesStore = create((set) => ({
   countriesList: [],
@@ -30,7 +32,7 @@ export const useCountriesStore = create((set) => ({
   getCountriesList: async () => {
     // set(() => ({ countriesListLoading: true }));
     const data = await getRequest({
-      url: "https://countriesnow.space/api/v0.1/countries",
+      url: 'https://countriesnow.space/api/v0.1/countries',
       withCredentials: false,
     });
     const countriesList: any[] = [];
@@ -48,7 +50,7 @@ export const useCountriesStore = create((set) => ({
     }
     set(() => ({ citiesListLoading: true }));
     const data = await postRequest({
-      url: "https://countriesnow.space/api/v0.1/countries/cities",
+      url: 'https://countriesnow.space/api/v0.1/countries/cities',
       data: { country },
       withCredentials: false,
     });
@@ -62,6 +64,64 @@ export const useCountriesStore = create((set) => ({
       set(() => ({ citiesList, citiesListLoading: false }));
     }
   },
+  getCountriesByRegions: async (region: string) => {
+    try {
+      const data = await getRequest({
+        url: `https://restcountries.com/v3.1/region/${region}?fields=name,subregion,cca2`,
+      });
+      return data;
+    } catch (error) {
+      return [];
+    }
+  },
+  getGeonameIdCountry: async (countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://secure.geonames.org/countryInfoJSON?country=${countryCode}&username=${process.env.NEXT_PUBLIC_GEONAMES_API_KEY}`,
+      );
+
+      const data = await response.json();
+
+      return data.geonames[0].geonameId;
+    } catch (error) {
+      return null;
+    }
+  },
+  getStatesByCountry: async (geonameId: string) => {
+    try {
+      const response = await fetch(
+        `https://secure.geonames.org/childrenJSON?geonameId=${geonameId}&username=${process.env.NEXT_PUBLIC_GEONAMES_API_KEY}`,
+      );
+
+      const data = await response.json();
+
+      return data.geonames;
+    } catch (error) {
+      return [];
+    }
+  },
+}));
+export const usePortsStore = create((set) => ({
+  getAirportsByCountry: async (countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://aviation-edge.com/v2/public/airportDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&type=Cargo&codeIso2Country=${countryCode}`,
+      );
+      return response.json();
+    } catch (error) {
+      return [];
+    }
+  },
+  getSeaPortsByCountry: async (countryCode: string) => {
+    try {
+      const response = await fetch(
+        `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&country_iso=${countryCode}&port_type=Port`,
+      );
+      return response.json();
+    } catch (error) {
+      return [];
+    }
+  },
 }));
 
 export const useGoodsStore = create((set) => ({
@@ -69,17 +129,16 @@ export const useGoodsStore = create((set) => ({
   goodsListLoading: false,
   getGoodsList: async (term: string) => {
     set(() => ({ goodsListLoading: true }));
-    // console.log("term", term);
-    const base = "https://hs-code-harmonized-system.p.rapidapi.com/";
+    const base = 'https://hs-code-harmonized-system.p.rapidapi.com/';
     const byCode = !!parseInt(term);
-    const url = base + (byCode ? "code" : "search");
+    const url = base + (byCode ? 'code' : 'search');
     getRequest({
       url,
       params: { term },
       withCredentials: false,
       headers: {
-        "X-RapidAPI-Key": "02c03ec749msh5ca6829a28a3028p1e6f11jsn835391f49eab",
-        "X-RapidAPI-Host": "hs-code-harmonized-system.p.rapidapi.com",
+        'X-RapidAPI-Key': '02c03ec749msh5ca6829a28a3028p1e6f11jsn835391f49eab',
+        'X-RapidAPI-Host': 'hs-code-harmonized-system.p.rapidapi.com',
       },
     })
       .then((data) => {
@@ -110,10 +169,29 @@ export const useRegistrationStore = create((set) => ({
   postUserRegistrationData: async (data: any) => {
     const isProvider = data.provider;
     const formData = new FormData();
-    formData.append("insuranceStatement", data.insuranceStatement);
-    formData.append("issuingAuthority", data.issuingAuthority);
-    formData.append("tradeLicenseNumber", data.tradeLicenseNumber);
-    formData.append("companyPhoto", data.companyPhoto);
+
+    if (Array.isArray(data.industryProofFile)) {
+      data.industryProofFile.map((item: File) => {
+        formData.append('industryProofFile', item);
+      });
+    }
+
+    if (Array.isArray(data.industryProofFileSecondary)) {
+      data.industryProofFile.map((item: File) => {
+        formData.append('industryProofFileSecondary', item);
+      });
+    }
+
+    if (Array.isArray(data.sustainabilityCertificationFile)) {
+      data.sustainabilityCertificationFile.map((item: File) => {
+        formData.append('sustainabilityCertificationFile', item);
+      });
+    }
+
+    formData.append('insuranceStatement', data.insuranceStatement);
+    formData.append('issuingAuthority', data.issuingAuthority);
+    formData.append('tradeLicenseNumber', data.tradeLicenseNumber);
+    formData.append('companyPhoto', data.companyPhoto);
 
     delete data.confirmPassword;
     delete data.privacy;
@@ -122,24 +200,30 @@ export const useRegistrationStore = create((set) => ({
     delete data.issuingAuthority;
     delete data.tradeLicenseNumber;
     delete data.companyPhoto;
+    delete data.industryProofFile;
+    delete data.industryProofFileSecondary;
+    delete data.sustainabilityCertificationFile;
+    delete data.finalAgreement;
 
     delete data.license;
-    postRequest({
-      url: "auth/register",
+
+    const response = await postRequest({
+      url: 'auth/register',
       data,
-    }).then((response) => {
-      if (isProvider) {
-        postRequest({
-          url: `users/${response.data.id}/upload/file`,
-          data: formData,
-          headers: { "Content-Type": "multipart/form-data" },
-        }).then(() => {
-          set(() => ({ registered: true, provider: true }));
-        });
-      } else {
-        set(() => ({ registered: true }));
-      }
     });
+
+    if (!response) throw new Error();
+
+    if (isProvider) {
+      await postRequest({
+        url: `users/${response.data.id}/upload/file`,
+        data: formData,
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      set(() => ({ registered: true, provider: true }));
+    } else {
+      set(() => ({ registered: true }));
+    }
   },
   setRegistrationDefaults: () => set({ registered: false, provider: false }),
 }));
@@ -153,24 +237,24 @@ export const useUserStore = create((set) => ({
   user: {},
   postLoginData: async (data: LoginProps) => {
     postRequest({
-      url: "auth/login",
+      url: 'auth/login',
       data,
     }).then((userData: any) => {
       // TODO add redirect
-      localStorage.setItem("id", userData.data.id);
-      Cookie.set("access_token", userData.data.access_token, {
+      localStorage.setItem('id', userData.data.id);
+      Cookie.set('access_token', userData.data.access_token, {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
       set(() => ({ user: userData?.data }));
     });
   },
   getUser: async () => {
-    const id = localStorage.getItem("id");
+    const id = localStorage.getItem('id');
     if (id)
       await getRequest({
         url: `/users/${id}`,
       }).then((userData: any) => {
-        if (!userData) localStorage.removeItem("id");
+        if (!userData) localStorage.removeItem('id');
         set(() => ({ user: userData?.data }));
       });
   },
@@ -179,13 +263,18 @@ export const useUserStore = create((set) => ({
       url: `/oauth/authenticate`,
       params: { access_token: data },
     }).then((userData: any) => {
-      localStorage.setItem("id", userData.data.id);
+      localStorage.setItem('id', userData.data.id);
       set(() => ({ user: userData?.data }));
     });
   },
   updateUser: async (data: any) => {
-    const id = localStorage.getItem("id");
-    const { savedPartners, ...restData } = data;
+    const id = localStorage.getItem('id');
+    const {
+      savedPartners,
+      industryRecognitions,
+      SustainabilityProof,
+      ...restData
+    } = data;
     await patchRequest({
       url: `/users/${id}`,
       data: {
@@ -196,9 +285,9 @@ export const useUserStore = create((set) => ({
     });
   },
   uploadLogo: async (data: any) => {
-    const id = localStorage.getItem("id");
+    const id = localStorage.getItem('id');
     const formData = new FormData();
-    formData.append("file", data);
+    formData.append('file', data);
     await postRequest({
       url: `/users/${id}/upload/logo`,
       data: formData,
@@ -209,21 +298,21 @@ export const useUserStore = create((set) => ({
     });
   },
   deleteUser: async (callback: () => void) => {
-    const id = localStorage.getItem("id");
+    const id = localStorage.getItem('id');
     await deleteRequest({
       url: `/users/${id}`,
     }).then(() => {
       set(() => ({ user: {} }));
-      localStorage.removeItem("id");
+      localStorage.removeItem('id');
       callback();
     });
   },
   logoutUser: async () => {
     await postRequest({
-      url: "/auth/logout",
+      url: '/auth/logout',
     }).then(() => {
-      localStorage.removeItem("id");
-      Cookie.remove("access_token");
+      localStorage.removeItem('id');
+      Cookie.remove('access_token');
       set(() => ({
         user: {},
       }));
@@ -265,7 +354,7 @@ export const useForgotPasswordStore = create((set) => ({
   user: {},
   postForgotPasswordData: async (data: any) => {
     postRequest({
-      url: "auth/forgot-password",
+      url: 'auth/forgot-password',
       data,
     }).then((userData: any) => {
       // TODO add redirect or pop-up
@@ -273,7 +362,7 @@ export const useForgotPasswordStore = create((set) => ({
   },
   postResetPasswordData: async (data: any) => {
     postRequest({
-      url: "auth/reset-password",
+      url: 'auth/reset-password',
       data,
     });
   },
@@ -306,7 +395,7 @@ export const useReferralsStore = create((set) => ({
   getAllReferrals: () => {
     set({ isReferralsLoading: true });
     return getRequest({
-      url: "referals",
+      url: 'referals',
     })
       .then((referrals) => {
         set({ referrals });
@@ -317,15 +406,15 @@ export const useReferralsStore = create((set) => ({
     set({ isReferralsLoading: true });
 
     const formData = new FormData();
-    formData.append("title", data.title);
-    formData.append("url", data.url);
-    formData.append("smallBanner", data.smallBanner);
-    formData.append("bigBanner", data.bigBanner);
+    formData.append('title', data.title);
+    formData.append('url', data.url);
+    formData.append('smallBanner', data.smallBanner);
+    formData.append('bigBanner', data.bigBanner);
 
     return postRequest({
-      url: "referals",
+      url: 'referals',
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((referrals) => {
         set({ referrals });
@@ -336,21 +425,21 @@ export const useReferralsStore = create((set) => ({
     set({ isReferralsLoading: true });
 
     const formData = new FormData();
-    if (data.title) formData.append("title", data.title);
-    if (data.url) formData.append("url", data.url);
-    if (data.file) formData.append("file", data.file);
+    if (data.title) formData.append('title', data.title);
+    if (data.url) formData.append('url', data.url);
+    if (data.file) formData.append('file', data.file);
 
     return patchRequest({
       url: `referals/${id}`,
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     }).finally(() => set({ isReferralsLoading: false }));
   },
   updateAllReferrals: (data: any) => {
     set({ isReferralsLoading: true });
 
     return patchRequest({
-      url: "referals/change-order",
+      url: 'referals/change-order',
       data,
     }).finally(() => set({ isReferralsLoading: false }));
   },
@@ -383,7 +472,7 @@ export const useRoutesStore = create((set) => ({
   getRoutes: ({ page = 1, take = 5 }) => {
     set({ isRoutesLoading: true });
     return getRequest({
-      url: "selected-orders",
+      url: 'selected-routes',
       params: {
         page,
         take,
@@ -394,18 +483,22 @@ export const useRoutesStore = create((set) => ({
       })
       .finally(() => set({ isRoutesLoading: false }));
   },
-  replyRoute: (id: string, data: any) => {
+  rejectRoute: (id: string, data: any) => {
     set({ isRoutesLoading: true });
 
     const formData = {
       message: data.message,
-      ...(data.reasons.length && {
-        reasons: data.reasons,
-      }),
+      ...(data.reasons.length
+        ? {
+            reasons: data.reasons,
+          }
+        : {
+            reasons: [],
+          }),
     };
 
     return postRequest({
-      url: `selected-orders/${id}/reply`,
+      url: `selected-routes/${id}/reject`,
       data: formData,
     }).finally(() => set({ isRoutesLoading: false }));
   },
@@ -413,26 +506,47 @@ export const useRoutesStore = create((set) => ({
     set({ isRoutesLoading: true });
 
     return postRequest({
-      url: `selected-orders/${id}/apply`,
+      url: `selected-routes/${id}/apply`,
     }).finally(() => set({ isRoutesLoading: false }));
   },
   deleteRoute: (id: string) => {
     set({ isRoutesLoading: true });
 
     return deleteRequest({
-      url: `selected-orders/${id}`,
+      url: `selected-routes/${id}`,
     }).finally(() => set({ isRoutesLoading: false }));
   },
 }));
 
-export const usePriceAlertsStore = create((set) => ({
+interface PriceAlert {
+  id: string;
+  message: string;
+  createdAt: string;
+  [key: string]: any;
+}
+
+interface GetPriceAlertsParams {
+  page?: number;
+  take?: number;
+}
+
+interface UsePriceAlertsStore {
+  priceAlerts: PriceAlert[];
+  isPriceAlertLoading: boolean;
+  getPriceAlerts: (params: GetPriceAlertsParams) => Promise<void>;
+  replyPriceAlerts: (id: string, message: string) => Promise<void>;
+  sendPriceAlert: (id: string) => Promise<void>;
+  deletePriceAlert: (id: string) => Promise<void>;
+}
+
+export const usePriceAlertsStore = create<UsePriceAlertsStore>((set) => ({
   priceAlerts: [],
-  isPriceAlertLoading: false,
+  isPriceAlertLoading: true,
 
   getPriceAlerts: ({ page = 1, take = 5 }) => {
     set({ isPriceAlertLoading: true });
     return getRequest({
-      url: "alerts",
+      url: 'alerts',
       params: {
         page,
         take,
@@ -466,10 +580,72 @@ export const usePriceAlertsStore = create((set) => ({
   },
 }));
 
+export interface Quotation {
+  id: string;
+  companyName: string;
+  email: string;
+  message: string;
+  partnerId: string;
+  phone: string;
+}
+
+interface UseQuotationsStore {
+  quotations: {
+    data: Quotation[];
+    meta: {
+      hasNextPage: boolean;
+      hasPreviousPage: boolean;
+      itemCount: number;
+      page: number;
+      pageCount: number;
+      take: number;
+    };
+  } | null;
+  isQuotationsLoading: boolean;
+  getQuotations: (params: { take?: number; page?: number }) => Promise<void>;
+  approveQuotation: (id: string) => Promise<void>;
+  rejectQuotation: (id: string) => Promise<void>;
+}
+
+export const useQuotationsStore = create<UseQuotationsStore>((set) => ({
+  quotations: null,
+  isQuotationsLoading: true,
+
+  getQuotations: ({ page = 1, take = 5 }) => {
+    set({ isQuotationsLoading: true });
+    return getRequest({
+      url: 'partners/quotations',
+      params: {
+        page,
+        take,
+      },
+    })
+      .then((quotations) => {
+        set({ quotations });
+      })
+      .finally(() => set({ isQuotationsLoading: false }));
+  },
+
+  approveQuotation: (id: string) => {
+    set({ isQuotationsLoading: true });
+    return postRequest({
+      url: `partners/free-quotation/${id}/approve`,
+    }).finally(() => set({ isQuotationsLoading: false }));
+  },
+
+  rejectQuotation: (id: string) => {
+    set({ isQuotationsLoading: true });
+    return deleteRequest({ url: `partners/free-quotation/${id}` }).finally(() =>
+      set({ isQuotationsLoading: false }),
+    );
+  },
+}));
+
 interface PartnersStoreState {
   partners: ResponsePartner[];
   partnerPage: PartnerPageResponse | null;
   isPartnersLoading: boolean;
+  partnersIndustriesData: PartnerIndustry[] | null;
   getPartnersApproved: () => Promise<void>;
   getPartnersInReview: () => Promise<void>;
   getPartnersNew: () => Promise<void>;
@@ -478,16 +654,19 @@ interface PartnersStoreState {
   replyPartner: (id: string, message: string) => Promise<void>;
   createPartnerPage: (data: any, id: string) => Promise<void>;
   getPartnersPage: (id: string) => Promise<void>;
+  getPartnersIndustries: () => Promise<void>;
 }
 
 export const usePartnersStore = create<PartnersStoreState>((set) => ({
   partners: [],
   partnerPage: null,
   isPartnersLoading: true,
+  partnersIndustriesData: null,
+
   getPartnersApproved: () => {
     set({ isPartnersLoading: true });
     return getRequest({
-      url: "partners/approved",
+      url: 'partners/approved',
     })
       .then((partners) => {
         set({ partners });
@@ -497,7 +676,7 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
   getPartnersInReview: () => {
     set({ isPartnersLoading: true });
     return getRequest({
-      url: "partners/review",
+      url: 'partners/review',
     })
       .then((partners) => {
         set({ partners });
@@ -507,7 +686,7 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
   getPartnersNew: () => {
     set({ isPartnersLoading: true });
     return getRequest({
-      url: "partners/new",
+      url: 'partners/new',
     })
       .then((partners) => {
         set({ partners });
@@ -540,7 +719,7 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     return postRequest({
       url: `partners/${id}/information`,
       data,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     }).finally(() => set({ isPartnersLoading: false }));
   },
   getPartnersPage: (id: string) => {
@@ -550,6 +729,15 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
     })
       .then((data) => set({ partnerPage: data }))
       .finally(() => set({ isPartnersLoading: false }));
+  },
+  getPartnersIndustries: () => {
+    return getRequest({
+      url: `/partners/filters`,
+    }).then((data) => {
+      set({
+        partnersIndustriesData: data,
+      });
+    });
   },
 }));
 
@@ -608,18 +796,18 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
     set({ isBlogLoading: true });
     const formData = new FormData();
 
-    formData.append("authorName", data.authorName);
-    formData.append("blogTypeId", data.blogTypeId);
-    formData.append("content", data.content);
-    formData.append("description", data.description);
-    formData.append("slug", data.slug);
-    formData.append("title", data.title);
-    formData.append("mainImg", data.mainImg[0]);
+    formData.append('authorName', data.authorName);
+    formData.append('blogTypeId', data.blogTypeId);
+    formData.append('content', data.content);
+    formData.append('description', data.description);
+    formData.append('slug', data.slug);
+    formData.append('title', data.title);
+    formData.append('mainImg', data.mainImg[0]);
 
     return postRequest({
-      url: "blogs",
+      url: 'blogs',
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     })
       .then((blogs) => {
         set({ blogs });
@@ -629,26 +817,26 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
   updateBlog: (data: any, id: string) => {
     const formData = new FormData();
 
-    formData.append("authorName", data.authorName);
-    formData.append("blogTypeId", data.blogTypeId);
-    formData.append("content", data.content);
-    formData.append("description", data.description);
-    formData.append("slug", data.slug);
-    formData.append("title", data.title);
-    if (typeof data.mainImg !== "string")
-      formData.append("mainImg", data.mainImg[0]);
+    formData.append('authorName', data.authorName);
+    formData.append('blogTypeId', data.blogTypeId);
+    formData.append('content', data.content);
+    formData.append('description', data.description);
+    formData.append('slug', data.slug);
+    formData.append('title', data.title);
+    if (typeof data.mainImg !== 'string')
+      formData.append('mainImg', data.mainImg[0]);
 
     set({ isBlogLoading: true });
     return patchRequest({
       url: `blogs/${id}`,
       data: formData,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     }).finally(() => set({ isBlogLoading: false }));
   },
   getBlogs: ({ page = 1, take = 5 }) => {
     set({ isBlogLoading: true });
     return getRequest({
-      url: "blogs?filter=Newest",
+      url: 'blogs?filter=Newest',
       params: {
         page,
         take,
@@ -713,7 +901,7 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
   getBlogCategories: () => {
     set({ isBlogLoading: true });
     return getRequest({
-      url: "blog-types",
+      url: 'blog-types',
     })
       .then((categories) => {
         set({ categories });
@@ -723,7 +911,7 @@ export const useBlogAdminStore = create<BlogAdminStoreState>((set) => ({
   createBlogCategory: (data) => {
     set({ isBlogLoading: true });
     return postRequest({
-      url: "blog-types",
+      url: 'blog-types',
       data,
     }).finally(() => set({ isBlogLoading: false }));
   },
@@ -775,7 +963,7 @@ export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
   getFooterData: () => {
     set({ isFooterLoading: true });
     return getRequest({
-      url: "dynamic-menu/footer",
+      url: 'dynamic-menu/footer',
     })
       .then((footerData) => {
         set({ footerData });
@@ -785,7 +973,7 @@ export const useFooterHeaderStore = create<FooterStoreState>((set) => ({
   getHeaderData: () => {
     set({ isHeaderLoading: true });
     return getRequest({
-      url: "dynamic-menu/header",
+      url: 'dynamic-menu/header',
     })
       .then((headerData) => {
         set({ headerData });
@@ -830,11 +1018,11 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
   isTemplatesLoading: true,
   isTemplateCategoriesLoading: false,
 
-  getTemplates: async (page = 1, take = 5, searchTerm = "") => {
+  getTemplates: async (page = 1, take = 5, searchTerm = '') => {
     set({ isTemplatesLoading: true });
     try {
       const templatesData = await getRequest({
-        url: "seo-pages",
+        url: 'seo-pages',
         params: {
           page,
           take,
@@ -850,9 +1038,9 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
   onCreateTemplatePage: async (data: FormData) => {
     set({ isTemplatesLoading: true });
     return postRequest({
-      url: "seo-pages",
+      url: 'seo-pages',
       data,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
 
@@ -860,7 +1048,7 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
     return putRequest({
       url: `seo-pages/${id}`,
       data,
-      headers: { "Content-Type": "multipart/form-data" },
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
 
@@ -873,7 +1061,7 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
   getTemplateCategories: async () => {
     set({ isTemplateCategoriesLoading: true });
     return getRequest({
-      url: "seo-pages/categories",
+      url: 'seo-pages/categories',
     })
       .then((data) => {
         set({ categories: data });
@@ -885,7 +1073,7 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
 
   createTemplateCategory: async (data) => {
     return postRequest({
-      url: "seo-pages/categories",
+      url: 'seo-pages/categories',
       data,
     });
   },
@@ -901,5 +1089,29 @@ export const useTemplatesStore = create<TemplatesStore>((set) => ({
     return deleteRequest({
       url: `seo-pages/categories/${id}`,
     });
+  },
+}));
+
+interface NewsletterStore {
+  isNewsletterLoading: boolean;
+  joinNewsletter: (email: string) => Promise<any>;
+}
+
+export const useNewsletterStore = create<NewsletterStore>((set) => ({
+  isNewsletterLoading: false,
+  joinNewsletter: (email: string) => {
+    set({
+      isNewsletterLoading: true,
+    });
+    return postRequest({
+      url: `email`,
+      data: {
+        email,
+      },
+    }).finally(() =>
+      set({
+        isNewsletterLoading: false,
+      }),
+    );
   },
 }));

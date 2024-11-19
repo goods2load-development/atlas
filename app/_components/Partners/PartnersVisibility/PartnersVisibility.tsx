@@ -1,7 +1,7 @@
-import Image from "next/image";
+import phoneImage from '@/assets/PartnersImage/PartnersVisibility/mac-phone.webp';
+import tabImage from '@/assets/PartnersImage/PartnersVisibility/tab.png';
 
-import phoneImage from "@/assets/PartnersImage/PartnersVisibility/mac-phone.webp";
-import tabImage from "@/assets/PartnersImage/PartnersVisibility/tab.png";
+import Image from 'next/image';
 
 const PartnersVisibility = () => {
   return (
@@ -10,8 +10,8 @@ const PartnersVisibility = () => {
         <div className="text-black text-[30px]/[34px] sm:text-[40px] font-normal sm:font-semibold italic">
           “Nice
           <span className="text-[30px]/[34px] sm:text-[40px] sm:leading-48 sm:font-normal font-light">
-            {" "}
-            and{" "}
+            {' '}
+            and{' '}
           </span>
           easy”
         </div>
@@ -22,7 +22,7 @@ const PartnersVisibility = () => {
           <h2 className="text-black max-w-[560px] md:max-w-[400px] lg:max-w-[560px] md:leading-[57px] font-light  mb-[10px] text-[34px]/[38px] md:text-[40px]/[48px] text-center sm:text-left">
             <span className="max-w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               Visibility
-            </span>{" "}
+            </span>{' '}
             in search results can truly set you apart
           </h2>
           <p className="sm:text-[18px] text-black w-full max-w-[570px] text-center sm:text-left mb-6 sm:mb-0">

@@ -1,14 +1,28 @@
-import { Metadata } from "next";
-import CareerForm from "../_components/Career/CareerForm/CareerForm";
-import { JoinOurTeam } from "../_components/Career/JoinOurTeam/JoinOurTeam";
+import CareerForm from '../_components/Career/CareerForm/CareerForm';
+import { JoinOurTeam } from '../_components/Career/JoinOurTeam/JoinOurTeam';
 
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
-import Footer from "@/components/Footer";
-import HeaderClient from "@/components/Header/HeaderClient";
-import DynamicMenu from "@/components/Header/DynamicMenu";
+import { Metadata } from 'next';
+
+import Footer from '@/components/Footer';
+import DynamicMenu from '@/components/Header/DynamicMenu';
+import HeaderClient from '@/components/Header/HeaderClient';
+
+const title = 'Join Our Team - GOODS2LOAD | Careers in Logistics Innovation';
+const description =
+  'Ready to challenge the logistics industry? Join the GOODS2LOAD team and make an impact with smart working opportunities in sales, customer care, and logistics partnerships. Apply';
+const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/career`;
 
 export const metadata: Metadata = {
-  title: "Career",
+  title,
+  description,
+  alternates: {
+    canonical,
+  },
+  openGraph: {
+    title,
+    description,
+    url: canonical,
+  },
 };
 
 const Career = () => {

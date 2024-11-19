@@ -1,110 +1,99 @@
-"use client";
-import React, { useCallback, useEffect, useState } from "react";
-import { useCountriesStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm, useFieldArray } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import UIButton from "@/components/common/Button";
-import Loader from "@/components/common/Loader";
+'use client';
+
+import { IsRequired } from './Registration/Registration';
+import CountryCode from './common/CountryCode';
+import { Textarea } from './ui/textarea';
+import { ToolTipComponent } from './ui/tooltip';
+import { useToast } from './ui/use-toast';
+import { useFilterStore } from '@/lib/filterStore';
+import { useCountriesStore, useUserStore } from '@/lib/store';
+import { postRequest } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import React, { useEffect, useState } from 'react';
+
+import { BellRing } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import { useFieldArray, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import UIButton from '@/components/common/Button';
+import Loader from '@/components/common/Loader';
+import { Button } from '@/components/ui/button';
 import {
   Command,
   CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
-} from "@/components/ui/command";
+} from '@/components/ui/command';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ChevronDown } from "lucide-react";
+} from '@/components/ui/dialog';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Image from "next/image";
-import { Button } from "@/components/ui/button";
-import { postRequest } from "@/lib/utils";
-import italyFlag from "@/assets/italy-flag.svg";
-import cnFlag from "@/assets/cn-flag.svg";
-import inFlag from "@/assets/in-flag.svg";
-import CountryCode from "./common/CountryCode";
-import { useGoogleReCaptcha } from "react-google-recaptcha-v3";
-import { useFilterStore } from "@/lib/filterStore";
-import { ToolTipComponent } from "./SearchMain";
-import Link from "next/link";
-import { BellRing } from "lucide-react";
-import { useToast } from "./ui/use-toast";
+} from '@/components/ui/popover';
 
-const phonesCode = [
-  {
-    label: "+39",
-    icon: italyFlag,
-  },
-  {
-    label: "+86",
-    icon: cnFlag,
-  },
-  {
-    label: "+91",
-    icon: inFlag,
-  },
-];
+const formSchema = (isLoggedIn: boolean) =>
+  z.object({
+    routes: z.array(
+      z.object({
+        fromCountry: z.string().optional(),
+        from: z.string().optional(),
+        toCountry: z.string().optional(),
+        to: z.string().optional(),
+      }),
+    ),
+    countryCode: isLoggedIn ? z.optional(z.string()) : z.string().min(1),
+    phone: isLoggedIn ? z.optional(z.string()) : z.string(),
+    email: isLoggedIn ? z.optional(z.string()) : z.string().min(5).email(),
+    companyName: isLoggedIn ? z.optional(z.string()) : z.string().min(2),
+    message: z.string().min(2),
+  });
 
 export default function SolutionFinder() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const {
+    deliveryBy,
+    placementOfGoods,
+    arrival,
+    departure,
+    goodsValue,
     from,
     fromCountry,
     to,
     toCountry,
-    arrival,
-    departure,
-    length,
-    width,
-    height,
-    goodsValue,
     typeOfGoods,
-    placementOfGoods,
     quantity,
-    totalKg,
     incoterms,
+    width,
+    length,
+    totalKg,
+    height,
   } = useFilterStore();
   const [step, setStep] = useState(0);
-  const formSchema = z
-    .object({
-      routes: z.array(
-        z.object({
-          fromCountry: z.string().optional(),
-          from: z.string().optional(),
-          toCountry: z.string().optional(),
-          to: z.string().optional(),
-        }),
-      ),
-      email: z.string(),
-      countryCode: z.string().optional(),
-      sms: z.string(),
-    })
-    .refine((data) => data.email.length !== 0 || data.sms.length !== 0, {
-      path: ["email"],
-    });
+  const { user } = useUserStore((state: any) => state);
+  const isLoggedIn = !!Object.values(user).length;
+
   const {
     countriesList,
     countriesListLoading,
@@ -115,8 +104,8 @@ export default function SolutionFinder() {
     getCountriesList,
     getCitiesList,
   } = useCountriesStore((state: any) => state);
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<ReturnType<typeof formSchema>>>({
+    resolver: zodResolver(formSchema(isLoggedIn)),
     defaultValues: {
       routes: [
         {
@@ -126,14 +115,17 @@ export default function SolutionFinder() {
           to,
         },
       ],
-      email: "",
-      sms: "",
+      email: '',
+      countryCode: '',
+      phone: '',
+      companyName: '',
+      message: '',
     },
   });
   const { control, register, watch } = form;
   const { fields, append, update, remove } = useFieldArray({
     control,
-    name: "routes",
+    name: 'routes',
     rules: {
       minLength: 1,
     },
@@ -168,19 +160,22 @@ export default function SolutionFinder() {
     );
   };
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<ReturnType<typeof formSchema>>) {
     if (!executeRecaptcha) return;
-    const token = await executeRecaptcha("login");
+    const token = await executeRecaptcha('login');
     postRequest({
-      url: "alerts/price",
+      url: 'alerts/price',
       data: {
         contacts: {
-          email: values.email?.length ? values.email : undefined,
-          phoneNumber: values.sms?.length
-            ? values.countryCode + values.sms
-            : undefined,
+          phone: isLoggedIn
+            ? user.phoneNumber
+            : `${(values as any).countryCode}${(values as any).phone}`,
+          email: isLoggedIn ? user.email : values.email,
+          companyName: isLoggedIn ? user.companyName : values.companyName,
         },
+        message: values.message,
         routes: values.routes.map((item) => ({
+          deliveryBy,
           fromRoute: `${item.fromCountry}, ${item.from}`,
           toRoute: `${item.toCountry}, ${item.to}`,
           arrival,
@@ -216,22 +211,22 @@ export default function SolutionFinder() {
       <DialogContent
         className={`max-w-[465px] pt-[48px] px-1 overflow-auto max-h-screen sm:pl-10 ${
           step === 3
-            ? "sm:max-w-[632px] pb-[32px] sm:pl-8 px-8"
-            : "sm:max-w-[632px] p-[32px]"
+            ? 'sm:max-w-[632px] pb-[32px] sm:pl-8 px-8'
+            : 'sm:max-w-[632px] p-[32px]'
         }`}
       >
         <Form {...form}>
           <form
-            className={`flex flex-col justify-between ${step === 3 && "hidden"} ${step === 2 ? "h-[594px] md:h-[424px]" : null}`}
+            className={`flex flex-col justify-between ${step === 3 && 'hidden'} ${step === 2 ? 'h-[594px] md:h-[424px]' : null}`}
             onSubmit={form.handleSubmit(onSubmit)}
           >
             <div>
               <DialogHeader
-                className={`sm:min-h-[300px] ${step !== 0 && "hidden"} items-center`}
+                className={`sm:min-h-[300px] ${step !== 0 && 'hidden'} items-center`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light">
                   <Image
-                    src={"/ring.svg"}
+                    src={'/ring.svg'}
                     className="filter grayscale contrast-200 mx-auto mb-8"
                     alt=""
                     width={54}
@@ -247,7 +242,7 @@ export default function SolutionFinder() {
                 </DialogDescription>
               </DialogHeader>
               <div
-                className={`${step === 1 && isSearchFilled() ? "sm:min-h-[272px]" : "hidden"} ${step === 2 ? "h-[424px]" : null}`}
+                className={`${step === 1 && isSearchFilled() ? 'sm:min-h-[272px]' : 'hidden'} ${step === 2 ? 'h-[424px]' : null}`}
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
                   Desired <i className="font-normal">routes</i>
@@ -278,10 +273,10 @@ export default function SolutionFinder() {
                             className="justify-start truncate h-[44px] rounded-l-[8px] rounded-r-none px-1 border-none font-normal text-black bg-[#ffede4] whitespace-nowrap sm:w-1/2 w-[135px] text-left"
                           >
                             <ToolTipComponent
-                              text={item.fromCountry || "Country"}
+                              text={item.fromCountry || 'Country'}
                             >
                               <div className="block w-[115px] sm:w-[120px] truncate text-left pl-2">
-                                {item.fromCountry || "Contry"}
+                                {item.fromCountry || 'Contry'}
                               </div>
                             </ToolTipComponent>
                           </Button>
@@ -308,7 +303,7 @@ export default function SolutionFinder() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  )
+                                  ),
                                 )}
                               </CommandGroup>
                             )}
@@ -324,9 +319,9 @@ export default function SolutionFinder() {
                             role="combobox"
                             className="justify-start h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] overflow-hidden sm:w-1/2 w-[135px]"
                           >
-                            <ToolTipComponent text={item.from || "City"}>
+                            <ToolTipComponent text={item.from || 'City'}>
                               <div className="block truncate w-[115px] sm:w-[100px] text-left">
-                                {item.from || "City"}
+                                {item.from || 'City'}
                               </div>
                             </ToolTipComponent>
                           </Button>
@@ -402,10 +397,10 @@ export default function SolutionFinder() {
                             className="justify-start h-[44px] rounded-l-[8px] rounded-r-none border-none font-normal text-black bg-[#ffede4] sm:w-1/2 w-[135px]"
                           >
                             <ToolTipComponent
-                              text={item.toCountry || "Country"}
+                              text={item.toCountry || 'Country'}
                             >
                               <div className="block w-[115px] sm:w-[95px] truncate text-left">
-                                {item.toCountry || "Country"}
+                                {item.toCountry || 'Country'}
                               </div>
                             </ToolTipComponent>
                           </Button>
@@ -432,7 +427,7 @@ export default function SolutionFinder() {
                                     >
                                       {country.label}
                                     </CommandItem>
-                                  )
+                                  ),
                                 )}
                               </CommandGroup>
                             )}
@@ -448,9 +443,9 @@ export default function SolutionFinder() {
                             role="combobox"
                             className="justify-start p-0 text-left h-[44px] rounded-l-none rounded-r-[8px] border-none font-normal text-black bg-[#ffede4] truncate pl-2 sm:w-1/2 w-[135px]"
                           >
-                            <ToolTipComponent text={item.to || "City"}>
+                            <ToolTipComponent text={item.to || 'City'}>
                               <div className="block w-[115px] sm:w-[100px] truncate text-left">
-                                {item.to || "City"}
+                                {item.to || 'City'}
                               </div>
                             </ToolTipComponent>
                           </Button>
@@ -487,7 +482,7 @@ export default function SolutionFinder() {
                 ))}
               </div>
               <div
-                className={`${step === 1 && !isSearchFilled() ? "sm:min-h-[172px]" : "hidden"}`}
+                className={`${step === 1 && !isSearchFilled() ? 'sm:min-h-[172px]' : 'hidden'}`}
               >
                 <DialogTitle className="text-center text-[24px]/[29px] sm:text-[40px]/[48px] font-light my-4">
                   Just a step away!
@@ -501,42 +496,96 @@ export default function SolutionFinder() {
                   partner.
                 </DialogTitle>
               </div>
-              <div className={step === 2 ? "" : "hidden"}>
+              <div className={step === 2 ? '' : 'hidden'}>
                 <DialogTitle className="text-center text-[40px]/[48px] font-light my-4">
-                  Contact <i className="font-normal">information</i>
+                  Enter <i className="font-normal">your details</i>
                 </DialogTitle>
-                <DialogDescription className="text-center text-[18px]/[26px] mx-auto max-w-[490px]">
-                  Choose how you want to receive notifications (email or SMS)
-                  and share your contact information for this.
+                <DialogDescription className="text-center text-[14px] mx-auto max-w-[490px]">
+                  Please provide your company name, phone number, email address,
+                  and a message detailing why you need this partner&apos;s
+                  services. This will help us better understand your needs and
+                  communicate your requirements more effectively with the
+                  logistics provider.
                 </DialogDescription>
-                <Tabs
-                  defaultValue="email"
-                  className="w-full max-w-[396px] mx-auto mt-[40px]"
-                >
-                  <TabsList className="grid w-[290px] grid-cols-2 mx-auto mb-[24px] gap-4">
-                    <TabsTrigger
-                      className={`data-[state="active"]:bg-orange-50 data-[state="active"]:border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-                      value="email"
-                    >
-                      Email
-                    </TabsTrigger>
-                    <TabsTrigger
-                      value="sms"
-                      className={`data-[state="active"]:bg-orange-50 data-[state="active"]:border-b-2 data-[state="active"]:border-orangePrimary rounded-none`}
-                    >
-                      SMS
-                    </TabsTrigger>
-                  </TabsList>
-                  <TabsContent value="email">
+
+                {/* Conditional rendering of fields based on isLoggedIn */}
+                {!isLoggedIn && (
+                  <>
+                    <div className="flex gap-2 mt-[32px]">
+                      <div>
+                        <label className="text-[14px]">
+                          Company phone number
+                          <IsRequired />
+                        </label>
+                        <div className="flex mt-2 gap-2">
+                          <FormField
+                            control={form.control}
+                            name="countryCode"
+                            render={({ field }) => (
+                              <FormItem className="w-4/12">
+                                <FormControl>
+                                  <CountryCode
+                                    onChange={field.onChange}
+                                    className="border-none bg-gray-2"
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name="phone"
+                            render={({ field }) => (
+                              <FormItem className="flex-1">
+                                <FormControl>
+                                  <Input
+                                    className="border-none bg-gray-2"
+                                    placeholder="0000000"
+                                    {...field}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                        </div>
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem className="flex-1">
+                            <label className="text-[14px]">
+                              Email
+                              <IsRequired />
+                            </label>
+                            <FormControl>
+                              <Input
+                                className="border-none bg-gray-2"
+                                placeholder="email@abcd.com"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
+
                     <FormField
                       control={form.control}
-                      name="email"
+                      name="companyName"
                       render={({ field }) => (
-                        <FormItem className="mr-3 w-full">
+                        <FormItem className="mt-[16px]">
+                          <label className="text-[14px]">
+                            Company name
+                            <IsRequired />
+                          </label>
                           <FormControl>
                             <Input
-                              placeholder="Enter your email address"
-                              className="text-center border-orangePrimary"
+                              className="border-none bg-gray-2"
+                              placeholder="ABCD FZ LLC"
                               {...field}
                             />
                           </FormControl>
@@ -544,68 +593,53 @@ export default function SolutionFinder() {
                         </FormItem>
                       )}
                     />
-                  </TabsContent>
-                  <TabsContent
-                    value="sms"
-                    className="flex justify-center gap-2 items-end"
-                  >
-                    <FormField
-                      control={form.control}
-                      name="countryCode"
-                      render={({ field }) => (
-                        <FormItem className="w-1/4">
-                          <FormControl>
-                            <CountryCode
-                              onChange={field.onChange}
-                              className="border-orangePrimary"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="sms"
-                      render={({ field }) => (
-                        <FormItem className="w-3/4">
-                          <FormControl>
-                            <Input
-                              placeholder="Enter your phone number"
-                              className="text-center border-orangePrimary"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </TabsContent>
-                </Tabs>
+                  </>
+                )}
+
+                <FormField
+                  control={form.control}
+                  name="message"
+                  render={({ field }) => (
+                    <FormItem className="mt-[16px]">
+                      <label className="text-[14px]">
+                        Message
+                        <IsRequired />
+                      </label>
+                      <FormControl>
+                        <Textarea
+                          className="border-none bg-gray-2 min-h-[200px]"
+                          placeholder="ABCD FZ LLC"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
               </div>
             </div>
             {step !== 3 && (
-              <div className="sm:flex justify-between items-center pt-5 space-y-5">
+              <div className="sm:flex justify-between items-center py-5 space-y-5">
                 <div className="flex space-x-1 order-2 justify-center w-full">
                   <div
-                    className={`shadow-2xl rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 0 ? "opacity-100" : "opacity-50"}`}
+                    className={`shadow-2xl rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 0 ? 'opacity-100' : 'opacity-50'}`}
                   />
                   <div
-                    className={`shadow-sm rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 1 ? "opacity-100" : "opacity-50"}`}
+                    className={`shadow-sm rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 1 ? 'opacity-100' : 'opacity-50'}`}
                   />
                   <div
-                    className={`shadow-sm rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 2 ? "opacity-100" : "opacity-50"}`}
+                    className={`shadow-sm rounded-full w-[16px] h-[16px] bg-orangePrimary border-4 border-white ${step === 2 ? 'opacity-100' : 'opacity-50'}`}
                   />
                 </div>
                 <UIButton
                   secondary
                   onClick={() => setStep(step - 1)}
-                  className={`w-full sm:max-w-40 ${step === 0 ? "hidden sm:block invisible" : ""}`}
+                  className={`w-full sm:max-w-40 ${step === 0 ? 'hidden sm:block invisible' : ''}`}
                 >
                   Previous step
                 </UIButton>
                 <UIButton
-                  className={`w-full sm:max-w-40 order-3 ${step === 1 && !isSearchFilled() ? "hidden" : null}`}
+                  className={`w-full sm:max-w-40 order-3 ${step === 1 && !isSearchFilled() ? 'hidden' : null}`}
                   type="submit"
                   onClick={(e: any) => {
                     if (step !== 2) {
@@ -613,9 +647,9 @@ export default function SolutionFinder() {
 
                       if (step === 1 && !isFieldsFilled()) {
                         toast({
-                          title: "Fill out the fields",
-                          variant: "destructive",
-                          className: "bg-red-500 text-white",
+                          title: 'Fill out the fields',
+                          variant: 'destructive',
+                          className: 'bg-red-500 text-white',
                         });
                         return;
                       } else {
@@ -631,7 +665,7 @@ export default function SolutionFinder() {
             )}
           </form>
         </Form>
-        <div className={`${step !== 3 && "hidden"}`}>
+        <div className={`${step !== 3 && 'hidden'}`}>
           <DialogHeader className="mb-[42px]">
             <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
               Thank <i className="font-normal">you!</i>

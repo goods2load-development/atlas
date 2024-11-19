@@ -1,34 +1,79 @@
-export type PARTNER_STATUS = "APPROVED" | "IN REVIEW" | "NEW";
+export type PARTNER_STATUS = 'APPROVED' | 'IN REVIEW' | 'NEW';
 
 export interface ResponsePartner {
   id: string;
   status: PARTNER_STATUS;
   hasPage: boolean;
   user: Partner;
+  aboutUs: string;
+  ourMission: string;
+}
+
+export interface PartnerIndustry {
+  label: string;
+  items: string[];
+}
+
+interface IBusinessProfile {
+  id: string;
+  text: string;
+  userId: string;
 }
 
 export interface Partner {
+  SustainabilityProof: any[]; // Define further if structure is known
   address: string;
-  city: string | null;
-  communication: boolean;
+  businessProfile: {
+    id: string;
+    text: string;
+    userId: string;
+  };
+  city: string;
   companyName: string;
-  companyPhoto: string | null;
+  companyPhoto: string;
   country: string;
   currency: string;
   email: string;
   ferry: boolean;
-  firstName: string | null;
+  filters: {
+    partnerFilter: {
+      id: string;
+      partnerFilterCategory: {
+        id: string;
+      };
+      value: string;
+    };
+  }[];
+  hasPage: boolean;
   id: string;
+  industries: {
+    label: string;
+    items: string[];
+  }[];
+  industryRecognitions: {
+    id: string;
+    isSecondary: boolean;
+    name: string;
+    proofs: {
+      id: string;
+      path: string;
+      name: string;
+    }[];
+  }[];
   insuranceStatement: string;
   isConfirmed: boolean;
   issuingAuthority: string;
   language: string;
-  lastName: string | null;
+  partnerId: string;
+  partnerLocation: {
+    airports: { name: string; code: string }[];
+    cities: { name: string; code: string }[];
+    ports: { name: string; code: string }[];
+  };
   phoneNumber: string;
   plane: boolean;
-  postalCode: string | null;
-  provider: boolean;
-  role: string | null;
+  postalCode: string;
+  sustainability: boolean;
   tradeLicenseNumber: string;
   truck: boolean;
 }

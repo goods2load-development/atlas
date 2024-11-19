@@ -1,16 +1,18 @@
-"use client";
-import React, { useEffect, useState, ReactNode } from "react";
+'use client';
+
+import React, { ReactNode, useEffect, useState } from 'react';
+
+import UIButton from '@/components/common/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import UIButton from "@/components/common/Button";
+} from '@/components/ui/dialog';
 
 interface ButtonProps {
   children?: ReactNode;

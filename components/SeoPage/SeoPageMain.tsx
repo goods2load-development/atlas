@@ -1,90 +1,88 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-
-import useDotButton from "@/app/hooks/useDotButton";
-import clsx from "clsx";
-import Fade from "embla-carousel-fade";
-import Autoplay from "embla-carousel-autoplay";
-import useEmblaCarousel from "embla-carousel-react";
-import { useEffect, useState } from "react";
-import Link from "next/link";
-import { z } from "zod";
-import { CircleX, Edit, Plus, X } from "lucide-react";
-
-import Header from "@/components/Header/Header";
-import SearchMain from "@/components/SearchMain";
-import SubHeaderMain from "@/components/SubHeaderMain";
-import QuestionsAndAnswers from "@/components/QuestionsAndAnswers";
-import Analytics from "@/components/Dashboard/Analytics";
-import TailoredServices from "../TailoredServices";
-
-import { DropdownItem, SeoPage, SeoPageCategory } from "./types";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormProvider, useForm } from "react-hook-form";
+import { formatToSlug } from '../Dashboard/BlogMain/utils';
+import TemplateCategoryDialog from '../Dashboard/TemplateMain/TemplateCategoryDialog';
+import MainLayout from '../MainLayout';
+import TailoredServices from '../TailoredServices';
+import { Button } from '../ui/button';
+import Editor from '../ui/editor';
 import {
   FormControl,
   FormField,
   FormItem,
-  FormMessage,
   FormLabel,
-} from "../ui/form";
-import { Input } from "../ui/input";
-import { fileToBase64, getRequest, urlsToFileList } from "@/lib/utils";
-import Editor from "../ui/editor";
-import { Button } from "../ui/button";
-import { Textarea } from "../ui/textarea";
-import { useTemplatesStore } from "@/lib/store";
-import { useRouter } from "next/navigation";
-import PartnersOurPartners from "@/app/_components/Partners/PartnersOurPartners/PartnersOurPartners";
+  FormMessage,
+} from '../ui/form';
+import { Input } from '../ui/input';
+import { Textarea } from '../ui/textarea';
+import { DropdownItem, SeoPage, SeoPageCategory } from './types';
+import PartnersOurPartners from '@/app/_components/Partners/PartnersOurPartners/PartnersOurPartners';
+import '@/app/content.css';
+import useBreakpoint from '@/app/hooks/useBreakpoint';
+import useDotButton from '@/app/hooks/useDotButton';
+import { useTemplatesStore } from '@/lib/store';
+import { fileToBase64, getRequest, urlsToFileList } from '@/lib/utils';
+import { zodResolver } from '@hookform/resolvers/zod';
+
+import { useEffect, useState } from 'react';
+
+import clsx from 'clsx';
+import Autoplay from 'embla-carousel-autoplay';
+import Fade from 'embla-carousel-fade';
+import useEmblaCarousel from 'embla-carousel-react';
+import { CircleX, Edit, Plus, X } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { FormProvider, useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import Analytics from '@/components/Dashboard/Analytics';
+import QuestionsAndAnswers from '@/components/QuestionsAndAnswers';
+import SearchMain from '@/components/SearchMain';
+import SubHeaderMain from '@/components/SubHeaderMain';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
-import TemplateCategoryDialog from "../Dashboard/TemplateMain/TemplateCategoryDialog";
-import useBreakpoint from "@/app/hooks/useBreakpoint";
-import { formatToSlug } from "../Dashboard/BlogMain/utils";
-import "@/app/content.css";
-import HeaderClient from "../Header/HeaderClient";
-import MainLayout from "../MainLayout";
+} from '@/components/ui/select';
 
-type BlockFiles = "block1File" | "block2File";
+type BlockFiles = 'block1File' | 'block2File';
 
 const achievementsLabels: string[] = [
-  "Delivered shippings",
-  "Countries covered",
-  "Companies served",
-  "Monthly User",
+  'Delivered shippings',
+  'Countries covered',
+  'Companies served',
+  'Monthly User',
 ];
 
 const seoPageSchema = z.object({
   category: z.string(),
-  description: z.string().min(3, "At least 3 symbols"),
-  title: z.string().min(3, "At least 3 symbols"),
-  subText: z.string().min(3, "At least 3 symbols"),
+  description: z.string().min(3, 'At least 3 symbols'),
+  title: z.string().min(3, 'At least 3 symbols'),
+  subText: z.string().min(3, 'At least 3 symbols'),
   block1File: z
     .unknown()
     .transform((value) => value as FileList | undefined)
-    .refine((files) => true, "You need to provide a file"),
+    .refine((files) => true, 'You need to provide a file'),
   block2File: z
     .unknown()
     .transform((value) => value as FileList | undefined)
-    .refine((files) => true, "You need to provide a file"),
+    .refine((files) => true, 'You need to provide a file'),
   blocks: z.array(
     z.object({
       title: z.string(),
       description: z.string(),
       video: z.string().optional(),
-    })
+    }),
   ),
   achievements: z.array(
     z.object({
       label: z.string(),
       value: z.string(),
-    })
+    }),
   ),
   dropdown: z.object({
     items: z
@@ -92,9 +90,9 @@ const seoPageSchema = z.object({
         z.object({
           title: z.string(),
           description: z.string(),
-        })
+        }),
       )
-      .nonempty("Dropdown items cannot be empty"),
+      .nonempty('Dropdown items cannot be empty'),
   }),
 });
 
@@ -102,7 +100,7 @@ export default function SeoPageMain({
   type,
   data,
 }: {
-  type: "view" | "edit" | "create";
+  type: 'view' | 'edit' | 'create';
   data?: SeoPage;
 }) {
   const {
@@ -112,12 +110,12 @@ export default function SeoPageMain({
     getTemplateCategories,
   }: any = useTemplatesStore();
   const [relatedPages, setRelatedPages] = useState<SeoPage[] | undefined>(
-    undefined
+    undefined,
   );
 
-  const isView = type === "view";
-  const isEdit = type === "edit";
-  const isCreate = type === "create";
+  const isView = type === 'view';
+  const isEdit = type === 'edit';
+  const isCreate = type === 'create';
 
   const [blockImagesBase64List, setBlockImagesBase64List] = useState<any>({
     block1File: null,
@@ -127,15 +125,15 @@ export default function SeoPageMain({
   const router = useRouter();
 
   const [localDropdownItems, setLocalDropDownItems] = useState<DropdownItem[]>(
-    isEdit ? (data?.dropdown?.items as any) : []
+    isEdit ? (data?.dropdown?.items as any) : [],
   );
   const [qaForm, setQAForm] = useState({
-    title: "",
-    description: "",
+    title: '',
+    description: '',
   });
 
   const form = useForm<z.infer<typeof seoPageSchema>>({
-    mode: "all",
+    mode: 'all',
     resolver: zodResolver(seoPageSchema),
     ...(isEdit &&
       data && {
@@ -153,7 +151,7 @@ export default function SeoPageMain({
 
   const getRelatedPages = () => {
     return getRequest({
-      url: "seo-pages",
+      url: 'seo-pages',
       params: {
         excludeId: data?.id || undefined,
         category: data?.category.id || undefined,
@@ -168,41 +166,41 @@ export default function SeoPageMain({
   }, [data]);
 
   const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, slidesToScroll: "auto" },
-    [Autoplay({ playOnInit: true, delay: 5000 }), Fade()]
+    { loop: true, slidesToScroll: 'auto' },
+    [Autoplay({ playOnInit: true, delay: 5000 }), Fade()],
   );
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
 
-  const { isBelowSm } = useBreakpoint("sm");
+  const { isBelowSm } = useBreakpoint('sm');
 
   useEffect(() => {
     getTemplateCategories();
   }, []);
 
   useEffect(() => {
-    form.setValue("dropdown.items", localDropdownItems as any);
+    form.setValue('dropdown.items', localDropdownItems as any);
   }, [form, localDropdownItems]);
 
   useEffect(() => {
     if (!isEdit || !data) return;
     (async () => {
       const urlsList = [data?.block1File, data?.block2File].map(
-        (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item}`
+        (item) => `${process.env.NEXT_PUBLIC_BASE_URL}${item}`,
       );
       const [file1, file2] = await Promise.all(
-        urlsList.map(async (url) => await urlsToFileList([url]))
+        urlsList.map(async (url) => await urlsToFileList([url])),
       );
 
-      form?.setValue("block1File", file1);
-      form?.setValue("block2File", file2);
+      form?.setValue('block1File', file1);
+      form?.setValue('block2File', file2);
 
       const listBase64 = await Promise.all(
         Array.from([file1, file2]).map(async (files) => {
           const base = await fileToBase64(files[0]);
 
           return base;
-        })
+        }),
       );
 
       setBlockImagesBase64List({
@@ -218,14 +216,14 @@ export default function SeoPageMain({
 
     setLocalDropDownItems((prev) => [...prev, qaForm]);
     setQAForm({
-      title: "",
-      description: "",
+      title: '',
+      description: '',
     });
   };
 
   const onDeleteLocalDropDown = (targetIdx: number) => {
     setLocalDropDownItems((prev) =>
-      prev.filter((item, prevIdx) => targetIdx !== prevIdx)
+      prev.filter((item, prevIdx) => targetIdx !== prevIdx),
     );
   };
 
@@ -272,16 +270,16 @@ export default function SeoPageMain({
   const onSubmit = (updatesData: z.infer<typeof seoPageSchema>) => {
     const formData = new FormData();
 
-    formData.append("title", updatesData.title);
-    formData.append("description", updatesData.description);
-    formData.append("blocks", JSON.stringify(updatesData.blocks));
-    formData.append("achievements", JSON.stringify(updatesData.achievements));
-    formData.append("dropdown", JSON.stringify({ items: localDropdownItems }));
-    formData.append("block1File", updatesData.block1File as any);
-    formData.append("block2File", updatesData.block2File as any);
-    formData.append("categoryId", updatesData.category);
-    formData.append("subText", updatesData.subText);
-    formData.append("slug", formatToSlug(updatesData?.title));
+    formData.append('title', updatesData.title);
+    formData.append('description', updatesData.description);
+    formData.append('blocks', JSON.stringify(updatesData.blocks));
+    formData.append('achievements', JSON.stringify(updatesData.achievements));
+    formData.append('dropdown', JSON.stringify({ items: localDropdownItems }));
+    formData.append('block1File', updatesData.block1File as any);
+    formData.append('block2File', updatesData.block2File as any);
+    formData.append('categoryId', updatesData.category);
+    formData.append('subText', updatesData.subText);
+    formData.append('slug', formatToSlug(updatesData?.title));
 
     if (isCreate) {
       onCreateTemplatePage(formData).then((data: any) => {
@@ -390,8 +388,8 @@ export default function SeoPageMain({
         {isView && <SearchMain main />}
       </div>
       <section
-        className={clsx("pb-8 md:pb-[111px]", {
-          "mt-40": !isView,
+        className={clsx('pb-8 md:pb-[111px]', {
+          'mt-40': !isView,
         })}
       >
         <div className="max-w-[1328px] mx-auto px-4">
@@ -431,7 +429,7 @@ export default function SeoPageMain({
                           type="file"
                           accept="image/*"
                           onChange={(e) => {
-                            handleUploadBlockImages(e, "block1File");
+                            handleUploadBlockImages(e, 'block1File');
                           }}
                         />
                       </FormControl>
@@ -441,7 +439,7 @@ export default function SeoPageMain({
                             width={16}
                             height={16}
                             className="mr-[8px] min-h-[250px]"
-                            src={"/upload.svg"}
+                            src={'/upload.svg'}
                             alt="upload"
                           />
                           Upload Image
@@ -450,7 +448,7 @@ export default function SeoPageMain({
                         <div className="relative">
                           <button
                             onClick={() =>
-                              handleDeleteBlockImages("block1File")
+                              handleDeleteBlockImages('block1File')
                             }
                             type="button"
                             className="absolute z-10 top-0 right-0 rounded-full border-solid bg-orangePrimary color-red -translate-y-1/2 translate-x-1/2"
@@ -502,7 +500,7 @@ export default function SeoPageMain({
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
-                      __html: data?.blocks[0].description || "",
+                      __html: data?.blocks[0].description || '',
                     }}
                   ></div>
                 </>
@@ -540,7 +538,7 @@ export default function SeoPageMain({
                 />
               )}
             </div>
-          </div>{" "}
+          </div>{' '}
         </div>
       </section>
       <SubHeaderMain />
@@ -556,7 +554,7 @@ export default function SeoPageMain({
                   <div
                     className="content"
                     dangerouslySetInnerHTML={{
-                      __html: data?.blocks[1].description || "",
+                      __html: data?.blocks[1].description || '',
                     }}
                   ></div>
                 </>
@@ -630,7 +628,7 @@ export default function SeoPageMain({
                           type="file"
                           accept="image/*"
                           onChange={(e) => {
-                            handleUploadBlockImages(e, "block2File");
+                            handleUploadBlockImages(e, 'block2File');
                           }}
                         />
                       </FormControl>
@@ -640,7 +638,7 @@ export default function SeoPageMain({
                             width={16}
                             height={16}
                             className="mr-[8px] min-h-[250px]"
-                            src={"/upload.svg"}
+                            src={'/upload.svg'}
                             alt="upload"
                           />
                           Upload Image
@@ -649,7 +647,7 @@ export default function SeoPageMain({
                         <div className="relative">
                           <button
                             onClick={() =>
-                              handleDeleteBlockImages("block2File")
+                              handleDeleteBlockImages('block2File')
                             }
                             type="button"
                             className="absolute z-10 top-0 right-0 rounded-full border-solid bg-orangePrimary color-red -translate-y-1/2 translate-x-1/2"
@@ -701,44 +699,42 @@ export default function SeoPageMain({
             <h2 className="text-[30px]/[34px] md:text-[40px]/[44px] mb-8 md:mb-10 max-md:justify-center flex items-center gap-2 font-light">
               <div className="py-1.5 px-2 bg-[#FEF1DF] rounded-[4px] font-normal">
                 <i>Related</i>
-              </div>{" "}
+              </div>{' '}
               topics:
             </h2>
             <div className="mx-auto overflow-hidden" ref={emblaRef}>
               <div className="flex">
                 {relatedPages.map((page: SeoPage, index: number) => (
                   <div
-                    className={clsx("min-w-0 md:pr-10 flex-[0_0_33.3333%]", {
-                      "!flex-[0_0_100%]": isBelowSm,
+                    className={clsx('min-w-0 md:pr-10 flex-[0_0_33.3333%]', {
+                      '!flex-[0_0_100%]': isBelowSm,
                     })}
                     key={index}
                   >
-                    <div className="relative">
+                    <div className="relative w-full h-[360px]">
                       <Image
-                        width={405}
-                        height={360}
                         src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
                         alt={page.blocks[0].title}
+                        layout="fill"
+                        objectFit="cover"
+                        className="rounded-md"
                         unoptimized
-                        className="h-[360px] w-[405px]"
                       />
                     </div>
                     <div className="p-4 flex flex-col">
                       <div>
                         <Link
-                          className="text-xl font-bold mb-2  min-h-[56px] line-clamp-2"
+                          className="text-xl font-bold mb-2 min-h-[56px] line-clamp-2"
                           href={{
                             pathname: `/${page.slug}`,
                           }}
                         >
                           {page.title}
                         </Link>
-
                         <p className="text-gray-600 mb-4 max-h-40 line-clamp-3 min-h-[72px]">
                           {page.description}
                         </p>
                       </div>
-
                       <Link
                         href={{
                           pathname: `/${page.slug}`,
@@ -758,10 +754,10 @@ export default function SeoPageMain({
                       <button
                         key={index}
                         onClick={() => onDotButtonClick(index)}
-                        className={"embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary".concat(
+                        className={'embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary'.concat(
                           index === selectedIndex
-                            ? " bg-orangePrimary"
-                            : " bg-transparent"
+                            ? ' bg-orangePrimary'
+                            : ' bg-transparent',
                         )}
                       />
                     ))}
@@ -836,14 +832,14 @@ export default function SeoPageMain({
           <div
             className="content max-w-[1328px] mx-auto px-4"
             dangerouslySetInnerHTML={{
-              __html: data?.subText || "",
+              __html: data?.subText || '',
             }}
           ></div>
         )}
         {!isView && (
           <FormField
             control={form?.control}
-            name={"subText"}
+            name={'subText'}
             render={({ field }) => (
               <FormItem className="max-w-[75%] mx-auto">
                 <FormControl>
@@ -906,7 +902,7 @@ export default function SeoPageMain({
                     <span className="text-primaryOrange">{idx + 1}.</span>
                     <div>{item.title}</div>
                     <Button
-                      variant={"default"}
+                      variant={'default'}
                       className="p-1 h-8 w-8 bg-transparent hover:bg-transparent"
                       type="button"
                       onClick={() => onDeleteLocalDropDown(idx)}
@@ -924,10 +920,10 @@ export default function SeoPageMain({
         isBackground={isView}
         data={(isView && data ? data?.dropdown?.items : localDropdownItems).map(
           (item, i) => ({
-            number: `${i < 9 ? "0" : ""}${i + 1}`,
+            number: `${i < 9 ? '0' : ''}${i + 1}`,
             title: item.title,
             content: item.description,
-          })
+          }),
         )}
       />
 

@@ -1,12 +1,13 @@
+import { ILegacyDataBlockBody } from '../types';
+
 import {
   Table,
-  TableRow,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-} from "@/components/ui/table";
-import { ILegacyDataBlockBody } from "../types";
+  TableRow,
+} from '@/components/ui/table';
 
 export default function LegacyTable({ tableContent }: ILegacyDataBlockBody) {
   return tableContent ? (

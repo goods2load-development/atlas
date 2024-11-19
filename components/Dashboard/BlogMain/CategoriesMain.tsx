@@ -1,12 +1,16 @@
-"use client";
-import ListItem from "@/components/ui/list-item";
-import Spinner from "@/components/ui/spinner";
-import { useBlogAdminStore } from "@/lib/store";
-import { clsx } from "clsx";
-import { useEffect } from "react";
-import { Trash } from "lucide-react";
-import { useToast } from "@/components/ui/use-toast";
-import CategoryDialog from "./CategoryDialog";
+'use client';
+
+import CategoryDialog from './CategoryDialog';
+import { useBlogAdminStore } from '@/lib/store';
+
+import { useEffect } from 'react';
+
+import { clsx } from 'clsx';
+import { Trash } from 'lucide-react';
+
+import ListItem from '@/components/ui/list-item';
+import Spinner from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/use-toast';
 
 const ApproveComments = () => {
   const { isBlogLoading, categories, getBlogCategories, deleteBlogCategory } =
@@ -22,10 +26,10 @@ const ApproveComments = () => {
       .then(getBlogCategories)
       .then(() =>
         toast({
-          title: "Category deleted.",
-          variant: "destructive",
-          className: "bg-green-500 text-white",
-        })
+          title: 'Category deleted.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
@@ -41,8 +45,8 @@ const ApproveComments = () => {
         <CategoryDialog type="create" />
       </div>
       <div
-        className={clsx("flex flex-col gap-4", {
-          "pointer-events-none": isBlogLoading,
+        className={clsx('flex flex-col gap-4', {
+          'pointer-events-none': isBlogLoading,
         })}
       >
         {!categories.length && !isBlogLoading && (

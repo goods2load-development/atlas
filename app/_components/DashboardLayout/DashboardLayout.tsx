@@ -1,6 +1,6 @@
-import MobileSidebar from "@/components/Dashboard/MobileSidebar/MobileSidebar";
-import Sidebar from "@/components/Dashboard/Sidebar/Sidebar";
-import MobileFooter from "@/components/Dashboard/MobileFooter/MobileFooter";
+import MobileFooter from '@/components/Dashboard/MobileFooter/MobileFooter';
+import MobileSidebar from '@/components/Dashboard/MobileSidebar/MobileSidebar';
+import Sidebar from '@/components/Dashboard/Sidebar/Sidebar';
 
 function DashboardLayout({ children }: { children: React.ReactNode }) {
   return (

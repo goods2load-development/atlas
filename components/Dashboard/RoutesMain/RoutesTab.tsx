@@ -1,16 +1,19 @@
-"use client";
+'use client';
 
-import ListItem from "@/components/ui/list-item";
-import Pagination from "@/components/ui/pagination";
-import Spinner from "@/components/ui/spinner";
-import { useToast } from "@/components/ui/use-toast";
-import { useRoutesStore } from "@/lib/store";
-import clsx from "clsx";
-import { useEffect, useState } from "react";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { Check, TrashIcon } from "lucide-react";
-import ReplyDialog from "./ReplyDialog";
-import ViewDialog from "./ViewDialog";
+import ReplyDialog from './ReplyDialog';
+import ViewDialog from './ViewDialog';
+import { useRoutesStore } from '@/lib/store';
+
+import { useEffect, useState } from 'react';
+
+import clsx from 'clsx';
+import { Check, TrashIcon } from 'lucide-react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+
+import ListItem from '@/components/ui/list-item';
+import Pagination from '@/components/ui/pagination';
+import Spinner from '@/components/ui/spinner';
+import { useToast } from '@/components/ui/use-toast';
 
 const TAKE = 5;
 
@@ -21,7 +24,7 @@ export const RoutesTab = () => {
     getRoutes,
     deleteRoute,
     applyRoute,
-    replyRoute,
+    rejectRoute,
   } = useRoutesStore((state: any) => state);
 
   const searchParams = useSearchParams();
@@ -29,12 +32,12 @@ export const RoutesTab = () => {
   const { replace } = useRouter();
   const { toast } = useToast();
 
-  const page = Number(searchParams.get("routesPage") || 1);
+  const page = Number(searchParams.get('routesPage') || 1);
   const { meta } = routes;
 
   const [isViewModalOpen, setIsViewModalOpen] = useState({
     isOpen: false,
-    id: "",
+    id: '',
   });
 
   useEffect(() => {
@@ -52,10 +55,10 @@ export const RoutesTab = () => {
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
-          title: "Route deleted.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Route deleted.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
@@ -64,37 +67,37 @@ export const RoutesTab = () => {
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
-          title: "Route approved. All data sent to provider.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Route approved. All data sent to provider.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
-  const replyRouteById = (
+  const rejectRouteById = (
     id: string,
     data: {
       message: string;
       reasons?: string[];
-    }
+    },
   ) => {
-    return replyRoute(id, data)
+    return rejectRoute(id, data)
       .then(() => getRoutesForPage(page))
       .then(() =>
         toast({
-          title: "Reply sent.",
-          variant: "destructive",
-          className: "bg-green-500",
-        })
+          title: 'Reply sent.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
   const handleSetPage = (page: number) => {
     const params = new URLSearchParams(searchParams);
     if (page) {
-      params.set("routesPage", page.toString());
+      params.set('routesPage', page.toString());
     } else {
-      params.delete("routesPage");
+      params.delete('routesPage');
     }
 
     replace(`${pathname}?${params.toString()}`);
@@ -102,19 +105,18 @@ export const RoutesTab = () => {
 
   return (
     <>
-      {isRoutesLoading && <Spinner />}
       <div
         className={clsx({
-          "pointer-events-none": isRoutesLoading,
+          'pointer-events-none': isRoutesLoading,
         })}
       >
-        <div className={clsx("flex flex-col gap-4")}>
+        <div className={clsx('flex flex-col gap-4')}>
           {!isRoutesLoading && !routes?.data?.length && (
             <p className="font-bold text-red-600">
-              There is no any routes at the moment
+              No routes selected at the moment
             </p>
           )}
-          {routes?.data?.map(({ order, user, id }: any, i: number) => (
+          {routes?.data?.map(({ id, ...route }: any, i: number) => (
             <ListItem key={i}>
               <div className="flex gap-2 justify-between w-full">
                 <p
@@ -126,7 +128,7 @@ export const RoutesTab = () => {
                   }
                   className="hover:underline hover:cursor-pointer"
                 >
-                  {user.email}
+                  {route.userEmail}
                 </p>
                 <div className="flex items-center gap-2">
                   <button onClick={() => applyRouteById(id)} title="Approve">
@@ -134,15 +136,16 @@ export const RoutesTab = () => {
                   </button>
                   <button title="Reply">
                     <ReplyDialog
-                      onSubmitCallback={(data: any) => replyRouteById(id, data)}
-                      order={order}
+                      onSubmitCallback={(data: any) =>
+                        rejectRouteById(id, data)
+                      }
+                      order={route}
                     />
                   </button>
                   <ViewDialog
                     isOpen={isViewModalOpen.id === id && isViewModalOpen.isOpen}
                     setIsOpen={setIsViewModalOpen}
-                    user={user}
-                    order={order}
+                    route={route}
                     id={id}
                   />
                   <button onClick={() => deleteRouteById(id)} title="Delete">

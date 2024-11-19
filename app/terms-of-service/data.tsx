@@ -1,13 +1,14 @@
+import bg from '@/assets/LegacyImages/termsOfService.png';
+
 import {
-  ILegacyPage,
   ILegacyDataBlock,
   ILegacyDataBlockBodyType,
-} from "@/components/Legacy/types";
-import bg from "@/assets/LegacyImages/termsOfService.png";
+  ILegacyPage,
+} from '@/components/Legacy/types';
 
 const data: ILegacyDataBlock[] = [
   {
-    title: "About Us: ",
+    title: 'About Us: ',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -24,12 +25,12 @@ const data: ILegacyDataBlock[] = [
     ],
   },
   {
-    title: "Acceptance of Terms:",
+    title: 'Acceptance of Terms:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          `Any person who accesses and/or uses the Platforms in any manner (“user”,“you”or “your”) or uses any current or future Services or functionality or offer made available
+          `Any person who accesses and/or uses the Platforms in any manner (“user”,“you” or “your”) or uses any current or future Services or functionality or offer made available
 on the Platforms will be subject to and governed by these Terms for use of our Services
 and Platforms, together with our <a href="/privacy-policy">Privacy Policy</a>, <a href="/cookie-policy">Cookies Policy</a>  and community
 guidelines (collectively,
@@ -68,7 +69,7 @@ will operate in place of or together with these Terms as appropriate.`,
     ],
   },
   {
-    title: "Eligibility:",
+    title: 'Eligibility:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -94,7 +95,7 @@ offer services that compete with those provided by Goods2Load.`,
     ],
   },
   {
-    title: "Restrictions on Use:",
+    title: 'Restrictions on Use:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -157,33 +158,31 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Sharing information with us:",
+    title: 'Sharing information with us:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
           `We take your privacy seriously and operate at all times in accordance with applicable
-          data protection laws. We do not intend to collect any personally identifiable data from
+          data protection laws. We do not intend to collect any personal or personally identifiable data from
           users including Logistics Providers, but in the event that any personal data is obtained,
-          such data will be processed according to our Privacy Policy. Any user information that is
-          gathered will be strictly for analytical purposes. You acknowledge that any Personal
-          Data or Business Data (as defined in our Privacy Policy) which you submit via our
-          Services or Platforms may be used by us in accordance with our Privacy Policy.`,
+          such data will be processed according to our Privacy Policy. Any user information or data that is
+          gathered through the Platforms will be strictly for analytical purposes and may also be shared with third-parties 
+          as necessary for improving our website functionalities and enhancing our service offerings. 
+          You acknowledge that any data which you submit via our
+          Services or Platforms may be used by us in accordance with our <a href="/privacy-policy"> Privacy Policy </a>.`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          `To the extent that our Services or Platforms allow users including Logistics Providers to
-            post, upload, transmit or otherwise make available any information, images, video, or
-            other data with Goods2Load or other Goods2Load users (“User Content”), you agree
-            that:`,
+          `To the extent that our Services or Platforms allow users to post, upload, transmit or otherwise make available any information, images, video, or other data with Goods2Load or other Goods2Load users (“User Content”), you agree that:`,
         ],
       },
       {
         type: ILegacyDataBlockBodyType.ULIST,
         content: [
-          `you will ensure that all User Content you provide to us is accurate and up to date
+          `you will ensure that all User Content you provide to us or submit on the Platforms is accurate and up to date
           and that you have all consents, licenses or approvals necessary to share it, and
           that it does not violate any laws, the Terms of Usage, or third-party rights and to
           allow us to use that information;`,
@@ -193,6 +192,7 @@ conditions in addition to these Terms.`,
           `you are solely responsible for User Content that you upload and you represent
           and agree that you will not share anything which you do not have the permission
           or right to share or for which you cannot grant the license;`,
+          `you are responsible for ensuring that any content you submit does not contain personal or sensitive information;`,
           `although all intellectual property rights in any User Content shall be owned by
           you or your licensors, you hereby grant Goods2Load a non-exclusive, perpetual
           and royalty-free, worldwide, transferable and sublicensable right to host, use,
@@ -209,12 +209,18 @@ conditions in addition to these Terms.`,
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
+          `User Content or other data provided to Transportation Providers is shared "as-is" or as modified (either through human intervention or automated processes), without any guarantees of accuracy in its original or modified form. We assume no responsibility for the data shared with Transportation Providers, and our actions in sharing this data do not imply any infringement of proprietary rights belonging to any party.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
           `<strong>Feedback</strong>: If you provide us with any suggestions, comments, improvements, ideas or
           other feedback (“Feedback”), you agree that such Feedback is provided voluntarily and
           will be deemed non-confidential and non-proprietary. You hereby irrevocably assign
-          ownership of all intellectual property rights subsisting in that Feedback to us and we
+          ownership of all intellectual property rights subsisting in that Feedback to us, and we
           reserve the right to use, reproduce, modify, and display the Feedback in any manner and
-          for any purpos  e, including for improving the Platforms or Services and for marketing.
+          for any purpose, including for improving the Platforms or Services and for marketing.
           Additionally, you grant us the right to associate your name or personal information
           provided with the Feedback, for purposes such as attribution or clarification, unless you
           explicitly request anonymity. Any personal data will be processed in accordance with
@@ -224,7 +230,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Communication:",
+    title: 'Communication:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -238,7 +244,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "User Conduct:",
+    title: 'User Conduct:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -253,7 +259,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Intellectual Property Rights (IPR):",
+    title: 'Intellectual Property Rights (IPR):',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -272,8 +278,8 @@ conditions in addition to these Terms.`,
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
-          `<strong>Third-Party IPR</strong>: We make no representations regarding the ownership or validity of
-          the IPR posted on our Platforms by third parties. We respect the intellectual property
+          `<strong>Third Party IPR</strong>: We make no representations regarding the ownership or validity of
+          the IPR posted or provided on our Platforms by third parties. We respect the intellectual property
           rights of others. If you have reason to believe that your copyright is being infringed by
           any content on our Services or Platforms, please send a written notification of the
           alleged infringement to <a href="mailto:legal@goods2load.com">legal@goods2load.com</a>, for the attention of the Legal
@@ -286,7 +292,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Currency:",
+    title: 'Currency:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -300,7 +306,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "Limitations and exclusions of liability:",
+    title: 'Limitations and exclusions of liability:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -323,18 +329,18 @@ conditions in addition to these Terms.`,
           `<strong>Is not liable</strong> for the actions, omissions, services, or failures of any
           Transportation Provider listed on the Platforms, including, but not limited to,
           issues regarding the quality, timeliness, safety, or legality of services provided.`,
-          `<strong>Does not guarantee</strong> fthe performance or suitability of any Transportation
+          `<strong>Does not guarantee</strong> the performance or suitability of any Transportation
           Provider, and it is the user’s responsibility to independently conduct verification
           before engaging with any Transportation Provider. Nevertheless, Goods2Load
           endeavours to procure that the content displayed on or via our Services and
-          Platforms is up to date and accurate.`,
+          Platforms is up-to-date and accurate.`,
           `<strong>Cannot guarantee</strong> that the information displayed on the Platforms are accurate
           or free from discrepancies as the information is based on data obtained from
           independent Transportation Providers or relevant third parties. Although
-          Goods2Load always endeavours to display accurate and updated information on
-          the Platforms, sometimes information may be subject to change, updation or
+          Goods2Load always endeavours to, and requires any third parties on our Platforms to display accurate and updated information on
+          the Platforms, sometimes information may be subject to change, update or
           contain errors beyond our control. Users are encouraged to verify any
-          information directly with the relevant Transportation Provider before making
+          information directly with the relevant Transportation Provider or other third parties they are interacting with before making
           decisions or bookings, as Goods2Load accepts no liability for any inaccuracies
           regarding the information.`,
           `<strong>Shall not be responsible</strong> for any direct, indirect, incidental, special, or
@@ -373,6 +379,13 @@ conditions in addition to these Terms.`,
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
         content: [
+          `<strong>AI-Integrations</strong>: Goods2Load incorporates various features and functionalities on its Platforms, either directly or through third-party providers. Some of these functionalities may utilize Artificial Intelligence (AI) and AI-powered language models (LLM) to better assist users looking for transportation options. These tools are designed to analyse and provide automated results based on the user’s input. By choosing to use these AI functionalities, users acknowledge and agree that it may produce inaccurate, incomplete, or unexpected results, and Goods2Load makes no guarantees regarding the accuracy, completeness, reliability, or usefulness of any results provided by these features. All AI-generated outputs are for informational purposes only and should not be solely relied upon without independent verification. You are solely responsible for the content you submit and agree not to submit any personal, sensitive or confidential information, or content that violates applicable laws and regulations. Users agree that by choosing to use these features, the data you submit may be processed by the LLM solely for the purpose of providing the services requested by users. You are under no obligation to use these AI features, and if you prefer, you may choose not to submit data to the AI feature.
+          <br>The AI features may be provided by third-party developers, and we do not endorse or assume responsibility for their functionality, accuracy, or results. In no event shall Goods2Load be liable for any direct, indirect, incidental, special, consequential, or exemplary damages arising from your use of, or inability to use, the AI features, including but not limited to incorrect or misleading results, errors, omissions, or inaccuracies in the results. These terms extend to all similar future technologies and services that may be incorporated into our platform, including those provided by other third-party vendors.`,
+        ],
+      },
+      {
+        type: ILegacyDataBlockBodyType.PARAGRAPH,
+        content: [
           `<strong>Alerts</strong>: Goods2Load offers a "Solution Finder" service that allows users to sign up for
           alerts and notifications about transportation solutions matching their specified criteria.
           While we strive to provide accurate and timely information, Goods2Load does not
@@ -391,7 +404,7 @@ conditions in addition to these Terms.`,
           implied, including but not limited to, the implied warranties of title, non-infringement,
           merchantability and accuracy, as well as any warranties implied by usage of trade,
           course of dealing or course of performance. To the extent permitted by law, we make no
-          representations and do not warrant to you that our Services or Platforms (a) are
+          representations and do not warrant to you that our Platforms, Services or any third-party functionalities made available on our Platforms (a) are
           accurate, complete or up to date; (b) will always be available; (c) will meet your
           expectations; or (d) are secure or are free from errors, faults, defects, viruses or
           malware.`,
@@ -404,7 +417,7 @@ conditions in addition to these Terms.`,
           to third-party websites or resources, including advertisers, these are provided solely for
           informational purposes. We have no control over the contents of those sites or resources
           and accept no responsibility for them or for any loss or damage that may arise from
-          your use of them. Goods2Load has not reviewed all of the third-party websites linked to
+          your use of them. Goods2Load has not reviewed all the third-party websites linked to
           its Platforms and is not responsible for the content or accuracy of any off-site pages nor
           are we responsible for the availability of such external websites or resources, and do not
           endorse and are not responsible in any way for the privacy practices or the content of
@@ -433,7 +446,7 @@ conditions in addition to these Terms.`,
           `<strong>Use of Platforms</strong>: To the maximum extent permitted by law, we (together with our
             officers, directors, employees, representatives, affiliates, providers and third parties) do
             not accept any liability for (a) any inaccuracies or omissions in the content displayed on
-            or via our Services or Platforms; or (b) any act of god, accident, delay or any special,
+            or made available via our Services or Platforms, including third-party functionalities; or (b) any act of god, accident, delay or any special,
             exemplary, punitive, indirect, incidental or consequential loss or damage of any kind
             (including, without limitation, lost profits or lost savings), whether based in contract,
             tort (including negligence), strict liability or otherwise, incurred by you arising out of or
@@ -470,7 +483,7 @@ conditions in addition to these Terms.`,
     ],
   },
   {
-    title: "General Provisions:",
+    title: 'General Provisions:',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -591,7 +604,7 @@ epidemics, pandemics, natural disasters, or any other similar event.`,
     ],
   },
   {
-    title: "Contact us",
+    title: 'Contact us',
     body: [
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
@@ -605,14 +618,16 @@ epidemics, pandemics, natural disasters, or any other similar event.`,
       },
       {
         type: ILegacyDataBlockBodyType.PARAGRAPH,
-        content: [`These Terms were last updated on 11 October 2024.`],
+        content: [
+          `These Terms were last updated on 1<sup>st</sup> November 2024.`,
+        ],
       },
     ],
   },
 ];
 
 export const termsOfServicePageData: ILegacyPage = {
-  title: "Terms of Service",
+  title: 'Terms of Service',
   bg,
   data,
 };

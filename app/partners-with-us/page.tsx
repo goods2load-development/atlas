@@ -1,10 +1,30 @@
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
-import PartnersWithUsImg from "@/assets/PartnersImage/PartnersWithUs/partners-with-us.jpg";
-import Footer from "@/components/Footer";
-import DynamicMenu from "@/components/Header/DynamicMenu";
-import HeaderClient from "@/components/Header/HeaderClient";
-import Image from "next/image";
-import Link from "next/link";
+import PartnersWithUsImg from '@/assets/PartnersImage/PartnersWithUs/partners-with-us.jpg';
+
+import { Metadata } from 'next';
+import Image from 'next/image';
+import Link from 'next/link';
+
+import Footer from '@/components/Footer';
+import DynamicMenu from '@/components/Header/DynamicMenu';
+import HeaderClient from '@/components/Header/HeaderClient';
+
+const title =
+  'Partner With Us - GOODS2LOAD | Expand Your Reach and Grow Your Business';
+const description =
+  'Partner with GOODS2LOAD to connect with millions of businesses seeking efficient shipping solutions. Join us as a trusted copilot and grow your business while enhancing logistics services across the globe.';
+
+export const metadata: Metadata = {
+  title,
+  description,
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}/partners-with-us`,
+  },
+  openGraph: {
+    title,
+    description,
+    url: `${process.env.NEXT_PUBLIC_CLIENT_URL}/partners-with-us`,
+  },
+};
 
 const PartnersWithUs = () => {
   return (
@@ -14,8 +34,8 @@ const PartnersWithUs = () => {
       <div className="md:flex gap-2 justify-between">
         <div className="px-4 xl:pt-[169px] pt-10 md:pt-20 lg:w-[592px] xl:ml-[72px] md:ml-10 2xl:mx-auto md:pb-4 pb-12 text-center md:text-left ml-0">
           <h3 className="text-[34px]/[37.6px] xl:text-[48px]/[57.6px] font-light text-black">
-            Reach <i className="font-normal">millions of business searching</i>{" "}
-            on how to ship their goods and{" "}
+            Reach <i className="font-normal">millions of business searching</i>{' '}
+            on how to ship their goods and{' '}
             <i className="font-normal bg-[#FEF1DF]">increase their business</i>
           </h3>
           <p className="mt-6 text-[18px]/[26px]">

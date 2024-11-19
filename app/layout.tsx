@@ -1,21 +1,43 @@
-import "./globals.css";
-import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
-import NextAuthProvider from "@/components/NextAuthProvider";
-import { WeglotProvider } from "./weglot/WeglotProvider";
-import { Toaster } from "@/components/ui/toaster";
-import ToasterWrapper from "@/components/Interceptor";
-import CaptchaProvider from "@/lib/providers/CaptchaProvider";
+import './globals.css';
+import { WeglotProvider } from './weglot/WeglotProvider';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
+
+import type { Metadata } from 'next';
+import { Poppins } from 'next/font/google';
+import { headers } from 'next/headers';
+
+import ToasterWrapper from '@/components/Interceptor';
+import NextAuthProvider from '@/components/NextAuthProvider';
+import { Toaster } from '@/components/ui/toaster';
 
 const poppins = Poppins({
-  subsets: ["latin"],
-  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
+  subsets: ['latin'],
+  weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
-export const metadata: Metadata = {
-  title: "Goods2load",
-  description: "no description",
-};
+export function generateMetadata(): Metadata {
+  const requestHeaders = headers();
+  const canonical = requestHeaders.get('referer') || 'https://goods2load.com';
+
+  return {
+    title: 'Goods2load',
+    description: 'Goods2load offers innovative logistics solutions.',
+    openGraph: {
+      title: 'Goods2load',
+      description:
+        'Goods2load offers innovative logistics solutions for global trade.',
+      url: canonical,
+    },
+    twitter: {
+      title: 'Goods2load',
+      description:
+        'Goods2load offers innovative logistics solutions for global trade.',
+    },
+    alternates: {
+      canonical,
+    },
+  };
+}
 
 export default function RootLayout({
   children,
