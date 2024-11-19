@@ -1,12 +1,22 @@
-import LoyaltAllWrapper from '../_components/LoyaltAllWrapper/LoyaltAllWrapper';
 import PartnersWithUsImg from '@/assets/PartnersImage/PartnersWithUs/partners-with-us.jpg';
 
+import { Metadata } from 'next';
 import Image from 'next/image';
 import Link from 'next/link';
 
 import Footer from '@/components/Footer';
 import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
+
+export const metadata: Metadata = {
+  title:
+    'Partner With Us - GOODS2LOAD | Expand Your Reach and Grow Your Business',
+  description:
+    'Partner with GOODS2LOAD to connect with millions of businesses seeking efficient shipping solutions. Join us as a trusted copilot and grow your business while enhancing logistics services across the globe.',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}/partners-with-us`,
+  },
+};
 
 const PartnersWithUs = () => {
   return (

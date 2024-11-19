@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Metadata } from 'next';
+
 import Analytics from '@/components/Dashboard/Analytics';
 import Footer from '@/components/Footer';
 import DynamicMenu from '@/components/Header/DynamicMenu';
@@ -12,6 +14,15 @@ import SubHeaderMain from '@/components/SubHeaderMain';
 import TailoredServices from '@/components/TailoredServices';
 import ConsentPopup from '@/components/common/ConsentPopup';
 import GDPRAiPopup from '@/components/common/GDPRAiPopup';
+
+export const metadata: Metadata = {
+  title: 'Top Logistics Company in Dubai | Best Cargo Services UAE',
+  description:
+    'Discover the best cargo and logistics companies in Dubai and the UAE. Our top-rated services ensure efficient and reliable solutions for all your shipping needs.',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}`,
+  },
+};
 
 const questionsContent = [
   {

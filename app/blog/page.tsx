@@ -5,7 +5,12 @@ import Blog from '@/components/Blog/Blog';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {
-  title: 'Blog',
+  title: 'Blog - GOODS2LOAD | Insights and Updates on Logistics',
+  description:
+    'Explore the GOODS2LOAD blog for the latest insights, trends, and updates on logistics, technology, and business solutions. Stay informed on how we’re transforming the logistics industry with innovative and sustainable practices.',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}/blog`,
+  },
 };
 
 export default async function BlogPage() {

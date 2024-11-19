@@ -16,7 +16,6 @@ const poppins = Poppins({
 
 export const metadata: Metadata = {
   title: 'Goods2load',
-  description: 'no description',
 };
 
 export default function RootLayout({
