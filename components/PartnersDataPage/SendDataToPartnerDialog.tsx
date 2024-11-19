@@ -37,7 +37,9 @@ function IsRequired() {
 const formSchema = (isLoggedIn: boolean) =>
   z.object({
     countryCode: isLoggedIn ? z.optional(z.string()) : z.string().min(1),
-    phone: isLoggedIn ? z.optional(z.string()) : z.string(),
+    phone: isLoggedIn
+      ? z.optional(z.string())
+      : z.string().regex(new RegExp('^[0-9]{4,15}$')),
     email: isLoggedIn ? z.optional(z.string()) : z.string().min(5).email(),
     companyName: isLoggedIn ? z.optional(z.string()) : z.string().min(2),
     message: z.string().min(2),

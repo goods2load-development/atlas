@@ -107,7 +107,7 @@ export default function Footer() {
               className="mr-8 md:mr-12 relative link-with-line"
               href="/terms-of-service"
             >
-              Terms and conditions
+              Terms and Conditions
             </Link>
             <Link
               className="mr-8 md:mr-12 relative link-with-line"
