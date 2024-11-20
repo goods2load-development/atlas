@@ -15,12 +15,25 @@ import TailoredServices from '@/components/TailoredServices';
 import ConsentPopup from '@/components/common/ConsentPopup';
 import GDPRAiPopup from '@/components/common/GDPRAiPopup';
 
+const title = 'Top Logistics Company in Dubai | Best Cargo Services UAE';
+const description =
+  'Discover the best cargo and logistics companies in Dubai and the UAE. Our top-rated services ensure efficient and reliable solutions for all your shipping needs.';
+const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}`;
+
 export const metadata: Metadata = {
-  title: 'Top Logistics Company in Dubai | Best Cargo Services UAE',
-  description:
-    'Discover the best cargo and logistics companies in Dubai and the UAE. Our top-rated services ensure efficient and reliable solutions for all your shipping needs.',
+  title,
+  description,
   alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}`,
+    canonical,
+  },
+  openGraph: {
+    title,
+    description,
+    url: canonical,
+  },
+  twitter: {
+    title,
+    description,
   },
 };
 
