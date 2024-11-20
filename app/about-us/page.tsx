@@ -1,4 +1,5 @@
 import LoyaltAllWrapper from '../_components/LoyaltAllWrapper/LoyaltAllWrapper';
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Suspense } from 'react';
 
@@ -36,6 +37,8 @@ export const generateMetadata = ({
 
   const description = data?.[key]?.description || data.company.description;
   const title = data?.[key]?.title || data.company.title;
+  const defaultMetadata = generateDefaultMetadata();
+
   const canonical = key
     ? `${process.env.NEXT_PUBLIC_CLIENT_URL}/about-us?${key}`
     : `${process.env.NEXT_PUBLIC_CLIENT_URL}/about-us`;
@@ -47,9 +50,15 @@ export const generateMetadata = ({
       canonical,
     },
     openGraph: {
+      ...defaultMetadata.openGraph,
       title,
       description,
       url: canonical,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title,
+      description,
     },
   };
 };

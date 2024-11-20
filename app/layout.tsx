@@ -1,10 +1,10 @@
 import './globals.css';
 import { WeglotProvider } from './weglot/WeglotProvider';
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
 import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import { headers } from 'next/headers';
 
 import ToasterWrapper from '@/components/Interceptor';
 import NextAuthProvider from '@/components/NextAuthProvider';
@@ -16,37 +16,7 @@ const poppins = Poppins({
 });
 
 export function generateMetadata(): Metadata {
-  const requestHeaders = headers();
-  const canonical = requestHeaders.get('referer') || 'https://goods2load.com';
-  const imageUrl = `${process.env.NEXT_PUBLIC_CLIENT_URL}/thumbnail.png`;
-
-  return {
-    title: 'Goods2load',
-    description: 'Goods2load offers innovative logistics solutions.',
-    openGraph: {
-      title: 'Goods2load',
-      description:
-        'Goods2load offers innovative logistics solutions for global trade.',
-      url: canonical,
-      images: [
-        {
-          url: imageUrl,
-          alt: 'Goods2load',
-          width: 1200,
-          height: 630,
-        },
-      ],
-    },
-    twitter: {
-      title: 'Goods2load',
-      description:
-        'Goods2load offers innovative logistics solutions for global trade.',
-      images: imageUrl,
-    },
-    alternates: {
-      canonical,
-    },
-  };
+  return generateDefaultMetadata();
 }
 export default function RootLayout({
   children,

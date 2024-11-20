@@ -1,3 +1,5 @@
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
+
 import { Metadata } from 'next';
 
 import BlogSlug from '@/components/BlogSlug/BlogSlug';
@@ -21,21 +23,22 @@ export async function generateMetadata({
   params: { slug: string };
 }): Promise<Metadata> {
   const blog = await getBlogData(slug);
-
-  const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/blog/${slug}`;
+  const defaultMetadata = generateDefaultMetadata();
 
   return {
     title: blog.title,
     description: blog.description,
     authors: [{ name: blog.authorName }],
     keywords: blog.blogTypeName?.split(', '),
-    alternates: {
-      canonical,
-    },
     openGraph: {
+      ...defaultMetadata.openGraph,
       title: blog.title,
       description: blog.description,
-      url: canonical,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title: blog.title,
+      description: blog.description,
     },
   };
 }
