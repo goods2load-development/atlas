@@ -113,7 +113,7 @@ export const RoutesTab = () => {
         <div className={clsx('flex flex-col gap-4')}>
           {!isRoutesLoading && !routes?.data?.length && (
             <p className="font-bold text-red-600">
-              There is no any routes at the moment
+              No routes selected at the moment
             </p>
           )}
           {routes?.data?.map(({ id, ...route }: any, i: number) => (

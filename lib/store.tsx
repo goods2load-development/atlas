@@ -269,7 +269,12 @@ export const useUserStore = create((set) => ({
   },
   updateUser: async (data: any) => {
     const id = localStorage.getItem('id');
-    const { savedPartners, ...restData } = data;
+    const {
+      savedPartners,
+      industryRecognitions,
+      SustainabilityProof,
+      ...restData
+    } = data;
     await patchRequest({
       url: `/users/${id}`,
       data: {

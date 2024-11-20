@@ -184,7 +184,9 @@ const PartnersMain = () => {
         <div className={clsx('flex flex-col gap-4')}>
           {!isPartnersLoading && !partners?.length && (
             <p className="font-bold text-red-600">
-              There is no any new partners at the moment.
+              {tab === 'new' && 'No registration requests at the moment'}
+              {tab === 'in-review' && 'No partners in review at the moment'}
+              {tab === 'active' && 'No approved partners at the moment'}
             </p>
           )}
           {filteredPartners?.map((partner, i: number) => (
