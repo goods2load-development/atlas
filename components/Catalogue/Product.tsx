@@ -99,13 +99,13 @@ export default function Product(props: any) {
             <div>{props.companyName}</div>
             {!isAlreadySavedPartner(user?.savedPartners, props.companyName) ? (
               <button
-                className="hover:opacity-60 transition-opacity"
+                className="hover:opacity-60 transition-opacity min-h-[18px] min-w-[18px]"
                 onClick={onSavePartner}
               >
                 <Image width={18} height={18} src={SaveIcon} alt="save" />
               </button>
             ) : (
-              <div>
+              <div className="min-h-[18px] min-w-[18px]">
                 <Image
                   width={18}
                   height={18}
