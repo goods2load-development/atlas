@@ -1,3 +1,5 @@
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
+
 import { notFound } from 'next/navigation';
 
 import Footer from '@/components/Footer';
@@ -32,14 +34,21 @@ export async function generateMetadata({
     return { title: 'Not Found' };
   }
 
-  const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/${data?.slug}`;
+  const defaultMetadata = generateDefaultMetadata();
 
   return {
-    title: data?.title || 'Goods2load',
+    title: data?.title,
     description: data?.description || 'Goods2load',
     keywords: data?.category?.name || '',
-    alternates: {
-      canonical,
+    openGraph: {
+      ...defaultMetadata.openGraph,
+      title: data?.title,
+      description: data?.description,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title: data?.title,
+      description: data?.description,
     },
   };
 }

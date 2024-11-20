@@ -42,36 +42,46 @@ const routes = {
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
 
 export async function middleware(request: NextRequest) {
-  const token =
-    cookies().get('access_token')?.value ||
-    request.cookies.get('access_token')?.value;
+  const currentPath = request.nextUrl.pathname;
 
-  if (!token) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
+  const response = NextResponse.next();
+  response.headers.set('x-url', currentPath);
 
-  try {
-    const { payload } = await jwtVerify(token, SECRET_KEY);
+  if (
+    currentPath.startsWith('/dashboard') ||
+    currentPath.startsWith('/account')
+  ) {
+    const token =
+      cookies().get('access_token')?.value ||
+      request.cookies.get('access_token')?.value;
 
-    const userRole = payload.role as Roles;
-    if (!userRole || !routes[userRole]) {
+    if (!token) {
       return NextResponse.redirect(new URL('/', request.url));
     }
 
-    const currentPath = request.nextUrl.pathname;
-    const allowedRoutes = routes[userRole];
+    try {
+      const { payload } = await jwtVerify(token, SECRET_KEY);
 
-    if (!allowedRoutes.some((route) => currentPath.startsWith(route))) {
+      const userRole = payload.role as Roles;
+      if (!userRole || !routes[userRole]) {
+        return NextResponse.redirect(new URL('/', request.url));
+      }
+
+      const currentPath = request.nextUrl.pathname;
+      const allowedRoutes = routes[userRole];
+
+      if (!allowedRoutes.some((route) => currentPath.startsWith(route))) {
+        return NextResponse.redirect(new URL('/', request.url));
+      }
+    } catch (error) {
+      console.error('JWT verification failed:', error);
       return NextResponse.redirect(new URL('/', request.url));
     }
-  } catch (error) {
-    console.error('JWT verification failed:', error);
-    return NextResponse.redirect(new URL('/', request.url));
   }
 
-  return NextResponse.next();
+  return response;
 }
 
 export const config = {
-  matcher: ['/dashboard/:path*', '/account'],
+  matcher: '/((?!api|_next|static|public|favicon.ico).*)',
 };

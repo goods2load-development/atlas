@@ -26,9 +26,12 @@ export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
                 src={blogImg}
                 alt={blog.title}
               />
-              <div className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg">
+              <Link
+                href={`/blog-category/${blog.blogTypeName}`}
+                className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg"
+              >
                 {blog?.blogTypeName || 'all'}
-              </div>
+              </Link>
             </div>
             <div className="p-4 flex flex-col h-full justify-between">
               <div>

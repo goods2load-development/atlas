@@ -1,3 +1,5 @@
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
+
 import { Suspense } from 'react';
 
 import { Metadata } from 'next';
@@ -36,6 +38,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const key = Object.keys(searchParams)?.[0];
   const meta = data[key] || data.default;
+  const defaultMetadata = generateDefaultMetadata();
 
   const canonical = key
     ? `${process.env.NEXT_PUBLIC_CLIENT_URL}/help?${key}`
@@ -48,9 +51,15 @@ export async function generateMetadata({
       canonical,
     },
     openGraph: {
+      ...defaultMetadata.openGraph,
       title: meta.title,
       description: meta.description,
       url: canonical,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title: meta.title,
+      description: meta.description,
     },
   };
 }
