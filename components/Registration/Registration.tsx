@@ -376,11 +376,12 @@ export default function Registration() {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
 
-    const { seaports, googleBusinessProfile, ...rest } = values;
+    const { companyName, seaports, googleBusinessProfile, ...rest } = values;
 
     try {
       await postUserRegistrationData({
         ...rest,
+        companyName: companyName.trim(),
         airports: values?.airports || [],
         ports: seaports || [],
         states: values?.states || [],

@@ -137,7 +137,9 @@ const PerformanceCard: React.FC<PerformanceCardProps> = ({
           <div className="flex flex-col gap-2 lg:gap-4 lg:w-full w-auto mr-5 lg:mr-0">
             <span>Last year</span>
             <span className={cn('text-[#666666]', isActive && 'text-[#FFF]')}>
-              {data?.lastYear || 0}
+              {type === CardType.USER_SEGMENTATION
+                ? data?.lastYear || 'Not found'
+                : data?.lastYear || 0}
               {/* {type === CardType.AVARAGE && "$"} */}
               {/* {type === CardType.REDIRECTS && "%"} */}
             </span>
