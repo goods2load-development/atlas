@@ -34,6 +34,14 @@ export async function generateMetadata({
       ...defaultMetadata.openGraph,
       title: blog.title,
       description: blog.description,
+      ...(!!blog.mainImageUrl && {
+        images: [
+          {
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`,
+            alt: blog.title,
+          },
+        ],
+      }),
     },
     twitter: {
       ...defaultMetadata.twitter,
