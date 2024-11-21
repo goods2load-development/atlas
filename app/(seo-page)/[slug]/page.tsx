@@ -42,12 +42,14 @@ export async function generateMetadata({
     keywords: data?.category?.name || '',
     openGraph: {
       ...defaultMetadata.openGraph,
-      images: [
-        {
-          url: `${process.env.NEXT_PUBLIC_BASE_URL}${data?.block1File}`,
-          alt: data?.title,
-        },
-      ],
+      ...(!!data?.block1File && {
+        images: [
+          {
+            url: `${process.env.NEXT_PUBLIC_BASE_URL}${data?.block1File}`,
+            alt: data?.title,
+          },
+        ],
+      }),
       title: data?.title,
       description: data?.description,
     },
