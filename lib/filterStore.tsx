@@ -386,10 +386,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           length: parseInt(length),
           width: parseInt(width),
           height: parseInt(height),
-
-          [`incoterms${deliveryBy.charAt(0).toUpperCase() + deliveryBy.slice(1)}`]:
-            incoterms,
-
+          incoterm: incoterms,
           logisticPartner: partnersSelected.length
             ? partnersSelected
             : undefined,

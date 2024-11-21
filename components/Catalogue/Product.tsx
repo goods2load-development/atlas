@@ -162,6 +162,7 @@ export default function Product(props: any) {
           })}
         <div className="flex items-center justify-center flex-1 px-2">
           <SelectionPopup
+            partnerId={props.partner.id}
             partnerCompany={props.companyName}
             carbonOffset={props.hasProof}
           />

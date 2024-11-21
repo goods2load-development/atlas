@@ -377,7 +377,7 @@ const PartnerDataPage = ({
 
     const formData = new FormData();
 
-    formData.append('name', body.name);
+    formData.append('name', body.name.trim());
     formData.append('description', body.description);
     formData.append('mission', body.mission);
     formData.append('placementId', body.placementId);

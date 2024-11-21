@@ -18,9 +18,9 @@ const UserSegmentationTab = ({ data }: { data: any }) => {
         data: data?.geolocation || [],
       },
       {
-        label: 'FCL/LCL',
+        label: 'Incoterms',
         type: CardType.USER_SEGMENTATION,
-        data: data?.placementOfGoods || [],
+        data: data?.incoterms || [],
       },
     ],
     [data],
@@ -38,7 +38,7 @@ const UserSegmentationTab = ({ data }: { data: any }) => {
         return data?.chartGeolocation || [];
       }
       case cardsData[1].label: {
-        return data?.chartPlacementOfGoods || [];
+        return data?.chartIncoterms || [];
       }
       default:
         return [];
