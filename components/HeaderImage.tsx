@@ -3,6 +3,7 @@ import { formatDate } from '@/lib/utils';
 import React from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface HeaderImageProps {
   title: string;
@@ -40,9 +41,12 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
 
       <div className="relative z-10 p-8 h-full flex flex-col justify-center lg:w-full lg:max-w-[1328px] lg:mx-auto">
         <div className="flex items-center mb-4">
-          <span className="bg-orange-500 text-white text-xs font-semibold px-3 py-1 rounded-full">
+          <Link
+            href={`/blog-category/${category}`}
+            className="mb-2 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg"
+          >
             {category}
-          </span>
+          </Link>
         </div>
         <h1 className="text-3xl md:text-4xl text-white mb-4">{title}</h1>
         <div className="flex items-center text-white gap-3 lg:gap-40">

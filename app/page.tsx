@@ -1,4 +1,4 @@
-import React from 'react';
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Metadata } from 'next';
 
@@ -15,14 +15,28 @@ import TailoredServices from '@/components/TailoredServices';
 import ConsentPopup from '@/components/common/ConsentPopup';
 import GDPRAiPopup from '@/components/common/GDPRAiPopup';
 
-export const metadata: Metadata = {
-  title: 'Top Logistics Company in Dubai | Best Cargo Services UAE',
-  description:
-    'Discover the best cargo and logistics companies in Dubai and the UAE. Our top-rated services ensure efficient and reliable solutions for all your shipping needs.',
-  alternates: {
-    canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}`,
-  },
-};
+const title = 'Top Logistics Company in Dubai | Best Cargo Services UAE';
+const description =
+  'Discover the best cargo and logistics companies in Dubai and the UAE. Our top-rated services ensure efficient and reliable solutions for all your shipping needs.';
+
+export function generateMetadata(): Metadata {
+  const defaultMetadata = generateDefaultMetadata();
+
+  return {
+    title,
+    description,
+    openGraph: {
+      ...defaultMetadata.openGraph,
+      title,
+      description,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title,
+      description,
+    },
+  };
+}
 
 const questionsContent = [
   {

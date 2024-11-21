@@ -1,10 +1,11 @@
 import './globals.css';
+import { OpenWidgetProvider } from './openwidget/OpenWidgetProvider';
 import { WeglotProvider } from './weglot/WeglotProvider';
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
 import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import { headers } from 'next/headers';
 
 import ToasterWrapper from '@/components/Interceptor';
 import NextAuthProvider from '@/components/NextAuthProvider';
@@ -16,29 +17,8 @@ const poppins = Poppins({
 });
 
 export function generateMetadata(): Metadata {
-  const requestHeaders = headers();
-  const canonical = requestHeaders.get('referer') || 'https://goods2load.com';
-
-  return {
-    title: 'Goods2load',
-    description: 'Goods2load offers innovative logistics solutions.',
-    openGraph: {
-      title: 'Goods2load',
-      description:
-        'Goods2load offers innovative logistics solutions for global trade.',
-      url: canonical,
-    },
-    twitter: {
-      title: 'Goods2load',
-      description:
-        'Goods2load offers innovative logistics solutions for global trade.',
-    },
-    alternates: {
-      canonical,
-    },
-  };
+  return generateDefaultMetadata();
 }
-
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -50,6 +30,7 @@ export default function RootLayout({
         <html lang="en">
           <head>
             <WeglotProvider />
+            <OpenWidgetProvider />
           </head>
           <body className={poppins.className}>
             <a
