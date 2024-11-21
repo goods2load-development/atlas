@@ -712,8 +712,6 @@ export default function SeoPageMain({
               topics:
             </h2>
 
-            <button onClick={() => onHandleSliderNext()}>123</button>
-
             <div className="mx-auto overflow-hidden" ref={emblaRef}>
               <div className="flex">
                 {relatedPages.map((page: SeoPage, index: number) => (
