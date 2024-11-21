@@ -46,6 +46,26 @@ axios.interceptors.response.use(
 
     if (
       error.response &&
+      error.response.data.message ===
+        'Your email address is already on our magic list' &&
+      !originalRequest._retry
+    ) {
+      return;
+    }
+
+    return Promise.reject(error);
+  },
+);
+
+axios.interceptors.response.use(
+  function (response) {
+    return response;
+  },
+  async function (error) {
+    const originalRequest = error.config;
+
+    if (
+      error.response &&
       error.response.status === 403 &&
       error.response.data.message === 'jwt expired' &&
       !originalRequest._retry

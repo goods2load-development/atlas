@@ -1,5 +1,6 @@
 import CareerForm from '../_components/Career/CareerForm/CareerForm';
 import { JoinOurTeam } from '../_components/Career/JoinOurTeam/JoinOurTeam';
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Metadata } from 'next';
 
@@ -10,21 +11,25 @@ import HeaderClient from '@/components/Header/HeaderClient';
 const title = 'Join Our Team - GOODS2LOAD | Careers in Logistics Innovation';
 const description =
   'Ready to challenge the logistics industry? Join the GOODS2LOAD team and make an impact with smart working opportunities in sales, customer care, and logistics partnerships. Apply';
-const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/career`;
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: {
-    canonical,
-  },
-  openGraph: {
+export function generateMetadata(): Metadata {
+  const defaultMetadata = generateDefaultMetadata();
+
+  return {
     title,
     description,
-    url: canonical,
-  },
-};
-
+    openGraph: {
+      ...defaultMetadata.openGraph,
+      title,
+      description,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title,
+      description,
+    },
+  };
+}
 const Career = () => {
   return (
     <>

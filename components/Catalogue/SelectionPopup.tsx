@@ -31,6 +31,7 @@ import {
 import { Input } from '@/components/ui/input';
 
 interface SelectionPopupProps {
+  partnerId: string;
   partnerCompany: string;
   carbonOffset: boolean;
 }
@@ -88,6 +89,7 @@ export default function SelectionPopup(props: SelectionPopupProps) {
       url: '/selected-routes',
       data: {
         ...userData,
+        partnerId: props.partnerId,
         typeOfFreight: deliveryBy,
         goGreen: props.carbonOffset,
         from: `${fromCountry}, ${from}`,
