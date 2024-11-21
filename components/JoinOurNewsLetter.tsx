@@ -40,7 +40,11 @@ export default function JoinOurNewsLetter() {
         });
       }
     } catch (error) {
-      throw new Error('Your email address is already on our magic list');
+      toast({
+        description: 'Your email address is already on our magic list',
+        className: 'bg-yellow-400 text-white',
+      });
+      return;
     }
 
     reset();

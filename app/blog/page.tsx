@@ -1,3 +1,5 @@
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
+
 import { Metadata } from 'next';
 
 import BigLayout from '@/components/BigLayout';
@@ -7,20 +9,25 @@ import Footer from '@/components/Footer';
 const title = 'Blog - GOODS2LOAD | Insights and Updates on Logistics';
 const description =
   'Explore the GOODS2LOAD blog for the latest insights, trends, and updates on logistics, technology, and business solutions. Stay informed on how we’re transforming the logistics industry with innovative and sustainable practices.';
-const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/blog`;
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: {
-    canonical,
-  },
-  openGraph: {
+export function generateMetadata(): Metadata {
+  const defaultMetadata = generateDefaultMetadata();
+
+  return {
     title,
     description,
-    url: canonical,
-  },
-};
+    openGraph: {
+      ...defaultMetadata.openGraph,
+      title,
+      description,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title,
+      description,
+    },
+  };
+}
 
 export default async function BlogPage() {
   const [categories, blogData] = await Promise.all([

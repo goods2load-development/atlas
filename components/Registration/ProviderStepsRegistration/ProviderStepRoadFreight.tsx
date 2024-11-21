@@ -108,6 +108,10 @@ export const FormStepRoadFreight = ({
       const geoNameIdCountry = await getGeonameIdCountry(codeCountry);
       const states = await getStatesByCountry(geoNameIdCountry);
 
+      if (!states && states.length < 0) {
+        return;
+      }
+
       setIsLoadingStates(null);
 
       let selectedStates: string[] = [];

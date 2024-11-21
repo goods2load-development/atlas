@@ -165,12 +165,21 @@ export default function SeoPageMain({
     }
   }, [data]);
 
-  const [emblaRef, emblaApi] = useEmblaCarousel(
-    { loop: true, slidesToScroll: 'auto' },
-    [Autoplay({ playOnInit: true, delay: 5000 }), Fade()],
-  );
+  const [emblaRef, emblaApi] = useEmblaCarousel({ slidesToScroll: 'auto' });
   const { selectedIndex, scrollSnaps, onDotButtonClick } =
     useDotButton(emblaApi);
+
+  const onHandleSliderNext = () => {
+    if (selectedIndex < scrollSnaps.length) {
+      onDotButtonClick(selectedIndex + 1);
+    }
+  };
+
+  const onHandleSliderPrev = () => {
+    if (selectedIndex) {
+      onDotButtonClick(selectedIndex - 1);
+    }
+  };
 
   const { isBelowSm } = useBreakpoint('sm');
 
@@ -702,6 +711,9 @@ export default function SeoPageMain({
               </div>{' '}
               topics:
             </h2>
+
+            <button onClick={() => onHandleSliderNext()}>123</button>
+
             <div className="mx-auto overflow-hidden" ref={emblaRef}>
               <div className="flex">
                 {relatedPages.map((page: SeoPage, index: number) => (
@@ -748,7 +760,13 @@ export default function SeoPageMain({
                 ))}
               </div>
               {scrollSnaps.length >= 2 && (
-                <div className="flex flex-col">
+                <div className="flex justify-center items-center">
+                  <button
+                    className="text-primaryOrange mr-2 text-[18px] mt-0.5"
+                    onClick={() => onHandleSliderPrev()}
+                  >
+                    &lt;
+                  </button>
                   <div className="embla__dots self-center">
                     {scrollSnaps.map((_, index) => (
                       <button
@@ -762,6 +780,12 @@ export default function SeoPageMain({
                       />
                     ))}
                   </div>
+                  <button
+                    className="text-primaryOrange  text-[18px]  ml-2 mt-0.5"
+                    onClick={() => onHandleSliderNext()}
+                  >
+                    &gt;
+                  </button>
                 </div>
               )}
             </div>
