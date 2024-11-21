@@ -1,4 +1,5 @@
 import './globals.css';
+import { OpenWidgetProvider } from './openwidget/OpenWidgetProvider';
 import { WeglotProvider } from './weglot/WeglotProvider';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 import CaptchaProvider from '@/lib/providers/CaptchaProvider';
@@ -29,6 +30,7 @@ export default function RootLayout({
         <html lang="en">
           <head>
             <WeglotProvider />
+            <OpenWidgetProvider />
           </head>
           <body className={poppins.className}>
             <a
