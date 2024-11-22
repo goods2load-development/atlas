@@ -31,7 +31,7 @@ Node.js (recommended version: 18 or higher)
     npm run dev
 ```
 
-### Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
 # CI/CD
 
@@ -59,8 +59,8 @@ on:
  branches:
 
 - development  
-  pull_request:  
-  branches:
+   pull_request:  
+   branches:
 - development
 
 jobs:  
@@ -91,11 +91,6 @@ jobs:
 
 ## Husky Configuration
 
-### The Husky pre-commit hook ensures that the codebase adheres to formatting, linting, and type-checking standards before any changes are committed. Below is the configuration:
-
-#!/bin/sh  
-. "$(dirname "$0")/\_/husky.sh"
-
 ### Format code
 
 yarn format  
@@ -116,9 +111,8 @@ npx lint-staged
 
 ## Notes
 
-### The GitHub Actions pipeline ensures a consistent development workflow by running automated tasks on every push and pull request.
-
-### The Husky hooks prevent invalid or unformatted code from being committed, maintaining code quality throughout the project.
+- The GitHub Actions pipeline ensures a consistent development workflow by running automated tasks on every push and pull request.
+- The Husky hooks prevent invalid or unformatted code from being committed, maintaining code quality throughout the project.
 
 # You need those variables in your env:
 
@@ -139,15 +133,12 @@ npx lint-staged
 
 # Project Information
 
-### Staging: Hosted on https://stage.goods2load.com
-
-### Development: Hosted on https://dev.goods2load.com
+- Staging: Hosted on https://stage.goods2load.com
+- Development: Hosted on https://dev.goods2load.com
 
 # Styles and Project Architecture
 
 ## Component Organization
-
-### The components in the Goods2Load project are organized into a modular structure, making it easy to scale and maintain the application. The core structure consists of the following folders:
 
 - \_components/: Contains reusable UI components like buttons, modals, navigation menus, etc.
 - app/: Standard Next.js page structure where each file represents a route.
@@ -158,7 +149,7 @@ npx lint-staged
 
 ## Styling Technologies
 
-### Tailwind CSS: Tailwind is the primary utility-first CSS framework used for styling the application. It enables rapid development of responsive, customizable, and maintainable layouts and components.
+### Tailwind CSS
 
 - tailwind.config.js: Contains the Tailwind CSS configuration, where custom colors, spacing, and themes are defined.
 
