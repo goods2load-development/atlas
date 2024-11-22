@@ -1,10 +1,10 @@
-### Goods2load Frontend
+# Goods2load Frontend
 
 ## Description
 
 Goods2Load is a project designed for logistics and freight management. Built with Next.js, it leverages a modern tech stack to enhance performance and developer experience.
 
-### Installation and Setup
+# Installation and Setup
 
 ## Prerequisites
 
@@ -12,37 +12,37 @@ Node.js (recommended version: 18 or higher)
 
 ## Getting Started
 
-# Clone the repository:
+### Clone the repository:
 
 ```bash
     git clone https://github.com/username/goods2load.git
     cd goods2load
 ```
 
-# Install dependencies:
+### Install dependencies:
 
 ```bash
     npm install
 ```
 
-# Start the development server:
+### Start the development server:
 
 ```bash
     npm run dev
 ```
 
-# Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-### CI/CD
+# CI/CD
 
 ## GitHub Actions Configuration
 
-# The CI/CD pipeline is managed using GitHub Actions. It is triggered automatically on:
+### The CI/CD pipeline is managed using GitHub Actions. It is triggered automatically on:
 
 - Pushes to the development branch.
 - Pull requests targeting the development branch.
 
-# Key Features
+### Key Features
 
 - Linting, TypeScript type checking, and code formatting.
 - Build process to prepare the project for deployment.
@@ -50,7 +50,7 @@ Node.js (recommended version: 18 or higher)
 
 ## Workflow Details
 
-# Here is an overview of the GitHub Actions configuration:
+### Here is an overview of the GitHub Actions configuration:
 
 name: CI/CD
 
@@ -91,36 +91,36 @@ jobs:
 
 ## Husky Configuration
 
-# The Husky pre-commit hook ensures that the codebase adheres to formatting, linting, and type-checking standards before any changes are committed. Below is the configuration:
+### The Husky pre-commit hook ensures that the codebase adheres to formatting, linting, and type-checking standards before any changes are committed. Below is the configuration:
 
 #!/bin/sh  
 . "$(dirname "$0")/\_/husky.sh"
 
-# Format code
+### Format code
 
 yarn format  
 git add .
 
-# Check TypeScript types
+### Check TypeScript types
 
 yarn tsc --noEmit
 
-# Build the project
+### Build the project
 
 yarn build  
 git add public/sitemap.xml
 
-# Run lint-staged to lint only staged files
+### Run lint-staged to lint only staged files
 
 npx lint-staged
 
 ## Notes
 
-# The GitHub Actions pipeline ensures a consistent development workflow by running automated tasks on every push and pull request.
+### The GitHub Actions pipeline ensures a consistent development workflow by running automated tasks on every push and pull request.
 
-# The Husky hooks prevent invalid or unformatted code from being committed, maintaining code quality throughout the project.
+### The Husky hooks prevent invalid or unformatted code from being committed, maintaining code quality throughout the project.
 
-### You need those variables in your env:
+# You need those variables in your env:
 
 1. **NEXT_PUBLIC_BASE_URL**
 2. **NEXTAUTH_URL**
@@ -137,17 +137,17 @@ npx lint-staged
 13. **NEXT_PUBLIC_DATALASTIC_API_KEY**
 14. **NEXT_PUBLIC_GEONAMES_API_KEY**
 
-### Project Information
+# Project Information
 
-# Staging: Hosted on https://stage.goods2load.com
+### Staging: Hosted on https://stage.goods2load.com
 
-# Development: Hosted on https://dev.goods2load.com
+### Development: Hosted on https://dev.goods2load.com
 
-### Styles and Project Architecture
+# Styles and Project Architecture
 
 ## Component Organization
 
-# The components in the Goods2Load project are organized into a modular structure, making it easy to scale and maintain the application. The core structure consists of the following folders:
+### The components in the Goods2Load project are organized into a modular structure, making it easy to scale and maintain the application. The core structure consists of the following folders:
 
 - \_components/: Contains reusable UI components like buttons, modals, navigation menus, etc.
 - app/: Standard Next.js page structure where each file represents a route.
@@ -158,11 +158,11 @@ npx lint-staged
 
 ## Styling Technologies
 
-# Tailwind CSS: Tailwind is the primary utility-first CSS framework used for styling the application. It enables rapid development of responsive, customizable, and maintainable layouts and components.
+### Tailwind CSS: Tailwind is the primary utility-first CSS framework used for styling the application. It enables rapid development of responsive, customizable, and maintainable layouts and components.
 
 - tailwind.config.js: Contains the Tailwind CSS configuration, where custom colors, spacing, and themes are defined.
 
-# Tailwind Plugins:
+### Tailwind Plugins:
 
 - tailwindcss-animate: Used for animations in the application.
 - tailwindcss-scoped-groups: Provides scoped styling for groups of elements.
@@ -170,7 +170,7 @@ npx lint-staged
 
 ## Key Configuration Files
 
-# Here are the main configuration files found in the project:
+### Here are the main configuration files found in the project:
 
 - next.config.js: Configuration for the Next.js application, including custom webpack settings, environmental variables, and build configurations.
 - tailwind.config.js: The configuration file for Tailwind CSS, defining custom themes, colors, spacing, and breakpoints.
@@ -180,11 +180,11 @@ npx lint-staged
 
 ## Project Dependencies
 
-# The project leverages a wide range of dependencies and libraries, such as:
+### The project leverages a wide range of dependencies and libraries, such as:
 
 - next-auth: For user authentication and session management.
 - react-hook-form: A popular library for managing form state and validation.
-- @radix-ui/react-*: Provides accessible UI components for building complex UIs, like dropdowns, modals, and tooltips.
+- @radix-ui/react-\*: Provides accessible UI components for building complex UIs, like dropdowns, modals, and tooltips.
 - axios: For making HTTP requests throughout the application.
 - zod: A TypeScript-first schema validation library for data validation and type checking.
 
@@ -196,13 +196,13 @@ npx lint-staged
 
 ## Deployment
 
-# Development (dev):
+### Development (dev):
 
 - The development environment is deployed to Vercel.
 - Vercel automatically detects changes pushed to the development branch and triggers a deployment.
 - The application is accessible via the Vercel-provided URL for the development environment, ensuring that every update pushed to the development branch is reflected in real-time.
 
-# Staging (stage):
+### Staging (stage):
 
 - The staging environment is deployed on a Google Cloud VM instance.
 - The staging version is tied to the stage branch in the project repository.
