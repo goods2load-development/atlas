@@ -61,7 +61,7 @@ on:
 
 - development
     pull_request:
-      branches:
+    branches:
 - development
 
 jobs:
@@ -69,8 +69,8 @@ jobs:
  runs-on: ubuntu-latest
 
     env:
-      NEXT_PUBLIC_BASE_URL: 'https://api.dev.goods2load.com/'
-      NEXT_PUBLIC_CLIENT_URL: 'http://localhost:3000'
+      NEXT_PUBLIC_BASE_URL: ''
+      NEXT_PUBLIC_CLIENT_URL: ''
 
     steps:
       - name: Checkout code
@@ -140,8 +140,6 @@ npx lint-staged
 
 - Staging: Hosted on https://stage.goods2load.com
 - Development: Hosted on https://dev.goods2load.com
-
-# Styles and Project Architecture
 
 ## Component Organization
 
