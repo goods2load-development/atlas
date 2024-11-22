@@ -15,7 +15,7 @@ Node.js (recommended version: 18 or higher)
 ### Clone the repository:
 
 ```bash
-    git clone https://github.com/username/goods2load.git
+    git clone https://github.com/digitalityagency/goods2load-FE.git
     cd goods2load
 ```
 
@@ -52,19 +52,20 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ### Here is an overview of the GitHub Actions configuration:
 
+```bash
 name: CI/CD
 
-on:  
- push:  
- branches:
+on:
+  push:
+    branches:
 
-- development  
-   pull_request:  
-   branches:
+- development
+    pull_request:
+      branches:
 - development
 
-jobs:  
- build:  
+jobs:
+ build:
  runs-on: ubuntu-latest
 
     env:
@@ -88,12 +89,14 @@ jobs:
 
       - name: Build project
         run: npm run build
+```
 
 ## Husky Configuration
 
 ### Format code
 
-yarn format  
+```bash
+yarn format
 git add .
 
 ### Check TypeScript types
@@ -102,12 +105,14 @@ yarn tsc --noEmit
 
 ### Build the project
 
-yarn build  
+yarn build
 git add public/sitemap.xml
 
 ### Run lint-staged to lint only staged files
 
 npx lint-staged
+
+```
 
 ## Notes
 
@@ -119,7 +124,7 @@ npx lint-staged
 1. **NEXT_PUBLIC_BASE_URL**
 2. **NEXTAUTH_URL**
 3. **GOOGLE_CLIENT_ID**
-4. **GOOGLE_CLIENT_SECRET=**
+4. **GOOGLE_CLIENT_SECRET**
 5. **AUTH_SECRET**
 6. **WEGLOT_API_KEY**
 7. **NEXT_PUBLIC_KEY_GET_GEOLOCATION**
