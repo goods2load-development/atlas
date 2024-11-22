@@ -119,7 +119,7 @@ npx lint-staged
 - The GitHub Actions pipeline ensures a consistent development workflow by running automated tasks on every push and pull request.
 - The Husky hooks prevent invalid or unformatted code from being committed, maintaining code quality throughout the project.
 
-# You need those variables in your env:
+## Your env:
 
 1. **NEXT_PUBLIC_BASE_URL**
 2. **NEXTAUTH_URL**
