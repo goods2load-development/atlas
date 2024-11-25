@@ -27,7 +27,7 @@ export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
                 alt={blog.title}
               />
               <Link
-                href={`/blog-category/${blog.blogTypeName}`}
+                href={`/category/${blog.blogTypeName}`}
                 className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg"
               >
                 {blog?.blogTypeName || 'all'}
