@@ -142,7 +142,7 @@ export default function Home() {
         <Analytics />
       </main>
       <Footer />
-      <GDPRAiPopup />
+      {/* <GDPRAiPopup /> */}
       <ConsentPopup />
     </>
   );

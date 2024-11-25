@@ -612,8 +612,8 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   <ToolTipComponent asChild text={typeOfGoods}>
                     <div className="flex">
                       <Input
-                        className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-none 
-                      border-none font-normal text-black w-full"
+                        className="h-[60px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]
+                      border-none font-normal text-black w-full "
                         onChange={handleChange}
                         onFocus={handleFocus}
                         onBlur={() => setOpen(false)}
@@ -654,7 +654,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 </PopoverContent>
               </Popover>
             </div>
-            <div className="mr-[1px] sm:w-[24%] mb-5 sm:mb-0">
+            {/* <div className="mr-[1px] sm:w-[24%] mb-5 sm:mb-0">
               <label className="mb-2 flex items-end gap-2">
                 Take a photo{' '}
                 <ToolTipComponent
@@ -681,7 +681,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   />
                 </label>
               </div>
-            </div>
+            </div> */}
           </div>
           <div className="lg:flex justify-stretch items-end w-full">
             <div className="mr-[1px] mb-5 lg:mb-0 lg:w-[14%]">
