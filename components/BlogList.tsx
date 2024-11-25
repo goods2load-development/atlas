@@ -1,3 +1,5 @@
+import { slugify } from '@/lib/utils';
+
 import { format } from 'date-fns';
 import Link from 'next/link';
 
@@ -44,7 +46,7 @@ const BlogList: React.FC<BlogListProps> = ({
                 alt={blog.title}
               />
               <Link
-                href={`/category/${blog.blogTypeName}`}
+                href={`/category/${slugify(blog.blogTypeName)}`}
                 className="absolute top-0 left-0 m-4 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg"
               >
                 {blog?.blogTypeName || 'all'}

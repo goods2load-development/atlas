@@ -1,4 +1,5 @@
 import decorLine from '@/assets/Blog/blog-decor-line.svg';
+import { slugify } from '@/lib/utils';
 
 import React from 'react';
 
@@ -52,7 +53,7 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
         <div className="p-2 md:p-8 w-full md:w-1/2 flex flex-col justify-center md:pt-[53px]">
           <div className="flex items-center">
             <Link
-              href={`/category/${blog.blogTypeName}`}
+              href={`/category/${slugify(blog.blogTypeName)}`}
               className="bg-orange-500 text-white text-sm font-semibold mb-2 px-2 py-1 rounded-lg"
             >
               {blog?.blogTypeName || 'all'}

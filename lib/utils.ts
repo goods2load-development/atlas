@@ -366,3 +366,19 @@ export function getCountryIsoByName(countryName: string) {
   const isoCode = countries.getAlpha2Code(countryName, 'en');
   return isoCode || null;
 }
+
+export function slugify(str: string, toSlug: boolean = true) {
+  if (toSlug) {
+    str = str.replace(/^\s+|\s+$/g, '');
+    str = str.toLowerCase();
+    str = str
+      .replace(/[^a-z0-9 -]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-');
+    return str;
+  } else {
+    return str
+      .replace(/-/g, ' ')
+      .replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+}
