@@ -307,61 +307,6 @@ export function sortByRegion(countries: any) {
   }, {});
 }
 
-export function checkAdministrativeDivision(name: string) {
-  const prefixes = [
-    'state',
-    'region',
-    'county',
-    'emirate',
-    'canton',
-    'kanton',
-    'district', // используется во многих странах
-    'province', // используется в разных странах (например, Канада, Китай)
-    'provincia', // испаноязычные страны (например, Испания, Аргентина)
-    'department',
-    'région',
-    'governorate',
-    'muḩāfaz̧at',
-    'territory',
-    'prefecture',
-    'oblast',
-    'krai',
-    'regionale',
-    'voivodeship',
-    'republic',
-    'democratic republic',
-    'autonomous region',
-    'territorial unit',
-    'municipality',
-    'federation',
-    'province',
-    'zoned area',
-    'municipal area',
-    'division',
-    'commune',
-    'borough',
-    'subregion',
-    'municipio',
-    'shire',
-    'municipio',
-    'regency',
-    'clerkship',
-    'province',
-    'district',
-    'capital territory',
-  ];
-  const nameLowerCase = name.toLowerCase();
-
-  const containsPrefix = prefixes.some((prefix) =>
-    nameLowerCase.includes(prefix),
-  );
-
-  if (!containsPrefix) {
-    return `${name} Administrative division`;
-  }
-  return name;
-}
-
 export function getCountryIsoByName(countryName: string) {
   const isoCode = countries.getAlpha2Code(countryName, 'en');
   return isoCode || null;
