@@ -1,6 +1,6 @@
 'use client';
 
-import LogoutIcon from '@/assets/logout.svg';
+import LogoutIcon from '@/assets/icons/logout.svg';
 import { useUserStore } from '@/lib/store';
 
 import React, { useState } from 'react';

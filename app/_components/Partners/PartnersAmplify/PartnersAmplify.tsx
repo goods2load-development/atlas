@@ -1,6 +1,6 @@
 import { opportunitiesData } from './opportunitiesData';
 import { OpportunitiesData } from '@/app/interface/PartnersAmplify';
-import macBookImage from '@/assets/PartnersImage/PartnersAmplify/macbookProMockup.png';
+import macBookImage from '@/assets/images/macbookProMockup.png';
 
 import React from 'react';
 

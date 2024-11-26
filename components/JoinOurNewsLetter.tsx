@@ -1,10 +1,8 @@
 import { Input } from './ui/input';
 import { useToast } from './ui/use-toast';
-import arrowRightIcon from '@/assets/arrow-right-input.svg';
+import arrowRightIcon from '@/assets/icons/arrow-right-input.svg';
 import { useNewsletterStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
-
-import { useEffect } from 'react';
 
 import Image from 'next/image';
 import { useForm } from 'react-hook-form';

@@ -1,5 +1,5 @@
-import shipImg from '@/assets/AboutUsImg/ship.png';
-import thereIsNotImg from '@/assets/AboutUsImg/thereIsNot.png';
+import shipImg from '@/assets/images/ship.png';
+import thereIsNotImg from '@/assets/images/thereIsNot.png';
 
 import React from 'react';
 

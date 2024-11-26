@@ -1,7 +1,7 @@
 import { Leadership } from '@/app/interface/leaderShip';
-import leadership1 from '@/assets/CompanyLeadership/Leadership1.png';
-import leadership2 from '@/assets/CompanyLeadership/Leadership2.png';
-import leadership3 from '@/assets/CompanyLeadership/Leadership3.png';
+import leadership2 from '@/assets/images/company-leadership-2.png';
+import leadership3 from '@/assets/images/company-leadership-3.png';
+import leadership1 from '@/assets/images/company-leadership.png';
 
 export const leaderships: Leadership[] = [
   {

@@ -1,6 +1,4 @@
-import menWithBox from '@/assets/PartnersImage/PartnersStartingFrom/menWithBox.png';
-
-import React from 'react';
+import menWithBox from '@/assets/images/menWithBox.png';
 
 import Image from 'next/image';
 

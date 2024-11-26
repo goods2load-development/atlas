@@ -1,6 +1,4 @@
-import location from '@/assets/CompanyLocation.png';
-
-import React from 'react';
+import location from '@/assets/images/CompanyLocation.png';
 
 import Image from 'next/image';
 

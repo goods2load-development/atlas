@@ -78,8 +78,7 @@ const config = {
       backgroundImage: {
         bgPartnersAmplifyShadow:
           'linear-gradient(90deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.7) 100%)',
-        bgPartnersAmplify:
-          "url('../assets/PartnersImage/PartnersAmplify/partnersAmplifyBg.png')",
+        bgPartnersAmplify: "url('../assets/images/partnersAmplifyBg.png')",
         bgMainPrimary: "url('../public/bgmain.svg')",
         bgMainPrimaryMobile: "url('../public/homebgmobile.svg')",
         bgWhiteGradient:
@@ -92,14 +91,15 @@ const config = {
         bgSeoPage: 'url(../public/seo-page-line-bg.svg)',
         bgPartnerLogo: 'url(../public/partner-logo-line.svg)',
         bgQuestions: 'url(../public/accordionbg.png)',
-        bgCareer: 'url(../assets/careerBg.png)',
-        'career-mobile': 'url(../assets/careerBg-mobile.jpg)',
-        'hero-pattern': "url('../assets/hero-pattern.svg')",
-        'divide-pattern': "url('../assets/divide-pattern.svg')",
-        'divide-pattern-mobile': "url('../assets/divide-pattern.jpg')",
-        'hero-pattern-mobile': "url('../assets/hero-pattern-mobile.png')",
-        'partners-mobile': "url('../assets/bg-partners-mobile.png')",
-        'blog-pattern': "url(../assets/Blog/bg-blog.png')",
+        bgCareer: 'url(../assets/images/careerBg.png)',
+        'career-mobile': 'url(../assets/images/careerBg-mobile.jpg)',
+        'hero-pattern': "url('../assets/icons/hero-pattern.svg')",
+        'divide-pattern': "url('../assets/icons/divide-pattern.svg')",
+        'divide-pattern-mobile': "url('../assets/images/divide-pattern.jpg')",
+        'hero-pattern-mobile':
+          "url('../assets/images/hero-pattern-mobile.png')",
+        'partners-mobile': "url('../assets/images/bg-partners-mobile.png')",
+        'blog-pattern': "url(../assets/images/bg-blog.png')",
         seo: 'url(../public/seobg.svg)',
         seomobile: 'url(../public/seobgmobile.svg)',
       },

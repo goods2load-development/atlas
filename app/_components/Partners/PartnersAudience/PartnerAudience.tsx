@@ -1,7 +1,5 @@
-import menWithPc from '@/assets/PartnersImage/PartnersAudience/menWithPc.png';
-import phone from '@/assets/PartnersImage/PartnersAudience/phone.png';
-
-import React from 'react';
+import menWithPc from '@/assets/images/menWithPc.png';
+import phone from '@/assets/images/partner-phone.png';
 
 import Image from 'next/image';
 

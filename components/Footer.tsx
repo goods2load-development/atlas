@@ -3,9 +3,9 @@
 import ErrorBoundary from './ErrorBoundary';
 import JoinOurNewsLetter from './JoinOurNewsLetter';
 import LangSwitcher from './LangSwicher';
-import addressIcon from '@/assets/address.svg';
-import emailIcon from '@/assets/email.svg';
-import phoneIcon from '@/assets/phone.svg';
+import addressIcon from '@/assets/icons/address.svg';
+import emailIcon from '@/assets/icons/email.svg';
+import phoneIcon from '@/assets/icons/phone.svg';
 import { useFooterHeaderStore } from '@/lib/store';
 
 import { useEffect } from 'react';

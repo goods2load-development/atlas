@@ -1,5 +1,5 @@
-import phoneImage from '@/assets/PartnersImage/PartnersVisibility/mac-phone.webp';
-import tabImage from '@/assets/PartnersImage/PartnersVisibility/tab.png';
+import phoneImage from '@/assets/images/mac-phone.webp';
+import tabImage from '@/assets/images/tab.png';
 
 import Image from 'next/image';
 

@@ -15,8 +15,8 @@ import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner
 import { Review } from '@/app/_components/Partner/Review/Review';
 import useBreakpoint from '@/app/hooks/useBreakpoint';
 import useDotButton from '@/app/hooks/useDotButton';
-import PartnerLogoDefault from '@/assets/Partners/partner-logo-default.jpg';
-import bgDecorline from '@/assets/bg-decor-line.svg';
+import bgDecorline from '@/assets/icons/bg-decor-line.svg';
+import PartnerLogoDefault from '@/assets/images/partner-logo-default.jpg';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
 import { usePartnersStore } from '@/lib/store';
 import {

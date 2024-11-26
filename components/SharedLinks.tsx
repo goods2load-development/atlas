@@ -1,13 +1,10 @@
 import { useToast } from './ui/use-toast';
-import fcIcon from '@/assets/fc.svg';
-import inIcon from '@/assets/in-icon.svg';
-import sharedIcon from '@/assets/shared-icon.svg';
-import xIcon from '@/assets/x-icon.svg';
-
-import React, { useEffect, useState } from 'react';
+import fcIcon from '@/assets/icons/fc.svg';
+import inIcon from '@/assets/icons/in-icon.svg';
+import sharedIcon from '@/assets/icons/shared-icon.svg';
+import xIcon from '@/assets/icons/x-icon.svg';
 
 import Image from 'next/image';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   FacebookShareButton,

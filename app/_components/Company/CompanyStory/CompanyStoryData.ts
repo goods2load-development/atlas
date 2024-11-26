@@ -1,7 +1,7 @@
-import icon1 from '@/assets/CompanyStoryIcons/icon1.svg';
-import icon2 from '@/assets/CompanyStoryIcons/icon2.svg';
-import icon3 from '@/assets/CompanyStoryIcons/icon3.svg';
-import icon4 from '@/assets/CompanyStoryIcons/icon4.svg';
+import icon1 from '@/assets/icons/company-story-icon-1.svg';
+import icon2 from '@/assets/icons/company-story-icon-2.svg';
+import icon3 from '@/assets/icons/company-story-icon-3.svg';
+import icon4 from '@/assets/icons/company-story-icon-4.svg';
 
 export const storyBlock = [
   {

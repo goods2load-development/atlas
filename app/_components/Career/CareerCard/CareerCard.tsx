@@ -4,12 +4,11 @@ import {
   ModalCareer,
   SalesChallenge,
 } from '@/app/interfaces/leaderShip/interface';
-import close from '@/assets/close.svg';
+import close from '@/assets/icons/close.svg';
 
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import Image from 'next/image';
-import { createPortal } from 'react-dom';
 
 import {
   Dialog,

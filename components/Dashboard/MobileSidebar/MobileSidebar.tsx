@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '../../ui/button';
-import closeSvg from '@/assets/close.svg';
+import closeSvg from '@/assets/icons/close.svg';
 import { useUserStore } from '@/lib/store';
 import { cn, isUserAdmin, isUserEditor, isUserProvider } from '@/lib/utils';
 

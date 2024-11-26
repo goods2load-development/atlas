@@ -1,4 +1,4 @@
-import decorLine from '@/assets/Blog/blog-decor-line.svg';
+import decorLine from '@/assets/icons/blog-decor-line.svg';
 import { slugify } from '@/lib/utils';
 
 import React from 'react';
