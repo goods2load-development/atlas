@@ -49,6 +49,7 @@ export interface Blog {
 export interface BlogType {
   id: string;
   name: string;
+  blogCount: number;
 }
 
 const BlogSlug = ({ blog }: { blog: Blog }) => {
