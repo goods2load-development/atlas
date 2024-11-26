@@ -158,7 +158,7 @@ export default function Home() {
         <HeaderClient variant="transparent" />
         <DynamicMenu variant="transparent" />
         <div className="px-[16px] max-w-[1250px] mx-auto text-center">
-          <h1 className="mt-12 font-light text-2xl md:text-[50px] md:leading-[55px] mb-4">
+          <h1 className="md:mt-[120px] mt-12 font-light text-2xl md:text-[50px] md:leading-[55px] mb-4">
             Find Top <i>Logistics Services</i> and <i>Cargo Companies</i>{' '}
             Globally and Across <i>GCC Countries</i>
           </h1>
