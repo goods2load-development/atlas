@@ -1,4 +1,4 @@
-import { formatDate } from '@/lib/utils';
+import { formatDate, slugify } from '@/lib/utils';
 
 import React from 'react';
 
@@ -42,7 +42,7 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
       <div className="relative z-10 p-8 h-full flex flex-col justify-center lg:w-full lg:max-w-[1328px] lg:mx-auto">
         <div className="flex items-center mb-4">
           <Link
-            href={`/category/${category}`}
+            href={`/category/${slugify(category)}`}
             className="mb-2 bg-orange-500 text-white px-2 py-1 text-xs font-bold uppercase rounded-lg"
           >
             {category}
