@@ -10,6 +10,7 @@ import { useFooterHeaderStore } from '@/lib/store';
 
 import { useEffect } from 'react';
 
+import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -60,14 +61,19 @@ export default function Footer() {
           <Socials />
         </div>
         <div className="flex flex-col justify-between max-sm:items-center gap-4">
-          <div className="flex lg:flex-nowrap gap-8 justify-end flex-wrap max-sm:flex-col max-sm:mx-auto sm:h-full">
+          <div className="flex xl:flex-nowrap xl:gap-6 lg:gap-12 gap-6 justify-end flex-wrap max-sm:flex-col max-sm:mx-auto sm:h-full">
             {footerData?.json?.map((item, i) => (
               <div
-                className="flex flex-col justify-between gap-4 lg:max-w-[216px] lg:w-auto w-[225px]"
+                className={clsx(
+                  'flex flex-col justify-between gap-8 w-full sm:w-[60%] md:w-[35%]  ',
+                  i === footerData.json.length - 1
+                    ? 'lg:min-w-[246px]'
+                    : 'lg:min-w-max',
+                )}
                 key={item.title}
               >
                 <div>
-                  <h3 className="font-semibold mb-2 max-sm:text-center">
+                  <h3 className="font-semibold mb-2 max-sm:text-center xl:whitespace-nowrap">
                     {item.title}
                   </h3>
                   {item.children?.length && (
