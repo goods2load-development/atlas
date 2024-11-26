@@ -13,11 +13,11 @@ import SliderMain from '@/components/SliderMain';
 import SubHeaderMain from '@/components/SubHeaderMain';
 import TailoredServices from '@/components/TailoredServices';
 import ConsentPopup from '@/components/common/ConsentPopup';
-import GDPRAiPopup from '@/components/common/GDPRAiPopup';
 
-const title = 'Top Logistics Company in Dubai | Best Cargo Services UAE';
+const title =
+  'Top Logistics Company | Cargo Services Globally and Across GCC Countries';
 const description =
-  'Discover the best cargo and logistics companies in Dubai and the UAE. Our top-rated services ensure efficient and reliable solutions for all your shipping needs.';
+  'Discover the best cargo and logistics companies globally and across the GCC countries. Our top-rated services ensure efficient and reliable solutions for all shipping needs.';
 
 export function generateMetadata(): Metadata {
   const defaultMetadata = generateDefaultMetadata();
@@ -113,6 +113,42 @@ const questionsContent = [
     content:
       "'SOLUTION FINDER' is a feature that allows our users to set notifications for specific route or offer or both. When the SOLUTION of the selected service reaches the designated level, the user receives an alert via email, SMS, or through the platform itself. Solutions Finder are useful for consumers and investors who want to track price movements and make informed decisions about purchasing or selling goods.",
   },
+  {
+    number: '06',
+    title: 'How long does cargo shipping take from Dubai to other countries?',
+    content: `Shipping times from Dubai vary depending on the destination and mode of transport. Air freight typically takes 1-5 days for most
+international destinations, while sea freight can range from 7-40 days. Factors such as customs clearance and local delivery also
+affect overall transit times.`,
+  },
+  {
+    number: '07',
+    title: 'What documents are required for cargo shipping?',
+    content: `Essential documents for cargo shipping include commercial invoices, packing lists, and certificates of origin. Depending on the
+nature of the goods, additional documents like import/export permits, health certificates, or dangerous goods declarations may be
+required. Our team can guide you through the specific documentation needed for your shipment.`,
+  },
+  {
+    number: '08',
+    title: 'What is the difference between cargo and logistics services?',
+    content: `Cargo services primarily focus on the transportation of goods from one point to another. Logistics services, on the other hand,
+encompass a broader range of activities including transportation, warehousing, inventory management, packaging, and
+distribution. Logistics involves the entire supply chain process, ensuring efficient flow of goods from manufacturer to end
+consumer.`,
+  },
+  {
+    number: '09',
+    title: 'How much does cargo shipping cost in Dubai?',
+    content: `Cargo shipping costs in Dubai vary based on factors such as shipment size, destination, mode of transport, and service level. It can
+range from $3,000 to $9,000 and more.`,
+  },
+  {
+    number: '10',
+    title:
+      'What are the benefits of using a logistics company based in the UAE?',
+    content: `Using a logistics company in the UAE offers numerous benefits, including expertise in local regulations, access to established
+shipping networks, and cost-effective solutions through economies of scale. Logistics companies also provide value-added services
+like customs clearance, warehousing, and last-mile delivery, streamlining your entire supply chain process.`,
+  },
 ];
 
 export default function Home() {
@@ -121,14 +157,21 @@ export default function Home() {
       <MainImageLayout>
         <HeaderClient variant="transparent" />
         <DynamicMenu variant="transparent" />
-        <div className="px-[16px] max-w-[1328px] mx-auto">
-          <h1 className="pt-[32px] sm:pt-16 pb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1265px] text-center sm:text-left">
-            Unlock countless <i className="font-normal">high-quality</i>{' '}
-            shipping options with <i className="font-normal">just one click</i>
+        <div className="px-[16px] max-w-[1250px] mx-auto text-center">
+          <h1 className="mt-12 font-light text-2xl md:text-[50px] md:leading-[55px] mb-4">
+            Find Top <i>Logistics Services</i> and <i>Cargo Companies</i>{' '}
+            Globally and Across <i>GCC Countries</i>
           </h1>
-          <span className="font-light text-[16px]/[20px] sm:text-[24px]/[28px] text-center block sm:text-left">
-            Doing business has never been easier.
-          </span>
+          <p className="font-medium md:text-2xl mb-4">
+            Get in touch with Cargo and Logistics Providers from around the
+            world.
+          </p>
+          <p className="max-w-[760px] mx-auto text-lg max-md:text-sm">
+            Goods2load stands out as a premier cargo and logistics provider. Our
+            comprehensive suite of services meets the needs of businesses of all
+            sizes, offering customized solutions for your shipping and supply
+            chain need
+          </p>
         </div>
       </MainImageLayout>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main max-w-full">

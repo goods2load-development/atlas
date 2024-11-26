@@ -13,7 +13,7 @@ function QuestionItem(props: any) {
   return (
     <AccordionItem value={`item-${props.number}`} className="sm:py-4">
       <AccordionTrigger className="text-orangePrimary font-light hover:no-underline md:ml-4 ml-0">
-        <div className="text-[18px]/[22px] font-normal text-left">
+        <div className="text-[18px]/[22px] font-normal text-left uppercase">
           <i className="text-[20px]/[24px] font-light sm:text-[24px]/[28px] inline-block w-8 sm:w-20 pr-10">
             {props.number}
           </i>
