@@ -15,7 +15,7 @@ export default async function CategoryBlogPage({
   params: { category: string };
 }) {
   const blogData = await fetch(
-    `${process.env.NEXT_PUBLIC_BASE_URL}api/blogs?category=${slugify(category, false)}&filter=Newest`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}api/blogs?category=${slugify(category, false)}&filter=Newest&take=4`,
     {
       cache: 'no-store',
     },
@@ -31,7 +31,10 @@ export default async function CategoryBlogPage({
   return (
     <>
       <BigLayout title={`Category: ${categoryName}`}>
-        <BlogCategories blogData={blogData} />
+        <BlogCategories
+          blogData={blogData}
+          category={slugify(category, false)}
+        />
       </BigLayout>
       <Footer />
     </>
