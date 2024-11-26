@@ -64,10 +64,10 @@ export default function SliderMain() {
             <div className="italic text-[30px]/[34px] sm:text-[40px]/[48px]">
               Expand Your Reach:
             </div>
-            <div className="italic text-[30px]/[34px] sm:text-[40px]/[48px] font-light mb-[20px]">
-              Partner with G2L
+            <div className="text-[30px]/[34px] sm:text-[40px]/[48px] mb-[20px]">
+              <span className="font-light">Partner with</span> <i>GOODS2LOAD</i>
             </div>
-            <div className="text-[16px]/[22px] mb-[5px]">
+            <div className="max-w-[332px] text-[16px]/[24px] mb-2">
               Tap into millions of businesses seeking better shipping solutions
               to grow. Join us to streamline your delivery process and boost
               your business effortlessly.
