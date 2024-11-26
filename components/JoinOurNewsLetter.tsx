@@ -53,7 +53,7 @@ export default function JoinOurNewsLetter() {
   return (
     <form
       onSubmit={handleSubmit(onSubmit)}
-      className="md:max-w-[246px] min-w-[320px] md:min-w-max ml-auto"
+      className="max-w-[246px] min-w-max ml-auto"
     >
       <legend className="mb-4 font-semibold text-center sm:text-left">
         Join our News Letter

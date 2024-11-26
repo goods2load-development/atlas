@@ -31,6 +31,7 @@ interface Blog {
 interface BlogType {
   id: string;
   name: string;
+  blogCount: number;
 }
 
 enum BlogFilters {

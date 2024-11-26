@@ -1,3 +1,4 @@
+import { BlogType } from './BlogSlug/BlogSlug';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 import React from 'react';
@@ -9,7 +10,7 @@ interface BlogFilterProps {
   setFilter: (filter: string) => void;
   selectedCategory: string;
   setSelectedCategory: (category: string) => void;
-  categories: { id: string; name: string }[];
+  categories: BlogType[];
 }
 
 const BlogFilter: React.FC<BlogFilterProps> = ({
@@ -36,19 +37,21 @@ const BlogFilter: React.FC<BlogFilterProps> = ({
         >
           All Categories
         </button>
-        {categories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.name)}
-            className={`px-4 py-2 rounded-[8px] border text-[15px]/[22px] font-semibold ${
-              selectedCategory === category.name
-                ? 'bg-primaryOrange text-white'
-                : 'text-gray-600 border-gray-300'
-            }`}
-          >
-            {category.name} {/* Render category name */}
-          </button>
-        ))}
+        {categories.map((category) =>
+          !!!category.blogCount ? null : (
+            <button
+              key={category.id}
+              onClick={() => setSelectedCategory(category.name)}
+              className={`px-4 py-2 rounded-[8px] border text-[15px]/[22px] font-semibold ${
+                selectedCategory === category.name
+                  ? 'bg-primaryOrange text-white'
+                  : 'text-gray-600 border-gray-300'
+              }`}
+            >
+              {category.name} {/* Render category name */}
+            </button>
+          ),
+        )}
       </div>
       <DropdownMenu.Root>
         <DropdownMenu.Trigger className="flex items-center gap-2 outline-none">

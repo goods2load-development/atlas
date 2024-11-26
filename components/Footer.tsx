@@ -28,7 +28,7 @@ export default function Footer() {
 
   return (
     <footer className="text-white min-h-[244px] bg-bgFooter bg-cover bg-center">
-      <div className="sm:flex align-middle block px-4 py-10 max-w-[1328px] mx-auto row gap-16">
+      <div className="sm:flex justify-between align-middle block py-10 max-w-[1328px] mx-auto row gap-10 px-8">
         <div className="space-y-5 sm:space-y-10 max-sm:mb-10 max-sm:text-center max-sm:flex max-sm:flex-col max-sm:items-center">
           <div className="mb-6">
             <Logo width={205} height={31} />
@@ -60,10 +60,10 @@ export default function Footer() {
           <Socials />
         </div>
         <div className="flex flex-col justify-between max-sm:items-center gap-4">
-          <div className="flex gap-8 flex-wrap max-sm:flex-col max-sm:mx-auto sm:h-full">
+          <div className="flex lg:flex-nowrap gap-8 justify-end flex-wrap max-sm:flex-col max-sm:mx-auto sm:h-full">
             {footerData?.json?.map((item, i) => (
               <div
-                className="flex flex-col justify-between gap-8 min-w-[216px]"
+                className="flex flex-col justify-between gap-4 lg:max-w-[216px] lg:w-auto w-[225px]"
                 key={item.title}
               >
                 <div>
@@ -100,8 +100,8 @@ export default function Footer() {
       <div className="text-orangePrimary font-semibold text-center py-[13px] font-[16px]/[24px] bg-white">
         GOODS2LOAD {currentYear} | All Rights Reserved
       </div>
-      <div className="bg-primaryOrange p-4">
-        <div className="flex items-center justify-center max-w-[1328px] mx-auto">
+      <div className="bg-primaryOrange py-4">
+        <div className="flex items-center justify-center max-w-[1328px] mx-auto px-8">
           <nav className="text-sm flex items-center justify-center flex-wrap mx-auto">
             <Link
               className="mr-8 md:mr-12 relative link-with-line"
