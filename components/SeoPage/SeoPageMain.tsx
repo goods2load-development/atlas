@@ -52,7 +52,7 @@ import {
 type BlockFiles = 'block1File' | 'block2File';
 
 const achievementsLabels: string[] = [
-  'Delivered shippings',
+  'Solutions offered',
   'Countries covered',
   'Companies served',
   'Monthly User',

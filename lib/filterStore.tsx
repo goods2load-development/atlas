@@ -86,6 +86,8 @@ interface FilterStoreProps {
   ecommerce_fullfillment: boolean;
   heavy_equipment_logistics: boolean;
   cross_border_expansion: boolean;
+  warehousing: boolean;
+  custom_clearance: boolean;
 
   partners: any[];
   filterPartners: any[];
@@ -158,6 +160,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     ecommerce_fullfillment: false,
     heavy_equipment_logistics: false,
     cross_border_expansion: false,
+    warehousing: false,
+    custom_clearance: false,
 
     partners: [],
     isPartnersLoading: true,
@@ -346,6 +350,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         ecommerce_fullfillment,
         heavy_equipment_logistics,
         cross_border_expansion,
+        warehousing,
+        custom_clearance,
       } = get();
 
       localStorage.setItem(
@@ -422,6 +428,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             ecommerceFullfillment: ecommerce_fullfillment,
             heavyEquipmentLogistics: heavy_equipment_logistics,
             crossBorderExpansion: cross_border_expansion,
+            warehousing: warehousing,
+            customClearance: custom_clearance,
 
             carbonOffset,
             industryRecognition,

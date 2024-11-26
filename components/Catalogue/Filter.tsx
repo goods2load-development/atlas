@@ -49,6 +49,8 @@ const partnerFilters = {
       { id: 'ecommerce_fullfillment', label: 'E-commerce Fullfillment' },
       { id: 'heavy_equipment_logistics', label: 'Heavy Equipment Logistics' },
       { id: 'cross_border_expansion', label: 'Cross-Border Expansion' },
+      { id: 'warehousing', label: 'Warehousing' },
+      { id: 'custom_clearance', label: 'Custom Clearance' },
     ],
   },
 };
@@ -173,6 +175,8 @@ export default function Filter() {
     ecommerce_fullfillment,
     heavy_equipment_logistics,
     cross_border_expansion,
+    warehousing,
+    custom_clearance,
   } = useFilterStore((state: any) => state);
 
   useEffect(() => {
@@ -212,6 +216,8 @@ export default function Filter() {
     ecommerce_fullfillment,
     heavy_equipment_logistics,
     cross_border_expansion,
+    warehousing,
+    custom_clearance,
   ]);
 
   const onValueChange = (id: string, value: boolean) => {
