@@ -1,5 +1,5 @@
 import CareerForm from '../_components/Career/CareerForm/CareerForm';
-import { JoinOurTeam } from '../_components/Career/JoinOurTeam/JoinOurTeam';
+import JoinOurTeam from '../_components/Career/JoinOurTeam/JoinOurTeam';
 import PartnersAmplify from '../_components/Partners/PartnersAmplify/PartnersAmplify';
 import PartnersAudience from '../_components/Partners/PartnersAudience/PartnerAudience';
 import PartnersBoostingTravel from '../_components/Partners/PartnersBoostingTravel/PartnersBoostingTravel';

@@ -3,6 +3,7 @@ import { generateDefaultMetadata } from '@/lib/metadataUtils';
 import { Suspense } from 'react';
 
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import BigLayout from '@/components/BigLayout';
 import Footer from '@/components/Footer';
@@ -64,6 +65,10 @@ export async function generateMetadata({
   };
 }
 
+const HelpLazy = dynamic(() => import('@/components/Help/Help'), {
+  ssr: false,
+});
+
 const HelpPage = () => {
   return (
     <>
@@ -72,7 +77,7 @@ const HelpPage = () => {
         description="Doing business has never been easier."
       >
         <Suspense>
-          <Help />
+          <HelpLazy />
         </Suspense>
       </BigLayout>
       <Footer />

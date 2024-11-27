@@ -1,6 +1,14 @@
+import dynamic from 'next/dynamic';
 import { redirect } from 'next/navigation';
 
 import PartnerDataPage from '@/components/PartnersDataPage/PartnerDataPage';
+
+const PartnerDataPageLazy = dynamic(
+  () => import('@/components/PartnersDataPage/PartnerDataPage'),
+  {
+    ssr: false,
+  },
+);
 
 export default async function EditPartnerPage({
   params,
@@ -29,7 +37,7 @@ export default async function EditPartnerPage({
   }
 
   return (
-    <PartnerDataPage
+    <PartnerDataPageLazy
       companyPhoto={companyPhoto}
       partnerData={partnerData}
       isEdit
