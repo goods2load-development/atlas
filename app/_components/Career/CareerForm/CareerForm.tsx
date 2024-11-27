@@ -27,6 +27,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useToast } from '@/components/ui/use-toast';
 
 const MAX_FILE_SIZE = 2000000;
 const ACCEPTED_IMAGE_TYPES = [
@@ -49,6 +50,7 @@ const formSchema = z.object({
 
 const CareerForm: React.FC = () => {
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,6 +76,11 @@ const CareerForm: React.FC = () => {
       url: 'careers',
       headers: { 'Content-Type': 'multipart/form-data' },
       data: formData,
+    }).then((data) => {
+      toast({
+        description: 'We’ve successfully received your application',
+        className: 'bg-green-500 text-white',
+      });
     });
   };
   const data: any = [
@@ -126,14 +133,14 @@ const CareerForm: React.FC = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="Sales representative">
-                        Sales representative
+                      <SelectItem value="Sales Representative">
+                        Sales Representative
                       </SelectItem>
                       <SelectItem value="Advertising Sales Representative">
                         Advertising Sales Representative
                       </SelectItem>
-                      <SelectItem value="Logistic company cooperation">
-                        Logistic company cooperation
+                      <SelectItem value="Logistic Company Cooperation">
+                        Logistic Company Cooperation
                       </SelectItem>
                     </SelectContent>
                   </Select>
