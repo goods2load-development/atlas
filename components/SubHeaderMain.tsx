@@ -8,17 +8,19 @@ import Image from 'next/image';
 export default function SubHeaderMain() {
   return (
     <section className="py-[54px] sm:py-[80px] bg-bgOptimize bg-cover bg-center">
-      <h2 className="max-w-[661px] text-[40px]/[34px] sm:text-[40px]/[48px] text-white text-center mb-4 mx-auto font-light">
-        <i className="font-normal">Optimize</i> Efficiency{' '}
-        <i className="font-normal">and</i> Reduce Costs on All Your Shipping
-        Needs
-      </h2>
-      <div className="max-w-[873px] mx-auto text-[16px]/[24px] sm:text-[18px]/[22px] text-white text-center mb-11 font-light">
-        We offer a one-stop logistics platform for all your shipping
-        requirements. Our centralized platform integrates various services,
-        including air, sea, and land freight forwarding. This integration
-        streamlines your supply chain, reducing complexity and improving overall
-        efficiency.
+      <div className="px-4">
+        <h2 className="max-w-[661px] text-[30px]/[34px] sm:text-[40px]/[48px] text-white text-center mb-4 mx-auto font-light">
+          <i className="font-normal">Optimize</i> Efficiency{' '}
+          <i className="font-normal">and</i> Reduce Costs on All Your Shipping
+          Needs
+        </h2>
+        <div className="max-w-[873px] mx-auto text-[16px]/[24px] sm:text-[18px]/[22px] text-white text-center mb-11 font-light">
+          We offer a one-stop logistics platform for all your shipping
+          requirements. Our centralized platform integrates various services,
+          including air, sea, and land freight forwarding. This integration
+          streamlines your supply chain, reducing complexity and improving
+          overall efficiency.
+        </div>
       </div>
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 top-[30px] sm:top-[55px] w-full h-[2px] z-1 overflow-hidden flex flex-row gap-1">

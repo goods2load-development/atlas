@@ -48,40 +48,41 @@ const questionsContent = [
         small and medium-sized enterprises, facilitating the transportation of
         goods. Here&apos;s how it works:
         <br />
+        <br />
         <ol>
           <li>
-            &#x2022; Registration: Small and medium-sized enterprises register
-            on the Goods2Load platform, providing necessary information about
-            their business and transportation needs.
+            &#x2022; <strong>Registration</strong>: Small and medium-sized
+            enterprises register on the Goods2Load platform, providing necessary
+            information about their business and transportation needs.
             <br />
             <br />
           </li>
           <li>
-            &#x2022; Load Posting: Companies input details of their loads,
-            including pickup and delivery locations, type of cargo, and other
-            relevant information.
+            &#x2022; <strong>Load Posting</strong>: Companies input details of
+            their loads, including pickup and delivery locations, type of cargo,
+            and other relevant information.
             <br />
             <br />
           </li>
           <li>
-            &#x2022; Load Search: Small and medium-sized enterprises can browse
-            available loads on the platform, provided by Goods2Load&apos;s
-            logistics partner companies. They can filter results based on
-            criteria such as pickup location, destination, type of cargo, speed,
-            cost, and CO2 emissions.
+            &#x2022; <strong>Load Search</strong>: Small and medium-sized
+            enterprises can browse available loads on the platform, provided by
+            Goods2Load&apos;s logistics partner companies. They can filter
+            results based on criteria such as pickup location, destination, type
+            of cargo, speed and CO2 emissions.
             <br />
             <br />
           </li>
           <li>
-            &#x2022; Negotiation: Small and medium-sized enterprises are
-            redirected to the platform or original contact to negotiate terms
-            such as price, delivery timeline, and other details.
+            &#x2022; <strong>Negotiation</strong>: Small and medium-sized
+            enterprises are redirected to the platform or original contact to
+            negotiate terms such as price, delivery timeline, and other details.
             <br />
             <br />
           </li>
           <li>
-            &#x2022; Contracting: Once terms are agreed upon, companies finalize
-            the contract through their official platform.
+            &#x2022; <strong>Contracting</strong>: Once terms are agreed upon,
+            companies finalize the contract through their official platform.
             <br />
             <br />
           </li>
@@ -93,13 +94,13 @@ const questionsContent = [
     number: '02',
     title: 'DO I BOOK MY LOGISTIC SERVICE WITH GOODS2LOAD?',
     content:
-      "You won't be booking your logistic service directly on Goods2Load, nor will you make payments for your logistic service through our platform. However, you will retain the best offer negotiated for you by us, and seamlessly continue the process on the logistic provider's platform to finalize and define the service according to your requirements.",
+      "You won't be booking your logistic service directly on Goods2Load, nor will you make payments for your logistic service through our platform but you will seamlessly continue the process on the logistic provider's platform to finalize and define the service according to your requirements.",
   },
   {
     number: '03',
     title: 'WHAT HAPPEN AFTER I BOOK MY LOGISTIC SERVICES?',
     content:
-      "After agreeing on the price, you will proceed to make the payment. Following this, you'll receive a confirmation of your booking from your chosen logistic provider. They will then initiate the logistics process, which could include picking up your goods, transporting them to the designated destination, and delivering them as per the agreed-upon terms. Throughout this process, you can monitor the progress of your shipment using the provided tracking information.",
+      "After agreeing with the freight forwarders on the price, you will proceed to make the payment directly with them. Following this, you'll receive a confirmation of your booking from your chosen logistic provider. They will then initiate the logistics process, which could include picking up your goods, transporting them to the designated destination, and delivering them as per the agreed-upon terms. Throughout this process, you can monitor the progress of your shipment using the provided tracking information if provided.",
   },
   {
     number: '04',
@@ -111,7 +112,7 @@ const questionsContent = [
     number: '05',
     title: "WHAT IS 'SOLUTION FINDER?'",
     content:
-      "'SOLUTION FINDER' is a feature that allows our users to set notifications for specific route or offer or both. When the SOLUTION of the selected service reaches the designated level, the user receives an alert via email, SMS, or through the platform itself. Solutions Finder are useful for consumers and investors who want to track price movements and make informed decisions about purchasing or selling goods.",
+      "'SOLUTION FINDER' is a feature that allows our users to set notifications for specific route and relevant details. When the SOLUTION of the selected service reaches the designated level, the user receives an alert via email, SMS, or through the platform itself. Solutions Finder are useful for consumers and investors who want to shipping options to make informed decisions about purchasing or selling goods globally.",
   },
   {
     number: '06',
@@ -158,7 +159,7 @@ export default function Home() {
         <HeaderClient variant="transparent" />
         <DynamicMenu variant="transparent" />
         <div className="px-[16px] max-w-[1250px] mx-auto text-center">
-          <h1 className="mt-12 font-light text-2xl md:text-[50px] md:leading-[55px] mb-4">
+          <h1 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
             Find Top <i>Logistics Services</i> and <i>Cargo Companies</i>{' '}
             Globally and Across <i>GCC Countries</i>
           </h1>
@@ -175,7 +176,7 @@ export default function Home() {
         </div>
       </MainImageLayout>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main max-w-full">
-        <div className="mt-[-170px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
+        <div className="mt-[-120px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
           <SearchMain main />
         </div>
         <SubHeaderMain />

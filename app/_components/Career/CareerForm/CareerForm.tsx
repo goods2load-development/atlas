@@ -130,7 +130,7 @@ const CareerForm: React.FC = () => {
                         Sales representative
                       </SelectItem>
                       <SelectItem value="customer-care">
-                        Customer care
+                        Advertising Sales Representative
                       </SelectItem>
                       <SelectItem value="logistic-company-cooperation">
                         Logistic company cooperation
