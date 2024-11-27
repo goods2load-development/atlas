@@ -126,13 +126,13 @@ const CareerForm: React.FC = () => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="sales-representative">
+                      <SelectItem value="Sales representative">
                         Sales representative
                       </SelectItem>
-                      <SelectItem value="customer-care">
+                      <SelectItem value="Advertising Sales Representative">
                         Advertising Sales Representative
                       </SelectItem>
-                      <SelectItem value="logistic-company-cooperation">
+                      <SelectItem value="Logistic company cooperation">
                         Logistic company cooperation
                       </SelectItem>
                     </SelectContent>
