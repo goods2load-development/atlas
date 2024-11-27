@@ -158,7 +158,7 @@ export default function Home() {
         <HeaderClient variant="transparent" />
         <DynamicMenu variant="transparent" />
         <div className="px-[16px] max-w-[1250px] mx-auto text-center">
-          <h1 className="md:mt-[120px] mt-12 font-light text-2xl md:text-[50px] md:leading-[55px] mb-4">
+          <h1 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
             Find Top <i>Logistics Services</i> and <i>Cargo Companies</i>{' '}
             Globally and Across <i>GCC Countries</i>
           </h1>
@@ -175,7 +175,7 @@ export default function Home() {
         </div>
       </MainImageLayout>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main max-w-full">
-        <div className="mt-[-170px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
+        <div className="mt-[-120px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
           <SearchMain main />
         </div>
         <SubHeaderMain />
