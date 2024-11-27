@@ -1,8 +1,16 @@
+import dynamic from 'next/dynamic';
 import { redirect } from 'next/navigation';
 
 import BigLayout from '@/components/BigLayout';
 import Footer from '@/components/Footer';
 import PartnerDataPage from '@/components/PartnersDataPage/PartnerDataPage';
+
+const PartnerDataPageLazy = dynamic(
+  () => import('@/components/PartnersDataPage/PartnerDataPage'),
+  {
+    ssr: false,
+  },
+);
 
 const Partner = async ({ params }: { params: { id: string } }) => {
   const [
@@ -35,7 +43,7 @@ const Partner = async ({ params }: { params: { id: string } }) => {
   return (
     <>
       <BigLayout title={partnerData.name}>
-        <PartnerDataPage
+        <PartnerDataPageLazy
           placeInfo={placeInfo}
           companyPhoto={companyPhoto}
           partnerData={partnerData}

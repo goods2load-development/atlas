@@ -1,5 +1,6 @@
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
+import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 
 import Footer from '@/components/Footer';
@@ -7,6 +8,11 @@ import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
 import MainLayout from '@/components/MainLayout';
 import SeoPageMain from '@/components/SeoPage/SeoPageMain';
+
+const SeoPageMainLazy = dynamic(
+  () => import('@/components/SeoPage/SeoPageMain'),
+  { ssr: false },
+);
 
 async function getSeoData(slug: string) {
   const res = await fetch(
@@ -86,7 +92,7 @@ export default async function SeoPage({
           </p>
         </div>
       </MainLayout>
-      <SeoPageMain type="view" data={data} />
+      <SeoPageMainLazy type="view" data={data} />
       <Footer />
     </>
   );

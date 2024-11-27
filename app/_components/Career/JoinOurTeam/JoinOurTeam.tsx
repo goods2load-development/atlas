@@ -3,7 +3,7 @@
 import CareerCard from '../CareerCard/CareerCard';
 import { careerData } from '../careerData';
 
-export const JoinOurTeam = () => {
+const JoinOurTeam = () => {
   return (
     <>
       <div className="flex flex-col gap-[16px] justify-center text-center text-black mb-[20px]">
@@ -30,3 +30,5 @@ export const JoinOurTeam = () => {
     </>
   );
 };
+
+export default JoinOurTeam;

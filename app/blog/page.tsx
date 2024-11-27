@@ -1,6 +1,7 @@
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import BigLayout from '@/components/BigLayout';
 import Blog from '@/components/Blog/Blog';
@@ -9,6 +10,10 @@ import Footer from '@/components/Footer';
 const title = 'Blog - GOODS2LOAD | Insights and Updates on Logistics';
 const description =
   'Explore the GOODS2LOAD blog for the latest insights, trends, and updates on logistics, technology, and business solutions. Stay informed on how we’re transforming the logistics industry with innovative and sustainable practices.';
+
+const BlogLazy = dynamic(() => import('@/components/Blog/Blog'), {
+  ssr: false,
+});
 
 export function generateMetadata(): Metadata {
   const defaultMetadata = generateDefaultMetadata();
@@ -45,7 +50,7 @@ export default async function BlogPage() {
   return (
     <>
       <BigLayout title="Blog">
-        <Blog categories={categories} blogData={blogData} />
+        <BlogLazy categories={categories} blogData={blogData} />
       </BigLayout>
       <Footer />
     </>
