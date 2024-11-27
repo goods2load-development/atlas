@@ -190,7 +190,9 @@ export const FormStepIndustryRecognitionSecondary = ({
             onCheckedChange={() => setIsProvideSustainability((prev) => !prev)}
           />
         </div>
-        <p className="block my-4">
+        <p
+          className={`${clsx('block my-4', !isProvideSustainability && 'opacity-40')}`}
+        >
           This certification is essential for companies we engage with,
           reflecting a commitment to sustainable, eco-friendly practices.
           Partnering with certified companies strengthens our brand reputation,
