@@ -1,27 +1,30 @@
-"use client";
+'use client';
 
-import Image from "next/image";
-import PriceAlerts from "@/components/PriceAlerts";
-import Filter from "./Filter";
-import Products from "./Products";
-import { useState } from "react";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import SelectedSearch from '../SelectedSearch';
+import Filter from './Filter';
+import Products from './Products';
+import { Referal } from './Referral';
+import { useFilterStore } from '@/lib/filterStore';
 
-import { useFilterStore } from "@/lib/filterStore";
-import SelectedSearch from "../SelectedSearch";
+import { useState } from 'react';
+
+import Image from 'next/image';
+
+import PriceAlerts from '@/components/SolutionFinder';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 const renderIcon = (deliveryBy: string) => {
-  let src = "";
+  let src = '';
   switch (deliveryBy) {
-    case "plane":
-      src = "/filtericon-plane.svg";
+    case 'plane':
+      src = '/filtericon-plane.svg';
       break;
 
-    case "ferry":
-      src = "/filtericon-ship.svg";
+    case 'ferry':
+      src = '/filtericon-ship.svg';
       break;
-    case "truck":
-      src = "/filtericon-truck.svg";
+    case 'truck':
+      src = '/filtericon-truck.svg';
       break;
   }
   return <Image src={src} alt={deliveryBy} width={44} height={44} />;
@@ -30,6 +33,7 @@ const renderIcon = (deliveryBy: string) => {
 export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
   const { deliveryBy } = useFilterStore((state: any) => state);
+
   return (
     <div className=" lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_16px] max-w-[1328px] mx-auto gap-8 overflow-visible">
       <div className="lg:hidden flex justify-between pb-[18px] items-center">
@@ -46,7 +50,7 @@ export default function Catalogue() {
             </SheetContent>
           </Sheet>
           <div
-            className={`w-[44px] h-[44px] rounded-[8px] p-[8px] cursor-pointer border-[2px] grid grid-cols-2 gap-1 [&>i]:inline-block [&>i]:w-[10px] [&>i]:h-[10px]  [&>i]:rounded-sm ${searchOpened ? "border-orangePrimary bg-orangePrimary [&>i]:bg-white" : "border-[#FFEDE4] [&>i]:bg-orangePrimary"}`}
+            className={`w-[44px] h-[44px] rounded-[8px] p-[8px] cursor-pointer border-[2px] grid grid-cols-2 gap-1 [&>i]:inline-block [&>i]:w-[10px] [&>i]:h-[10px]  [&>i]:rounded-sm ${searchOpened ? 'border-orangePrimary bg-orangePrimary [&>i]:bg-white' : 'border-[#FFEDE4] [&>i]:bg-orangePrimary'}`}
             onClick={() => setSearchOpened(!searchOpened)}
           >
             <i />
@@ -57,17 +61,27 @@ export default function Catalogue() {
         </div>
       </div>
       <div
-        className={`col-span-2 rounded-2xl overflow-hidden ${searchOpened ? "max-h-min" : "max-h-0"} lg:max-h-min transition-all duration-500 ease lg:h-auto`}
+        className={`col-span-2 rounded-2xl overflow-hidden ${searchOpened ? 'max-h-min' : 'max-h-0'} lg:max-h-min transition-all duration-500 ease lg:h-auto`}
       >
         <SelectedSearch />
       </div>
-      <div className="lg:bg-[#F9F9F9] rounded-2xl w-full lg:w-[280px] hidden lg:block">
-        <div className="lg:p-4 sticky top-0">
-          <PriceAlerts />
-          <Filter />
+      <div>
+        <div className="lg:bg-[#F9F9F9] rounded-2xl w-full lg:w-[280px] hidden lg:block h-max">
+          <div className="lg:p-4">
+            <PriceAlerts />
+            <Filter />
+          </div>
+        </div>
+
+        <div className="mt-8 hidden lg:block">
+          <Referal />
         </div>
       </div>
       <Products />
+
+      <div className="lg:hidden block mt-8">
+        <Referal className="mx-auto" />
+      </div>
     </div>
   );
 }

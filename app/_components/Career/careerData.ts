@@ -1,80 +1,114 @@
-"use client";
+'use client';
 
-import { SalesChallenge } from "@/app/interfaces/leaderShip/interface";
+import { SalesChallenge } from '@/app/interfaces/leaderShip/interface';
 
 export const careerData: SalesChallenge[] = [
   {
-    modalName: "Sales representive",
-    challengeName: "Sales representative",
-    workingName: "Smart working",
-    tittle: "Sales representive",
+    modalName: 'Sales representative',
+    challengeName: 'Sales representative',
+    workingName: 'Smart working',
+    tittle: 'Sales representative',
     description:
-      "We are seeking a highly motivated and dynamic Sales Representative to join our team. As a Sales Representative, you will play a crucial role in driving our company’s sales growth and expanding our customer base. Your primary responsibility will be to generate new leads, build strong relationships with prospective clients, and close sales deals",
+      'We are seeking a highly motivated and dynamic Sales Representative to join our team. As a Sales Representative, you will play a crucial role in driving our company’s sales growth and expanding our customer base. Your primary responsibility will be to generate new leads, build strong relationships with prospective clients, and close sales deals',
 
     options: [
       {
-        optionName: "Responsibilities",
+        optionName: 'Responsibilities',
         optionText:
-          "– Identify and prospect potential customers through various channels, including cold calling, networking events, and online platforms.\n–Understand customer needs and offer tailored solutions that align with their requirements.\n– Present and demonstrate our products or services to potential clients, highlighting their key features and benefits.\n– Effectively negotiate and close sales deals, ensuring customer satisfaction and achieving sales targets.\n– Maintain accurate records of sales activities, customer interactions, and follow-up actions in our CRM system.\n– Collaborate with the sales team to develop sales strategies, improve processes, and contribute to overall sales growth.\n– Stay updated on industry trends, market conditions, and competitor activities to identify new business opportunities.\n– Build and maintain strong relationships with existing customers, providing exceptional after-sales support and fostering customer loyalty.",
+          '–Understand customer needs and offer tailored solutions that align with their requirements.\n' +
+          '– Present and demonstrate our products or services to potential clients, highlighting their key features and benefits.\n' +
+          '– Effectively negotiate and close sales deals, ensuring customer satisfaction and achieving sales targets.\n' +
+          '– Maintain accurate records of sales activities, customer interactions, and follow-up actions in our CRM system.\n' +
+          '– Collaborate with the sales team to develop sales strategies, improve processes, and contribute to overall sales growth.\n' +
+          '– Stay updated on industry trends, market conditions, and competitor activities to identify new business opportunities.\n' +
+          '– Build and maintain strong relationships with existing customers, providing exceptional after-sales support and fostering customer loyalty.\n',
         additionText:
-          "Join our dedicated team and be a crucial part of our commitment to providing outstanding customer care. As a Customer Care Specialist, you will have the opportunity to make a positive impact, enhance customer satisfaction, and contribute to our continued success in [industry/sector]. Apply now and become a key player in our journey towards excellence in customer service.",
+          'Join us and help businesses achieve success! Apply now and become a key player in our journey towards excellence.',
       },
       {
-        optionName: "Requirements",
+        optionName: 'Requirements',
         optionText:
-          "– Proven experience as a Sales Representative or similar role, preferably in the [industry/sector].\n– Excellent communication and interpersonal skills, with the ability to build rapport and effectively engage with clients.\n– Strong negotiation and persuasive abilities to close sales deals.\n– Self-motivated and target-driven, with a proven track record of meeting or exceeding sales targets.\n– Ability to work independently, as well as collaboratively within a team.\n– Proficiency in using CRM software and other sales tools.\n– Knowledge of [industry/sector] products, market trends, and competitor landscape.\n– Willingness to travel and meet clients as required.",
+          '– Proven experience as a Sales Representative or similar role, preferably in the logistic/freight forwarding field.\n' +
+          '– Excellent communication and interpersonal skills, with the ability to build rapport and effectively engage with clients.\n' +
+          '– Strong negotiation and persuasive abilities to close sales deals.\n' +
+          '– Self-motivated and target-driven, with a proven track record of meeting or exceeding sales targets.\n' +
+          '– Ability to work independently, as well as collaboratively within a team.\n' +
+          '– Knowledge of logistic industry products, market trends, and competitor landscape.\n' +
+          '– Willingness to travel and meet clients as required.\n',
         additionText:
-          "Join our dedicated team and be a crucial part of our commitment to providing outstanding customer care. As a Customer Care Specialist, you will have the opportunity to make a positive impact, enhance customer satisfaction, and contribute to our continued success in [industry/sector]. Apply now and become a key player in our journey towards excellence in customer service.",
+          'Join us and help businesses achieve success! Apply now and become a key player in our journey towards excellence.',
       },
     ],
   },
   {
-    modalName: "Customer care specialist",
-    challengeName: "Customer care",
-    workingName: "Smart working",
-    tittle: "Customer care specialist",
+    modalName: 'Advertising Sales Representative',
+    challengeName: 'Advertising Sales Representative',
+    workingName: 'Smart working',
+    tittle: 'Advertising Sales Representative',
     description:
-      "We are seeking a highly motivated and dynamic Sales Representative to join our team. As a Sales Representative, you will play a crucial role in driving our company’s sales growth and expanding our customer base. Your primary responsibility will be to generate new leads, build strong relationships with prospective clients, and close sales deals",
+      'We are seeking a highly motivated and dynamic Advertising Sales Representative to join our team. In this role, you will be instrumental in driving\n' +
+      'revenue growth by identifying companies interested in advertising on our platform. Your primary responsibility will be to generate leads, build\n' +
+      'relationships, and close advertising deals that align with our company’s goals.',
 
     options: [
       {
-        optionName: "Responsibilities",
+        optionName: 'Responsibilities',
         optionText:
-          "– Identify and prospect potential customers through various channels, including cold calling, networking events, and online platforms.\n– Understand customer needs and offer tailored solutions that align with their requirements.\n– Present and demonstrate our products or services to potential clients, highlighting their key features and benefits.\n– Effectively negotiate and close sales deals, ensuring customer satisfaction and achieving sales targets.\n– Maintain accurate records of sales activities, customer interactions, and follow-up actions in our CRM system.\n– Collaborate with the sales team to develop sales strategies, improve processes, and contribute to overall sales growth.\n– Stay updated on industry trends, market conditions, and competitor activities to identify new business opportunities.\n– Build and maintain strong relationships with existing customers, providing exceptional after-sales support and fostering customer loyalty.",
-        additionText: "",
+          '– Identify and prospect potential advertisers through channels like cold outreach, networking events, and digital platforms.\n' +
+          '– Understand client needs and offer tailored advertising solutions to achieve their business objectives.\n' +
+          '– Present and demonstrate advertising opportunities, emphasizing their key features and benefits.\n' +
+          '– Negotiate and close advertising deals, ensuring client satisfaction and achieving revenue targets.\n' +
+          '– Maintain accurate records of sales activities, client interactions, and follow-ups.\n' +
+          '– Collaborate with the sales team to refine strategies and contribute to overall growth.\n' +
+          '– Stay updated on advertising trends, market conditions, and competitor activities to uncover new opportunities.\n' +
+          '– Build and maintain strong client relationships, providing exceptional service to encourage repeat business.',
+        additionText:
+          'Join us and help businesses achieve success through impactful advertising on our platform! Apply now and become a key player in our journey towards excellence.',
       },
       {
-        optionName: "Requirements",
+        optionName: 'Requirements',
         optionText:
-          "– Proven experience as a Sales Representative or similar role, preferably in the [industry/sector].\n– Excellent communication and interpersonal skills, with the ability to build rapport and effectively engage with clients.\n– Strong negotiation and persuasive abilities to close sales deals.– Self-motivated and target-driven, with a proven track record of meeting or exceeding sales targets.\n– Ability to work independently, as well as collaboratively within a team.\n– Proficiency in using CRM software and other sales tools.\n– Knowledge of [industry/sector] products, market trends, and competitor landscape.\n– Willingness to travel and meet clients as required.",
+          '– Proven experience in sales, ideally in advertising or media.\n' +
+          '– Strong communication, presentation, and negotiation skills.\n' +
+          '– Ability to understand client needs and recommend customized advertising solutions.\n' +
+          '– Results-driven, self-motivated, and able to work in a fast-paced environment.\n' +
+          '– Excellent organizational and time-management skills.\n' +
+          '– Familiarity with digital advertising trends and competitive insights.',
         additionText:
-          "Join our dedicated team and be a crucial part of our commitment to providing outstanding customer care. As a Customer Care Specialist, you will have the opportunity to make a positive impact, enhance customer satisfaction, and contribute to our continued success in [industry/sector]. Apply now and become a key player in our journey towards excellence in customer service.",
+          'Join us and help businesses achieve success through impactful advertising on our platform! Apply now and become a key player in our journey towards excellence.',
       },
     ],
   },
   {
-    modalName: "Logistics companies collaboration opportunity - Europe",
-    challengeName: "Logistic company cooperation",
-    workingName: "Smart working",
-    tittle: "Logistics companies collaboration opportunity - Europe",
+    modalName: 'Global Collaboration Opportunity for Freight Forwarders',
+    challengeName: 'Logistic Cooperation',
+    workingName: 'Smart working',
+    tittle: 'Global Collaboration Opportunity for Freight Forwarders',
     description:
-      "Attention Logistics Companies in Europe, GOODS2LOAD is actively seeking partnerships with reputable and innovative logistics firms across Europe. We aim to enhance our service offerings, provide a diverse range of options to our clients, and foster collaborative relationships with logistics experts like you.",
+      'Attention Freight Forwarders worldwide! GOODS2LOAD is actively seeking partnerships with reputable and innovative logistics firms across the globe. We aim to enhance our service offerings, provide a diverse range of options to our clients, and foster collaborative relationships with logistics experts like you.',
 
     options: [
       {
-        optionName: "Key benefits of collabotation",
-        optionText: `1. Pan-European Reach : Join our platform to expand your presence across Europe and access a broader client base.
-2. Versatile Opportunities : Showcase your logistics expertise in various services, contributing to a network that offers a wide array of solutions.
-3. Competitive Edge : Position your company as a preferred choice for clients seeking reliable and efficient logistics services in the European market.
-4. Adaptability : Be part of a collaborative environment that values adaptability, allowing you to tailor services to meet the unique needs of clients in different European regions.`,
-        additionText: "",
+        optionName: 'Key benefits of collaboration',
+        optionText: `– Global Reach: Join our platform to expand your presence worldwide and access a broader client base across continents.
+– Versatile Opportunities: Showcase your logistics expertise in various services and contribute to a network offering a comprehensive array of solutions.
+– Competitive Edge: Position your company as a preferred choice for clients seeking reliable and efficient logistics services in the global market.
+– Adaptability: Be part of a collaborative environment that values adaptability, enabling you to tailor services to meet the unique needs of clients across different regions and industries.`,
+        additionText:
+          'Join our growing network of global freight forwarders by connecting with us today. \n' +
+          'Let’s revolutionize global logistics—together!',
       },
       {
-        optionName: "How to apply or inquire",
+        optionName: 'How to apply or inquire',
         optionText:
-          "If your logistics company is interested in exploring collaboration opportunities with GOODS2LOAD, please visit our website and complete the collaboration inquiry form designed for European logistics partners. Our team will promptly review your application and initiate discussions on potential partnership opportunities.",
+          'If your freight forwarding company is interested in exploring collaboration opportunities with GOODS2LOAD, we invite you to visit our website and complete the global collaboration inquiry sign-up form. This will allow us to profile your company and create a personalized identikit page, making it easier for users seeking transportation solutions to find and connect with you.\n' +
+          '\n' +
+          'Our team will promptly review your application and reach out to discuss partnership opportunities tailored to your expertise and market presence.\n' +
+          '\n' +
+          'Join us in providing exceptional freight forwarding solutions and helping expand our global collaborative network. We look forward to the opportunity to work together and enhance the services we offer to our valued clients worldwide.',
         additionText:
-          "Join us in providing exceptional logistics solutions and contributing to the success of our collaborative network throughout Europe. We look forward to the prospect of working together to elevate the services we offer to our valued clients.",
+          'Join our growing network of global freight forwarders by connecting with us today. \n' +
+          'Let’s revolutionize global logistics—together!',
       },
     ],
   },

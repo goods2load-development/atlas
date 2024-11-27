@@ -1,14 +1,59 @@
-"use client";
-import React, { useEffect } from "react";
+'use client';
+
+import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
+
+import React, { useEffect, useState } from 'react';
+
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import { useFilterStore, useCurrenciesStore } from "@/lib/filterStore";
+} from '@/components/ui/accordion';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+
+const partnerFilters = {
+  industrySolutions: {
+    name: 'Industry Solutions',
+    items: [
+      { id: 'pharmaceuticals', label: 'Pharmaceuticals' },
+      { id: 'electronics', label: 'Electronics' },
+      { id: 'automotive', label: 'Automotive' },
+      { id: 'manufacturing_retail', label: 'Manufacturing & Retail' },
+      {
+        id: 'exhibition_interior_design',
+        label: 'Exhibition & Interior Design',
+      },
+      { id: 'apparel_fashion', label: 'Apparel Fashion' },
+      { id: 'ecommerce', label: 'E-commerce' },
+      { id: 'food_beverage', label: 'Food & Beverage' },
+      { id: 'energy', label: 'Energy' },
+    ],
+  },
+  transportSolutions: {
+    name: 'Transport Solutions',
+    items: [
+      { id: 'cold_chain', label: 'Cold Chain' },
+      { id: 'dangerous_goods', label: 'Dangerous Goods' },
+      { id: 'high_value_goods', label: 'High-Value Goods' },
+      { id: 'last_mile_delivery', label: 'Last Mile Delivery' },
+      { id: 'project_cargo', label: 'Project Cargo' },
+      { id: 'general_solutions', label: 'General Solutions' },
+    ],
+  },
+  additionalServices: {
+    name: 'Additional Services',
+    items: [
+      { id: 'white_gloves_services', label: 'White Gloves Services' },
+      { id: 'ecommerce_fullfillment', label: 'E-commerce Fullfillment' },
+      { id: 'heavy_equipment_logistics', label: 'Heavy Equipment Logistics' },
+      { id: 'cross_border_expansion', label: 'Cross-Border Expansion' },
+      { id: 'warehousing', label: 'Warehousing' },
+      { id: 'custom_clearance', label: 'Custom Clearance' },
+    ],
+  },
+};
 
 function GroupSelection({ selectAll, clearAll }: any) {
   return (
@@ -22,7 +67,7 @@ function GroupSelection({ selectAll, clearAll }: any) {
     </div>
   );
 }
-function FilterItem({ id, checked, onChange, label, price }: any) {
+function FilterItem({ id, checked, onChange, label, price, fromValue }: any) {
   return (
     <div className="flex items-top space-x-2 mb-3">
       <Checkbox
@@ -35,10 +80,16 @@ function FilterItem({ id, checked, onChange, label, price }: any) {
       <div className="grid gap-1.5 leading-none">
         <label
           htmlFor={id}
-          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+          className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
         >
           {label}
         </label>
+        {fromValue && (
+          <div className="text-[#636363]">
+            <>&#40;</>From ${fromValue}
+            <>&#41;</>
+          </div>
+        )}
         <p className="text-sm text-muted-foreground">{price}</p>
       </div>
     </div>
@@ -71,7 +122,7 @@ function FilterItemList({
         <div className="grid gap-1.5 leading-none">
           <label
             htmlFor={item.id}
-            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {item.label || item[label as keyof object]}
           </label>
@@ -87,44 +138,93 @@ function FilterItemList({
 export default function Filter() {
   const {
     deliveryBy,
-    cheapest,
-    fastest,
-    goGreen,
-    priceMin,
-    priceMax,
-    partners,
+
+    filterPartners,
     partnersSelected,
     portsDeparture,
     portsDepartureSelected,
     portsArrival,
     portsArrivalSelected,
+    getPartnersFilters,
     setFilter,
     getPortsList,
     getPartners,
-    getProducts,
+
+    bestReviewed,
+    carbonOffset,
+    industryRecognition,
+
+    pharmaceuticals,
+    electronics,
+    automotive,
+    manufacturing_retail,
+    exhibition_interior_design,
+    apparel_fashion,
+    ecommerce,
+    food_beverage,
+    energy,
+
+    cold_chain,
+    dangerous_goods,
+    high_value_goods,
+    last_mile_delivery,
+    project_cargo,
+    general_solutions,
+
+    white_gloves_services,
+    ecommerce_fullfillment,
+    heavy_equipment_logistics,
+    cross_border_expansion,
+    warehousing,
+    custom_clearance,
   } = useFilterStore((state: any) => state);
-  const { selectedCurrency } = useCurrenciesStore((state: any) => state);
+
   useEffect(() => {
-    getPartners();
     getPortsList(true);
     getPortsList();
   }, []);
+
   useEffect(() => {
-    getProducts();
+    getPartners();
   }, [
-    cheapest,
-    fastest,
-    goGreen,
-    priceMin,
-    priceMax,
     partnersSelected.length,
     portsDepartureSelected.length,
     portsArrivalSelected.length,
+
+    getPartners,
+    bestReviewed,
+    carbonOffset,
+    industryRecognition,
+    pharmaceuticals,
+    electronics,
+    automotive,
+    manufacturing_retail,
+    exhibition_interior_design,
+    apparel_fashion,
+    ecommerce,
+    food_beverage,
+    energy,
+
+    cold_chain,
+    dangerous_goods,
+    high_value_goods,
+    last_mile_delivery,
+    project_cargo,
+    general_solutions,
+
+    white_gloves_services,
+    ecommerce_fullfillment,
+    heavy_equipment_logistics,
+    cross_border_expansion,
+    warehousing,
+    custom_clearance,
   ]);
-  function onOrderChange(id: string, e: any, selectedArray: string[]) {
-    setFilter({ [id]: e });
-    return e;
-  }
+
+  const onValueChange = (id: string, value: boolean) => {
+    setFilter({ [id]: value });
+    return value;
+  };
+
   function onCheckboxChange(id: string, e: any, selectedArray: string[]) {
     const tempArray: string[] = selectedArray;
     if (e) {
@@ -139,77 +239,134 @@ export default function Filter() {
     const tempArray = select ? array.map((item: any) => item.id) : [];
     setFilter({ [`${arrayName}Selected`]: tempArray });
   }
+
+  function selectAllPartnerFilters(catalog: keyof typeof partnerFilters) {
+    partnerFilters[catalog].items.map((item) => {
+      onValueChange(item.id, true);
+    });
+  }
+  function clearAllPartnerFilters(catalog: keyof typeof partnerFilters) {
+    partnerFilters[catalog].items.map((item) => {
+      onValueChange(item.id, false);
+    });
+  }
+
   return (
     <Accordion type="multiple" className="w-full">
       <AccordionItem value="item-1">
-        <AccordionTrigger>Order</AccordionTrigger>
+        <AccordionTrigger>Services</AccordionTrigger>
         <AccordionContent>
           <FilterItem
-            id="cheapest"
-            checked={cheapest}
-            onChange={onOrderChange}
-            label="Cheapest"
+            onChange={onValueChange}
+            checked={bestReviewed}
+            id="bestReviewed"
+            label="Best Reviewed"
           />
           <FilterItem
-            id="fastest"
-            checked={fastest}
-            onChange={onOrderChange}
-            label="Fastest"
+            onChange={onValueChange}
+            checked={carbonOffset}
+            id="carbonOffset"
+            label="Carbon Offset"
           />
           <FilterItem
-            id="goGreen"
-            checked={goGreen}
-            onChange={onOrderChange}
-            label="GoGreen"
+            onChange={onValueChange}
+            checked={industryRecognition}
+            id="industryRecognition"
+            label="Industry Recognition"
           />
         </AccordionContent>
       </AccordionItem>
-      <AccordionItem value="price">
-        <AccordionTrigger>Shipping price</AccordionTrigger>
-        <AccordionContent className="flex items-center">
-          {selectedCurrency?.symbol}
-          <Input
-            className="m-1"
-            placeholder="min"
-            value={priceMin}
-            onChange={(e) => setFilter({ priceMin: e.target.value })}
+
+      <AccordionItem value="industry-solutions">
+        <AccordionTrigger>Industry Solutions</AccordionTrigger>
+        <AccordionContent>
+          <GroupSelection
+            selectAll={() => selectAllPartnerFilters('industrySolutions')}
+            clearAll={() => clearAllPartnerFilters('industrySolutions')}
           />
-          -
-          <Input
-            className="ml-1"
-            placeholder="max"
-            value={priceMax}
-            onChange={(e) => setFilter({ priceMax: e.target.value })}
-          />
+          {partnerFilters.industrySolutions.items.map((item) => {
+            return (
+              <FilterItem
+                key={item.label}
+                onChange={onValueChange}
+                checked={eval(item.id)}
+                id={item.id}
+                label={item.label}
+              />
+            );
+          })}
         </AccordionContent>
       </AccordionItem>
+
+      <AccordionItem value="transport-solutions">
+        <AccordionTrigger>Transport solutions</AccordionTrigger>
+        <AccordionContent>
+          <GroupSelection
+            selectAll={() => selectAllPartnerFilters('transportSolutions')}
+            clearAll={() => clearAllPartnerFilters('transportSolutions')}
+          />
+          {partnerFilters.transportSolutions.items.map((item) => {
+            return (
+              <FilterItem
+                key={item.label}
+                onChange={onValueChange}
+                checked={eval(item.id)}
+                id={item.id}
+                label={item.label}
+              />
+            );
+          })}
+        </AccordionContent>
+      </AccordionItem>
+
+      <AccordionItem value="additional-services">
+        <AccordionTrigger>Additional Services</AccordionTrigger>
+        <AccordionContent>
+          <GroupSelection
+            selectAll={() => selectAllPartnerFilters('additionalServices')}
+            clearAll={() => clearAllPartnerFilters('additionalServices')}
+          />
+          {partnerFilters.additionalServices.items.map((item) => {
+            return (
+              <FilterItem
+                key={item.label}
+                onChange={onValueChange}
+                checked={eval(item.id)}
+                id={item.id}
+                label={item.label}
+              />
+            );
+          })}
+        </AccordionContent>
+      </AccordionItem>
+
       <AccordionItem value="partners">
         <AccordionTrigger>Logistic partner</AccordionTrigger>
         <AccordionContent>
           <GroupSelection
-            selectAll={() => selectAll(partners, "partners", true)}
-            clearAll={() => selectAll(partners, "partners")}
+            selectAll={() => selectAll(filterPartners, 'partners', true)}
+            clearAll={() => selectAll(filterPartners, 'partners')}
           />
           <FilterItemList
-            items={partners}
+            items={filterPartners}
             checkedList={partnersSelected}
             onChange={onCheckboxChange}
             label="name"
           />
         </AccordionContent>
       </AccordionItem>
-      {deliveryBy !== "truck" && (
+      {deliveryBy !== 'truck' && (
         <>
           <AccordionItem value="portsDeparture">
             <AccordionTrigger>
-              {deliveryBy === "plane" && "Air"}Port Departure
+              {deliveryBy === 'plane' && 'Air'}Port Departure
             </AccordionTrigger>
             <AccordionContent>
               <GroupSelection
                 selectAll={() =>
-                  selectAll(portsDeparture, "portsDeparture", true)
+                  selectAll(portsDeparture, 'portsDeparture', true)
                 }
-                clearAll={() => selectAll(portsDeparture, "portsDeparture")}
+                clearAll={() => selectAll(portsDeparture, 'portsDeparture')}
               />
               <FilterItemList
                 items={portsDeparture}
@@ -220,12 +377,12 @@ export default function Filter() {
           </AccordionItem>
           <AccordionItem value="portsArrival">
             <AccordionTrigger>
-              {deliveryBy === "plane" && "Air"}Port Arrival
+              {deliveryBy === 'plane' && 'Air'}Port Arrival
             </AccordionTrigger>
             <AccordionContent>
               <GroupSelection
-                selectAll={() => selectAll(portsArrival, "portsArrival", true)}
-                clearAll={() => selectAll(portsArrival, "portsArrival")}
+                selectAll={() => selectAll(portsArrival, 'portsArrival', true)}
+                clearAll={() => selectAll(portsArrival, 'portsArrival')}
               />
               <FilterItemList
                 items={portsArrival}

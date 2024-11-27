@@ -1,21 +1,17 @@
-import { HelpData, TabName } from "@/app/interface/helpData";
-import HelpShipSvg from "@/components/ui/Svg/HelpSvg/HelpShipSvg";
-import HelpPlaneSvg from "@/components/ui/Svg/HelpSvg/HelpPlaneSvg";
-import HelpTruckSvg from "@/components/ui/Svg/HelpSvg/HelpTruckSvg";
-import Image from "next/image";
+import { HelpData, TabName } from '@/app/interface/helpData';
 
 export const tabs = [
   {
     name: TabName.PLANE,
-    icon: "/plane.svg",
+    icon: '/plane.svg',
   },
   {
     name: TabName.SHIP,
-    icon: "/ship.svg",
+    icon: '/ship.svg',
   },
   {
     name: TabName.TRUCK,
-    icon: "/truck.svg",
+    icon: '/truck.svg',
   },
 ];
 
@@ -23,7 +19,7 @@ export const helpData: HelpData = {
   [TabName.SHIP]: [
     {
       question:
-        "What is the reason for specifying the Incoterm details in my shipping request?",
+        'What is the reason for specifying the Incoterm details in my shipping request?',
       description: (
         <span>
           Specifying Incoterms details in your shipping request is essential for
@@ -58,19 +54,19 @@ export const helpData: HelpData = {
     },
     {
       question:
-        "HOW DOES THE PROCESS OF CARGO LOADING AND UNLOADING WORK AT PORTS FOR SEA SHIPMENTS?",
+        'HOW DOES THE PROCESS OF CARGO LOADING AND UNLOADING WORK AT PORTS FOR SEA SHIPMENTS?',
       description:
-        "The process of cargo loading and unloading at ports involves specialized equipment such as cranes to move containers onto and off ships. Cargo is organized and stored in designated areas within the port until it&apos;s ready to be loaded onto the ship or transported away from the port.",
+        'The process of cargo loading and unloading at ports involves specialized equipment such as cranes to move containers onto and off ships. Cargo is organized and stored in designated areas within the port until it&apos;s ready to be loaded onto the ship or transported away from the port.',
     },
     {
       question:
-        "WHAT ARE THE MAIN FACTORS INFLUENCING TRANSIT TIMES FOR SEA CARGO SHIPMENTS?",
+        'WHAT ARE THE MAIN FACTORS INFLUENCING TRANSIT TIMES FOR SEA CARGO SHIPMENTS?',
       description:
-        "Transit times for sea cargo shipments are influenced by factors such as the distance between ports, shipping routes, vessel speed, port congestion, geopolitical tension, customs clearance procedures, and weather conditions.",
+        'Transit times for sea cargo shipments are influenced by factors such as the distance between ports, shipping routes, vessel speed, port congestion, geopolitical tension, customs clearance procedures, and weather conditions.',
     },
     {
       question:
-        "CAN YOU EXPLAIN THE DIFFERENT TYPES OF VESSELS USED FOR SEA CARGO TRANSPORTATION AND THEIR RESPECTIVE CAPABILITIES?",
+        'CAN YOU EXPLAIN THE DIFFERENT TYPES OF VESSELS USED FOR SEA CARGO TRANSPORTATION AND THEIR RESPECTIVE CAPABILITIES?',
       description: (
         <span>
           Various types of vessels are used for sea cargo transportation, such
@@ -105,13 +101,13 @@ export const helpData: HelpData = {
     },
     {
       question:
-        "CAN YOU EXPLAIN THE DIFFERENT TYPES OF VESSELS USED FOR SEA CARGO TRANSPORTATION AND THEIR RESPECTIVE CAPABILITIES?",
+        'CAN YOU EXPLAIN THE DIFFERENT TYPES OF VESSELS USED FOR SEA CARGO TRANSPORTATION AND THEIR RESPECTIVE CAPABILITIES?',
       description:
-        "Customs procedures for sea cargo shipments, especially for international routes, involve thorough documentation checks, cargo inspections, and compliance with import/export regulations. Customs authorities verify the accuracy of documents such as the commercial invoice and packing list, conduct physical inspections when necessary, and ensure compliance with regulations on prohibited goods, customs duties, and tariffs. Risk assessments are performed to identify high-risk shipments, which may undergo enhanced scrutiny to mitigate potential risks such as smuggling or fraud. Compliance with customs procedures is essential to facilitate smooth clearance and avoid delays or penalties.",
+        'Customs procedures for sea cargo shipments, especially for international routes, involve thorough documentation checks, cargo inspections, and compliance with import/export regulations. Customs authorities verify the accuracy of documents such as the commercial invoice and packing list, conduct physical inspections when necessary, and ensure compliance with regulations on prohibited goods, customs duties, and tariffs. Risk assessments are performed to identify high-risk shipments, which may undergo enhanced scrutiny to mitigate potential risks such as smuggling or fraud. Compliance with customs procedures is essential to facilitate smooth clearance and avoid delays or penalties.',
     },
     {
       question:
-        "WHAT MEASURES ARE IN PLACE TO SAFEGUARD SEA CARGO AGAINST ADVERSE WEATHER CONDITIONS OR UNFORESEEN EVENTS DURING TRANSIT?",
+        'WHAT MEASURES ARE IN PLACE TO SAFEGUARD SEA CARGO AGAINST ADVERSE WEATHER CONDITIONS OR UNFORESEEN EVENTS DURING TRANSIT?',
       description: (
         <span>
           • Proper Packaging and Securing of Cargo: Cargo must be securely
@@ -153,7 +149,7 @@ export const helpData: HelpData = {
   [TabName.PLANE]: [
     {
       question:
-        "What is the reason for specifying the Incoterm details in my shipping  request?",
+        'What is the reason for specifying the Incoterm details in my shipping  request?',
       description: (
         <span>
           Specifying Incoterms details in your shipping request is essential for
@@ -190,13 +186,13 @@ export const helpData: HelpData = {
     },
     {
       question:
-        "HOW DOES THE PROCESS OF CARGO HANDLING WORK AT AIRPORTS FOR AIR CARGO SHIPMENTS?",
+        'HOW DOES THE PROCESS OF CARGO HANDLING WORK AT AIRPORTS FOR AIR CARGO SHIPMENTS?',
       description:
-        "The process of cargo handling at airports for air cargo shipments involves several steps to ensure efficient and timely movement of goods. Upon arrival at the airport, cargo is unloaded from arriving aircraft and transported to the cargo terminal or warehouse. Here, the cargo undergoes documentation checks, including verification of shipping manifests and customs clearance procedures. Next, cargo is sorted based on destination and type, and then loaded onto outbound aircraft for departure. Specialized equipment such as conveyor belts, forklifts, and pallet loaders are used to handle and transport cargo within the cargo terminal. Throughout the process, strict security measures are enforced to safeguard the integrity of the cargo. Finally, once loaded onto the aircraft, the cargo is secured in the cargo hold or on pallets to ensure safe transportation during flight.",
+        'The process of cargo handling at airports for air cargo shipments involves several steps to ensure efficient and timely movement of goods. Upon arrival at the airport, cargo is unloaded from arriving aircraft and transported to the cargo terminal or warehouse. Here, the cargo undergoes documentation checks, including verification of shipping manifests and customs clearance procedures. Next, cargo is sorted based on destination and type, and then loaded onto outbound aircraft for departure. Specialized equipment such as conveyor belts, forklifts, and pallet loaders are used to handle and transport cargo within the cargo terminal. Throughout the process, strict security measures are enforced to safeguard the integrity of the cargo. Finally, once loaded onto the aircraft, the cargo is secured in the cargo hold or on pallets to ensure safe transportation during flight.',
     },
     {
       question:
-        "WHAT FACTORS INFLUENCE THE TRANSIT TIMES FOR AIR CARGO SHIPMENT?",
+        'WHAT FACTORS INFLUENCE THE TRANSIT TIMES FOR AIR CARGO SHIPMENT?',
       description: (
         <span>
           Several factors influence the transit times for air cargo shipments:
@@ -236,7 +232,7 @@ export const helpData: HelpData = {
     },
     {
       question:
-        "CAN YOU EXPLAIN THE DIFFERENT TYPES OF AIRCRAFT USED FOR AIR CARGO TRANSPORTATION AND THEIR RESPECTIVE CAPACITIES?",
+        'CAN YOU EXPLAIN THE DIFFERENT TYPES OF AIRCRAFT USED FOR AIR CARGO TRANSPORTATION AND THEIR RESPECTIVE CAPACITIES?',
       description: (
         <span>
           Certainly! Here are some of the different types of aircraft commonly
@@ -282,7 +278,7 @@ export const helpData: HelpData = {
     },
     {
       question:
-        "HOW ARE CUSTOMS PROCEDURES MANAGED FOR AIR CARGO SHIPMENTS,ESPECIALLY FOR INTERNATIONAL ROUTES?",
+        'HOW ARE CUSTOMS PROCEDURES MANAGED FOR AIR CARGO SHIPMENTS,ESPECIALLY FOR INTERNATIONAL ROUTES?',
       description: (
         <span>
           Customs procedures for air cargo shipments, particularly for
@@ -335,7 +331,7 @@ export const helpData: HelpData = {
     },
     {
       question:
-        "WHAT ARE THE SPECIFIC REGULATIONS AND SAFETY PROTOCOLS INVOLVED IN TRANSPORTING CHEMICAL OR RAW MATERIAL CARGO?",
+        'WHAT ARE THE SPECIFIC REGULATIONS AND SAFETY PROTOCOLS INVOLVED IN TRANSPORTING CHEMICAL OR RAW MATERIAL CARGO?',
       description: (
         <span>
           The transportation of chemical or raw material cargo is subject to
@@ -396,7 +392,7 @@ export const helpData: HelpData = {
   [TabName.TRUCK]: [
     {
       question:
-        "WHY PROPER MEASURE AND WEIGHT ARE FUNDAMENTAL FOR YOUR SHIPPING?",
+        'WHY PROPER MEASURE AND WEIGHT ARE FUNDAMENTAL FOR YOUR SHIPPING?',
       description: (
         <span>
           Cost Control: Accurate measurements determine shipping prices,
@@ -422,7 +418,7 @@ export const helpData: HelpData = {
       ),
     },
     {
-      question: "WHY DO I HAVE TO DECLARE THE GOODS I WANT TO SHIP?",
+      question: 'WHY DO I HAVE TO DECLARE THE GOODS I WANT TO SHIP?',
       description: (
         <span>
           Declaring your goods for shipping is crucial for these reasons:
@@ -505,7 +501,7 @@ export const helpData: HelpData = {
       ),
     },
     {
-      question: "WHY IT TAKES SO LONG TO HAVE A QUOTATION OF TRANSPORTATION?",
+      question: 'WHY IT TAKES SO LONG TO HAVE A QUOTATION OF TRANSPORTATION?',
       description: (
         <span>
           Obtaining a transport quotation can take time due to factors such as
@@ -519,12 +515,12 @@ export const helpData: HelpData = {
       ),
     },
     {
-      question: "ARE ALL INTERNATIONAL AND NATIONAL SHIPPING ALREADY INSURED?",
+      question: 'ARE ALL INTERNATIONAL AND NATIONAL SHIPPING ALREADY INSURED?',
       description:
         "Not all shipments are covered by insurance, so please bear in mind that you will not be covered for damage, loss or theft for shipments that contain prohibited or restricted items. The shipping insurance does not apply for high-value items, fragile, dangerous, illegal, perishable goods or goods which are not appropriately packed according to the logistic provider's guidelines, which you will find on their website or receive upon booking.",
     },
     {
-      question: "HOW DO I TRACE MY GOODS AFTER I SHIP THEM?",
+      question: 'HOW DO I TRACE MY GOODS AFTER I SHIP THEM?',
       description:
         "All shipments will be meticulously regulated in accordance with the logistic provider's robust platform system, ensuring smooth and efficient handling from start to finish.",
     },

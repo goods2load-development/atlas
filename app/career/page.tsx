@@ -1,40 +1,46 @@
-"use client";
+import CareerForm from '../_components/Career/CareerForm/CareerForm';
+import { JoinOurTeam } from '../_components/Career/JoinOurTeam/JoinOurTeam';
+import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
-import CareerCard from "../_components/Career/CareerCard/CareerCard";
-import CareerForm from "../_components/Career/CareerForm/CareerForm";
-import { careerData } from "../_components/Career/careerData";
+import { Metadata } from 'next';
 
-import LoyaltAllWrapper from "../_components/LoyaltAllWrapper/LoyaltAllWrapper";
+import Footer from '@/components/Footer';
+import DynamicMenu from '@/components/Header/DynamicMenu';
+import HeaderClient from '@/components/Header/HeaderClient';
 
-const Career: React.FC = () => {
+const title = 'Join Our Team - GOODS2LOAD | Careers in Logistics Innovation';
+const description =
+  'Ready to challenge the logistics industry? Join the GOODS2LOAD team and make an impact with smart working opportunities in sales, customer care, and logistics partnerships. Apply';
+
+export function generateMetadata(): Metadata {
+  const defaultMetadata = generateDefaultMetadata();
+
+  return {
+    title,
+    description,
+    openGraph: {
+      ...defaultMetadata.openGraph,
+      title,
+      description,
+    },
+    twitter: {
+      ...defaultMetadata.twitter,
+      title,
+      description,
+    },
+  };
+}
+const Career = () => {
   return (
-    <LoyaltAllWrapper>
+    <>
+      <HeaderClient />
+      <DynamicMenu />
       <section className="max-w-[1440px] w-full justify-center items-center gap-[40px] py-[40px] sm:py-[104px] px-5 m-auto">
-        <div className="flex flex-col gap-[16px] justify-center text-center text-black mb-[20px]">
-          <h1 className="font-normal text-[34px]/[40px] sm:text-[48px]/[57.6px] italic text-center flex flex-row justify-center gap-[12px]">
-            Join our{" "}
-            <div className="font-light not-italic bg-[#FEF1DF] rounded-md h-[40px] sm:h-[49px] px-[4px]">
-              team
-            </div>
-          </h1>
-        </div>
-        <div className="flex justify-center mb-[40px]">
-          <p className="max-w-[800px] text-center font-normal text-black sm:text-[18px]/[25px]">
-            Do you have what it takes to challenge the logistics industry with
-            us?
-            <br />
-            Send your application right away
-          </p>
-        </div>
-        <div className="flex gap-5 sm:gap-[40px] flex-wrap justify-center mb-[40px]">
-          {careerData?.map((item, i) => (
-            // eslint-disable-next-line react/jsx-key
-            <CareerCard key={i} pesonalInfo={item} />
-          ))}
-        </div>
+        <JoinOurTeam />
         <CareerForm />
       </section>
-    </LoyaltAllWrapper>
+      <Footer />
+    </>
   );
 };
 

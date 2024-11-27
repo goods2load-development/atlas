@@ -1,10 +1,13 @@
-import { TrashIcon, ArrowUpRight, GripVertical } from "lucide-react";
-import type { ReferralItemType } from "./types";
-import { useSortable } from "@dnd-kit/sortable";
-import { CSS } from "@dnd-kit/utilities";
-import Link from "next/link";
-import EditReferralDialog from "./EditReferralDialog";
-import BannerPreview from "./BannerPreview";
+import BannerPreview from './BannerPreview';
+import EditReferralDialog from './EditReferralDialog';
+import type { ReferralItemType } from './types';
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+
+import { ArrowUpRight, GripVertical, TrashIcon } from 'lucide-react';
+import Link from 'next/link';
+
+import ListItem from '@/components/ui/list-item';
 
 const ReferralItem = ({
   referralItem,
@@ -16,16 +19,16 @@ const ReferralItem = ({
   editReferral: (
     oldData: ReferralItemType,
     data: ReferralItemType,
-    id: string
+    id: string,
   ) => void;
 }) => {
-  const { title, url, id, picture } = referralItem;
+  const { title, url, id, bigBanner, smallBanner } = referralItem;
   const { attributes, listeners, setNodeRef, transform, transition } =
     useSortable({
       id,
       transition: {
         duration: 150,
-        easing: "cubic-bezier(0.25, 1, 0.5, 1)",
+        easing: 'cubic-bezier(0.25, 1, 0.5, 1)',
       },
     });
 
@@ -39,15 +42,12 @@ const ReferralItem = ({
       <button {...attributes} {...listeners}>
         <GripVertical size={40} strokeWidth={2.75} />
       </button>
-      <div
-        className="flex items-center border border-orange-500 p-4 w-full
-    rounded-lg shadow-lg bg-white hover:bg-orange-100 transition duration-300 ease-in-out"
-      >
+      <ListItem>
         <h2 className="max-w-[300px] text-lg md:text-2xl font-semibold text-orange-700">
           {title}
         </h2>
         <div className="flex gap-2 ml-auto">
-          <BannerPreview image={picture} />
+          <BannerPreview bigBanner={bigBanner} smallBanner={smallBanner} />
           <EditReferralDialog
             editReferral={editReferral}
             referralItem={referralItem}
@@ -59,7 +59,7 @@ const ReferralItem = ({
             <ArrowUpRight size={30} />
           </Link>
         </div>
-      </div>
+      </ListItem>
     </div>
   );
 };

@@ -1,10 +1,10 @@
-import React from "react";
-import Image from "next/image";
+import { opportunitiesData } from './opportunitiesData';
+import { OpportunitiesData } from '@/app/interface/PartnersAmplify';
+import macBookImage from '@/assets/PartnersImage/PartnersAmplify/macbookProMockup.png';
 
-import { opportunitiesData } from "./opportunitiesData";
+import React from 'react';
 
-import macBookImage from "@/assets/PartnersImage/PartnersAmplify/macbookProMockup.png";
-import { OpportunitiesData } from "@/app/interface/PartnersAmplify";
+import Image from 'next/image';
 
 const PartnersAmplify: React.FC = () => {
   return (
@@ -14,9 +14,9 @@ const PartnersAmplify: React.FC = () => {
           <div className="absolute top-0 right-0 w-[1540px] h-full text-white text-center pb-[100px] pt-[150px] mb-[110px]" />
           <div className="absolute left-0 bottom-0 transform translate-y-[220px] md:translate-y-[115px]">
             <Image
-              className="w-full sm:w-[489px] sm:h-[330px] md:w-[533px] md:h-[330px]  lg:w-[733px] lg:h-[430px]"
+              className="w-full sm:w-[489px] sm:h-[330px] md:w-[533px] md:h-[330px]  lg:w-[733px] lg:h-[430px] mx-auto"
               src={macBookImage}
-              alt=""
+              alt="pc-image"
             />
           </div>
           <div className="sm:flex flex-col z-40">
@@ -41,7 +41,7 @@ const PartnersAmplify: React.FC = () => {
                     {opportunity}
                   </div>
                 </div>
-              )
+              ),
             )}
           </div>
         </div>

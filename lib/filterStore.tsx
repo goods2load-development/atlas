@@ -1,8 +1,15 @@
-import { create } from "zustand";
-import { format } from "date-fns";
-import { getRequest, postRequest, patchRequest, deleteRequest } from "./utils";
+import {
+  deleteRequest,
+  getCountryIsoByName,
+  getRequest,
+  patchRequest,
+  postRequest,
+} from './utils';
 
-export const LOCAL_STORAGE_SEARCH_FORM_KEY = "search-from";
+import { format } from 'date-fns';
+import { create } from 'zustand';
+
+export const LOCAL_STORAGE_SEARCH_FORM_KEY = 'search-from';
 
 function validate(requiredFields: any) {
   let isValid = true;
@@ -19,21 +26,19 @@ function validate(requiredFields: any) {
 }
 
 export enum ContainerLoad {
-  FCL = "FCL",
-  LCL = "LCL",
+  FCL = 'FCL',
+  LCL = 'LCL',
 }
 
 export enum DeliveryBy {
-  plane = "plane",
-  ferry = "ferry",
-  truck = "truck",
+  plane = 'plane',
+  ferry = 'ferry',
+  truck = 'truck',
 }
 
 interface FilterStoreProps {
   valid: boolean;
   partnersSelected: string[];
-  priceMin: string | null;
-  priceMax: string | null;
   deliveryBy: DeliveryBy;
   fromCountry: string;
   from: string;
@@ -51,13 +56,45 @@ interface FilterStoreProps {
   goodsValue: string;
   incoterms: string;
   sortBy: null | any;
-  cheapest: boolean;
-  fastest: boolean;
-  goGreen: boolean;
+
+  // Services
+  bestReviewed: boolean;
+  carbonOffset: boolean;
+  industryRecognition: boolean;
+
+  // Industry Solutions
+  pharmaceuticals: boolean;
+  electronics: boolean;
+  automotive: boolean;
+  manufacturing_retail: boolean;
+  exhibition_interior_design: boolean;
+  apparel_fashion: boolean;
+  ecommerce: boolean;
+  food_beverage: boolean;
+  energy: boolean;
+
+  // Transport Solutions
+  cold_chain: boolean;
+  dangerous_goods: boolean;
+  high_value_goods: false;
+  last_mile_delivery: boolean;
+  project_cargo: boolean;
+  general_solutions: boolean;
+
+  // Additional services
+  white_gloves_services: boolean;
+  ecommerce_fullfillment: boolean;
+  heavy_equipment_logistics: boolean;
+  cross_border_expansion: boolean;
+  warehousing: boolean;
+  custom_clearance: boolean;
+
   partners: any[];
+  filterPartners: any[];
+  isPartnersLoading: boolean;
   portsDepartureSelected: string[];
   portsArrivalSelected: string[];
-  products: any[];
+  // products: any[];
   pagination: any;
   setFilter: (data: FilterStoreProps) => void;
   portsDeparture: string[];
@@ -65,7 +102,7 @@ interface FilterStoreProps {
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
   let savedSeachForm: any =
-    typeof window !== "undefined"
+    typeof window !== 'undefined'
       ? localStorage.getItem(LOCAL_STORAGE_SEARCH_FORM_KEY)
       : null;
 
@@ -76,38 +113,68 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
   return {
     valid: validate(savedSeachForm),
     deliveryBy: savedSeachForm?.deliveryBy || DeliveryBy.plane,
-    fromCountry: savedSeachForm?.fromCountry || "",
-    from: savedSeachForm?.from || "",
-    toCountry: savedSeachForm?.toCountry || "",
-    to: savedSeachForm?.to || "",
-    departure: savedSeachForm?.departure || "",
-    arrival: savedSeachForm?.arrival || "",
-    typeOfGoods: savedSeachForm?.typeOfGoods || "",
-    totalKg: savedSeachForm?.totalKg || "",
-    placementOfGoods: savedSeachForm?.placementOfGoods || "Pallets",
-    quantity: savedSeachForm?.quantity || "",
-    length: savedSeachForm?.length || "",
-    width: savedSeachForm?.width || "",
-    height: savedSeachForm?.height || "",
-    goodsValue: savedSeachForm?.goodsValue || "0",
-    incoterms: savedSeachForm?.incoterms || "DDP",
+    fromCountry: savedSeachForm?.fromCountry || '',
+    from: savedSeachForm?.from || '',
+    toCountry: savedSeachForm?.toCountry || '',
+    to: savedSeachForm?.to || '',
+    departure: savedSeachForm?.departure || '',
+    arrival: savedSeachForm?.arrival || '',
+    typeOfGoods: savedSeachForm?.typeOfGoods || '',
+    totalKg: savedSeachForm?.totalKg || '',
+    placementOfGoods: savedSeachForm?.placementOfGoods || 'Pallets',
+    quantity: savedSeachForm?.quantity || '',
+    length: savedSeachForm?.length || '',
+    width: savedSeachForm?.width || '',
+    height: savedSeachForm?.height || '',
+    goodsValue: savedSeachForm?.goodsValue || '0',
+    incoterms: savedSeachForm?.incoterms || 'Unknown',
 
     // filter options
-    cheapest: false,
-    fastest: false,
-    goGreen: false,
-    priceMin: null,
-    priceMax: null,
+
+    // Services
+    bestReviewed: false,
+    carbonOffset: false,
+    industryRecognition: false,
+
+    // Industry solutions
+    pharmaceuticals: false,
+    electronics: false,
+    automotive: false,
+    manufacturing_retail: false,
+    exhibition_interior_design: false,
+    apparel_fashion: false,
+    ecommerce: false,
+    food_beverage: false,
+    energy: false,
+
+    // Transport solutions
+    cold_chain: false,
+    dangerous_goods: false,
+    high_value_goods: false,
+    last_mile_delivery: false,
+    project_cargo: false,
+    general_solutions: false,
+
+    // Additional Services
+    white_gloves_services: false,
+    ecommerce_fullfillment: false,
+    heavy_equipment_logistics: false,
+    cross_border_expansion: false,
+    warehousing: false,
+    custom_clearance: false,
+
     partners: [],
+    isPartnersLoading: true,
     partnersSelected: [],
     portsDeparture: [],
     portsDepartureSelected: [],
     portsArrival: [],
     portsArrivalSelected: [],
+    filterPartners: [],
 
     sortBy: null,
 
-    products: [],
+    // products: [],
     pagination: {},
     setFilter: (newFilter: FilterStoreProps) => {
       const {
@@ -141,7 +208,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height,
           goodsValue,
         },
-        newFilter
+        newFilter,
       );
       set((state: FilterStoreProps) => ({
         ...state,
@@ -149,31 +216,41 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         valid: validate(requiredFields),
       }));
     },
-    getPartners: async () => {
-      const data = await getRequest({
-        url: "orders/partners",
-      });
-      set(() => ({
-        partners: data.data,
-        partnersSelected: data.data.map((item: any) => item.id),
-      }));
-    },
-    getPortsList: (departure: boolean = false) => {
+    getPortsList: async (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
-      const type = deliveryBy === "plane" ? "airport" : "seaport";
+      const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
       const city = `${departure ? fromCountry : toCountry} ${departure ? from : to}`;
-      if (deliveryBy !== "truck")
+
+      let iso2;
+
+      try {
+        const reponse_iso2 = await fetch(
+          `https://restcountries.com/v3.1/name/${departure ? fromCountry : toCountry}`,
+        );
+        const data = await reponse_iso2.json();
+        iso2 = data[0]?.cca2 || 'Country not found';
+      } catch (error) {
+        iso2 = null;
+      }
+
+      if (deliveryBy === 'truck') return;
+
+      if (type === 'airport') {
         getRequest({
-          url: `https://port-api.com/${type}/search/${city}`,
+          url: `https://aviation-edge.com/v2/public/airportDatabase?key=${process.env.NEXT_PUBLIC_AVIATION_EDGE_API_KEY}&type=Cargo&codeIso2Country=${iso2}`,
           withCredentials: false,
         }).then((data: any) => {
-          if (data?.features) {
-            const ports: any[] = data?.features.map((item: any) => ({
-              id: item.properties.name,
-              label: item.properties.name,
+          if (!!data.length) {
+            const ports: any[] = data.map((item: any) => ({
+              id: item.codeIataAirport,
+              label: `(${item.codeIataAirport}) ${
+                item.nameAirport.includes(' Airport')
+                  ? item.nameAirport
+                  : item.nameAirport + ' Airport'
+              }`,
             }));
-            const selected: any[] = data?.features.map(
-              (item: any) => item.properties.name
+            const selected: any[] = data.map(
+              (item: any) => item.codeIataAirport,
             );
             if (departure) {
               set(() => ({
@@ -188,8 +265,43 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             }
           }
         });
+      }
+
+      if (type === 'seaport') {
+        const response = await fetch(
+          `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&name=${encodeURIComponent(departure ? from : to)}&country_iso=${encodeURIComponent(iso2 as string)}&port_type=Port&fuzzy=1`,
+        );
+        const data = await response.json();
+
+        const ports = data.data
+          .filter((item: any) => item.unlocode)
+          .map((item: any) => ({
+            id: item.unlocode,
+            label: `(${item.unlocode}) ${item.port_name}`,
+          }));
+
+        const selected: any[] = data.data
+          .filter((item: any) => item.unlocode)
+          .map((item: any) => item.unlocode);
+
+        if (departure) {
+          set(() => ({
+            portsDeparture: ports,
+            portsDepartureSelected: selected,
+          }));
+        } else {
+          set(() => ({
+            portsArrival: ports,
+            portsArrivalSelected: selected,
+          }));
+        }
+      }
     },
-    getProducts: async (page?: number) => {
+    clearPartners: () => {
+      set({ partners: [] });
+    },
+    getPartners: async (page?: number) => {
+      set({ isPartnersLoading: true });
       const {
         deliveryBy,
         fromCountry,
@@ -199,11 +311,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         departure,
         arrival,
         typeOfGoods,
-        cheapest,
-        fastest,
-        goGreen,
-        priceMin,
-        priceMax,
+        bestReviewed,
+        carbonOffset,
+        industryRecognition,
         partnersSelected,
         portsDepartureSelected,
         portsArrivalSelected,
@@ -215,6 +325,33 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         height,
         goodsValue,
         incoterms,
+
+        // Industry solutions
+        pharmaceuticals,
+        electronics,
+        automotive,
+        manufacturing_retail,
+        exhibition_interior_design,
+        apparel_fashion,
+        ecommerce,
+        food_beverage,
+        energy,
+
+        // Transport solutions
+        cold_chain,
+        dangerous_goods,
+        high_value_goods,
+        last_mile_delivery,
+        project_cargo,
+        general_solutions,
+
+        // Additional Services
+        white_gloves_services,
+        ecommerce_fullfillment,
+        heavy_equipment_logistics,
+        cross_border_expansion,
+        warehousing,
+        custom_clearance,
       } = get();
 
       localStorage.setItem(
@@ -236,11 +373,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height,
           goodsValue,
           incoterms,
-        })
+        }),
       );
 
       postRequest({
-        url: "orders/search",
+        url: 'partners/search',
         params: { page, take: 10 },
         data: {
           transportation: deliveryBy,
@@ -248,17 +385,14 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           to: `${toCountry}, ${to}`,
           departure,
           arrival,
-          goods: typeOfGoods.split(" ")[0],
+          goods: typeOfGoods.split(' ')[0],
           kilogram: parseInt(totalKg),
           placementOfGoods,
           quantity: parseInt(quantity),
           length: parseInt(length),
           width: parseInt(width),
           height: parseInt(height),
-
-          [`incoterms${deliveryBy.charAt(0).toUpperCase() + deliveryBy.slice(1)}`]:
-            incoterms,
-
+          incoterm: incoterms,
           logisticPartner: partnersSelected.length
             ? partnersSelected
             : undefined,
@@ -272,48 +406,54 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           goodsValue:
             parseInt(goodsValue) /
             useCurrenciesStore.getState().selectedCurrency.rate,
-          order: {
-            cheapest: cheapest,
-            fastest: fastest,
-            goGreen: goGreen,
-          },
+
           provider: {},
-          price: {
-            min: priceMin
-              ? parseInt(priceMin) /
-                useCurrenciesStore.getState().selectedCurrency.rate
-              : undefined,
-            max: priceMax
-              ? parseInt(priceMax) /
-                useCurrenciesStore.getState().selectedCurrency.rate
-              : undefined,
+          filters: {
+            pharmaceuticals: pharmaceuticals,
+            electronics: electronics,
+            automotive: automotive,
+            manufacturingRetail: manufacturing_retail,
+            exhibitionInteriorDesign: exhibition_interior_design,
+            apparelFashion: apparel_fashion,
+            ecommerce: ecommerce,
+            foodBeverage: food_beverage,
+            energy: energy,
+            coldChain: cold_chain,
+            dangerousGoods: dangerous_goods,
+            highValueGoods: high_value_goods,
+            lastMileDelivery: last_mile_delivery,
+            projectCargo: project_cargo,
+            generalSolutions: general_solutions,
+            whiteGlovesServices: white_gloves_services,
+            ecommerceFullfillment: ecommerce_fullfillment,
+            heavyEquipmentLogistics: heavy_equipment_logistics,
+            crossBorderExpansion: cross_border_expansion,
+            warehousing: warehousing,
+            customClearance: custom_clearance,
+
+            carbonOffset,
+            industryRecognition,
+            bestReviewed,
           },
         },
-      }).then((data: any) => {
-        const products = data.partners.data.map((item: any) => ({
-          deliveryBy: item.transportation,
-          estimatedTransit: item.transit,
-          company: {
-            name: item.companyName,
-          },
-          withdraw: format(
-            new Date(item.withdraw).toDateString(),
-            "MM/dd/yyyy"
-          ),
-          delivery: format(
-            new Date(item.delivery).toDateString(),
-            "MM/dd/yyyy"
-          ),
-          orderCost: item.price,
-          CO2EmissionControlled: item.goGreen,
-          portArrival: item.portArrival,
-          portDeparture: item.portDeparture,
-          price: item.price, // Added for analytics avarge store when user select this product
-          placementOfGoods: item.placementOfGoods // Added for analytics avarge store when user select this product
-        }));
-        console.log("products", products);
-        set(() => ({ products, pagination: data.partners.meta }));
-      });
+      })
+        .then((data: any) => {
+          let partners = data?.partners?.data;
+
+          set(() => ({ partners, pagination: data?.partners?.meta }));
+        })
+        .finally(() => {
+          set({ isPartnersLoading: false });
+        });
+    },
+    setPartnersFilters: async (data: any) => {
+      set(() => ({
+        filterPartners: data.map((item: any) => ({
+          id: item.partner.id,
+          label: item.companyName,
+        })),
+        partnersSelected: data.map((item: any) => item.partner.id),
+      }));
     },
   };
 });
@@ -332,8 +472,8 @@ interface SelectedCurrencyProps {
 
 export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
   selectedCurrency: {
-    symbol: "$",
-    code: "USD",
+    symbol: '$',
+    code: 'USD',
     rate: 1,
   },
   currencies: [],
@@ -343,10 +483,10 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
     })),
   getCurrencies: async () => {
     const exchangeRates = await getRequest({
-      url: "/currencies",
+      url: '/currencies',
     });
     getRequest({
-      url: "https://www.wixapis.com/currency_converter/v1/currencies",
+      url: 'https://www.wixapis.com/currency_converter/v1/currencies',
       withCredentials: false,
     }).then((data) => {
       const currenciesSorted = data.currencies.sort((a: any, b: any) => {
@@ -359,20 +499,20 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
         }
       });
       const majorCurrencies = currenciesSorted.filter(
-        (i: any) => i.code === "USD" || i.code === "EUR" || i.code === "GBP"
+        (i: any) => i.code === 'USD' || i.code === 'EUR' || i.code === 'GBP',
       );
       set(() => ({
         currencies: majorCurrencies
           .concat(
             currenciesSorted.filter(
               (i: any) =>
-                !(i.code === "USD" || i.code === "EUR" || i.code === "GBP") &&
-                exchangeRates[i.code]
-            )
+                !(i.code === 'USD' || i.code === 'EUR' || i.code === 'GBP') &&
+                exchangeRates[i.code],
+            ),
           )
           .map((item: any) => ({ ...item, rate: exchangeRates[item.code] })),
         selectedCurrency: {
-          ...currenciesSorted.find((item: any) => item.code === "USD"),
+          ...currenciesSorted.find((item: any) => item.code === 'USD'),
           rate: 1,
         },
       }));

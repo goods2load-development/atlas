@@ -1,5 +1,5 @@
-import Image from "next/image";
-import Link from "next/link";
+import Image from 'next/image';
+import Link from 'next/link';
 
 interface lItemProps {
   title: string;
@@ -12,25 +12,25 @@ interface lItemProps {
 // TEMP DATA (till missing API)
 const lItems: lItemProps[] = [
   {
-    title: "JP MORGAN",
-    imageSrc: "/logisticimg1.png",
-    date: "February 2024",
-    text: "With 30% of global container trade transiting through the Suez Canal, the Red Sea shipping crisis is upending supply chains.",
-    link: "https://www.jpmorgan.com/insights/global-research/supply-chain/red-sea-shipping",
+    title: 'JP MORGAN',
+    imageSrc: '/logisticimg1.png',
+    date: 'February 2024',
+    text: 'With 30% of global container trade transiting through the Suez Canal, the Red Sea shipping crisis is upending supply chains.',
+    link: 'https://www.jpmorgan.com/insights/global-research/supply-chain/red-sea-shipping',
   },
   {
-    title: "Kuehne & Nagel International",
-    imageSrc: "/logisticimg2.png",
-    date: "February 2024",
-    text: "Kühne + Nagel International AG engages in the provision of logistic services. It operates through the following segments: Sea Freight, Airfreight, Overland, and Contract Logistics.",
-    link: "https://www.forbes.com/companies/kuehne-nagel-international/?sh=4263844f5141",
+    title: 'Kuehne & Nagel International',
+    imageSrc: '/logisticimg2.png',
+    date: 'February 2024',
+    text: 'Kühne + Nagel International AG engages in the provision of logistic services. It operates through the following segments: Sea Freight, Airfreight, Overland, and Contract Logistics.',
+    link: 'https://www.forbes.com/companies/kuehne-nagel-international/?sh=4263844f5141',
   },
   {
-    title: "CNBC",
-    imageSrc: "/logisticimg3.png",
-    date: "February 2024",
-    text: "Ocean freight rates from Asia to the U.S. have begun to de- cline, providing some relief for U.S. shippers. But cargo shipping costs are still massively up since Decem",
-    link: "https://www.cnbc.com/2024/02/15/red-sea-attack-fueled-ocean-freight-inflation-is-starting-to-reverse.html#:~:text=State%20of%20Freight-,Red%20Sea%20attack%2Dfueled%20ocean%20freight%20inflation%20is%20starting%20to,on%20key%20global%20trade%20routes&text=Ocean%20freight%20rates%20from%20Asia,the%20Red%20Sea%20crisis%20began.",
+    title: 'CNBC',
+    imageSrc: '/logisticimg3.png',
+    date: 'February 2024',
+    text: 'Ocean freight rates from Asia to the U.S. have begun to de- cline, providing some relief for U.S. shippers. But cargo shipping costs are still massively up since Decem',
+    link: 'https://www.cnbc.com/2024/02/15/red-sea-attack-fueled-ocean-freight-inflation-is-starting-to-reverse.html#:~:text=State%20of%20Freight-,Red%20Sea%20attack%2Dfueled%20ocean%20freight%20inflation%20is%20starting%20to,on%20key%20global%20trade%20routes&text=Ocean%20freight%20rates%20from%20Asia,the%20Red%20Sea%20crisis%20began.',
   },
 ];
 
@@ -75,14 +75,25 @@ export default function LogisticInsights() {
   return (
     <div className="px-[16px] py-[80px] lg:bg-bgLogistics bg-no-repeat bg-cover text-black">
       <div className="max-w-[1328px] mx-auto">
-        <h2 className="font-light text-[30px]/[34px] md:text-[40px]/[48px] text-center md:text-left">
-          <i className="bg-allTittleColor rounded-md px-2 font-normal">
-            Logistics
-          </i>{" "}
-          insights:
-        </h2>
-        <div className="font-light text-[16px]/[20px] md:text-[18px]/[22px] py-3 text-center md:text-left">
-          stay ahead with our blog.
+        <div className="flex items-center justify-between">
+          <div>
+            <h2 className="font-light text-[30px]/[34px] md:text-[40px]/[48px] text-center md:text-left">
+              <i className="bg-allTittleColor rounded-md px-2 font-normal">
+                Logistics
+              </i>{' '}
+              insights:
+            </h2>
+            <div className="font-light text-[16px]/[20px] md:text-[18px]/[22px] py-3 text-center md:text-left">
+              stay ahead with our blog.
+            </div>
+          </div>
+
+          <Link
+            className="py-3 w-[184px] rounded-2xl font-medium text-white hover:opacity-80"
+            href="/"
+          >
+            More articles
+          </Link>
         </div>
         <div className="sm:flex flex-wrap justify-around mt-5 gap-3">
           {lItems.map((item, index) => (

@@ -1,6 +1,6 @@
-import { OrderedList, Paragraph, UnorderedList } from "./blocks";
-import LegacyTable from "./blocks/LegacyTable";
-import { ILegacyDataBlockBody, ILegacyDataBlockBodyType } from "./types";
+import { OrderedList, Paragraph, UnorderedList } from './blocks';
+import LegacyTable from './blocks/LegacyTable';
+import { ILegacyDataBlockBody, ILegacyDataBlockBodyType } from './types';
 
 export default function LegacyBlock({
   content,

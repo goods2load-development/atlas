@@ -1,17 +1,21 @@
-"use client";
-import UIButton from "@/components/common/Button";
+'use client';
+
+import { useUserStore } from '@/lib/store';
+
+import { Trash2 } from 'lucide-react';
+import { redirect } from 'next/navigation';
+
+import UIButton from '@/components/common/Button';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogFooter,
-  DialogClose,
-} from "@/components/ui/dialog";
-import { redirect } from "next/navigation";
-import { useUserStore } from "@/lib/store";
+} from '@/components/ui/dialog';
 
 export default function DeleteAccount() {
   const { deleteUser } = useUserStore((state: any) => state);
@@ -23,7 +27,7 @@ export default function DeleteAccount() {
           secondary
           className="text-[#666666] border-[#666666] hover:bg-[#666666] w-full sm:w-[224px]"
         >
-          <img src="/trash.svg" />
+          <Trash2 className="w-4 h-4 mr-[6px]" />
           Delete account
         </UIButton>
       </DialogTrigger>
@@ -34,7 +38,7 @@ export default function DeleteAccount() {
           </DialogTitle>
           <DialogDescription className="text-center text-[18px]/[26px] text-black mb-8">
             Are you sure you would like to delete this profile from the
-            database?{" "}
+            database?{' '}
             <span className="font-semibold">This action cannot be undone.</span>
           </DialogDescription>
         </DialogHeader>
@@ -48,7 +52,7 @@ export default function DeleteAccount() {
             <UIButton
               onClick={() => {
                 deleteUser(() => {
-                  redirect("/");
+                  redirect('/');
                 });
               }}
             >

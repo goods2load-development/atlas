@@ -1,14 +1,17 @@
-"use client";
-import UIButton from "@/components/common/Button";
+'use client';
+
+import ReferralFormDialog from './ReferralFormDialog';
+
+import { useState } from 'react';
+
+import UIButton from '@/components/common/Button';
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
-import { useState } from "react";
-import ReferralFormDialog from "./ReferralFormDialog";
+} from '@/components/ui/dialog';
 
 const AddNewReferralDialog = ({
   addNewReferral,
@@ -23,7 +26,7 @@ const AddNewReferralDialog = ({
   };
 
   return (
-    <Dialog open={isOpen}>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogContent onCloseClick={() => setIsOpen(false)} className="p-8">
         <DialogHeader>
           <DialogTitle className="text-center text-[40px]/[48px] mb-3 uppercase font-bold">

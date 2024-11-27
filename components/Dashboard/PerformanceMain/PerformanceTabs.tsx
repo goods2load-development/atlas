@@ -1,7 +1,9 @@
-import { ReactNode } from "react";
-import { cn } from "@/lib/utils";
-import * as DropdownMenu from "@radix-ui/react-dropdown-menu";
-import { ChevronUp } from "lucide-react";
+import { cn } from '@/lib/utils';
+import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
+
+import { ReactNode } from 'react';
+
+import { ChevronUp } from 'lucide-react';
 
 export interface IPerformanceTab {
   label: PerformaceTab;
@@ -9,11 +11,10 @@ export interface IPerformanceTab {
 }
 
 export enum PerformaceTab {
-  EVOLUTION = "Evolution",
-  COMPETITIVENESS = "Competitiveness",
-  USER_SEGMENTATION = "User segmentation",
+  EVOLUTION = 'Evolution',
+  COMPETITIVENESS = 'Competitiveness',
+  USER_SEGMENTATION = 'User segmentation',
 }
-
 
 interface PerformanceTabsProps {
   tabs: IPerformanceTab[];
@@ -34,15 +35,15 @@ const PerformanceTabs: React.FC<PerformanceTabsProps> = ({
             key={index}
             onClick={() => onChangeTab(tab.label)}
             className={cn(
-              "text-md leading-6 opacity-60 relative flex  justify-center cursor-pointer mb-10 whitespace-nowrap",
-              "p-4"
+              'text-md leading-6 opacity-60 relative flex  justify-center cursor-pointer mb-10 whitespace-nowrap',
+              'p-4',
             )}
           >
             {tab.label}
             <div
               className={cn(
-                "absolute w-[100%] h-[2px] bg-[#FF6720] top-[96%]",
-                activeTab === tab.label ? "opacity-100" : "opacity-0"
+                'absolute w-[100%] h-[2px] bg-[#FF6720] top-[96%]',
+                activeTab === tab.label ? 'opacity-100' : 'opacity-0',
               )}
             ></div>
           </li>

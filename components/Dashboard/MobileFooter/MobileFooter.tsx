@@ -1,5 +1,5 @@
-import Logo from "@/components/Logo";
-import Socials from "@/components/Socials";
+import Logo from '@/components/Logo';
+import Socials from '@/components/Socials';
 
 const MobileFooter = () => {
   return (

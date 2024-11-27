@@ -1,29 +1,35 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
-import AddNewReferralDialog from "./AddNewReferralDialog";
-import ReferralItem from "./ReferralItem";
-import { ReferralItemType } from "./types";
-import * as Slider from "@radix-ui/react-slider";
+import AddNewReferralDialog from './AddNewReferralDialog';
+import ReferralItem from './ReferralItem';
+import { ReferralItemType } from './types';
+import { useReferralsStore } from '@/lib/store';
+import { filterByField, removeEqualFields } from '@/lib/utils';
 import {
-  arrayMove,
-  rectSortingStrategy,
-  SortableContext,
-  sortableKeyboardCoordinates,
-} from "@dnd-kit/sortable";
-import {
-  closestCorners,
   DndContext,
   KeyboardSensor,
   PointerSensor,
+  closestCorners,
   useSensor,
   useSensors,
-} from "@dnd-kit/core";
-import { useReferralsStore } from "@/lib/store";
-import { Button } from "@/components/ui/button";
-import clsx from "clsx";
-import { removeEqualFields } from "@/lib/utils";
-import { useToast } from "@/components/ui/use-toast";
+} from '@dnd-kit/core';
+import {
+  SortableContext,
+  arrayMove,
+  rectSortingStrategy,
+  sortableKeyboardCoordinates,
+} from '@dnd-kit/sortable';
+import * as Slider from '@radix-ui/react-slider';
+
+import { useCallback, useEffect, useMemo, useState } from 'react';
+
+import clsx from 'clsx';
+import debounce from 'lodash/debounce';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Input } from '@/components/ui/input';
+import { useToast } from '@/components/ui/use-toast';
 
 const ReferralMain = () => {
   const {
@@ -33,28 +39,42 @@ const ReferralMain = () => {
     deleteReferral,
     updateReferral: editReferralById,
     updateReferralsViewCount,
+    updateReferralsIsRefInCatalog,
     isReferralsLoading,
     referrals: referralsData,
   } = useReferralsStore((state: any) => state);
-  const { referals: referrals = [], slicePerReferals = null } = referralsData;
+  const {
+    referals: referrals = [],
+    slicePerReferals = null,
+    referalIsInCatalog = true,
+  } = referralsData;
   const { toast } = useToast();
 
   const [referralsItems, setReferralsItems] = useState<ReferralItemType[]>([]);
   const [localSlicePerReferals, setLocalSlicePerReferals] = useState<
     null | number[]
   >(null);
+  const [localIsRefInCatalog, setLocalIsRefInCatalog] = useState<boolean>(true);
+
+  const [searchValue, setSearchValue] = useState('');
+  const filteredReferrals = useMemo(
+    () => filterByField(referralsItems, 'title', searchValue),
+    [searchValue, referralsItems],
+  );
 
   const isReferralsChanged =
     JSON.stringify(referrals) !== JSON.stringify(referralsItems);
   const isSlicePerReferralsChanged =
     localSlicePerReferals?.[0] !== slicePerReferals;
-  const isAnyChanges = isReferralsChanged || isSlicePerReferralsChanged;
+  const isRefInCatalogChanged = localIsRefInCatalog !== referalIsInCatalog;
+  const isAnyChanges =
+    isReferralsChanged || isSlicePerReferralsChanged || isRefInCatalogChanged;
 
   const sensors = useSensors(
     useSensor(PointerSensor),
     useSensor(KeyboardSensor, {
       coordinateGetter: sortableKeyboardCoordinates,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -66,20 +86,22 @@ const ReferralMain = () => {
 
     setReferralsItems(referrals);
     setLocalSlicePerReferals([slicePerReferals]);
+    setLocalIsRefInCatalog(referalIsInCatalog);
   }, [referrals, slicePerReferals]);
 
   const addNewReferral = async (data: ReferralItemType) => {
     postNewReferral({
       ...data,
-      picture: data.picture[0],
+      bigBanner: data.bigBanner[0],
+      smallBanner: data.smallBanner[0],
     })
       .then(getAllReferrals)
       .then(
         toast({
-          title: "New referral added.",
-          variant: "default",
-          className: "bg-green-500",
-        })
+          title: 'New referral added.',
+          variant: 'destructive',
+          className: 'bg-green-500 text-white',
+        }),
       );
   };
 
@@ -97,16 +119,19 @@ const ReferralMain = () => {
       ...(isReferralsChanged
         ? [updateAllReferrals({ referals: referralsItems })]
         : []),
+      ...(isRefInCatalogChanged
+        ? [updateReferralsIsRefInCatalog(localIsRefInCatalog)]
+        : []),
     ];
 
     Promise.all(listOfUpdates)
       .then(getAllReferrals)
       .then(() =>
         toast({
-          title: "Referrals list updated.",
-          variant: "default",
-          className: "bg-green-500",
-        })
+          title: 'Referrals list updated.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
@@ -115,41 +140,44 @@ const ReferralMain = () => {
       .then(getAllReferrals)
       .then(
         toast({
-          title: "Referral deleted.",
-          variant: "default",
-          className: "bg-green-500",
-        })
+          title: 'Referral deleted.',
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
       );
   };
 
   const editReferral = (
     oldData: ReferralItemType,
     data: ReferralItemType,
-    id: string
+    id: string,
   ) => {
     const dataClone = { ...data };
-    delete (dataClone as any)["picture"];
+    delete (dataClone as any)['picture'];
 
     const newRef = {
       ...removeEqualFields(oldData, dataClone),
-      ...((data.picture as unknown as FileList)?.[0]?.name && {
-        file: data.picture[0],
-      }),
+      // ...((data.picture as unknown as FileList)?.[0]?.name && {
+      //   file: data.picture[0],
+      // }),
     };
 
-    editReferralById(newRef, id).then(getAllReferrals).then(
-      toast({
-        title: `Referral "${data.title}" edited.`,
-        variant: "default",
-        className: "bg-green-500",
-      })
-    );;
+    editReferralById(newRef, id)
+      .then(getAllReferrals)
+      .then(
+        toast({
+          title: `Referral "${data.title}" edited.`,
+          variant: 'destructive',
+          className: 'bg-green-500',
+        }),
+      );
   };
 
   const handleDragEnd = ({ active, over }: any) => {
+    if (searchValue) return;
     if (over && active.id !== over?.id) {
       const activeIndex = referralsItems.findIndex(
-        ({ id }) => id === active.id
+        ({ id }) => id === active.id,
       );
       const overIndex = referralsItems.findIndex(({ id }) => id === over.id);
 
@@ -157,16 +185,26 @@ const ReferralMain = () => {
     }
   };
 
+  const debouncedSetSearchValue = useCallback(
+    debounce((value: string) => {
+      setSearchValue(value);
+    }, 200),
+    [],
+  );
+
   return (
     <div className="min-h-screen">
-      <div className="flex justify-between items-center mb-8">
-        <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left">
+      <div className="flex justify-between items-center mb-8 flex-wrap">
+        <h1 className="text-[26px] font-[400] text-[#263238] leading-[30px] text-center md:text-left mb-8 md:mb-0">
           Referrals
         </h1>
         <div
-          className={clsx("flex items-center gap-2", {
-            "pointer-events-none": isReferralsLoading,
-          })}
+          className={clsx(
+            'flex items-center gap-2 order-2 md:order-1 lg:order-2',
+            {
+              'pointer-events-none': isReferralsLoading,
+            },
+          )}
         >
           {localSlicePerReferals && localSlicePerReferals}
           <Slider.Root
@@ -195,10 +233,26 @@ const ReferralMain = () => {
             Update
           </Button>
         </div>
+        <label className="flex gap-2 lg:ml-auto items-center mr-0 lg:mr-4 mt-0 mb-8 md:mb-0 md:mt-4 lg:mt-0 order-1 md:order-2 lg:order-1 w-auto md:w-full lg:w-auto">
+          <span>In catalog</span>
+          <Checkbox
+            checked={localIsRefInCatalog}
+            onCheckedChange={(value) =>
+              setLocalIsRefInCatalog(value as boolean)
+            }
+          />
+        </label>
       </div>
+      <Input
+        onInput={(e: React.ChangeEvent<HTMLInputElement>) =>
+          debouncedSetSearchValue(e.currentTarget.value)
+        }
+        className="max-w-[400px] mb-4"
+        placeholder="Search..."
+      />
       <div
-        className={clsx("flex flex-col gap-4", {
-          "pointer-events-none": isReferralsLoading,
+        className={clsx('flex flex-col gap-4', {
+          'pointer-events-none': isReferralsLoading,
         })}
       >
         <DndContext
@@ -207,10 +261,10 @@ const ReferralMain = () => {
           onDragEnd={handleDragEnd}
         >
           <SortableContext
-            items={referralsItems.map((item) => item.id)}
+            items={filteredReferrals.map((item) => item.id)}
             strategy={rectSortingStrategy}
           >
-            {referralsItems.map((item) => (
+            {filteredReferrals.map((item) => (
               <ReferralItem
                 key={item.id}
                 referralItem={item}

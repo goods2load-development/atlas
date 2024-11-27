@@ -1,19 +1,17 @@
-import React from "react";
-import Image from "next/image";
+import phoneImage from '@/assets/PartnersImage/PartnersVisibility/mac-phone.webp';
+import tabImage from '@/assets/PartnersImage/PartnersVisibility/tab.png';
 
-import pcImage from "@/assets/PartnersImage/PartnersVisibility/pc.png";
-import phoneImage from "@/assets/PartnersImage/PartnersVisibility/phone.png";
-import tabImage from "@/assets/PartnersImage/PartnersVisibility/tab.png";
+import Image from 'next/image';
 
-const PartnersVisibility: React.FC = () => {
+const PartnersVisibility = () => {
   return (
     <section className="w-full items-center justify-center sm:pt-[47px] text-white text-center  mb-[50px] sm:mb-[100px] px-[16px] max-w-[1328px] mx-auto">
       <div className="mb-[40px]">
         <div className="text-black text-[30px]/[34px] sm:text-[40px] font-normal sm:font-semibold italic">
           “Nice
           <span className="text-[30px]/[34px] sm:text-[40px] sm:leading-48 sm:font-normal font-light">
-            {" "}
-            and{" "}
+            {' '}
+            and{' '}
           </span>
           easy”
         </div>
@@ -24,7 +22,7 @@ const PartnersVisibility: React.FC = () => {
           <h2 className="text-black max-w-[560px] md:max-w-[400px] lg:max-w-[560px] md:leading-[57px] font-light  mb-[10px] text-[34px]/[38px] md:text-[40px]/[48px] text-center sm:text-left">
             <span className="max-w-[400px] font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               Visibility
-            </span>{" "}
+            </span>{' '}
             in search results can truly set you apart
           </h2>
           <p className="sm:text-[18px] text-black w-full max-w-[570px] text-center sm:text-left mb-6 sm:mb-0">
@@ -33,20 +31,11 @@ const PartnersVisibility: React.FC = () => {
           </p>
         </div>
         <div className="relative">
-          <div className="absolute md:left-0 md:bottom-0 md:translate-y-[85px] md:translate-x-[-220px] left-[-140px] bottom-25 w-full">
-            <Image
-              alt="phone"
-              src={phoneImage.src}
-              width={phoneImage.width * 0.6}
-              height={phoneImage.height}
-            />
-          </div>
           <Image
-            src={pcImage.src}
-            width={pcImage.width}
-            height={pcImage.height}
-            alt="menWithPc"
-            className="w-full"
+            alt="phone"
+            src={phoneImage.src}
+            width={phoneImage.width * 0.6}
+            height={phoneImage.height}
           />
         </div>
       </div>

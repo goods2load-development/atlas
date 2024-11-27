@@ -1,6 +1,6 @@
-import LegacyBlock from "./LegacyBlock";
-import { ILegacyDataBlock } from "./types";
-import { generateBlockId } from "@/lib/utils";
+import LegacyBlock from './LegacyBlock';
+import { ILegacyDataBlock } from './types';
+import { generateBlockId } from '@/lib/utils';
 
 export default function LegacyData({ data }: { data: ILegacyDataBlock[] }) {
   return (

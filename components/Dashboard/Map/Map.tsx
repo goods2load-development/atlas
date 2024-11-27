@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
+
 import {
   ComposableMap,
   Geographies,
   Geography,
-  Marker,
   Line,
-} from "react-simple-maps";
+  Marker,
+} from 'react-simple-maps';
 
 interface MarkerCoordinates {
   name: string;
@@ -29,7 +30,7 @@ const Map = ({
   height?: number;
 }) => {
   const [hoveredMarkerIndex, setHoveredMarkerIndex] = useState<number | null>(
-    null
+    null,
   );
 
   const handleMarkerHover = (index: number) => {
@@ -67,9 +68,9 @@ const Map = ({
                   fill="url(#pattern)"
                   stroke=""
                   style={{
-                    default: { outline: "none" },
-                    hover: { outline: "none" },
-                    pressed: { outline: "none" },
+                    default: { outline: 'none' },
+                    hover: { outline: 'none' },
+                    pressed: { outline: 'none' },
                   }}
                 />
               ))
@@ -92,15 +93,15 @@ const Map = ({
                 <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
                   <stop
                     offset="20%"
-                    style={{ stopColor: "#FF6720", stopOpacity: 1 }}
+                    style={{ stopColor: '#FF6720', stopOpacity: 1 }}
                   />
                   <stop
                     offset="50%"
-                    style={{ stopColor: "#FFFFFF", stopOpacity: 1 }}
+                    style={{ stopColor: '#FFFFFF', stopOpacity: 1 }}
                   />
                   <stop
                     offset="80%"
-                    style={{ stopColor: "#FF6720", stopOpacity: 1 }}
+                    style={{ stopColor: '#FF6720', stopOpacity: 1 }}
                   />
                 </linearGradient>
               </defs>
@@ -164,7 +165,7 @@ const Map = ({
                       textAnchor="middle"
                       dominantBaseline="middle"
                       style={{
-                        fontSize: "14px",
+                        fontSize: '14px',
                       }}
                     >
                       {from.name}

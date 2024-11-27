@@ -1,152 +1,47 @@
-"use client";
-import React, { useEffect } from "react";
-import { useCookies } from "react-cookie";
-import { useRouter, redirect } from "next/navigation";
-import { useUserStore } from "@/lib/store";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import LoginWrapper from "@/components/LoginWrapper";
-import Link from "next/link";
-import { getSession, signIn } from "next-auth/react";
-import GoogleIcon from "@/assets/AuthProviderLogos/GoogleIcon";
-import Divider from "@/components/Divider";
-import { getCookie } from "react-use-cookie";
-import InputPassword from "@/components/common/InputPassword";
+import { Suspense } from 'react';
 
-interface Props {
-  searchParams: {
-    callbackUrl?: string;
-    error?: string;
-  };
-}
+import { Metadata } from 'next';
 
-export default function Login({ searchParams: { callbackUrl, error } }: Props) {
-  const [cookies] = useCookies(["accessToken"]);
-  const formSchema = z.object({
-    email: z.string().email(),
-    password: z.string(),
-  });
+import DynamicMenu from '@/components/Header/DynamicMenu';
+import HeaderClient from '@/components/Header/HeaderClient';
+import LoginWrapper from '@/components/LoginWrapper';
+import SignIn from '@/components/SignIn/SignIn';
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
-  });
-  const { user, postLoginData, authenticateUser } = useUserStore(
-    (state: any) => state
-  );
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    postLoginData(values);
-  }
+const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/sign-in`;
 
-  const signInWithGoogle = () => {
-    signIn("google", { callbackUrl, redirect: true });
-  };
+export const metadata: Metadata = {
+  title: 'Sign In - GOODS2LOAD | Access Your Account for Logistics Services',
+  description:
+    'Sign in to GOODS2LOAD to access your account and streamline your logistics management. Log in to manage your shipments, view updates, and more.',
+  openGraph: {
+    title: 'Sign In - GOODS2LOAD',
+    description:
+      'Log in to your GOODS2LOAD account to manage your logistics needs. Access all your logistics services and track your shipments easily.',
+    url: canonical,
+  },
+  twitter: {
+    title: 'Sign In - GOODS2LOAD',
+    description:
+      'Log in to GOODS2LOAD to access your account and manage your logistics efficiently.',
+  },
+  robots: {
+    index: false,
+  },
+  alternates: {
+    canonical,
+  },
+};
 
-  useEffect(() => {
-    const fetchData = async () => {
-      if (cookies.accessToken) {
-        const token = getCookie("accessToken");
-        const decodedToken = await getSession({
-          req: { headers: { cookie: `accessToken=${token}` } },
-        });
-        if (decodedToken) {
-          const { idToken }: any = decodedToken;
-          authenticateUser(idToken);
-        }
-      }
-    };
-
-    fetchData();
-  }, [cookies.accessToken]);
-
-  useEffect(() => {
-    if (!!user?.id) redirect("/account");
-  }, [user?.id]);
+export default function Login() {
   return (
-    <LoginWrapper>
-      <Button
-        variant="outline"
-        onClick={signInWithGoogle}
-        className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
-      >
-        <GoogleIcon />
-        <span>Sign in with Google </span>
-      </Button>
-      {error ? (
-        <p className="my-2 text-sm text-center font-medium text-destructive">
-          Something went wrong, please try again
-        </p>
-      ) : (
-        <></>
-      )}
-      <Divider />
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)}>
-          <FormField
-            control={form.control}
-            name="email"
-            render={({ field }) => (
-              <FormItem className="w-full mb-5">
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <Input
-                    className="bg-gray-2 border-0"
-                    placeholder=""
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="password"
-            render={({ field }) => (
-              <FormItem className="w-full mb-1">
-                <FormLabel>Password</FormLabel>
-                <FormControl>
-                  <InputPassword
-                    className="bg-gray-2 border-0"
-                    placeholder=""
-                    {...field}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Link href="/forgot-password" className="text-[12px]/[16px]">
-            Forgot your password?
-          </Link>
-          <Button
-            type="submit"
-            className="bg-orangePrimary border-2 border-orangePrimary font-medium text-[16px]/[22px] w-full my-5"
-          >
-            Sign in
-          </Button>
-          <p className="text-[12px]/[16px] text-center">
-            Don&apos;t have an account?{" "}
-            <Link href="/registration" className="text-orangePrimary">
-              Sign up for free
-            </Link>
-          </p>
-        </form>
-      </Form>
-    </LoginWrapper>
+    <>
+      <HeaderClient />
+      <DynamicMenu />
+      <Suspense>
+        <LoginWrapper>
+          <SignIn />
+        </LoginWrapper>
+      </Suspense>
+    </>
   );
 }

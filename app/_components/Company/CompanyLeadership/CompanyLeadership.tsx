@@ -1,9 +1,11 @@
-import React from "react";
-import { leaderships } from "@/app/_components/Company/CompanyLeadership/CompanyLidershipData";
-import CompanyLeader from "@/app/_components/Company/CompanyLeadership/CompanyLeader";
-import Image from "next/image";
-import line from "@/assets/line.svg";
-import { Leadership } from "@/app/interface/leaderShip";
+import CompanyLeader from '@/app/_components/Company/CompanyLeadership/CompanyLeader';
+import { leaderships } from '@/app/_components/Company/CompanyLeadership/CompanyLidershipData';
+import { Leadership } from '@/app/interface/leaderShip';
+import line from '@/assets/line.svg';
+
+import React from 'react';
+
+import Image from 'next/image';
 
 export interface ILeader {
   img: string;
@@ -32,7 +34,7 @@ const CompanyLeadership = () => {
       <Image
         className="absolute bottom-0 left-[-15%]"
         src={line}
-        alt={"line"}
+        alt={'line'}
       />
     </section>
   );

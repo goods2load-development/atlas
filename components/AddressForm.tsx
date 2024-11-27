@@ -1,12 +1,15 @@
-"use client";
-import React, { useEffect } from "react";
+'use client';
 
-import { useCountriesStore } from "@/lib/store";
-import { useUserStore } from "@/lib/store";
+import { useCountriesStore } from '@/lib/store';
+import { useUserStore } from '@/lib/store';
+import { zodResolver } from '@hookform/resolvers/zod';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
+import React, { useEffect } from 'react';
+
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
+
+import UIButton from '@/components/common/Button';
 import {
   Form,
   FormControl,
@@ -14,16 +17,15 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import UIButton from "@/components/common/Button";
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select";
+} from '@/components/ui/select';
 
 interface CountriesProps {
   value: string;
@@ -49,7 +51,7 @@ export default function AddressForm(props: AddressFormProps) {
     companyName: z.string(),
   });
   const { countriesList, getCountriesList } = useCountriesStore(
-    (state: any) => state
+    (state: any) => state,
   );
   const { user, updateUser } = useUserStore((state: any) => state);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -64,11 +66,7 @@ export default function AddressForm(props: AddressFormProps) {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const data = {
-      ...values,
-      postalCode: parseInt(values.postalCode),
-    };
-    updateUser(data);
+    updateUser(values);
     props.onCancel();
   }
   useEffect(() => {
