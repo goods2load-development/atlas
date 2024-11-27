@@ -132,12 +132,7 @@ export const FormStepIndustryRecognition = ({
   return (
     <div>
       <div className="flex items-center justify-between mb-6 font-semibold">
-        <h4
-          className={clsx(
-            'tracking-wide text-[24px]/[27px]',
-            !isProvideRecognition && 'opacity-40',
-          )}
-        >
+        <h4 className={clsx('tracking-wide text-[24px]/[27px]')}>
           Industry Recognition
         </h4>
         <Switch

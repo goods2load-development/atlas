@@ -48,13 +48,17 @@ export default function TailoredServices({
           <>
             <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
               <i className="bg-allTittleColor px-2 rounded-md">
-                Empower Your Business
+                Global Reach with
               </i>{' '}
-              with <span className="font-light">Tailored Services</span>
+              <span className="font-light">Local Expertise</span>
             </h2>
-            <p className="max-w-[344px] text-center md:text-left font-light text-lg mb-8 md:mb-10 mx-auto md:mx-0">
+            <strong className="block font-medium text-xl mb-4">
+              Empower Your Business with Tailored Services.
+            </strong>
+            <p className="max-w-[815px] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
               Unlock Your Business&apos;s Full Potential with Our Customized
-              Solutions
+              Logistics Solution providers. While we operate on a global scale,
+              we maintain a strong local presence in Dubai and the UAE.
             </p>
           </>
         )}

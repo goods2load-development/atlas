@@ -52,7 +52,7 @@ import {
 type BlockFiles = 'block1File' | 'block2File';
 
 const achievementsLabels: string[] = [
-  'Delivered shippings',
+  'Solutions offered',
   'Countries covered',
   'Companies served',
   'Monthly User',
@@ -711,8 +711,6 @@ export default function SeoPageMain({
               </div>{' '}
               topics:
             </h2>
-
-            <button onClick={() => onHandleSliderNext()}>123</button>
 
             <div className="mx-auto overflow-hidden" ref={emblaRef}>
               <div className="flex">
