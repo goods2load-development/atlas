@@ -1,6 +1,6 @@
 'use client';
 
-import * as React from 'react';
+import LogoIcon from '@/assets/icons/logo.svg';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -13,7 +13,7 @@ export default function Logo(props: LogoProps) {
   return (
     <Link href="/" className="flex">
       <Image
-        src="/logo.svg"
+        src={LogoIcon}
         alt="Goods2load Logo"
         className="dark:invert z-40"
         width={props.width}

@@ -23,18 +23,18 @@ import { useToast } from '@/components/ui/use-toast';
 //   index: number;
 // }
 
-function Icon(type: string) {
-  switch (type) {
-    case 'plane':
-      return '/productplane.svg';
+// function Icon(type: string) {
+//   switch (type) {
+//     case 'plane':
+//       return '/productplane.svg';
 
-    case 'ferry':
-      return '/productferry.svg';
+//     case 'ferry':
+//       return '/productferry.svg';
 
-    default:
-      return '/producttruck.svg';
-  }
-}
+//     default:
+//       return '/producttruck.svg';
+//   }
+// }
 
 export default function Product(props: any) {
   const { toast } = useToast();

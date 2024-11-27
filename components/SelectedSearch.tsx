@@ -1,6 +1,9 @@
 'use client';
 
 import { ToolTipComponent } from './ui/tooltip';
+import FilterPlaneIcon from '@/assets/icons/filtericon-plane.svg';
+import FilterShipIcon from '@/assets/icons/filtericon-ship.svg';
+import FilterTruckIcon from '@/assets/icons/filtericon-truck.svg';
 import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
 import { countVolume } from '@/lib/utils';
 
@@ -31,32 +34,17 @@ export default function SelectedSearch() {
     switch (deliveryBy) {
       case 'plane': {
         return (
-          <Image
-            src={`/filtericon-plane.svg`}
-            alt={'plane'}
-            width={58}
-            height={58}
-          />
+          <Image src={FilterPlaneIcon} alt="plane" width={58} height={58} />
         );
       }
       case 'ferry': {
         return (
-          <Image
-            src={`/filtericon-ship.svg`}
-            alt={'ferry'}
-            width={58}
-            height={58}
-          />
+          <Image src={FilterShipIcon} alt={'ferry'} width={58} height={58} />
         );
       }
       case 'truck': {
         return (
-          <Image
-            src={`/filtericon-truck.svg`}
-            alt={'truck'}
-            width={58}
-            height={58}
-          />
+          <Image src={FilterTruckIcon} alt={'truck'} width={58} height={58} />
         );
       }
     }

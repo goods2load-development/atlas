@@ -2,6 +2,13 @@
 
 import { Dialog, DialogContent } from './ui/dialog';
 import LoadingBalls from './ui/loading-balls';
+import AiImage from '@/assets/icons/ai.svg';
+import FilterIcon1 from '@/assets/icons/filtericon1.svg';
+import FilterIcon2 from '@/assets/icons/filtericon2.svg';
+import FilterIcon3 from '@/assets/icons/filtericon3.svg';
+import SadSmile from '@/assets/icons/sad-smile.svg';
+import TurnIcon from '@/assets/icons/turn.svg';
+import TurnHover from '@/assets/icons/turnhover.svg';
 import {
   DeliveryBy,
   useCurrenciesStore,
@@ -9,7 +16,7 @@ import {
 } from '@/lib/filterStore';
 import { useCountriesStore, useGoodsStore } from '@/lib/store';
 
-import React, { ChangeEvent, useEffect, useRef, useState } from 'react';
+import React, { ChangeEvent, FC, useEffect, useRef, useState } from 'react';
 
 import { format } from 'date-fns';
 import Image from 'next/image';
@@ -107,19 +114,28 @@ const incotermsList: Incoterms = {
   ],
 };
 
-function CustomRadioGroupItem({
+const filterIcons = {
+  1: FilterIcon1,
+  2: FilterIcon2,
+  3: FilterIcon3,
+};
+
+interface CustomRadioGroupItemProps {
+  value: string;
+  imageNumber: keyof typeof filterIcons;
+}
+
+const CustomRadioGroupItem: FC<CustomRadioGroupItemProps> = ({
   value,
   imageNumber,
-}: {
-  value: DeliveryBy;
-  imageNumber: number;
-}) {
+}) => {
+  const Icon = filterIcons[imageNumber];
   return (
     <>
       <RadioGroupItem value={value} id={value} className="hidden" />
       <Label htmlFor={value}>
         <Image
-          src={`/filtericon${imageNumber}.svg`}
+          src={Icon}
           alt={value}
           width={58}
           height={58}
@@ -128,7 +144,7 @@ function CustomRadioGroupItem({
       </Label>
     </>
   );
-}
+};
 
 export default function SearchMain({ main }: { main?: boolean }) {
   const router = useRouter();
@@ -428,14 +444,14 @@ export default function SearchMain({ main }: { main?: boolean }) {
                 width={34}
                 height={34}
                 alt="turn"
-                src="/turn.svg"
+                src={TurnIcon}
               />
               <Image
                 className="min-w-[34px] min-h-[34px] hidden group-hover:block"
                 width={34}
                 height={34}
                 alt="turn"
-                src="/turnhover.svg"
+                src={TurnHover}
               />
             </Button>
             <div className="flex lg:w-[26%] items-end mb-5 lg:mb-0">
@@ -672,7 +688,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
                   className="h-[60px] w-[150px] rounded-[16px] sm:rounded-l-none sm:rounded-r-[16px]  border-none
               bg-white font-normal text-black flex items-center justify-center"
                 >
-                  <Image width={50} height={50} src="/ai.svg" alt="AI upload" />
+                  <Image width={50} height={50} src={AiImage} alt="AI upload" />
                   <input
                     onChange={onFileUploaded}
                     accept="image/jpg, image/png"
@@ -855,12 +871,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
 
           {isLoadingAI.error && (
             <div className="flex justify-center items-center mb-4">
-              <Image
-                width={100}
-                height={100}
-                src="/sad-smile.svg"
-                alt="Error"
-              />
+              <Image width={100} height={100} src={SadSmile} alt="Error" />
             </div>
           )}
 

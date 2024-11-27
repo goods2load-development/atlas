@@ -1,6 +1,6 @@
 'use client';
 
-import CookiesImage from '@/assets/images/cookies.png';
+import AiImage from '@/assets/icons/ai.svg';
 
 import { useEffect, useState } from 'react';
 
@@ -41,7 +41,7 @@ const GDPRAiPopup = () => {
         className="max-w-4xl p-4 md:p-12 md:gap-9 w-[95%] max-h-[90vh] overflow-y-auto"
       >
         <DialogHeader className="flex flex-row items-center mx-auto gap-4">
-          <Image src="/ai.svg" alt="AI" width={64} height={64} />
+          <Image src={AiImage} alt="AI" width={64} height={64} />
           <DialogTitle className="text-2xl md:text-5xl font-thin">
             <span className="font-normal italic">AI Usage</span> and{' '}
             <span className="font-normal italic">Disclaimer Notice</span>

@@ -1,3 +1,6 @@
+import FacebookIcon from '@/assets/icons/facebookicon.svg';
+import InstagramIcon from '@/assets/icons/instagramicon.svg';
+import LinkedInIcon from '@/assets/icons/linkedinicon.svg';
 import { cn } from '@/lib/utils';
 
 import Image from 'next/image';
@@ -12,7 +15,7 @@ export default function Socials({ container }: { container?: string }) {
         target="_blank"
       >
         <Image
-          src="/instagramicon.svg"
+          src={InstagramIcon}
           alt="Instagram"
           className="dark:invert"
           width={40}
@@ -26,7 +29,7 @@ export default function Socials({ container }: { container?: string }) {
         target="_blank"
       >
         <Image
-          src="/linkedinicon.svg"
+          src={LinkedInIcon}
           alt="Linkedin"
           className="dark:invert"
           width={40}
@@ -40,7 +43,7 @@ export default function Socials({ container }: { container?: string }) {
         target="_blank"
       >
         <Image
-          src="/facebookicon.svg"
+          src={FacebookIcon}
           alt="facebook"
           className="dark:invert"
           width={40}

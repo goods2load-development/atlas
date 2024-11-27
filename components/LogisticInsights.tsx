@@ -1,3 +1,5 @@
+import ArrowLong from '@/assets/icons/arrowlong.svg';
+
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -62,7 +64,7 @@ function LogisticsItem({ item }: { item: lItemProps }) {
         <Image
           width={101}
           height={6}
-          src="/arrowlong.svg"
+          src={ArrowLong}
           className="inline-block ml-3"
           alt="arrowlong"
         />
