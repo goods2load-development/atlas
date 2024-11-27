@@ -13,19 +13,21 @@ const CompanyMainInfo = () => {
       </div>
       <div className="md:w-1/2 flex flex-col justify-start gap-[16px] md:order-2 order-1">
         <p className="text-black font-normal lg:text-[18px]/[25px] text-[16px]/[24px] text-left">
-          Founded in 2022, GOODS2LOAD embarked on a mission to revolutionize the
-          global logistics landscape through a digital-first paradigm. Catering
-          to over 311 SMEs across Europe and now extending our reach worldwide,
-          we stand at the forefront of innovation.
+          Founded in 2023, GOODS2LOAD is transforming the global logistics
+          landscape with a bold, digital-first approach. Our cutting-edge
+          platform redefines freight forwarding, delivering optimized solutions
+          that turbocharge both time and cost efficiency.
         </p>
         <p className="text-black font-normal lg:text-[18px]/[25px] text-[16px]/[24px] text-left">
-          Our cutting-edge platform, goods2load, streamlines logistics
-          operations, providing pre-negotiated quotes to optimize both time and
-          cost efficiency. Committed to sustainability, we champion eco-friendly
-          solutions while leveraging the strengths of our diverse team to exceed
-          customer expectations. Through relentless innovation, we conquer
-          intricate logistics challenges, ensuring unparalleled service
-          delivery.
+          But we’re not just about logistics; we’re about creating a sustainable
+          future. We push eco-friendly solutions to the forefront, driving
+          positive change in the industry. Built on diversity and fueled by
+          innovation, our team is dedicated to exceeding expectations and
+          breaking the mold of traditional logistics. Our platform is the
+          ultimate tool for SMEs, helping them scale faster by connecting with
+          the right logistics partners to power their growth. At GOODS2LOAD, we
+          believe everyone deserves the chance to innovate and change the game.
+          Together, we’re rewriting the future of logistics.
         </p>
       </div>
     </section>
