@@ -10,14 +10,15 @@ const PartnersAmplify: React.FC = () => {
   return (
     <section className="w-full bg-bgPartnersAmplify bg-cover bg-center relative">
       <div className="bg-bgPartnersAmplifyShadow">
-        <div className="relative flex flex-col w-full items-end justify-center pt-[40px] sm:pt-[47px] text-white text-center pb-[140px] sm:pb-[270px] lg:pb-[100px] sm:pr-[100px] max-w-[1328px] mx-auto">
+        <div className="relative flex flex-col w-full items-end justify-center pt-[40px] sm:pt-[47px] text-white text-center pb-[170px] sm:pb-[270px] lg:pb-[100px] sm:pr-[100px] max-w-[1328px] mx-auto">
           <div className="absolute top-0 right-0 w-[1540px] h-full text-white text-center pb-[100px] pt-[150px] mb-[110px]" />
           {/* MacBook Image */}
-          <div className="w-full lg:w-1/2 absolute left-1/2 bottom-0 lg:-left-[72px] lg:bottom-[-72px] transform max-lg:-translate-x-1/2 max-lg:translate-y-1/2">
+          <div className="w-full lg:w-1/2 absolute left-1/2 bottom-0 lg:left-2 lg:bottom-[-72px] transform max-lg:-translate-x-1/2 max-lg:translate-y-1/2">
             <Image
               className="w-full mx-auto max-lg:max-w-[500px] lg:w-[min(100%,772px)]"
               src={macBookImage}
               alt="pc-image"
+              unoptimized
             />
           </div>
           {/* Content */}

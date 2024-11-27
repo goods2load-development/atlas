@@ -14,7 +14,7 @@ const PartnersAudience: React.FC = () => {
           <div className="italic text-[14px] sm:text-[16px] font-light sm:font-normal text-center sm:text-left text-black">
             The power of connection
           </div>
-          <div className="text-black md:leading-[57px] font-light  mb-[30px] text-[34px]/[38px] sm:text-[40px]/[48px] text-center sm:text-left">
+          <div className="text-black font-light  mb-[30px] text-[34px] sm:text-[40px] text-center sm:text-left leading-snug">
             Reach your target{' '}
             <span className="font-normal italic pl-[10px] pr-[10px] bg-[#FEF1DF] mr-[10px] rounded-[6px] h-[49px] items-center">
               audience
