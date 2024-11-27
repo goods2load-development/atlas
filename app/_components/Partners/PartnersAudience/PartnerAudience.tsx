@@ -7,7 +7,7 @@ import Image from 'next/image';
 
 const PartnersAudience: React.FC = () => {
   return (
-    <section className="w-full md:flex flex-row gap-[56px] py-[104px] items-center px-[16px] max-w-[1328px] mx-auto">
+    <section className="w-full md:flex flex-row gap-[56px] pt-12 pb-[90px] md:py-[104px] items-center px-[16px] max-w-[1328px] mx-auto">
       {/* <div className="flex w-full px-[72px] gap-[56px] items-center justify-center pt-[47px]  text-white text-center mb-[100px]"> */}
       <div className="md:w-1/2">
         <div>
