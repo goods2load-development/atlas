@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const PartnersVisibility = () => {
   return (
-    <section className="w-full items-center justify-center sm:pt-[47px] text-white text-center  mb-[50px] sm:mb-[100px] px-[16px] max-w-[1328px] mx-auto">
+    <section className="w-full pt-[200px] lg:pt-[150px] items-center justify-center text-white text-center  mb-[50px] sm:mb-[100px] px-[16px] max-w-[1328px] mx-auto">
       <div className="mb-[40px]">
         <div className="text-black text-[30px]/[34px] sm:text-[40px] font-normal sm:font-semibold italic">
           “Nice

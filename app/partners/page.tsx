@@ -1,5 +1,5 @@
 import CareerForm from '../_components/Career/CareerForm/CareerForm';
-import { JoinOurTeam } from '../_components/Career/JoinOurTeam/JoinOurTeam';
+import JoinOurTeam from '../_components/Career/JoinOurTeam/JoinOurTeam';
 import PartnersAmplify from '../_components/Partners/PartnersAmplify/PartnersAmplify';
 import PartnersAudience from '../_components/Partners/PartnersAudience/PartnerAudience';
 import PartnersBoostingTravel from '../_components/Partners/PartnersBoostingTravel/PartnersBoostingTravel';
@@ -34,9 +34,19 @@ const Partners = () => {
   return (
     <>
       <BigLayout
-        title="Engage with businesses throughout their journey of envisioning, strategizing, and arranging bookings"
-        description="We help reduce costs, increase efficiency and offer improved
-              customer service"
+        introChildren={
+          <div className="py-[60px] font-light px-4">
+            <h1 className="max-w-[1048px] text-[30px] md:text-[48px]/[58px] mb-4 text-center">
+              Engage with businesses throughout their journey of envisioning,
+              strategizing,{' '}
+              <i className="font-normal">and arranging bookings</i>
+            </h1>
+            <p>
+              We help reduce costs, increase efficiency and offer improved
+              customer service.
+            </p>
+          </div>
+        }
       >
         <div className="w-full flex flex-col justify-center items-center pb-8">
           <PartnersStartingFrom />

@@ -1,9 +1,17 @@
+import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 
 import Footer from '@/components/Footer';
 import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
 import SeoPageMain from '@/components/SeoPage/SeoPageMain';
+
+const SeoPageMainLazy = dynamic(
+  () => import('@/components/SeoPage/SeoPageMain'),
+  {
+    ssr: false,
+  },
+);
 
 export default async function SeoPage({
   params: { slug },
@@ -31,7 +39,7 @@ export default async function SeoPage({
     <>
       <HeaderClient />
       <DynamicMenu variant="secondary" />
-      <SeoPageMain type="edit" data={data} />
+      <SeoPageMainLazy type="edit" data={data} />
       <Footer />
     </>
   );
