@@ -273,6 +273,8 @@ export const useUserStore = create((set) => ({
       savedPartners,
       industryRecognitions,
       SustainabilityProof,
+      partner,
+      access_token,
       ...restData
     } = data;
     await patchRequest({
@@ -737,6 +739,17 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
       set({
         partnersIndustriesData: data,
       });
+    });
+  },
+  uploadPartnerLogo: (id: string, data: File) => {
+    const formData = new FormData();
+
+    formData.append('companyPhoto', data);
+
+    return postRequest({
+      url: `partners/${id}/upload-photo`,
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
 }));

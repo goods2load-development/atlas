@@ -9,6 +9,7 @@ import { Textarea } from '../ui/textarea';
 import { useToast } from '../ui/use-toast';
 import PlaceIdMap from './PlaceIdMap';
 import SendDataToPartnerDialog from './SendDataToPartnerDialog';
+import UploadPartnerLogo from './UploadPartnerLogo';
 import { formSchema } from './constants';
 import { PlaceDetails } from './types';
 import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner/GoogleRatingBunner';
@@ -99,6 +100,8 @@ const PartnerDataPage = ({
   const { id } = useParams();
   const { toast } = useToast();
   const { push } = useRouter();
+
+  const param = useParams();
 
   const { isPartnersLoading, createPartnerPage } = usePartnersStore(
     (state) => state,
@@ -441,34 +444,42 @@ const PartnerDataPage = ({
         )}
         <div className="max-w-[1295px] w-full mx-auto md:pt-[72px] pt-6 pb-[104px] px-4">
           <div className="lg:flex gap-14 justify-between mb-10 sm:mb-[104px]">
-            <div
-              className="md:basis-1/2 px-20 rounded-2xl border border-solid border-primaryOrange 
+            {isGet ? (
+              <div
+                className="md:basis-1/2 px-20 rounded-2xl border border-solid border-primaryOrange 
             bg-bgPartnerLogo bg-no-repeat md:[background-position:center_bottom] [background-position:bottom_bottom]
             rotate-180 md:rotate-0 shadow-[2px_2px_10px_0px_#FF672029] h-[250px] md:h-[487px]"
-            >
-              <div className="relative mx-auto w-2/3 sm:w-[40%] h-full rotate-180 md:rotate-0 flex items-center justify-center">
-                {companyPhoto.endsWith('.svg') ? (
-                  <ReactSVG
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`}
-                    beforeInjection={(svg) => {
-                      svg.setAttribute('style', 'width: 225px');
-                    }}
-                  />
-                ) : (
-                  <Image
-                    alt="Company"
-                    src={
-                      companyPhoto
-                        ? `${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`
-                        : PartnerLogoDefault
-                    }
-                    layout="fill"
-                    objectFit="contain"
-                    unoptimized
-                  />
-                )}
+              >
+                <div className="relative mx-auto w-2/3 sm:w-[40%] h-full rotate-180 md:rotate-0 flex items-center justify-center">
+                  {companyPhoto.endsWith('.svg') ? (
+                    <ReactSVG
+                      src={`${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`}
+                      beforeInjection={(svg) => {
+                        svg.setAttribute('style', 'width: 225px');
+                      }}
+                    />
+                  ) : (
+                    <Image
+                      alt="Company"
+                      src={
+                        companyPhoto
+                          ? `${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`
+                          : PartnerLogoDefault
+                      }
+                      layout="fill"
+                      objectFit="contain"
+                      unoptimized
+                    />
+                  )}
+                </div>
               </div>
-            </div>
+            ) : (
+              <UploadPartnerLogo
+                companyPhoto={companyPhoto}
+                partnerId={id as string}
+              />
+            )}
+
             <div className="pt-7 text-black text-left sm:max-w-[606px] basis-1/2">
               <div className="font-medium text-[28px]/[33px] sm:text-[24px]/[28px] mb-4">
                 About us
