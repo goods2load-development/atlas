@@ -53,13 +53,14 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
                 >
                   {user.companyPhoto.endsWith('.svg') ? (
                     <ReactSVG
+                      className="flex items-center justify-center h-full"
                       src={
                         user.companyPhoto.startsWith('data:')
                           ? user.companyPhoto
                           : `${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`
                       }
                       beforeInjection={(svg: any) => {
-                        svg.setAttribute('style', 'width: 225px');
+                        svg.setAttribute('style', 'width: 100%');
                       }}
                     />
                   ) : (
