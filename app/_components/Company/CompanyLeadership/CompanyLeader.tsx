@@ -1,8 +1,7 @@
-import { ILeader } from '@/app/_components/Company/CompanyLeadership/CompanyLeadership';
 import { Leadership } from '@/app/interface/leaderShip';
-import arrow from '@/assets/arrow.svg';
-import close from '@/assets/close.svg';
-import linkedin from '@/assets/linkedin.svg';
+import arrow from '@/assets/icons/arrow.svg';
+import close from '@/assets/icons/close.svg';
+import linkedin from '@/assets/icons/linkedin.svg';
 
 import React, { FC, useState } from 'react';
 

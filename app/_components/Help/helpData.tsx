@@ -1,17 +1,20 @@
 import { HelpData, TabName } from '@/app/interface/helpData';
+import PlaneIcon from '@/assets/icons/plane.svg';
+import ShipIcon from '@/assets/icons/ship.svg';
+import TruckIcon from '@/assets/icons/truck.svg';
 
 export const tabs = [
   {
     name: TabName.PLANE,
-    icon: '/plane.svg',
+    icon: PlaneIcon,
   },
   {
     name: TabName.SHIP,
-    icon: '/ship.svg',
+    icon: ShipIcon,
   },
   {
     name: TabName.TRUCK,
-    icon: '/truck.svg',
+    icon: TruckIcon,
   },
 ];
 

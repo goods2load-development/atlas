@@ -1,6 +1,9 @@
 'use client';
 
-import LogoutIcon from '@/assets/logout.svg';
+import EditIcon from '@/assets/icons/edit.svg';
+import LogoutIcon from '@/assets/icons/logout.svg';
+import SettingsIcon from '@/assets/icons/settings.svg';
+import UserIcon from '@/assets/icons/user.svg';
 import { useUserStore } from '@/lib/store';
 
 import React, { useState } from 'react';
@@ -115,7 +118,13 @@ export default function Account() {
       <main className="flex min-h-screen flex-col py-5 sm:py-16 justify-between colored-main px-[16px] max-w-[1328px] mx-auto">
         <div className="md:flex justify-between mb-10 items-center">
           <i className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">
-            <img src="/user.svg" className="mr-3" />
+            <Image
+              width={40}
+              height={40}
+              src={UserIcon}
+              alt="user"
+              className="mr-3"
+            />
             Account
           </i>
           <div className="mt-5 md:mt-0 gap-4 flex items-center flex-wrap md:flex-nowrap">
@@ -188,7 +197,7 @@ export default function Account() {
                 className={`${edit === 'info' && 'hidden'} rounded-full`}
               >
                 Edit
-                <img src="/edit.svg" />
+                <Image src={EditIcon} width={16} height={16} alt="edit" />
               </UIButton>
             </CardTitle>
           </CardHeader>
@@ -213,7 +222,7 @@ export default function Account() {
                 className={`${edit === 'address' && 'hidden'} rounded-full`}
               >
                 Edit
-                <img src="/edit.svg" />
+                <Image src={EditIcon} width={16} height={16} alt="edit" />
               </UIButton>
             </CardTitle>
           </CardHeader>
@@ -227,7 +236,7 @@ export default function Account() {
         </Card>
         <div className="flex justify-between mb-10">
           <span className="flex text-[28px]/[40px] sm:text-[48px]/[52px]">
-            <img src="/settings.svg" />
+            <Image width={40} height={40} src={SettingsIcon} alt="settings" />
             Regional settings
           </span>
         </div>
@@ -246,7 +255,7 @@ export default function Account() {
                 className={`${edit === 'regional' && 'hidden'} rounded-full`}
               >
                 Edit
-                <img src="/edit.svg" />
+                <Image src={EditIcon} width={16} height={16} alt="edit" />
               </UIButton>
             </CardTitle>
           </CardHeader>
@@ -307,7 +316,7 @@ export default function Account() {
                 className={`rounded-full`}
               >
                 Edit
-                <img src="/edit.svg" />
+                <Image src={EditIcon} width={16} height={16} alt="edit" />
               </UIButton>
             ) : (
               <UIButton

@@ -1,8 +1,9 @@
 'use client';
 
+import DefaultLogoImg from '@/assets/images/defaultlogo.png';
 import { useUserStore } from '@/lib/store';
 
-import React from 'react';
+import Image from 'next/image';
 
 import { Input } from '@/components/ui/input';
 
@@ -27,7 +28,7 @@ export default function UploadCompanyLogo() {
           }}
         />
       ) : (
-        <img src="/defaultlogo.png" />
+        <Image src={DefaultLogoImg} width={68} height={68} alt="default" />
       )}
     </label>
   );

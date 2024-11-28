@@ -1,6 +1,6 @@
 import DynamicMenu from './Header/DynamicMenu';
 import HeaderClient from './Header/HeaderClient';
-import Line from '@/assets/bg-decor-line.svg';
+import Line from '@/assets/icons/bg-decor-line.svg';
 
 import { PropsWithChildren } from 'react';
 

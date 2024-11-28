@@ -1,6 +1,5 @@
-import { formatDate, slugify } from '@/lib/utils';
-
-import React from 'react';
+import DefaultImage from '@/assets/images/default-image.jpg';
+import { slugify } from '@/lib/utils';
 
 import Image from 'next/image';
 import Link from 'next/link';
@@ -24,7 +23,7 @@ const HeaderImage: React.FC<HeaderImageProps> = ({
 }) => {
   const imageUrl = mainImageUrl
     ? `${process.env.NEXT_PUBLIC_BASE_URL}${mainImageUrl}`
-    : '/default-image.jpg';
+    : DefaultImage;
 
   return (
     <div className="relative h-80 md:h-[350px] overflow-hidden">

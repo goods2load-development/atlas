@@ -1,5 +1,3 @@
-import React from 'react';
-
 const TrustArticle = () => {
   return (
     <section className="w-full flex flex-col items-center gap-[16px] py-20 sm:py-[84px] px-[16px] max-w-[1328px] mx-auto">

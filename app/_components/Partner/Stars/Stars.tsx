@@ -1,5 +1,5 @@
-import StarSvgNone from '@/assets/Partners/star-none.svg';
-import StarSvg from '@/assets/Partners/star.svg';
+import StarSvgNone from '@/assets/icons/star-none.svg';
+import StarSvg from '@/assets/icons/star.svg';
 
 import { useEffect, useState } from 'react';
 

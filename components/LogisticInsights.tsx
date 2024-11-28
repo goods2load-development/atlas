@@ -1,9 +1,14 @@
-import Image from 'next/image';
+import ArrowLong from '@/assets/icons/arrowlong.svg';
+import LogisticsImg1 from '@/assets/images/logisticimg1.png';
+import LogisticsImg2 from '@/assets/images/logisticimg2.png';
+import LogisticsImg3 from '@/assets/images/logisticimg3.png';
+
+import Image, { StaticImageData } from 'next/image';
 import Link from 'next/link';
 
 interface lItemProps {
   title: string;
-  imageSrc: string;
+  imageSrc: string | StaticImageData;
   date: string;
   text: string;
   link: string;
@@ -13,21 +18,21 @@ interface lItemProps {
 const lItems: lItemProps[] = [
   {
     title: 'JP MORGAN',
-    imageSrc: '/logisticimg1.png',
+    imageSrc: LogisticsImg1,
     date: 'February 2024',
     text: 'With 30% of global container trade transiting through the Suez Canal, the Red Sea shipping crisis is upending supply chains.',
     link: 'https://www.jpmorgan.com/insights/global-research/supply-chain/red-sea-shipping',
   },
   {
     title: 'Kuehne & Nagel International',
-    imageSrc: '/logisticimg2.png',
+    imageSrc: LogisticsImg2,
     date: 'February 2024',
     text: 'Kühne + Nagel International AG engages in the provision of logistic services. It operates through the following segments: Sea Freight, Airfreight, Overland, and Contract Logistics.',
     link: 'https://www.forbes.com/companies/kuehne-nagel-international/?sh=4263844f5141',
   },
   {
     title: 'CNBC',
-    imageSrc: '/logisticimg3.png',
+    imageSrc: LogisticsImg3,
     date: 'February 2024',
     text: 'Ocean freight rates from Asia to the U.S. have begun to de- cline, providing some relief for U.S. shippers. But cargo shipping costs are still massively up since Decem',
     link: 'https://www.cnbc.com/2024/02/15/red-sea-attack-fueled-ocean-freight-inflation-is-starting-to-reverse.html#:~:text=State%20of%20Freight-,Red%20Sea%20attack%2Dfueled%20ocean%20freight%20inflation%20is%20starting%20to,on%20key%20global%20trade%20routes&text=Ocean%20freight%20rates%20from%20Asia,the%20Red%20Sea%20crisis%20began.',
@@ -38,7 +43,9 @@ function LogisticsItem({ item }: { item: lItemProps }) {
   return (
     <div className="w-full mb-5 max-w-[400px] text-left">
       <div className="bg-gradient-to-br from-gradFrom to-gradTo px-[30px] py-[20px] rounded-sm mb-[30px]">
-        <img
+        <Image
+          width={405}
+          height={218}
           src={item.imageSrc}
           alt={item.title}
           className="shadow-lg w-full"
@@ -62,7 +69,7 @@ function LogisticsItem({ item }: { item: lItemProps }) {
         <Image
           width={101}
           height={6}
-          src="/arrowlong.svg"
+          src={ArrowLong}
           className="inline-block ml-3"
           alt="arrowlong"
         />

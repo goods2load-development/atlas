@@ -1,7 +1,7 @@
-import arFlag from '@/assets/ar-flag.svg';
-import cnFlag from '@/assets/cn-flag.svg';
-import enFlag from '@/assets/en-flag.svg';
-import inFlag from '@/assets/in-flag.svg';
+import arFlag from '@/assets/icons/ar-flag.svg';
+import cnFlag from '@/assets/icons/cn-flag.svg';
+import enFlag from '@/assets/icons/en-flag.svg';
+import inFlag from '@/assets/icons/in-flag.svg';
 
 export const LOCAL_STORAGE_KEY_LANG = 'lang';
 

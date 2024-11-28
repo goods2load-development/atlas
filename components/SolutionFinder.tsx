@@ -5,6 +5,9 @@ import CountryCode from './common/CountryCode';
 import { Textarea } from './ui/textarea';
 import { ToolTipComponent } from './ui/tooltip';
 import { useToast } from './ui/use-toast';
+import RingIcon from '@/assets/icons/ring.svg';
+import TurnIcon from '@/assets/icons/turn.svg';
+import TurnHover from '@/assets/icons/turnhover.svg';
 import { useFilterStore } from '@/lib/filterStore';
 import { useCountriesStore, useUserStore } from '@/lib/store';
 import { postRequest } from '@/lib/utils';
@@ -226,7 +229,7 @@ export default function SolutionFinder() {
               >
                 <DialogTitle className="text-center text-[40px]/[48px] font-light">
                   <Image
-                    src={'/ring.svg'}
+                    src={RingIcon}
                     className="filter grayscale contrast-200 mx-auto mb-8"
                     alt=""
                     width={54}
@@ -375,14 +378,14 @@ export default function SolutionFinder() {
                         width={34}
                         height={34}
                         alt="turn"
-                        src="/turn.svg"
+                        src={TurnIcon}
                       />
                       <Image
                         className="min-w-[34px] min-h-[34px] hidden group-hover:block"
                         width={34}
                         height={34}
                         alt="turn"
-                        src="/turnhover.svg"
+                        src={TurnHover}
                       />
                     </Button>
                     <div className="mx-[5px] sm:w-[230px] w-full flex items-center sm:block justify-center">
