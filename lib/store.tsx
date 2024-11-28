@@ -7,6 +7,7 @@ import {
   putRequest,
 } from './utils';
 
+import axios from 'axios';
 import Cookie from 'js-cookie';
 import { create } from 'zustand';
 
