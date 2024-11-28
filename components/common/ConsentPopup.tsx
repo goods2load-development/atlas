@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/dialog';
 
 const LOCAL_STORAGE_KEY = 'cookiesAgreement';
-const CONSENT_DELAY = 2000;
+const CONSENT_DELAY = 50;
 
 const ConsentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);

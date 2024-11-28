@@ -35,9 +35,9 @@ export default function Footer() {
             <Logo width={205} height={31} />
           </div>
           <p className="max-w-[233px] text-sm mb-7">
-            G2L is the premier platform for reliable, cost-effective logistics
-            solutions and predictive data. Our mission is to transform the
-            logistics landscape by integrating leading SMEs and digitizing
+            Goods2load is the premier platform for reliable, cost-effective
+            logistics solutions and predictive data. Our mission is to transform
+            the logistics landscape by integrating leading SMEs and digitizing
             traditional freight forwarders, delivering tailored services that
             meet the needs of emerging businesses worldwide.
           </p>

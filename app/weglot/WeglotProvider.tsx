@@ -5,11 +5,11 @@ export const WeglotProvider = () => {
     <>
       <Script
         src="https://cdn.weglot.com/weglot.min.js"
-        strategy="beforeInteractive"
+        // strategy="lazyOnload"
       />
       <Script
         id="weglot-init"
-        strategy="beforeInteractive"
+        // strategy="lazyOnload"
         dangerouslySetInnerHTML={{
           __html: `
             Weglot.initialize({
