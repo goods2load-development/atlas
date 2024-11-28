@@ -60,7 +60,7 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
                           : `${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`
                       }
                       beforeInjection={(svg: any) => {
-                        svg.setAttribute('style', 'width: 100%');
+                        svg.setAttribute('style', 'width: 225px');
                       }}
                     />
                   ) : (
