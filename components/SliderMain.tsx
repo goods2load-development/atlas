@@ -1,9 +1,13 @@
 'use client';
 
 import useDotButton from '@/app/hooks/useDotButton';
+import Slider1 from '@/assets/images/home-slide1.png';
+import Slider2 from '@/assets/images/home-slide2.png';
+import Slider3 from '@/assets/images/home-slide3.png';
 
 import Autoplay from 'embla-carousel-autoplay';
 import useEmblaCarousel from 'embla-carousel-react';
+import Image from 'next/image';
 import Link from 'next/link';
 
 const DotButton = (props: any) => {
@@ -32,8 +36,10 @@ export default function SliderMain() {
         <div
           className={`embla__slide flex-[0_0_100%] ${selectedIndex === 0 && 'is-selected'}`}
         >
-          <img
-            src="/slide1.png"
+          <Image
+            src={Slider1}
+            width={1440}
+            height={415}
             className="w-full object-cover min-h-96"
             alt={'slide10-bg'}
           />
@@ -41,8 +47,10 @@ export default function SliderMain() {
         <div
           className={`embla__slide flex-[0_0_100%] ${selectedIndex === 1 && 'is-selected'}`}
         >
-          <img
-            src="/slide2.png"
+          <Image
+            src={Slider2}
+            width={1440}
+            height={415}
             className="w-full object-cover min-h-96"
             alt={'slide2-bg'}
           />
@@ -50,14 +58,22 @@ export default function SliderMain() {
         <div
           className={`embla__slide flex-[0_0_100%] ${selectedIndex === 2 && 'is-selected'}`}
         >
-          <img
-            src="/slide3.png"
+          <Image
+            src={Slider3}
+            width={1440}
+            height={415}
             className="w-full object-cover min-h-96"
             alt={'slide3-bg'}
           />
         </div>
       </div>
-      <img src="/slide1.png" className="w-full relative z-0" />
+      <Image
+        src={Slider1}
+        width={1440}
+        height={415}
+        alt="slide"
+        className="w-full relative z-0"
+      />
       <div className="absolute top-0 left-0 z-10 w-full h-[100%] flex flex-wrap content-center">
         <div className="w-full px-[16px] max-w-[1328px] mx-auto">
           <div className="lg:w-1/2">

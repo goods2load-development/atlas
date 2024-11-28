@@ -1,6 +1,10 @@
 'use client';
 
+import FaqBg1 from '@/assets/images/faqmobile1.png';
+import FaqBg2 from '@/assets/images/faqmobile2.png';
+
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import {
   Accordion,
@@ -45,15 +49,19 @@ export default function QuestionsAndAnswers({
         isBackground ? 'md:bg-bgQuestions' : null,
       )}
     >
-      <img
-        src="/faqmobile1.png"
+      <Image
+        src={FaqBg1}
+        width={167}
+        height={312}
         className="absolute left-0 bottom-0 md:hidden"
-        alt={'faqmobile1'}
+        alt="faqmobile1"
       />
-      <img
-        src="/faqmobile2.png"
+      <Image
+        src={FaqBg2}
+        width={158}
+        height={302}
         className="absolute top-0 right-0 md:hidden"
-        alt={'faqmobile2'}
+        alt="faqmobile2"
       />
       <h2 className="text-center text-[34px] sm:text-[48px] mb-12 font-light">
         <i className="bg-allTittleColor px-2 rounded-md font-normal">Answers</i>

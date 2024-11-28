@@ -1,7 +1,6 @@
 import decorLine from '@/assets/icons/blog-decor-line.svg';
+import DefaultImage from '@/assets/images/default-image.jpg';
 import { slugify } from '@/lib/utils';
-
-import React from 'react';
 
 import { format } from 'date-fns';
 import Image from 'next/image';
@@ -39,15 +38,18 @@ interface BlogType {
 const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
   const imageUrl = blog.mainImageUrl
     ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
-    : '/default-image.jpg';
+    : DefaultImage;
+
   return (
     <div className="mb-8 w-full mt-10 overflow-visible relative text-left">
       <div className="flex flex-col md:flex-row gap-6 items-start rounded-lg container max-w-[1320px] px-4 relative z-20">
         <div className="relative w-full md:w-[620px] h-[388px]">
-          <img
+          <Image
             src={imageUrl}
             alt={blog.title}
-            className="absolute top-0 left-0 w-full h-full object-cover rounded-lg"
+            className="object-cover rounded-lg"
+            fill
+            priority
           />
         </div>
         <div className="p-2 md:p-8 w-full md:w-1/2 flex flex-col justify-center md:pt-[53px]">
@@ -75,13 +77,15 @@ const FeaturedBlog: React.FC<FeaturedBlogProps> = ({ blog }) => {
           </div>
         </div>
       </div>
-      <Image
-        className="absolute xl:w-[53%] w-[50%] md:block hidden -top-[20%] right-0 z-10"
-        width={865}
-        height={201}
-        src={decorLine}
-        alt="decor-line"
-      />
+      <div className="absolute xl:w-[53%] w-[50%] hidden md:block -top-[20%] right-0 z-10">
+        <Image
+          src={decorLine}
+          alt="decor-line"
+          width={865}
+          height={201}
+          priority={false}
+        />
+      </div>
     </div>
   );
 };

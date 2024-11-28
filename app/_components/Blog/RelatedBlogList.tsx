@@ -1,8 +1,10 @@
 'use client';
 
+import DefaultImage from '@/assets/images/default-image.jpg';
 import { slugify } from '@/lib/utils';
 
 import { format } from 'date-fns';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface IRelatedBlogsList {
@@ -13,20 +15,21 @@ export const RelatedBlogList = ({ blogs }: IRelatedBlogsList) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-8">
       {blogs.map((blog) => {
-        const blogImg = blog.mainImageUrl
+        const blogImg = false
           ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
-          : '/default-image.jpg';
+          : DefaultImage;
 
         return (
           <div
             key={blog.id}
             className="bg-white rounded-lg overflow-hidden flex flex-col justify-between"
           >
-            <div className="relative">
-              <img
-                className="w-full h-[285px] object-cover rounded-lg"
+            <div className="relative w-full h-[285px]">
+              <Image
+                className="object-cover rounded-lg"
                 src={blogImg}
                 alt={blog.title}
+                fill
               />
               <Link
                 href={`/category/${slugify(blog.blogTypeName)}`}

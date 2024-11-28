@@ -1,8 +1,7 @@
-import { IsRequired } from '../Registration';
-
 import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -169,7 +168,13 @@ export const FormStepIndustryRecognitionSecondary = ({
                   />
                 </FormControl>
                 <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                  <img className="" src="/upload.svg" />
+                  <Image
+                    className="mr-2"
+                    src="/upload.svg"
+                    alt="upload"
+                    width={16}
+                    height={16}
+                  />
                   {field.value
                     ? `(${field.value?.length}) Files`
                     : `Upload ${field?.value?.length || ''} Files(front&back)`}
@@ -301,7 +306,13 @@ export const FormStepIndustryRecognitionSecondary = ({
                   />
                 </FormControl>
                 <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                  <img className="" src="/upload.svg" />
+                  <Image
+                    className="mr-2"
+                    src="/upload.svg"
+                    alt="upload"
+                    width={16}
+                    height={16}
+                  />
                   {field.value
                     ? `(${field.value?.length}) Files`
                     : `Upload ${field?.value?.length || ''} Files(front&back)`}

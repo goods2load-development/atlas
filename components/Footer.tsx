@@ -28,7 +28,7 @@ export default function Footer() {
   if (!footerData?.json) return null;
 
   return (
-    <footer className="text-white min-h-[244px] bg-bgFooter bg-cover bg-center">
+    <footer className="text-white min-h-[244px] bg-[#FF6720] bg-cover bg-center">
       <div className="sm:flex justify-between align-middle block py-10 max-w-[1328px] mx-auto row gap-10 px-8">
         <div className="space-y-5 sm:space-y-10 max-sm:mb-10 max-sm:text-center max-sm:flex max-sm:flex-col max-sm:items-center">
           <div className="mb-6">
