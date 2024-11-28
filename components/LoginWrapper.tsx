@@ -15,7 +15,7 @@ export default function LoginWrapper(props: LoginWrapperProps) {
 
   return (
     <>
-      <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
+      <main className="grid grid-cols-1 min-h-screen p-74 colored-main">
         <div className="sm:flex">
           <div className="sm:w-6/12 p-[16px] sm:py-16">
             <div className="max-w-[528px] mx-auto">
