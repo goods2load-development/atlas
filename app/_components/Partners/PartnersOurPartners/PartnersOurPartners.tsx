@@ -49,7 +49,7 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
                 <Link
                   key={idx}
                   href={`/partner/${partner.id}`}
-                  className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative"
+                  className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative overflow-hidden"
                 >
                   {user.companyPhoto.endsWith('.svg') ? (
                     <ReactSVG
@@ -60,7 +60,10 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
                           : `${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`
                       }
                       beforeInjection={(svg: any) => {
-                        svg.setAttribute('style', 'width: 225px');
+                        svg.setAttribute(
+                          'style',
+                          'width: 225px; height: 63px;',
+                        );
                       }}
                     />
                   ) : (

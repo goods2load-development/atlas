@@ -444,10 +444,6 @@ export default function Registration() {
   }, [step]);
 
   useEffect(() => {
-    console.log(form.getValues(), 'FORM_STATE');
-  }, [form.getValues()]);
-
-  useEffect(() => {
     if (cookies.accessToken) {
       fillFields();
     }

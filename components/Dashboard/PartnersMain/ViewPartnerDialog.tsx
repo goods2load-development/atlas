@@ -66,7 +66,7 @@ const ViewPartnerDialog = ({
                 <ReactSVG
                   src={`${process.env.NEXT_PUBLIC_BASE_URL}${partner.companyPhoto}`}
                   beforeInjection={(svg: any) => {
-                    svg.setAttribute('style', 'width: 125px');
+                    svg.setAttribute('style', 'width: 125px; height: 63px');
                   }}
                 />
               ) : (

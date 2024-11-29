@@ -120,7 +120,7 @@ export default function Product(props: any) {
             <ReactSVG
               src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
               beforeInjection={(svg) => {
-                svg.setAttribute('style', 'width: 125px');
+                svg.setAttribute('style', 'width: 125px; height: 41px;');
               }}
             />
           ) : (
