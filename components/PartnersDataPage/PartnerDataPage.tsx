@@ -16,8 +16,10 @@ import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner
 import { Review } from '@/app/_components/Partner/Review/Review';
 import useBreakpoint from '@/app/hooks/useBreakpoint';
 import useDotButton from '@/app/hooks/useDotButton';
-import PartnerLogoDefault from '@/assets/Partners/partner-logo-default.jpg';
-import bgDecorline from '@/assets/bg-decor-line.svg';
+import ArrowSliderLeft from '@/assets/icons/arrow-slider-left.svg';
+import ArrowSliderRight from '@/assets/icons/arrow-slider-right.svg';
+import bgDecorline from '@/assets/icons/bg-decor-line.svg';
+import PartnerLogoDefault from '@/assets/images/partner-logo-default.jpg';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
 import { usePartnersStore } from '@/lib/store';
 import {
@@ -101,11 +103,7 @@ const PartnerDataPage = ({
   const { toast } = useToast();
   const { push } = useRouter();
 
-  const param = useParams();
-
-  const { isPartnersLoading, createPartnerPage } = usePartnersStore(
-    (state) => state,
-  );
+  const { createPartnerPage } = usePartnersStore((state) => state);
   const [activeTab, setActiveTab] = useState<TabsEnum>(
     TabsEnum.SERVICES_PROVIDED,
   );
@@ -361,7 +359,7 @@ const PartnerDataPage = ({
     form?.setValue('awardedBy', updatedFileList);
   };
 
-  const onCreatePageSubmit = (data: z.infer<typeof formSchema>) => {
+  const onCreatePageSubmit = async (data: z.infer<typeof formSchema>) => {
     const body = {
       name: data.name,
       description: data.description,
@@ -401,14 +399,48 @@ const PartnerDataPage = ({
       formData.append('awardedFiles', file),
     );
 
-    createPartnerPage(formData as any, id.toString()).then(() => {
+    try {
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/${id}/information`,
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
+
+      if (!response.ok) {
+        throw new Error((await response.json()).message);
+      }
+
       push('/dashboard/partners?tab=active');
       toast({
-        title: 'Page successfully created.',
+        title: `Page successfully ${isCreate ? 'created' : 'updated'}.`,
         variant: 'destructive',
         className: 'bg-green-500',
       });
-    });
+    } catch (error: any) {
+      toast({
+        title: 'Error',
+        description: error.message,
+        variant: 'destructive',
+        className: 'bg-red-500',
+      });
+    }
+
+    // createPartnerPage(formData as any, id.toString())
+    //   .then((a) => console.log(a))
+    //   .catch((error) => {
+    //     console.log(error);
+    //   });
+
+    //  .then(() => {
+    //     push('/dashboard/partners?tab=active');
+    //     toast({
+    //       title: 'Page successfully created.',
+    //       variant: 'destructive',
+    //       className: 'bg-green-500',
+    //     });
+    //   });
   };
 
   const content = () => (
@@ -1087,7 +1119,7 @@ const PartnerDataPage = ({
                                   onClick={() => emblaApi?.scrollPrev()}
                                   width={8}
                                   height={16}
-                                  src="/arrow-slider-left.svg"
+                                  src={ArrowSliderLeft}
                                   alt="prev"
                                 />
                               </button>
@@ -1109,7 +1141,7 @@ const PartnerDataPage = ({
                                   onClick={() => emblaApi?.scrollNext()}
                                   width={8}
                                   height={16}
-                                  src="/arrow-slider-right.svg"
+                                  src={ArrowSliderRight}
                                   alt="next"
                                 />
                               </button>

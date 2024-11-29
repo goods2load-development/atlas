@@ -1,5 +1,7 @@
 'use client';
 
+import Image from 'next/image';
+
 import Footer from '@/components/Footer';
 import Header from '@/components/Header/Header';
 
@@ -58,22 +60,35 @@ interface SEOPagesTemplateProps {
 
 export default function SEOPagesTemplate(props: SEOPagesTemplateProps) {
   const { children, imgSrc, imgSrcMobile, title } = props;
+
   return (
     <>
       <Header />
       <main className="min-h-screen colored-main">
-        <div className="min-h-[216px] lg:min-h-[300px]">
-          <img
-            className="w-full h-[300px] min-h-full object-cover hidden md:block"
-            src={imgSrc}
-          />
-          <img
-            className="w-full h-[216px] min-h-full object-cover md:hidden"
-            src={imgSrcMobile ? imgSrcMobile : imgSrc}
-          />
+        <div className="min-h-[216px] lg:min-h-[300px] relative">
+          <div className="hidden md:block relative w-full h-[300px]">
+            <Image
+              src={imgSrc}
+              alt="SEO Header Desktop"
+              className="object-cover"
+              fill // Makes the image fill its container
+              priority // Ensures this image loads faster
+              sizes="100vw" // Helps optimize the image for different viewports
+            />
+          </div>
+          <div className="md:hidden relative w-full h-[216px]">
+            <Image
+              src={imgSrcMobile || imgSrc}
+              alt="SEO Header Mobile"
+              className="object-cover"
+              fill
+              priority
+              sizes="100vw"
+            />
+          </div>
         </div>
         <div className="px-[16px] py-[40px] md:py-[72px] bg-seomobile md:bg-seo bg-no-repeat bg-top bg-contain">
-          <div className="max-w-[1296px]  mx-auto [&>img]:mb-[32px] [&>p]:mb-[32px]">
+          <div className="max-w-[1296px] mx-auto [&>img]:mb-[32px] [&>p]:mb-[32px]">
             <h1
               dangerouslySetInnerHTML={{ __html: title }}
               className="italic text-[34px]/[38px] md:text-[48px]/[58px] font-normal mb-[48px]"

@@ -1,6 +1,6 @@
 import { storyBlock } from './CompanyStoryData';
 import CompanyStoryBlock from '@/app/_components/Company/CompanyStory/CompanyStoryBlock';
-import line from '@/assets/line-dashed.svg';
+import line from '@/assets/icons/line-dashed.svg';
 
 import React from 'react';
 

@@ -1,31 +1,20 @@
-import SendDataToPartnerDialog from '../PartnersDataPage/SendDataToPartnerDialog';
 import { GoogleRating } from './GoogleRating';
-import { IProduct } from './MOCK';
 import SelectionPopup from './SelectionPopup';
-import LeafIcon from '@/assets/Product/LeafIcon';
-import defaultCompanyLogo from '@/assets/defaultCompanyLogo.svg';
-import recognationIcon from '@/assets/industryRecognations.svg';
-import InfoImg from '@/assets/info.svg';
-import SaveIconFilled from '@/assets/save-filled.svg';
-import SaveIcon from '@/assets/save.svg';
+import recognationIcon from '@/assets/icons/industryRecognations.svg';
+import leaf from '@/assets/icons/leaf.svg';
+import SaveIconFilled from '@/assets/icons/save-filled.svg';
+import SaveIcon from '@/assets/icons/save.svg';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
-import { useFilterStore } from '@/lib/filterStore';
 import { useUserStore } from '@/lib/store';
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { ReactSVG } from 'react-svg';
 
-import {
-  ToolTipComponent,
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { ToolTipComponent } from '@/components/ui/tooltip';
 import { useToast } from '@/components/ui/use-toast';
 
 // interface Props extends IProduct {
@@ -34,18 +23,18 @@ import { useToast } from '@/components/ui/use-toast';
 //   index: number;
 // }
 
-function Icon(type: string) {
-  switch (type) {
-    case 'plane':
-      return '/productplane.svg';
+// function Icon(type: string) {
+//   switch (type) {
+//     case 'plane':
+//       return '/productplane.svg';
 
-    case 'ferry':
-      return '/productferry.svg';
+//     case 'ferry':
+//       return '/productferry.svg';
 
-    default:
-      return '/producttruck.svg';
-  }
-}
+//     default:
+//       return '/producttruck.svg';
+//   }
+// }
 
 export default function Product(props: any) {
   const { toast } = useToast();
@@ -194,7 +183,7 @@ export default function Product(props: any) {
 
           {props.hasProof && (
             <div className="rounded-[5px] px-2 text-[15px]/[22.5px] bg-[#E6F4EB] text-[#004E00] w-fit flex">
-              <LeafIcon />
+              <Image width={21} height={21} src={leaf} alt="leaf" />
               Carbon Offset
             </div>
           )}

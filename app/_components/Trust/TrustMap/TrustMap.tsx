@@ -1,6 +1,4 @@
-import map from '@/assets/map.svg';
-
-import React from 'react';
+import map from '@/assets/icons/map.svg';
 
 import Image from 'next/image';
 

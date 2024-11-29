@@ -1,11 +1,13 @@
 import './globals.css';
 import { OpenWidgetProvider } from './openwidget/OpenWidgetProvider';
 import { WeglotProvider } from './weglot/WeglotProvider';
+import WhatsupIcon from '@/assets/icons/whatsupicon.svg';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
+import Image from 'next/image';
 
 import ToasterWrapper from '@/components/Interceptor';
 import NextAuthProvider from '@/components/NextAuthProvider';
@@ -42,8 +44,10 @@ export default function RootLayout({
                 Chat by WhatsApp
                 <br /> with us!
               </span>
-              <img
-                src="/whatsupicon.svg"
+              <Image
+                width={52}
+                height={52}
+                src={WhatsupIcon}
                 alt="whatsup"
                 className="float-right w-[52px] h-[52px]"
               />

@@ -1,7 +1,7 @@
 import CompanyLeader from '@/app/_components/Company/CompanyLeadership/CompanyLeader';
 import { leaderships } from '@/app/_components/Company/CompanyLeadership/CompanyLidershipData';
 import { Leadership } from '@/app/interface/leaderShip';
-import line from '@/assets/line.svg';
+import line from '@/assets/icons/line.svg';
 
 import React from 'react';
 

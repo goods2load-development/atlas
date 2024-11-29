@@ -1,4 +1,5 @@
 import { FooterItem } from '../Dashboard/HeaderFooterMain/types';
+import PlusIcon from '@/assets/icons/plus.svg';
 
 import { useState } from 'react';
 
@@ -25,7 +26,7 @@ const NavLinkMobile = ({ item }: { item: FooterItem }) => {
             })}
             width={13}
             height={13}
-            src="/plus.svg"
+            src={PlusIcon}
             alt="expand"
           />
         )}

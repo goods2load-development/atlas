@@ -29,6 +29,7 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { set } from 'lodash';
 import { getSession, signIn } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -695,7 +696,13 @@ export default function Registration() {
                           />
                         </FormControl>
                         <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 flex justify-center items-center">
-                          <img className="mr-[8px]" src="/upload.svg" />
+                          <Image
+                            className="mr-2"
+                            src="/upload.svg"
+                            alt="upload"
+                            width={16}
+                            height={16}
+                          />{' '}
                           {field.value ? field.value.name : 'Upload logo'}
                         </FormLabel>
                       </div>
@@ -894,7 +901,13 @@ export default function Registration() {
                           />
                         </FormControl>
                         <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                          <img className="mr-[8px]" src="/upload.svg" />
+                          <Image
+                            className="mr-2"
+                            src="/upload.svg"
+                            alt="upload"
+                            width={16}
+                            height={16}
+                          />{' '}
                           {field.value
                             ? field.value.name
                             : 'Upload PDF(front&back)'}
@@ -937,7 +950,13 @@ export default function Registration() {
                           />
                         </FormControl>
                         <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                          <img className="mr-[8px]" src="/upload.svg" />
+                          <Image
+                            className="mr-2"
+                            src="/upload.svg"
+                            alt="upload"
+                            width={16}
+                            height={16}
+                          />{' '}
                           {field.value
                             ? field.value.name
                             : 'Upload PDF(front&back)'}
@@ -980,7 +999,13 @@ export default function Registration() {
                           />
                         </FormControl>
                         <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 sm:w-1/2 flex justify-center items-center">
-                          <img className="mr-[8px]" src="/upload.svg" />
+                          <Image
+                            className="mr-2"
+                            src="/upload.svg"
+                            alt="upload"
+                            width={16}
+                            height={16}
+                          />
                           {field.value
                             ? field.value.name
                             : 'Upload PDF(front&back)'}

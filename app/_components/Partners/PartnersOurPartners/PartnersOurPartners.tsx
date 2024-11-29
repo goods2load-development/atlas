@@ -1,6 +1,6 @@
 'use client';
 
-import defaultLogo from '@/assets/default-logo-g2l.svg';
+import defaultLogo from '@/assets/icons/default-logo-g2l.svg';
 import { usePartnersStore } from '@/lib/store';
 
 import React, { useEffect } from 'react';

@@ -1,12 +1,10 @@
 import { sliderData } from './sliderData';
-import google from '@/assets/google.svg';
-import stars from '@/assets/stars.svg';
-import trustpilot from '@/assets/trustpilot.svg';
-
-import React from 'react';
+import google from '@/assets/icons/google.svg';
+import stars from '@/assets/icons/stars.svg';
+import trustpilot from '@/assets/icons/trustpilot.svg';
 
 import Autoplay from 'embla-carousel-autoplay';
-import Image, { StaticImageData } from 'next/image';
+import Image from 'next/image';
 
 import { CardContent } from '@/components/ui/card';
 import {

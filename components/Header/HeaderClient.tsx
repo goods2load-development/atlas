@@ -11,11 +11,13 @@ import {
 } from '../ui/accordion';
 import NavLinkMobile from './NavLinkMobile';
 import useBreakpoint from '@/app/hooks/useBreakpoint';
+import UserWhite from '@/assets/icons/userwhite.svg';
 import { useFooterHeaderStore, useUserStore } from '@/lib/store';
 
 import { PropsWithChildren, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useLockBodyScroll } from 'react-use';
 
@@ -124,7 +126,12 @@ export default function HeaderClient({
               {user?.id ? (
                 <NavigationMenuItem>
                   <Link href="/account" className="flex items-center">
-                    <img src="/userwhite.svg" alt={'user-white'} />
+                    <Image
+                      width={26}
+                      height={26}
+                      src={UserWhite}
+                      alt={'user-white'}
+                    />
                   </Link>
                 </NavigationMenuItem>
               ) : (

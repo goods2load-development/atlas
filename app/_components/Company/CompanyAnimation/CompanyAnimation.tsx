@@ -1,6 +1,6 @@
 'use client';
 
-import line from '@/assets/line-dashed.svg';
+import line from '@/assets/icons/line-dashed.svg';
 
 import Image from 'next/image';
 
