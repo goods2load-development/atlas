@@ -19,6 +19,7 @@ import {
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import { Input } from '@/components/ui/input';
 import ListItem from '@/components/ui/list-item';
 import Spinner from '@/components/ui/spinner';
@@ -227,12 +228,7 @@ const PartnersMain = () => {
                       <Check />
                     </button>
                   )}
-                  <button
-                    onClick={() => unconfirmPartner(partner.partnerId)}
-                    title="Delete"
-                  >
-                    <TrashIcon />
-                  </button>
+
                   {tab === 'active' && !partner.hasPage && (
                     <button
                       title="create page"
@@ -261,6 +257,24 @@ const PartnersMain = () => {
                       <Edit2Icon />
                     </button>
                   )}
+                  <ConfirmDialog
+                    trigger={
+                      <button title="Delete">
+                        <TrashIcon />
+                      </button>
+                    }
+                    title="Confirm Deletion"
+                    description={
+                      <>
+                        Are you sure you want to delete partner{' '}
+                        <strong>{partner.email}</strong>? This action cannot be
+                        undone.
+                      </>
+                    }
+                    confirmLabel="Yes, delete"
+                    cancelLabel="No, cancel"
+                    onConfirm={() => unconfirmPartner(partner.partnerId)}
+                  />
                 </div>
               </div>
             </ListItem>

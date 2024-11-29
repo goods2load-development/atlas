@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import { Check, TrashIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import ListItem from '@/components/ui/list-item';
 import Pagination from '@/components/ui/pagination';
 import { useToast } from '@/components/ui/use-toast';
@@ -144,12 +145,18 @@ export const SolutionFinderTab = () => {
                     id={item.id}
                   />
 
-                  <button
-                    title="Delete"
-                    onClick={() => deletePriceAlertById(item.id)}
-                  >
-                    <TrashIcon />
-                  </button>
+                  <ConfirmDialog
+                    trigger={
+                      <button title="Delete">
+                        <TrashIcon />
+                      </button>
+                    }
+                    title="Confirm Deletion"
+                    description="Are you sure you want to delete this price alert? This action cannot be undone."
+                    confirmLabel="Yes, delete"
+                    cancelLabel="No, cancel"
+                    onConfirm={() => deletePriceAlertById(item.id)}
+                  />
                 </div>
               </div>
             </ListItem>

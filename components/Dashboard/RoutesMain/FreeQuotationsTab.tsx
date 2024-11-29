@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { Check, TrashIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import ListItem from '@/components/ui/list-item';
 import Pagination from '@/components/ui/pagination';
 import { useToast } from '@/components/ui/use-toast';
@@ -115,9 +116,18 @@ export const FreeQuotationsTab = () => {
                     <Check />
                   </button>
 
-                  <button title="reject" onClick={() => handleReject(item.id)}>
-                    <TrashIcon />
-                  </button>
+                  <ConfirmDialog
+                    trigger={
+                      <button title="reject">
+                        <TrashIcon />
+                      </button>
+                    }
+                    title="Confirm Rejection"
+                    description="Are you sure you want to reject this quotation? This action cannot be undone."
+                    confirmLabel="Yes, reject"
+                    cancelLabel="No, cancel"
+                    onConfirm={() => handleReject(item.id)}
+                  />
                 </div>
               </div>
             </ListItem>
