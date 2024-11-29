@@ -53,6 +53,7 @@ export const FormStepRoadFreight = ({
   isProvideServices,
   setIsProvideServices,
   setActiveAccord,
+  states,
 }: {
   form: any;
   activeCountriesWithStates: any;
@@ -61,6 +62,7 @@ export const FormStepRoadFreight = ({
   isProvideServices: boolean;
   setIsProvideServices: any;
   setActiveAccord: any;
+  states: any;
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const {
@@ -74,8 +76,6 @@ export const FormStepRoadFreight = ({
   const [isAccordLoading, setIsAccordLoading] = useState(false);
 
   const [isLoadingStates, setIsLoadingStates] = useState<string | null>(null);
-
-  const states = form.watch('states');
 
   useEffect(() => {
     if (!isProvideServices) return setIsFreightDisabled(false);

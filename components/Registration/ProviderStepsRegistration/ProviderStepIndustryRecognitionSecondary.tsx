@@ -32,6 +32,8 @@ export const FormStepIndustryRecognitionSecondary = ({
   setIsProvideRecognitionSecondary,
   isProvideSustainability,
   setIsProvideSustainability,
+  industryRecognitionsSecondary,
+  sustainabilityCertificationFile,
 }: {
   form: any;
 
@@ -42,15 +44,10 @@ export const FormStepIndustryRecognitionSecondary = ({
   setIsProvideSustainability: (isProvide: any) => any;
 
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  industryRecognitionsSecondary: any;
+  sustainabilityCertificationFile: any;
 }) => {
   const { clearErrors } = form;
-
-  const industryRecognitionsSecondary = form.watch(
-    'industryRecognitionsSecondary',
-  );
-  const sustainabilityCertificationFile = form.watch(
-    'sustainabilityCertificationFile',
-  );
 
   useEffect(() => {
     const shouldDisableFreight =

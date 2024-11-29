@@ -53,6 +53,7 @@ export const FormStepAirFreight = ({
   setIsProvideServices,
   setActiveAccord,
   setIsFreightDisabled,
+  airports,
 }: {
   activeCountries: string[];
   setActiveCountries: any;
@@ -61,6 +62,7 @@ export const FormStepAirFreight = ({
   setIsProvideServices: any;
   setActiveAccord: any;
   form: any;
+  airports: any;
 
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
@@ -71,8 +73,6 @@ export const FormStepAirFreight = ({
   const [countriesData, setCountriesData] = useState<any>(null);
 
   const [isAccordLoading, setIsAccordLoading] = useState(false);
-
-  const airports = form.watch('airports');
 
   useEffect(() => {
     if (!isProvideServices) return setIsFreightDisabled(false);
