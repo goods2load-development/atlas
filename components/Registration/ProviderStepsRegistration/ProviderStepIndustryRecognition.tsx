@@ -116,13 +116,17 @@ export const FormStepIndustryRecognition = ({
   setIsProvideRecognition: (isProvide: any) => any;
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const industryRecognitionsWatch = form.watch('industryRecognitions');
+  // const industryRecognitionsWatch = form.watch('industryRecognitions');
 
   useEffect(() => {
     if (!isProvideRecognition) return setIsFreightDisabled(false);
 
-    setIsFreightDisabled(!industryRecognitionsWatch?.length);
-  }, [industryRecognitionsWatch, isProvideRecognition, setIsFreightDisabled]);
+    setIsFreightDisabled(!form.watch('industryRecognitions')?.length);
+  }, [
+    form.watch('industryRecognitions'),
+    isProvideRecognition,
+    setIsFreightDisabled,
+  ]);
 
   useEffect(() => {
     if (!isProvideRecognition) {

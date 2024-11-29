@@ -404,11 +404,19 @@ export default function Registration() {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
 
-    const { companyName, seaports, googleBusinessProfile, ...rest } = values;
+    const {
+      phoneNumber,
+      countryCode,
+      companyName,
+      seaports,
+      googleBusinessProfile,
+      ...rest
+    } = values;
 
     try {
       await postUserRegistrationData({
         ...rest,
+        phoneNumber: `${countryCode}${phoneNumber}`,
         companyName: companyName.trim(),
         airports: values?.airports || [],
         ports: seaports || [],
