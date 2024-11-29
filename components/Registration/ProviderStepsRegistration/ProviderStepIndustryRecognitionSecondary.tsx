@@ -3,6 +3,7 @@ import { IsRequired } from '../Registration';
 import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import { boolean } from 'zod';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -29,13 +30,22 @@ const industryRecognitions = [
 export const FormStepIndustryRecognitionSecondary = ({
   form,
   setIsFreightDisabled,
+  isProvideRecognitionSecondary,
+  setIsProvideRecognitionSecondary,
+  isProvideSustainability,
+  setIsProvideSustainability,
 }: {
   form: any;
+
+  isProvideRecognitionSecondary: boolean;
+  setIsProvideRecognitionSecondary: (isProvide: any) => any;
+
+  isProvideSustainability: boolean;
+  setIsProvideSustainability: (isProvide: any) => any;
+
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { clearErrors } = form;
-  const [isProvideRecognition, setIsProvideRecognition] = useState(true);
-  const [isProvideSustainability, setIsProvideSustainability] = useState(true);
 
   const industryRecognitionsSecondary = form.watch(
     'industryRecognitionsSecondary',
@@ -46,24 +56,25 @@ export const FormStepIndustryRecognitionSecondary = ({
 
   useEffect(() => {
     const shouldDisableFreight =
-      (isProvideRecognition && !industryRecognitionsSecondary?.length) ||
+      (isProvideRecognitionSecondary &&
+        !industryRecognitionsSecondary?.length) ||
       (isProvideSustainability && !sustainabilityCertificationFile?.length);
 
     setIsFreightDisabled(shouldDisableFreight);
   }, [
     industryRecognitionsSecondary,
-    isProvideRecognition,
+    isProvideRecognitionSecondary,
     isProvideSustainability,
     sustainabilityCertificationFile,
     setIsFreightDisabled,
   ]);
 
   useEffect(() => {
-    if (!isProvideRecognition) {
+    if (!isProvideRecognitionSecondary) {
       form.setValue('industryRecognitionsSecondary', []);
       form.setValue('industryProofFileSecondary', undefined);
     }
-  }, [isProvideRecognition]);
+  }, [isProvideRecognitionSecondary]);
 
   useEffect(() => {
     if (!isProvideSustainability)
@@ -77,14 +88,16 @@ export const FormStepIndustryRecognitionSecondary = ({
           Additional Validations
         </h4>
         <Switch
-          checked={isProvideRecognition}
-          onCheckedChange={() => setIsProvideRecognition((prev) => !prev)}
+          checked={isProvideRecognitionSecondary}
+          onCheckedChange={() =>
+            setIsProvideRecognitionSecondary((prev: any) => !prev)
+          }
         />
       </div>
 
       <div
         className={clsx('my-4', {
-          'opacity-40 pointer-events-none': !isProvideRecognition,
+          'opacity-40 pointer-events-none': !isProvideRecognitionSecondary,
         })}
       >
         <FormField
@@ -187,7 +200,9 @@ export const FormStepIndustryRecognitionSecondary = ({
           </h4>
           <Switch
             checked={isProvideSustainability}
-            onCheckedChange={() => setIsProvideSustainability((prev) => !prev)}
+            onCheckedChange={() =>
+              setIsProvideSustainability((prev: any) => !prev)
+            }
           />
         </div>
         <p

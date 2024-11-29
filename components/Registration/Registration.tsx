@@ -27,6 +27,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import { set } from 'lodash';
 import { getSession, signIn } from 'next-auth/react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -99,6 +100,32 @@ export default function Registration() {
   const [cookies] = useCookies(['accessToken']);
   const isUser = useSearchParams().toString().split('=')[0] !== 'provider';
   const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
+
+  const [isProvideRecognition, setIsProvideRecognition] = useState(true);
+  const [isProvideRecognitionSecondary, setIsProvideRecognitionSecondary] =
+    useState(true);
+  const [isProvideSustainability, setIsProvideSustainability] = useState(true);
+
+  const [isProviderAirFreight, setIsProvideAirFreight] = useState(true);
+  const [activeAirFreightAccord, setActiveAirFreightAccord] =
+    useState(undefined);
+  const [activeAirFreightCountries, setActiveAirFreightCountries] = useState(
+    [],
+  );
+
+  const [isProvideSeaFreight, setIsProvideSeaFreight] = useState(true);
+  const [activeSeaFreightAccord, setActiveSeaFreightAccord] =
+    useState(undefined);
+  const [activeSeaFreightCountries, setActiveSeaFreightCountries] = useState(
+    [],
+  );
+
+  const [isProvideRoadFreight, setIsProvideRoadFreight] = useState(true);
+  const [activeRoadFreightAccord, setActiveRoadFreightAccord] =
+    useState(undefined);
+  const [activeRoadFreightCountries, setActiveRoadFreightCountries] = useState(
+    [],
+  );
 
   const [formState, setFormState] = useState(() => {
     const savedFormState =
@@ -391,7 +418,8 @@ export default function Registration() {
     } catch {
       toast({
         title: 'Error',
-        description: 'User already found. Try another email or phone number.',
+        description:
+          'User already found. Try another email, phone number, company name',
         variant: 'destructive',
         className: 'bg-red-500',
       });
@@ -414,6 +442,10 @@ export default function Registration() {
 
     setIsFreightDisabled(isDisablingStep);
   }, [step]);
+
+  useEffect(() => {
+    console.log(form.getValues(), 'FORM_STATE');
+  }, [form.getValues()]);
 
   useEffect(() => {
     if (cookies.accessToken) {
@@ -546,17 +578,20 @@ export default function Registration() {
                     <FormField
                       control={form.control}
                       name="countryCode"
-                      render={({ field }) => (
-                        <FormItem className="sm:w-5/12 sm:mr-2">
-                          <FormControl>
-                            <CountryCode
-                              onChange={field.onChange}
-                              className="bg-gray-2 border-transparent outline-none"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                      render={({ field }) => {
+                        return (
+                          <FormItem className="sm:w-5/12 sm:mr-2">
+                            <FormControl>
+                              <CountryCode
+                                selectedValue={field.value}
+                                onChange={handleChange}
+                                className="bg-gray-2 border-transparent outline-none"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        );
+                      }}
                     />
                     <FormField
                       control={form.control}
@@ -731,6 +766,7 @@ export default function Registration() {
                     </FormLabel>
                     <FormControl>
                       <Select
+                        value={field.value}
                         onValueChange={(value) => {
                           field.onChange(value);
                           form.setValue('city', '');
@@ -1077,6 +1113,8 @@ export default function Registration() {
           {step === 2 && (
             <div className={clsx('pt-6 mb-10')}>
               <FormStepIndustryRecognition
+                isProvideRecognition={isProvideRecognition}
+                setIsProvideRecognition={setIsProvideRecognition}
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
@@ -1086,6 +1124,12 @@ export default function Registration() {
           {step === 3 && (
             <div className={clsx('pt-6 mb-10')}>
               <FormStepIndustryRecognitionSecondary
+                isProvideRecognitionSecondary={isProvideRecognitionSecondary}
+                isProvideSustainability={isProvideSustainability}
+                setIsProvideSustainability={setIsProvideSustainability}
+                setIsProvideRecognitionSecondary={
+                  setIsProvideRecognitionSecondary
+                }
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
@@ -1099,6 +1143,12 @@ export default function Registration() {
           {step === 5 && (
             <div className={clsx('pt-6')}>
               <FormStepAirFreight
+                isProvideServices={isProviderAirFreight}
+                setIsProvideServices={setIsProvideAirFreight}
+                activeCountries={activeAirFreightCountries}
+                setActiveCountries={setActiveAirFreightCountries}
+                activeAccord={activeAirFreightAccord}
+                setActiveAccord={setActiveAirFreightAccord}
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
@@ -1108,6 +1158,12 @@ export default function Registration() {
           {step === 6 && (
             <div className={clsx('pt-6')}>
               <FormStepSeaFreight
+                isProvideServices={isProvideSeaFreight}
+                setIsProvideServices={setIsProvideSeaFreight}
+                activeCountries={activeSeaFreightCountries}
+                setActiveCountries={setActiveSeaFreightCountries}
+                activeAccord={activeSeaFreightAccord}
+                setActiveAccord={setActiveSeaFreightAccord}
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
@@ -1117,6 +1173,12 @@ export default function Registration() {
           {step === 7 && (
             <div className={clsx('pt-6')}>
               <FormStepRoadFreight
+                isProvideServices={isProvideRoadFreight}
+                setIsProvideServices={setIsProvideRoadFreight}
+                activeCountriesWithStates={activeRoadFreightCountries}
+                setActiveCountriesWithStates={setActiveRoadFreightCountries}
+                activeAccord={activeRoadFreightAccord}
+                setActiveAccord={setActiveRoadFreightAccord}
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
