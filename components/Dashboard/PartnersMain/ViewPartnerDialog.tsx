@@ -187,7 +187,7 @@ const ViewPartnerDialog = ({
                   <strong className="block text-center text-[18px]">
                     Partner Locations
                   </strong>
-                  <div>
+                  <div className="py-4">
                     {!!partner.partnerLocation.airports?.length && (
                       <>
                         <strong>Airports</strong>
@@ -199,7 +199,7 @@ const ViewPartnerDialog = ({
                       </>
                     )}
                   </div>
-                  <div>
+                  <div className="py-4">
                     {!!partner.partnerLocation.cities?.length && (
                       <>
                         <strong>Cities</strong>
@@ -211,13 +211,25 @@ const ViewPartnerDialog = ({
                       </>
                     )}
                   </div>
-                  <div>
+                  <div className="py-4">
                     {!!partner.partnerLocation.ports?.length && (
                       <>
                         <strong>Ports</strong>
                         {partner.partnerLocation.airports.map((item) => (
                           <div key={item.name} className="mt-3">
                             {item.name}({item.code})
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </div>
+                  <div className="py-4">
+                    {!!partner.partnerLocation.states?.length && (
+                      <>
+                        <strong>States</strong>
+                        {partner.partnerLocation.states.map((item) => (
+                          <div key={item} className="mt-3">
+                            {item}
                           </div>
                         ))}
                       </>
