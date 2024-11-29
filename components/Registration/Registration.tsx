@@ -387,6 +387,19 @@ export default function Registration() {
   const { watch, trigger, clearErrors } = form;
   const { toast } = useToast();
 
+  const industryRecognitionsWatch = form.watch('industryRecognitions');
+
+  const industryRecognitionsSecondary = form.watch(
+    'industryRecognitionsSecondary',
+  );
+  const sustainabilityCertificationFile = form.watch(
+    'sustainabilityCertificationFile',
+  );
+
+  const airports = form.watch('airports');
+  const seaports = form.watch('seaports');
+  const states = form.watch('states');
+
   const isProvider = watch('provider');
 
   const {
@@ -1142,6 +1155,7 @@ export default function Registration() {
           {step === 2 && (
             <div className={clsx('pt-6 mb-10')}>
               <FormStepIndustryRecognition
+                industryRecognitionsWatch={industryRecognitionsWatch}
                 isProvideRecognition={isProvideRecognition}
                 setIsProvideRecognition={setIsProvideRecognition}
                 setIsFreightDisabled={setIsFreightDisabled}
@@ -1153,6 +1167,10 @@ export default function Registration() {
           {step === 3 && (
             <div className={clsx('pt-6 mb-10')}>
               <FormStepIndustryRecognitionSecondary
+                industryRecognitionsSecondary={industryRecognitionsSecondary}
+                sustainabilityCertificationFile={
+                  sustainabilityCertificationFile
+                }
                 isProvideRecognitionSecondary={isProvideRecognitionSecondary}
                 isProvideSustainability={isProvideSustainability}
                 setIsProvideSustainability={setIsProvideSustainability}
@@ -1172,6 +1190,7 @@ export default function Registration() {
           {step === 5 && (
             <div className={clsx('pt-6')}>
               <FormStepAirFreight
+                airports={airports}
                 isProvideServices={isProviderAirFreight}
                 setIsProvideServices={setIsProvideAirFreight}
                 activeCountries={activeAirFreightCountries}
@@ -1187,6 +1206,7 @@ export default function Registration() {
           {step === 6 && (
             <div className={clsx('pt-6')}>
               <FormStepSeaFreight
+                seaports={seaports}
                 isProvideServices={isProvideSeaFreight}
                 setIsProvideServices={setIsProvideSeaFreight}
                 activeCountries={activeSeaFreightCountries}
@@ -1202,6 +1222,7 @@ export default function Registration() {
           {step === 7 && (
             <div className={clsx('pt-6')}>
               <FormStepRoadFreight
+                states={states}
                 isProvideServices={isProvideRoadFreight}
                 setIsProvideServices={setIsProvideRoadFreight}
                 activeCountriesWithStates={activeRoadFreightCountries}
