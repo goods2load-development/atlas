@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import { Input } from '@/components/ui/input';
 import ListItem from '@/components/ui/list-item';
 import Pagination from '@/components/ui/pagination';
@@ -138,12 +139,18 @@ const PartnersMain = () => {
                     <FileSymlink />
                   </button>
 
-                  <button
-                    onClick={() => onDeleteTemplate(template.id)}
-                    title="Delete"
-                  >
-                    <TrashIcon />
-                  </button>
+                  <ConfirmDialog
+                    trigger={
+                      <button title="Delete">
+                        <TrashIcon />
+                      </button>
+                    }
+                    title="Confirm Deletion"
+                    description="Are you sure you want to delete this template? This action cannot be undone."
+                    confirmLabel="Yes, delete"
+                    cancelLabel="No, cancel"
+                    onConfirm={() => onDeleteTemplate(template.id)}
+                  />
                 </div>
               </div>
             </ListItem>

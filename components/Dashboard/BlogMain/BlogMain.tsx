@@ -11,6 +11,7 @@ import Link from 'next/link';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import { Button } from '@/components/ui/button';
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import { Input } from '@/components/ui/input';
 import ListItem from '@/components/ui/list-item';
 import Pagination from '@/components/ui/pagination';
@@ -149,12 +150,18 @@ const BlogMain = () => {
                 >
                   <Edit />
                 </Link>
-                <button
-                  onClick={() => handleDeleteBlog(post.id)}
-                  title="delete blog"
-                >
-                  <Trash />
-                </button>
+                <ConfirmDialog
+                  trigger={
+                    <button title="delete blog">
+                      <Trash />
+                    </button>
+                  }
+                  title="Confirm Deletion"
+                  description="Are you sure you want to delete this blog post? This action cannot be undone."
+                  confirmLabel="Yes, delete"
+                  cancelLabel="No, cancel"
+                  onConfirm={() => handleDeleteBlog(post.id)}
+                />
               </div>
             </div>
           </ListItem>
