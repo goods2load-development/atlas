@@ -46,22 +46,31 @@ const regions = [
 
 export const FormStepAirFreight = ({
   form,
+  activeCountries,
+  setActiveCountries,
+  activeAccord,
+  isProvideServices,
+  setIsProvideServices,
+  setActiveAccord,
   setIsFreightDisabled,
 }: {
+  activeCountries: string[];
+  setActiveCountries: any;
+  activeAccord: string | undefined;
+  isProvideServices: boolean;
+  setIsProvideServices: any;
+  setActiveAccord: any;
   form: any;
+
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { getCountriesByRegions }: any = useCountriesStore();
 
   const { getAirportsByCountry }: any = usePortsStore();
 
-  const [activeAccord, setActiveAccord] = useState<string | undefined>(
-    undefined,
-  );
   const [countriesData, setCountriesData] = useState<any>(null);
-  const [activeCountries, setActiveCountries] = useState<string[]>([]);
+
   const [isAccordLoading, setIsAccordLoading] = useState(false);
-  const [isProvideServices, setIsProvideServices] = useState(true);
 
   const airports = form.watch('airports');
 

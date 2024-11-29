@@ -70,7 +70,7 @@ export default function UploadPartnerLogo({
                     : `${process.env.NEXT_PUBLIC_BASE_URL}${localPhoto}`
                 }
                 beforeInjection={(svg) => {
-                  svg.setAttribute('style', 'width: 225px');
+                  svg.setAttribute('style', 'width: 225px; height: 225px');
                 }}
               />
             ) : (
