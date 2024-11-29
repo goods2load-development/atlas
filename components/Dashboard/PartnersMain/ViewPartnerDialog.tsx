@@ -200,18 +200,6 @@ const ViewPartnerDialog = ({
                     )}
                   </div>
                   <div className="py-4">
-                    {!!partner.partnerLocation.cities?.length && (
-                      <>
-                        <strong>Cities</strong>
-                        {partner.partnerLocation.cities.map((item) => (
-                          <div key={item.name} className="mt-3">
-                            {item.name}({item.code})
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </div>
-                  <div className="py-4">
                     {!!partner.partnerLocation.ports?.length && (
                       <>
                         <strong>Ports</strong>
