@@ -20,7 +20,7 @@ export default function DeleteAccount() {
       trigger={
         <UIButton
           secondary
-          className="text-[#666666] border-[#666666] hover:bg-[#666666] w-full px-8"
+          className="text-[#666666] border-[#666666] hover:bg-[#666666] ml-auto px-8"
         >
           <Trash2 className="w-4 h-4 mr-[6px]" />
           Delete account

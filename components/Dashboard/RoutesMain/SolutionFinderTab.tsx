@@ -152,7 +152,7 @@ export const SolutionFinderTab = () => {
                       </button>
                     }
                     title="Confirm Deletion"
-                    description="Are you sure you want to delete this price alert? This action cannot be undone."
+                    description="Are you sure you want to delete this solution finder? This action cannot be undone."
                     confirmLabel="Yes, delete"
                     cancelLabel="No, cancel"
                     onConfirm={() => deletePriceAlertById(item.id)}

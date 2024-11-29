@@ -161,7 +161,7 @@ export default function Account() {
                 <SolutionFinder />
               </div>
             )}
-            {user?.role !== 'editor' && <DeleteAccount />}
+
             <button
               onClick={onLogout}
               className="flex items-center gap-3 text-[14px]/[17px] font-medium cursor-pointer hover:opacity-50 transition-all mx-auto"
@@ -274,7 +274,7 @@ export default function Account() {
             <span className="font-medium">Logistics&nbsp;</span>partners saved
           </span>
         </div>
-        <Card className="">
+        <Card className="mb-10">
           <CardContent className="sm:flex justify-between">
             <div className="flex gap-1">
               {user?.savedPartners?.map(({ id, photo }: any) => {
@@ -329,6 +329,9 @@ export default function Account() {
             )}
           </CardContent>
         </Card>
+        <div className="flex items-end">
+          {user?.role !== 'editor' && <DeleteAccount />}
+        </div>
       </main>
     </>
   );
