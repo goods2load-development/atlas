@@ -20,6 +20,7 @@ import { FormStepIndustryRecognitionSecondary } from './ProviderStepsRegistratio
 import { FormStepRoadFreight } from './ProviderStepsRegistration/ProviderStepRoadFreight';
 import { FormStepSeaFreight } from './ProviderStepsRegistration/ProviderStepSeaFreight';
 import RegistrationSuccessPopup from './RegistrationSuccessPopup';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 import { usePartnersStore, useRegistrationStore } from '@/lib/store';
 import { useCountriesStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -92,7 +93,7 @@ export function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
 }
 
-export default function Registration() {
+function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
   const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -1202,3 +1203,11 @@ export default function Registration() {
     </RegistrationWrapper>
   );
 }
+
+const RegistrationWrapped = () => (
+  <CaptchaProvider>
+    <Registration />
+  </CaptchaProvider>
+);
+
+export default RegistrationWrapped;
