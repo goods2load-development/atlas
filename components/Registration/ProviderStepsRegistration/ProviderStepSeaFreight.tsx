@@ -46,6 +46,7 @@ const regions = [
 
 export const FormStepSeaFreight = ({
   form,
+  step,
   activeCountries,
   setActiveCountries,
   activeAccord,
@@ -56,6 +57,7 @@ export const FormStepSeaFreight = ({
   seaports,
 }: {
   form: any;
+  step: any;
   activeCountries: string[];
   setActiveCountries: any;
   activeAccord: string | undefined;

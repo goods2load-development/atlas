@@ -106,12 +106,14 @@ const industryRecognitions = [
 ];
 
 export const FormStepIndustryRecognition = ({
+  step,
   form,
   isProvideRecognition,
   setIsProvideRecognition,
   setIsFreightDisabled,
   industryRecognitionsWatch,
 }: {
+  step: any;
   form: any;
   isProvideRecognition: boolean;
   setIsProvideRecognition: (isProvide: any) => any;
@@ -122,7 +124,12 @@ export const FormStepIndustryRecognition = ({
     if (!isProvideRecognition) return setIsFreightDisabled(false);
 
     setIsFreightDisabled(!industryRecognitionsWatch?.length);
-  }, [industryRecognitionsWatch, isProvideRecognition, setIsFreightDisabled]);
+  }, [
+    step,
+    industryRecognitionsWatch,
+    isProvideRecognition,
+    setIsFreightDisabled,
+  ]);
 
   useEffect(() => {
     if (!isProvideRecognition) {
