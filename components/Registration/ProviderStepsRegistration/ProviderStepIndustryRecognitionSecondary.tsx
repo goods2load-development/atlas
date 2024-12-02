@@ -56,7 +56,6 @@ export const FormStepIndustryRecognitionSecondary = ({
       (isProvideRecognitionSecondary &&
         !industryRecognitionsSecondary?.length) ||
       (isProvideSustainability && !sustainabilityCertificationFile?.length);
-
     setIsFreightDisabled(shouldDisableFreight);
   }, [
     step,

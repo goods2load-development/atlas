@@ -460,23 +460,43 @@ export default function Registration() {
   }
 
   useEffect(() => {
-    const isDisablingStep = [3, 5, 6, 7].includes(step);
-
     if (
-      (step === 2 && !isProvideRecognition) ||
-      !industryRecognitionsWatch?.length
+      step === 2 &&
+      (!isProvideRecognition || !industryRecognitionsWatch?.length)
     ) {
       setIsFreightDisabled(false);
     }
 
-    setIsFreightDisabled(isDisablingStep);
-  }, [step]);
+    if (
+      step === 3 &&
+      (!isProvideRecognitionSecondary ||
+        !industryRecognitionsSecondary?.length) &&
+      (!isProvideSustainability || !sustainabilityCertificationFile?.length)
+    ) {
+      setIsFreightDisabled(false);
+    }
 
-  useEffect(() => {
-    console.log('STEP', step);
-    console.log('IS_FREIGHT_DISABLED', isFreightDisabled);
-    console.log('FORM', form.getValues());
-  }, [step, form.getValues()]);
+    if (
+      step === 5 &&
+      (!isProviderAirFreight || !activeAirFreightCountries?.length)
+    ) {
+      setIsFreightDisabled(false);
+    }
+
+    if (
+      step === 6 &&
+      (!isProvideSeaFreight || !activeSeaFreightCountries?.length)
+    ) {
+      setIsFreightDisabled(false);
+    }
+
+    if (
+      step === 7 &&
+      (!isProvideRoadFreight || !activeRoadFreightCountries?.length)
+    ) {
+      setIsFreightDisabled(false);
+    }
+  }, [step]);
 
   useEffect(() => {
     if (cookies.accessToken) {
