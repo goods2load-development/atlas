@@ -460,10 +460,23 @@ export default function Registration() {
   }
 
   useEffect(() => {
-    const isDisablingStep = [2, 3, 5, 6, 7].includes(step);
+    const isDisablingStep = [3, 5, 6, 7].includes(step);
+
+    if (
+      (step === 2 && !isProvideRecognition) ||
+      !industryRecognitionsWatch?.length
+    ) {
+      setIsFreightDisabled(false);
+    }
 
     setIsFreightDisabled(isDisablingStep);
   }, [step]);
+
+  useEffect(() => {
+    console.log('STEP', step);
+    console.log('IS_FREIGHT_DISABLED', isFreightDisabled);
+    console.log('FORM', form.getValues());
+  }, [step, form.getValues()]);
 
   useEffect(() => {
     if (cookies.accessToken) {
