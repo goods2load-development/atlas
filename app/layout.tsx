@@ -3,7 +3,6 @@ import { OpenWidgetProvider } from './openwidget/OpenWidgetProvider';
 import { WeglotProvider } from './weglot/WeglotProvider';
 import WhatsupIcon from '@/assets/icons/whatsupicon.svg';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
-import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
@@ -31,7 +30,7 @@ export default function RootLayout({
       <html lang="en">
         <head>
           <WeglotProvider />
-          <OpenWidgetProvider />
+          {/* <OpenWidgetProvider /> */}
         </head>
         <body className={poppins.className}>
           <a
