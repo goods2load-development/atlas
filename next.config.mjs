@@ -17,6 +17,11 @@ const nextConfig = {
       'production-dubainight.s3.me-south-1.amazonaws.com',
     ],
   },
+  experimental: {
+    modern: true,
+    serverComponents: true,
+  },
+  compress: true,
 };
 
 export default nextConfig;
