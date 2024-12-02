@@ -27,7 +27,9 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import { set } from 'lodash';
 import { getSession, signIn } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import { useRouter } from 'next/navigation';
@@ -99,6 +101,32 @@ export default function Registration() {
   const [cookies] = useCookies(['accessToken']);
   const isUser = useSearchParams().toString().split('=')[0] !== 'provider';
   const [isRegisteredWithGoogle, setIsRegisteredWithGoogle] = useState(false);
+
+  const [isProvideRecognition, setIsProvideRecognition] = useState(true);
+  const [isProvideRecognitionSecondary, setIsProvideRecognitionSecondary] =
+    useState(true);
+  const [isProvideSustainability, setIsProvideSustainability] = useState(true);
+
+  const [isProviderAirFreight, setIsProvideAirFreight] = useState(true);
+  const [activeAirFreightAccord, setActiveAirFreightAccord] =
+    useState(undefined);
+  const [activeAirFreightCountries, setActiveAirFreightCountries] = useState(
+    [],
+  );
+
+  const [isProvideSeaFreight, setIsProvideSeaFreight] = useState(true);
+  const [activeSeaFreightAccord, setActiveSeaFreightAccord] =
+    useState(undefined);
+  const [activeSeaFreightCountries, setActiveSeaFreightCountries] = useState(
+    [],
+  );
+
+  const [isProvideRoadFreight, setIsProvideRoadFreight] = useState(true);
+  const [activeRoadFreightAccord, setActiveRoadFreightAccord] =
+    useState(undefined);
+  const [activeRoadFreightCountries, setActiveRoadFreightCountries] = useState(
+    [],
+  );
 
   const [formState, setFormState] = useState(() => {
     const savedFormState =
@@ -359,6 +387,19 @@ export default function Registration() {
   const { watch, trigger, clearErrors } = form;
   const { toast } = useToast();
 
+  const industryRecognitionsWatch = form.watch('industryRecognitions');
+
+  const industryRecognitionsSecondary = form.watch(
+    'industryRecognitionsSecondary',
+  );
+  const sustainabilityCertificationFile = form.watch(
+    'sustainabilityCertificationFile',
+  );
+
+  const airports = form.watch('airports');
+  const seaports = form.watch('seaports');
+  const states = form.watch('states');
+
   const isProvider = watch('provider');
 
   const {
@@ -376,11 +417,19 @@ export default function Registration() {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
 
-    const { companyName, seaports, googleBusinessProfile, ...rest } = values;
+    const {
+      phoneNumber,
+      countryCode,
+      companyName,
+      seaports,
+      googleBusinessProfile,
+      ...rest
+    } = values;
 
     try {
       await postUserRegistrationData({
         ...rest,
+        phoneNumber: `${countryCode}${phoneNumber}`,
         companyName: companyName.trim(),
         airports: values?.airports || [],
         ports: seaports || [],
@@ -391,7 +440,8 @@ export default function Registration() {
     } catch {
       toast({
         title: 'Error',
-        description: 'User already found. Try another email or phone number.',
+        description:
+          'User already found. Try another email, phone number, company name',
         variant: 'destructive',
         className: 'bg-red-500',
       });
@@ -546,17 +596,20 @@ export default function Registration() {
                     <FormField
                       control={form.control}
                       name="countryCode"
-                      render={({ field }) => (
-                        <FormItem className="sm:w-5/12 sm:mr-2">
-                          <FormControl>
-                            <CountryCode
-                              onChange={field.onChange}
-                              className="bg-gray-2 border-transparent outline-none"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
+                      render={({ field }) => {
+                        return (
+                          <FormItem className="sm:w-5/12 sm:mr-2">
+                            <FormControl>
+                              <CountryCode
+                                selectedValue={field.value}
+                                onChange={handleChange}
+                                className="bg-gray-2 border-transparent outline-none"
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        );
+                      }}
                     />
                     <FormField
                       control={form.control}
@@ -664,7 +717,13 @@ export default function Registration() {
                           />
                         </FormControl>
                         <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 flex justify-center items-center">
-                          <img className="mr-[8px]" src="/upload.svg" />
+                          <Image
+                            className="mr-2"
+                            src="/upload.svg"
+                            alt="upload"
+                            width={16}
+                            height={16}
+                          />{' '}
                           {field.value ? field.value.name : 'Upload logo'}
                         </FormLabel>
                       </div>
@@ -731,6 +790,7 @@ export default function Registration() {
                     </FormLabel>
                     <FormControl>
                       <Select
+                        value={field.value}
                         onValueChange={(value) => {
                           field.onChange(value);
                           form.setValue('city', '');
@@ -862,7 +922,13 @@ export default function Registration() {
                           />
                         </FormControl>
                         <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                          <img className="mr-[8px]" src="/upload.svg" />
+                          <Image
+                            className="mr-2"
+                            src="/upload.svg"
+                            alt="upload"
+                            width={16}
+                            height={16}
+                          />{' '}
                           {field.value
                             ? field.value.name
                             : 'Upload PDF(front&back)'}
@@ -905,7 +971,13 @@ export default function Registration() {
                           />
                         </FormControl>
                         <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                          <img className="mr-[8px]" src="/upload.svg" />
+                          <Image
+                            className="mr-2"
+                            src="/upload.svg"
+                            alt="upload"
+                            width={16}
+                            height={16}
+                          />{' '}
                           {field.value
                             ? field.value.name
                             : 'Upload PDF(front&back)'}
@@ -948,7 +1020,13 @@ export default function Registration() {
                           />
                         </FormControl>
                         <FormLabel className="border border-black font-normal text-[14px] rounded-sm py-2 sm:w-1/2 flex justify-center items-center">
-                          <img className="mr-[8px]" src="/upload.svg" />
+                          <Image
+                            className="mr-2"
+                            src="/upload.svg"
+                            alt="upload"
+                            width={16}
+                            height={16}
+                          />
                           {field.value
                             ? field.value.name
                             : 'Upload PDF(front&back)'}
@@ -1077,6 +1155,9 @@ export default function Registration() {
           {step === 2 && (
             <div className={clsx('pt-6 mb-10')}>
               <FormStepIndustryRecognition
+                industryRecognitionsWatch={industryRecognitionsWatch}
+                isProvideRecognition={isProvideRecognition}
+                setIsProvideRecognition={setIsProvideRecognition}
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
@@ -1086,6 +1167,16 @@ export default function Registration() {
           {step === 3 && (
             <div className={clsx('pt-6 mb-10')}>
               <FormStepIndustryRecognitionSecondary
+                industryRecognitionsSecondary={industryRecognitionsSecondary}
+                sustainabilityCertificationFile={
+                  sustainabilityCertificationFile
+                }
+                isProvideRecognitionSecondary={isProvideRecognitionSecondary}
+                isProvideSustainability={isProvideSustainability}
+                setIsProvideSustainability={setIsProvideSustainability}
+                setIsProvideRecognitionSecondary={
+                  setIsProvideRecognitionSecondary
+                }
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
@@ -1099,6 +1190,13 @@ export default function Registration() {
           {step === 5 && (
             <div className={clsx('pt-6')}>
               <FormStepAirFreight
+                airports={airports}
+                isProvideServices={isProviderAirFreight}
+                setIsProvideServices={setIsProvideAirFreight}
+                activeCountries={activeAirFreightCountries}
+                setActiveCountries={setActiveAirFreightCountries}
+                activeAccord={activeAirFreightAccord}
+                setActiveAccord={setActiveAirFreightAccord}
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
@@ -1108,6 +1206,13 @@ export default function Registration() {
           {step === 6 && (
             <div className={clsx('pt-6')}>
               <FormStepSeaFreight
+                seaports={seaports}
+                isProvideServices={isProvideSeaFreight}
+                setIsProvideServices={setIsProvideSeaFreight}
+                activeCountries={activeSeaFreightCountries}
+                setActiveCountries={setActiveSeaFreightCountries}
+                activeAccord={activeSeaFreightAccord}
+                setActiveAccord={setActiveSeaFreightAccord}
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />
@@ -1117,6 +1222,13 @@ export default function Registration() {
           {step === 7 && (
             <div className={clsx('pt-6')}>
               <FormStepRoadFreight
+                states={states}
+                isProvideServices={isProvideRoadFreight}
+                setIsProvideServices={setIsProvideRoadFreight}
+                activeCountriesWithStates={activeRoadFreightCountries}
+                setActiveCountriesWithStates={setActiveRoadFreightCountries}
+                activeAccord={activeRoadFreightAccord}
+                setActiveAccord={setActiveRoadFreightAccord}
                 setIsFreightDisabled={setIsFreightDisabled}
                 form={form}
               />

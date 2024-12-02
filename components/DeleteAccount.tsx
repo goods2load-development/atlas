@@ -1,66 +1,54 @@
 'use client';
 
 import { useUserStore } from '@/lib/store';
+import { isUserAdmin } from '@/lib/utils';
 
 import { Trash2 } from 'lucide-react';
-import { redirect } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import UIButton from '@/components/common/Button';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 
 export default function DeleteAccount() {
-  const { deleteUser } = useUserStore((state: any) => state);
+  const router = useRouter();
+  const { deleteUser, user } = useUserStore((state: any) => state);
+
+  const isAdmin = isUserAdmin(user?.role);
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
+    <ConfirmDialog
+      trigger={
         <UIButton
           secondary
-          className="text-[#666666] border-[#666666] hover:bg-[#666666] w-full sm:w-[224px]"
+          className="text-[#666666] border-[#666666] hover:bg-[#666666] ml-auto px-8"
         >
           <Trash2 className="w-4 h-4 mr-[6px]" />
           Delete account
         </UIButton>
-      </DialogTrigger>
-      <DialogContent className="p-8">
-        <DialogHeader>
-          <DialogTitle className="text-center font-light text-[40px]/[48px] mb-3">
-            Confirm <i className="font-normal">Deletion</i>
-          </DialogTitle>
-          <DialogDescription className="text-center text-[18px]/[26px] text-black mb-8">
+      }
+      title={
+        <>
+          Confirm <i className="font-normal">Deletion</i>
+        </>
+      }
+      description={
+        isAdmin ? (
+          <>
             Are you sure you would like to delete this profile from the
-            database?{' '}
-            <span className="font-semibold">This action cannot be undone.</span>
-          </DialogDescription>
-        </DialogHeader>
-        <DialogFooter className="sm:justify-around mt-8">
-          <DialogClose asChild>
-            <UIButton secondary className="w-5/12">
-              Cancel
-            </UIButton>
-          </DialogClose>
-          <DialogClose asChild className="w-5/12">
-            <UIButton
-              onClick={() => {
-                deleteUser(() => {
-                  redirect('/');
-                });
-              }}
-            >
-              Yes, delete my profile
-            </UIButton>
-          </DialogClose>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+            database? <strong>This action cannot be undone.</strong>
+          </>
+        ) : (
+          <>
+            Are you sure you would like to delete your profile from the
+            platform? <strong>This action cannot be undone.</strong>
+          </>
+        )
+      }
+      confirmLabel="Yes, delete"
+      cancelLabel="No, keep"
+      onConfirm={() => {
+        deleteUser(() => router.push('/'));
+      }}
+    />
   );
 }

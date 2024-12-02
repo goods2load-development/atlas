@@ -2,6 +2,7 @@ import { cookiePolicyPageData } from './data';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import Footer from '@/components/Footer';
 import DynamicMenu from '@/components/Header/DynamicMenu';
@@ -33,12 +34,16 @@ export function generateMetadata(): Metadata {
   };
 }
 
+const LegacyPageLazy = dynamic(() => import('@/components/Legacy/LegacyPage'), {
+  ssr: false,
+});
+
 export default function CookiePolicyPage() {
   return (
     <>
       <HeaderClient />
       <DynamicMenu />
-      <LegacyPage {...cookiePolicyPageData} />
+      <LegacyPageLazy {...cookiePolicyPageData} />
       <Footer />
     </>
   );

@@ -1,3 +1,4 @@
+import AverageDemand from '@/assets/icons/average-demand.svg';
 import { getRandomHexColor } from '@/lib/utils';
 
 import React, { useEffect, useState } from 'react';
@@ -116,12 +117,7 @@ const IndustryChart = ({ data }: { data: IndustryData[] }) => {
 
       <div className="flex items-center sm:w-full mx-auto">
         <div className="-mt-[20px] lg:-mt-[40px] min-w-[21px] max-w-[1050px]">
-          <Image
-            width={21}
-            height={141}
-            alt="av-dm"
-            src="/average-demand.svg"
-          />
+          <Image width={21} height={141} alt="av-dm" src={AverageDemand} />
         </div>
         <div className="ml-auto flex-1 lg:min-w-[800px] h-[200px] lg:h-[400px] w-full overflow-scroll">
           <ResponsiveContainer width="100%" height="100%">

@@ -4,9 +4,13 @@ import { generateDefaultMetadata } from '@/lib/metadataUtils';
 import { Suspense } from 'react';
 
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
-import AboutUs from '@/components/AboutUs/AboutUs';
 import BigLayout from '@/components/BigLayout';
+
+const AboutUsLazy = dynamic(() => import('@/components/AboutUs/AboutUs'), {
+  ssr: false,
+});
 
 export const generateMetadata = ({
   searchParams,
@@ -71,7 +75,7 @@ export default function AboutUsPage() {
         description="We help reduce costs, increase efficiency and offer improved customer service"
       >
         <Suspense>
-          <AboutUs />
+          <AboutUsLazy />
         </Suspense>
       </BigLayout>
     </LoyaltAllWrapper>

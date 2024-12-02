@@ -1,6 +1,6 @@
 'use client';
 
-import CookiesImage from '@/assets/LegacyImages/cookies.png';
+import CookiesImage from '@/assets/images/cookies.png';
 
 import { useEffect, useState } from 'react';
 

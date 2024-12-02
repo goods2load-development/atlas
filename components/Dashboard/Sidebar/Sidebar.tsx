@@ -1,5 +1,6 @@
 'use client';
 
+import ArrowSliderLeft from '@/assets/icons/arrow-slider-left.svg';
 import { useUserStore } from '@/lib/store';
 import { cn, isUserAdmin, isUserEditor, isUserProvider } from '@/lib/utils';
 
@@ -57,12 +58,7 @@ const Sidebar: React.FC = () => {
             onClick={() => router.push('/account')}
             className="p-4 pl-0 self-start"
           >
-            <Image
-              width={15}
-              height={15}
-              src="/arrow-slider-left.svg"
-              alt="back"
-            />
+            <Image width={15} height={15} src={ArrowSliderLeft} alt="back" />
           </button>
           {isProvider && (
             <>

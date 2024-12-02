@@ -1,7 +1,5 @@
 import BarChartGraph, { BarChartData } from '../../../Charts/BarChart';
-import { ICompetitivenessiteItem } from '@/app/interface/dashboard';
-
-import { useEffect } from 'react';
+import AverageDemand from '@/assets/icons/average-demand.svg';
 
 import Image from 'next/image';
 
@@ -46,12 +44,7 @@ const CompetitivenessChart = ({ data }: { data: any }) => {
       </div>
       <div className="flex items-center sm:w-full w-[280px] overflow-x-scroll mx-auto">
         <div className="-mt-[20px] lg:-mt-[40px] min-w-[21px]">
-          <Image
-            width={21}
-            height={141}
-            alt="av-dm"
-            src="/average-demand.svg"
-          />
+          <Image width={21} height={141} alt="av-dm" src={AverageDemand} />
         </div>
         <div className="ml-auto flex-1 min-w-[800px] h-[200px] lg:h-[400px]">
           {data.length > 0 ? (

@@ -1,7 +1,8 @@
 'use client';
 
 import { Button } from '../../ui/button';
-import closeSvg from '@/assets/close.svg';
+import closeSvg from '@/assets/icons/close.svg';
+import MenuIcon from '@/assets/icons/menu.svg';
 import { useUserStore } from '@/lib/store';
 import { cn, isUserAdmin, isUserEditor, isUserProvider } from '@/lib/utils';
 
@@ -73,7 +74,7 @@ const MobileSidebar: React.FC = () => {
           className="p-0"
         >
           {!expanded ? (
-            <Image alt="menu" width={32} height={32} src="/menu.svg" />
+            <Image alt="menu" width={32} height={32} src={MenuIcon} />
           ) : (
             <Image
               alt="close-menu"

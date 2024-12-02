@@ -1,7 +1,7 @@
 import ReplyComment from './ReplyComment';
-import pencilIcon from '@/assets/pencel.svg';
-import trushIcon from '@/assets/trush.svg';
-import userIcon from '@/assets/user.png';
+import pencilIcon from '@/assets/icons/pencel.svg';
+import trashIcon from '@/assets/icons/trash.svg';
+import userIcon from '@/assets/images/user.png';
 import {
   deleteRequest,
   getRequest,
@@ -293,8 +293,8 @@ const Comment: React.FC<CommentProps> = ({
                       className=""
                       width={20}
                       height={20}
-                      src={trushIcon}
-                      alt="trush"
+                      src={trashIcon}
+                      alt="trash"
                     />
                   </button>
                 </>

@@ -1,6 +1,7 @@
 import { Suspense } from 'react';
 
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
 import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
@@ -32,13 +33,20 @@ export const metadata: Metadata = {
   },
 };
 
+const RegistrationPageLazy = dynamic(
+  () => import('@/components/Registration/Registration'),
+  {
+    ssr: false,
+  },
+);
+
 export default function RegistrationPage() {
   return (
     <>
       <HeaderClient />
       <DynamicMenu />
       <Suspense>
-        <Registration />
+        <RegistrationPageLazy />
       </Suspense>
     </>
   );

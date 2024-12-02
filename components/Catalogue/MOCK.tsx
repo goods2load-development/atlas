@@ -1,7 +1,3 @@
-import { GoogleRatingProps } from './GoogleRating';
-import logoPlaceholder from '@/assets/Product/DP_World.png';
-import logoPlaceholder2 from '@/assets/Product/Hapag_Lloyd.png';
-
 import { StaticImageData } from 'next/image';
 
 export interface IProductServices {

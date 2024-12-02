@@ -10,9 +10,9 @@ import clsx from 'clsx';
 import { Check, TrashIcon } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import ListItem from '@/components/ui/list-item';
 import Pagination from '@/components/ui/pagination';
-import Spinner from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/use-toast';
 
 const TAKE = 5;
@@ -148,9 +148,18 @@ export const RoutesTab = () => {
                     route={route}
                     id={id}
                   />
-                  <button onClick={() => deleteRouteById(id)} title="Delete">
-                    <TrashIcon />
-                  </button>
+                  <ConfirmDialog
+                    trigger={
+                      <button title="Delete">
+                        <TrashIcon />
+                      </button>
+                    }
+                    title="Confirm Deletion"
+                    description="Are you sure you want to delete this route? This action cannot be undone."
+                    confirmLabel="Yes, delete"
+                    cancelLabel="No, cancel"
+                    onConfirm={() => deleteRouteById(id)}
+                  />
                 </div>
               </div>
             </ListItem>

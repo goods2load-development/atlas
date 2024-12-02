@@ -1,17 +1,21 @@
 'use client';
 
+import LogInImg from '@/assets/images/loginImg.png';
+
+import Image from 'next/image';
+
 import Footer from '@/components/Footer';
-import Header from '@/components/Header/Header';
 
 interface LoginWrapperProps {
-  children: string | JSX.Element | JSX.Element[];
+  children: React.ReactNode;
 }
 
 export default function LoginWrapper(props: LoginWrapperProps) {
   const { children } = props;
+
   return (
     <>
-      <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
+      <main className="grid grid-cols-1 min-h-screen p-74 colored-main">
         <div className="sm:flex">
           <div className="sm:w-6/12 p-[16px] sm:py-16">
             <div className="max-w-[528px] mx-auto">
@@ -27,11 +31,13 @@ export default function LoginWrapper(props: LoginWrapperProps) {
               {children}
             </div>
           </div>
-          <div className="min-h-[320px] sm:w-6/12">
-            <img
+          <div className="min-h-[320px] sm:w-6/12 relative">
+            <Image
               alt="Login Image"
-              className="w-full h-full object-cover"
-              src="/loginImg.png"
+              src={LogInImg}
+              className="object-cover"
+              fill
+              priority
             />
           </div>
         </div>

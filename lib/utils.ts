@@ -190,7 +190,7 @@ export const toNormalText = (input: string) => {
 };
 
 export const countVolume = (width: number, length: number, height: number) => {
-  return width * height * length;
+  return (width * height * length) / 1000000;
 };
 
 export const filterByField = (arr: any[], field: string, value: string) => {
