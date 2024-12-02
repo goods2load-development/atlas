@@ -1,6 +1,7 @@
 'use client';
 
 import AttachSvg from '../../Svg/CareerSvg/Attach/AttachSvg';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 import { postRequest } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Label } from '@radix-ui/react-label';
@@ -28,14 +29,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
-
-const MAX_FILE_SIZE = 2000000;
-const ACCEPTED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/jpg',
-  'image/png',
-  'image/webp',
-];
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -201,4 +194,10 @@ const CareerForm: React.FC = () => {
   );
 };
 
-export default CareerForm;
+const CareerFormWrapped = () => (
+  <CaptchaProvider>
+    <CareerForm />
+  </CaptchaProvider>
+);
+
+export default CareerFormWrapped;

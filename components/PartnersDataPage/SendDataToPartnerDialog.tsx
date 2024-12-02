@@ -1,5 +1,6 @@
 import CountryCode from '../common/CountryCode';
 import { Textarea } from '../ui/textarea';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 import { useUserStore } from '@/lib/store';
 import { postRequest } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -45,13 +46,12 @@ const formSchema = (isLoggedIn: boolean) =>
     message: z.string().min(2),
   });
 
-export default function SendDataToPartnerDialog({
-  title,
-  trigger,
-}: {
+interface Props {
   title?: React.ReactNode;
   trigger: React.ReactNode;
-}) {
+}
+
+function SendDataDialog({ title, trigger }: Props) {
   const { id } = useParams();
   const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -248,3 +248,11 @@ export default function SendDataToPartnerDialog({
     </Dialog>
   );
 }
+
+const SendDataToPartnerDialog = (props: Props) => (
+  <CaptchaProvider>
+    <SendDataDialog {...props} />
+  </CaptchaProvider>
+);
+
+export default SendDataToPartnerDialog;
