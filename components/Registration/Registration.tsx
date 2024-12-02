@@ -462,7 +462,7 @@ export default function Registration() {
   useEffect(() => {
     if (
       step === 2 &&
-      (!isProvideRecognition || !industryRecognitionsWatch?.length)
+      (!isProvideRecognition || industryRecognitionsWatch?.length)
     ) {
       setIsFreightDisabled(false);
     }
@@ -470,29 +470,29 @@ export default function Registration() {
     if (
       step === 3 &&
       (!isProvideRecognitionSecondary ||
-        !industryRecognitionsSecondary?.length) &&
-      (!isProvideSustainability || !sustainabilityCertificationFile?.length)
+        industryRecognitionsSecondary?.length) &&
+      (!isProvideSustainability || sustainabilityCertificationFile?.length)
     ) {
       setIsFreightDisabled(false);
     }
 
     if (
       step === 5 &&
-      (!isProviderAirFreight || !activeAirFreightCountries?.length)
+      (!isProviderAirFreight || activeAirFreightCountries?.length)
     ) {
       setIsFreightDisabled(false);
     }
 
     if (
       step === 6 &&
-      (!isProvideSeaFreight || !activeSeaFreightCountries?.length)
+      (!isProvideSeaFreight || activeSeaFreightCountries?.length)
     ) {
       setIsFreightDisabled(false);
     }
 
     if (
       step === 7 &&
-      (!isProvideRoadFreight || !activeRoadFreightCountries?.length)
+      (!isProvideRoadFreight || activeRoadFreightCountries?.length)
     ) {
       setIsFreightDisabled(false);
     }
