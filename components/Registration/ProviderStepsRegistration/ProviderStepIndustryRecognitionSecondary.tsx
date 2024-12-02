@@ -69,13 +69,13 @@ export const FormStepIndustryRecognitionSecondary = ({
   useEffect(() => {
     if (!isProvideRecognitionSecondary) {
       form.setValue('industryRecognitionsSecondary', []);
-      form.setValue('industryProofFileSecondary', undefined);
+      form.setValue('industryProofFileSecondary', null);
     }
   }, [isProvideRecognitionSecondary]);
 
   useEffect(() => {
     if (!isProvideSustainability)
-      form.setValue('sustainabilityCertificationFile', undefined);
+      form.setValue('sustainabilityCertificationFile', null);
   }, [isProvideSustainability]);
 
   return (

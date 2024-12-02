@@ -134,7 +134,7 @@ export const FormStepIndustryRecognition = ({
   useEffect(() => {
     if (!isProvideRecognition) {
       form.setValue('industryRecognitions', []);
-      form.setValue('industryProofFile', undefined);
+      form.setValue('industryProofFile', null);
     }
   }, [isProvideRecognition]);
 
