@@ -8,6 +8,7 @@ import { useEffect } from 'react';
 import { clsx } from 'clsx';
 import { Trash } from 'lucide-react';
 
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import ListItem from '@/components/ui/list-item';
 import Spinner from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/use-toast';
@@ -58,12 +59,18 @@ const ApproveComments = () => {
               <p className="max-w-[400px]">{category.name}</p>
               <div className="flex gap-2">
                 <CategoryDialog type="update" category={category} />
-                <button
-                  onClick={() => handleDeleteCategory(category.id)}
-                  title="delete"
-                >
-                  <Trash />
-                </button>
+                <ConfirmDialog
+                  trigger={
+                    <button title="delete">
+                      <Trash />
+                    </button>
+                  }
+                  title="Confirm Deletion"
+                  description="Are you sure you want to delete this category? This action cannot be undone."
+                  confirmLabel="Yes, delete"
+                  cancelLabel="No, cancel"
+                  onConfirm={() => handleDeleteCategory(category.id)}
+                />
               </div>
             </div>
           </ListItem>

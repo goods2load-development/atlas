@@ -1,4 +1,13 @@
+import dynamic from 'next/dynamic';
+
 import PartnerDataPage from '@/components/PartnersDataPage/PartnerDataPage';
+
+const PartnerDataPageLazy = dynamic(
+  () => import('@/components/PartnersDataPage/PartnerDataPage'),
+  {
+    ssr: false,
+  },
+);
 
 export default async function CreatePartnerPage({
   params,
@@ -16,5 +25,5 @@ export default async function CreatePartnerPage({
     )
   ).json();
 
-  return <PartnerDataPage companyPhoto={companyPhoto} isCreate />;
+  return <PartnerDataPageLazy companyPhoto={companyPhoto} isCreate />;
 }

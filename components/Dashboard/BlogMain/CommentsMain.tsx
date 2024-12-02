@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { Trash } from 'lucide-react';
 import { useParams } from 'next/navigation';
 
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import ListItem from '@/components/ui/list-item';
 import Spinner from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/use-toast';
@@ -57,12 +58,18 @@ const CommentsMain = () => {
             <div className="w-full flex justify-between gap-2">
               <p className="max-w-[400px]">{comment.comment}</p>
               <div className="flex gap-2">
-                <button
-                  onClick={() => handleDelete(comment.id)}
-                  className="delete"
-                >
-                  <Trash />
-                </button>
+                <ConfirmDialog
+                  trigger={
+                    <button title="Delete" className="delete">
+                      <Trash />
+                    </button>
+                  }
+                  title="Confirm Deletion"
+                  description="Are you sure you want to delete this comment? This action cannot be undone."
+                  confirmLabel="Yes, delete"
+                  cancelLabel="No, cancel"
+                  onConfirm={() => handleDelete(comment.id)}
+                />
                 <ViewCommentDialog comment={comment} />
               </div>
             </div>

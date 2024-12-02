@@ -1,4 +1,4 @@
-import bg from '@/assets/LegacyImages/cookiePolicy.jpg';
+import bg from '@/assets/images/cookiePolicy.jpg';
 
 import {
   ILegacyDataBlock,

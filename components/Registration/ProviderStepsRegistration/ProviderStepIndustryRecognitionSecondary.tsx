@@ -1,8 +1,7 @@
-import { IsRequired } from '../Registration';
-
 import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -29,41 +28,48 @@ const industryRecognitions = [
 export const FormStepIndustryRecognitionSecondary = ({
   form,
   setIsFreightDisabled,
+  isProvideRecognitionSecondary,
+  setIsProvideRecognitionSecondary,
+  isProvideSustainability,
+  setIsProvideSustainability,
+  industryRecognitionsSecondary,
+  sustainabilityCertificationFile,
 }: {
   form: any;
+
+  isProvideRecognitionSecondary: boolean;
+  setIsProvideRecognitionSecondary: (isProvide: any) => any;
+
+  isProvideSustainability: boolean;
+  setIsProvideSustainability: (isProvide: any) => any;
+
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  industryRecognitionsSecondary: any;
+  sustainabilityCertificationFile: any;
 }) => {
   const { clearErrors } = form;
-  const [isProvideRecognition, setIsProvideRecognition] = useState(true);
-  const [isProvideSustainability, setIsProvideSustainability] = useState(true);
-
-  const industryRecognitionsSecondary = form.watch(
-    'industryRecognitionsSecondary',
-  );
-  const sustainabilityCertificationFile = form.watch(
-    'sustainabilityCertificationFile',
-  );
 
   useEffect(() => {
     const shouldDisableFreight =
-      (isProvideRecognition && !industryRecognitionsSecondary?.length) ||
+      (isProvideRecognitionSecondary &&
+        !industryRecognitionsSecondary?.length) ||
       (isProvideSustainability && !sustainabilityCertificationFile?.length);
 
     setIsFreightDisabled(shouldDisableFreight);
   }, [
     industryRecognitionsSecondary,
-    isProvideRecognition,
+    isProvideRecognitionSecondary,
     isProvideSustainability,
     sustainabilityCertificationFile,
     setIsFreightDisabled,
   ]);
 
   useEffect(() => {
-    if (!isProvideRecognition) {
+    if (!isProvideRecognitionSecondary) {
       form.setValue('industryRecognitionsSecondary', []);
       form.setValue('industryProofFileSecondary', undefined);
     }
-  }, [isProvideRecognition]);
+  }, [isProvideRecognitionSecondary]);
 
   useEffect(() => {
     if (!isProvideSustainability)
@@ -77,14 +83,16 @@ export const FormStepIndustryRecognitionSecondary = ({
           Additional Validations
         </h4>
         <Switch
-          checked={isProvideRecognition}
-          onCheckedChange={() => setIsProvideRecognition((prev) => !prev)}
+          checked={isProvideRecognitionSecondary}
+          onCheckedChange={() =>
+            setIsProvideRecognitionSecondary((prev: any) => !prev)
+          }
         />
       </div>
 
       <div
         className={clsx('my-4', {
-          'opacity-40 pointer-events-none': !isProvideRecognition,
+          'opacity-40 pointer-events-none': !isProvideRecognitionSecondary,
         })}
       >
         <FormField
@@ -169,7 +177,13 @@ export const FormStepIndustryRecognitionSecondary = ({
                   />
                 </FormControl>
                 <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                  <img className="" src="/upload.svg" />
+                  <Image
+                    className="mr-2"
+                    src="/upload.svg"
+                    alt="upload"
+                    width={16}
+                    height={16}
+                  />
                   {field.value
                     ? `(${field.value?.length}) Files`
                     : `Upload ${field?.value?.length || ''} Files(front&back)`}
@@ -187,7 +201,9 @@ export const FormStepIndustryRecognitionSecondary = ({
           </h4>
           <Switch
             checked={isProvideSustainability}
-            onCheckedChange={() => setIsProvideSustainability((prev) => !prev)}
+            onCheckedChange={() =>
+              setIsProvideSustainability((prev: any) => !prev)
+            }
           />
         </div>
         <p
@@ -301,7 +317,13 @@ export const FormStepIndustryRecognitionSecondary = ({
                   />
                 </FormControl>
                 <FormLabel className="border border-black font-normal text-[14px] rounded-sm sm:w-1/2 py-2 flex justify-center items-center">
-                  <img className="" src="/upload.svg" />
+                  <Image
+                    className="mr-2"
+                    src="/upload.svg"
+                    alt="upload"
+                    width={16}
+                    height={16}
+                  />
                   {field.value
                     ? `(${field.value?.length}) Files`
                     : `Upload ${field?.value?.length || ''} Files(front&back)`}

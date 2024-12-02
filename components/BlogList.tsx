@@ -1,6 +1,8 @@
+import DefaultImage from '@/assets/images/default-image.jpg';
 import { slugify } from '@/lib/utils';
 
 import { format } from 'date-fns';
+import Image from 'next/image';
 import Link from 'next/link';
 
 interface Blog {
@@ -32,18 +34,20 @@ const BlogList: React.FC<BlogListProps> = ({
       {list.map((blog) => {
         const blogImg = blog.mainImageUrl
           ? `${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`
-          : '/default-image.jpg';
+          : DefaultImage;
 
         return (
           <div
             key={blog.id}
             className="bg-white rounded-lg overflow-hidden flex flex-col justify-between"
           >
-            <div className="relative">
-              <img
-                className="w-full h-[285px] object-cover rounded-lg"
+            <div className="relative w-full h-[285px]">
+              <Image
+                className="object-cover rounded-lg"
                 src={blogImg}
                 alt={blog.title}
+                fill
+                priority={blog.id === blogs[0].id} // Prioritize the first blog image for faster loading
               />
               <Link
                 href={`/category/${slugify(blog.blogTypeName)}`}

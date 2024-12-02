@@ -1,6 +1,7 @@
 'use client';
 
 import { type Tab } from './MarketTrendsMain';
+import ArrowDown from '@/assets/icons/arrow-down.svg';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 import Image from 'next/image';
@@ -53,7 +54,7 @@ const MarketTrendsTabs = ({
             </div>
             <div className="flex items-center justify-center rounded-md w-[30px] h-[30px] sm:w-[38px] sm:h-[38px] bg-primaryOrange">
               <Image
-                src="/arrow-down.svg"
+                src={ArrowDown}
                 width={14}
                 height={7}
                 alt="arrow-down"

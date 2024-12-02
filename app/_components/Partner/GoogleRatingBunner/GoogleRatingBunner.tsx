@@ -1,5 +1,5 @@
 import { Stars } from '../Stars/Stars';
-import GoogleRatingSvg from '@/assets/Partners/google-rating.svg';
+import GoogleRatingSvg from '@/assets/icons/google-rating.svg';
 
 import Image from 'next/image';
 import Link from 'next/link';

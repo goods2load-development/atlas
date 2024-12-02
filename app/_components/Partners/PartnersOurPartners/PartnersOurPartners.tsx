@@ -1,12 +1,13 @@
 'use client';
 
-import defaultLogo from '@/assets/default-logo-g2l.svg';
+import defaultLogo from '@/assets/icons/default-logo-g2l.svg';
 import { usePartnersStore } from '@/lib/store';
 
 import React, { useEffect } from 'react';
 
 import clsx from 'clsx';
 import Link from 'next/link';
+import { ReactSVG } from 'react-svg';
 
 interface PartnersOurPartnersProps {
   className?: string;
@@ -40,21 +41,42 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
         <div className="flex w-full text-black gap-2 flex-wrap justify-center lg:justify-start">
           {partners &&
             partners.map(({ user, ...partner }, idx) => {
+              if (!user.companyPhoto) {
+                return;
+              }
+
               return (
                 <Link
                   key={idx}
                   href={`/partner/${partner.id}`}
-                  className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative"
+                  className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative overflow-hidden"
                 >
-                  <div
-                    className="h-full"
-                    style={{
-                      backgroundImage: `url(${defaultLogo.src})`,
-                      backgroundSize: 'contain',
-                      backgroundPosition: 'center',
-                      backgroundRepeat: 'no-repeat',
-                    }}
-                  />
+                  {user.companyPhoto.endsWith('.svg') ? (
+                    <ReactSVG
+                      className="flex items-center justify-center h-full"
+                      src={
+                        user.companyPhoto.startsWith('data:')
+                          ? user.companyPhoto
+                          : `${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`
+                      }
+                      beforeInjection={(svg: any) => {
+                        svg.setAttribute(
+                          'style',
+                          'width: 225px; height: 63px;',
+                        );
+                      }}
+                    />
+                  ) : (
+                    <div
+                      className="h-full"
+                      style={{
+                        backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`,
+                        backgroundSize: 'contain',
+                        backgroundPosition: 'center',
+                        backgroundRepeat: 'no-repeat',
+                      }}
+                    />
+                  )}
                 </Link>
               );
             })}

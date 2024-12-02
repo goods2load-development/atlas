@@ -1,5 +1,4 @@
-import bg from '@/assets/LegacyImages/privacyPolicy.png';
-import { generateBlockId } from '@/lib/utils';
+import bg from '@/assets/images/privacyPolicy.png';
 
 import {
   ILegacyDataBlock,

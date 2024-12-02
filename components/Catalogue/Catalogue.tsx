@@ -4,6 +4,10 @@ import SelectedSearch from '../SelectedSearch';
 import Filter from './Filter';
 import Products from './Products';
 import { Referal } from './Referral';
+import FilterPlaneIcon from '@/assets/icons/filtericon-plane.svg';
+import FilterShipIcon from '@/assets/icons/filtericon-ship.svg';
+import FilterTruckIcon from '@/assets/icons/filtericon-truck.svg';
+import FilterMobileButton from '@/assets/icons/filtermobilebutton.svg';
 import { useFilterStore } from '@/lib/filterStore';
 
 import { useState } from 'react';
@@ -17,14 +21,14 @@ const renderIcon = (deliveryBy: string) => {
   let src = '';
   switch (deliveryBy) {
     case 'plane':
-      src = '/filtericon-plane.svg';
+      src = FilterPlaneIcon;
       break;
 
     case 'ferry':
-      src = '/filtericon-ship.svg';
+      src = FilterShipIcon;
       break;
     case 'truck':
-      src = '/filtericon-truck.svg';
+      src = FilterTruckIcon;
       break;
   }
   return <Image src={src} alt={deliveryBy} width={44} height={44} />;
@@ -41,7 +45,12 @@ export default function Catalogue() {
         <div className="flex items-center space-x-[6px]">
           <Sheet>
             <SheetTrigger>
-              <img src="/filtermobilebutton.svg" />
+              <Image
+                width={44}
+                height={44}
+                src={FilterMobileButton}
+                alt="Filter"
+              />
             </SheetTrigger>
             <SheetContent side="left" className="pt-[54px] overflow-y-auto">
               <p className="pb-[32px] text-[18px] font-medium">Filters</p>

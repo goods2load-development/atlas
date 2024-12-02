@@ -1,14 +1,20 @@
 'use client';
 
+import ProviderRegistrationImg from '@/assets/images/providerregistrationimg.png';
+import UserRegistrationImg from '@/assets/images/userregistrationimg.png';
+
+import Image from 'next/image';
+
 import Footer from '@/components/Footer';
 
 interface RegistrationWrapperProps {
-  children: any;
+  children: React.ReactNode;
   userRegistration?: boolean;
 }
 
 export default function RegistrationWrapper(props: RegistrationWrapperProps) {
   const { children, userRegistration } = props;
+
   return (
     <>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main">
@@ -29,16 +35,22 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
           </div>
           <div className="h-screen sm:w-6/12 sticky top-0">
             {userRegistration ? (
-              <img
+              <Image
                 alt="User Registration Image"
-                className="w-full h-full object-cover"
-                src="/userregistrationimg.png"
+                src={UserRegistrationImg}
+                className="object-cover"
+                fill
+                priority
+                unoptimized
               />
             ) : (
-              <img
+              <Image
                 alt="Provider Registration Image"
-                className="w-full h-full object-cover"
-                src="/providerregistrationimg.png"
+                src={ProviderRegistrationImg}
+                className="object-cover"
+                fill
+                priority
+                unoptimized
               />
             )}
           </div>

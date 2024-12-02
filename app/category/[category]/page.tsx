@@ -1,6 +1,7 @@
 import { slugify } from '@/lib/utils';
 
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 
 import BigLayout from '@/components/BigLayout';
@@ -8,6 +9,13 @@ import BlogCategories from '@/components/BlogCategories/BlogCategories';
 import Footer from '@/components/Footer';
 
 export const metadata: Metadata = {};
+
+const BlogCategoriesLazy = dynamic(
+  () => import('@/components/BlogCategories/BlogCategories'),
+  {
+    ssr: false,
+  },
+);
 
 export default async function CategoryBlogPage({
   params: { category },
@@ -31,7 +39,7 @@ export default async function CategoryBlogPage({
   return (
     <>
       <BigLayout title={`Category: ${categoryName}`}>
-        <BlogCategories
+        <BlogCategoriesLazy
           blogData={blogData}
           category={slugify(category, false)}
         />

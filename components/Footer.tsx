@@ -3,9 +3,9 @@
 import ErrorBoundary from './ErrorBoundary';
 import JoinOurNewsLetter from './JoinOurNewsLetter';
 import LangSwitcher from './LangSwicher';
-import addressIcon from '@/assets/address.svg';
-import emailIcon from '@/assets/email.svg';
-import phoneIcon from '@/assets/phone.svg';
+import addressIcon from '@/assets/icons/address.svg';
+import emailIcon from '@/assets/icons/email.svg';
+import phoneIcon from '@/assets/icons/phone.svg';
 import { useFooterHeaderStore } from '@/lib/store';
 
 import { useEffect } from 'react';
@@ -28,16 +28,16 @@ export default function Footer() {
   if (!footerData?.json) return null;
 
   return (
-    <footer className="text-white min-h-[244px] bg-bgFooter bg-cover bg-center">
+    <footer className="text-white min-h-[244px] bg-[#FF6720] bg-cover bg-center">
       <div className="sm:flex justify-between align-middle block py-10 max-w-[1328px] mx-auto row gap-10 px-8">
         <div className="space-y-5 sm:space-y-10 max-sm:mb-10 max-sm:text-center max-sm:flex max-sm:flex-col max-sm:items-center">
           <div className="mb-6">
             <Logo width={205} height={31} />
           </div>
           <p className="max-w-[233px] text-sm mb-7">
-            G2L is the premier platform for reliable, cost-effective logistics
-            solutions and predictive data. Our mission is to transform the
-            logistics landscape by integrating leading SMEs and digitizing
+            GOODS2LOAD is the premier platform for reliable, cost-effective
+            logistics solutions and predictive data. Our mission is to transform
+            the logistics landscape by integrating leading SMEs and digitizing
             traditional freight forwarders, delivering tailored services that
             meet the needs of emerging businesses worldwide.
           </p>

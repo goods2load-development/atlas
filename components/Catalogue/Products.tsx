@@ -1,7 +1,7 @@
 import UIButton from '../common/Button';
 import Spinner from '../ui/spinner';
 import Product from './Product';
-import NotFound from '@/assets/Catalogue/no-products-found.png';
+import NotFound from '@/assets/images/catalogue-no-products-found.png';
 import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
 
 import { useEffect, useState } from 'react';

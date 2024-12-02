@@ -1,13 +1,14 @@
 'use client';
 
 import TemplateCategoryDialog from './TemplateCategoryDialog';
-import { useBlogAdminStore, useTemplatesStore } from '@/lib/store';
+import { useTemplatesStore } from '@/lib/store';
 
 import { useEffect } from 'react';
 
 import { clsx } from 'clsx';
 import { Trash } from 'lucide-react';
 
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import ListItem from '@/components/ui/list-item';
 import Spinner from '@/components/ui/spinner';
 import { useToast } from '@/components/ui/use-toast';
@@ -64,12 +65,18 @@ const TemplateCategoriesMain = () => {
                 <p className="max-w-[400px]">{category.name}</p>
                 <div className="flex gap-2">
                   <TemplateCategoryDialog type="update" category={category} />
-                  <button
-                    onClick={() => handleDeleteTemplateCategory(category.id)}
-                    title="delete"
-                  >
-                    <Trash />
-                  </button>
+                  <ConfirmDialog
+                    trigger={
+                      <button title="delete">
+                        <Trash />
+                      </button>
+                    }
+                    title="Confirm Deletion"
+                    description="Are you sure you want to delete this category? This action cannot be undone."
+                    confirmLabel="Yes, delete"
+                    cancelLabel="No, cancel"
+                    onConfirm={() => handleDeleteTemplateCategory(category.id)}
+                  />
                 </div>
               </div>
             </ListItem>

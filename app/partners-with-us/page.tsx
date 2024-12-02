@@ -1,4 +1,4 @@
-import PartnersWithUsImg from '@/assets/PartnersImage/PartnersWithUs/partners-with-us.jpg';
+import PartnersWithUsImg from '@/assets/images/partners-with-us.jpg';
 
 import { Metadata } from 'next';
 import Image from 'next/image';

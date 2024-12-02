@@ -1,12 +1,13 @@
 'use client';
 
-import GoogleIcon from '@/assets/AuthProviderLogos/GoogleIcon';
+import GoogleIcon from '@/assets/icons/google-icon.svg';
 import { useUserStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useEffect } from 'react';
 
 import { getSession, signIn } from 'next-auth/react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { redirect, useSearchParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
@@ -91,7 +92,7 @@ export default function SignIn() {
         onClick={signInWithGoogle}
         className="flex gap-2 justify-center w-full border-orangePrimary text-[16px]/[24px] font-semibold p-[18px] h-[60px]"
       >
-        <GoogleIcon />
+        <Image src={GoogleIcon} width={25} height={25} alt="user-avatar" />
         <span>Sign in with Google </span>
       </Button>
 

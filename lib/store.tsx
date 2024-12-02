@@ -7,6 +7,7 @@ import {
   putRequest,
 } from './utils';
 
+import axios from 'axios';
 import Cookie from 'js-cookie';
 import { create } from 'zustand';
 
@@ -219,8 +220,11 @@ export const useRegistrationStore = create((set) => ({
         url: `users/${response.data.id}/upload/file`,
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' },
+      }).then((data) => {
+        if (data?.status === 200) {
+          set(() => ({ registered: true, provider: true }));
+        }
       });
-      set(() => ({ registered: true, provider: true }));
     } else {
       set(() => ({ registered: true }));
     }
@@ -273,6 +277,8 @@ export const useUserStore = create((set) => ({
       savedPartners,
       industryRecognitions,
       SustainabilityProof,
+      partner,
+      access_token,
       ...restData
     } = data;
     await patchRequest({
@@ -737,6 +743,17 @@ export const usePartnersStore = create<PartnersStoreState>((set) => ({
       set({
         partnersIndustriesData: data,
       });
+    });
+  },
+  uploadPartnerLogo: (id: string, data: File) => {
+    const formData = new FormData();
+
+    formData.append('companyPhoto', data);
+
+    return postRequest({
+      url: `partners/${id}/upload-photo`,
+      data: formData,
+      headers: { 'Content-Type': 'multipart/form-data' },
     });
   },
 }));

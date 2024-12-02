@@ -1,7 +1,7 @@
-import media1 from '@/assets/Media/img.png';
-import media2 from '@/assets/Media/img_1.png';
-import media3 from '@/assets/Media/img_2.png';
-import media4 from '@/assets/Media/img_3.png';
+import media2 from '@/assets/images/media-1.png';
+import media3 from '@/assets/images/media-2.png';
+import media4 from '@/assets/images/media-3.png';
+import media1 from '@/assets/images/media.png';
 
 import { StaticImageData } from 'next/image';
 

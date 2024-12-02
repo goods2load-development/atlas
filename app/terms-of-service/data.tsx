@@ -1,4 +1,4 @@
-import bg from '@/assets/LegacyImages/termsOfService.png';
+import bg from '@/assets/images/termsOfService.png';
 
 import {
   ILegacyDataBlock,

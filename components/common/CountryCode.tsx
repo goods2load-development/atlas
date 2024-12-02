@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import CountryList from 'country-list-with-dial-code-and-flag';
 
@@ -27,6 +27,16 @@ export default function CountryCode(props: any) {
   }
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<any>(null);
+
+  useEffect(() => {
+    const found = phoneCodes.find(
+      (item: any) => item.countryCode === props.selectedValue,
+    );
+    if (found) {
+      setSelected(found);
+    }
+  }, []);
+
   return (
     <Popover open={open}>
       <PopoverTrigger asChild>
@@ -52,20 +62,27 @@ export default function CountryCode(props: any) {
           <CommandEmpty>Not found.</CommandEmpty>
           <ScrollArea className="h-72 w-full">
             <CommandGroup>
-              {phoneCodes.map((item: any, index: number) => (
-                <CommandItem
-                  value={`${item.countryCode}`}
-                  key={index}
-                  onSelect={() => {
-                    props.onChange(item.countryCode);
-                    setSelected(item);
-                    setOpen(false);
-                  }}
-                >
-                  {item.flag}
-                  {item.countryCode}
-                </CommandItem>
-              ))}
+              {phoneCodes.map((item: any, index: number) => {
+                return (
+                  <CommandItem
+                    value={`${item.countryCode}`}
+                    key={index}
+                    onSelect={() => {
+                      props.onChange({
+                        target: {
+                          name: 'countryCode',
+                          value: item.countryCode,
+                        },
+                      });
+                      setSelected(item);
+                      setOpen(false);
+                    }}
+                  >
+                    {item.flag}
+                    {item.countryCode}
+                  </CommandItem>
+                );
+              })}
             </CommandGroup>
           </ScrollArea>
         </Command>

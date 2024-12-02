@@ -107,15 +107,17 @@ const industryRecognitions = [
 
 export const FormStepIndustryRecognition = ({
   form,
+  isProvideRecognition,
+  setIsProvideRecognition,
   setIsFreightDisabled,
+  industryRecognitionsWatch,
 }: {
   form: any;
+  isProvideRecognition: boolean;
+  setIsProvideRecognition: (isProvide: any) => any;
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
+  industryRecognitionsWatch: any;
 }) => {
-  const [isProvideRecognition, setIsProvideRecognition] = useState(true);
-
-  const industryRecognitionsWatch = form.watch('industryRecognitions');
-
   useEffect(() => {
     if (!isProvideRecognition) return setIsFreightDisabled(false);
 
@@ -137,7 +139,7 @@ export const FormStepIndustryRecognition = ({
         </h4>
         <Switch
           checked={isProvideRecognition}
-          onCheckedChange={() => setIsProvideRecognition((prev) => !prev)}
+          onCheckedChange={() => setIsProvideRecognition((prev: any) => !prev)}
         />
       </div>
 
