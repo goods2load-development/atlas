@@ -17,10 +17,7 @@ export const OpenWidgetProvider = () => {
           `,
         }}
       />
-      <Script
-        src="https://cdn.openwidget.com/openwidget.js"
-        strategy="beforeInteractive"
-      />
+      <Script src="https://cdn.openwidget.com/openwidget.js" async />
     </>
   );
 };

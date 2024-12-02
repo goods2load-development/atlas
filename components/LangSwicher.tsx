@@ -36,7 +36,7 @@ const LangSwitcher = () => {
   }, []);
 
   useEffect(() => {
-    Weglot?.switchTo(lang.label);
+    window.Weglot?.switchTo(lang.label);
   }, [lang]);
 
   useEffect(() => {

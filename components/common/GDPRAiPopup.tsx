@@ -17,7 +17,7 @@ import {
 } from '@/components/ui/dialog';
 
 const LOCAL_STORAGE_KEY = 'GDPRAIagreement';
-const CONSENT_DELAY = 2000;
+const CONSENT_DELAY = 300;
 
 const GDPRAiPopup = () => {
   const [isVisible, setIsVisible] = useState(false);

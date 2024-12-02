@@ -1,5 +1,11 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  headers: async () => [
+    {
+      source: '/_next/static/:path*',
+      headers: [{ key: 'Cache-Control', value: 'no-store, must-revalidate' }],
+    },
+  ],
   images: {
     formats: ['image/webp'],
     domains: [
@@ -11,6 +17,11 @@ const nextConfig = {
       'production-dubainight.s3.me-south-1.amazonaws.com',
     ],
   },
+  experimental: {
+    modern: true,
+    serverComponents: true,
+  },
+  compress: true,
 };
 
 export default nextConfig;

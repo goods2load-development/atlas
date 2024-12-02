@@ -3,13 +3,9 @@ import Script from 'next/script';
 export const WeglotProvider = () => {
   return (
     <>
-      <Script
-        src="https://cdn.weglot.com/weglot.min.js"
-        strategy="beforeInteractive"
-      />
+      <Script src="https://cdn.weglot.com/weglot.min.js" async />
       <Script
         id="weglot-init"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             Weglot.initialize({
