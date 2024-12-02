@@ -35,7 +35,7 @@ export default function Footer() {
             <Logo width={205} height={31} />
           </div>
           <p className="max-w-[233px] text-sm mb-7">
-            Goods2load is the premier platform for reliable, cost-effective
+            GOODS2LOAD is the premier platform for reliable, cost-effective
             logistics solutions and predictive data. Our mission is to transform
             the logistics landscape by integrating leading SMEs and digitizing
             traditional freight forwarders, delivering tailored services that
