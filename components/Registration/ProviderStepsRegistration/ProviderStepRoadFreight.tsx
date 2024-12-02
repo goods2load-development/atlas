@@ -46,6 +46,7 @@ const regions = [
 
 export const FormStepRoadFreight = ({
   form,
+  step,
   setIsFreightDisabled,
   activeCountriesWithStates,
   setActiveCountriesWithStates,
@@ -56,6 +57,7 @@ export const FormStepRoadFreight = ({
   states,
 }: {
   form: any;
+  step: any;
   activeCountriesWithStates: any;
   setActiveCountriesWithStates: any;
   activeAccord: string | undefined;

@@ -27,6 +27,7 @@ const industryRecognitions = [
 
 export const FormStepIndustryRecognitionSecondary = ({
   form,
+  step,
   setIsFreightDisabled,
   isProvideRecognitionSecondary,
   setIsProvideRecognitionSecondary,
@@ -35,6 +36,7 @@ export const FormStepIndustryRecognitionSecondary = ({
   industryRecognitionsSecondary,
   sustainabilityCertificationFile,
 }: {
+  step: any;
   form: any;
 
   isProvideRecognitionSecondary: boolean;
@@ -57,6 +59,7 @@ export const FormStepIndustryRecognitionSecondary = ({
 
     setIsFreightDisabled(shouldDisableFreight);
   }, [
+    step,
     industryRecognitionsSecondary,
     isProvideRecognitionSecondary,
     isProvideSustainability,

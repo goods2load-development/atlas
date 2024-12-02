@@ -602,7 +602,10 @@ export default function Registration() {
                             <FormControl>
                               <CountryCode
                                 selectedValue={field.value}
-                                onChange={handleChange}
+                                onChange={(e: any) => {
+                                  field.onChange(e.target.value);
+                                  handleChange(e);
+                                }}
                                 className="bg-gray-2 border-transparent outline-none"
                               />
                             </FormControl>
@@ -1155,6 +1158,7 @@ export default function Registration() {
           {step === 2 && (
             <div className={clsx('pt-6 mb-10')}>
               <FormStepIndustryRecognition
+                step={step}
                 industryRecognitionsWatch={industryRecognitionsWatch}
                 isProvideRecognition={isProvideRecognition}
                 setIsProvideRecognition={setIsProvideRecognition}
@@ -1167,6 +1171,7 @@ export default function Registration() {
           {step === 3 && (
             <div className={clsx('pt-6 mb-10')}>
               <FormStepIndustryRecognitionSecondary
+                step={step}
                 industryRecognitionsSecondary={industryRecognitionsSecondary}
                 sustainabilityCertificationFile={
                   sustainabilityCertificationFile
@@ -1190,6 +1195,7 @@ export default function Registration() {
           {step === 5 && (
             <div className={clsx('pt-6')}>
               <FormStepAirFreight
+                step={step}
                 airports={airports}
                 isProvideServices={isProviderAirFreight}
                 setIsProvideServices={setIsProvideAirFreight}
@@ -1206,6 +1212,7 @@ export default function Registration() {
           {step === 6 && (
             <div className={clsx('pt-6')}>
               <FormStepSeaFreight
+                step={step}
                 seaports={seaports}
                 isProvideServices={isProvideSeaFreight}
                 setIsProvideServices={setIsProvideSeaFreight}
@@ -1222,6 +1229,7 @@ export default function Registration() {
           {step === 7 && (
             <div className={clsx('pt-6')}>
               <FormStepRoadFreight
+                step={step}
                 states={states}
                 isProvideServices={isProvideRoadFreight}
                 setIsProvideServices={setIsProvideRoadFreight}
