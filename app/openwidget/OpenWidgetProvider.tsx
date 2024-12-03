@@ -3,6 +3,17 @@ import Script from 'next/script';
 export const OpenWidgetProvider = () => {
   return (
     <>
+      <link
+        rel="preconnect"
+        href="https://cdn.openwidget.com"
+        crossOrigin="anonymous"
+      />
+      <link rel="dns-prefetch" href="https://cdn.openwidget.com" />
+
+      <Script
+        src="https://cdn.openwidget.com/openwidget.js"
+        strategy="beforeInteractive"
+      />
       <Script
         id="openwidget-config"
         strategy="beforeInteractive"
@@ -17,7 +28,6 @@ export const OpenWidgetProvider = () => {
           `,
         }}
       />
-      <Script src="https://cdn.openwidget.com/openwidget.js" async />
     </>
   );
 };

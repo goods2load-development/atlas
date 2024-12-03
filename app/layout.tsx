@@ -6,6 +6,7 @@ import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
+import Head from 'next/head';
 import Image from 'next/image';
 
 import ToasterWrapper from '@/components/Interceptor';
@@ -30,7 +31,7 @@ export default function RootLayout({
       <html lang="en">
         <head>
           <WeglotProvider />
-          {/* <OpenWidgetProvider /> */}
+          <OpenWidgetProvider />
         </head>
         <body className={poppins.className}>
           <a

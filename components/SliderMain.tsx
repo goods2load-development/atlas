@@ -94,6 +94,7 @@ export default function SliderMain() {
               aria-label="Learn more about partnering with GOODS2LOAD"
             >
               Learn more
+              {/* <span className="screen-reader-text">Details</span> */}
             </Link>
           </div>
         </div>
