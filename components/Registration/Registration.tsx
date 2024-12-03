@@ -130,6 +130,8 @@ function Registration() {
     [],
   );
 
+  const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
+
   const [formState, setFormState] = useState(() => {
     const savedFormState =
       typeof window !== 'undefined'
@@ -412,8 +414,9 @@ function Registration() {
     getCitiesList,
   } = useCountriesStore((state: any) => state);
 
-  const { postUserRegistrationData, isRegisteredLoading } =
-    useRegistrationStore((state: any) => state);
+  const { postUserRegistrationData } = useRegistrationStore(
+    (state: any) => state,
+  );
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
@@ -428,6 +431,7 @@ function Registration() {
     } = values;
 
     try {
+      setIsRegistrationLoading(true);
       await postUserRegistrationData({
         ...rest,
         phoneNumber: `${countryCode}${phoneNumber}`,
@@ -447,6 +451,8 @@ function Registration() {
         className: 'bg-red-500',
       });
       setStep(0);
+    } finally {
+      setIsRegistrationLoading(false);
     }
   }
 
@@ -1288,6 +1294,7 @@ function Registration() {
           <div className="flex gap-2 items-center">
             {isProvider && step !== 0 && (
               <Button
+                disabled={isRegistrationLoading}
                 onClick={onPrevStep}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
@@ -1309,8 +1316,8 @@ function Registration() {
 
             {!isProvider && (
               <>
-                {isRegisteredLoading ? (
-                  <div className="w-1/2">
+                {isRegistrationLoading ? (
+                  <div className="w-full">
                     <Spinner />
                   </div>
                 ) : (
@@ -1326,7 +1333,7 @@ function Registration() {
 
             {isProvider && step === 9 && (
               <>
-                {isRegisteredLoading ? (
+                {isRegistrationLoading ? (
                   <div className="w-1/2">
                     <Spinner />
                   </div>

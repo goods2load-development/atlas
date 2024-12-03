@@ -165,7 +165,6 @@ export const useGoodsStore = create((set) => ({
 }));
 
 export const useRegistrationStore = create((set) => ({
-  isRegisteredLoading: false,
   registered: false,
   provider: false,
   postUserRegistrationData: async (data: any) => {
@@ -209,13 +208,9 @@ export const useRegistrationStore = create((set) => ({
 
     delete data.license;
 
-    set(() => ({ isRegisteredLoading: true }));
-
     const response = await postRequest({
       url: 'auth/register',
       data,
-    }).finally(() => {
-      set(() => ({ isRegisteredLoading: false }));
     });
 
     if (!response) throw new Error();
@@ -225,24 +220,19 @@ export const useRegistrationStore = create((set) => ({
         url: `users/${response.data.id}/upload/file`,
         data: formData,
         headers: { 'Content-Type': 'multipart/form-data' },
-      })
-        .then((data) => {
-          if (data?.status === 200) {
-            set(() => ({
-              registered: true,
-              provider: true,
-            }));
-          }
-        })
-        .finally(() => {
-          set(() => ({ isRegisteredLoading: false }));
-        });
+      }).then((data) => {
+        if (data?.status === 200) {
+          set(() => ({
+            registered: true,
+            provider: true,
+          }));
+        }
+      });
     } else {
-      set(() => ({ registered: true, isRegisteredLoading: false }));
+      set(() => ({ registered: true }));
     }
   },
-  setRegistrationDefaults: () =>
-    set({ registered: false, provider: false, isRegisteredLoading: false }),
+  setRegistrationDefaults: () => set({ registered: false, provider: false }),
 }));
 
 interface LoginProps {
