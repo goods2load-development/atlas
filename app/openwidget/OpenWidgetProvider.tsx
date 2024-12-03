@@ -10,13 +10,9 @@ export const OpenWidgetProvider = () => {
       />
       <link rel="dns-prefetch" href="https://cdn.openwidget.com" />
 
-      <Script
-        src="https://cdn.openwidget.com/openwidget.js"
-        strategy="beforeInteractive"
-      />
+      <Script src="https://cdn.openwidget.com/openwidget.js" />
       <Script
         id="openwidget-config"
-        strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             window.__ow = window.__ow || {};
