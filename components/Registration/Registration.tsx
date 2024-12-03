@@ -10,6 +10,7 @@ import {
 } from '../ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { ScrollArea } from '../ui/scroll-area';
+import Spinner from '../ui/spinner';
 import { FormAboutUs } from './ProviderStepsRegistration/ProviderAboutUs';
 import { FormStepAirFreight } from './ProviderStepsRegistration/ProviderStepAirFreight';
 import { FormStepFinalAgreement } from './ProviderStepsRegistration/ProviderStepFinalAgreement';
@@ -411,9 +412,8 @@ function Registration() {
     getCitiesList,
   } = useCountriesStore((state: any) => state);
 
-  const { postUserRegistrationData } = useRegistrationStore(
-    (state: any) => state,
-  );
+  const { postUserRegistrationData, isRegisteredLoading } =
+    useRegistrationStore((state: any) => state);
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
@@ -1308,21 +1308,37 @@ function Registration() {
             )}
 
             {!isProvider && (
-              <Button
-                type="submit"
-                className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
-              >
-                Continue
-              </Button>
+              <>
+                {isRegisteredLoading ? (
+                  <div className="w-1/2">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+                  >
+                    Continue
+                  </Button>
+                )}
+              </>
             )}
 
             {isProvider && step === 9 && (
-              <Button
-                type="submit"
-                className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
-              >
-                Submit
-              </Button>
+              <>
+                {isRegisteredLoading ? (
+                  <div className="w-1/2">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+                  >
+                    Submit
+                  </Button>
+                )}
+              </>
             )}
           </div>
         </form>
