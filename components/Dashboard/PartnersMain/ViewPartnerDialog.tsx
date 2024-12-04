@@ -180,7 +180,7 @@ const ViewPartnerDialog = ({
               ))}
 
               <hr />
-              {Object.values(partner.partnerLocation).some(
+              {/* {Object.values(partner.partnerLocation).some(
                 (item) => item.length,
               ) && (
                 <div>
@@ -224,7 +224,7 @@ const ViewPartnerDialog = ({
                     )}
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </DialogHeader>
