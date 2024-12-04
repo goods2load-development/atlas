@@ -1,7 +1,7 @@
 import { useCountriesStore, usePortsStore } from '@/lib/store';
 import { sortByRegion } from '@/lib/utils';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { Check, ChevronDown } from 'lucide-react';
@@ -75,10 +75,6 @@ export const FormStepAirFreight = ({
   const [activeCountryAccord, setActiveCountryAccord] = useState('');
 
   useEffect(() => {
-    console.log(activeCountries, '123');
-  }, [activeCountries]);
-
-  useEffect(() => {
     if (!isProvideServices) return setIsFreightDisabled(false);
 
     setIsFreightDisabled(!airports?.length);
@@ -131,6 +127,28 @@ export const FormStepAirFreight = ({
     }
   }, [isProvideServices]);
 
+  const refs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const handleScroll = (() => {
+    let scrollTimeout: NodeJS.Timeout | null = null;
+
+    return (key: string) => {
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+
+      scrollTimeout = setTimeout(() => {
+        const element = refs.current[key];
+        if (element) {
+          window.scrollTo({
+            top: element.offsetTop,
+            behavior: 'smooth',
+          });
+        }
+      }, 100);
+    };
+  })();
+
   const memoizedCountriesData = useMemo(() => {
     if (!countriesData) return null;
 
@@ -143,32 +161,8 @@ export const FormStepAirFreight = ({
           className="max-w-[884px] w-full self-center"
           value={activeCountryAccord}
           onValueChange={(value) => {
-            setActiveCountries((prev: any) => {
-              if (prev.includes(value)) {
-                return [...prev];
-              } else {
-                let selectedAirports: string[] = [];
-
-                const airports = values
-                  .find((item: any) => item?.cca2 === value)
-                  ?.airports?.map((airport: any) => {
-                    if (!airport.codeIataAirport) {
-                      return;
-                    }
-
-                    selectedAirports.push(
-                      `(${airport.codeIataAirport}) ${airport.nameAirport}`,
-                    );
-                  });
-
-                form.setValue('airports', [
-                  ...(form.getValues('airports') || []),
-                  ...selectedAirports,
-                ]);
-
-                return [...prev, value];
-              }
-            });
+            handleScroll(value);
+            setActiveCountries((prev: any) => {});
             setActiveCountryAccord(value);
           }}
         >
@@ -176,9 +170,12 @@ export const FormStepAirFreight = ({
           {values.map((item: any, idx: number) => {
             return item && item.airports.length > 0 ? (
               <AccordionItem
+                ref={(el) => {
+                  refs.current[item.cca2] = el;
+                }}
                 key={item.name.common + idx}
                 value={item.cca2}
-                className={clsx('border-transparent')}
+                className={clsx('border-transparent pl-2')}
               >
                 <AccordionTrigger
                   isChevron={false}
@@ -186,13 +183,6 @@ export const FormStepAirFreight = ({
                   disabled={false}
                 >
                   <div className="text-[16px]/[20px] font-normal text-left  gap-1 inline-flex items-center">
-                    <Checkbox
-                      value={item.name.common}
-                      checked={activeCountries.includes(item.cca2)}
-                      onCheckedChange={(isChecked) => {
-                        console.log(1);
-                      }}
-                    />
                     <h3 className="text-blackTertiary">{item.name.common}</h3>
                     <ChevronDown className={clsx('w-4 h-4')} />
                   </div>
@@ -201,6 +191,48 @@ export const FormStepAirFreight = ({
                   key={activeCountryAccord}
                   className="pl-5 text-[16px]/[24px] font-light max-w-[760px] text-blackTertiary"
                 >
+                  <div className="flex gap-3 text-[14px]/[15px] text-gray-600 font-medium mt-3">
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => {
+                        let selectedAirports = item.airports?.map(
+                          (airport: any) => {
+                            if (!airport.codeIataAirport) {
+                              return;
+                            }
+
+                            return `(${airport.codeIataAirport}) ${airport.nameAirport}`;
+                          },
+                        );
+
+                        form.setValue('airports', [
+                          ...(form.getValues('airports') || []),
+                          ...selectedAirports,
+                        ]);
+                      }}
+                    >
+                      Select all
+                    </button>
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => {
+                        item?.airports?.map((airport: any) => {
+                          form.setValue(
+                            'airports',
+                            form
+                              .getValues('airports')
+                              ?.filter(
+                                (existSeaport: any) =>
+                                  existSeaport !==
+                                  `(${airport.codeIataAirport}) ${airport.nameAirport}`,
+                              ),
+                          );
+                        });
+                      }}
+                    >
+                      Clear all
+                    </button>
+                  </div>
                   <FormField
                     control={form.control}
                     name="airports"
@@ -279,28 +311,7 @@ export const FormStepAirFreight = ({
                         ]);
                       }
 
-                      setActiveCountries((prev: any) => {
-                        if (isChecked) {
-                          return [...prev, item.cca2];
-                        } else {
-                          item?.airports?.map((airport: any) => {
-                            form.setValue(
-                              'airports',
-                              form
-                                .getValues('airports')
-                                ?.filter(
-                                  (existAirport: any) =>
-                                    existAirport !==
-                                    `(${airport.codeIataAirport}) ${airport.nameAirport}`,
-                                ),
-                            );
-                          });
-                          return prev.filter(
-                            (activeCountry: string) =>
-                              activeCountry !== item.cca2,
-                          );
-                        }
-                      });
+                 
                     }}
                   />
                   <span className="font-normal">{item.name.common}</span>
