@@ -380,20 +380,14 @@ export const useForgotPasswordStore = create((set) => ({
 interface ILangStore {
   lang: ILang;
   setLang: (lang: ILang) => void;
-  initializeLang: () => void;
 }
 
 export const useLangStore = create<ILangStore>((set) => ({
-  lang: langs[0],
+  lang:
+    langs.find((elem) => elem.label === Cookie.get(COOKIE_KEY_LANG)) ||
+    langs[0],
   setLang: (lang: ILang) => {
     set({ lang });
-  },
-  initializeLang: () => {
-    const savedLang = Cookie.get(COOKIE_KEY_LANG) || langs[0];
-
-    const lang = langs.find((elem) => elem.label === savedLang);
-
-    if (lang) set({ lang });
   },
 }));
 
