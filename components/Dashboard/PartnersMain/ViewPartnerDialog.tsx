@@ -203,7 +203,7 @@ const ViewPartnerDialog = ({
                     {!!partner.partnerLocation.ports?.length && (
                       <>
                         <strong>Ports</strong>
-                        {partner.partnerLocation.airports.map((item) => (
+                        {partner.partnerLocation.ports.map((item) => (
                           <div key={item.name} className="mt-3">
                             {item.name}({item.code})
                           </div>
