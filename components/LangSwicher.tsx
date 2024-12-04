@@ -1,5 +1,7 @@
+'use client';
+
 import { useLangStore, useUserStore } from '@/lib/store';
-import { COOKIE_KEY_LANG, ILang, langs } from '@/lib/types';
+import { COOKIE_KEY_LANG, ILang, Langs, langs } from '@/lib/types';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 import { useEffect, useRef } from 'react';
@@ -8,8 +10,45 @@ import Cookies from 'js-cookie';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 
+const loadWeglotScripts = () => {
+  return new Promise<void>((resolve, reject) => {
+    const mainScript = document.createElement('script');
+    mainScript.src = 'https://cdn.weglot.com/weglot.min.js';
+    mainScript.async = true;
+    mainScript.onload = () => {
+      console.log('Weglot main script loaded.');
+
+      const initScript = document.createElement('script');
+      initScript.id = 'weglot-init';
+      initScript.type = 'text/javascript';
+      initScript.innerHTML = `
+        Weglot.initialize({
+          api_key: '${process.env.WEGLOT_API_KEY}'
+        });
+      `;
+      initScript.onload = () => {
+        console.log('Weglot initialization script executed.');
+        resolve();
+      };
+      initScript.onerror = (e) => {
+        console.error('Failed to execute Weglot initialization script.', e);
+        reject(e);
+      };
+      document.head.appendChild(initScript);
+    };
+
+    mainScript.onerror = (e) => {
+      console.error('Failed to load Weglot main script.', e);
+      reject(e);
+    };
+
+    document.head.appendChild(mainScript);
+  });
+};
+
 const LangSwitcher = () => {
-  const { lang, setLang, initializeLang } = useLangStore();
+  const { lang, setLang } = useLangStore();
+
   let reloadTimer = useRef<ReturnType<typeof setTimeout>>();
   const { user, updateUser }: any = useUserStore();
 
@@ -26,19 +65,21 @@ const LangSwitcher = () => {
 
     reloadTimer.current = setTimeout(() => {
       window.location.reload();
-    }, 1000);
+    });
   };
 
   useEffect(() => {
-    initializeLang();
-
     return () => {
       clearTimeout(reloadTimer.current);
     };
   }, []);
 
   useEffect(() => {
-    window.Weglot?.switchTo(lang.label);
+    if (lang.label === Langs.EN) return;
+
+    loadWeglotScripts()
+      .then(() => window.Weglot?.switchTo(lang.label))
+      .catch((error) => console.error('Error loading Weglot scripts:', error));
   }, [lang]);
 
   useEffect(() => {

@@ -1,16 +1,15 @@
-// import { COOKIE_KEY_LANG, Langs } from '@/lib/types';
-// import { cookies } from 'next/headers';
+import { COOKIE_KEY_LANG, Langs } from '@/lib/types';
+
+import { cookies } from 'next/headers';
 import Script from 'next/script';
 
 export const WeglotProvider = async () => {
-  // const cookieStore = await cookies();
-  // const currentLang = cookieStore.get(COOKIE_KEY_LANG);
+  const cookieStore = await cookies();
+  const currentLang = cookieStore.get(COOKIE_KEY_LANG);
 
-  // console.log({ currentLang });
-
-  // if (!currentLang || currentLang.value === Langs.EN) {
-  //   return null;
-  // }
+  if (!currentLang || currentLang.value === Langs.EN) {
+    return null;
+  }
 
   return (
     <>
