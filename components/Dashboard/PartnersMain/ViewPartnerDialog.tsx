@@ -180,7 +180,7 @@ const ViewPartnerDialog = ({
               ))}
 
               <hr />
-              {Object.values(partner.partnerLocation).some(
+              {/* {Object.values(partner.partnerLocation).some(
                 (item) => item.length,
               ) && (
                 <div>
@@ -203,7 +203,7 @@ const ViewPartnerDialog = ({
                     {!!partner.partnerLocation.ports?.length && (
                       <>
                         <strong>Ports</strong>
-                        {partner.partnerLocation.airports.map((item) => (
+                        {partner.partnerLocation.ports.map((item) => (
                           <div key={item.name} className="mt-3">
                             {item.name}({item.code})
                           </div>
@@ -224,7 +224,7 @@ const ViewPartnerDialog = ({
                     )}
                   </div>
                 </div>
-              )}
+              )} */}
             </div>
           </div>
         </DialogHeader>

@@ -1,7 +1,42 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  headers: async () => {
+    if (process.env.NODE_ENV === 'production') {
+      return [
+        {
+          source: '/_next/static/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=31536000, immutable',
+            },
+          ],
+        },
+        {
+          source: '/_next/image/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=604800, immutable',
+            },
+          ],
+        },
+        {
+          source: '/scripts/:path*',
+          headers: [
+            {
+              key: 'Cache-Control',
+              value: 'public, max-age=3600, stale-while-revalidate=86400',
+            },
+          ],
+        },
+      ];
+    }
+
+    return [];
+  },
   images: {
-    formats: ['image/webp'],
+    formats: ['image/webp', 'image/avif'],
     domains: [
       'localhost',
       'api.dev.goods2load.com',
@@ -11,6 +46,7 @@ const nextConfig = {
       'production-dubainight.s3.me-south-1.amazonaws.com',
     ],
   },
+  compress: true,
 };
 
 export default nextConfig;

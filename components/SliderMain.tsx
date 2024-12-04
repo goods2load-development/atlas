@@ -88,8 +88,13 @@ export default function SliderMain() {
               to grow. Join us to streamline your delivery process and boost
               your business effortlessly.
             </div>
-            <Link className="text-orangePrimary font-medium" href="/partners">
+            <Link
+              className="text-orangePrimary font-medium"
+              href="/partners"
+              aria-label="Learn more about partnering with GOODS2LOAD"
+            >
               Learn more
+              <span className="screen-reader-text">Details</span>
             </Link>
           </div>
         </div>

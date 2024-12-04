@@ -27,6 +27,7 @@ const industryRecognitions = [
 
 export const FormStepIndustryRecognitionSecondary = ({
   form,
+  step,
   setIsFreightDisabled,
   isProvideRecognitionSecondary,
   setIsProvideRecognitionSecondary,
@@ -35,6 +36,7 @@ export const FormStepIndustryRecognitionSecondary = ({
   industryRecognitionsSecondary,
   sustainabilityCertificationFile,
 }: {
+  step: any;
   form: any;
 
   isProvideRecognitionSecondary: boolean;
@@ -54,9 +56,9 @@ export const FormStepIndustryRecognitionSecondary = ({
       (isProvideRecognitionSecondary &&
         !industryRecognitionsSecondary?.length) ||
       (isProvideSustainability && !sustainabilityCertificationFile?.length);
-
     setIsFreightDisabled(shouldDisableFreight);
   }, [
+    step,
     industryRecognitionsSecondary,
     isProvideRecognitionSecondary,
     isProvideSustainability,
@@ -67,13 +69,13 @@ export const FormStepIndustryRecognitionSecondary = ({
   useEffect(() => {
     if (!isProvideRecognitionSecondary) {
       form.setValue('industryRecognitionsSecondary', []);
-      form.setValue('industryProofFileSecondary', undefined);
+      form.setValue('industryProofFileSecondary', null);
     }
   }, [isProvideRecognitionSecondary]);
 
   useEffect(() => {
     if (!isProvideSustainability)
-      form.setValue('sustainabilityCertificationFile', undefined);
+      form.setValue('sustainabilityCertificationFile', null);
   }, [isProvideSustainability]);
 
   return (

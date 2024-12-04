@@ -9,11 +9,12 @@ import RingIcon from '@/assets/icons/ring.svg';
 import TurnIcon from '@/assets/icons/turn.svg';
 import TurnHover from '@/assets/icons/turnhover.svg';
 import { useFilterStore } from '@/lib/filterStore';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 import { useCountriesStore, useUserStore } from '@/lib/store';
 import { postRequest } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { BellRing } from 'lucide-react';
 import Image from 'next/image';
@@ -73,8 +74,9 @@ const formSchema = (isLoggedIn: boolean) =>
     message: z.string().min(2),
   });
 
-export default function SolutionFinder() {
+function SolutionFinder() {
   const { executeRecaptcha } = useGoogleReCaptcha();
+
   const {
     deliveryBy,
     placementOfGoods,
@@ -102,8 +104,6 @@ export default function SolutionFinder() {
     countriesListLoading,
     citiesList,
     citiesListLoading,
-    citiesListTo,
-    citiesListToLoading,
     getCountriesList,
     getCitiesList,
   } = useCountriesStore((state: any) => state);
@@ -689,3 +689,11 @@ export default function SolutionFinder() {
     </Dialog>
   );
 }
+
+const SolutionFinderWrapped = () => (
+  <CaptchaProvider>
+    <SolutionFinder />
+  </CaptchaProvider>
+);
+
+export default SolutionFinderWrapped;

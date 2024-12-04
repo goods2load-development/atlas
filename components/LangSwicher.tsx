@@ -1,18 +1,55 @@
+'use client';
+
 import { useLangStore, useUserStore } from '@/lib/store';
-import { ILang, langs } from '@/lib/types';
+import { COOKIE_KEY_LANG, ILang, Langs, langs } from '@/lib/types';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
+import Cookies from 'js-cookie';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 
+const loadWeglotScripts = (onWeglotLoad: () => void) => {
+  return new Promise<void>((resolve, reject) => {
+    const mainScript = document.createElement('script');
+    mainScript.src = 'https://cdn.weglot.com/weglot.min.js';
+    mainScript.async = true;
+    mainScript.onload = () => {
+      onWeglotLoad();
+      const initScript = document.createElement('script');
+      initScript.id = 'weglot-init';
+      initScript.type = 'text/javascript';
+
+      initScript.innerHTML = `
+        Weglot.initialize({
+          api_key: '${process.env.NEXT_PUBLIC_WEGLOT_API_KEY}'
+        });
+      `;
+      initScript.onload = () => {
+        resolve();
+      };
+      initScript.onerror = (e) => {
+        reject(e);
+      };
+      document.head.appendChild(initScript);
+    };
+
+    mainScript.onerror = (e) => {
+      reject(e);
+    };
+
+    document.head.appendChild(mainScript);
+  });
+};
+
 const LangSwitcher = () => {
-  const { lang, setLang, initializeLang } = useLangStore();
-  let reloadTimer = useRef<ReturnType<typeof setTimeout>>();
+  const { lang, setLang } = useLangStore();
+
   const { user, updateUser }: any = useUserStore();
 
   const onChangeLang = async (elem: ILang) => {
+    Cookies.set(COOKIE_KEY_LANG, elem.label, { expires: 365 });
     setLang(elem);
 
     if (user?.id) {
@@ -22,22 +59,21 @@ const LangSwitcher = () => {
       });
     }
 
-    reloadTimer.current = setTimeout(() => {
-      window.location.reload();
-    }, 1000);
-  };
-
-  useEffect(() => {
-    initializeLang();
-
-    return () => {
-      clearTimeout(reloadTimer.current);
+    const switchAndReload = () => {
+      window.Weglot.switchTo(elem.label);
+      if (elem.label === Langs.EN)
+        setTimeout(() => window.location.reload(), 1000);
+      window.Weglot.on('languageChanged', () => window.location.reload());
     };
-  }, []);
 
-  useEffect(() => {
-    Weglot?.switchTo(lang.label);
-  }, [lang]);
+    if (!window.Weglot) {
+      loadWeglotScripts(() => {
+        window.Weglot.on('initialized', switchAndReload);
+      });
+    }
+
+    switchAndReload();
+  };
 
   useEffect(() => {
     if (user?.id) {
