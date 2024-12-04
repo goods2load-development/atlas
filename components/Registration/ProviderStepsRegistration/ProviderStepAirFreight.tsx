@@ -145,7 +145,7 @@ export const FormStepAirFreight = ({
             behavior: 'smooth',
           });
         }
-      }, 100);
+      }, 50);
     };
   })();
 
