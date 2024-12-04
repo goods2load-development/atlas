@@ -1,18 +1,30 @@
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Metadata } from 'next';
+import dynamic from 'next/dynamic';
 
-import Analytics from '@/components/Dashboard/Analytics';
 import Footer from '@/components/Footer';
-import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
 import MainImageLayout from '@/components/MainLayout';
-import QuestionsAndAnswers from '@/components/QuestionsAndAnswers';
 import SearchMain from '@/components/SearchMain';
-import SliderMain from '@/components/SliderMain';
 import SubHeaderMain from '@/components/SubHeaderMain';
 import TailoredServices from '@/components/TailoredServices';
-import ConsentPopup from '@/components/common/ConsentPopup';
+
+const ConsentPopup = dynamic(() => import('@/components/common/ConsentPopup'), {
+  ssr: false,
+});
+
+const QuestionsAndAnswers = dynamic(
+  () => import('@/components/QuestionsAndAnswers'),
+);
+
+const SliderMain = dynamic(() => import('@/components/SliderMain'));
+
+const DynamicMenu = dynamic(() => import('@/components/Header/DynamicMenu'));
+
+const Analytics = dynamic(() => import('@/components/Dashboard/Analytics'), {
+  ssr: false,
+});
 
 const title =
   'Top Logistics Company | Cargo Services Globally and Across GCC Countries';

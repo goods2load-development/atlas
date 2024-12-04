@@ -1,4 +1,4 @@
-import { ILang, LOCAL_STORAGE_KEY_LANG, langs } from './types';
+import { COOKIE_KEY_LANG, ILang, langs } from './types';
 import {
   deleteRequest,
   getRequest,
@@ -222,7 +222,10 @@ export const useRegistrationStore = create((set) => ({
         headers: { 'Content-Type': 'multipart/form-data' },
       }).then((data) => {
         if (data?.status === 200) {
-          set(() => ({ registered: true, provider: true }));
+          set(() => ({
+            registered: true,
+            provider: true,
+          }));
         }
       });
     } else {
@@ -377,21 +380,14 @@ export const useForgotPasswordStore = create((set) => ({
 interface ILangStore {
   lang: ILang;
   setLang: (lang: ILang) => void;
-  initializeLang: () => void;
 }
 
 export const useLangStore = create<ILangStore>((set) => ({
-  lang: langs[0],
+  lang:
+    langs.find((elem) => elem.label === Cookie.get(COOKIE_KEY_LANG)) ||
+    langs[0],
   setLang: (lang: ILang) => {
     set({ lang });
-    localStorage.setItem(LOCAL_STORAGE_KEY_LANG, lang.label);
-  },
-  initializeLang: () => {
-    const savedLang = localStorage.getItem(LOCAL_STORAGE_KEY_LANG) || langs[0];
-
-    const lang = langs.find((elem) => elem.label === savedLang);
-
-    if (lang) set({ lang });
   },
 }));
 

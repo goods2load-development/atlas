@@ -18,16 +18,22 @@ import {
 } from '@/components/ui/dialog';
 
 const LOCAL_STORAGE_KEY = 'cookiesAgreement';
-const CONSENT_DELAY = 2000;
 
 const ConsentPopup = () => {
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem(LOCAL_STORAGE_KEY) === 'true') return;
+    const showOnScroll = () => {
+      if (localStorage.getItem(LOCAL_STORAGE_KEY) === 'true') return;
 
-    const timer = setTimeout(() => setIsVisible(true), CONSENT_DELAY);
-    return () => clearTimeout(timer);
+      if (window.scrollY > 100) {
+        setIsVisible(true);
+        window.removeEventListener('scroll', showOnScroll);
+      }
+    };
+
+    window.addEventListener('scroll', showOnScroll);
+    return () => window.removeEventListener('scroll', showOnScroll);
   }, []);
 
   const handleAcceptAll = () => {

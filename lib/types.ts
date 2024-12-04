@@ -3,7 +3,7 @@ import cnFlag from '@/assets/icons/cn-flag.svg';
 import enFlag from '@/assets/icons/en-flag.svg';
 import inFlag from '@/assets/icons/in-flag.svg';
 
-export const LOCAL_STORAGE_KEY_LANG = 'lang';
+export const COOKIE_KEY_LANG = 'lang';
 
 export enum Langs {
   EN = 'en',

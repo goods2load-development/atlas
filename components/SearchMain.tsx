@@ -2,7 +2,6 @@
 
 import { Dialog, DialogContent } from './ui/dialog';
 import LoadingBalls from './ui/loading-balls';
-import AiImage from '@/assets/icons/ai.svg';
 import FilterIcon1 from '@/assets/icons/filtericon1.svg';
 import FilterIcon2 from '@/assets/icons/filtericon2.svg';
 import FilterIcon3 from '@/assets/icons/filtericon3.svg';

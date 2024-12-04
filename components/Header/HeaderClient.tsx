@@ -2,7 +2,6 @@
 
 import Currencies from '../Currencies';
 import ErrorBoundary from '../ErrorBoundary';
-import LangSwitcher from '../LangSwicher';
 import {
   Accordion,
   AccordionContent,
@@ -17,6 +16,7 @@ import { useFooterHeaderStore, useUserStore } from '@/lib/store';
 import { PropsWithChildren, useEffect, useState } from 'react';
 
 import clsx from 'clsx';
+import dynamic from 'next/dynamic';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useLockBodyScroll } from 'react-use';
@@ -27,6 +27,10 @@ import {
   NavigationMenuItem,
   NavigationMenuList,
 } from '@/components/ui/navigation-menu';
+
+const LangSwitcher = dynamic(() => import('../LangSwicher'), {
+  ssr: false,
+});
 
 export type HeaderVariant = 'primary' | 'secondary' | 'transparent';
 

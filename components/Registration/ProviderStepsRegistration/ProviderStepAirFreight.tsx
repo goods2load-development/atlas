@@ -46,6 +46,7 @@ const regions = [
 
 export const FormStepAirFreight = ({
   form,
+  step,
   activeCountries,
   setActiveCountries,
   activeAccord,
@@ -62,6 +63,7 @@ export const FormStepAirFreight = ({
   setIsProvideServices: any;
   setActiveAccord: any;
   form: any;
+  step: any;
   airports: any;
 
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;

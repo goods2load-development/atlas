@@ -1,6 +1,7 @@
 'use client';
 
 import GoogleIcon from '@/assets/icons/google-icon.svg';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 import { useUserStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
@@ -29,7 +30,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-export default function SignIn() {
+function SignIn() {
   const [cookies] = useCookies(['accessToken']);
   const { executeRecaptcha } = useGoogleReCaptcha();
   const searchParams = useSearchParams();
@@ -153,3 +154,11 @@ export default function SignIn() {
     </>
   );
 }
+
+const SignInWrapped = () => (
+  <CaptchaProvider>
+    <SignIn />
+  </CaptchaProvider>
+);
+
+export default SignInWrapped;
