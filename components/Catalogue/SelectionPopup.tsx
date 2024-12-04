@@ -1,12 +1,12 @@
 import CountryCode from '../common/CountryCode';
 import { useFilterStore } from '@/lib/filterStore';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 import { useUserStore } from '@/lib/store';
 import { countVolume, postRequest } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 import React, { useEffect, useState } from 'react';
 
-import { format } from 'date-fns';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -40,7 +40,7 @@ function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
 }
 
-export default function SelectionPopup(props: SelectionPopupProps) {
+function SelectionPopup(props: SelectionPopupProps) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [step, setStep] = useState(0);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -288,3 +288,11 @@ export default function SelectionPopup(props: SelectionPopupProps) {
     </Dialog>
   );
 }
+
+const SelectionPopupWrapped = (props: SelectionPopupProps) => (
+  <CaptchaProvider>
+    <SelectionPopup {...props} />
+  </CaptchaProvider>
+);
+
+export default SelectionPopupWrapped;

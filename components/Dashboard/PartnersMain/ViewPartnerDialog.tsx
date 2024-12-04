@@ -187,7 +187,7 @@ const ViewPartnerDialog = ({
                   <strong className="block text-center text-[18px]">
                     Partner Locations
                   </strong>
-                  <div>
+                  <div className="py-4">
                     {!!partner.partnerLocation.airports?.length && (
                       <>
                         <strong>Airports</strong>
@@ -199,11 +199,11 @@ const ViewPartnerDialog = ({
                       </>
                     )}
                   </div>
-                  <div>
-                    {!!partner.partnerLocation.cities?.length && (
+                  <div className="py-4">
+                    {!!partner.partnerLocation.ports?.length && (
                       <>
-                        <strong>Cities</strong>
-                        {partner.partnerLocation.cities.map((item) => (
+                        <strong>Ports</strong>
+                        {partner.partnerLocation.airports.map((item) => (
                           <div key={item.name} className="mt-3">
                             {item.name}({item.code})
                           </div>
@@ -211,13 +211,13 @@ const ViewPartnerDialog = ({
                       </>
                     )}
                   </div>
-                  <div>
-                    {!!partner.partnerLocation.ports?.length && (
+                  <div className="py-4">
+                    {!!partner.partnerLocation.states?.length && (
                       <>
-                        <strong>Ports</strong>
-                        {partner.partnerLocation.airports.map((item) => (
-                          <div key={item.name} className="mt-3">
-                            {item.name}({item.code})
+                        <strong>States</strong>
+                        {partner.partnerLocation.states.map((item) => (
+                          <div key={item} className="mt-3">
+                            {item}
                           </div>
                         ))}
                       </>

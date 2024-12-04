@@ -10,6 +10,7 @@ import {
 } from '../ui/command';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { ScrollArea } from '../ui/scroll-area';
+import Spinner from '../ui/spinner';
 import { FormAboutUs } from './ProviderStepsRegistration/ProviderAboutUs';
 import { FormStepAirFreight } from './ProviderStepsRegistration/ProviderStepAirFreight';
 import { FormStepFinalAgreement } from './ProviderStepsRegistration/ProviderStepFinalAgreement';
@@ -20,6 +21,7 @@ import { FormStepIndustryRecognitionSecondary } from './ProviderStepsRegistratio
 import { FormStepRoadFreight } from './ProviderStepsRegistration/ProviderStepRoadFreight';
 import { FormStepSeaFreight } from './ProviderStepsRegistration/ProviderStepSeaFreight';
 import RegistrationSuccessPopup from './RegistrationSuccessPopup';
+import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 import { usePartnersStore, useRegistrationStore } from '@/lib/store';
 import { useCountriesStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -93,7 +95,7 @@ export function IsRequired() {
   return <i className="text-orangePrimary">*</i>;
 }
 
-export default function Registration() {
+function Registration() {
   const { getPartnersIndustries } = usePartnersStore();
   const [step, setStep] = useState(5);
   const { executeRecaptcha } = useGoogleReCaptcha();
@@ -127,6 +129,8 @@ export default function Registration() {
   const [activeRoadFreightCountries, setActiveRoadFreightCountries] = useState(
     [],
   );
+
+  const [isRegistrationLoading, setIsRegistrationLoading] = useState(false);
 
   const [formState, setFormState] = useState(() => {
     const savedFormState =
@@ -427,6 +431,7 @@ export default function Registration() {
     } = values;
 
     try {
+      setIsRegistrationLoading(true);
       await postUserRegistrationData({
         ...rest,
         phoneNumber: `${countryCode}${phoneNumber}`,
@@ -446,6 +451,8 @@ export default function Registration() {
         className: 'bg-red-500',
       });
       setStep(0);
+    } finally {
+      setIsRegistrationLoading(false);
     }
   }
 
@@ -1287,6 +1294,7 @@ export default function Registration() {
           <div className="flex gap-2 items-center">
             {isProvider && step !== 0 && (
               <Button
+                disabled={isRegistrationLoading}
                 onClick={onPrevStep}
                 type="button"
                 className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
@@ -1307,21 +1315,37 @@ export default function Registration() {
             )}
 
             {!isProvider && (
-              <Button
-                type="submit"
-                className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
-              >
-                Continue
-              </Button>
+              <>
+                {isRegistrationLoading ? (
+                  <div className="w-full">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+                  >
+                    Continue
+                  </Button>
+                )}
+              </>
             )}
 
             {isProvider && step === 9 && (
-              <Button
-                type="submit"
-                className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
-              >
-                Submit
-              </Button>
+              <>
+                {isRegistrationLoading ? (
+                  <div className="w-1/2">
+                    <Spinner />
+                  </div>
+                ) : (
+                  <Button
+                    type="submit"
+                    className="bg-orangePrimary border-2 border-orangePrimary rounded-[8px] font-medium text-[16px]/[22px] w-full"
+                  >
+                    Submit
+                  </Button>
+                )}
+              </>
             )}
           </div>
         </form>
@@ -1330,3 +1354,11 @@ export default function Registration() {
     </RegistrationWrapper>
   );
 }
+
+const RegistrationWrapped = () => (
+  <CaptchaProvider>
+    <Registration />
+  </CaptchaProvider>
+);
+
+export default RegistrationWrapped;

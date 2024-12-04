@@ -1,9 +1,10 @@
 import { useLangStore, useUserStore } from '@/lib/store';
-import { ILang, langs } from '@/lib/types';
+import { COOKIE_KEY_LANG, ILang, langs } from '@/lib/types';
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 import { useEffect, useRef } from 'react';
 
+import Cookies from 'js-cookie';
 import { ChevronDown } from 'lucide-react';
 import Image from 'next/image';
 
@@ -13,6 +14,7 @@ const LangSwitcher = () => {
   const { user, updateUser }: any = useUserStore();
 
   const onChangeLang = async (elem: ILang) => {
+    Cookies.set(COOKIE_KEY_LANG, elem.label, { expires: 365 });
     setLang(elem);
 
     if (user?.id) {
@@ -36,7 +38,7 @@ const LangSwitcher = () => {
   }, []);
 
   useEffect(() => {
-    Weglot?.switchTo(lang.label);
+    window.Weglot?.switchTo(lang.label);
   }, [lang]);
 
   useEffect(() => {

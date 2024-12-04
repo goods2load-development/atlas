@@ -7,6 +7,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { ArrowUpRight, GripVertical, TrashIcon } from 'lucide-react';
 import Link from 'next/link';
 
+import ConfirmDialog from '@/components/ui/confirm-dialog';
 import ListItem from '@/components/ui/list-item';
 
 const ReferralItem = ({
@@ -52,9 +53,18 @@ const ReferralItem = ({
             editReferral={editReferral}
             referralItem={referralItem}
           />
-          <button onClick={() => deleteReferralById(id)} title="Delete">
-            <TrashIcon />
-          </button>
+          <ConfirmDialog
+            trigger={
+              <button title="Delete">
+                <TrashIcon />
+              </button>
+            }
+            title="Confirm Deletion"
+            description="Are you sure you want to delete this referral? This action cannot be undone."
+            confirmLabel="Yes, delete"
+            cancelLabel="No, cancel"
+            onConfirm={() => deleteReferralById(id)}
+          />
           <Link title="Check url" href={url} target="_blank">
             <ArrowUpRight size={30} />
           </Link>
