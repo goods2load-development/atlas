@@ -1,4 +1,5 @@
 import './globals.css';
+import OpenWidget from './openwidget/OpenWidget';
 import { OpenWidgetProvider } from './openwidget/OpenWidgetProvider';
 import { WeglotProvider } from './weglot/WeglotProvider';
 import WhatsupIcon from '@/assets/icons/whatsupicon.svg';
@@ -6,7 +7,6 @@ import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
-import Head from 'next/head';
 import Image from 'next/image';
 
 import ToasterWrapper from '@/components/Interceptor';
@@ -53,6 +53,7 @@ export default function RootLayout({
           </a>
           <ToasterWrapper>{children}</ToasterWrapper>
           <Toaster />
+          <OpenWidget />
         </body>
       </html>
     </NextAuthProvider>
