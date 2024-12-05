@@ -193,6 +193,7 @@ export const FormStepAirFreight = ({
                 >
                   <div className="flex gap-3 text-[14px]/[15px] text-gray-600 font-medium mt-3">
                     <button
+                      type="button"
                       className="cursor-pointer"
                       onClick={() => {
                         let selectedAirports = item.airports
@@ -217,6 +218,7 @@ export const FormStepAirFreight = ({
                       Select all
                     </button>
                     <button
+                      type="button"
                       className="cursor-pointer"
                       onClick={() => {
                         item?.airports?.map((airport: any) => {
@@ -252,7 +254,7 @@ export const FormStepAirFreight = ({
 
                               return (
                                 <label
-                                  key={airportValue}
+                                  key={airportValue + idx}
                                   className="flex items-center gap-2"
                                 >
                                   <Checkbox

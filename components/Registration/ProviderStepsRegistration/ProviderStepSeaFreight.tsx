@@ -132,10 +132,6 @@ export const FormStepSeaFreight = ({
     }
   }, [isProvideServices]);
 
-  useEffect(() => {
-    console.log(form.getValues('seaports'));
-  }, [form.getValues('seaports')]);
-
   const refs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const handleScroll = (() => {
@@ -202,6 +198,7 @@ export const FormStepSeaFreight = ({
                 >
                   <div className="flex gap-3 text-[14px]/[15px] text-gray-600 font-medium mt-3">
                     <button
+                      type="button"
                       className="cursor-pointer"
                       onClick={() => {
                         let selectedSeaports = item.seaports
@@ -226,6 +223,7 @@ export const FormStepSeaFreight = ({
                       Select all
                     </button>
                     <button
+                      type="button"
                       className="cursor-pointer"
                       onClick={() => {
                         item?.seaports?.map((seaport: any) => {
@@ -261,7 +259,7 @@ export const FormStepSeaFreight = ({
 
                               return (
                                 <label
-                                  key={seaportValue}
+                                  key={seaportValue + idx}
                                   className="flex items-center gap-2"
                                 >
                                   <Checkbox

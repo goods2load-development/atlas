@@ -248,6 +248,7 @@ export const FormStepRoadFreight = ({
                     <>
                       <div className="flex gap-3 text-[14px]/[15px] text-gray-600 font-medium mt-3">
                         <button
+                          type="button"
                           className="cursor-pointer"
                           onClick={() => {
                             let selectedStates: string[] =
@@ -271,6 +272,7 @@ export const FormStepRoadFreight = ({
                           Select all
                         </button>
                         <button
+                          type="button"
                           className="cursor-pointer"
                           onClick={() => {
                             currentCountry?.states?.map((state: any) => {
