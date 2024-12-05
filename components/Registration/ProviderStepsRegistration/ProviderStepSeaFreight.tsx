@@ -1,7 +1,7 @@
 import { useCountriesStore, usePortsStore } from '@/lib/store';
 import { sortByRegion } from '@/lib/utils';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
@@ -74,6 +74,8 @@ export const FormStepSeaFreight = ({
 
   const [isAccordLoading, setIsAccordLoading] = useState(false);
 
+  const [activeCountryAccord, setActiveCountryAccord] = useState('');
+
   useEffect(() => {
     if (!isProvideServices) return setIsFreightDisabled(false);
 
@@ -130,139 +132,184 @@ export const FormStepSeaFreight = ({
     }
   }, [isProvideServices]);
 
+  useEffect(() => {
+    console.log(form.getValues('seaports'));
+  }, [form.getValues('seaports')]);
+
+  const refs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const handleScroll = (() => {
+    let scrollTimeout: NodeJS.Timeout | null = null;
+
+    return (key: string) => {
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+
+      scrollTimeout = setTimeout(() => {
+        const element = refs.current[key];
+        if (element) {
+          window.scrollTo({
+            top: element.offsetTop,
+            behavior: 'smooth',
+          });
+        }
+      }, 10);
+    };
+  })();
+
   const memoizedCountriesData = useMemo(() => {
     if (!countriesData) return null;
 
     return Object.entries(countriesData).map(([label, values]: any, idx) => {
       return (
-        <div key={label + idx} className="mb-4">
-          <strong className="block font-bold mb-2">{label}</strong>
+        <Accordion
+          key={activeCountryAccord}
+          type="single"
+          collapsible
+          className="max-w-[884px] w-full self-center"
+          value={activeCountryAccord}
+          onValueChange={(value) => {
+            handleScroll(value);
+            setActiveCountries((prev: any) => {});
+            setActiveCountryAccord(value);
+          }}
+        >
+          <strong className="block font-bold mb-1 mt-3">{label}</strong>
           {values.map((item: any, idx: number) => {
-            return (
-              item &&
-              item.seaports.length > 0 && (
-                <div key={item.name.common + idx}>
-                  <label className="flex items-center gap-2">
-                    <Checkbox
-                      value={item.name.common}
-                      checked={activeCountries.includes(item.cca2)}
-                      onCheckedChange={(isChecked) => {
-                        if (isChecked) {
-                          let selectedSeaports: string[] = [];
-
-                          item.seaports?.map((seaport: any) => {
-                            if (!seaport.unlocode) {
-                              return;
-                            }
-
-                            selectedSeaports.push(
-                              `(${seaport.unlocode}) ${seaport.port_name}`,
-                            );
+            return item && item.seaports.length > 0 ? (
+              <AccordionItem
+                ref={(el) => {
+                  refs.current[item.cca2] = el;
+                }}
+                key={item.name.common + idx}
+                value={item.cca2}
+                className={clsx('border-transparent pl-2')}
+              >
+                <AccordionTrigger
+                  isChevron={false}
+                  className="text-orangePrimary font-light hover:no-underline ml-0 py-1.5 max-w-max"
+                  disabled={false}
+                >
+                  <div className="text-[16px]/[20px] font-normal text-left  gap-1 inline-flex items-center">
+                    <h3 className="text-blackTertiary">{item.name.common}</h3>
+                    <ChevronDown className={clsx('w-4 h-4')} />
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent
+                  key={activeCountryAccord}
+                  className="pl-5 text-[16px]/[24px] font-light max-w-[760px] text-blackTertiary"
+                >
+                  <div className="flex gap-3 text-[14px]/[15px] text-gray-600 font-medium mt-3">
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => {
+                        let selectedSeaports = item.seaports
+                          ?.filter((seaport: any) => seaport.unlocode)
+                          ?.map((seaport: any) => {
+                            return `(${seaport.unlocode}) ${seaport.port_name}`;
                           });
 
-                          form.setValue('seaports', [
-                            ...(form.getValues('seaports') || []),
+                        const existingSeaports =
+                          form.getValues('seaports') || [];
+
+                        const uniqueSeaports = [
+                          ...new Set([
+                            ...existingSeaports,
                             ...selectedSeaports,
-                          ]);
-                        }
+                          ]),
+                        ];
 
-                        setActiveCountries((prev: any) => {
-                          if (isChecked) {
-                            return [...prev, item.cca2];
-                          } else {
-                            item?.seaports?.map((seaport: any) => {
-                              form.setValue(
-                                'seaports',
-                                form
-                                  .getValues('seaports')
-                                  ?.filter(
-                                    (existSeaport: any) =>
-                                      existSeaport !==
-                                      `(${seaport.unlocode}) ${seaport.port_name}`,
-                                  ),
-                              );
-                            });
-
-                            return prev.filter(
-                              (activeCountry: string) =>
-                                activeCountry !== item.cca2,
-                            );
-                          }
+                        form.setValue('seaports', uniqueSeaports);
+                      }}
+                    >
+                      Select all
+                    </button>
+                    <button
+                      className="cursor-pointer"
+                      onClick={() => {
+                        item?.seaports?.map((seaport: any) => {
+                          form.setValue(
+                            'seaports',
+                            form
+                              .getValues('seaports')
+                              ?.filter(
+                                (existSeaport: any) =>
+                                  existSeaport !==
+                                  `(${seaport.unlocode}) ${seaport.port_name}`,
+                              ),
+                          );
                         });
                       }}
-                    />
-                    <span className="font-normal">{item.name.common}</span>
-                    <ChevronDown
-                      className={clsx(
-                        'w-4 h-4',
-                        activeCountries.includes(item.cca2) ? 'rotate-180' : '',
-                      )}
-                    />
-                  </label>
+                    >
+                      Clear all
+                    </button>
+                  </div>
+                  <FormField
+                    control={form.control}
+                    name="seaports"
+                    render={({ field }) => (
+                      <FormItem className="">
+                        <FormControl>
+                          <div className="pl-1 my-1">
+                            {item.seaports.map((item: any, idx: number) => {
+                              if (!item.unlocode) {
+                                return;
+                              }
 
-                  {activeCountries.includes(item.cca2) && ( // Needs change to ports
-                    <FormField
-                      control={form.control}
-                      name="seaports"
-                      render={({ field }) => (
-                        <FormItem className="">
-                          <FormControl>
-                            <div className="pl-6 my-2">
-                              {item.seaports.map((item: any, idx: number) => {
-                                if (!item.unlocode) {
-                                  return;
-                                }
+                              const seaportValue = `(${item.unlocode}) ${item.port_name}`;
 
-                                const portValue = `(${item.unlocode}) ${item.port_name}`;
-
-                                return (
-                                  <label
-                                    key={portValue}
-                                    className="flex items-center gap-2"
-                                  >
-                                    <Checkbox
-                                      value={portValue}
-                                      checked={
-                                        field.value?.includes(portValue) ||
-                                        false
-                                      }
-                                      onCheckedChange={(checked) => {
-                                        const value = portValue;
-                                        const newValue = checked
-                                          ? [...(field.value || []), value]
-                                          : field.value?.filter(
-                                              (v: string) => v !== value,
-                                            ) || [];
-                                        field.onChange(newValue);
-                                      }}
-                                    />
-                                    <div className="text-[14px]f font-medium flex gap-1 items-center">
-                                      <span className="text-[12px]">
-                                        ({item.unlocode})
-                                      </span>
-                                      <span className="capitalize">
-                                        {item.port_name.includes('PORT')
-                                          ? item.port_name
-                                          : item.port_name + ' Port'}
-                                      </span>
-                                    </div>
-                                  </label>
-                                );
-                              })}
-                            </div>
-                          </FormControl>
-                        </FormItem>
-                      )}
-                    />
-                  )}
-                </div>
-              )
-            );
+                              return (
+                                <label
+                                  key={seaportValue}
+                                  className="flex items-center gap-2"
+                                >
+                                  <Checkbox
+                                    value={seaportValue}
+                                    checked={
+                                      field.value?.includes(seaportValue) ||
+                                      false
+                                    }
+                                    onCheckedChange={(checked) => {
+                                      const value = seaportValue;
+                                      const newValue = checked
+                                        ? [...(field.value || []), value]
+                                        : field.value?.filter(
+                                            (v: string) => v !== value,
+                                          ) || [];
+                                      field.onChange(newValue);
+                                    }}
+                                  />
+                                  <div className="text-[14px]f font-medium flex gap-1 items-center">
+                                    <span className="text-[12px]">
+                                      ({item.unlocode})
+                                    </span>
+                                    <span>
+                                      {item.port_name.includes('PORT')
+                                        ? item.port_name
+                                        : item.port_name + ' Port'}
+                                    </span>
+                                  </div>
+                                </label>
+                              );
+                            })}
+                          </div>
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                </AccordionContent>
+              </AccordionItem>
+            ) : null;
           })}
-        </div>
+        </Accordion>
       );
     });
-  }, [countriesData, activeCountries]);
+  }, [countriesData, activeCountryAccord]);
+
+  useEffect(() => {
+    console.log(form.getValues('seaports'));
+  }, [form.getValues('seaports')]);
 
   return (
     <>
@@ -297,7 +344,7 @@ export const FormStepSeaFreight = ({
 
         <div className="mb-10">
           <Accordion
-            key={activeAccord}
+            key={activeCountryAccord}
             type="single"
             collapsible
             className="max-w-[884px] w-full self-center"

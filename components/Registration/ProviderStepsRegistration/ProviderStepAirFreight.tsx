@@ -145,7 +145,7 @@ export const FormStepAirFreight = ({
             behavior: 'smooth',
           });
         }
-      }, 50);
+      }, 10);
     };
   })();
 
@@ -195,20 +195,23 @@ export const FormStepAirFreight = ({
                     <button
                       className="cursor-pointer"
                       onClick={() => {
-                        let selectedAirports = item.airports?.map(
-                          (airport: any) => {
-                            if (!airport.codeIataAirport) {
-                              return;
-                            }
-
+                        let selectedAirports = item.airports
+                          ?.filter((airport: any) => airport.codeIataAirport)
+                          ?.map((airport: any) => {
                             return `(${airport.codeIataAirport}) ${airport.nameAirport}`;
-                          },
-                        );
+                          });
 
-                        form.setValue('airports', [
-                          ...(form.getValues('airports') || []),
-                          ...selectedAirports,
-                        ]);
+                        const existingAirports =
+                          form.getValues('airports') || [];
+
+                        const uniqueAirports = [
+                          ...new Set([
+                            ...existingAirports,
+                            ...selectedAirports,
+                          ]),
+                        ];
+
+                        form.setValue('airports', uniqueAirports);
                       }}
                     >
                       Select all
@@ -222,8 +225,8 @@ export const FormStepAirFreight = ({
                             form
                               .getValues('airports')
                               ?.filter(
-                                (existSeaport: any) =>
-                                  existSeaport !==
+                                (existAirport: any) =>
+                                  existAirport !==
                                   `(${airport.codeIataAirport}) ${airport.nameAirport}`,
                               ),
                           );
@@ -287,97 +290,6 @@ export const FormStepAirFreight = ({
                     )}
                   />
                 </AccordionContent>
-                {/* <label className="flex items-center gap-2">
-                  <Checkbox
-                    value={item.name.common}
-                    checked={activeCountries.includes(item.cca2)}
-                    onCheckedChange={(isChecked) => {
-                      if (isChecked) {
-                        let selectedAirports: string[] = [];
-
-                        item.airports?.map((airport: any) => {
-                          if (!airport.codeIataAirport) {
-                            return;
-                          }
-
-                          selectedAirports.push(
-                            `(${airport.codeIataAirport}) ${airport.nameAirport}`,
-                          );
-                        });
-
-                        form.setValue('airports', [
-                          ...(form.getValues('airports') || []),
-                          ...selectedAirports,
-                        ]);
-                      }
-
-                 
-                    }}
-                  />
-                  <span className="font-normal">{item.name.common}</span>
-                  <ChevronDown
-                    className={clsx(
-                      'w-4 h-4',
-                      activeCountries.includes(item.cca2) ? 'rotate-180' : '',
-                    )}
-                  />
-                </label> */}
-
-                {/* {activeCountries.includes(item.cca2) && (
-                  <FormField
-                    control={form.control}
-                    name="airports"
-                    render={({ field }) => (
-                      <FormItem className="">
-                        <FormControl>
-                          <div className="pl-6 my-2">
-                            {item.airports.map((item: any, idx: number) => {
-                              if (!item.codeIataAirport) {
-                                return;
-                              }
-
-                              const airportValue = `(${item.codeIataAirport}) ${item.nameAirport}`;
-
-                              return (
-                                <label
-                                  key={airportValue}
-                                  className="flex items-center gap-2"
-                                >
-                                  <Checkbox
-                                    value={airportValue}
-                                    checked={
-                                      field.value?.includes(airportValue) ||
-                                      false
-                                    }
-                                    onCheckedChange={(checked) => {
-                                      const value = airportValue;
-                                      const newValue = checked
-                                        ? [...(field.value || []), value]
-                                        : field.value?.filter(
-                                            (v: string) => v !== value,
-                                          ) || [];
-                                      field.onChange(newValue);
-                                    }}
-                                  />
-                                  <div className="text-[14px]f font-medium flex gap-1 items-center">
-                                    <span className="text-[12px]">
-                                      ({item.codeIataAirport})
-                                    </span>
-                                    <span>
-                                      {item.nameAirport.includes(' Airport')
-                                        ? item.nameAirport
-                                        : item.nameAirport + ' Airport'}
-                                    </span>
-                                  </div>
-                                </label>
-                              );
-                            })}
-                          </div>
-                        </FormControl>
-                      </FormItem>
-                    )}
-                  />
-                )} */}
               </AccordionItem>
             ) : null;
           })}
