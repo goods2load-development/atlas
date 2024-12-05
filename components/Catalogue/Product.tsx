@@ -6,6 +6,7 @@ import SaveIconFilled from '@/assets/icons/save-filled.svg';
 import SaveIcon from '@/assets/icons/save.svg';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
 import { useUserStore } from '@/lib/store';
+import { slugify } from '@/lib/utils';
 
 import { useEffect } from 'react';
 
@@ -40,7 +41,6 @@ export default function Product(props: any) {
   const { toast } = useToast();
   const { user, getUser, onSaveUserPartner }: any = useUserStore();
   const router = useRouter();
-  const { postInteractionWithPartner } = useAnalyticsStore();
 
   useEffect(() => {
     if (!user?.id) getUser();
@@ -216,7 +216,7 @@ export default function Product(props: any) {
               />
               <Link
                 className="underline underline-offset-1 hover:no-underline"
-                href={`/partner/${props.partner?.id}#awards`}
+                href={`/partner/${slugify(props.partner?.companyName)}#awards`}
               >
                 Industry Recognition
               </Link>

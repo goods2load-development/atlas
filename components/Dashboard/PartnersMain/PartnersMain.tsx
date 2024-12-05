@@ -3,7 +3,7 @@
 import ReplyPartnerDialog from './ReplyPartnerDialog';
 import ViewPartnerDialog from './ViewPartnerDialog';
 import { usePartnersStore } from '@/lib/store';
-import { filterByField } from '@/lib/utils';
+import { filterByField, slugify } from '@/lib/utils';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -242,7 +242,9 @@ const PartnersMain = () => {
                   {tab === 'active' && partner.hasPage && (
                     <button
                       title="visit page"
-                      onClick={() => push(`/partner/${partner.partnerId}`)}
+                      onClick={() =>
+                        push(`/partner/${slugify(partner.companyName)}`)
+                      }
                     >
                       <FileSymlink />
                     </button>

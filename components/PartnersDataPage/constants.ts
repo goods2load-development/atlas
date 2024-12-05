@@ -7,12 +7,12 @@ const schemaChart = z.object({
 
 export const formSchema = z
   .object({
-    name: z.string().nonempty('Name is required'),
-    description: z.string().nonempty('Description is required'),
-    mission: z.string().nonempty('Mission is required'),
-    airFreight: z.string().nonempty('Air Freight is required'),
-    seaFreight: z.string().nonempty('Sea Freight is required'),
-    roadFreight: z.string().nonempty('Road Freight is required'),
+    name: z.string().min(3, 'Name is required'),
+    description: z.string().min(10, 'Description is required'),
+    mission: z.string().min(10, 'Mission is required'),
+    airFreight: z.string().min(3, 'Air Freight is required'),
+    seaFreight: z.string().min(3, 'Sea Freight is required'),
+    roadFreight: z.string().min(3, 'Road Freight is required'),
     focus: z.array(schemaChart).nonempty('At least one focus item is required'),
     industries: z
       .array(schemaChart)
@@ -24,7 +24,7 @@ export const formSchema = z
         }),
       )
       .nonempty('At least one mission item is required'),
-    placementId: z.string().nonempty('Place ID is required'),
+    placementId: z.string().min(3, 'Place ID is required'),
     awardedBy: z.union([
       z.string(),
       z

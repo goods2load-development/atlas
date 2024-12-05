@@ -763,7 +763,7 @@ const PartnerDataPage = ({
 
                       <div className="mt-[30px] flex-1">
                         <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
-                          Country focus
+                          Countries focus
                         </div>
                         {!isGet && (
                           <>
@@ -869,7 +869,7 @@ const PartnerDataPage = ({
 
                       <div className="mt-[30px] flex-1">
                         <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
-                          Service lines
+                          Industries we serve
                         </div>
                         {!isGet && (
                           <>
@@ -971,7 +971,7 @@ const PartnerDataPage = ({
 
                       <div className="mt-[30px] flex-1">
                         <div className="font-medium border-b border-lightOrange pb-2 w-full mb-6">
-                          Services lines
+                          Our values
                         </div>
 
                         {!isGet && (
@@ -1152,7 +1152,7 @@ const PartnerDataPage = ({
             </>
           )}
 
-          <div className="mt-10 md:mt-[112px]">
+          <div id="awards" className="mt-10 md:mt-[112px]">
             <h3 className="text-4xl md:text-[48px] mb-8 text-black text-center md:text-left">
               <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
                 <span>Awarded</span>
