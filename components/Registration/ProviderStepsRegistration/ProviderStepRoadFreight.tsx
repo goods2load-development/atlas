@@ -1,7 +1,7 @@
 import { useCountriesStore } from '@/lib/store';
 import { sortByRegion } from '@/lib/utils';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { ChevronDown } from 'lucide-react';
@@ -79,6 +79,8 @@ export const FormStepRoadFreight = ({
 
   const [isLoadingStates, setIsLoadingStates] = useState<string | null>(null);
 
+  const [activeCountryAccord, setActiveCountryAccord] = useState('');
+
   useEffect(() => {
     if (!isProvideServices) return setIsFreightDisabled(false);
 
@@ -122,17 +124,6 @@ export const FormStepRoadFreight = ({
       }
 
       setIsLoadingStates(null);
-
-      let selectedStates: string[] = [];
-
-      states.map((state: any) => {
-        selectedStates.push(state.name);
-      });
-
-      form.setValue('states', [
-        ...(form.getValues('states') || []),
-        ...selectedStates,
-      ]);
 
       setActiveCountriesWithStates((prev: any) => {
         const countryWithStates = {
@@ -179,13 +170,61 @@ export const FormStepRoadFreight = ({
     }
   }, [isProvideServices]);
 
+  const scrollTimeout = useRef<any>(null);
+
+  const onSmoothScroll = () => {
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    scrollTimeout.current = setTimeout(() => {
+      window.scroll({
+        top: 300,
+        behavior: 'smooth',
+      });
+    }, 10);
+  };
+
+  const refs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const handleScroll = (() => {
+    let scrollTimeout: NodeJS.Timeout | null = null;
+
+    return (key: string) => {
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+
+      scrollTimeout = setTimeout(() => {
+        const element = refs.current[key];
+        if (element) {
+          window.scrollTo({
+            top: element.offsetTop,
+            behavior: 'smooth',
+          });
+        }
+      }, 10);
+    };
+  })();
+
   const memoizedCountriesData = useMemo(() => {
     if (!countriesData) return null;
 
     return Object.entries(countriesData).map(([label, values]: any, idx) => {
       return (
-        <div key={label + idx} className="mb-4">
-          <strong className="block font-bold mb-2">{label}</strong>
+        <Accordion
+          key={idx}
+          type="single"
+          collapsible
+          className="max-w-[884px] w-full self-center"
+          value={activeCountryAccord}
+          onValueChange={(value) => {
+            handleScroll(value);
+            onSelectActiveCountries(true, value);
+            setActiveCountryAccord(value);
+          }}
+        >
+          <strong className="block font-bold mb-1 mt-3">{label}</strong>
           {values.map((item: any, idx: number) => {
             const currentCountry = activeCountriesWithStates.find(
               (activeCountry: any) => {
@@ -193,103 +232,153 @@ export const FormStepRoadFreight = ({
               },
             );
 
-            return (
-              item && (
-                <div key={item.name.common + idx}>
-                  <label className="flex items-center gap-2">
-                    <Checkbox
-                      value={item.name.common}
-                      checked={activeCountriesWithStates.some(
-                        (activeCountry: any) =>
-                          activeCountry.codeCountry === item.cca2,
-                      )}
-                      onCheckedChange={(isChecked: boolean) => {
-                        onSelectActiveCountries(isChecked, item.cca2);
-                      }}
-                    />
-                    <span className="font-normal">{item.name.common}</span>
+            return item ? (
+              <AccordionItem
+                ref={(el) => {
+                  refs.current[item.cca2] = el;
+                }}
+                key={item.name.common + idx}
+                value={item.cca2}
+                className={clsx('border-transparent pl-2')}
+              >
+                <AccordionTrigger
+                  isChevron={false}
+                  className="text-orangePrimary font-light hover:no-underline ml-0 py-1.5 max-w-max"
+                  disabled={false}
+                >
+                  <div className="text-[16px]/[20px] font-normal text-left  gap-1 inline-flex items-center">
+                    <h3 className="text-blackTertiary">{item.name.common}</h3>
                     {isLoadingStates === item.cca2 ? (
                       <Spinner />
                     ) : (
-                      <ChevronDown
-                        className={clsx(
-                          'w-4 h-4',
-                          currentCountry?.states?.length > 0
-                            ? 'rotate-180'
-                            : '',
-                        )}
-                      />
+                      <ChevronDown className={clsx('w-4 h-4')} />
                     )}
-                  </label>
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent
+                  key={activeCountryAccord + idx}
+                  className="pl-5 text-[16px]/[24px] font-light max-w-[760px] text-blackTertiary"
+                >
+                  {!isLoadingStates && (
+                    <>
+                      <div className="flex gap-3 text-[14px]/[15px] text-gray-600 font-medium mt-3">
+                        <button
+                          type="button"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            let selectedStates: string[] =
+                              currentCountry?.states.map(
+                                (state: any) => state.name,
+                              ) || [];
 
-                  {currentCountry && (
-                    <FormField
-                      control={form.control}
-                      name="states"
-                      render={({ field }) => {
-                        return (
-                          <>
-                            <FormItem className="">
-                              <FormControl>
-                                <div className="pl-6">
-                                  {currentCountry?.states?.length &&
-                                  isLoadingStates !== item.cca2 ? (
-                                    currentCountry?.states?.map(
-                                      (state: any, idx: number) => {
-                                        return (
-                                          <label
-                                            key={state.name + idx}
-                                            className="flex items-center gap-2"
-                                          >
-                                            <Checkbox
-                                              value={state.name}
-                                              checked={
-                                                field.value?.includes(
-                                                  state.name,
-                                                ) || false
-                                              }
-                                              onCheckedChange={(checked) => {
-                                                const value = state.name;
-                                                const newValue = checked
-                                                  ? [
-                                                      ...(field.value || []),
-                                                      value,
-                                                    ]
-                                                  : field.value?.filter(
-                                                      (v: string) =>
-                                                        v !== value,
-                                                    ) || [];
-                                                field.onChange(newValue);
-                                              }}
-                                            />
-                                            <span className="text-[14px] font-medium">
-                                              {state.toponymName}
-                                            </span>
-                                          </label>
-                                        );
-                                      },
-                                    )
-                                  ) : (
-                                    <strong className="text-[14px] font-semibold">
-                                      No States
-                                    </strong>
-                                  )}
-                                </div>
-                              </FormControl>
-                            </FormItem>
-                          </>
-                        );
-                      }}
-                    />
+                            const existingStates =
+                              form.getValues('states') || [];
+
+                            const uniqueStates = [
+                              ...new Set([
+                                ...existingStates,
+                                ...selectedStates,
+                              ]),
+                            ];
+
+                            form.setValue('states', uniqueStates);
+                          }}
+                        >
+                          Select all
+                        </button>
+                        <button
+                          type="button"
+                          className="cursor-pointer"
+                          onClick={() => {
+                            currentCountry?.states?.map((state: any) => {
+                              form.setValue(
+                                'states',
+                                form
+                                  .getValues('states')
+                                  ?.filter(
+                                    (existState: any) =>
+                                      existState !== state.name,
+                                  ),
+                              );
+                            });
+                          }}
+                        >
+                          Clear all
+                        </button>
+                      </div>
+                      <FormField
+                        control={form.control}
+                        name="states"
+                        render={({ field }) => {
+                          return (
+                            <>
+                              <FormItem className="">
+                                <FormControl>
+                                  <div className="pl-1 my-1">
+                                    {currentCountry?.states?.length &&
+                                    isLoadingStates !== item.cca2 ? (
+                                      currentCountry?.states?.map(
+                                        (state: any, idx: number) => {
+                                          return (
+                                            <label
+                                              key={state.name + idx}
+                                              className="flex items-center gap-2"
+                                            >
+                                              <Checkbox
+                                                value={state.name}
+                                                checked={
+                                                  field.value?.includes(
+                                                    state.name,
+                                                  ) || false
+                                                }
+                                                onCheckedChange={(checked) => {
+                                                  const value = state.name;
+                                                  const newValue = checked
+                                                    ? [
+                                                        ...(field.value || []),
+                                                        value,
+                                                      ]
+                                                    : field.value?.filter(
+                                                        (v: string) =>
+                                                          v !== value,
+                                                      ) || [];
+                                                  field.onChange(newValue);
+                                                }}
+                                              />
+                                              <span className="text-[14px] font-medium">
+                                                {state.toponymName}
+                                              </span>
+                                            </label>
+                                          );
+                                        },
+                                      )
+                                    ) : (
+                                      <strong className="text-[14px] font-semibold">
+                                        No States
+                                      </strong>
+                                    )}
+                                  </div>
+                                </FormControl>
+                              </FormItem>
+                            </>
+                          );
+                        }}
+                      />{' '}
+                    </>
                   )}
-                </div>
-              )
-            );
+                </AccordionContent>
+              </AccordionItem>
+            ) : null;
           })}
-        </div>
+        </Accordion>
       );
     });
-  }, [activeAccord, countriesData, activeCountriesWithStates, isLoadingStates]);
+  }, [
+    countriesData,
+    activeCountryAccord,
+    activeCountriesWithStates,
+    isLoadingStates,
+  ]);
 
   return (
     <>
@@ -324,22 +413,19 @@ export const FormStepRoadFreight = ({
 
         <div className="mb-10">
           <Accordion
-            key={activeAccord}
+            key={activeCountryAccord}
             type="single"
             collapsible
             className="max-w-[884px] w-full self-center"
             value={activeAccord}
             onValueChange={(value) => {
-              window.scroll({
-                top: 500,
-                behavior: 'smooth',
-              });
+              onSmoothScroll();
               setActiveAccord(value);
             }}
           >
-            {regions.map((item) => (
+            {regions.map((item: any, idx: number) => (
               <AccordionItem
-                key={item.label}
+                key={item.label + idx}
                 value={item.value}
                 className={clsx('sm:py-1')}
               >
