@@ -105,7 +105,26 @@ export default function Product(props: any) {
             )}
           </div>
 
-          {props.companyPhoto.endsWith('.svg') ? (
+          {props.partner.hasPage ? (
+            <Link href={`/partner/${props.partner.id}`}>
+              {props.companyPhoto.endsWith('.svg') ? (
+                <ReactSVG
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
+                  beforeInjection={(svg) => {
+                    svg.setAttribute('style', 'width: 125px; height: 41px;');
+                  }}
+                />
+              ) : (
+                <Image
+                  width={73}
+                  height={66}
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
+                  alt="Logo"
+                  className="mx-auto mt-3"
+                />
+              )}
+            </Link>
+          ) : props.companyPhoto.endsWith('.svg') ? (
             <ReactSVG
               src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
               beforeInjection={(svg) => {

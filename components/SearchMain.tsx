@@ -61,6 +61,7 @@ const placementOfGoodsOptions = [
   'Ro-Ro',
   '20’ Container',
   '40’ Container',
+  'Carton Boxes',
   'Other',
 ];
 
