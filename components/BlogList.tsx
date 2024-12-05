@@ -47,7 +47,6 @@ const BlogList: React.FC<BlogListProps> = ({
                 src={blogImg}
                 alt={blog.title}
                 fill
-                priority={blog.id === blogs[0].id} // Prioritize the first blog image for faster loading
               />
               <Link
                 href={`/category/${slugify(blog.blogTypeName)}`}

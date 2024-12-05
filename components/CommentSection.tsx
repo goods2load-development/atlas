@@ -100,7 +100,7 @@ const CommentSection: React.FC<CommentSectionProps> = ({
         </div>
       </div>
 
-      {!comments.length && (
+      {!comments?.length && (
         <div className="text-black text-center py-4 bg-[#FFC1A2] rounded-md my-8">
           Be the first to leave a comment
         </div>
