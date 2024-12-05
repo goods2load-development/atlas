@@ -5,6 +5,7 @@ import LogoutIcon from '@/assets/icons/logout.svg';
 import SettingsIcon from '@/assets/icons/settings.svg';
 import UserIcon from '@/assets/icons/user.svg';
 import { useUserStore } from '@/lib/store';
+import { slugify } from '@/lib/utils';
 
 import React, { useState } from 'react';
 
@@ -277,11 +278,11 @@ export default function Account() {
         <Card className="mb-10">
           <CardContent className="sm:flex justify-between">
             <div className="flex gap-1">
-              {user?.savedPartners?.map(({ id, photo }: any) => {
+              {user?.savedPartners?.map(({ name, id, photo }: any) => {
                 return (
                   <Link
-                    key={id}
-                    href={`/partner/${id}`}
+                    key={name}
+                    href={`/partner/${slugify(name)}`}
                     className="block w-[140px] h-12 bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative"
                   >
                     <div

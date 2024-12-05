@@ -2,6 +2,7 @@
 
 import defaultLogo from '@/assets/icons/default-logo-g2l.svg';
 import { usePartnersStore } from '@/lib/store';
+import { slugify } from '@/lib/utils';
 
 import React, { useEffect } from 'react';
 
@@ -48,7 +49,7 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
               return (
                 <Link
                   key={idx}
-                  href={`/partner/${partner.id}`}
+                  href={`/partner/${slugify(user.companyName)}`}
                   className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative overflow-hidden"
                 >
                   {user.companyPhoto.endsWith('.svg') ? (
