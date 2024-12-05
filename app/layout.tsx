@@ -4,6 +4,7 @@ import { OpenWidgetProvider } from './openwidget/OpenWidgetProvider';
 import { WeglotProvider } from './weglot/WeglotProvider';
 import WhatsupIcon from '@/assets/icons/whatsupicon.svg';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
+import GtagProvider from '@/lib/providers/GtagProvider';
 
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
@@ -32,6 +33,7 @@ export default function RootLayout({
         <head>
           <WeglotProvider />
           <OpenWidgetProvider />
+          <GtagProvider />
         </head>
         <body className={poppins.className}>
           <a
