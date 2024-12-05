@@ -477,19 +477,15 @@ const PartnerDataPage = ({
         <div className="max-w-[1295px] w-full mx-auto md:pt-[72px] pt-6 pb-[104px] px-4">
           <div className="lg:flex gap-14 justify-between mb-10 sm:mb-[104px]">
             {isGet ? (
-              <div
-                className="md:basis-1/2 px-20 rounded-2xl border border-solid border-primaryOrange 
-            bg-bgPartnerLogo bg-no-repeat md:[background-position:center_bottom] [background-position:bottom_bottom]
-            rotate-180 md:rotate-0 shadow-[2px_2px_10px_0px_#FF672029] h-[250px] md:h-[487px]"
-              >
-                <div className="relative mx-auto w-2/3 sm:w-[40%] h-full rotate-180 md:rotate-0 flex items-center justify-center overflow-hidden">
+              <div className="md:basis-1/2 px-20 rounded-2xl h-[250px] md:h-[487px]">
+                <div className="relative mx-auto w-full] h-full flex items-center justify-center">
                   {companyPhoto.endsWith('.svg') ? (
                     <ReactSVG
                       src={`${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`}
                       beforeInjection={(svg) => {
                         svg.setAttribute(
                           'style',
-                          'width: 225px; height: 225px;',
+                          'width: 325px; height: 325px;',
                         );
                       }}
                     />
