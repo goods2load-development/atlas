@@ -170,6 +170,21 @@ export const FormStepRoadFreight = ({
     }
   }, [isProvideServices]);
 
+  const scrollTimeout = useRef<any>(null);
+
+  const onSmoothScroll = () => {
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    scrollTimeout.current = setTimeout(() => {
+      window.scroll({
+        top: 300,
+        behavior: 'smooth',
+      });
+    }, 10);
+  };
+
   const refs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const handleScroll = (() => {
@@ -198,7 +213,7 @@ export const FormStepRoadFreight = ({
     return Object.entries(countriesData).map(([label, values]: any, idx) => {
       return (
         <Accordion
-          key={activeCountryAccord}
+          key={idx}
           type="single"
           collapsible
           className="max-w-[884px] w-full self-center"
@@ -241,7 +256,7 @@ export const FormStepRoadFreight = ({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent
-                  key={activeCountryAccord}
+                  key={activeCountryAccord + idx}
                   className="pl-5 text-[16px]/[24px] font-light max-w-[760px] text-blackTertiary"
                 >
                   {!isLoadingStates && (
@@ -404,16 +419,13 @@ export const FormStepRoadFreight = ({
             className="max-w-[884px] w-full self-center"
             value={activeAccord}
             onValueChange={(value) => {
-              window.scroll({
-                top: 500,
-                behavior: 'smooth',
-              });
+              onSmoothScroll();
               setActiveAccord(value);
             }}
           >
-            {regions.map((item) => (
+            {regions.map((item: any, idx: number) => (
               <AccordionItem
-                key={item.label}
+                key={item.label + idx}
                 value={item.value}
                 className={clsx('sm:py-1')}
               >

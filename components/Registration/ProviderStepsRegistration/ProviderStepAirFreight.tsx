@@ -149,13 +149,28 @@ export const FormStepAirFreight = ({
     };
   })();
 
+  const scrollTimeout = useRef<any>(null);
+
+  const onSmoothScroll = () => {
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    scrollTimeout.current = setTimeout(() => {
+      window.scroll({
+        top: 300,
+        behavior: 'smooth',
+      });
+    }, 10);
+  };
+
   const memoizedCountriesData = useMemo(() => {
     if (!countriesData) return null;
 
     return Object.entries(countriesData).map(([label, values]: any, idx) => {
       return (
         <Accordion
-          key={activeCountryAccord}
+          key={idx}
           type="single"
           collapsible
           className="max-w-[884px] w-full self-center"
@@ -188,7 +203,7 @@ export const FormStepAirFreight = ({
                   </div>
                 </AccordionTrigger>
                 <AccordionContent
-                  key={activeCountryAccord}
+                  key={activeCountryAccord + idx}
                   className="pl-5 text-[16px]/[24px] font-light max-w-[760px] text-blackTertiary"
                 >
                   <div className="flex gap-3 text-[14px]/[15px] text-gray-600 font-medium mt-3">
@@ -339,16 +354,13 @@ export const FormStepAirFreight = ({
             className="max-w-[884px] w-full self-center"
             value={activeAccord}
             onValueChange={(value) => {
-              window.scroll({
-                top: 500,
-                behavior: 'smooth',
-              });
+              onSmoothScroll();
               setActiveAccord(value);
             }}
           >
             {regions.map((item, idx) => (
               <AccordionItem
-                key={activeCountryAccord}
+                key={activeCountryAccord + idx}
                 value={item.value}
                 className={clsx('sm:py-1')}
               >
