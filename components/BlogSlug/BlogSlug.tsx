@@ -3,7 +3,7 @@
 import { RelatedBlogs } from '@/app/_components/Blog/RelatedBlogs';
 import { postRequest } from '@/lib/utils';
 
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { format } from 'date-fns';
 
@@ -96,7 +96,6 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
   return (
     <>
       <div className="blog-page">
-        {/* Header Section */}
         <HeaderImage
           title={blog.title}
           mainImageUrl={blog.mainImageUrl}
@@ -108,7 +107,6 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
 
         <div className="px-4 py-8">
           <div className="flex flex-col md:flex-row gap-8 max-w-[1328px] mx-auto">
-            {/* Table of Contents */}
             <div className="sticky top-0 z-50 max-h-[100vh] overflow-y-scroll">
               <TableOfContents headings={headings} />
               <div className="mt-6 hidden md:block">
@@ -119,7 +117,6 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
               </div>
             </div>
 
-            {/* Blog Content */}
             <div className="flex-1">
               <BlogContent
                 content={blog.content}
@@ -132,14 +129,12 @@ const BlogSlug = ({ blog }: { blog: Blog }) => {
             <ReferalsSlider />
           </div>
 
-          {/* Comments Section */}
           <CommentSection
             blogId={blog.id}
             activeUsers={localActiveUsers || 0}
             commentCount={blog.commentCount}
           />
 
-          {/* Related Blogs Section */}
           <RelatedBlogs
             blogSectionType="related"
             categoriesName={blog.blogTypeName}

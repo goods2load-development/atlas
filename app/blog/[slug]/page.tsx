@@ -1,6 +1,7 @@
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Metadata } from 'next';
+import Head from 'next/head';
 
 import BlogSlug from '@/components/BlogSlug/BlogSlug';
 import Footer from '@/components/Footer';
@@ -61,6 +62,13 @@ export default async function BlogPage({
 
   return (
     <>
+      <Head>
+        <link
+          rel="preload"
+          as="image"
+          href={`${process.env.NEXT_PUBLIC_BASE_URL}${blog.mainImageUrl}`}
+        />
+      </Head>
       <HeaderClient variant="secondary" />
       <DynamicMenu />
       <BlogSlug blog={blog} />
