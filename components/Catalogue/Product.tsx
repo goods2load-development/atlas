@@ -6,7 +6,6 @@ import SaveIconFilled from '@/assets/icons/save-filled.svg';
 import SaveIcon from '@/assets/icons/save.svg';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
 import { useUserStore } from '@/lib/store';
-import { slugify } from '@/lib/utils';
 
 import { useEffect } from 'react';
 
@@ -105,8 +104,11 @@ export default function Product(props: any) {
             )}
           </div>
 
-          {props.partner.hasPage ? (
-            <Link href={`/partner/${props.partner.id}`}>
+          {props.partner.hasPage && !!props.partner.slug ? (
+            <Link
+              className="inline-block text-center  mt-3"
+              href={`/partner/${props.partner.slug}`}
+            >
               {props.companyPhoto.endsWith('.svg') ? (
                 <ReactSVG
                   src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
@@ -120,7 +122,7 @@ export default function Product(props: any) {
                   height={66}
                   src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
                   alt="Logo"
-                  className="mx-auto mt-3"
+                  className="mx-auto"
                 />
               )}
             </Link>
@@ -216,7 +218,7 @@ export default function Product(props: any) {
               />
               <Link
                 className="underline underline-offset-1 hover:no-underline"
-                href={`/partner/${slugify(props.partner?.companyName)}#awards`}
+                href={`/partner/${props.partner.slug}#awards`}
               >
                 Industry Recognition
               </Link>

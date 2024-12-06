@@ -3,7 +3,7 @@
 import ReplyPartnerDialog from './ReplyPartnerDialog';
 import ViewPartnerDialog from './ViewPartnerDialog';
 import { usePartnersStore } from '@/lib/store';
-import { filterByField, slugify } from '@/lib/utils';
+import { filterByField } from '@/lib/utils';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
@@ -57,6 +57,7 @@ const PartnersMain = () => {
           aboutUs: par.aboutUs,
           ourMission: par.ourMission,
           partnerId: par.id,
+          slug: par.slug,
         })),
         'email',
         searchValue,
@@ -190,97 +191,99 @@ const PartnersMain = () => {
               {tab === 'active' && 'No approved partners at the moment'}
             </p>
           )}
-          {filteredPartners?.map((partner, i: number) => (
-            <ListItem key={i}>
-              <div className="flex gap-2 justify-between w-full">
-                <p
-                  onClick={() =>
-                    setIsViewModalOpen({
-                      id: partner.id,
-                      isOpen: true,
-                    })
-                  }
-                  className="hover:underline hover:cursor-pointer"
-                >
-                  {partner.email}
-                </p>
-                <div className="flex items-center gap-2">
-                  <ViewPartnerDialog
-                    isOpen={
-                      isViewModalOpen.id === partner.id &&
-                      isViewModalOpen.isOpen
+          {filteredPartners?.map((partner, i: number) => {
+            return (
+              <ListItem key={i}>
+                <div className="flex gap-2 justify-between w-full">
+                  <p
+                    onClick={() =>
+                      setIsViewModalOpen({
+                        id: partner.id,
+                        isOpen: true,
+                      })
                     }
-                    setIsOpen={setIsViewModalOpen}
-                    partner={partner}
-                  />
-                  {tab === 'new' && (
-                    <ReplyPartnerDialog
-                      onSubmitCallback={({ message }: any) =>
-                        replyPartnerById(partner.partnerId, message)
+                    className="hover:underline hover:cursor-pointer"
+                  >
+                    {partner.email}
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <ViewPartnerDialog
+                      isOpen={
+                        isViewModalOpen.id === partner.id &&
+                        isViewModalOpen.isOpen
                       }
+                      setIsOpen={setIsViewModalOpen}
+                      partner={partner}
                     />
-                  )}
-                  {tab !== 'active' && (
-                    <button
-                      onClick={() => confirmPartner(partner.partnerId)}
-                      title="Confirm"
-                    >
-                      <Check />
-                    </button>
-                  )}
-
-                  {tab === 'active' && !partner.hasPage && (
-                    <button
-                      title="create page"
-                      onClick={() =>
-                        push(`/dashboard/partners/create/${partner.partnerId}`)
-                      }
-                    >
-                      <FilePlus />
-                    </button>
-                  )}
-                  {tab === 'active' && partner.hasPage && (
-                    <button
-                      title="visit page"
-                      onClick={() =>
-                        push(`/partner/${slugify(partner.companyName)}`)
-                      }
-                    >
-                      <FileSymlink />
-                    </button>
-                  )}
-                  {tab === 'active' && partner.hasPage && (
-                    <button
-                      title="edit page"
-                      onClick={() =>
-                        push(`/dashboard/partners/edit/${partner.partnerId}`)
-                      }
-                    >
-                      <Edit2Icon />
-                    </button>
-                  )}
-                  <ConfirmDialog
-                    trigger={
-                      <button title="Delete">
-                        <TrashIcon />
+                    {tab === 'new' && (
+                      <ReplyPartnerDialog
+                        onSubmitCallback={({ message }: any) =>
+                          replyPartnerById(partner.partnerId, message)
+                        }
+                      />
+                    )}
+                    {tab !== 'active' && (
+                      <button
+                        onClick={() => confirmPartner(partner.partnerId)}
+                        title="Confirm"
+                      >
+                        <Check />
                       </button>
-                    }
-                    title="Confirm Deletion"
-                    description={
-                      <>
-                        Are you sure you want to delete partner{' '}
-                        <strong>{partner.email}</strong>? This action cannot be
-                        undone.
-                      </>
-                    }
-                    confirmLabel="Yes, delete"
-                    cancelLabel="No, cancel"
-                    onConfirm={() => unconfirmPartner(partner.partnerId)}
-                  />
+                    )}
+
+                    {tab === 'active' && !partner.hasPage && (
+                      <button
+                        title="create page"
+                        onClick={() =>
+                          push(
+                            `/dashboard/partners/create/${partner.partnerId}`,
+                          )
+                        }
+                      >
+                        <FilePlus />
+                      </button>
+                    )}
+                    {tab === 'active' && partner.hasPage && (
+                      <button
+                        title="visit page"
+                        onClick={() => push(`/partner/${partner.slug}`)}
+                      >
+                        <FileSymlink />
+                      </button>
+                    )}
+                    {tab === 'active' && partner.hasPage && (
+                      <button
+                        title="edit page"
+                        onClick={() =>
+                          push(`/dashboard/partners/edit/${partner.partnerId}`)
+                        }
+                      >
+                        <Edit2Icon />
+                      </button>
+                    )}
+                    <ConfirmDialog
+                      trigger={
+                        <button title="Delete">
+                          <TrashIcon />
+                        </button>
+                      }
+                      title="Confirm Deletion"
+                      description={
+                        <>
+                          Are you sure you want to delete partner{' '}
+                          <strong>{partner.email}</strong>? This action cannot
+                          be undone.
+                        </>
+                      }
+                      confirmLabel="Yes, delete"
+                      cancelLabel="No, cancel"
+                      onConfirm={() => unconfirmPartner(partner.partnerId)}
+                    />
+                  </div>
                 </div>
-              </div>
-            </ListItem>
-          ))}
+              </ListItem>
+            );
+          })}
         </div>
       </div>
     </div>

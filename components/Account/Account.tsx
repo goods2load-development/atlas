@@ -278,11 +278,11 @@ export default function Account() {
         <Card className="mb-10">
           <CardContent className="sm:flex justify-between">
             <div className="flex gap-1">
-              {user?.savedPartners?.map(({ name, id, photo }: any) => {
+              {user?.savedPartners?.map(({ name, id, photo, slug }: any) => {
                 return (
                   <Link
                     key={name}
-                    href={`/partner/${slugify(name)}`}
+                    href={`/partner/${slug}`}
                     className="block w-[140px] h-12 bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative"
                   >
                     <div

@@ -7,6 +7,7 @@ export interface ResponsePartner {
   user: Partner;
   aboutUs: string;
   ourMission: string;
+  slug: string;
 }
 
 export interface PartnerIndustry {

@@ -293,7 +293,7 @@ const PartnerDataPage = ({
     if (!isEdit) return;
     (async () => {
       const fileList = await urlsToFileList(
-        partnerData?.awardsFiles.map(
+        partnerData?.awardsFiles?.map(
           (item: any) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
         ),
       );
@@ -1191,7 +1191,7 @@ const PartnerDataPage = ({
               )}
 
               {isGet &&
-                partnerData?.awardsFiles.map((item: any) => (
+                partnerData?.awardsFiles?.map((item: any) => (
                   <Image
                     key={item.path}
                     width={293}

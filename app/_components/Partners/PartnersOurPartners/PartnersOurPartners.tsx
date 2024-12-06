@@ -49,7 +49,7 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
               return (
                 <Link
                   key={idx}
-                  href={`/partner/${slugify(user.companyName)}`}
+                  href={`/partner/${partner.slug}`}
                   className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative overflow-hidden"
                 >
                   {user.companyPhoto.endsWith('.svg') ? (
