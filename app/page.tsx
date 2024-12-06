@@ -18,9 +18,9 @@ const QuestionsAndAnswers = dynamic(
   () => import('@/components/QuestionsAndAnswers'),
 );
 
-const SliderMain = dynamic(() => import('@/components/SliderMain'));
-
 const DynamicMenu = dynamic(() => import('@/components/Header/DynamicMenu'));
+
+const SliderMain = dynamic(() => import('@/components/SliderMain'));
 
 const Analytics = dynamic(() => import('@/components/Dashboard/Analytics'), {
   ssr: false,

@@ -5,6 +5,7 @@ import LogoutIcon from '@/assets/icons/logout.svg';
 import SettingsIcon from '@/assets/icons/settings.svg';
 import UserIcon from '@/assets/icons/user.svg';
 import { useUserStore } from '@/lib/store';
+import { slugify } from '@/lib/utils';
 
 import React, { useState } from 'react';
 
@@ -271,19 +272,17 @@ export default function Account() {
         <div className="flex justify-between mb-10">
           <span className="flex items-center text-[28px]/[40px] sm:text-[48px]/[52px]">
             <Bookmark className="w-10 h-10 text-primaryOrange mr-2" />
-            <span className="font-medium">
-              Logistics&nbsp;
-            </span>partners saved
+            <span className="font-medium">Logistics&nbsp;</span>partners saved
           </span>
         </div>
         <Card className="mb-10">
           <CardContent className="sm:flex justify-between">
             <div className="flex gap-1">
-              {user?.savedPartners?.map(({ id, photo }: any) => {
+              {user?.savedPartners?.map(({ name, id, photo, slug }: any) => {
                 return (
                   <Link
-                    key={id}
-                    href={`/partner/${id}`}
+                    key={name}
+                    href={`/partner/${slug}`}
                     className="block w-[140px] h-12 bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative"
                   >
                     <div

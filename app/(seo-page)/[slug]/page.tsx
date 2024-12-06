@@ -7,11 +7,9 @@ import Footer from '@/components/Footer';
 import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
 import MainLayout from '@/components/MainLayout';
-import SeoPageMain from '@/components/SeoPage/SeoPageMain';
 
 const SeoPageMainLazy = dynamic(
   () => import('@/components/SeoPage/SeoPageMain'),
-  { ssr: false },
 );
 
 async function getSeoData(slug: string) {
@@ -51,6 +49,7 @@ export async function generateMetadata({
       ...(!!data?.block1File && {
         images: [
           {
+            ...defaultMetadata.openGraph.images[0],
             url: `${process.env.NEXT_PUBLIC_BASE_URL}${data?.block1File}`,
             alt: data?.title,
           },
