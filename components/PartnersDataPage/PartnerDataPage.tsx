@@ -1231,7 +1231,7 @@ const PartnerDataPage = ({
         </div>
       </section>
 
-      {isCreate && isHasAnyErrors && (
+      {!isGet && isHasAnyErrors && (
         <div className="fixed top-2 right-2 bg-white rounded-xl w-[300px] h-[140px] overflow-y-scroll p-2 shadow-md">
           <h3 className="text-2xl font-bold">Error list:</h3>
           {Object.values(form?.formState?.errors || {}).map((error, i) => {

@@ -10,9 +10,9 @@ export const formSchema = z
     name: z.string().min(3, 'Name is required'),
     description: z.string().min(10, 'Description is required'),
     mission: z.string().min(10, 'Mission is required'),
-    airFreight: z.string().min(3, 'Air Freight is required'),
-    seaFreight: z.string().min(3, 'Sea Freight is required'),
-    roadFreight: z.string().min(3, 'Road Freight is required'),
+    airFreight: z.string().min(1, 'Air Freight is required'),
+    seaFreight: z.string().min(1, 'Sea Freight is required'),
+    roadFreight: z.string().min(1, 'Road Freight is required'),
     focus: z.array(schemaChart).nonempty('At least one focus item is required'),
     industries: z
       .array(schemaChart)
