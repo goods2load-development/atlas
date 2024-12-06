@@ -81,7 +81,7 @@ export default async function SeoPage({
     <>
       <MainLayout>
         <HeaderClient variant="transparent" />
-        <DynamicMenu variant="transparent" />
+        {/* <DynamicMenu variant="transparent" /> */}
         <div className="px-4 max-w-[1328px] mx-auto">
           <h1 className="mt-8 sm:mt-16 mb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1265px] text-center sm:text-left">
             {data?.title}
