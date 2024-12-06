@@ -4,7 +4,6 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
 import Footer from '@/components/Footer';
-import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
 import MainImageLayout from '@/components/MainLayout';
 import SearchMain from '@/components/SearchMain';
@@ -18,6 +17,8 @@ const ConsentPopup = dynamic(() => import('@/components/common/ConsentPopup'), {
 const QuestionsAndAnswers = dynamic(
   () => import('@/components/QuestionsAndAnswers'),
 );
+
+const DynamicMenu = dynamic(() => import('@/components/Header/DynamicMenu'));
 
 const SliderMain = dynamic(() => import('@/components/SliderMain'));
 

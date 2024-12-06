@@ -1,15 +1,12 @@
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
-import { Suspense } from 'react';
-
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 
 import Footer from '@/components/Footer';
+import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
 import MainLayout from '@/components/MainLayout';
-
-const DynamicMenu = dynamic(() => import('@/components/Header/DynamicMenu'));
 
 const SeoPageMainLazy = dynamic(
   () => import('@/components/SeoPage/SeoPageMain'),
@@ -84,9 +81,7 @@ export default async function SeoPage({
     <>
       <MainLayout>
         <HeaderClient variant="transparent" />
-        <Suspense fallback={<></>}>
-          <DynamicMenu variant="transparent" />
-        </Suspense>
+        <DynamicMenu variant="transparent" />
         <div className="px-4 max-w-[1328px] mx-auto">
           <h1 className="mt-8 sm:mt-16 mb-5 text-[38px]/[42px] sm:text-[64px]/[68px] font-light max-w-[1265px] text-center sm:text-left">
             {data?.title}

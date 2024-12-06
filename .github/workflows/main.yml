@@ -32,5 +32,13 @@ jobs:
       - name: Install dependencies
         run: npm install
 
+      - name: Debug environment
+        run: |
+          node -v
+          npm -v
+          ls -la
+          cat package.json
+          cat package-lock.json
+
       - name: Build project
-        run: npm run build
+        run: npm run build -- --verbose
