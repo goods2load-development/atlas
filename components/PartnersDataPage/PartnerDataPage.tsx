@@ -293,7 +293,7 @@ const PartnerDataPage = ({
     if (!isEdit) return;
     (async () => {
       const fileList = await urlsToFileList(
-        partnerData?.awardsFiles.map(
+        partnerData?.awardsFiles?.map(
           (item: any) => `${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`,
         ),
       );
@@ -477,7 +477,7 @@ const PartnerDataPage = ({
         <div className="max-w-[1295px] w-full mx-auto md:pt-[72px] pt-6 pb-[104px] px-4">
           <div className="lg:flex gap-14 justify-between mb-10 sm:mb-[104px]">
             {isGet ? (
-              <div className="md:basis-1/2 px-20 rounded-2xl h-[250px] md:h-[487px]">
+              <div className="md:basis-1/2 px-20 rounded-2xl h-full">
                 <div className="relative mx-auto w-full] h-full flex items-center justify-center">
                   {companyPhoto.endsWith('.svg') ? (
                     <ReactSVG
@@ -922,6 +922,11 @@ const PartnerDataPage = ({
                                     color: industriesForm.color,
                                   },
                                 ]);
+                                setIndustriesForm({
+                                  label: '',
+                                  value: '',
+                                  color: '',
+                                });
                               }}
                               className="w-full mb-2"
                             >
@@ -1152,7 +1157,7 @@ const PartnerDataPage = ({
             </>
           )}
 
-          <div className="mt-10 md:mt-[112px]">
+          <div id="awards" className="mt-10 md:mt-[112px]">
             <h3 className="text-4xl md:text-[48px] mb-8 text-black text-center md:text-left">
               <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
                 <span>Awarded</span>
@@ -1191,17 +1196,33 @@ const PartnerDataPage = ({
               )}
 
               {isGet &&
-                partnerData?.awardsFiles.map((item: any) => (
-                  <Image
-                    key={item.path}
-                    width={293}
-                    height={400}
-                    className="h-auto w-full"
-                    src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
-                    unoptimized
-                    alt="award"
-                  />
-                ))}
+                partnerData?.awardsFiles?.map((item: any) => {
+                  return (
+                    <>
+                      {item.path.endsWith('.svg') ? (
+                        <ReactSVG
+                          src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
+                          beforeInjection={(svg) => {
+                            svg.setAttribute(
+                              'style',
+                              'width: 325px; height: 325px;',
+                            );
+                          }}
+                        />
+                      ) : (
+                        <Image
+                          key={item.path}
+                          width={293}
+                          height={400}
+                          className="h-auto w-full"
+                          src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
+                          unoptimized
+                          alt="award"
+                        />
+                      )}
+                    </>
+                  );
+                })}
 
               {!isGet &&
                 awardedByBase64List.map((base, i) => (
@@ -1227,7 +1248,7 @@ const PartnerDataPage = ({
         </div>
       </section>
 
-      {isCreate && isHasAnyErrors && (
+      {!isGet && isHasAnyErrors && (
         <div className="fixed top-2 right-2 bg-white rounded-xl w-[300px] h-[140px] overflow-y-scroll p-2 shadow-md">
           <h3 className="text-2xl font-bold">Error list:</h3>
           {Object.values(form?.formState?.errors || {}).map((error, i) => {
