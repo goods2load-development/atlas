@@ -83,7 +83,7 @@ export default async function SeoPage({
     <>
       <MainLayout>
         <HeaderClient variant="transparent" />
-        <Suspense>
+        <Suspense fallback={<></>}>
           <DynamicMenu variant="transparent" />
         </Suspense>
         <div className="px-4 max-w-[1328px] mx-auto">
