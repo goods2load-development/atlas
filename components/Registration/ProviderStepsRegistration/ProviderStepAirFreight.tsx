@@ -1,10 +1,10 @@
 import { useCountriesStore, usePortsStore } from '@/lib/store';
 import { sortByRegion } from '@/lib/utils';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import clsx from 'clsx';
-import { ChevronDown } from 'lucide-react';
+import { Check, ChevronDown } from 'lucide-react';
 
 import {
   Accordion,
@@ -69,12 +69,10 @@ export const FormStepAirFreight = ({
   setIsFreightDisabled: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
   const { getCountriesByRegions }: any = useCountriesStore();
-
   const { getAirportsByCountry }: any = usePortsStore();
-
   const [countriesData, setCountriesData] = useState<any>(null);
-
   const [isAccordLoading, setIsAccordLoading] = useState(false);
+  const [activeCountryAccord, setActiveCountryAccord] = useState('');
 
   useEffect(() => {
     if (!isProvideServices) return setIsFreightDisabled(false);
@@ -115,7 +113,7 @@ export const FormStepAirFreight = ({
 
       setIsAccordLoading(false);
     }
-  }, [activeAccord]);
+  }, [activeAccord, activeCountryAccord]);
 
   useEffect(() => {
     fetchCountriesData();
@@ -129,81 +127,139 @@ export const FormStepAirFreight = ({
     }
   }, [isProvideServices]);
 
+  const refs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  const handleScroll = (() => {
+    let scrollTimeout: NodeJS.Timeout | null = null;
+
+    return (key: string) => {
+      if (scrollTimeout) {
+        clearTimeout(scrollTimeout);
+      }
+
+      scrollTimeout = setTimeout(() => {
+        const element = refs.current[key];
+        if (element) {
+          window.scrollTo({
+            top: element.offsetTop,
+            behavior: 'smooth',
+          });
+        }
+      }, 10);
+    };
+  })();
+
+  const scrollTimeout = useRef<any>(null);
+
+  const onSmoothScroll = () => {
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    scrollTimeout.current = setTimeout(() => {
+      window.scroll({
+        top: 300,
+        behavior: 'smooth',
+      });
+    }, 10);
+  };
+
   const memoizedCountriesData = useMemo(() => {
     if (!countriesData) return null;
 
     return Object.entries(countriesData).map(([label, values]: any, idx) => {
       return (
-        <div key={label + idx} className="mb-4">
-          <strong className="block font-bold mb-2">{label}</strong>
+        <Accordion
+          key={idx}
+          type="single"
+          collapsible
+          className="max-w-[884px] w-full self-center"
+          value={activeCountryAccord}
+          onValueChange={(value) => {
+            handleScroll(value);
+            setActiveCountries((prev: any) => {});
+            setActiveCountryAccord(value);
+          }}
+        >
+          <strong className="block font-bold mb-1 mt-3">{label}</strong>
           {values.map((item: any, idx: number) => {
             return item && item.airports.length > 0 ? (
-              <div key={item.name.common + idx}>
-                <label className="flex items-center gap-2">
-                  <Checkbox
-                    value={item.name.common}
-                    checked={activeCountries.includes(item.cca2)}
-                    onCheckedChange={(isChecked) => {
-                      if (isChecked) {
-                        let selectedAirports: string[] = [];
+              <AccordionItem
+                ref={(el) => {
+                  refs.current[item.cca2] = el;
+                }}
+                key={item.name.common + idx}
+                value={item.cca2}
+                className={clsx('border-transparent pl-2')}
+              >
+                <AccordionTrigger
+                  isChevron={false}
+                  className="text-orangePrimary font-light hover:no-underline ml-0 py-1.5 max-w-max"
+                  disabled={false}
+                >
+                  <div className="text-[16px]/[20px] font-normal text-left  gap-1 inline-flex items-center">
+                    <h3 className="text-blackTertiary">{item.name.common}</h3>
+                    <ChevronDown className={clsx('w-4 h-4')} />
+                  </div>
+                </AccordionTrigger>
+                <AccordionContent
+                  key={activeCountryAccord + idx}
+                  className="pl-5 text-[16px]/[24px] font-light max-w-[760px] text-blackTertiary"
+                >
+                  <div className="flex gap-3 text-[14px]/[15px] text-gray-600 font-medium mt-3">
+                    <button
+                      type="button"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        let selectedAirports = item.airports
+                          ?.filter((airport: any) => airport.codeIataAirport)
+                          ?.map((airport: any) => {
+                            return `(${airport.codeIataAirport}) ${airport.nameAirport}`;
+                          });
 
-                        item.airports?.map((airport: any) => {
-                          if (!airport.codeIataAirport) {
-                            return;
-                          }
+                        const existingAirports =
+                          form.getValues('airports') || [];
 
-                          selectedAirports.push(
-                            `(${airport.codeIataAirport}) ${airport.nameAirport}`,
+                        const uniqueAirports = [
+                          ...new Set([
+                            ...existingAirports,
+                            ...selectedAirports,
+                          ]),
+                        ];
+
+                        form.setValue('airports', uniqueAirports);
+                      }}
+                    >
+                      Select all
+                    </button>
+                    <button
+                      type="button"
+                      className="cursor-pointer"
+                      onClick={() => {
+                        item?.airports?.map((airport: any) => {
+                          form.setValue(
+                            'airports',
+                            form
+                              .getValues('airports')
+                              ?.filter(
+                                (existAirport: any) =>
+                                  existAirport !==
+                                  `(${airport.codeIataAirport}) ${airport.nameAirport}`,
+                              ),
                           );
                         });
-
-                        form.setValue('airports', [
-                          ...(form.getValues('airports') || []),
-                          ...selectedAirports,
-                        ]);
-                      }
-
-                      setActiveCountries((prev: any) => {
-                        if (isChecked) {
-                          return [...prev, item.cca2];
-                        } else {
-                          item?.airports?.map((airport: any) => {
-                            form.setValue(
-                              'airports',
-                              form
-                                .getValues('airports')
-                                ?.filter(
-                                  (existAirport: any) =>
-                                    existAirport !==
-                                    `(${airport.codeIataAirport}) ${airport.nameAirport}`,
-                                ),
-                            );
-                          });
-                          return prev.filter(
-                            (activeCountry: string) =>
-                              activeCountry !== item.cca2,
-                          );
-                        }
-                      });
-                    }}
-                  />
-                  <span className="font-normal">{item.name.common}</span>
-                  <ChevronDown
-                    className={clsx(
-                      'w-4 h-4',
-                      activeCountries.includes(item.cca2) ? 'rotate-180' : '',
-                    )}
-                  />
-                </label>
-
-                {activeCountries.includes(item.cca2) && (
+                      }}
+                    >
+                      Clear all
+                    </button>
+                  </div>
                   <FormField
                     control={form.control}
                     name="airports"
                     render={({ field }) => (
                       <FormItem className="">
                         <FormControl>
-                          <div className="pl-6 my-2">
+                          <div className="pl-1 my-1">
                             {item.airports.map((item: any, idx: number) => {
                               if (!item.codeIataAirport) {
                                 return;
@@ -213,7 +269,7 @@ export const FormStepAirFreight = ({
 
                               return (
                                 <label
-                                  key={airportValue}
+                                  key={airportValue + idx}
                                   className="flex items-center gap-2"
                                 >
                                   <Checkbox
@@ -250,14 +306,14 @@ export const FormStepAirFreight = ({
                       </FormItem>
                     )}
                   />
-                )}
-              </div>
+                </AccordionContent>
+              </AccordionItem>
             ) : null;
           })}
-        </div>
+        </Accordion>
       );
     });
-  }, [countriesData, activeCountries]);
+  }, [countriesData, activeCountryAccord]);
 
   return (
     <>
@@ -292,22 +348,19 @@ export const FormStepAirFreight = ({
 
         <div className="mb-10">
           <Accordion
-            key={activeAccord}
+            key={activeCountryAccord}
             type="single"
             collapsible
             className="max-w-[884px] w-full self-center"
             value={activeAccord}
             onValueChange={(value) => {
-              window.scroll({
-                top: 500,
-                behavior: 'smooth',
-              });
+              onSmoothScroll();
               setActiveAccord(value);
             }}
           >
             {regions.map((item, idx) => (
               <AccordionItem
-                key={item.label + idx}
+                key={activeCountryAccord + idx}
                 value={item.value}
                 className={clsx('sm:py-1')}
               >

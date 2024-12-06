@@ -26,7 +26,7 @@ import { usePartnersStore, useRegistrationStore } from '@/lib/store';
 import { useCountriesStore } from '@/lib/store';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import clsx from 'clsx';
 import { set } from 'lodash';
@@ -511,11 +511,19 @@ function Registration() {
     }
   }, [cookies.accessToken]);
 
+  const scrollTimeout = useRef<any>(null);
+
   const onSmoothScroll = () => {
-    window.scroll({
-      top: 300,
-      behavior: 'smooth',
-    });
+    if (scrollTimeout.current) {
+      clearTimeout(scrollTimeout.current);
+    }
+
+    scrollTimeout.current = setTimeout(() => {
+      window.scroll({
+        top: 125,
+        behavior: 'smooth',
+      });
+    }, 10);
   };
 
   const onNextStep = async () => {

@@ -5,19 +5,13 @@ import Footer from '@/components/Footer';
 import PartnerDataPage from '@/components/PartnersDataPage/PartnerDataPage';
 
 const Partner = async ({ params }: { params: { id: string } }) => {
-  const [
-    partnerData,
-    {
-      user: { companyPhoto },
-    },
-  ] = await Promise.all([
-    fetch(
-      `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/${params.id}/information`,
-      {
-        cache: 'no-store',
+  const [partnerData] = await Promise.all([
+    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/partners/information`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
       },
-    ).then((res) => res.json()),
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/partners/${params.id}`, {
+      body: JSON.stringify({ slug: params.id }),
       cache: 'no-store',
     }).then((res) => res.json()),
   ]);
@@ -37,7 +31,7 @@ const Partner = async ({ params }: { params: { id: string } }) => {
       <BigLayout title={partnerData.name}>
         <PartnerDataPage
           placeInfo={placeInfo}
-          companyPhoto={companyPhoto}
+          companyPhoto={partnerData.photo}
           partnerData={partnerData}
         />
       </BigLayout>

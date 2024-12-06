@@ -25,27 +25,41 @@ const AccordionTrigger = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> & {
     usageContext?: string;
+    isChevron?: boolean;
   }
->(({ className, children, usageContext = 'default', ...props }, ref) => (
-  <AccordionPrimitive.Header className="flex" asChild>
-    <AccordionPrimitive.Trigger
-      ref={ref}
-      className={cn(
-        'flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 w-full',
-        className,
-      )}
-      {...props}
-    >
-      {children}
-      <ChevronDown
-        className={cn('shrink-0 transition-transform duration-200', {
-          'size-8 ml-4': usageContext === 'default',
-          'size-6': usageContext === 'footer',
-        })}
-      />
-    </AccordionPrimitive.Trigger>
-  </AccordionPrimitive.Header>
-));
+>(
+  (
+    {
+      className,
+      children,
+      isChevron = true,
+      usageContext = 'default',
+      ...props
+    },
+    ref,
+  ) => (
+    <AccordionPrimitive.Header className="flex" asChild>
+      <AccordionPrimitive.Trigger
+        ref={ref}
+        className={cn(
+          'flex flex-1 items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180 w-full',
+          className,
+        )}
+        {...props}
+      >
+        {children}
+        {isChevron && (
+          <ChevronDown
+            className={cn('shrink-0 transition-transform duration-200', {
+              'size-8 ml-4': usageContext === 'default',
+              'size-6': usageContext === 'footer',
+            })}
+          />
+        )}
+      </AccordionPrimitive.Trigger>
+    </AccordionPrimitive.Header>
+  ),
+);
 AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName;
 
 const AccordionContent = React.forwardRef<

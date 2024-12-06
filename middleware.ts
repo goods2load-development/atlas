@@ -63,14 +63,21 @@ export async function middleware(request: NextRequest) {
       const { payload } = await jwtVerify(token, SECRET_KEY);
 
       const userRole = payload.role as Roles;
-      if (!userRole || !routes[userRole]) {
+      if (
+        !userRole ||
+        !routes[userRole]
+        // && process.env.NODE_ENV === 'production'
+      ) {
         return NextResponse.redirect(new URL('/', request.url));
       }
 
       const currentPath = request.nextUrl.pathname;
       const allowedRoutes = routes[userRole];
 
-      if (!allowedRoutes.some((route) => currentPath.startsWith(route))) {
+      if (
+        !allowedRoutes.some((route) => currentPath.startsWith(route))
+        // && process.env.NODE_ENV === 'production'
+      ) {
         return NextResponse.redirect(new URL('/', request.url));
       }
     } catch (error) {

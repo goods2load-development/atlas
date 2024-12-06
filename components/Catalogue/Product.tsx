@@ -40,7 +40,6 @@ export default function Product(props: any) {
   const { toast } = useToast();
   const { user, getUser, onSaveUserPartner }: any = useUserStore();
   const router = useRouter();
-  const { postInteractionWithPartner } = useAnalyticsStore();
 
   useEffect(() => {
     if (!user?.id) getUser();
@@ -83,7 +82,7 @@ export default function Product(props: any) {
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
       <div className="md:flex justify-start md:border-b">
-        <div className="w-[213px] py-[37px] px-[25px] border-r">
+        <div className="w-[213px] py-[37px] px-[25px] border-r text-center">
           <div className="flex items-center gap-3">
             <div>{props.companyName}</div>
             {!isAlreadySavedPartner(user?.savedPartners, props.companyName) ? (
@@ -105,7 +104,29 @@ export default function Product(props: any) {
             )}
           </div>
 
-          {props.companyPhoto.endsWith('.svg') ? (
+          {props.partner.hasPage && !!props.partner.slug ? (
+            <Link
+              className="inline-block text-center  mt-3"
+              href={`/partner/${props.partner.slug}`}
+            >
+              {props.companyPhoto.endsWith('.svg') ? (
+                <ReactSVG
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
+                  beforeInjection={(svg) => {
+                    svg.setAttribute('style', 'width: 125px; height: 41px;');
+                  }}
+                />
+              ) : (
+                <Image
+                  width={73}
+                  height={66}
+                  src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
+                  alt="Logo"
+                  className="mx-auto"
+                />
+              )}
+            </Link>
+          ) : props.companyPhoto.endsWith('.svg') ? (
             <ReactSVG
               src={`${process.env.NEXT_PUBLIC_BASE_URL}${props.companyPhoto}`}
               beforeInjection={(svg) => {
@@ -197,7 +218,7 @@ export default function Product(props: any) {
               />
               <Link
                 className="underline underline-offset-1 hover:no-underline"
-                href={`/partner/${props.partner?.id}#awards`}
+                href={`/partner/${props.partner.slug}#awards`}
               >
                 Industry Recognition
               </Link>
