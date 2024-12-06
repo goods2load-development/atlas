@@ -82,7 +82,7 @@ export default function Product(props: any) {
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
       <div className="md:flex justify-start md:border-b">
-        <div className="w-[213px] py-[37px] px-[25px] border-r">
+        <div className="w-[213px] py-[37px] px-[25px] border-r text-center">
           <div className="flex items-center gap-3">
             <div>{props.companyName}</div>
             {!isAlreadySavedPartner(user?.savedPartners, props.companyName) ? (

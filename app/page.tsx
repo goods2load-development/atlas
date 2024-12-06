@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
 import Footer from '@/components/Footer';
+import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
 import MainImageLayout from '@/components/MainLayout';
 import SearchMain from '@/components/SearchMain';
@@ -19,8 +20,6 @@ const QuestionsAndAnswers = dynamic(
 );
 
 const SliderMain = dynamic(() => import('@/components/SliderMain'));
-
-const DynamicMenu = dynamic(() => import('@/components/Header/DynamicMenu'));
 
 const Analytics = dynamic(() => import('@/components/Dashboard/Analytics'), {
   ssr: false,
