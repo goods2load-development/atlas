@@ -2,7 +2,7 @@
 
 import Script from 'next/script';
 
-const GTM_ID = process.env.GOOGLE_GTAG_SECRET;
+const GTM_ID = process.env.NEXT_PUBLIC_GOOGLE_GTAG_SECRET;
 
 const GtagProvider = () => (
   <>
