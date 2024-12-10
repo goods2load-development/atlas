@@ -34,7 +34,6 @@ export default function RootLayout({
         <head>
           <WeglotProvider />
           <OpenWidgetProvider />
-          <GtagProvider />
         </head>
         <body className={poppins.className}>
           <NextTopLoader
@@ -67,6 +66,7 @@ export default function RootLayout({
           <ToasterWrapper>{children}</ToasterWrapper>
           <Toaster />
           <OpenWidget />
+          <GtagProvider />
         </body>
       </html>
     </NextAuthProvider>
