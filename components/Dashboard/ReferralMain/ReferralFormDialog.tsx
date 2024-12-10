@@ -30,6 +30,15 @@ const validateImageDimensions = (file: File, width: number, height: number) =>
     };
   });
 
+const validateImageEqually = (file: File) =>
+  new Promise<boolean>((resolve) => {
+    const img = new Image();
+    img.src = URL?.createObjectURL(file);
+    img.onload = () => {
+      resolve(img.width === img.height);
+    };
+  });
+
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   url: z.string().url('Enter a valid URL'),
@@ -56,7 +65,7 @@ const formSchema = z.object({
         'The file is too large, it should be less than 5MB',
       )
       .refine(
-        async (files) => await validateImageDimensions(files[0], 100, 100),
+        async (files) => await validateImageEqually(files[0]),
         'The image must be 1x1',
       ),
   ]),
