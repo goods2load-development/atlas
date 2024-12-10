@@ -30,6 +30,15 @@ const validateImageDimensions = (file: File, width: number, height: number) =>
     };
   });
 
+const validateImageEqually = (file: File) =>
+  new Promise<boolean>((resolve) => {
+    const img = new Image();
+    img.src = URL?.createObjectURL(file);
+    img.onload = () => {
+      resolve(img.width === img.height);
+    };
+  });
+
 const formSchema = z.object({
   title: z.string().min(1, 'Title is required'),
   url: z.string().url('Enter a valid URL'),
@@ -41,12 +50,8 @@ const formSchema = z.object({
       .transform((value) => value as FileList)
       .refine((files) => files?.length === 1, 'You need to provide a file')
       .refine(
-        async (files) => files?.[0]?.size <= 2000000,
-        'The file is too large, it should be less than 2MB',
-      )
-      .refine(
-        async (files) => await validateImageDimensions(files[0], 1300, 360),
-        'The image must be 1300x360',
+        async (files) => files?.[0]?.size <= 5000000,
+        'The file is too large, it should be less than 5MB',
       ),
   ]),
   smallBanner: z.union([
@@ -56,12 +61,12 @@ const formSchema = z.object({
       .transform((value) => value as FileList)
       .refine((files) => files?.length === 1, 'You need to provide a file')
       .refine(
-        async (files) => files?.[0]?.size <= 2000000,
-        'The file is too large, it should be less than 2MB',
+        async (files) => files?.[0]?.size <= 5000000,
+        'The file is too large, it should be less than 5MB',
       )
       .refine(
-        async (files) => await validateImageDimensions(files[0], 400, 400),
-        'The image must be 400x400',
+        async (files) => await validateImageEqually(files[0]),
+        'The image must be 1x1',
       ),
   ]),
 });
@@ -175,9 +180,9 @@ const ReferralFormDialog = ({
                     Large banner for your referral
                   </FormLabel>
                   <FormDescription className="text-[12px]">
-                    *Attachments not bigger than 2MB.
+                    *Attachments not bigger than 5MB.
                     <br />
-                    Recommended resolution 1300x360
+                    Recommended resolution 7x1
                   </FormDescription>
                 </div>
                 <FormControl>
@@ -236,9 +241,9 @@ const ReferralFormDialog = ({
                     Small banner for your referral
                   </FormLabel>
                   <FormDescription className="text-[12px]">
-                    *Attachments not bigger than 2MB.
+                    *Attachments not bigger than 5MB.
                     <br />
-                    Recommended resolution 400x400
+                    Recommended resolution 1x1
                   </FormDescription>
                 </div>
                 <FormControl>

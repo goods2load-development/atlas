@@ -1,4 +1,5 @@
 import CountryCode from '../common/CountryCode';
+import { useAnalyticsStore } from '@/lib/analyticsStore';
 import { useFilterStore } from '@/lib/filterStore';
 import CaptchaProvider from '@/lib/providers/CaptchaProvider';
 import { useUserStore } from '@/lib/store';
@@ -62,6 +63,9 @@ function SelectionPopup(props: SelectionPopupProps) {
     totalKg,
     height,
   } = useFilterStore();
+
+  const { getGeolocationInformation } = useAnalyticsStore();
+
   const formSchema = z.object({
     countryCode: z.string(),
     phone: z.string().regex(new RegExp('^[0-9]{4,15}$')),
@@ -85,10 +89,13 @@ function SelectionPopup(props: SelectionPopupProps) {
   const onPostData = async (userData: any) => {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
+    const country = await getGeolocationInformation({});
+
     postRequest({
       url: '/selected-routes',
       data: {
         ...userData,
+        requestFromCountry: country?.country_name || null,
         partnerId: props.partnerId,
         typeOfFreight: deliveryBy,
         goGreen: props.carbonOffset,
