@@ -37,7 +37,6 @@ import { useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
-import Analytics from '@/components/Dashboard/Analytics';
 import QuestionsAndAnswers from '@/components/QuestionsAndAnswers';
 import SearchMain from '@/components/SearchMain';
 import SubHeaderMain from '@/components/SubHeaderMain';
@@ -948,8 +947,6 @@ export default function SeoPageMain({
           }),
         )}
       />
-
-      <Analytics />
 
       {!isView && (
         <div className="my-20 mx-auto max-w-[192px] rounded-lg bg-white py-8 px-6">
