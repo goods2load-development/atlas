@@ -22,10 +22,6 @@ const DynamicMenu = dynamic(() => import('@/components/Header/DynamicMenu'));
 
 const SliderMain = dynamic(() => import('@/components/SliderMain'));
 
-const Analytics = dynamic(() => import('@/components/Dashboard/Analytics'), {
-  ssr: false,
-});
-
 const title =
   'Top Logistics Company | Cargo Services Globally and Across GCC Countries';
 const description =
@@ -195,7 +191,6 @@ export default function Home() {
         <TailoredServices className="py-20 md:py-[104px]" />
         <SliderMain />
         <QuestionsAndAnswers data={questionsContent} />
-        <Analytics />
       </main>
       <Footer />
       {/* <GDPRAiPopup /> */}
