@@ -33,10 +33,6 @@ export default function TailoredServices({
   const { isBelowSm } = useBreakpoint('sm');
 
   useEffect(() => {
-    console.log(referrals.length);
-  }, [referrals]);
-
-  useEffect(() => {
     getAllReferrals();
   }, []);
 
