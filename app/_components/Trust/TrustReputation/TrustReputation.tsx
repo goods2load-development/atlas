@@ -41,7 +41,7 @@ const TrustReputation = () => {
           opts={{ loop: true, duration: 3000 }}
           plugins={[Autoplay({ delay: 0 })]}
         >
-          <CarouselContent className="-ml-1 w-full max-w-full">
+          <CarouselContent className="-ml-1 w-full max-w-full h-[100px]">
             {partners.map((partner, index) => {
               return (
                 <CarouselItem
@@ -59,14 +59,14 @@ const TrustReputation = () => {
                                 beforeInjection={(svg) => {
                                   svg.setAttribute(
                                     'style',
-                                    'width: 200px; height: 200px;',
+                                    'width: 100px; height: 100px;',
                                   );
                                 }}
                               />
                             ) : (
                               <Image
-                                width={200}
-                                height={200}
+                                width={100}
+                                height={100}
                                 src={`${process.env.NEXT_PUBLIC_BASE_URL}${partner.user.companyPhoto}`}
                                 alt="Logo"
                                 className="object-contain"
@@ -79,14 +79,14 @@ const TrustReputation = () => {
                             beforeInjection={(svg) => {
                               svg.setAttribute(
                                 'style',
-                                'width: 200px; height: 200px;',
+                                'width: 100px; height: 100px;',
                               );
                             }}
                           />
                         ) : (
                           <Image
-                            width={200}
-                            height={200}
+                            width={100}
+                            height={100}
                             src={`${process.env.NEXT_PUBLIC_BASE_URL}${partner.user.companyPhoto}`}
                             alt="Logo"
                             className="object-contain"

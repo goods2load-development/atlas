@@ -512,7 +512,7 @@ const PartnerDataPage = ({
               />
             )}
 
-            <div className="pt-7 text-black text-left sm:max-w-[606px] basis-1/2">
+            <div className="pt-7 text-black text-left sm:max-w-[606px] basis-1/2 mt-8 sm:mt-0">
               <div className="font-medium text-[28px]/[33px] sm:text-[24px]/[28px] mb-4">
                 About us
               </div>
