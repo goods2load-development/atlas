@@ -101,6 +101,7 @@ export default function HeaderClient({
                 {headerData?.json?.map((item, index) => {
                   return item.href && !!!item?.children?.length ? (
                     <Link
+                      key={item.href}
                       onClick={() => {
                         setOpen(false);
                       }}

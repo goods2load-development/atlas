@@ -31,7 +31,7 @@ import {
 } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import Fade from 'embla-carousel-fade';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -466,11 +466,16 @@ const PartnerDataPage = ({
             />
 
             <div className="sm:hidden absolute -top-32 left-0">
-              <Image src={bgDecorline} alt="background" />
+              <Image src={bgDecorline} alt="background" layout="fill" />
             </div>
 
             <div className="sm:hidden absolute -top-32 right-0 scale-x-[-1]">
-              <Image src={bgDecorline} alt="background" className="" />
+              <Image
+                src={bgDecorline}
+                alt="background"
+                className=""
+                layout="fill"
+              />
             </div>
           </div>
         )}
@@ -1199,7 +1204,7 @@ const PartnerDataPage = ({
               {isGet &&
                 partnerData?.awardsFiles?.map((item: any) => {
                   return (
-                    <>
+                    <Fragment key={item.path}>
                       {item.path.endsWith('.svg') ? (
                         <ReactSVG
                           src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
@@ -1221,7 +1226,7 @@ const PartnerDataPage = ({
                           alt="award"
                         />
                       )}
-                    </>
+                    </Fragment>
                   );
                 })}
 
