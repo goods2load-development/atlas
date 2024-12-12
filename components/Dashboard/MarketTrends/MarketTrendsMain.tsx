@@ -1,7 +1,15 @@
+import Map from '../Map/Map';
 import MarketTrendsTabs from './MarketTrendsTabs';
+import MostFrequentRoute from './Tabs/MostFrequentRoute';
+import MostFrequentDay from './Tabs/MostRequentDay';
+import TabMapDetails from './Tabs/TabMapDetails';
+import TopTransportsGoods from './Tabs/TopTransportedGoods';
 import { Tabs } from './mocks/tabs';
+import { tab1Data } from './mocks/tabs';
+import { type IAnalyticsStore } from '@/lib/analyticsStore';
+import { useAnalyticsStore } from '@/lib/analyticsStore';
 
-import { type ReactNode, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
 export interface Tab {
   id: number;
@@ -10,6 +18,8 @@ export interface Tab {
 }
 
 const MarketTrendsMain = () => {
+  const { deliveryBy, marketTrendsData, getMarketTrendsData }: IAnalyticsStore =
+    useAnalyticsStore();
   const [activeTab, setActiveTab] = useState<Tab>(Tabs[0]);
   const [tabs, setTabs] = useState<Tab[]>(Tabs);
 
@@ -20,6 +30,10 @@ const MarketTrendsMain = () => {
       setActiveTab(tab);
     }
   };
+
+  useEffect(() => {
+    getMarketTrendsData(deliveryBy);
+  }, [deliveryBy]);
 
   return (
     <div className="md:flex md:gap-6 lg:items-stretch items-start mt-6">
@@ -33,7 +47,13 @@ const MarketTrendsMain = () => {
         key={activeTab.id}
         className="flex flex-col gap-6 w-full max-w-[733px]"
       >
-        {activeTab.element}
+        {activeTab.id === 1 && <MostFrequentRoute data={[]} />}
+        {activeTab.id === 2 && (
+          <TopTransportsGoods data={marketTrendsData?.goodsFrequency || []} />
+        )}
+        {activeTab.id === 3 && (
+          <MostFrequentDay data={marketTrendsData?.daysFrequency || []} />
+        )}
       </div>
     </div>
   );

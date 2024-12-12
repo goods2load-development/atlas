@@ -7,7 +7,7 @@ const TabPieInfo = ({ data }: { data: PieData[] }) => {
         <PieChart data={data} />
       </div>
       <ul className="flex lg:flex-col gap-2 justify-center lg:gap-4 min-w-[100px] flex-wrap">
-        {data.map(({ name, value, color }: any) => {
+        {data?.map(({ name, value, color }: any) => {
           return (
             <li key={name}>
               <div className="flex items-center gap-2 mb-2 w-20 lg:w-auto">
@@ -15,12 +15,12 @@ const TabPieInfo = ({ data }: { data: PieData[] }) => {
                   className="min-w-[8px] min-h-[8px] rounded-full pl-1"
                   style={{ backgroundColor: color }}
                 ></div>
-                <span className="text-extraHalfBlack text-xs lg:text-sm">
+                <span className="text-extraHalfBlack text-xs lg:text-sm lowercase first-letter:capitalize">
                   {name}
                 </span>
               </div>
               <div className="text-xs text lg:text-left lg:pl-4 lg:text-sm pl-4">
-                {value}%
+                {value}
               </div>
             </li>
           );

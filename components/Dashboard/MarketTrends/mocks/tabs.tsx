@@ -14,7 +14,7 @@ import {
   MarketTrendsTabData,
 } from '@/components/Dashboard/MarketTrends/MarketTrendsTab';
 
-const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: any } = {
+export const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: any } = {
   data: [
     { name: 'DUBAI-INDIA', value: 54, color: '#FF6720' },
     { name: 'DUBAI-VIETNAM', value: 26, color: '#834629' },

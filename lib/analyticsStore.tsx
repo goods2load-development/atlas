@@ -28,8 +28,10 @@ export interface IAnalyticsStore {
   performanceData: IPerformanceData | undefined;
   performanceDataIsLoading: boolean;
   performanceDataError: string;
+  marketTrendsData: any;
 
   getPerformancedData: (deliveryBy: DeliveryBy) => void;
+  getMarketTrendsData: (DeliveryBy: DeliveryBy) => void;
   onChangeTransportation: (deliveryBy: DeliveryBy) => void;
   getGeolocationInformation: (data: any) => any;
   postGeolocationUser: (data: any) => any;
@@ -41,6 +43,8 @@ export const useAnalyticsStore = create<IAnalyticsStore>((set) => ({
   performanceData: undefined,
   performanceDataIsLoading: false,
   performanceDataError: '',
+
+  marketTrendsData: undefined,
 
   getPerformancedData: async (deliveryBy: DeliveryBy) => {
     postRequest({
@@ -83,6 +87,16 @@ export const useAnalyticsStore = create<IAnalyticsStore>((set) => ({
     postRequest({
       url: `analytics/competitiveness/trigger`,
       data: { partnerId },
+    });
+  },
+
+  getMarketTrendsData: async (deliveryBy: DeliveryBy) => {
+    getRequest({
+      url: `analytics/market-trends?transportaton=${deliveryBy}`,
+    }).then((data) => {
+      set(() => ({
+        marketTrendsData: data,
+      }));
     });
   },
 }));
