@@ -82,8 +82,8 @@ export default function Product(props: any) {
   return (
     <div className="border-[1px] rounded-2xl overflow-hidden">
       <div className="md:flex justify-start md:border-b">
-        <div className="w-[213px] py-[37px] px-[25px] border-r text-center">
-          <div className="flex items-center gap-3">
+        <div className="sm:w-[213px] py-[37px] px-[25px] sm:border-r text-center">
+          <div className="flex justify-center items-center gap-3">
             <div>{props.companyName}</div>
             {!isAlreadySavedPartner(user?.savedPartners, props.companyName) ? (
               <button
@@ -148,11 +148,11 @@ export default function Product(props: any) {
           .map(({ label, items }: any) => {
             return (
               <div key={label} className="border-r">
-                <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap min-w-[200px]">
+                <div className="text-[15px]/[22.5px] font-semibold bg-[#FFEDE4] text-primaryOrange py-[5px] px-4 whitespace-nowrap min-w-[200px] text-center">
                   {label}
                 </div>
 
-                <div className="mt-4 px-[17.5px]">
+                <div className="mt-4 px-[17.5px] flex items-center sm:items-start flex-col">
                   {items.slice(0, 3).map((item: string) => {
                     return (
                       <ToolTipComponent

@@ -470,15 +470,15 @@ const PartnerDataPage = ({
             </div>
 
             <div className="sm:hidden absolute -top-32 right-0 scale-x-[-1]">
-              <Image src={bgDecorline} alt="background" />
+              <Image src={bgDecorline} alt="background" className="" />
             </div>
           </div>
         )}
         <div className="max-w-[1295px] w-full mx-auto md:pt-[72px] pt-6 pb-[104px] px-4">
           <div className="lg:flex gap-14 justify-between mb-10 sm:mb-[104px]">
             {isGet ? (
-              <div className="md:basis-1/2 px-20 rounded-2xl h-full">
-                <div className="relative mx-auto w-full] h-full flex items-center justify-center">
+              <div className="md:basis-1/2 rounded-2xl h-full">
+                <div className="relative mx-auto w-full h-[200px] flex items-center justify-center">
                   {companyPhoto.endsWith('.svg') ? (
                     <ReactSVG
                       src={`${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`}
@@ -500,6 +500,7 @@ const PartnerDataPage = ({
                       layout="fill"
                       objectFit="contain"
                       unoptimized
+                      className="w-full"
                     />
                   )}
                 </div>
