@@ -1,7 +1,9 @@
 'use client';
 
 import ProviderRegistrationImg from '@/assets/images/providerregistrationimg.png';
+import ProviderRegistrationMobileImg from '@/assets/images/providerregistrationmobileimg.jpg';
 import UserRegistrationImg from '@/assets/images/userregistrationimg.png';
+import UserRegistrationMobileImg from '@/assets/images/userregistrationmobileimg.png';
 
 import Image from 'next/image';
 
@@ -33,25 +35,45 @@ export default function RegistrationWrapper(props: RegistrationWrapperProps) {
               {children}
             </div>
           </div>
-          <div className="h-screen sm:w-6/12 sticky top-0">
+          <div className="h-[360px] sm:h-screen sm:w-6/12 sticky top-0">
             {userRegistration ? (
-              <Image
-                alt="User Registration Image"
-                src={UserRegistrationImg}
-                className="object-cover"
-                fill
-                priority
-                unoptimized
-              />
+              <>
+                <Image
+                  alt="User Registration Image"
+                  src={UserRegistrationImg}
+                  className="hidden sm:block object-cover"
+                  fill
+                  priority
+                  unoptimized
+                />
+                <Image
+                  alt="User Registration Image"
+                  src={UserRegistrationMobileImg}
+                  className="sm:hidden object-cover"
+                  fill
+                  priority
+                  unoptimized
+                />
+              </>
             ) : (
-              <Image
-                alt="Provider Registration Image"
-                src={ProviderRegistrationImg}
-                className="object-cover"
-                fill
-                priority
-                unoptimized
-              />
+              <>
+                <Image
+                  alt="Provider Registration Image"
+                  src={ProviderRegistrationImg}
+                  className="object-cover hidden sm:block"
+                  fill
+                  priority
+                  unoptimized
+                />
+                <Image
+                  alt="Provider Registration Image"
+                  src={ProviderRegistrationMobileImg}
+                  className="object-cover sm:hidden"
+                  fill
+                  priority
+                  unoptimized
+                />
+              </>
             )}
           </div>
         </div>
