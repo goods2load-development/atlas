@@ -1,7 +1,5 @@
-// generate-sitemap.js
 import dotenv from 'dotenv';
 import fs from 'fs';
-// To handle __dirname
 import * as glob from 'glob';
 import fetch from 'node-fetch';
 import path from 'path';
@@ -9,11 +7,9 @@ import { fileURLToPath } from 'url';
 
 dotenv.config();
 
-// Derive __dirname for ES modules
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Function to fetch all blog posts
 const getAllBlogs = async () => {
   const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/blogs`);
   if (!response.ok) {
@@ -27,7 +23,7 @@ const getSeoPagesUrls = async () => {
     `${process.env.NEXT_PUBLIC_BASE_URL}api/seo-pages/urls`,
   );
   if (!response.ok) {
-    throw new Error('Failed to fetch blogs');
+    throw new Error('Failed to fetch SEO pages');
   }
   return response.json();
 };
@@ -82,7 +78,6 @@ const getAppPages = async () => {
   const blogsUrls = blogs.data.map((post) => `blog/${post.slug}`);
   const seoPagesUrls = seoPages.map((item) => ({
     url: `/${item.slug}`,
-    // updatedAt: new Date().toISOString(),
     category: 'seo-page',
     subCategory: item.category.name,
     title: item.title,
@@ -104,9 +99,10 @@ const getAppPages = async () => {
   return [...pages, ...seoPagesUrls];
 };
 
-// Function to generate sitemap
 const generateSitemap = async () => {
   const pages = await getAppPages();
+
+  // Generate XML Sitemap
   const sitemapContent = `<?xml version="1.0" encoding="UTF-8"?>
     <urlset xmlns="http://www.sitemaps.org/schemas/sitemap-image/1.1">
         ${pages
@@ -114,9 +110,7 @@ const generateSitemap = async () => {
             (page) => `
             <url>
                 <loc>${`https://goods2load.com${page.url}`}</loc>
-                ${page.category ? `<category>${page.category}</category>` : ''}
-                ${page.subCategory ? `<subcategory>${page.subCategory}</subcategory>` : ''}
-                ${page.title ? `<title>${page.title}</title>` : ''}
+                ${page.updatedAt ? `<lastmod>${page.updatedAt}</lastmod>` : ''}
             </url>`,
           )
           .join('')}
@@ -126,9 +120,27 @@ const generateSitemap = async () => {
     path.join(__dirname, 'public', 'sitemap.xml'),
     sitemapContent,
   );
+
+  // Generate JSON Sitemap
+  const groupedSitemapJson = pages.reduce((acc, page) => {
+    if (!page.category) return acc;
+    if (!acc[page.category]) acc[page.category] = [];
+    acc[page.category || 'other'].push({
+      url: `https://goods2load.com${page.url}`,
+      cateogry: page.category,
+      subCategory: page.subCategory,
+      title: page.title,
+      lastmod: page.updatedAt,
+    });
+    return acc;
+  }, {});
+
+  fs.writeFileSync(
+    path.join(__dirname, 'public', 'sitemap.json'),
+    JSON.stringify(groupedSitemapJson, null, 2),
+  );
 };
 
-// Execute the sitemap generation
 try {
   await generateSitemap();
   console.log('Sitemap generated successfully!');
