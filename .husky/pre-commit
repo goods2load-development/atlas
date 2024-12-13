@@ -10,6 +10,7 @@ yarn tsc --noEmit
 # Build the project
 yarn build
 git add public/sitemap.xml
+git add public/sitemap.json
 
 # Run lint-staged to lint only staged files
 npx lint-staged

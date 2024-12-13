@@ -37,82 +37,84 @@ export default function TailoredServices({
   }, []);
 
   return (
-    <section
-      className={clsx(
-        'px-4 w-full mx-auto bg-bgReferralsMobile md:bg-bgReferrals md:[background-position:0_30px] [background-position:0_250px] bg-no-repeat bg-contain 2xl:bg-cover',
-        className,
-      )}
-    >
-      <div className="max-w-[1328px] mx-auto">
-        {isTitle && (
-          <>
-            <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
-              <i className="bg-allTittleColor px-2 rounded-md">
-                Global Reach with
-              </i>{' '}
-              <span className="font-light">Local Expertise</span>
-            </h2>
-            <strong className="block font-medium text-xl mb-4">
-              Empower Your Business with Tailored Services.
-            </strong>
-            <p className="max-w-[815px] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
-              Unlock Your Business&apos;s Full Potential with Our Customized
-              Logistics Solution providers. While we operate on a global scale,
-              we maintain a strong local presence in Dubai and the UAE.
-            </p>
-          </>
+    !!referrals.length && (
+      <section
+        className={clsx(
+          'px-4 w-full mx-auto bg-none md:bg-bgReferrals 2xl:[background-position:0_30px] lg:[background-position:0_140px] md:[background-position:0_180px] bg-no-repeat bg-contain 2xl:bg-cover',
+          className,
         )}
+      >
+        <div className="max-w-[1328px] mx-auto">
+          {isTitle && (
+            <>
+              <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
+                <i className="bg-allTittleColor px-2 rounded-md">
+                  Global Reach with
+                </i>{' '}
+                <span className="font-light">Local Expertise</span>
+              </h2>
+              <strong className="block font-medium text-xl mb-4">
+                Empower Your Business with Tailored Services.
+              </strong>
+              <p className="max-w-[815px] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
+                Unlock Your Business&apos;s Full Potential with Our Customized
+                Logistics Solution providers. While we operate on a global
+                scale, we maintain a strong local presence in Dubai and the UAE.
+              </p>
+            </>
+          )}
 
-        <div className="min-h-[360px] mx-auto overflow-hidden" ref={emblaRef}>
-          <div className="flex">
-            {referrals.map((referral: ReferralItemType, index: number) => (
-              <div
-                className={clsx(
-                  'min-h-[360px] min-w-0 md:pr-10 flex-[0_0_100%]',
-                  {
-                    'md:flex-[0_0_33.3333%]': slicePerReferals === 3,
-                    'md:flex-[0_0_50%]': slicePerReferals === 2,
-                  },
-                )}
-                key={index}
-              >
+          <div className="min-h-[360px] mx-auto overflow-hidden" ref={emblaRef}>
+            <div className="flex">
+              {referrals.map((referral: ReferralItemType, index: number) => (
                 <div
-                  style={{
-                    backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${slicePerReferals === 3 || isBelowSm ? referral.smallBanner : referral.bigBanner})`,
-                    backgroundSize: 'contain',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                  }}
-                  className="h-full rounded-2xl overflow-hidden relative"
+                  className={clsx(
+                    'min-h-[360px] min-w-0 md:pr-10 flex-[0_0_100%]',
+                    {
+                      'md:flex-[0_0_33.3333%]': slicePerReferals === 3,
+                      'md:flex-[0_0_50%]': slicePerReferals === 2,
+                    },
+                  )}
+                  key={index}
                 >
-                  <Link
-                    target="_blank"
-                    className="absolute inset-0"
-                    href={referral.url}
-                  />
+                  <div
+                    style={{
+                      backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${slicePerReferals === 3 || isBelowSm ? referral.smallBanner : referral.bigBanner})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                      backgroundRepeat: 'no-repeat',
+                    }}
+                    className="h-full rounded-2xl overflow-hidden relative"
+                  >
+                    <Link
+                      target="_blank"
+                      className="absolute inset-0"
+                      href={referral.url}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            {isDots && (
+              <div className="flex flex-col mt-8">
+                <div className="embla__dots self-center">
+                  {scrollSnaps.map((_, index) => (
+                    <button
+                      key={index}
+                      onClick={() => onDotButtonClick(index)}
+                      className={'embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary'.concat(
+                        index === selectedIndex
+                          ? ' bg-orangePrimary'
+                          : ' bg-transparent',
+                      )}
+                    />
+                  ))}
                 </div>
               </div>
-            ))}
+            )}
           </div>
-          {isDots && (
-            <div className="flex flex-col mt-8">
-              <div className="embla__dots self-center">
-                {scrollSnaps.map((_, index) => (
-                  <button
-                    key={index}
-                    onClick={() => onDotButtonClick(index)}
-                    className={'embla__dot w-[12px] h-[12px] rounded-full mx-[6px] border border-orangePrimary'.concat(
-                      index === selectedIndex
-                        ? ' bg-orangePrimary'
-                        : ' bg-transparent',
-                    )}
-                  />
-                ))}
-              </div>
-            </div>
-          )}
         </div>
-      </div>
-    </section>
+      </section>
+    )
   );
 }

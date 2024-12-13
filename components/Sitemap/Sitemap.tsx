@@ -1,8 +1,4 @@
-'use client';
-
-import { SitemapResult, groupBySubCategory, parseSitemap } from './utils';
-
-import { useEffect, useState } from 'react';
+import { SitemapResult, groupBySubCategory } from './utils';
 
 import Link from 'next/link';
 
@@ -25,26 +21,7 @@ function StyledLink(props: any) {
   );
 }
 
-export default function Sitemap() {
-  const [data, setData] = useState<null | SitemapResult>(null);
-
-  const getRoutes = async () => {
-    try {
-      const response = await fetch(`/sitemap.xml`);
-      const xmlText = await response.text();
-      const parser = new DOMParser();
-      const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
-
-      setData(parseSitemap(xmlDoc));
-    } catch (error) {
-      console.error('Error fetching sitemap:', error);
-    }
-  };
-
-  useEffect(() => {
-    getRoutes();
-  }, []);
-
+export default function Sitemap({ data }: { data: SitemapResult }) {
   if (!data) {
     return;
   }
@@ -55,14 +32,14 @@ export default function Sitemap() {
         <h1 className="text-center text-[48px]/[58px] mb-8">Site Map</h1>
         <SubTitle>Home page</SubTitle>
         <div className="mb-8 sm:mb-[56px]">
-          <StyledLink href={`${data.home[0].loc}`}>
+          <StyledLink href={`${data.home[0].url}`}>
             {data.home[0].title}
           </StyledLink>
         </div>
         <SubTitle>Blog</SubTitle>
         <div className="mb-[56px] grid grid-cols-1 md:grid-cols-2">
-          {data.blog.map(({ title, loc }) => (
-            <StyledLink key={loc} href={loc}>
+          {data.blog.map(({ title, url }) => (
+            <StyledLink key={url} href={url}>
               {title}
             </StyledLink>
           ))}
@@ -70,30 +47,30 @@ export default function Sitemap() {
         <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
           <div>
             <SubTitle>About Us</SubTitle>
-            <StyledLink href={`${data.about[0].loc}?company`}>
+            <StyledLink href={`${data.about[0].url}?company`}>
               Company
             </StyledLink>
-            <StyledLink href={`${data.about[0].loc}?trust`}>Trust</StyledLink>
-            <StyledLink href={`${data.about[0].loc}?media`}>Media</StyledLink>
+            <StyledLink href={`${data.about[0].url}?trust`}>Trust</StyledLink>
+            <StyledLink href={`${data.about[0].url}?media`}>Media</StyledLink>
           </div>
           <div>
             <SubTitle>FAQ</SubTitle>
-            <StyledLink href={`${data.help[0].loc}?truck`}>Truck</StyledLink>
-            <StyledLink href={`${data.help[0].loc}?ship`}>Ship</StyledLink>
-            <StyledLink href={`${data.help[0].loc}?plane`}>Plane</StyledLink>
+            <StyledLink href={`${data.help[0].url}?truck`}>Truck</StyledLink>
+            <StyledLink href={`${data.help[0].url}?ship`}>Ship</StyledLink>
+            <StyledLink href={`${data.help[0].url}?plane`}>Plane</StyledLink>
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
           <div>
             <SubTitle>Log in</SubTitle>
-            <StyledLink href={`${data['sign-in'][0].loc}`}>Log in</StyledLink>
+            <StyledLink href={`${data['sign-in'][0].url}`}>Log in</StyledLink>
           </div>
           <div>
             <SubTitle>Sign up</SubTitle>
-            <StyledLink href={`${data['sign-up'][0].loc}?provider`}>
+            <StyledLink href={`${data['sign-up'][0].url}?provider`}>
               Sign Up for Logistic Provider
             </StyledLink>
-            <StyledLink href={`${data['sign-up'][0].loc}`}>
+            <StyledLink href={`${data['sign-up'][0].url}`}>
               Sign Up for User
             </StyledLink>
           </div>
@@ -101,29 +78,29 @@ export default function Sitemap() {
         <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
           <div>
             <SubTitle>Partners</SubTitle>
-            {data.partners.map(({ title, loc }) => (
-              <StyledLink key={loc} href={loc}>
+            {data.partners.map(({ title, url }) => (
+              <StyledLink key={url} href={url}>
                 {title}
               </StyledLink>
             ))}
           </div>
           <div>
             <SubTitle>Career</SubTitle>
-            <StyledLink href={`${data.career[0].loc}`}>Career</StyledLink>
+            <StyledLink href={`${data.career[0].url}`}>Career</StyledLink>
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
           <div>
             <SubTitle>Legacy</SubTitle>
-            {data.legacy.map(({ title, loc }) => (
-              <StyledLink key={loc} href={loc}>
+            {data.legacy.map(({ title, url }) => (
+              <StyledLink key={url} href={url}>
                 {title}
               </StyledLink>
             ))}
           </div>
           <div>
             <SubTitle>Sitemap</SubTitle>
-            <StyledLink href={`${data.sitemap[0].loc}`}>Sitemap</StyledLink>
+            <StyledLink href={`${data.sitemap[0].url}`}>Sitemap</StyledLink>
           </div>
         </div>
         <div className="grid md:grid-cols-2 gap-y-8 gap-x-[15%] mb-8">
@@ -131,8 +108,8 @@ export default function Sitemap() {
             return (
               <div key={group[0].title}>
                 <SubTitle>{group[0].subCategory}</SubTitle>
-                {group.map(({ title, loc }) => (
-                  <StyledLink key={loc} href={loc}>
+                {group.map(({ title, url }) => (
+                  <StyledLink key={url} href={url}>
                     {title}
                   </StyledLink>
                 ))}
@@ -142,8 +119,8 @@ export default function Sitemap() {
         </div>
         {/* <SubTitle>Other</SubTitle>
         <div className="mb-[56px] grid grid-cols-1 md:grid-cols-2">
-          {data.other.map(({ title, loc }) => (
-            <StyledLink key={loc} href={loc}>
+          {data.other.map(({ title, url }) => (
+            <StyledLink key={url} href={url}>
               {title}
             </StyledLink>
           ))}

@@ -1,6 +1,7 @@
 'use client';
 
 import LogInImg from '@/assets/images/loginImg.png';
+import LogInImgMobile from '@/assets/images/providerregistrationmobileimg.jpg';
 
 import Image from 'next/image';
 
@@ -35,7 +36,14 @@ export default function LoginWrapper(props: LoginWrapperProps) {
             <Image
               alt="Login Image"
               src={LogInImg}
-              className="object-cover"
+              className="object-cover sm:block hidden"
+              fill
+              priority
+            />
+            <Image
+              alt="Login Image"
+              src={LogInImgMobile}
+              className="object-cover sm:hidden"
               fill
               priority
             />

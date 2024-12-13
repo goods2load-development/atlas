@@ -24,25 +24,25 @@ export default function BigLayout({
   return (
     <>
       <div className="flex relative flex-col w-full items-center justify-center bg-cover bg-center text-white text-center overflow-x-hidden">
-        <div className="flex flex-col w-full items-center justify-start bg-hero-pattern bg-cover bg-center text-white text-center bg-no-repeat min-h-[501px] 2xl:min-h-[651px]">
+        <div className="flex flex-col w-full items-center justify-start bg-hero-pattern bg-cover bg-center text-white text-center bg-no-repeat min-h-[384px] sm:min-h-[601px] 2xl:min-h-[651px]">
           <HeaderClient className="w-full" variant="transparent" />
           <DynamicMenu variant="transparent" />
           <Image
             className="absolute -left-[30px] -top-[120px] sm:hidden -rotate-20"
             src={Line}
-            width={130}
-            height={60}
+            width={110}
+            height={54}
             alt={'line'}
           />
           <Image
             className="absolute -right-[30px] -top-[120px] transform -scale-x-100 sm:hidden rotate-20"
             src={Line}
-            width={130}
-            height={60}
+            width={110}
+            height={54}
             alt={'line'}
           />
           {title && (
-            <h1 className="text-9 sm:text-[64px] font-light mb-4 mt-10 2xl:mt-28">
+            <h1 className="text-[40px]/[44px] sm:text-[64px] font-light mb-4 mt-16 sm:mt-10 xl:mt-28">
               {titleParts.map((part, index) => (
                 <span key={index} className={index >= midIndex ? 'italic' : ''}>
                   {part}

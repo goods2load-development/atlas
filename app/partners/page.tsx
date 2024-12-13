@@ -35,8 +35,8 @@ const Partners = () => {
     <>
       <BigLayout
         introChildren={
-          <div className="py-[60px] font-light px-4">
-            <h1 className="max-w-[1048px] text-[30px] md:text-[48px]/[58px] mb-4 text-center">
+          <div className="py-10 font-light px-4">
+            <h1 className="max-w-[1048px] text-[30px]/[34px] md:text-[48px]/[58px] mb-4 text-center">
               Engage with businesses throughout their journey of envisioning,
               strategizing,{' '}
               <i className="font-normal">and arranging bookings</i>
