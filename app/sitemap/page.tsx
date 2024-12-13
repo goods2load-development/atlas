@@ -16,7 +16,9 @@ export default async function SitemapPage() {
       ? 'https'
       : 'http';
 
-  const response = await fetch(`${protocol}://${host}/sitemap.json`);
+  const response = await fetch(`${protocol}://${host}/sitemap.json`, {
+    cache: 'no-store',
+  });
   const data = await response.json();
 
   return (
