@@ -31,7 +31,7 @@ import {
 } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useEffect, useMemo, useState } from 'react';
+import { Fragment, useEffect, useMemo, useState } from 'react';
 
 import Fade from 'embla-carousel-fade';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -466,19 +466,24 @@ const PartnerDataPage = ({
             />
 
             <div className="sm:hidden absolute -top-32 left-0">
-              <Image src={bgDecorline} alt="background" />
+              <Image src={bgDecorline} alt="background" layout="fill" />
             </div>
 
             <div className="sm:hidden absolute -top-32 right-0 scale-x-[-1]">
-              <Image src={bgDecorline} alt="background" />
+              <Image
+                src={bgDecorline}
+                alt="background"
+                className=""
+                layout="fill"
+              />
             </div>
           </div>
         )}
         <div className="max-w-[1295px] w-full mx-auto md:pt-[72px] pt-6 pb-[104px] px-4">
           <div className="lg:flex gap-14 justify-between mb-10 sm:mb-[104px]">
             {isGet ? (
-              <div className="md:basis-1/2 px-20 rounded-2xl h-full">
-                <div className="relative mx-auto w-full] h-full flex items-center justify-center">
+              <div className="md:basis-1/2 rounded-2xl h-full">
+                <div className="relative mx-auto w-full h-[200px] flex items-center justify-center">
                   {companyPhoto.endsWith('.svg') ? (
                     <ReactSVG
                       src={`${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`}
@@ -500,6 +505,7 @@ const PartnerDataPage = ({
                       layout="fill"
                       objectFit="contain"
                       unoptimized
+                      className="w-full"
                     />
                   )}
                 </div>
@@ -511,7 +517,7 @@ const PartnerDataPage = ({
               />
             )}
 
-            <div className="pt-7 text-black text-left sm:max-w-[606px] basis-1/2">
+            <div className="pt-7 text-black text-left sm:max-w-[606px] basis-1/2 mt-8 sm:mt-0">
               <div className="font-medium text-[28px]/[33px] sm:text-[24px]/[28px] mb-4">
                 About us
               </div>
@@ -1198,7 +1204,7 @@ const PartnerDataPage = ({
               {isGet &&
                 partnerData?.awardsFiles?.map((item: any) => {
                   return (
-                    <>
+                    <Fragment key={item.path}>
                       {item.path.endsWith('.svg') ? (
                         <ReactSVG
                           src={`${process.env.NEXT_PUBLIC_BASE_URL}${item.path}`}
@@ -1220,7 +1226,7 @@ const PartnerDataPage = ({
                           alt="award"
                         />
                       )}
-                    </>
+                    </Fragment>
                   );
                 })}
 

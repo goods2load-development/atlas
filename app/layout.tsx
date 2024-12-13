@@ -6,6 +6,7 @@ import WhatsupIcon from '@/assets/icons/whatsupicon.svg';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 import GtagProvider from '@/lib/providers/GtagProvider';
 
+// import { GoogleTagManager } from '@next/third-parties/google';
 import type { Metadata } from 'next';
 import { Poppins } from 'next/font/google';
 import Image from 'next/image';
@@ -34,6 +35,10 @@ export default function RootLayout({
         <head>
           <WeglotProvider />
           <OpenWidgetProvider />
+          <meta
+            name="google-site-verification"
+            content="DhV93E_5VWkiNA1ic5_JkLvLifE-XJVbq5uOwE4TkE8"
+          />
         </head>
         <body className={poppins.className}>
           <NextTopLoader
@@ -67,6 +72,9 @@ export default function RootLayout({
           <Toaster />
           <OpenWidget />
           <GtagProvider />
+          {/* <GoogleTagManager
+            gtmId={process.env.NEXT_PUBLIC_GOOGLE_GTAG_SECRET as string}
+          /> */}
         </body>
       </html>
     </NextAuthProvider>

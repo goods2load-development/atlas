@@ -89,7 +89,7 @@ export default function HeaderClient({
           )}
         </div>
         <NavigationMenu
-          className={`${open && isBelowSm ? '!fixed left-0 right-0 bottom-0 top-[77px] pb-4' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
+          className={`${open && isBelowSm ? '!fixed left-0 right-0 bottom-0 top-[77px] pb-4 overflow-y-scroll' : 'hidden'}  sm:block absolute z-20 sm:static top-16 left-0 w-full max-w-full sm:w-auto rounded-sm sm:p-5  bg-orangePrimary sm:bg-transparent text-white pr-0`}
         >
           <div className="flex flex-col w-full max-h-[calc(100vh-100px)]">
             <NavigationMenuList className="sm:hidden flex-col items-start px-10">
@@ -98,22 +98,38 @@ export default function HeaderClient({
                 collapsible
                 className="w-full self-center flex flex-col justify-center"
               >
-                {headerData?.json?.map((item, index) => (
-                  <AccordionItem
-                    key={index}
-                    value={`item-${index}`}
-                    className="sm:py-4 border-none"
-                  >
-                    <AccordionTrigger className="text-white font-light hover:no-underline md:ml-4 ml-0">
-                      <p className="text inline">{item.title}</p>
-                    </AccordionTrigger>
-                    <AccordionContent className="">
-                      {item.children?.map((childItem) => (
-                        <NavLinkMobile item={childItem} key={childItem.href} />
-                      ))}
-                    </AccordionContent>
-                  </AccordionItem>
-                ))}
+                {headerData?.json?.map((item, index) => {
+                  return item.href && !!!item?.children?.length ? (
+                    <Link
+                      key={item.href}
+                      onClick={() => {
+                        setOpen(false);
+                      }}
+                      className="block w-max"
+                      href={item.href}
+                    >
+                      {item.title}
+                    </Link>
+                  ) : (
+                    <AccordionItem
+                      key={index}
+                      value={`item-${index}`}
+                      className="sm:py-4 border-none"
+                    >
+                      <AccordionTrigger className="text-white font-light hover:no-underline md:ml-4 ml-0">
+                        <p className="text inline">{item.title}</p>
+                      </AccordionTrigger>
+                      <AccordionContent className="">
+                        {item.children?.map((childItem) => (
+                          <NavLinkMobile
+                            item={childItem}
+                            key={childItem.href}
+                          />
+                        ))}
+                      </AccordionContent>
+                    </AccordionItem>
+                  );
+                })}
               </Accordion>
             </NavigationMenuList>
             <hr className="w-full border-t border-white my-4 opacity-30 sm:hidden" />
