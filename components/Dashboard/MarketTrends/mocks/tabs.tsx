@@ -122,7 +122,7 @@ const tab3Data: MarketTrendsTabData<any> = {
     'demand for cargo transportation depending on the day of the week',
 };
 
-const tab4Data: MarketTrendsTabData<any> & JourneyDurationData = {
+export const tab4Data: MarketTrendsTabData<any> & JourneyDurationData = {
   data: [
     {
       name: 'Dubai',

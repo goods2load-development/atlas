@@ -92,7 +92,7 @@ export const useAnalyticsStore = create<IAnalyticsStore>((set) => ({
 
   getMarketTrendsData: async (deliveryBy: DeliveryBy) => {
     getRequest({
-      url: `analytics/market-trends?transportaton=${deliveryBy}`,
+      url: `analytics/market-trends?transportation=${deliveryBy}`,
     }).then((data) => {
       set(() => ({
         marketTrendsData: data,

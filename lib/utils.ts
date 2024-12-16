@@ -327,3 +327,32 @@ export function slugify(str: string, toSlug: boolean = true) {
       .replace(/\b\w/g, (char) => char.toUpperCase());
   }
 }
+
+export function calculatePercentages(data: any) {
+  if (!!!data.length) return data;
+
+  const totalSum = data.reduce((sum: any, item: any) => sum + item.value, 0);
+
+  let percentages = data.map((item: any) => ({
+    label: item.label,
+    value: (item.value / totalSum) * 100,
+  }));
+
+  let roundedPercentages = percentages.map((item: any) => ({
+    label: item.label,
+    value: Math.round(item.value * 100) / 100,
+  }));
+
+  const totalRounded = roundedPercentages.reduce(
+    (sum: any, item: any) => sum + item.value,
+    0,
+  );
+  const correction = Math.round((100 - totalRounded) * 100) / 100;
+  if (correction !== 0) {
+    roundedPercentages.sort((a: any, b: any) => b.value - a.value);
+
+    roundedPercentages[0].value += correction;
+  }
+
+  return roundedPercentages;
+}

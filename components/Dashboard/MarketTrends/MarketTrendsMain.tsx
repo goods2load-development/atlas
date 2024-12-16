@@ -2,6 +2,9 @@ import Map from '../Map/Map';
 import MarketTrendsTabs from './MarketTrendsTabs';
 import MostFrequentRoute from './Tabs/MostFrequentRoute';
 import MostFrequentDay from './Tabs/MostRequentDay';
+import PreferedIncoterms, { IIncoterms } from './Tabs/PreferedIcoterms';
+import SeasonalVariationsTab from './Tabs/SeasonalVariationsTab';
+import SeasonalVariations from './Tabs/SeasonalVariationsTab';
 import TabMapDetails from './Tabs/TabMapDetails';
 import TopTransportsGoods from './Tabs/TopTransportedGoods';
 import { Tabs } from './mocks/tabs';
@@ -53,6 +56,16 @@ const MarketTrendsMain = () => {
         )}
         {activeTab.id === 3 && (
           <MostFrequentDay data={marketTrendsData?.daysFrequency || []} />
+        )}
+        {activeTab.id === 9 && (
+          <PreferedIncoterms
+            data={(marketTrendsData?.generalIncoterms as IIncoterms[]) || []}
+          />
+        )}
+        {activeTab.id === 10 && (
+          <SeasonalVariationsTab
+            data={marketTrendsData?.seasonsFrequency || []}
+          />
         )}
       </div>
     </div>

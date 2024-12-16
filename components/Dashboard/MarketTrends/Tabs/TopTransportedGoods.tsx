@@ -1,10 +1,10 @@
 import TabPieInfo from './TabPieInfo';
 import { useGoodsStore } from '@/lib/store';
+import { calculatePercentages } from '@/lib/utils';
 
 import { useCallback, useEffect, useState } from 'react';
 
 import { MarketTrendsTab } from '@/components/Dashboard/MarketTrends/MarketTrendsTab';
-import Spinner from '@/components/ui/spinner';
 
 interface ITransportedItem {
   label: string;
@@ -27,7 +27,7 @@ const TopTransportsGoods = ({ data }: any) => {
 
   useEffect(() => {
     if (!!data?.length) {
-      constructData(data);
+      constructData(calculatePercentages(data));
     }
   }, [data]);
 
@@ -38,26 +38,26 @@ const TopTransportsGoods = ({ data }: any) => {
       setIsLoading(true);
       const results = await Promise.all(
         data?.map(async (item) => {
-          const result = await getGoodsNameByCode(item.label);
-
-          if (result?.status === 'success') {
-            return {
-              name: result.result.description.split(/[.,:]/)[0].trim(),
-              value: item.value,
-            };
-          } else {
-            return null;
-          }
+          // const result = await getGoodsNameByCode(item.label);
+          // if (result?.status === 'success') {
+          //   return {
+          //     name: result.result.description.split(/[.,:]/)[0].trim(),
+          //     value: item.value,
+          //   };
+          // } else {
+          //   return null;
+          // }
         }),
       );
 
       setPreperedData(
-        results
+        data
           .filter((item: any) => item)
           .sort((a: any, b: any) => b.value - a.value)
           .slice(0, 6)
           .map((item: any, i: number) => ({
-            ...item,
+            name: item.label,
+            value: Math.round(item.value),
             color: colors[i],
           })),
       );
@@ -66,10 +66,6 @@ const TopTransportsGoods = ({ data }: any) => {
     },
     [data],
   );
-
-  useEffect(() => {
-    console.log(preperedData, 'preparedData');
-  }, [preperedData]);
 
   return (
     <MarketTrendsTab
