@@ -138,7 +138,7 @@ export const useGoodsStore = create((set) => ({
       params: { term },
       withCredentials: false,
       headers: {
-        'X-RapidAPI-Key': '02c03ec749msh5ca6829a28a3028p1e6f11jsn835391f49eab',
+        'X-RapidAPI-Key': process.env.NEXT_PUBLIC_RAPID_HS_CODES_KEY,
         'X-RapidAPI-Host': 'hs-code-harmonized-system.p.rapidapi.com',
       },
     })
