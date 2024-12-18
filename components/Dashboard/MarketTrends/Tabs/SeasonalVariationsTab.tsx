@@ -21,7 +21,14 @@ const SeasonalVariationsTab = ({ data }: any) => {
       title="Seasonal variations"
       description="changes in demand for services depending on the time of year"
     >
-      <TabPieInfo data={constructData(calculatePercentages(data))} />
+      {!!data.length && (
+        <TabPieInfo data={constructData(calculatePercentages(data))} />
+      )}
+      {!!!data.length && (
+        <div className="text-center text-[24px]/[27px] h-[70%] flex items-center justify-center">
+          Data not found
+        </div>
+      )}
     </MarketTrendsTab>
   );
 };

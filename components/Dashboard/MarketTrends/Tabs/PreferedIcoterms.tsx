@@ -36,10 +36,18 @@ const PreferedIncoterms = ({ data }: { data: IIncoterms[] }) => {
       title="Preferred Incoterms"
       description="Each Incoterms rule clarifies the tasks, costs, and risks to be borne by buyers and sellers in these transactions. Familiarizing yourself with Incoterms will help improve smoother transactions by clearly defining who is responsible for what and each step of the transaction."
     >
-      <TabPieInfo
-        data={constructData(calculatePercentages(data))}
-        upperCase={true}
-      />
+      {!!data.length && (
+        <TabPieInfo
+          data={constructData(calculatePercentages(data))}
+          upperCase={true}
+        />
+      )}
+
+      {!!!data.length && (
+        <div className="text-center text-[24px]/[27px] h-[70%] flex items-center justify-center">
+          Data not found
+        </div>
+      )}
     </MarketTrendsTab>
   );
 };

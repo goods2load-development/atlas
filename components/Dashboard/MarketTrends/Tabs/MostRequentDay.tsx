@@ -25,9 +25,10 @@ const colors = [
 ];
 
 const MostFrequentDay = ({ data }: any) => {
-  const [preparedData, setPreperedData] = useState<any>([]);
+  const [preperedData, setPreperedData] = useState<any>([]);
 
   useEffect(() => {
+    setPreperedData([]);
     if (!!data.length) {
       constractData(data);
     }
@@ -54,7 +55,12 @@ const MostFrequentDay = ({ data }: any) => {
       description="demand for cargo transportation depending on the day of the week"
     >
       <div className="h-[300px] lg:h-[500px] w-full">
-        <BarChartGraph data={preparedData} />
+        {!!preperedData.length && <BarChartGraph data={preperedData} />}
+        {!!!preperedData.length && (
+          <div className="text-center text-[24px]/[27px] h-[70%] flex items-center justify-center">
+            Data not found
+          </div>
+        )}
       </div>
     </MarketTrendsTab>
   );

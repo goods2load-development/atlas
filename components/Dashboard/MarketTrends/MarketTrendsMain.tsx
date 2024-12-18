@@ -1,14 +1,16 @@
-import Map from '../Map/Map';
 import MarketTrendsTabs from './MarketTrendsTabs';
-import MostFrequentRoute from './Tabs/MostFrequentRoute';
+import BookingBihaviorTab from './Tabs/BookingBihaviorTab';
+import GeographicalTrendsTab from './Tabs/GeographicalTrendsTab';
+import JourneyDurationTab from './Tabs/JourneyDurationTab';
+import MostFrequentRouteTab from './Tabs/MostFrequentRouteTab';
 import MostFrequentDay from './Tabs/MostRequentDay';
 import PreferedIncoterms, { IIncoterms } from './Tabs/PreferedIcoterms';
 import SeasonalVariationsTab from './Tabs/SeasonalVariationsTab';
-import SeasonalVariations from './Tabs/SeasonalVariationsTab';
-import TabMapDetails from './Tabs/TabMapDetails';
+import ServiceSatisfactionTab from './Tabs/ServiceSatisfactionTab';
+import TopDeparturePoint from './Tabs/TopDeparturePoint';
 import TopTransportsGoods from './Tabs/TopTransportedGoods';
 import { Tabs } from './mocks/tabs';
-import { tab1Data } from './mocks/tabs';
+import { tab1Data, tab4Data, tab5Data, tab6Data, tab7Data } from './mocks/tabs';
 import { type IAnalyticsStore } from '@/lib/analyticsStore';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
 
@@ -50,13 +52,24 @@ const MarketTrendsMain = () => {
         key={activeTab.id}
         className="flex flex-col gap-6 w-full max-w-[733px]"
       >
-        {activeTab.id === 1 && <MostFrequentRoute data={[]} />}
+        {activeTab.id === 1 && (
+          <MostFrequentRouteTab key={deliveryBy} data={[]} />
+        )}
         {activeTab.id === 2 && (
           <TopTransportsGoods data={marketTrendsData?.goodsFrequency || []} />
         )}
         {activeTab.id === 3 && (
           <MostFrequentDay data={marketTrendsData?.daysFrequency || []} />
         )}
+        {activeTab.id === 4 && <JourneyDurationTab data={tab4Data} />}
+        {activeTab.id === 5 && (
+          <TopDeparturePoint
+            data={marketTrendsData?.fromRouteFrequency || []}
+          />
+        )}
+        {activeTab.id === 6 && <ServiceSatisfactionTab data={tab6Data} />}
+        {activeTab.id === 7 && <BookingBihaviorTab data={tab7Data} />}
+        {activeTab.id === 8 && <GeographicalTrendsTab data={tab1Data} />}
         {activeTab.id === 9 && (
           <PreferedIncoterms
             data={(marketTrendsData?.generalIncoterms as IIncoterms[]) || []}

@@ -5,6 +5,7 @@ import { calculatePercentages } from '@/lib/utils';
 import { useCallback, useEffect, useState } from 'react';
 
 import { MarketTrendsTab } from '@/components/Dashboard/MarketTrends/MarketTrendsTab';
+import Spinner from '@/components/ui/spinner';
 
 interface ITransportedItem {
   label: string;
@@ -26,6 +27,7 @@ const TopTransportsGoods = ({ data }: any) => {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    setPreperedData([]);
     if (!!data?.length) {
       constructData(calculatePercentages(data));
     }
@@ -38,25 +40,25 @@ const TopTransportsGoods = ({ data }: any) => {
       setIsLoading(true);
       const results = await Promise.all(
         data?.map(async (item) => {
-          // const result = await getGoodsNameByCode(item.label);
-          // if (result?.status === 'success') {
-          //   return {
-          //     name: result.result.description.split(/[.,:]/)[0].trim(),
-          //     value: item.value,
-          //   };
-          // } else {
-          //   return null;
-          // }
+          const result = await getGoodsNameByCode(item.label);
+          if (result?.status === 'success') {
+            return {
+              name: result.result.description.split(/[.,:]/)[0].trim(),
+              value: item.value,
+            };
+          } else {
+            return null;
+          }
         }),
       );
 
       setPreperedData(
-        data
+        results
           .filter((item: any) => item)
           .sort((a: any, b: any) => b.value - a.value)
           .slice(0, 6)
           .map((item: any, i: number) => ({
-            name: item.label,
+            name: item.name,
             value: Math.round(item.value),
             color: colors[i],
           })),
@@ -72,7 +74,17 @@ const TopTransportsGoods = ({ data }: any) => {
       title={'Top transported goods'}
       description={'the most popular goods transported by your company'}
     >
-      <TabPieInfo data={preperedData} />
+      {!!preperedData.length && !isLoading && (
+        <TabPieInfo data={preperedData} />
+      )}
+
+      {!!!preperedData.length && !isLoading && (
+        <div className="text-center text-[24px]/[27px] h-[70%] flex items-center justify-center">
+          Data not found
+        </div>
+      )}
+
+      {isLoading && <Spinner />}
     </MarketTrendsTab>
   );
 };
