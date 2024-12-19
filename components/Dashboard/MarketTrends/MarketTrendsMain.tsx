@@ -69,7 +69,11 @@ const MarketTrendsMain = () => {
         )}
         {activeTab.id === 6 && <ServiceSatisfactionTab data={tab6Data} />}
         {activeTab.id === 7 && <BookingBihaviorTab data={tab7Data} />}
-        {activeTab.id === 8 && <GeographicalTrendsTab data={tab1Data} />}
+        {activeTab.id === 8 && (
+          <GeographicalTrendsTab
+            data={marketTrendsData?.fromToPairsFrequency || []}
+          />
+        )}
         {activeTab.id === 9 && (
           <PreferedIncoterms
             data={(marketTrendsData?.generalIncoterms as IIncoterms[]) || []}

@@ -4,11 +4,9 @@ import { getRequest } from '@/lib/utils';
 
 import { useCallback, useEffect, useState } from 'react';
 
-import { url } from 'inspector';
-import { headers } from 'next/headers';
-
 const TopDeparturePoint = ({ data }: { data: any }) => {
   const [preparedData, setPreparedData] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   useEffect(() => {
     setPreparedData([]);
@@ -19,6 +17,7 @@ const TopDeparturePoint = ({ data }: { data: any }) => {
 
   const getCoordinatesForCountry = useCallback(
     async (data: any) => {
+      setIsLoading(true);
       const result = await Promise.all(
         data.map(async (item: any) => {
           const result = await getRequest({
@@ -44,16 +43,13 @@ const TopDeparturePoint = ({ data }: { data: any }) => {
       );
 
       setPreparedData(result);
+      setIsLoading(false);
     },
     [data],
   );
 
-  useEffect(() => {
-    console.log(preparedData, 'prepared data');
-  }, [preparedData]);
-
   return (
-    <MarketTrendsTab title={'Top departure point'}>
+    <MarketTrendsTab title={'Top departure point'} isLoading={isLoading}>
       <Map data={preparedData} />
     </MarketTrendsTab>
   );

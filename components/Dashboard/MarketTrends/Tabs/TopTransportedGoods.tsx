@@ -2,7 +2,7 @@ import TabPieInfo from './TabPieInfo';
 import { useGoodsStore } from '@/lib/store';
 import { calculatePercentages } from '@/lib/utils';
 
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 import { MarketTrendsTab } from '@/components/Dashboard/MarketTrends/MarketTrendsTab';
 import Spinner from '@/components/ui/spinner';
@@ -25,6 +25,7 @@ const TopTransportsGoods = ({ data }: any) => {
   const { getGoodsNameByCode }: any = useGoodsStore();
   const [preperedData, setPreperedData] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const animationDeley = useRef<any>();
 
   useEffect(() => {
     setPreperedData([]);
@@ -32,6 +33,12 @@ const TopTransportsGoods = ({ data }: any) => {
       constructData(calculatePercentages(data));
     }
   }, [data]);
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(animationDeley.current);
+    };
+  }, []);
 
   const constructData = useCallback(
     async (data: ITransportedItem[]) => {
@@ -64,7 +71,9 @@ const TopTransportsGoods = ({ data }: any) => {
           })),
       );
 
-      setIsLoading(false);
+      animationDeley.current = setTimeout(() => {
+        setIsLoading(false);
+      }, 600);
     },
     [data],
   );
@@ -79,7 +88,7 @@ const TopTransportsGoods = ({ data }: any) => {
       )}
 
       {!!!preperedData.length && !isLoading && (
-        <div className="text-center text-[24px]/[27px] h-[70%] flex items-center justify-center">
+        <div className="text-center text-[24px]/[27px] h-[70%] flex items-center justify-center pb-10 lg:pb-0">
           Data not found
         </div>
       )}
