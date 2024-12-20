@@ -33,18 +33,23 @@ export default function RootLayout({
     <NextAuthProvider>
       <html lang="en">
         <head>
+          {/* Weglot and OpenWidget Providers */}
           <WeglotProvider />
           <OpenWidgetProvider />
+
+          {/* Meta Tag for Google Site Verification */}
           <meta
             name="google-site-verification"
             content="DhV93E_5VWkiNA1ic5_JkLvLifE-XJVbq5uOwE4TkE8"
           />
 
+          {/* Bing Webmaster Meta Tag */}
           <meta
             name="msvalidate.01"
             content="F7DB9475600B7983F23BF99A0B1D3081"
           />
 
+          {/* Microsoft Clarity Script */}
           <script
             type="text/javascript"
             dangerouslySetInnerHTML={{
@@ -59,6 +64,7 @@ export default function RootLayout({
           />
         </head>
         <body className={poppins.className}>
+          {/* Top Loader */}
           <NextTopLoader
             color="#000"
             initialPosition={0.08}
@@ -69,6 +75,8 @@ export default function RootLayout({
             easing="ease"
             speed={200}
           />
+
+          {/* WhatsApp Chat Button */}
           <a
             href="https://wa.me/+971505574291"
             className="sm:pl-[20px] text-[14px]/[16px] bg-white rounded-full flex flex-row border-[1px] shadow-lg border-white fixed z-50 bottom-[16px] sm:bottom-[40px] right-[16px] sm:right-[40px]"
@@ -87,6 +95,8 @@ export default function RootLayout({
               className="float-right w-[52px] h-[52px]"
             />
           </a>
+
+          {/* Children and Other Components */}
           <ToasterWrapper>{children}</ToasterWrapper>
           <Toaster />
           <OpenWidget />
