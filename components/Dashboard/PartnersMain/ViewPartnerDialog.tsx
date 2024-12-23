@@ -118,7 +118,10 @@ const ViewPartnerDialog = ({
                   <strong className="text-center text-[18px]">
                     Business Profile
                   </strong>
-                  <Link href={partner.businessProfile.text}>
+                  <Link
+                    className="break-all"
+                    href={partner.businessProfile.text}
+                  >
                     {partner.businessProfile.text}
                   </Link>
                 </>

@@ -27,7 +27,7 @@ export default function Help() {
           router.push(`/help?${e.toLowerCase()}`);
         }}
       >
-        <TabsList className="flex justify-center mt-54">
+        <TabsList className="flex justify-center mt-54 max-w-[280px] mx-auto sm:max-w-full">
           {tabs.map(({ name, icon }) => (
             <TabsTrigger
               key={name}

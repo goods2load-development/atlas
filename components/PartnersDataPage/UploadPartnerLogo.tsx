@@ -85,7 +85,7 @@ export default function UploadPartnerLogo({
           </div>
         </div>
       ) : (
-        <img src="/defaultlogo.png" alt="Default Logo" />
+        <Image src="/defaultlogo.png" alt="Default Logo" layout="fill" />
       )}
     </label>
   );

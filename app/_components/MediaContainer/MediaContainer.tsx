@@ -23,7 +23,7 @@ const MediaContainer = () => {
           <MediaContainerItem key={item.date} item={item} />
         ))}
       </div>
-      <div className="pb-[104px]">
+      <div className="pb-[104px] px-4">
         <RelatedBlogs />
       </div>
     </div>
