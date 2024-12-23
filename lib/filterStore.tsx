@@ -385,7 +385,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           to: `${toCountry}, ${to}`,
           departure,
           arrival,
-          goods: typeOfGoods.split(' ')[0],
+          goods: typeOfGoods.split(' ')[0].replace(/00$/, ''),
           kilogram: parseInt(totalKg),
           placementOfGoods,
           quantity: parseInt(quantity),

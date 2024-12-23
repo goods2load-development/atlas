@@ -1,13 +1,21 @@
 import PieChart, { PieData } from '../../Charts/PieChart';
 
-const TabPieInfo = ({ data }: { data: PieData[] }) => {
+import clsx from 'clsx';
+
+const TabPieInfo = ({
+  data,
+  upperCase = false,
+}: {
+  data: PieData[];
+  upperCase?: boolean;
+}) => {
   return (
     <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-10 lg:items-stretch">
       <div className="w-full h-[300px] lg:h-[400px]">
         <PieChart data={data} />
       </div>
       <ul className="flex lg:flex-col gap-2 justify-center lg:gap-4 min-w-[100px] flex-wrap">
-        {data.map(({ name, value, color }: any) => {
+        {data?.map(({ name, value, color }: any) => {
           return (
             <li key={name}>
               <div className="flex items-center gap-2 mb-2 w-20 lg:w-auto">
@@ -15,7 +23,12 @@ const TabPieInfo = ({ data }: { data: PieData[] }) => {
                   className="min-w-[8px] min-h-[8px] rounded-full pl-1"
                   style={{ backgroundColor: color }}
                 ></div>
-                <span className="text-extraHalfBlack text-xs lg:text-sm">
+                <span
+                  className={clsx(
+                    'text-extraHalfBlack text-xs lg:text-sm first-letter:capitalize',
+                    upperCase ? 'uppercase' : 'lowercase',
+                  )}
+                >
                   {name}
                 </span>
               </div>

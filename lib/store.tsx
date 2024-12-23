@@ -162,6 +162,20 @@ export const useGoodsStore = create((set) => ({
       })
       .finally(() => set(() => ({ goodsListLoading: false })));
   },
+  getGoodsNameByCode: async (term: string) => {
+    const base = 'https://hs-code-harmonized-system.p.rapidapi.com/';
+    const byCode = !!parseInt(term);
+    const url = base + (byCode ? 'code' : 'search');
+    return getRequest({
+      url,
+      params: { term },
+      withCredentials: false,
+      headers: {
+        'X-RapidAPI-Key': '02c03ec749msh5ca6829a28a3028p1e6f11jsn835391f49eab',
+        'X-RapidAPI-Host': 'hs-code-harmonized-system.p.rapidapi.com',
+      },
+    });
+  },
 }));
 
 export const useRegistrationStore = create((set) => ({
