@@ -47,7 +47,9 @@ const TopTransportsGoods = ({ data }: any) => {
       setIsLoading(true);
       const results = await Promise.all(
         data?.map(async (item) => {
-          const result = await getGoodsNameByCode(item.label);
+          const result = await getGoodsNameByCode(
+            item.label.replace(/\./g, ''),
+          );
           if (result?.status === 'success') {
             return {
               name: result.result.description.split(/[.,:]/)[0].trim(),
