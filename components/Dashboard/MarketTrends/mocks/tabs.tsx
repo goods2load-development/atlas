@@ -14,7 +14,7 @@ import {
   MarketTrendsTabData,
 } from '@/components/Dashboard/MarketTrends/MarketTrendsTab';
 
-const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: any } = {
+export const tab1Data: MarketTrendsTabData<MapDetails[]> & { markers: any } = {
   data: [
     { name: 'DUBAI-INDIA', value: 54, color: '#FF6720' },
     { name: 'DUBAI-VIETNAM', value: 26, color: '#834629' },
@@ -122,7 +122,7 @@ const tab3Data: MarketTrendsTabData<any> = {
     'demand for cargo transportation depending on the day of the week',
 };
 
-const tab4Data: MarketTrendsTabData<any> & JourneyDurationData = {
+export const tab4Data: MarketTrendsTabData<any> & JourneyDurationData = {
   data: [
     {
       name: 'Dubai',
@@ -172,14 +172,16 @@ const tab4Data: MarketTrendsTabData<any> & JourneyDurationData = {
   ],
 };
 
-const tab5Data: MarketTrendsTabData<[]> & { markers: MarkersCoordinates[] } = {
+export const tab5Data: MarketTrendsTabData<[]> & {
+  markers: MarkersCoordinates[];
+} = {
   data: [],
   title: 'Top departure point',
   markers: [
     {
       from: {
         name: 'Genoa, Italy',
-        coordinates: [10.4737, 45.2304],
+        coordinates: [10.4737, 45],
       },
       to: null,
     },
@@ -214,7 +216,7 @@ const tab5Data: MarketTrendsTabData<[]> & { markers: MarkersCoordinates[] } = {
   ],
 };
 
-const tab6Data: MarketTrendsTabData<PieData[]> = {
+export const tab6Data: MarketTrendsTabData<PieData[]> = {
   data: [
     { name: '10', value: 20, color: '#F4BE37' },
     { name: '9-8', value: 20, color: '#692607' },
@@ -231,7 +233,7 @@ const tab6Data: MarketTrendsTabData<PieData[]> = {
   description: 'where 10 - excellent and 0 - unsatisfactory',
 };
 
-const tab7Data: MarketTrendsTabData<PieData[]> = {
+export const tab7Data: MarketTrendsTabData<PieData[]> = {
   data: [
     { name: 'Last minute booking', value: 34, color: '#F4BE37' },
     { name: 'Dynamic Booking Changes', value: 32, color: '#FB5304' },

@@ -1,6 +1,9 @@
 'use client';
 
 import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
+import { useAnalyticsStore } from '@/lib/analyticsStore';
+import { IAnalyticsStore } from '@/lib/analyticsStore';
+import { DeliveryBy } from '@/lib/filterStore';
 
 import { usePathname } from 'next/navigation';
 
@@ -14,6 +17,8 @@ export default function MarketTrends({
 }) {
   const pathname = usePathname();
   const colorClass = pathname === params.route ? 'text-black' : 'text-blue';
+  const { deliveryBy, onChangeTransportation }: IAnalyticsStore =
+    useAnalyticsStore();
 
   return (
     <DashboardLayout>
@@ -25,7 +30,11 @@ export default function MarketTrends({
           <h2 className="text-[#FF6720] text-[18px] leading-[26px] text-center md:text-left">
             Market trends
           </h2>
-          <RadioGroupItems />
+          <RadioGroupItems
+            onChangeValue={(value: DeliveryBy) => {
+              onChangeTransportation(value);
+            }}
+          />
         </div>
 
         <MarketTrendsMain />
