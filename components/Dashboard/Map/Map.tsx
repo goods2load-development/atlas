@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { Point } from 'react-simple-maps';
 import {
   ComposableMap,
   Geographies,
@@ -29,12 +30,12 @@ const Map = ({
   width?: number;
   height?: number;
 }) => {
-  const [hoveredMarkerIndex, setHoveredMarkerIndex] = useState<number | null>(
+  const [hoveredMarkerIndex, setHoveredMarkerIndex] = useState<string | null>(
     null,
   );
 
-  const handleMarkerHover = (index: number) => {
-    setHoveredMarkerIndex(index);
+  const handleMarkerHover = (nameMarker: string) => {
+    setHoveredMarkerIndex(nameMarker);
   };
 
   return (
@@ -87,6 +88,10 @@ const Map = ({
                   stroke="url(#gradient)"
                   strokeWidth={2}
                   strokeLinecap="round"
+                  coordinates={[
+                    from.coordinates as Point,
+                    to.coordinates as Point,
+                  ]}
                 />
               )}
               <defs>
@@ -119,7 +124,7 @@ const Map = ({
                 y="-8"
                 x="-9"
                 z="1000"
-                onMouseEnter={() => handleMarkerHover(index)}
+                onMouseEnter={() => handleMarkerHover(from.name)}
                 onMouseLeave={() => setHoveredMarkerIndex(null)}
               >
                 <circle cx="10.2814" cy="10.4876" r="9.54901" fill="#FF6720" />
@@ -132,7 +137,7 @@ const Map = ({
                 />
               </svg>
 
-              {hoveredMarkerIndex === index || isTooltip ? (
+              {hoveredMarkerIndex === from.name || isTooltip ? (
                 <svg
                   opacity={1}
                   x="-80"
@@ -215,6 +220,125 @@ const Map = ({
               ) : null}
             </Marker>
           ))}
+
+          {data.map(
+            ({ to }, index) =>
+              to?.coordinates && (
+                <Marker key={to.name} coordinates={to.coordinates}>
+                  <svg
+                    width="20"
+                    height="21"
+                    viewBox="0 0 20 21"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    y="-8"
+                    x="-9"
+                    z="1000"
+                    onMouseEnter={() => handleMarkerHover(to.name)}
+                    onMouseLeave={() => setHoveredMarkerIndex(null)}
+                  >
+                    <circle
+                      cx="10.2814"
+                      cy="10.4876"
+                      r="9.54901"
+                      fill="#FF6720"
+                    />
+                    <circle
+                      cx="10.2817"
+                      cy="10.4876"
+                      r="7.02191"
+                      fill="#FF6720"
+                      stroke="white"
+                    />
+                  </svg>
+
+                  {hoveredMarkerIndex === to.name || isTooltip ? (
+                    <svg
+                      opacity={1}
+                      x="-80"
+                      y="-58"
+                      fill="white"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g filter="url(#filter0_d_60_3059)">
+                        <rect
+                          x="3.06641"
+                          y="6.97296"
+                          height="34.0594"
+                          rx="5"
+                          width={`${
+                            to.name.length * 7 + 10 < 100
+                              ? 100
+                              : to.name.length * 7 + 10
+                          }`}
+                        />
+                        <text
+                          x={`${
+                            (to.name.length * 7 + 10 < 100
+                              ? 100
+                              : to.name.length * 7 + 10) /
+                              2 +
+                            3.06641
+                          }`}
+                          y="26"
+                          fill="black"
+                          textAnchor="middle"
+                          dominantBaseline="middle"
+                          style={{
+                            fontSize: '14px',
+                          }}
+                        >
+                          {to.name}
+                        </text>
+                        <path
+                          d="M80.7097 51.1369L74.2896 40.0169L87.1298 40.0169L80.7097 51.1369Z"
+                          fill="white"
+                        />
+                      </g>
+                      <defs>
+                        <filter
+                          id="filter0_d_60_3059"
+                          x="0.0664062"
+                          y="0.972961"
+                          height="60.164"
+                          filterUnits="userSpaceOnUse"
+                          color-interpolation-filters="sRGB"
+                        >
+                          <feFlood
+                            flood-opacity="0"
+                            result="BackgroundImageFix"
+                          />
+                          <feColorMatrix
+                            in="SourceAlpha"
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+                            result="hardAlpha"
+                          />
+                          <feOffset dx="5" dy="2" />
+                          <feGaussianBlur stdDeviation="4" />
+                          <feComposite in2="hardAlpha" operator="out" />
+                          <feColorMatrix
+                            type="matrix"
+                            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in2="BackgroundImageFix"
+                            result="effect1_dropShadow_60_3059"
+                          />
+                          <feBlend
+                            mode="normal"
+                            in="SourceGraphic"
+                            in2="effect1_dropShadow_60_3059"
+                            result="shape"
+                          />
+                        </filter>
+                      </defs>
+                    </svg>
+                  ) : null}
+                </Marker>
+              ),
+          )}
         </ComposableMap>
       </div>
     </div>
