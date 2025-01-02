@@ -1295,7 +1295,7 @@ function Registration() {
             <FormAboutUs form={form} />
           </div>
 
-          <div className={clsx('pt-6', step !== 9 && 'hidden')}>
+          <div className={clsx(step !== 9 && 'hidden')}>
             <FormStepFinalAgreement form={form} />
           </div>
 
