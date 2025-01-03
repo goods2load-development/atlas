@@ -341,3 +341,33 @@ input[type='number'] {
   word-wrap: normal !important;
   word-break: normal;
 }
+
+/*Styles for the lists*/
+
+.letter-order {
+  list-style-type: upper-latin;
+  margin-left: 16px;
+  & > li {
+    padding-bottom: 6px;
+  }
+}
+
+.number-order {
+  list-style-type: decimal-leading-zero;
+  margin-left: 16px;
+  & > li {
+    padding-bottom: 6px;
+
+    & > a {
+      color: #ff6720;
+    }
+  }
+}
+
+.unordered-list {
+  list-style-type: disc;
+  margin-left: 16px;
+  & > li {
+    padding-bottom: 6px;
+  }
+}

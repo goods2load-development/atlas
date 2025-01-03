@@ -722,7 +722,7 @@ export default function SeoPageMain({
                   >
                     <div className="relative w-full h-[360px]">
                       <Image
-                        src={`${process.env.NEXT_PUBLIC_BASE_URL}/${page.block1File}`}
+                        src={`${process.env.NEXT_PUBLIC_BASE_URL}${page.block1File}`}
                         alt={page.blocks[0].title}
                         layout="fill"
                         objectFit="cover"
