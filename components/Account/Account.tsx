@@ -272,9 +272,7 @@ export default function Account() {
         <div className="flex justify-between mb-10">
           <span className="flex items-center text-[28px]/[40px] sm:text-[48px]/[52px]">
             <Bookmark className="w-10 h-10 text-primaryOrange mr-2" />
-            <span className="font-medium">
-              Logistics&nbsp;
-            </span>partners saved
+            <span className="font-medium">Logistics&nbsp;</span>partners saved
           </span>
         </div>
         <Card className="mb-10">
