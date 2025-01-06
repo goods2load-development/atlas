@@ -422,6 +422,7 @@ function Registration() {
     const token = await executeRecaptcha('login');
 
     const {
+      email,
       phoneNumber,
       countryCode,
       companyName,
@@ -434,6 +435,7 @@ function Registration() {
       setIsRegistrationLoading(true);
       await postUserRegistrationData({
         ...rest,
+        email: email.toLowerCase(),
         phoneNumber: `${countryCode}${phoneNumber}`,
         companyName: companyName.trim(),
         airports: values?.airports || [],
