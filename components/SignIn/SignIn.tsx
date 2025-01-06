@@ -55,7 +55,11 @@ function SignIn() {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!executeRecaptcha) return;
     const token = await executeRecaptcha('login');
-    postLoginData({ ...values, recaptchaToken: token });
+    postLoginData({
+      ...values,
+      email: values.email.toLowerCase(),
+      recaptchaToken: token,
+    });
   }
 
   const signInWithGoogle = () => {
