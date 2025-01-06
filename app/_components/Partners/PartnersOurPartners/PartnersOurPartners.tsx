@@ -41,46 +41,51 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
         </div>
         <div className="flex w-full text-black gap-2 flex-wrap justify-center lg:justify-start">
           {partners &&
-            partners.map(({ user, ...partner }, idx) => {
-              if (!user.companyPhoto) {
-                return;
-              }
-
-              return (
-                <Link
-                  key={idx}
-                  href={`/partner/${partner.slug}`}
-                  className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative overflow-hidden"
-                >
-                  {user.companyPhoto.endsWith('.svg') ? (
-                    <ReactSVG
-                      className="flex items-center justify-center h-full"
-                      src={
-                        user.companyPhoto.startsWith('data:')
-                          ? user.companyPhoto
-                          : `${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`
-                      }
-                      beforeInjection={(svg: any) => {
-                        svg.setAttribute(
-                          'style',
-                          'width: 225px; height: 63px;',
-                        );
-                      }}
-                    />
-                  ) : (
-                    <div
-                      className="h-full"
-                      style={{
-                        backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`,
-                        backgroundSize: 'contain',
-                        backgroundPosition: 'center',
-                        backgroundRepeat: 'no-repeat',
-                      }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
+            partners
+              .sort((a, b) => {
+                const companyNameA = a.user.companyName?.toLowerCase() || '';
+                const companyNameB = b.user.companyName?.toLowerCase() || '';
+                return companyNameA.localeCompare(companyNameB);
+              })
+              .map(({ user, ...partner }, idx) => {
+                if (!user.companyPhoto) {
+                  return null;
+                }
+                return (
+                  <Link
+                    key={idx}
+                    href={`/partner/${partner.slug}`}
+                    className="block w-[318px] h-[79px] bg-gray-200 p-2 hover:bg-slate-300 transition-all cursor-pointer relative overflow-hidden"
+                  >
+                    {user.companyPhoto.endsWith('.svg') ? (
+                      <ReactSVG
+                        className="flex items-center justify-center h-full"
+                        src={
+                          user.companyPhoto.startsWith('data:')
+                            ? user.companyPhoto
+                            : `${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`
+                        }
+                        beforeInjection={(svg: any) => {
+                          svg.setAttribute(
+                            'style',
+                            'width: 225px; height: 63px;',
+                          );
+                        }}
+                      />
+                    ) : (
+                      <div
+                        className="h-full"
+                        style={{
+                          backgroundImage: `url(${process.env.NEXT_PUBLIC_BASE_URL}${user.companyPhoto}`,
+                          backgroundSize: 'contain',
+                          backgroundPosition: 'center',
+                          backgroundRepeat: 'no-repeat',
+                        }}
+                      />
+                    )}
+                  </Link>
+                );
+              })}
         </div>
       </section>
     )
