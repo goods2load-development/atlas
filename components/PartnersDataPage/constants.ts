@@ -27,10 +27,7 @@ export const formSchema = z
     placementId: z.string().min(3, 'Place ID is required'),
     awardedBy: z.union([
       z.string(),
-      z
-        .unknown()
-        .transform((value) => value as FileList)
-        .refine((files) => files?.length >= 1, 'You need to provide a file'),
+      z.unknown().transform((value) => value as FileList),
     ]),
   })
   .refine(

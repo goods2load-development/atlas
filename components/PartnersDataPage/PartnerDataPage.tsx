@@ -1164,12 +1164,25 @@ const PartnerDataPage = ({
           )}
 
           <div id="awards" className="mt-10 md:mt-[112px]">
-            <h3 className="text-4xl md:text-[48px] mb-8 text-black text-center md:text-left">
-              <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
-                <span>Awarded</span>
-              </div>
-              <i className="font-normal">by:</i>
-            </h3>
+            {isGet ? (
+              <>
+                {!!partnerData?.awardsFiles.length && (
+                  <h3 className="text-4xl md:text-[48px] mb-8 text-black text-center md:text-left">
+                    <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
+                      <span>Awarded</span>
+                    </div>
+                    <i className="font-normal">by:</i>
+                  </h3>
+                )}
+              </>
+            ) : (
+              <h3 className="text-4xl md:text-[48px] mb-8 text-black text-center md:text-left">
+                <div className="bg-[#FEF1DF] font-light p-1 rounded-sm inline-block">
+                  <span>Awarded</span>
+                </div>
+                <i className="font-normal">by:</i>
+              </h3>
+            )}
             <div className="grid grid-cols-[repeat(auto-fill,_minmax(290px,_4fr))] gap-10">
               {!isGet && (
                 <FormField
