@@ -371,3 +371,10 @@ input[type='number'] {
     padding-bottom: 6px;
   }
 }
+
+/* ------- dynamic-heeader-dropdown ------- */
+.group-sub-1:hover .group-sub-1,
+.group-sub-2:hover .group-sub-2,
+.group-sub-3:hover .group-sub-3 {
+  display: block;
+}
