@@ -49,10 +49,10 @@ const MenuItems = ({
                 key={title + href + idx}
                 className={clsx(
                   'relative',
-                  depth === 0 ? 'group' : 'group/sub',
+                  depth === 0 ? 'group' : `group-sub-${depth}`,
                 )}
               >
-                {children?.length ? (
+                {!href ? (
                   <p className="py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline">
                     {title}
                     <ChevronRight className="w-4 h-4 text-orangePrimary" />
@@ -63,11 +63,16 @@ const MenuItems = ({
                     className="py-2 text-sm hover:opacity-75 transition-opacity flex gap-2 items-center border-b hover:border-orangePrimary hover:text-orangePrimary border-orangeSecondary hover:no-underline"
                   >
                     {title}
+                    {!!children?.length && (
+                      <ChevronRight className="w-4 h-4 text-orangePrimary" />
+                    )}
                   </Link>
                 )}
 
                 {!!children?.length && (
-                  <div className="absolute left-0 md:left-[100%] top-[100%] md:top-0 hidden group-hover/sub:block">
+                  <div
+                    className={`absolute left-0 md:left-[100%] top-[100%] md:top-0 hidden group-sub-${depth}`}
+                  >
                     <MenuItems depth={depth + 1} items={children} />
                   </div>
                 )}
