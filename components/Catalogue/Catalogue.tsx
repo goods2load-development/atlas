@@ -37,6 +37,7 @@ const renderIcon = (deliveryBy: string) => {
 export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
   const { deliveryBy } = useFilterStore((state: any) => state);
+  const { partners, isPartnersLoading } = useFilterStore((state: any) => state);
 
   return (
     <div className=" lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_16px] max-w-[1328px] mx-auto gap-8 overflow-visible">
@@ -54,7 +55,9 @@ export default function Catalogue() {
             </SheetTrigger>
             <SheetContent side="left" className="pt-[54px] overflow-y-auto">
               <p className="pb-[32px] text-[18px] font-medium">Filters</p>
-              <PriceAlerts />
+              <PriceAlerts
+                isPulseAnimation={!!!partners.length && !isPartnersLoading}
+              />
               <Filter />
             </SheetContent>
           </Sheet>
@@ -77,7 +80,9 @@ export default function Catalogue() {
       <div>
         <div className="lg:bg-[#F9F9F9] rounded-2xl w-full lg:w-[280px] hidden lg:block h-max">
           <div className="lg:p-4">
-            <PriceAlerts />
+            <PriceAlerts
+              isPulseAnimation={!!!partners.length && !isPartnersLoading}
+            />
             <Filter />
           </div>
         </div>
