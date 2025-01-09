@@ -31,7 +31,7 @@ export default function Products() {
     }
   }, [partners]);
 
-  return partners?.length ? (
+  return partners?.length && !isPartnersLoading ? (
     <div className="bg-blue-000 space-y-[24px]">
       {partners.map((partner: any, index: number) => (
         <Product

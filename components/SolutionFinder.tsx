@@ -16,6 +16,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 
 import { useEffect, useState } from 'react';
 
+import clsx from 'clsx';
 import { BellRing } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -74,7 +75,7 @@ const formSchema = (isLoggedIn: boolean) =>
     message: z.string().min(2),
   });
 
-function SolutionFinder() {
+function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
   const { executeRecaptcha } = useGoogleReCaptcha();
 
   const {
@@ -206,7 +207,12 @@ function SolutionFinder() {
   return (
     <Dialog onOpenChange={() => setStep(0)}>
       <DialogTrigger asChild>
-        <UIButton className="w-full px-1">
+        <UIButton
+          className={clsx(
+            'w-full px-1',
+            isPulseAnimation && 'animate-button-ping transition-shadow',
+          )}
+        >
           <BellRing />
           Solution Finder
         </UIButton>
@@ -690,9 +696,13 @@ function SolutionFinder() {
   );
 }
 
-const SolutionFinderWrapped = () => (
+const SolutionFinderWrapped = ({
+  isPulseAnimation,
+}: {
+  isPulseAnimation?: boolean;
+}) => (
   <CaptchaProvider>
-    <SolutionFinder />
+    <SolutionFinder isPulseAnimation={isPulseAnimation} />
   </CaptchaProvider>
 );
 
