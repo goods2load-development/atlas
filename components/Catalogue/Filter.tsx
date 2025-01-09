@@ -187,7 +187,7 @@ export default function Filter() {
   useEffect(() => {
     getPartners();
   }, [
-    partnersSelected.length,
+    partnersSelected?.length,
     portsDepartureSelected.length,
     portsArrivalSelected.length,
 

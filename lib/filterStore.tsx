@@ -38,7 +38,7 @@ export enum DeliveryBy {
 
 interface FilterStoreProps {
   valid: boolean;
-  partnersSelected: string[];
+  partnersSelected: string[] | undefined;
   deliveryBy: DeliveryBy;
   fromCountry: string;
   from: string;
@@ -132,7 +132,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     // filter options
 
     // Services
-    bestReviewed: false,
+    bestReviewed: true,
     carbonOffset: false,
     industryRecognition: false,
 
@@ -165,7 +165,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
 
     partners: [],
     isPartnersLoading: true,
-    partnersSelected: [],
+    partnersSelected: undefined,
     portsDeparture: [],
     portsDepartureSelected: [],
     portsArrival: [],
@@ -396,9 +396,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           width: parseInt(width),
           height: parseInt(height),
           incoterm: incoterms,
-          logisticPartner: partnersSelected.length
-            ? partnersSelected
-            : undefined,
+          logisticPartner: partnersSelected,
           portDeparture: portsDepartureSelected.length
             ? portsDepartureSelected
             : undefined,
