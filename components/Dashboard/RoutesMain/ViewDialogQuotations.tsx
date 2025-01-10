@@ -15,17 +15,32 @@ import {
 
 const includesList = ['id', 'partnerId'];
 
-const ViewDialogQuotation = ({
+export const ViewDialogQuotation = ({
   isOpen,
   setIsOpen,
   item,
+  id,
 }: {
   isOpen: boolean;
-  setIsOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setIsOpen: React.Dispatch<
+    React.SetStateAction<{
+      id: string;
+      isOpen: boolean;
+    }>
+  >;
   item: Quotation;
+  id: string;
 }) => {
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={isOpen}
+      onOpenChange={(isOpen) => {
+        setIsOpen({
+          isOpen,
+          id: isOpen ? id : '',
+        });
+      }}
+    >
       <DialogContent className="p-8">
         <DialogHeader>
           <DialogTitle className="text-center text-[40px]/[48px] mb-3 uppercase font-bold">

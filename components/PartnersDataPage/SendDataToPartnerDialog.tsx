@@ -91,8 +91,12 @@ function SendDataDialog({ title, trigger }: Props) {
     postRequest({
       url: `partners/${id}/free-quotation`,
       data,
-    }).then(() => {
-      setStep(1);
+    }).then((data) => {
+      if (data) {
+        setStep(1);
+      } else {
+        setStep(0);
+      }
     });
   };
 
