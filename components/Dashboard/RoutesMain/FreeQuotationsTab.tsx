@@ -17,7 +17,10 @@ import { useToast } from '@/components/ui/use-toast';
 const TAKE = 5;
 
 export const FreeQuotationsTab = () => {
-  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isViewModalOpen, setIsViewModalOpen] = useState({
+    isOpen: false,
+    id: '',
+  });
 
   const {
     isQuotationsLoading,
@@ -99,15 +102,23 @@ export const FreeQuotationsTab = () => {
               <div className="flex gap-2 justify-between w-full">
                 <p
                   className="hover:underline hover:cursor-pointer"
-                  onClick={() => setIsViewModalOpen(true)}
+                  onClick={() =>
+                    setIsViewModalOpen({
+                      isOpen: true,
+                      id: item.id,
+                    })
+                  }
                 >
                   {item.email || item.phone}
                 </p>
                 <div className="flex items-center gap-2">
                   <ViewDialogQuotation
-                    isOpen={isViewModalOpen}
+                    isOpen={
+                      isViewModalOpen.id === item.id && isViewModalOpen.isOpen
+                    }
                     setIsOpen={setIsViewModalOpen}
                     item={item}
+                    id={item.id}
                   />
                   <button
                     title="approve"
