@@ -201,7 +201,7 @@ const ReferralFormDialog = ({
                   <FormDescription className="text-[12px]">
                     *Attachments not bigger than 5MB.
                     <br />
-                    Recommended resolution 7x1
+                    Recommended resolution 1360x360
                   </FormDescription>
                 </div>
                 <FormControl>
