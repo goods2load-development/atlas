@@ -64,10 +64,21 @@ const formSchema = z.object({
         async (files) => files?.[0]?.size <= 5000000,
         'The file is too large, it should be less than 5MB',
       )
-      .refine(
-        async (files) => await validateImageEqually(files[0]),
-        'The image must be 1x1',
-      ),
+      .refine(async (files: any) => {
+        if (!files) {
+          return false;
+        }
+
+        if (typeof files[0] === 'string') {
+          return true;
+        }
+
+        try {
+          return await validateImageEqually(files[0]);
+        } catch (error) {
+          return false;
+        }
+      }, 'The image must be 1x1'),
   ]),
 });
 
@@ -93,7 +104,15 @@ const ReferralFormDialog = ({
     }),
   });
 
-  const { handleSubmit, control, reset, getValues, setValue } = form;
+  const {
+    handleSubmit,
+    control,
+    reset,
+    getValues,
+    setValue,
+    formState: { errors },
+  } = form;
+
   const bigBannerValue = getValues('bigBanner');
   const smallBannerValue = getValues('smallBanner');
 

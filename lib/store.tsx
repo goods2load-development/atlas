@@ -443,7 +443,11 @@ export const useReferralsStore = create((set) => ({
     const formData = new FormData();
     if (data.title) formData.append('title', data.title);
     if (data.url) formData.append('url', data.url);
-    if (data.file) formData.append('file', data.file);
+    if (data.smallBanner && typeof data.smallBanner !== 'string')
+      formData.append('smallBanner', data.smallBanner[0]);
+
+    if (data.bigBanner && typeof data.bigBanner !== 'string')
+      formData.append('bigBanner', data.bigBanner[0]);
 
     return patchRequest({
       url: `referals/${id}`,
