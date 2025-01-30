@@ -6,6 +6,7 @@ import PartnersBoostingTravel from '../_components/Partners/PartnersBoostingTrav
 import PartnersOurPartners from '../_components/Partners/PartnersOurPartners/PartnersOurPartners';
 import PartnersStartingFrom from '../_components/Partners/PartnersStartingFrom/PartnersStartingFrom';
 import PartnersVisibility from '../_components/Partners/PartnersVisibility/PartnersVisibility';
+import DigitalAlliances from '@/app/_components/Alliances/DigitalAliances';
 
 import { Metadata } from 'next';
 
@@ -30,7 +31,7 @@ export const metadata: Metadata = {
   },
 };
 
-const Partners = () => {
+export default function Partner() {
   return (
     <>
       <BigLayout
@@ -59,10 +60,10 @@ const Partners = () => {
           <PartnersVisibility />
           <PartnersBoostingTravel />
           <PartnersOurPartners />
+          <DigitalAlliances />
         </div>
       </BigLayout>
       <Footer />
     </>
   );
-};
-export default Partners;
+}
