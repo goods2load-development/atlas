@@ -30,7 +30,17 @@ const TopTransportsGoods = ({ data }: any) => {
   useEffect(() => {
     setPreperedData([]);
     if (!!data?.length) {
-      constructData(calculatePercentages(data));
+      constructData(
+        calculatePercentages(
+          data
+            .filter((item: any) => {
+              const { label } = item;
+              return /^\d+$/.test(label) && label.length === 6;
+            })
+            .sort((a: any, b: any) => b.value - a.value)
+            .slice(0, 6),
+        ),
+      );
     }
   }, [data]);
 
@@ -52,7 +62,9 @@ const TopTransportsGoods = ({ data }: any) => {
           );
           if (result?.status === 'success') {
             return {
-              name: result.result.description.split(/[.,:]/)[0].trim(),
+              name:
+                result.result.description?.split(/[.,:]/)[0].trim() ||
+                result.result[0].description.split(/[.,:]/)[0].trim(),
               value: item.value,
             };
           } else {
