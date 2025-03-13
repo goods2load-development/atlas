@@ -29,7 +29,7 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
       <section
         id="our-partners"
         className={clsx(
-          'w-full items-center max-w-[1328px] mx-auto px-4',
+          'w-full items-center max-w-[1328px] mx-auto px-4 mb-20',
           className,
         )}
       >

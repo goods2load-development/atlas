@@ -1,3 +1,4 @@
+import DigitalAlliances from '@/app/_components/Alliances/DigitalAliances';
 import PartnersWithUsImg from '@/assets/images/partners-with-us.jpg';
 
 import { Metadata } from 'next';
@@ -31,7 +32,7 @@ const PartnersWithUs = () => {
     <>
       <HeaderClient />
       <DynamicMenu />
-      <div className="md:flex gap-2 justify-between">
+      <div className="md:flex gap-2 justify-between mb-20">
         <div className="px-4 xl:pt-[169px] pt-10 md:pt-20 lg:w-[592px] xl:ml-[72px] md:ml-10 2xl:mx-auto md:pb-4 pb-12 text-center md:text-left ml-0">
           <h3 className="text-[34px]/[37.6px] xl:text-[48px]/[57.6px] font-light text-black">
             Reach <i className="font-normal">millions of business searching</i>{' '}
@@ -57,6 +58,7 @@ const PartnersWithUs = () => {
           className="w-full md:w-[720px]"
         />
       </div>
+      <DigitalAlliances />
       <Footer />
     </>
   );
