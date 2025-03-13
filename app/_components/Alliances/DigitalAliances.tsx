@@ -23,7 +23,7 @@ const DigitalAlliances = () => {
       <div className="flex w-full text-black gap-2 flex-wrap justify-center lg:justify-start">
         {AlliancesData.map(({ id, image, title, link }) => {
           const baseCardClasses =
-            'w-[150px] h-[150px] md:w-[250px] md:h-[250px] relative overflow-hidden flex items-center justify-center';
+            'w-[350px] h-[150px] md:w-[350px] md:h-[150px] relative overflow-hidden flex items-center justify-center';
 
           const imageClasses =
             'bg-contain bg-no-repeat h-full bg-center object-contain';
