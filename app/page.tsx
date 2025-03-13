@@ -14,6 +14,10 @@ const ConsentPopup = dynamic(() => import('@/components/common/ConsentPopup'), {
   ssr: false,
 });
 
+const DigitalAlliances = dynamic(
+  () => import('@/app/_components/Alliances/DigitalAliances'),
+);
+
 const QuestionsAndAnswers = dynamic(
   () => import('@/components/QuestionsAndAnswers'),
 );
@@ -191,6 +195,7 @@ export default function Home() {
         <TailoredServices className="py-20 md:py-[104px]" />
         <SliderMain />
         <QuestionsAndAnswers data={questionsContent} />
+        <DigitalAlliances />
       </main>
       <Footer />
       {/* <GDPRAiPopup /> */}

@@ -1,4 +1,5 @@
 import LoyaltAllWrapper from '../_components/LoyaltAllWrapper/LoyaltAllWrapper';
+import DigitalAlliances from '@/app/_components/Alliances/DigitalAliances';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Suspense } from 'react';
@@ -77,6 +78,7 @@ export default function AboutUsPage() {
         <Suspense>
           <AboutUsLazy />
         </Suspense>
+        <DigitalAlliances />
       </BigLayout>
     </LoyaltAllWrapper>
   );
