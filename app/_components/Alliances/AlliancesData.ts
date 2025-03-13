@@ -14,7 +14,7 @@ export const AlliancesData: AllianceData[] = [
     id: '1',
     title: 'dp-world-searates',
     image: Alliance1Logo,
-    link: 'https://www.dpworld.com/',
+    link: 'https://wa.me/+971505574291',
   },
   // {
   //   id: '2',
