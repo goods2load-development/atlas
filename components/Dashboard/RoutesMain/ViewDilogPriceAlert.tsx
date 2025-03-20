@@ -37,6 +37,7 @@ const ViewDialogPriceAlert = ({
 
   const {
     userEmail,
+    companyName,
     phoneNumber,
     fromRoute,
     toRoute,
@@ -67,6 +68,12 @@ const ViewDialogPriceAlert = ({
           <hr />
 
           <div className="flex flex-col gap-2">
+            {companyName && (
+              <div>
+                <span className="font-semibold">Company name:</span>{' '}
+                {companyName}
+              </div>
+            )}
             {userEmail && (
               <div>
                 <span className="font-semibold">Customer email:</span>{' '}
