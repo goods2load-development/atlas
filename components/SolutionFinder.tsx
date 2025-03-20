@@ -20,7 +20,6 @@ import clsx from 'clsx';
 import { BellRing } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -76,8 +75,6 @@ const formSchema = (isLoggedIn: boolean) =>
   });
 
 function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
-  const { executeRecaptcha } = useGoogleReCaptcha();
-
   const {
     deliveryBy,
     placementOfGoods,
@@ -165,8 +162,6 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
   };
 
   async function onSubmit(values: z.infer<ReturnType<typeof formSchema>>) {
-    if (!executeRecaptcha) return;
-    const token = await executeRecaptcha('login');
     postRequest({
       url: 'alerts/price',
       data: {
@@ -194,7 +189,6 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
           length,
           height,
         })),
-        recaptchaToken: token,
       },
     }).then(() => {
       setStep(3);
