@@ -56,10 +56,11 @@ export default function TailoredServices({
               <strong className="block font-medium text-xl mb-4">
                 Empower Your Business with Tailored Services.
               </strong>
-              <p className="max-w-[815px] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
-                Unlock Your Business&apos;s Full Potential with Our Customized
-                Logistics Solution providers. While we operate on a global
-                scale, we maintain a strong local presence in Dubai and the UAE.
+              <p className="max-w-full md:max-w-[75%] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
+                Discover value-added logistics services designed to optimize
+                your business in Dubai and across the UAE — from freight
+                forwarding support to smart operational solutions, we empower
+                your growth with local expertise and global reach.
               </p>
             </>
           )}
