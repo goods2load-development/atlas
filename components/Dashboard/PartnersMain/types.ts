@@ -113,4 +113,5 @@ export interface PartnerPageResponse {
   name: string;
   placementId: string;
   serviceProvided: ServiceProvided;
+  phoneNumber?: string;
 }

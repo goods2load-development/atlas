@@ -16,6 +16,7 @@ import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner
 import { Review } from '@/app/_components/Partner/Review/Review';
 import useBreakpoint from '@/app/hooks/useBreakpoint';
 import useDotButton from '@/app/hooks/useDotButton';
+import { useYouTubeEmbedId } from '@/app/hooks/useYouTubeEmbedId';
 import ArrowSliderLeft from '@/assets/icons/arrow-slider-left.svg';
 import ArrowSliderRight from '@/assets/icons/arrow-slider-right.svg';
 import bgDecorline from '@/assets/icons/bg-decor-line.svg';
@@ -42,6 +43,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { ReactSVG } from 'react-svg';
 import { z } from 'zod';
 
+import { WhatsAppButton } from '@/components/WhatsAppButton';
 import {
   FormControl,
   FormField,
@@ -97,6 +99,7 @@ const PartnerDataPage = ({
       focus: [],
       industries: [],
       placementId: isEdit ? partnerData?.placementId : '',
+      youtubeLink: isEdit ? partnerData?.youtubeLink : undefined,
     },
   });
   const { id } = useParams();
@@ -130,7 +133,13 @@ const PartnerDataPage = ({
     seaFreight: isEdit ? +partnerData?.serviceProvided.seaFreight : 0,
     roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
   });
+  const youtubeLink = form.watch('youtubeLink');
 
+  const embedId = useYouTubeEmbedId(
+    youtubeLink ??
+      'https://www.youtube.com/watch?v=kPa7bsKwL-c&ab_channel=LadyGagaVEVO',
+    500,
+  );
   const [focusData, setFocusData] = useState<
     {
       label: string;
@@ -374,6 +383,7 @@ const PartnerDataPage = ({
       missions: data.missions,
       placementId: data.placementId,
       files: data.awardedBy as FileList,
+      youtubeLink: data?.youtubeLink,
     };
 
     const formData = new FormData();
@@ -386,6 +396,8 @@ const PartnerDataPage = ({
     formData.append(`industries`, JSON.stringify(body.industries));
     formData.append(`missions`, JSON.stringify(body.missions));
     formData.append(`focus`, JSON.stringify(body.focus));
+
+    formData.append(`youtubeLink`, JSON.stringify(body.youtubeLink));
 
     Object.keys(body.serviceProvided).forEach((key) => {
       const typedKey = key as keyof typeof body.serviceProvided;
@@ -509,6 +521,9 @@ const PartnerDataPage = ({
                     />
                   )}
                 </div>
+                {partnerData?.phoneNumber && (
+                  <WhatsAppButton phoneNumber={partnerData.phoneNumber} />
+                )}
               </div>
             ) : (
               <UploadPartnerLogo
@@ -1090,6 +1105,40 @@ const PartnerDataPage = ({
               </button>
             }
           />
+
+          <div className={'mb-10'}>
+            {!isGet && (
+              <FormField
+                control={form?.control}
+                name="youtubeLink"
+                render={({ field }) => (
+                  <FormItem className="min-w-[294px]">
+                    <FormControl>
+                      <Input
+                        className="text-black"
+                        placeholder="Youtube link"
+                        value={form.watch('youtubeLink')}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          form.setValue('youtubeLink', value);
+                        }}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
+            {embedId && (
+              <iframe
+                className={'w-full aspect-video'}
+                src={`https://www.youtube.com/embed/${embedId}`}
+                title={embedId}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            )}
+          </div>
 
           {!isGet ? (
             <PlaceIdMap
