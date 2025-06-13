@@ -59,8 +59,8 @@ const questionsContent = [
       <span>
         Goods2Load is a digital platform that connects logistics providers with
         small and medium-sized enterprises (SMEs), making it easier to find
-        reliable freight solutions tailored to their specific needs. Here's how
-        the platform works:
+        reliable freight solutions tailored to their specific needs. Here&#39;s
+        how the platform works:
         <br />
         <br />
         <ol>
