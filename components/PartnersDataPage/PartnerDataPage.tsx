@@ -99,7 +99,7 @@ const PartnerDataPage = ({
       focus: [],
       industries: [],
       placementId: isEdit ? partnerData?.placementId : '',
-      youtubeLink: isEdit ? partnerData?.youtubeLink : undefined,
+      link: isEdit ? partnerData?.link : undefined,
     },
   });
   const { id } = useParams();
@@ -133,13 +133,9 @@ const PartnerDataPage = ({
     seaFreight: isEdit ? +partnerData?.serviceProvided.seaFreight : 0,
     roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
   });
-  const youtubeLink = form.watch('youtubeLink');
+  const link = form.watch('link');
 
-  const embedId = useYouTubeEmbedId(
-    youtubeLink ??
-      'https://www.youtube.com/watch?v=kPa7bsKwL-c&ab_channel=LadyGagaVEVO',
-    500,
-  );
+  const embedId = useYouTubeEmbedId(partnerData?.link ?? '' ?? link);
   const [focusData, setFocusData] = useState<
     {
       label: string;
@@ -383,7 +379,7 @@ const PartnerDataPage = ({
       missions: data.missions,
       placementId: data.placementId,
       files: data.awardedBy as FileList,
-      youtubeLink: data?.youtubeLink,
+      link: data?.link,
     };
 
     const formData = new FormData();
@@ -397,7 +393,9 @@ const PartnerDataPage = ({
     formData.append(`missions`, JSON.stringify(body.missions));
     formData.append(`focus`, JSON.stringify(body.focus));
 
-    formData.append(`youtubeLink`, JSON.stringify(body.youtubeLink));
+    if (body?.link) {
+      formData.append(`link`, body.link);
+    }
 
     Object.keys(body.serviceProvided).forEach((key) => {
       const typedKey = key as keyof typeof body.serviceProvided;
@@ -1110,17 +1108,17 @@ const PartnerDataPage = ({
             {!isGet && (
               <FormField
                 control={form?.control}
-                name="youtubeLink"
+                name="link"
                 render={({ field }) => (
                   <FormItem className="min-w-[294px]">
                     <FormControl>
                       <Input
                         className="text-black"
                         placeholder="Youtube link"
-                        value={form.watch('youtubeLink')}
+                        value={form.watch('link')}
                         onChange={(e) => {
                           const value = e.target.value;
-                          form.setValue('youtubeLink', value);
+                          form.setValue('link', value);
                         }}
                       />
                     </FormControl>

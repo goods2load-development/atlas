@@ -1,3 +1,4 @@
+import PartnersOurPartners from '@/app/_components/Partners/PartnersOurPartners/PartnersOurPartners';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Metadata } from 'next';
@@ -56,45 +57,40 @@ const questionsContent = [
     title: 'HOW DOES GOODS2LOAD WORK?',
     content: (
       <span>
-        Goods2Load is a platform designed to connect logistics companies with
-        small and medium-sized enterprises, facilitating the transportation of
-        goods. Here&apos;s how it works:
+        Goods2Load is a digital platform that connects logistics providers with
+        small and medium-sized enterprises (SMEs), making it easier to find
+        reliable freight solutions tailored to their specific needs. Here's how
+        the platform works:
         <br />
         <br />
         <ol>
           <li>
-            &#x2022; <strong>Registration</strong>: Small and medium-sized
-            enterprises register on the Goods2Load platform, providing necessary
-            information about their business and transportation needs.
+            &#x2022; <strong>Registration</strong>: Logistics providers and SMEs
+            register on the platform by creating a profile and selecting a plan
+            that fits their business type and needs.
             <br />
             <br />
           </li>
           <li>
-            &#x2022; <strong>Load Posting</strong>: Companies input details of
-            their loads, including pickup and delivery locations, type of cargo,
-            and other relevant information.
+            &#x2022; <strong>Service Browsing</strong>: SMEs can browse
+            logistics providers listed on the platform, using filters such as
+            freight type (air, sea, road), origin and destination,
+            certifications, service speed, and CO2 offset availability.
             <br />
             <br />
           </li>
           <li>
-            &#x2022; <strong>Load Search</strong>: Small and medium-sized
-            enterprises can browse available loads on the platform, provided by
-            Goods2Load&apos;s logistics partner companies. They can filter
-            results based on criteria such as pickup location, destination, type
-            of cargo, speed and CO2 emissions.
+            &#x2022; <strong>Direct Contact</strong>: Once a suitable provider
+            is identified, SMEs can reach out directly to the logistics company
+            through their contact details listed on the platform—there is no
+            price comparison or negotiation through Goods2Load.
             <br />
             <br />
           </li>
           <li>
-            &#x2022; <strong>Negotiation</strong>: Small and medium-sized
-            enterprises are redirected to the platform or original contact to
-            negotiate terms such as price, delivery timeline, and other details.
-            <br />
-            <br />
-          </li>
-          <li>
-            &#x2022; <strong>Contracting</strong>: Once terms are agreed upon,
-            companies finalize the contract through their official platform.
+            &#x2022; <strong>External Agreement</strong>: All pricing,
+            contracting, and service agreements are finalized directly between
+            the SME and the logistics provider outside the Goods2Load platform.
             <br />
             <br />
           </li>
@@ -191,6 +187,7 @@ export default function Home() {
         <div className="mt-[-120px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
           <SearchMain main />
         </div>
+        <PartnersOurPartners />
         <SubHeaderMain />
         <TailoredServices className="py-20 md:py-[104px]" />
         <SliderMain />
