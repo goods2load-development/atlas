@@ -104,75 +104,71 @@ export const RoutesTab = () => {
   };
 
   return (
-    <>
-      <div
-        className={clsx({
-          'pointer-events-none': isRoutesLoading,
-        })}
-      >
-        <div className={clsx('flex flex-col gap-4')}>
-          {!isRoutesLoading && !routes?.data?.length && (
-            <p className="font-bold text-red-600">
-              No routes selected at the moment
-            </p>
-          )}
-          {routes?.data?.map(({ id, ...route }: any, i: number) => (
-            <ListItem key={i}>
-              <div className="flex gap-2 justify-between w-full">
-                <p
-                  onClick={() =>
-                    setIsViewModalOpen({
-                      id,
-                      isOpen: true,
-                    })
-                  }
-                  className="hover:underline hover:cursor-pointer"
-                >
-                  {route.userEmail}
-                </p>
-                <div className="flex items-center gap-2">
-                  <button onClick={() => applyRouteById(id)} title="Approve">
-                    <Check />
-                  </button>
-                  <button title="Reply">
-                    <ReplyDialog
-                      onSubmitCallback={(data: any) =>
-                        rejectRouteById(id, data)
-                      }
-                      order={route}
-                    />
-                  </button>
-                  <ViewDialog
-                    isOpen={isViewModalOpen.id === id && isViewModalOpen.isOpen}
-                    setIsOpen={setIsViewModalOpen}
-                    route={route}
-                    id={id}
-                  />
-                  <ConfirmDialog
-                    trigger={
-                      <button title="Delete">
-                        <TrashIcon />
-                      </button>
-                    }
-                    title="Confirm Deletion"
-                    description="Are you sure you want to delete this route? This action cannot be undone."
-                    confirmLabel="Yes, delete"
-                    cancelLabel="No, cancel"
-                    onConfirm={() => deleteRouteById(id)}
-                  />
-                </div>
-              </div>
-            </ListItem>
-          ))}
-        </div>
-        {meta && meta?.pageCount > 1 && (
-          <Pagination
-            page={page}
-            total={meta.pageCount}
-            onPageChange={(newPage) => handleSetPage(newPage)}
-          />
+    <div
+      className={clsx({
+        'pointer-events-none': isRoutesLoading,
+      })}
+    >
+      <div className={clsx('flex flex-col gap-4')}>
+        {!isRoutesLoading && !routes?.data?.length && (
+          <p className="font-bold text-red-600">
+            No routes selected at the moment
+          </p>
         )}
+        {routes?.data?.map(({ id, ...route }: any, i: number) => (
+          <ListItem key={i}>
+            <div className="flex gap-2 justify-between w-full">
+              <p
+                onClick={() =>
+                  setIsViewModalOpen({
+                    id,
+                    isOpen: true,
+                  })
+                }
+                className="hover:underline hover:cursor-pointer"
+              >
+                {route.userEmail}
+              </p>
+              <div className="flex items-center gap-2">
+                <button onClick={() => applyRouteById(id)} title="Approve">
+                  <Check />
+                </button>
+                <button title="Reply">
+                  <ReplyDialog
+                    onSubmitCallback={(data: any) => rejectRouteById(id, data)}
+                    order={route}
+                  />
+                </button>
+                <ViewDialog
+                  isOpen={isViewModalOpen.id === id && isViewModalOpen.isOpen}
+                  setIsOpen={setIsViewModalOpen}
+                  route={route}
+                  id={id}
+                />
+                <ConfirmDialog
+                  trigger={
+                    <button title="Delete">
+                      <TrashIcon />
+                    </button>
+                  }
+                  title="Confirm Deletion"
+                  description="Are you sure you want to delete this route? This action cannot be undone."
+                  confirmLabel="Yes, delete"
+                  cancelLabel="No, cancel"
+                  onConfirm={() => deleteRouteById(id)}
+                />
+              </div>
+            </div>
+          </ListItem>
+        ))}
       </div>
-    </>
+      {meta && meta?.pageCount > 1 && (
+        <Pagination
+          page={page}
+          total={meta.pageCount}
+          onPageChange={(newPage) => handleSetPage(newPage)}
+        />
+      )}
+    </div>
   );
 };

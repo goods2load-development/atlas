@@ -109,8 +109,10 @@ export interface PartnerPageResponse {
   hasPage: boolean;
   id: string;
   industries: IndustryItem[];
+  link?: string;
   mission: string;
   name: string;
   placementId: string;
   serviceProvided: ServiceProvided;
+  phoneNumber?: string;
 }

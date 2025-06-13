@@ -3,6 +3,8 @@
 import { Quotation } from '@/lib/store';
 import { toNormalText } from '@/lib/utils';
 
+import { useMemo } from 'react';
+
 import { ViewIcon } from 'lucide-react';
 
 import {
@@ -31,6 +33,24 @@ export const ViewDialogQuotation = ({
   item: Quotation;
   id: string;
 }) => {
+  const partnerInfo = useMemo(() => {
+    return {
+      partnerName: item.partner?.user.companyName,
+      partnerEmail: item.partner?.user.email,
+      partnerPhoneNumber: item.partner?.user.phoneNumber,
+    };
+  }, [item]);
+
+  const companyInfo = useMemo(() => {
+    return {
+      companyName: item.companyName,
+      email: item.email,
+      phone: item.phone,
+      message: item.message,
+      createdAt: '10/06/25',
+    };
+  }, [item]);
+
   return (
     <Dialog
       open={isOpen}
@@ -49,7 +69,7 @@ export const ViewDialogQuotation = ({
           <hr />
 
           <div className="flex flex-col gap-2">
-            {Object.entries(item).map(([key, value]) => {
+            {Object.entries(companyInfo).map(([key, value]) => {
               if (!value || includesList.includes(key)) return null;
               return (
                 <div key={key}>
@@ -59,6 +79,22 @@ export const ViewDialogQuotation = ({
               );
             })}
           </div>
+
+          <hr />
+
+          {partnerInfo && (
+            <div className="flex flex-col gap-2">
+              {Object.entries(partnerInfo).map(([key, value]) => {
+                if (!value || includesList.includes(key)) return null;
+                return (
+                  <div key={key}>
+                    <span className="font-semibold">{toNormalText(key)}:</span>{' '}
+                    {value}
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </DialogHeader>
       </DialogContent>
       <DialogTrigger asChild>

@@ -14,7 +14,7 @@ import { useCountriesStore, useUserStore } from '@/lib/store';
 import { postRequest } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import { BellRing } from 'lucide-react';
@@ -48,6 +48,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -72,6 +73,7 @@ const formSchema = (isLoggedIn: boolean) =>
     email: isLoggedIn ? z.optional(z.string()) : z.string().min(5).email(),
     companyName: isLoggedIn ? z.optional(z.string()) : z.string().min(2),
     message: z.string().min(2),
+    attachments: z.array(z.instanceof(File)).max(5, 'Max 5 files').optional(),
   });
 
 function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
@@ -123,6 +125,7 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
       message: '',
     },
   });
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { control, register, watch } = form;
   const { fields, append, update, remove } = useFieldArray({
     control,
@@ -161,39 +164,75 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
     );
   };
 
+  useEffect(() => {
+    form.setValue('attachments', selectedFiles);
+  }, [selectedFiles]);
+
   async function onSubmit(values: z.infer<ReturnType<typeof formSchema>>) {
-    postRequest({
-      url: 'alerts/price',
-      data: {
-        contacts: {
-          phone: isLoggedIn
-            ? user.phoneNumber
-            : `${(values as any).countryCode}${(values as any).phone}`,
-          email: isLoggedIn ? user.email : values.email,
-          companyName: isLoggedIn ? user.companyName : values.companyName,
-        },
-        message: values.message,
-        routes: values.routes.map((item) => ({
-          deliveryBy,
-          fromRoute: `${item.fromCountry}, ${item.from}`,
-          toRoute: `${item.toCountry}, ${item.to}`,
-          arrival,
-          departure,
-          goodsValue,
-          typeOfGoods,
-          placementOfGoods,
-          quantity,
-          totalKg,
-          incoterms,
-          width,
-          length,
-          height,
-        })),
-      },
-    }).then(() => {
-      setStep(3);
+    const formData = new FormData();
+
+    formData.append(
+      'contacts[phone]',
+      isLoggedIn
+        ? user.phoneNumber
+        : `${(values as any).countryCode}${(values as any).phone}`,
+    );
+    formData.append('contacts[email]', isLoggedIn ? user.email : values.email);
+    formData.append(
+      'contacts[companyName]',
+      isLoggedIn ? user.companyName : values.companyName,
+    );
+
+    if (values.attachments && values.attachments.length > 0) {
+      values.attachments.forEach((file) => {
+        formData.append('contacts[attachments]', file);
+      });
+    }
+
+    formData.append('message', values.message);
+
+    values.routes.forEach((item, index) => {
+      formData.append(`routes[${index}][deliveryBy]`, deliveryBy);
+      formData.append(
+        `routes[${index}][fromRoute]`,
+        `${item.fromCountry}, ${item.from}`,
+      );
+      formData.append(
+        `routes[${index}][toRoute]`,
+        `${item.toCountry}, ${item.to}`,
+      );
+      formData.append(`routes[${index}][arrival]`, arrival);
+      formData.append(`routes[${index}][departure]`, departure);
+      formData.append(`routes[${index}][goodsValue]`, goodsValue);
+      formData.append(`routes[${index}][typeOfGoods]`, typeOfGoods);
+      formData.append(`routes[${index}][placementOfGoods]`, placementOfGoods);
+      formData.append(`routes[${index}][quantity]`, quantity);
+      formData.append(`routes[${index}][totalKg]`, totalKg);
+      formData.append(`routes[${index}][incoterms]`, incoterms);
+      formData.append(`routes[${index}][width]`, width);
+      formData.append(`routes[${index}][length]`, length);
+      formData.append(`routes[${index}][height]`, height);
     });
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}alerts/price`,
+        {
+          method: 'POST',
+          body: formData,
+        },
+      );
+
+      if (res.ok) {
+        setStep(3);
+      } else {
+        console.error('Server error', await res.text());
+      }
+    } catch (err) {
+      console.error('Submit error:', err);
+    }
   }
+
   useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
@@ -616,6 +655,85 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
                         />
                       </FormControl>
                       <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="attachments"
+                  render={() => (
+                    <FormItem className="flex-1 mt-4">
+                      <span className="text-[14px]">Attachments</span>
+                      <FormControl>
+                        <input
+                          className="hidden"
+                          id="file-upload"
+                          type="file"
+                          multiple
+                          accept="*"
+                          onChange={(e) => {
+                            const files = Array.from(e.target.files || []);
+                            const validFiles = files.filter(
+                              (file) => file.size <= 10 * 1024 * 1024,
+                            );
+
+                            if (selectedFiles.length + validFiles.length > 5) {
+                              alert('Max 5 files!');
+                              return;
+                            }
+
+                            const updated = [...selectedFiles, ...validFiles];
+                            setSelectedFiles(updated);
+                            form.setValue('attachments', updated);
+                          }}
+                        />
+                      </FormControl>
+                      <FormLabel
+                        htmlFor="file-upload"
+                        className="border border-black font-normal text-[14px] rounded-sm py-2 flex justify-center items-center cursor-pointer"
+                      >
+                        <Image
+                          className="mr-2"
+                          src="/upload.svg"
+                          alt="upload"
+                          width={16}
+                          height={16}
+                        />
+                        {selectedFiles.length > 0
+                          ? `${selectedFiles.length} file(s) selected`
+                          : 'Upload files'}
+                      </FormLabel>
+                      <FormMessage />
+
+                      {selectedFiles.length > 0 && (
+                        <ul className="text-xs mt-2 list-disc ml-4">
+                          {selectedFiles.map((file, index) => (
+                            <li
+                              key={index}
+                              className="flex items-center justify-between gap-2"
+                            >
+                              <span>
+                                {file.name} (
+                                {(file.size / 1024 / 1024).toFixed(2)} MB)
+                              </span>
+                              <button
+                                type="button"
+                                className="text-red-500 hover:underline"
+                                onClick={() => {
+                                  const newFiles = selectedFiles.filter(
+                                    (_, i) => i !== index,
+                                  );
+                                  setSelectedFiles(newFiles);
+                                  form.setValue('attachments', newFiles);
+                                }}
+                              >
+                                Remove
+                              </button>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
                     </FormItem>
                   )}
                 />

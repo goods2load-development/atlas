@@ -17,6 +17,7 @@ import {
   HeaderFooterData,
 } from '@/components/Dashboard/HeaderFooterMain/types';
 import {
+  Partner,
   PartnerIndustry,
   PartnerPageResponse,
   ResponsePartner,
@@ -607,6 +608,7 @@ export interface Quotation {
   message: string;
   partnerId: string;
   phone: string;
+  partner?: ResponsePartner;
 }
 
 interface UseQuotationsStore {
@@ -631,19 +633,49 @@ export const useQuotationsStore = create<UseQuotationsStore>((set) => ({
   quotations: null,
   isQuotationsLoading: true,
 
-  getQuotations: ({ page = 1, take = 5 }) => {
+  getQuotations: async ({ page = 1, take = 5 }) => {
     set({ isQuotationsLoading: true });
-    return getRequest({
-      url: 'partners/quotations',
-      params: {
-        page,
-        take,
-      },
-    })
-      .then((quotations) => {
-        set({ quotations });
-      })
-      .finally(() => set({ isQuotationsLoading: false }));
+
+    try {
+      const quotationsResponse = await getRequest({
+        url: 'partners/quotations',
+        params: { page, take },
+      });
+
+      const quotationsWithPartners = await Promise.all(
+        quotationsResponse.data.map(async (quotation: Quotation) => {
+          try {
+            const partner = await fetch(
+              `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/${quotation.partnerId}`,
+              {
+                method: 'GET',
+                headers: {
+                  'Content-Type': 'application/json',
+                },
+                cache: 'no-store',
+              },
+            ).then((res) => res.json());
+
+            return { ...quotation, partner };
+          } catch (error) {
+            console.error(
+              `Error fetching partner for ${quotation.partnerId}`,
+              error,
+            );
+            return { ...quotation, partner: null };
+          }
+        }),
+      );
+
+      set({
+        quotations: {
+          ...quotationsResponse,
+          data: quotationsWithPartners,
+        },
+      });
+    } finally {
+      set({ isQuotationsLoading: false });
+    }
   },
 
   approveQuotation: (id: string) => {
