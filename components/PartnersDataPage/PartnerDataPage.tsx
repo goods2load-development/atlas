@@ -32,7 +32,7 @@ import {
 } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 
 import Fade from 'embla-carousel-fade';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -58,6 +58,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import Spinner from '@/components/ui/spinner';
 
 enum TabsEnum {
   SERVICES_PROVIDED = 'Service provided',
@@ -1366,7 +1367,11 @@ const PartnerDataPage = ({
           disabled={form?.formState?.isSubmitting}
           className="fixed left-1/2 bottom-6 -translate-x-1/2 px-10"
         >
-          Submit
+          {form?.formState?.isSubmitting ? (
+            <Spinner className={'border-white'} />
+          ) : (
+            'Submit'
+          )}
         </Button>
       )}
     </>
