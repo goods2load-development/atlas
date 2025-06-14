@@ -18,7 +18,7 @@ class WhatsAppButton extends Component<WhatsAppButtonProps> {
     return (
       <button
         onClick={this.handleClick}
-        className="mt-5 bg-green-500 p-1.5 rounded-[48px] flex flex-row items-center gap-2"
+        className="mt-5 bg-green-500 p-1.5 rounded-[48px] flex flex-row items-center gap-2 justify-between"
       >
         <span className="border-2 border-white rounded-full grid place-content-center p-1.5">
           <Phone color="white" fill="white" />

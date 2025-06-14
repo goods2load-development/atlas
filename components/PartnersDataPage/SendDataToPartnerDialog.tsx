@@ -103,11 +103,13 @@ function SendDataDialog({ title, trigger }: Props) {
       values.attachments.forEach((file) => {
         formData.append('attachments', file);
       });
+    } else {
+      formData.append('attachments', '[]');
     }
 
     try {
       const response = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}partners/${id}/free-quotation`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/${id}/free-quotation`,
         {
           method: 'POST',
           body: formData,

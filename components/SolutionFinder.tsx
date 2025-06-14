@@ -185,8 +185,10 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
 
     if (values.attachments && values.attachments.length > 0) {
       values.attachments.forEach((file) => {
-        formData.append('contacts[attachments]', file);
+        formData.append('attachments', file);
       });
+    } else {
+      formData.append('attachments', '[]');
     }
 
     formData.append('message', values.message);
@@ -216,7 +218,7 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
 
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}alerts/price`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}api/alerts/price`,
         {
           method: 'POST',
           body: formData,
