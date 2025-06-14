@@ -61,6 +61,7 @@ function SendDataDialog({ title, trigger }: Props) {
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const { user } = useUserStore((state: any) => state);
   const isLoggedIn = !!Object.values(user).length;
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const Title = title || (
     <DialogTitle className="text-center text-[40px]/[48px] font-light mb-[16px]">
@@ -78,7 +79,7 @@ function SendDataDialog({ title, trigger }: Props) {
 
   const onSubmit = async (values: z.infer<ReturnType<typeof formSchema>>) => {
     if (!executeRecaptcha) return;
-
+    setIsSubmitting(true);
     const token = await executeRecaptcha('pollVote');
 
     const formData = new FormData();
@@ -103,8 +104,6 @@ function SendDataDialog({ title, trigger }: Props) {
       values.attachments.forEach((file) => {
         formData.append('attachments', file);
       });
-    } else {
-      formData.append('attachments', '[]');
     }
 
     try {
@@ -125,6 +124,8 @@ function SendDataDialog({ title, trigger }: Props) {
       }
     } catch (error) {
       setStep(0);
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -333,7 +334,12 @@ function SendDataDialog({ title, trigger }: Props) {
               )}
             />
 
-            <UIButton className="mx-auto mt-[40px] w-[184px]" type="submit">
+            <UIButton
+              disabled={isSubmitting}
+              isLoading={isSubmitting}
+              className="mx-auto mt-[40px] w-[184px]"
+              type="submit"
+            >
               Send
             </UIButton>
           </form>

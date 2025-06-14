@@ -3,6 +3,7 @@
 import React, { ReactNode } from 'react';
 
 import { Button } from '@/components/ui/button';
+import Spinner from '@/components/ui/spinner';
 
 interface ButtonProps {
   children: ReactNode;
@@ -11,6 +12,7 @@ interface ButtonProps {
   onClick?: (e: any) => void;
   secondary?: boolean;
   disabled?: boolean;
+  isLoading?: boolean;
 }
 
 export default function UIButton(props: ButtonProps) {
@@ -26,7 +28,7 @@ export default function UIButton(props: ButtonProps) {
       onClick={props.onClick}
       disabled={props.disabled}
     >
-      {props.children}
+      {props.isLoading ? <Spinner /> : props.children}
     </Button>
   );
 }

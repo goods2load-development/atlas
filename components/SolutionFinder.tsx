@@ -107,6 +107,7 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
   const [step, setStep] = useState(0);
   const { user } = useUserStore((state: any) => state);
   const isLoggedIn = !!Object.values(user).length;
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
   const {
     countriesList,
@@ -179,7 +180,7 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
 
   async function onSubmit(values: z.infer<ReturnType<typeof formSchema>>) {
     const formData = new FormData();
-
+    setIsSubmitting(true);
     formData.append(
       'contacts[phone]',
       isLoggedIn
@@ -196,8 +197,6 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
       values.attachments.forEach((file) => {
         formData.append('attachments', file);
       });
-    } else {
-      formData.append('attachments', '[]');
     }
 
     formData.append('message', values.message);
@@ -241,6 +240,8 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
       }
     } catch (err) {
       console.error('Submit error:', err);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -771,6 +772,8 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
                   Previous step
                 </UIButton>
                 <UIButton
+                  isLoading={isSubmitting}
+                  disabled={isSubmitting}
                   className={`w-full sm:max-w-40 order-3 ${step === 1 && !isSearchFilled() ? 'hidden' : null}`}
                   type="submit"
                   onClick={(e: any) => {
