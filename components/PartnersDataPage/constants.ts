@@ -9,6 +9,8 @@ export const formSchema = z
   .object({
     name: z.string().min(3, 'Name is required'),
     description: z.string().min(10, 'Description is required'),
+    link: z.string().optional(),
+    phoneNumber: z.string().optional(),
     mission: z.string().min(10, 'Mission is required'),
     airFreight: z.string().min(1, 'Air Freight is required'),
     seaFreight: z.string().min(1, 'Sea Freight is required'),

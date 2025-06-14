@@ -85,73 +85,68 @@ export const FreeQuotationsTab = () => {
   };
 
   return (
-    <>
-      <div
-        className={clsx({
-          'pointer-events-none': isQuotationsLoading,
-        })}
-      >
-        <div className={clsx('flex flex-col gap-4')}>
-          {!isQuotationsLoading && !quotations?.data?.length && (
-            <p className="font-bold text-red-600">
-              No quotation requests at the moment
-            </p>
-          )}
-          {quotations?.data?.map((item, i: number) => (
-            <ListItem key={i}>
-              <div className="flex gap-2 justify-between w-full">
-                <p
-                  className="hover:underline hover:cursor-pointer"
-                  onClick={() =>
-                    setIsViewModalOpen({
-                      isOpen: true,
-                      id: item.id,
-                    })
-                  }
-                >
-                  {item.email || item.phone}
-                </p>
-                <div className="flex items-center gap-2">
-                  <ViewDialogQuotation
-                    isOpen={
-                      isViewModalOpen.id === item.id && isViewModalOpen.isOpen
-                    }
-                    setIsOpen={setIsViewModalOpen}
-                    item={item}
-                    id={item.id}
-                  />
-                  <button
-                    title="approve"
-                    onClick={() => handleApprove(item.id)}
-                  >
-                    <Check />
-                  </button>
-
-                  <ConfirmDialog
-                    trigger={
-                      <button title="reject">
-                        <TrashIcon />
-                      </button>
-                    }
-                    title="Confirm Rejection"
-                    description="Are you sure you want to reject this quotation? This action cannot be undone."
-                    confirmLabel="Yes, reject"
-                    cancelLabel="No, cancel"
-                    onConfirm={() => handleReject(item.id)}
-                  />
-                </div>
-              </div>
-            </ListItem>
-          ))}
-        </div>
-        {meta && meta?.pageCount > 1 && (
-          <Pagination
-            page={page}
-            total={meta.pageCount}
-            onPageChange={(newPage) => handleSetPage(newPage)}
-          />
+    <div
+      className={clsx({
+        'pointer-events-none': isQuotationsLoading,
+      })}
+    >
+      <div className={clsx('flex flex-col gap-4')}>
+        {!isQuotationsLoading && !quotations?.data?.length && (
+          <p className="font-bold text-red-600">
+            No quotation requests at the moment
+          </p>
         )}
+        {quotations?.data?.map((item, i: number) => (
+          <ListItem key={i}>
+            <div className="flex gap-2 justify-between w-full">
+              <p
+                className="hover:underline hover:cursor-pointer"
+                onClick={() =>
+                  setIsViewModalOpen({
+                    isOpen: true,
+                    id: item.id,
+                  })
+                }
+              >
+                {item.email || item.phone}
+              </p>
+              <div className="flex items-center gap-2">
+                <ViewDialogQuotation
+                  isOpen={
+                    isViewModalOpen.id === item.id && isViewModalOpen.isOpen
+                  }
+                  setIsOpen={setIsViewModalOpen}
+                  item={item}
+                  id={item.id}
+                />
+                <button title="approve" onClick={() => handleApprove(item.id)}>
+                  <Check />
+                </button>
+
+                <ConfirmDialog
+                  trigger={
+                    <button title="reject">
+                      <TrashIcon />
+                    </button>
+                  }
+                  title="Confirm Rejection"
+                  description="Are you sure you want to reject this quotation? This action cannot be undone."
+                  confirmLabel="Yes, reject"
+                  cancelLabel="No, cancel"
+                  onConfirm={() => handleReject(item.id)}
+                />
+              </div>
+            </div>
+          </ListItem>
+        ))}
       </div>
-    </>
+      {meta && meta?.pageCount > 1 && (
+        <Pagination
+          page={page}
+          total={meta.pageCount}
+          onPageChange={(newPage) => handleSetPage(newPage)}
+        />
+      )}
+    </div>
   );
 };

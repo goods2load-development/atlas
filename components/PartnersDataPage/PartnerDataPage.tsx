@@ -16,6 +16,7 @@ import { GoogleRatingBunner } from '@/app/_components/Partner/GoogleRatingBunner
 import { Review } from '@/app/_components/Partner/Review/Review';
 import useBreakpoint from '@/app/hooks/useBreakpoint';
 import useDotButton from '@/app/hooks/useDotButton';
+import { useYouTubeEmbedId } from '@/app/hooks/useYouTubeEmbedId';
 import ArrowSliderLeft from '@/assets/icons/arrow-slider-left.svg';
 import ArrowSliderRight from '@/assets/icons/arrow-slider-right.svg';
 import bgDecorline from '@/assets/icons/bg-decor-line.svg';
@@ -31,7 +32,7 @@ import {
 } from '@/lib/utils';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-import { Fragment, useEffect, useMemo, useState } from 'react';
+import React, { Fragment, useEffect, useMemo, useState } from 'react';
 
 import Fade from 'embla-carousel-fade';
 import useEmblaCarousel from 'embla-carousel-react';
@@ -42,6 +43,7 @@ import { FormProvider, useForm } from 'react-hook-form';
 import { ReactSVG } from 'react-svg';
 import { z } from 'zod';
 
+import { WhatsAppButton } from '@/components/WhatsAppButton';
 import {
   FormControl,
   FormField,
@@ -56,6 +58,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import Spinner from '@/components/ui/spinner';
 
 enum TabsEnum {
   SERVICES_PROVIDED = 'Service provided',
@@ -97,6 +100,8 @@ const PartnerDataPage = ({
       focus: [],
       industries: [],
       placementId: isEdit ? partnerData?.placementId : '',
+      link: isEdit ? partnerData?.link : undefined,
+      phoneNumber: isEdit ? partnerData?.phoneNumber : '',
     },
   });
   const { id } = useParams();
@@ -130,7 +135,10 @@ const PartnerDataPage = ({
     seaFreight: isEdit ? +partnerData?.serviceProvided.seaFreight : 0,
     roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
   });
+  const link = form.watch('link');
+  const phoneNumber = form.watch('phoneNumber');
 
+  const embedId = useYouTubeEmbedId(partnerData?.link ?? link ?? '');
   const [focusData, setFocusData] = useState<
     {
       label: string;
@@ -374,6 +382,8 @@ const PartnerDataPage = ({
       missions: data.missions,
       placementId: data.placementId,
       files: data.awardedBy as FileList,
+      link: data?.link,
+      phoneNumber: data?.phoneNumber,
     };
 
     const formData = new FormData();
@@ -386,6 +396,14 @@ const PartnerDataPage = ({
     formData.append(`industries`, JSON.stringify(body.industries));
     formData.append(`missions`, JSON.stringify(body.missions));
     formData.append(`focus`, JSON.stringify(body.focus));
+
+    if (body?.link) {
+      formData.append(`link`, body.link);
+    }
+
+    if (body?.phoneNumber) {
+      formData.append(`phoneNumber`, body.phoneNumber);
+    }
 
     Object.keys(body.serviceProvided).forEach((key) => {
       const typedKey = key as keyof typeof body.serviceProvided;
@@ -509,12 +527,41 @@ const PartnerDataPage = ({
                     />
                   )}
                 </div>
+                {partnerData?.phoneNumber && (
+                  <WhatsAppButton phoneNumber={partnerData.phoneNumber} />
+                )}
               </div>
             ) : (
-              <UploadPartnerLogo
-                companyPhoto={companyPhoto}
-                partnerId={id as string}
-              />
+              <div className={'flex flex-col'}>
+                <UploadPartnerLogo
+                  companyPhoto={companyPhoto}
+                  partnerId={id as string}
+                />
+                <div className={'flex flex-col gap-5'}>
+                  <FormField
+                    control={form?.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem className="min-w-[294px]">
+                        <FormControl>
+                          <Input
+                            className="text-black"
+                            placeholder="Phone number (optional)"
+                            value={form.watch('phoneNumber')}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              form.setValue('phoneNumber', value);
+                            }}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {phoneNumber && phoneNumber.trim().length > 0 && (
+                    <WhatsAppButton phoneNumber={phoneNumber} />
+                  )}
+                </div>
+              </div>
             )}
 
             <div className="pt-7 text-black text-left sm:max-w-[606px] basis-1/2 mt-8 sm:mt-0">
@@ -1091,6 +1138,40 @@ const PartnerDataPage = ({
             }
           />
 
+          <div className={'mb-10'}>
+            {!isGet && (
+              <FormField
+                control={form?.control}
+                name="link"
+                render={({ field }) => (
+                  <FormItem className="min-w-[294px]">
+                    <FormControl>
+                      <Input
+                        className="text-black"
+                        placeholder="Youtube link"
+                        value={form.watch('link')}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          form.setValue('link', value);
+                        }}
+                      />
+                    </FormControl>
+                  </FormItem>
+                )}
+              />
+            )}
+            {embedId && (
+              <iframe
+                className={'w-full aspect-video'}
+                src={`https://www.youtube.com/embed/${embedId}`}
+                title={embedId}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerPolicy="strict-origin-when-cross-origin"
+                allowFullScreen
+              />
+            )}
+          </div>
+
           {!isGet ? (
             <PlaceIdMap
               onChangePlaceId={(placeId: string) =>
@@ -1286,7 +1367,11 @@ const PartnerDataPage = ({
           disabled={form?.formState?.isSubmitting}
           className="fixed left-1/2 bottom-6 -translate-x-1/2 px-10"
         >
-          Submit
+          {form?.formState?.isSubmitting ? (
+            <Spinner className={'border-white'} />
+          ) : (
+            'Submit'
+          )}
         </Button>
       )}
     </>

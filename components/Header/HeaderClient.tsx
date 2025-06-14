@@ -138,6 +138,15 @@ export default function HeaderClient({
              max-sm:gap-5 sm:flex-row sm:justify-end max-sm:px-10"
             >
               <NavigationMenuItem>
+                <Link
+                  className="rounded-[48px] px-2 py-1 transition bg-[#b7f218] hover:bg-[#a9e503] text-black no-underline"
+                  target="_blank"
+                  href="https://calendly.com/hey-goods2load/30min"
+                >
+                  Get a Demo
+                </Link>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
                 <Link href="/help">FAQs</Link>
               </NavigationMenuItem>
               <NavigationMenuItem>

@@ -99,77 +99,73 @@ export const SolutionFinderTab = () => {
   };
 
   return (
-    <>
-      <div
-        className={clsx({
-          'pointer-events-none': isPriceAlertLoading,
-        })}
-      >
-        <div className={clsx('flex flex-col gap-4')}>
-          {!isPriceAlertLoading && !priceAlerts?.data?.length && (
-            <p className="font-bold text-red-600">
-              No solutions finder requests
-            </p>
-          )}
-          {priceAlerts?.data?.map((item: any, i: number) => (
-            <ListItem key={i}>
-              <div className="flex gap-2 justify-between w-full">
-                <p
-                  className="hover:underline hover:cursor-pointer"
-                  onClick={() =>
-                    setIsViewModalOpen({ isOpen: true, id: item.id })
-                  }
-                >
-                  {item.userEmail || item.phoneNumber}
-                </p>
-                <div className="flex items-center gap-2">
-                  <button
-                    title="Send"
-                    onClick={() => sendPriceAlertById(item.id)}
-                  >
-                    <Check />
-                  </button>
-                  <button title="Reply">
-                    <PriceAlertReplyDialog
-                      onSubmitCallback={(data: any) => {
-                        replyPriceAlertsById(item.id, data.message);
-                      }}
-                    />
-                  </button>
-                  <ViewDialogPriceAlert
-                    isOpen={
-                      isViewModalOpen.id === item.id && isViewModalOpen.isOpen
-                    }
-                    setIsOpen={setIsViewModalOpen}
-                    item={item}
-                    id={item.id}
-                  />
-
-                  <ConfirmDialog
-                    trigger={
-                      <button title="Delete">
-                        <TrashIcon />
-                      </button>
-                    }
-                    title="Confirm Deletion"
-                    description="Are you sure you want to delete this solution finder? This action cannot be undone."
-                    confirmLabel="Yes, delete"
-                    cancelLabel="No, cancel"
-                    onConfirm={() => deletePriceAlertById(item.id)}
-                  />
-                </div>
-              </div>
-            </ListItem>
-          ))}
-        </div>
-        {meta && meta?.pageCount > 1 && (
-          <Pagination
-            page={page}
-            total={meta.pageCount}
-            onPageChange={(newPage) => handleSetPage(newPage)}
-          />
+    <div
+      className={clsx({
+        'pointer-events-none': isPriceAlertLoading,
+      })}
+    >
+      <div className={clsx('flex flex-col gap-4')}>
+        {!isPriceAlertLoading && !priceAlerts?.data?.length && (
+          <p className="font-bold text-red-600">No solutions finder requests</p>
         )}
+        {priceAlerts?.data?.map((item: any, i: number) => (
+          <ListItem key={i}>
+            <div className="flex gap-2 justify-between w-full">
+              <p
+                className="hover:underline hover:cursor-pointer"
+                onClick={() =>
+                  setIsViewModalOpen({ isOpen: true, id: item.id })
+                }
+              >
+                {item.userEmail || item.phoneNumber}
+              </p>
+              <div className="flex items-center gap-2">
+                <button
+                  title="Send"
+                  onClick={() => sendPriceAlertById(item.id)}
+                >
+                  <Check />
+                </button>
+                <button title="Reply">
+                  <PriceAlertReplyDialog
+                    onSubmitCallback={(data: any) => {
+                      replyPriceAlertsById(item.id, data.message);
+                    }}
+                  />
+                </button>
+                <ViewDialogPriceAlert
+                  isOpen={
+                    isViewModalOpen.id === item.id && isViewModalOpen.isOpen
+                  }
+                  setIsOpen={setIsViewModalOpen}
+                  item={item}
+                  id={item.id}
+                />
+
+                <ConfirmDialog
+                  trigger={
+                    <button title="Delete">
+                      <TrashIcon />
+                    </button>
+                  }
+                  title="Confirm Deletion"
+                  description="Are you sure you want to delete this solution finder? This action cannot be undone."
+                  confirmLabel="Yes, delete"
+                  cancelLabel="No, cancel"
+                  onConfirm={() => deletePriceAlertById(item.id)}
+                />
+              </div>
+            </div>
+          </ListItem>
+        ))}
       </div>
-    </>
+      {meta && meta?.pageCount > 1 && (
+        <Pagination
+          page={page}
+          total={meta.pageCount}
+          onPageChange={(newPage) => handleSetPage(newPage)}
+        />
+      )}
+    </div>
   );
 };

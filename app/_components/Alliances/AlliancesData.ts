@@ -1,3 +1,4 @@
+import Alliance2Logo from '@/assets/images/DigitalAlliances/NAFL & FIATA LOGO DIGITAL STRATEGY ALLIANCE.webp';
 import Alliance1Logo from '@/assets/images/DigitalAlliances/SEARATES Partner - Logo.jpg';
 
 import { StaticImageData } from 'next/image';
@@ -16,12 +17,12 @@ export const AlliancesData: AllianceData[] = [
     image: Alliance1Logo,
     link: 'https://wa.me/+971505574291',
   },
-  // {
-  //   id: '2',
-  //   title: 'Physical',
-  //   image: Alliance3Logo,
-  //   link: 'https://www.dpworld.com/',
-  // },
+  {
+    id: '2',
+    title: 'Physical',
+    image: Alliance2Logo,
+    link: 'https://wa.me/+971505574291',
+  },
   // {
   //   id: '3',
   //   title: 'dp-world',

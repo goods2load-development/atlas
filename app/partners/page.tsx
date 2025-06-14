@@ -50,6 +50,7 @@ export default function Partner() {
         }
       >
         <div className="w-full flex flex-col justify-center items-center pb-8">
+          <PartnersOurPartners />
           <PartnersStartingFrom />
           <section className="max-w-[1440px] w-full justify-center items-center gap-[40px] py-[40px] md:py-[104px] px-5 m-auto">
             <JoinOurTeam />
@@ -59,7 +60,6 @@ export default function Partner() {
           <PartnersAmplify />
           <PartnersVisibility />
           <PartnersBoostingTravel />
-          <PartnersOurPartners />
           <DigitalAlliances />
         </div>
       </BigLayout>
