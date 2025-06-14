@@ -58,6 +58,15 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 
+function ensureISODate(date: string | Date): string {
+  if (typeof date === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(date)) {
+    return date;
+  }
+
+  const d = typeof date === 'string' ? new Date(date) : date;
+  return d.toISOString();
+}
+
 const formSchema = (isLoggedIn: boolean) =>
   z.object({
     routes: z.array(
@@ -203,8 +212,8 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
         `routes[${index}][toRoute]`,
         `${item.toCountry}, ${item.to}`,
       );
-      formData.append(`routes[${index}][arrival]`, arrival);
-      formData.append(`routes[${index}][departure]`, departure);
+      formData.append(`routes[${index}][arrival]`, ensureISODate(arrival));
+      formData.append(`routes[${index}][departure]`, ensureISODate(departure));
       formData.append(`routes[${index}][goodsValue]`, goodsValue);
       formData.append(`routes[${index}][typeOfGoods]`, typeOfGoods);
       formData.append(`routes[${index}][placementOfGoods]`, placementOfGoods);
