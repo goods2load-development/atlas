@@ -94,6 +94,12 @@ const questionsContent = [
             <br />
             <br />
           </li>
+          <li>
+            Goods2Load facilitates visibility and connectivity but does not act
+            as an intermediary or booking platform.
+            <br />
+            <br />
+          </li>
         </ol>
       </span>
     ),

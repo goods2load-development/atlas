@@ -100,6 +100,7 @@ const PartnerDataPage = ({
       industries: [],
       placementId: isEdit ? partnerData?.placementId : '',
       link: isEdit ? partnerData?.link : undefined,
+      phoneNumber: isEdit ? partnerData?.phoneNumber : '',
     },
   });
   const { id } = useParams();
@@ -134,8 +135,9 @@ const PartnerDataPage = ({
     roadFreight: isEdit ? +partnerData?.serviceProvided.roadFreight : 0,
   });
   const link = form.watch('link');
+  const phoneNumber = form.watch('phoneNumber');
 
-  const embedId = useYouTubeEmbedId(partnerData?.link ?? '' ?? link);
+  const embedId = useYouTubeEmbedId(partnerData?.link ?? link ?? '');
   const [focusData, setFocusData] = useState<
     {
       label: string;
@@ -380,6 +382,7 @@ const PartnerDataPage = ({
       placementId: data.placementId,
       files: data.awardedBy as FileList,
       link: data?.link,
+      phoneNumber: data?.phoneNumber,
     };
 
     const formData = new FormData();
@@ -395,6 +398,10 @@ const PartnerDataPage = ({
 
     if (body?.link) {
       formData.append(`link`, body.link);
+    }
+
+    if (body?.phoneNumber) {
+      formData.append(`phoneNumber`, body.phoneNumber);
     }
 
     Object.keys(body.serviceProvided).forEach((key) => {
@@ -524,10 +531,36 @@ const PartnerDataPage = ({
                 )}
               </div>
             ) : (
-              <UploadPartnerLogo
-                companyPhoto={companyPhoto}
-                partnerId={id as string}
-              />
+              <div className={'flex flex-col'}>
+                <UploadPartnerLogo
+                  companyPhoto={companyPhoto}
+                  partnerId={id as string}
+                />
+                <div className={'flex flex-col gap-5'}>
+                  <FormField
+                    control={form?.control}
+                    name="phoneNumber"
+                    render={({ field }) => (
+                      <FormItem className="min-w-[294px]">
+                        <FormControl>
+                          <Input
+                            className="text-black"
+                            placeholder="Phone number (optional)"
+                            value={form.watch('phoneNumber')}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              form.setValue('phoneNumber', value);
+                            }}
+                          />
+                        </FormControl>
+                      </FormItem>
+                    )}
+                  />
+                  {phoneNumber && phoneNumber.trim().length > 0 && (
+                    <WhatsAppButton phoneNumber={phoneNumber} />
+                  )}
+                </div>
+              </div>
             )}
 
             <div className="pt-7 text-black text-left sm:max-w-[606px] basis-1/2 mt-8 sm:mt-0">
