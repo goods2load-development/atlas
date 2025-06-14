@@ -4,6 +4,7 @@ import { countVolume } from '@/lib/utils';
 
 import { useMemo } from 'react';
 
+import { format } from 'date-fns';
 import { ViewIcon } from 'lucide-react';
 
 import {
@@ -41,7 +42,8 @@ const ViewDialogPriceAlert = ({
     phoneNumber,
     fromRoute,
     toRoute,
-    price,
+    departure,
+    arrival,
     typeOfGoods,
     totalKg,
     goodsValue,
@@ -105,27 +107,35 @@ const ViewDialogPriceAlert = ({
           <div className="font-semibold mx-auto text-[22px]/[28px]">Info</div>
 
           <div>
-            <span className="font-semibold">Type of Goods</span> {typeOfGoods}
+            <span className="font-semibold">Departure:</span>{' '}
+            {format(departure, 'MM/dd/yyyy')}
           </div>
           <div>
-            <span className="font-semibold">Placement of Goods</span>{' '}
+            <span className="font-semibold">Arrival:</span>{' '}
+            {format(arrival, 'MM/dd/yyyy')}
+          </div>
+          <div>
+            <span className="font-semibold">Type of Goods:</span> {typeOfGoods}
+          </div>
+          <div>
+            <span className="font-semibold">Placement of Goods:</span>{' '}
             {placementOfGoods}
           </div>
 
           <div>
-            <span className="font-semibold">Total Kg</span> {totalKg}
+            <span className="font-semibold">Total Kg:</span> {totalKg}
           </div>
 
           <div>
-            <span className="font-semibold">Volume</span> {volume}&nbsp;m3
+            <span className="font-semibold">Volume:</span> {volume}&nbsp;m3
           </div>
 
           <div>
-            <span className="font-semibold">Goods value</span> {goodsValue}$
+            <span className="font-semibold">Goods value:</span> {goodsValue}$
           </div>
 
           <div>
-            <span className="font-semibold">Quantity</span> {quantity}
+            <span className="font-semibold">Quantity:</span> {quantity}
           </div>
         </DialogHeader>
       </DialogContent>
