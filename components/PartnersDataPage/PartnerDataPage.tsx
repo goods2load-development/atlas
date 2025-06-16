@@ -36,7 +36,7 @@ import React, { Fragment, useEffect, useMemo, useState } from 'react';
 
 import Fade from 'embla-carousel-fade';
 import useEmblaCarousel from 'embla-carousel-react';
-import { TrashIcon, X } from 'lucide-react';
+import { CrossIcon, TrashIcon, X } from 'lucide-react';
 import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { FormProvider, useForm } from 'react-hook-form';
@@ -138,7 +138,7 @@ const PartnerDataPage = ({
   const link = form.watch('link');
   const phoneNumber = form.watch('phoneNumber');
 
-  const embedId = useYouTubeEmbedId(partnerData?.link ?? link ?? '');
+  const embedId = useYouTubeEmbedId(link ?? partnerData?.link ?? '');
   const [focusData, setFocusData] = useState<
     {
       label: string;
@@ -382,8 +382,8 @@ const PartnerDataPage = ({
       missions: data.missions,
       placementId: data.placementId,
       files: data.awardedBy as FileList,
-      link: data?.link,
-      phoneNumber: data?.phoneNumber,
+      link: data?.link || '',
+      phoneNumber: data?.phoneNumber || '',
     };
 
     const formData = new FormData();
@@ -397,13 +397,8 @@ const PartnerDataPage = ({
     formData.append(`missions`, JSON.stringify(body.missions));
     formData.append(`focus`, JSON.stringify(body.focus));
 
-    if (body?.link) {
-      formData.append(`link`, body.link);
-    }
-
-    if (body?.phoneNumber) {
-      formData.append(`phoneNumber`, body.phoneNumber);
-    }
+    formData.append(`link`, body.link);
+    formData.append(`phoneNumber`, body.phoneNumber);
 
     Object.keys(body.serviceProvided).forEach((key) => {
       const typedKey = key as keyof typeof body.serviceProvided;
@@ -538,25 +533,35 @@ const PartnerDataPage = ({
                   partnerId={id as string}
                 />
                 <div className={'flex flex-col gap-5'}>
-                  <FormField
-                    control={form?.control}
-                    name="phoneNumber"
-                    render={({ field }) => (
-                      <FormItem className="min-w-[294px]">
-                        <FormControl>
-                          <Input
-                            className="text-black"
-                            placeholder="Phone number (optional)"
-                            value={form.watch('phoneNumber')}
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              form.setValue('phoneNumber', value);
-                            }}
-                          />
-                        </FormControl>
-                      </FormItem>
+                  <div className={'flex items-center relative gap-2'}>
+                    <FormField
+                      control={form?.control}
+                      name="phoneNumber"
+                      render={({ field }) => (
+                        <FormItem className="min-w-[294px]">
+                          <FormControl>
+                            <Input
+                              className="text-black"
+                              placeholder="Phone number (optional)"
+                              value={form.watch('phoneNumber')}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                form.setValue('phoneNumber', value);
+                              }}
+                            />
+                          </FormControl>
+                        </FormItem>
+                      )}
+                    />
+                    {phoneNumber && phoneNumber.length > 0 && (
+                      <CrossIcon
+                        onClick={() => form.setValue('phoneNumber', '')}
+                        className={'absolute right-3 rotate-45'}
+                        fill={'#FF6720'}
+                        color={'#FF6720'}
+                      />
                     )}
-                  />
+                  </div>
                   {phoneNumber && phoneNumber.trim().length > 0 && (
                     <WhatsAppButton phoneNumber={phoneNumber} />
                   )}
@@ -1140,25 +1145,35 @@ const PartnerDataPage = ({
 
           <div className={'mb-10'}>
             {!isGet && (
-              <FormField
-                control={form?.control}
-                name="link"
-                render={({ field }) => (
-                  <FormItem className="min-w-[294px]">
-                    <FormControl>
-                      <Input
-                        className="text-black"
-                        placeholder="Youtube link"
-                        value={form.watch('link')}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          form.setValue('link', value);
-                        }}
-                      />
-                    </FormControl>
-                  </FormItem>
+              <div className={'flex w-full items-center gap-2 relative'}>
+                <FormField
+                  control={form?.control}
+                  name="link"
+                  render={({ field }) => (
+                    <FormItem className="min-w-[294px] w-full">
+                      <FormControl>
+                        <Input
+                          className="text-black"
+                          placeholder="Youtube link"
+                          value={form.watch('link')}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            form.setValue('link', value);
+                          }}
+                        />
+                      </FormControl>
+                    </FormItem>
+                  )}
+                />
+                {link && link.length > 0 && (
+                  <CrossIcon
+                    onClick={() => form.setValue('link', '')}
+                    className={'rotate-45 absolute right-3'}
+                    fill={'#FF6720'}
+                    color={'#FF6720'}
+                  />
                 )}
-              />
+              </div>
             )}
             {embedId && (
               <iframe
