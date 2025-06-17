@@ -47,6 +47,8 @@ export interface OrderRoute {
   withdraw: string;
   delivery: string;
   description: string;
+  message?: string;
+  attachments?: string[];
 }
 
 export interface Route {
