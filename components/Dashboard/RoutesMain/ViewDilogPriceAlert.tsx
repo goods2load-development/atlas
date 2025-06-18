@@ -52,6 +52,7 @@ const ViewDialogPriceAlert = ({
     placementOfGoods,
     message,
     attachments,
+    createdAt,
   } = item;
 
   return (
@@ -134,6 +135,10 @@ const ViewDialogPriceAlert = ({
           </div>
           <div>
             <span className="font-semibold">Quantity:</span> {quantity}
+          </div>
+          <div>
+            <span className="font-semibold">Created at:</span>{' '}
+            {format(createdAt, 'MM/dd/yyyy')}
           </div>
 
           <hr />

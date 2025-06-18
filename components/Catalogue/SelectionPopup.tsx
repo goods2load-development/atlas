@@ -72,10 +72,10 @@ function SelectionPopup(props: SelectionPopupProps) {
 
   const formSchema = z.object({
     countryCode: z.string(),
-    phone: z.string().regex(new RegExp('^[0-9]{4,15}$')),
-    email: z.string().min(5).email(),
-    companyName: z.string().min(2),
-    message: z.string().min(2),
+    phone: isLoggedIn ? z.optional(z.string()) : z.string(),
+    email: isLoggedIn ? z.optional(z.string()) : z.string().min(5).email(),
+    companyName: isLoggedIn ? z.optional(z.string()) : z.string().min(2),
+    message: z.string().optional(),
     attachments: z.array(z.instanceof(File)).max(5, 'Max 5 files').optional(),
   });
   const form = useForm<z.infer<typeof formSchema>>({
@@ -131,7 +131,10 @@ function SelectionPopup(props: SelectionPopupProps) {
     formData.append('goodsValue', Number(goodsValue).toString());
     formData.append('incoterms', incoterms);
     formData.append('recaptchaToken', token);
-    formData.append('message', values.message);
+
+    if (values.message && values.message.length > 0) {
+      formData.append('message', values.message);
+    }
 
     if (values.attachments && values.attachments.length > 0) {
       values.attachments.forEach((file) => {
@@ -172,18 +175,7 @@ function SelectionPopup(props: SelectionPopupProps) {
 
   return (
     <Dialog onOpenChange={() => setStep(0)}>
-      <DialogTrigger
-        onClick={() => {
-          // if (user?.id) {
-          //   onPostData({
-          //     userCompany: user.companyName,
-          //     userEmail: user.email,
-          //     userPhone: user.phoneNumber,
-          //   });
-          // }
-        }}
-        asChild
-      >
+      <DialogTrigger asChild>
         <UIButton className="w-full md:w-[200px] rounded-lg">
           Get a free quotation
         </UIButton>
@@ -294,10 +286,7 @@ function SelectionPopup(props: SelectionPopupProps) {
                 name="message"
                 render={({ field }) => (
                   <FormItem className="mt-[16px]">
-                    <label className="text-[14px]">
-                      Message
-                      <IsRequired />
-                    </label>
+                    <label className="text-[14px]">Message</label>
                     <FormControl>
                       <Textarea
                         className="border-none bg-gray-2 min-h-[200px]"
