@@ -608,7 +608,9 @@ export interface Quotation {
   message: string;
   partnerId: string;
   phone: string;
+  createdAt: string;
   partner?: ResponsePartner;
+  attachments: string[];
 }
 
 interface UseQuotationsStore {

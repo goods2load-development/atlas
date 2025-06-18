@@ -3,14 +3,18 @@ import React, { Component } from 'react';
 import { Phone } from 'lucide-react';
 
 type WhatsAppButtonProps = {
-  phoneNumber: string; // приклад: "380961234567"
+  phoneNumber: string;
 };
 
 class WhatsAppButton extends Component<WhatsAppButtonProps> {
   handleClick = () => {
     const { phoneNumber } = this.props;
     const formatted = phoneNumber.replace(/[^0-9]/g, '');
-    const url = `https://wa.me/${formatted}`;
+
+    const message = `Hi Provider, I found you on Goods2Load and would like to know more about your services and how you can support my business. Thanks`;
+    const encodedMessage = encodeURIComponent(message);
+    const url = `https://wa.me/${formatted}?text=${encodedMessage}`;
+
     window.open(url, '_blank');
   };
 
