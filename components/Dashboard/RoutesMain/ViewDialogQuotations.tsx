@@ -5,6 +5,7 @@ import { toNormalText } from '@/lib/utils';
 
 import { useMemo } from 'react';
 
+import { format } from 'date-fns';
 import { FileCode, ViewIcon } from 'lucide-react';
 import Link from 'next/link';
 
@@ -48,7 +49,7 @@ export const ViewDialogQuotation = ({
       email: item.email,
       phone: item.phone,
       message: item.message,
-      createdAt: '10/06/25',
+      createdAt: format(item.createdAt, 'MM/dd/yyyy, HH:mm'),
     };
   }, [item]);
 

@@ -91,7 +91,9 @@ const ViewDialog = ({
                 )
                   return null;
                 const val = dateValues.includes(key as string)
-                  ? format(value, 'MM/dd/yyyy')
+                  ? key === 'createdAt'
+                    ? format(value, 'MM/dd/yyyy, HH:mm')
+                    : format(value, 'MM/dd/yyyy')
                   : value;
                 return (
                   <p key={key}>
