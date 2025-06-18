@@ -5,7 +5,8 @@ import { countVolume } from '@/lib/utils';
 import { useMemo } from 'react';
 
 import { format } from 'date-fns';
-import { ViewIcon } from 'lucide-react';
+import { FileCode, ViewIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import {
   Dialog,
@@ -50,6 +51,8 @@ const ViewDialogPriceAlert = ({
     quantity,
     placementOfGoods,
     message,
+    attachments,
+    createdAt,
   } = item;
 
   return (
@@ -121,21 +124,43 @@ const ViewDialogPriceAlert = ({
             <span className="font-semibold">Placement of Goods:</span>{' '}
             {placementOfGoods}
           </div>
-
           <div>
             <span className="font-semibold">Total Kg:</span> {totalKg}
           </div>
-
           <div>
             <span className="font-semibold">Volume:</span> {volume}&nbsp;m3
           </div>
-
           <div>
             <span className="font-semibold">Goods value:</span> {goodsValue}$
           </div>
-
           <div>
             <span className="font-semibold">Quantity:</span> {quantity}
+          </div>
+          <div>
+            <span className="font-semibold">Created at:</span>{' '}
+            {format(createdAt, 'MM/dd/yyyy')}
+          </div>
+
+          <hr />
+
+          <div className="font-semibold mx-auto text-[22px]/[28px]">
+            Attachments
+          </div>
+          <div className={'flex flex-row gap-2'}>
+            {attachments && attachments.length > 0 ? (
+              attachments.map((i: string) => (
+                <div key={i}>
+                  <Link
+                    target="_blank"
+                    href={`${process.env.NEXT_PUBLIC_BASE_URL}${i}`}
+                  >
+                    <FileCode className="hover:scale-110 transition-all" />
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <span className="font-semibold">No attachments</span>
+            )}
           </div>
         </DialogHeader>
       </DialogContent>

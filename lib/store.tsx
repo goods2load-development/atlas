@@ -609,6 +609,7 @@ export interface Quotation {
   partnerId: string;
   phone: string;
   partner?: ResponsePartner;
+  attachments: string[];
 }
 
 interface UseQuotationsStore {

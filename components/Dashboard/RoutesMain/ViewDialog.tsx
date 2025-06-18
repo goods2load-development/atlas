@@ -7,7 +7,8 @@ import { countVolume, toNormalText } from '@/lib/utils';
 import { useMemo } from 'react';
 
 import { format } from 'date-fns';
-import { ViewIcon } from 'lucide-react';
+import { FileCode, ViewIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import {
   Dialog,
@@ -21,9 +22,18 @@ const listOfUserData = [
   'userCompany',
   'userPhone',
   'userEmail',
+  'message',
   // 'address',
   // 'country',
   // 'postalCode',
+];
+
+const orderList = [
+  'userCompany',
+  'userPhone',
+  'userEmail',
+  'attachments',
+  'message',
 ];
 
 const ViewDialog = ({
@@ -77,7 +87,7 @@ const ViewDialog = ({
               {[...Object.entries(route)].map(([key, value]) => {
                 if (
                   key === 'id' ||
-                  (typeof key === 'string' && listOfUserData.includes(key))
+                  (typeof key === 'string' && orderList.includes(key))
                 )
                   return null;
                 const val = dateValues.includes(key as string)
@@ -90,6 +100,25 @@ const ViewDialog = ({
                   </p>
                 );
               })}
+            </div>
+            <hr className="block mt-4" />
+
+            <h2 className="font-bold text-xl my-4">Attachments</h2>
+            <div className={'flex flex-row gap-2'}>
+              {route.attachments && route.attachments.length > 0 ? (
+                route.attachments.map((i: string) => (
+                  <div key={i}>
+                    <Link
+                      target="_blank"
+                      href={`${process.env.NEXT_PUBLIC_BASE_URL}${i}`}
+                    >
+                      <FileCode className="hover:scale-110 transition-all" />
+                    </Link>
+                  </div>
+                ))
+              ) : (
+                <span className="font-semibold">No attachments</span>
+              )}
             </div>
           </div>
         </DialogHeader>
