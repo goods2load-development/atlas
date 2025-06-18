@@ -48,6 +48,7 @@ export interface OrderRoute {
   delivery: string;
   description: string;
   message?: string;
+  createdAt: string;
   attachments?: string[];
 }
 
