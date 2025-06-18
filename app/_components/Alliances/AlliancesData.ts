@@ -1,4 +1,4 @@
-import Alliance2Logo from '@/assets/images/DigitalAlliances/NAFL & FIATA LOGO DIGITAL STRATEGY ALLIANCE.webp';
+import Alliance2Logo from '@/assets/images/DigitalAlliances/Progetto senza titolo.png';
 import Alliance1Logo from '@/assets/images/DigitalAlliances/SEARATES Partner - Logo.jpg';
 
 import { StaticImageData } from 'next/image';
