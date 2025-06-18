@@ -19,8 +19,13 @@ const Editor = React.memo(
           height: 400,
           block_unsupported_drop: false,
           automatic_uploads: true,
+          link_target_list: [
+            { title: 'Current window', value: '' },
+            { title: 'New window', value: '_blank' },
+          ],
           image_title: true,
           file_picker_types: 'image',
+          link_default_target: '_blank',
           images_upload_url: `${process.env.NEXT_PUBLIC_BASE_URL}api/blogs/editor/upload`,
 
           images_upload_handler: (blobInfo: any, progress: any) => {
