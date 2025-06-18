@@ -138,7 +138,7 @@ const ViewDialogPriceAlert = ({
           </div>
           <div>
             <span className="font-semibold">Created at:</span>{' '}
-            {format(createdAt, 'MM/dd/yyyy')}
+            {format(createdAt, 'MM/dd/yyyy, HH:mm')}
           </div>
 
           <hr />
