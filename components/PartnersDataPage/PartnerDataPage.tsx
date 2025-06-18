@@ -496,7 +496,7 @@ const PartnerDataPage = ({
           <div className="lg:flex gap-14 justify-between mb-10 sm:mb-[104px]">
             {isGet ? (
               <div className="md:basis-1/2 rounded-2xl h-full">
-                <div className="relative mx-auto w-full h-[200px] flex items-center justify-center">
+                <div className="relative mx-auto w-full h-[300px] flex items-center justify-center">
                   {companyPhoto.endsWith('.svg') ? (
                     <ReactSVG
                       src={`${process.env.NEXT_PUBLIC_BASE_URL}${companyPhoto}`}
