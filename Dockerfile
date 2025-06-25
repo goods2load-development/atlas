@@ -10,7 +10,7 @@ COPY package*.json ./
 
 FROM base AS deps
 ENV HUSKY=0
-RUN HUSKY=0 npm install && npm cache clean --force
+RUN HUSKY=0 npm install --ignore-scripts && npm cache clean --force
 
 FROM base AS builder
 ARG NODE_ENV=production
@@ -20,7 +20,7 @@ ENV HUSKY=0
 ENV NODE_ENV=$NODE_ENV
 ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
 
-RUN HUSKY=0 npm install
+RUN HUSKY=0 npm install --ignore-scripts
 COPY . .
 
 RUN npm list @tinymce/tinymce-react || (echo "❌ @tinymce/tinymce-react not found" && exit 1)
