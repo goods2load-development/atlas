@@ -37,11 +37,6 @@ Thumbs.db
 .git
 .gitignore
 
-# Docker
-Dockerfile
-.dockerignore
-docker-compose*.yml
-
 # Testing
 coverage
 .coverage
