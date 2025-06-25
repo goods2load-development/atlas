@@ -1,0 +1,250 @@
+name: Deploy to Production (GCP)
+
+on:
+  push:
+    branches: [main]
+
+env:
+  PROJECT_ID: goods2load-oauth
+  REGION: europe-central2-a
+  INSTANCE_NAME: instance-20240628-20240904-100221
+  CONTAINER_NAME: goods2load-frontend-production
+  IMAGE_NAME: gcr.io/${{ vars.PROJECT_ID || 'goods2load-oauth' }}/goods2load-frontend
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    outputs:
+      image-tag: ${{ steps.meta.outputs.tags }}
+      image-digest: ${{ steps.build.outputs.digest }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Configure Docker for GCR
+        run: gcloud auth configure-docker --quiet
+
+      - name: Extract metadata
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ${{ env.IMAGE_NAME }}
+          tags: |
+            type=ref,event=branch
+            type=sha,prefix=production-
+
+      - name: Build and push Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          build-args: |
+            NODE_ENV=production
+
+  deploy:
+    needs: build-and-push
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Setup Google Cloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: Cleanup and prepare deployment
+        run: |
+          echo "🧹 Starting cleanup process..."
+
+          # Restart Docker service
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo systemctl restart docker.service || true" \
+            --ssh-flag="-o ConnectTimeout=30"
+
+          # Wait for Docker to be ready
+          sleep 10
+
+          # Cleanup Docker system
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker system prune -af || true"
+
+          # Kill processes on port 3000
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo fuser -k 3000/tcp || true"
+
+          # Wait a bit more
+          sleep 5
+
+      - name: Docker authentication on remote
+        run: |
+          echo "🔐 Authenticating Docker on remote instance..."
+          GCP_ACCESS_TOKEN=$(gcloud auth print-access-token)
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="echo '${GCP_ACCESS_TOKEN}' | sudo docker login -u oauth2accesstoken --password-stdin https://gcr.io"
+
+      - name: Stop old container
+        run: |
+          echo "🛑 Stopping old container..."
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker stop ${{ env.CONTAINER_NAME }} || true"
+
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker rm ${{ env.CONTAINER_NAME }} || true"
+
+          # Cleanup old images (более безопасная команда)
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker images | grep '${{ env.IMAGE_NAME }}' | grep -v '${{ github.sha }}' | awk '{print \$3}' | xargs -r sudo docker rmi || true"
+
+      - name: Create configuration files
+        run: |
+          echo "📁 Creating configuration files..."
+
+          # Create deployment script
+          cat > deploy_config.sh << 'EOF'
+          #!/bin/bash
+          set -e
+
+          echo "Creating gcloud.json..."
+          cat > gcloud.json << 'JSON_EOF'
+          ${{ secrets.GCLOUD_STORAGE_CONFIG }}
+          JSON_EOF
+
+          echo "Creating .env file..."
+          cat > .env << 'ENV_EOF'
+          NODE_ENV=production
+          NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
+          NEXT_PUBLIC_WEGLOT_API_KEY=${{ secrets.NEXT_PUBLIC_WEGLOT_API_KEY }}
+          WEGLOT_API_KEY=${{ secrets.WEGLOT_API_KEY }}
+          AUTH_SECRET=${{ secrets.AUTH_SECRET }}
+          GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
+          GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
+          JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
+          NEXT_PUBLIC_KEY_GET_GEOLOCATION=${{ secrets.NEXT_PUBLIC_KEY_GET_GEOLOCATION }}
+          NEXT_PUBLIC_DATALASTIC_API_KEY=${{ secrets.NEXT_PUBLIC_DATALASTIC_API_KEY }}
+          NEXT_PUBLIC_AVIATION_EDGE_API_KEY=${{ secrets.NEXT_PUBLIC_AVIATION_EDGE_API_KEY }}
+          NEXT_PUBLIC_GOOGLE_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_API_KEY }}
+          NEXT_PUBLIC_GEONAMES_API_KEY=${{ secrets.NEXT_PUBLIC_GEONAMES_API_KEY }}
+          NEXT_PUBLIC_TINY_KEY=${{ secrets.NEXT_PUBLIC_TINY_KEY }}
+          NEXT_PUBLIC_CLIENT_URL=${{ secrets.NEXT_PUBLIC_CLIENT_URL }}
+          NEXT_PUBLIC_OPENWIDGET_ORGANIZATION_ID=${{ secrets.NEXT_PUBLIC_OPENWIDGET_ORGANIZATION_ID }}
+          NEXT_PUBLIC_GOOGLE_GTAG_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_GTAG_SECRET }}
+          NEXT_PUBLIC_RAPID_HS_CODES_KEY=${{ secrets.NEXT_PUBLIC_RAPID_HS_CODES_KEY }}
+          ENV_EOF
+
+          echo "✅ Configuration files created successfully"
+          EOF
+
+          # Copy and execute script
+          gcloud compute scp deploy_config.sh volodymyr@${{ env.INSTANCE_NAME }}:~/deploy_config.sh --zone=${{ env.REGION }}
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="chmod +x ~/deploy_config.sh && ~/deploy_config.sh"
+
+      - name: Deploy new container
+        run: |
+          echo "🚀 Deploying new container..."
+
+          # Pull new image
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker pull ${{ env.IMAGE_NAME }}:production-${{ github.sha }}"
+
+          # Verify .env file exists
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="test -f /home/volodymyr/.env || (echo 'ERROR: .env file missing' && exit 1)"
+
+          # Start new container
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker run -d \
+              --name ${{ env.CONTAINER_NAME }} \
+              --env-file /home/volodymyr/.env \
+              -p 3000:3000 \
+              --add-host=host.docker.internal:host-gateway \
+              --restart unless-stopped \
+              --health-cmd='curl -f http://localhost:3000 || exit 1' \
+              --health-interval=30s \
+              --health-timeout=10s \
+              --health-retries=3 \
+              ${{ env.IMAGE_NAME }}:production-${{ github.sha }}"
+
+      - name: Verify deployment
+        run: |
+          echo "✅ Verifying deployment..."
+
+          # Wait for container to start
+          sleep 10
+
+          # Check container status
+          CONTAINER_STATUS=$(gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker ps --filter name=${{ env.CONTAINER_NAME }} --format '{{.Status}}'")
+
+          if [[ -z "$CONTAINER_STATUS" ]]; then
+            echo "❌ Container is not running!"
+            exit 1
+          fi
+
+          echo "📊 Container status: $CONTAINER_STATUS"
+
+          # Check application logs
+          echo "📋 Application logs:"
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker logs ${{ env.CONTAINER_NAME }} --tail=20"
+
+          # Health check
+          echo "🏥 Performing health check..."
+          for i in {1..5}; do
+            HEALTH_STATUS=$(gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+              --zone=${{ env.REGION }} \
+              --command="sudo docker inspect ${{ env.CONTAINER_NAME }} --format='{{.State.Health.Status}}' || echo 'no-health'")
+            
+            if [[ "$HEALTH_STATUS" == "healthy" ]]; then
+              echo "✅ Application is healthy!"
+              break
+            elif [[ "$i" == "5" ]]; then
+              echo "⚠️  Health check timeout, but deployment completed"
+            else
+              echo "⏳ Waiting for health check... ($i/5)"
+              sleep 15
+            fi
+          done
+
+          # Cleanup
+          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="rm -f ~/deploy_config.sh"
+
+          echo "🎉 Deployment completed successfully!"
