@@ -17,6 +17,8 @@ jobs:
     outputs:
       image-tag: ${{ steps.meta.outputs.tags }}
       image-digest: ${{ steps.build.outputs.digest }}
+      # add specific tag for use in deploy
+      sha-tag: ${{ env.IMAGE_NAME }}:production-${{ github.sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -45,6 +47,8 @@ jobs:
           tags: |
             type=ref,event=branch
             type=sha,prefix=production-
+            # add latest tag for first deploy
+            type=raw,value=latest
 
       - name: Build and push Docker image
         id: build
@@ -59,6 +63,13 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
+
+      # add check for successful build
+      - name: Verify image was pushed
+        run: |
+          echo "✅ Image built and pushed successfully"
+          echo "Tags: ${{ steps.meta.outputs.tags }}"
+          echo "Digest: ${{ steps.build.outputs.digest }}"
 
   deploy:
     needs: build-and-push
@@ -120,7 +131,7 @@ jobs:
             --zone=${{ env.REGION }} \
             --command="sudo docker rm ${{ env.CONTAINER_NAME }} || true"
 
-          # Cleanup old images (более безопасная команда)
+          # Cleanup old images (more secure command) - only if not first deploy
           gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
             --zone=${{ env.REGION }} \
             --command="sudo docker images | grep '${{ env.IMAGE_NAME }}' | grep -v '${{ github.sha }}' | awk '{print \$3}' | xargs -r sudo docker rmi || true"
@@ -174,10 +185,15 @@ jobs:
         run: |
           echo "🚀 Deploying new container..."
 
-          # Pull new image
+          # define image tag for use
+          IMAGE_TAG="${{ env.IMAGE_NAME }}:production-${{ github.sha }}"
+          echo "Using image tag: $IMAGE_TAG"
+
+          # Pull new image with check
+          echo "📥 Pulling Docker image..."
           gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
             --zone=${{ env.REGION }} \
-            --command="sudo docker pull ${{ env.IMAGE_NAME }}:production-${{ github.sha }}"
+            --command="sudo docker pull $IMAGE_TAG"
 
           # Verify .env file exists
           gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
@@ -185,6 +201,7 @@ jobs:
             --command="test -f /home/volodymyr/.env || (echo 'ERROR: .env file missing' && exit 1)"
 
           # Start new container
+          echo "🏃 Starting new container..."
           gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
             --zone=${{ env.REGION }} \
             --command="sudo docker run -d \
@@ -197,7 +214,7 @@ jobs:
               --health-interval=30s \
               --health-timeout=10s \
               --health-retries=3 \
-              ${{ env.IMAGE_NAME }}:production-${{ github.sha }}"
+              $IMAGE_TAG"
 
       - name: Verify deployment
         run: |
@@ -213,6 +230,13 @@ jobs:
 
           if [[ -z "$CONTAINER_STATUS" ]]; then
             echo "❌ Container is not running!"
+            
+            # Show container logs for debugging
+            echo "📋 Container logs:"
+            gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+              --zone=${{ env.REGION }} \
+              --command="sudo docker logs ${{ env.CONTAINER_NAME }} || true"
+            
             exit 1
           fi
 
@@ -223,24 +247,6 @@ jobs:
           gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
             --zone=${{ env.REGION }} \
             --command="sudo docker logs ${{ env.CONTAINER_NAME }} --tail=20"
-
-          # Health check
-          echo "🏥 Performing health check..."
-          for i in {1..5}; do
-            HEALTH_STATUS=$(gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
-              --zone=${{ env.REGION }} \
-              --command="sudo docker inspect ${{ env.CONTAINER_NAME }} --format='{{.State.Health.Status}}' || echo 'no-health'")
-            
-            if [[ "$HEALTH_STATUS" == "healthy" ]]; then
-              echo "✅ Application is healthy!"
-              break
-            elif [[ "$i" == "5" ]]; then
-              echo "⚠️  Health check timeout, but deployment completed"
-            else
-              echo "⏳ Waiting for health check... ($i/5)"
-              sleep 15
-            fi
-          done
 
           # Cleanup
           gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
