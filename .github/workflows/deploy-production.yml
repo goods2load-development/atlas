@@ -85,6 +85,7 @@ jobs:
           build-args: |
             NODE_ENV=production
             NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
+            NEXTAUTH_URL=${{ secrets.NEXT_PUBLIC_CLIENT_URL }}
 
       # add check for successful build
       - name: Verify image was pushed
@@ -183,6 +184,7 @@ jobs:
           NEXT_PUBLIC_WEGLOT_API_KEY=${{ secrets.NEXT_PUBLIC_WEGLOT_API_KEY }}
           WEGLOT_API_KEY=${{ secrets.WEGLOT_API_KEY }}
           AUTH_SECRET=${{ secrets.AUTH_SECRET }}
+          NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
           JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
