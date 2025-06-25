@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: goods2load_frontend
+    restart: unless-stopped
+    ports:
+      - '3000:3000'
+    environment:
+      - NODE_ENV=production
+      - NEXT_PUBLIC_BASE_URL=https://api.stage.goods2load.com/
+      - NEXT_PUBLIC_CLIENT_URL=https://goods2load.com
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - goods2load_network
+    command: npm run start
+
+networks:
+  goods2load_network:
+    driver: bridge
