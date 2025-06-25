@@ -5,7 +5,9 @@ import { toNormalText } from '@/lib/utils';
 
 import { useMemo } from 'react';
 
-import { ViewIcon } from 'lucide-react';
+import { format } from 'date-fns';
+import { FileCode, ViewIcon } from 'lucide-react';
+import Link from 'next/link';
 
 import {
   Dialog,
@@ -47,7 +49,7 @@ export const ViewDialogQuotation = ({
       email: item.email,
       phone: item.phone,
       message: item.message,
-      createdAt: '10/06/25',
+      createdAt: format(item.createdAt, 'MM/dd/yyyy, HH:mm'),
     };
   }, [item]);
 
@@ -95,6 +97,28 @@ export const ViewDialogQuotation = ({
               })}
             </div>
           )}
+
+          <hr />
+
+          <div className="font-semibold mx-auto text-[22px]/[28px]">
+            Attachments
+          </div>
+          <div className={'flex flex-row gap-2'}>
+            {item?.attachments && item.attachments.length > 0 ? (
+              item.attachments.map((i: string) => (
+                <div key={i}>
+                  <Link
+                    target="_blank"
+                    href={`${process.env.NEXT_PUBLIC_BASE_URL}${i}`}
+                  >
+                    <FileCode className="hover:scale-110 transition-all" />
+                  </Link>
+                </div>
+              ))
+            ) : (
+              <span className="font-semibold">No attachments</span>
+            )}
+          </div>
         </DialogHeader>
       </DialogContent>
       <DialogTrigger asChild>
