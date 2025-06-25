@@ -41,6 +41,7 @@ EXPOSE 3000
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
 ENV PORT=3000
+ENV NEXT_PUBLIC_BASE_URL=https://api.stage.goods2load.com
 
 ENTRYPOINT ["dumb-init", "--"]
 CMD ["npm", "start"]
