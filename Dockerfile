@@ -15,10 +15,12 @@ RUN HUSKY=0 npm install --ignore-scripts && npm cache clean --force
 FROM base AS builder
 ARG NODE_ENV=production
 ARG NEXT_PUBLIC_BASE_URL=https://api.stage.goods2load.com
+ARG NEXTAUTH_URL=https://goods2load.com
 
 ENV HUSKY=0
 ENV NODE_ENV=$NODE_ENV
 ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ENV NEXTAUTH_URL=$NEXTAUTH_URL
 
 RUN HUSKY=0 npm install --ignore-scripts
 COPY . .
