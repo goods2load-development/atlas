@@ -1,5 +1,18 @@
+import path from 'path';
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  experimental: {
+    esmExternals: 'loose',
+  },
+  webpack: (config, { isServer }) => {
+    // Ensure proper path resolution
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.resolve(process.cwd(), './'),
+    };
+    return config;
+  },
   headers: async () => {
     if (process.env.NODE_ENV === 'production') {
       return [
