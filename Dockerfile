@@ -9,7 +9,7 @@ WORKDIR /app
 COPY package*.json ./
 
 FROM base AS deps
-RUN npm ci --only=production && npm cache clean --force
+RUN npm install --only=production && npm cache clean --force
 
 FROM base AS builder
 # install dependencies
