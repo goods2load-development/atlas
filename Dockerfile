@@ -9,9 +9,17 @@ WORKDIR /app
 COPY package*.json ./
 
 FROM base AS deps
+ENV HUSKY=0
 RUN npm install --ignore-scripts && npm cache clean --force
 
 FROM base AS builder
+ARG NODE_ENV=production
+ARG NEXT_PUBLIC_BASE_URL=https://api.stage.goods2load.com
+
+ENV HUSKY=0
+ENV NODE_ENV=$NODE_ENV
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+
 RUN npm install --ignore-scripts
 COPY . .
 
