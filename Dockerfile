@@ -9,11 +9,24 @@ WORKDIR /app
 COPY package*.json ./
 
 FROM base AS deps
+# Отключаем husky и скрипты для production сборки
+ENV HUSKY=0
 RUN npm install --omit=dev --ignore-scripts && npm cache clean --force
 
 FROM base AS builder
-# install dependencies
-RUN npm install
+# Объявляем build arguments
+ARG NODE_ENV=production
+ARG NEXT_PUBLIC_BASE_URL=https://api.stage.goods2load.com
+ARG NEXT_PUBLIC_CLIENT_URL=https://api.stage.goods2load.com
+
+# Отключаем husky для builder стадии тоже
+ENV HUSKY=0
+# Устанавливаем переменные окружения для сборки
+ENV NODE_ENV=$NODE_ENV
+ENV NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL
+ENV NEXT_PUBLIC_CLIENT_URL=$NEXT_PUBLIC_CLIENT_URL
+
+RUN npm install --ignore-scripts
 COPY . .
 
 RUN npm run build
