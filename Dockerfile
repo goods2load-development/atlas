@@ -12,6 +12,7 @@ FROM base AS deps
 RUN npm ci --only=production && npm cache clean --force
 
 FROM base AS builder
+# install dependencies
 RUN npm install
 COPY . .
 
