@@ -23,6 +23,26 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Check environment variables
+        run: |
+          echo "🔍 Checking environment variables..."
+          echo "PROJECT_ID: ${{ env.PROJECT_ID }}"
+          echo "IMAGE_NAME: ${{ env.IMAGE_NAME }}"
+          echo "NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}"
+          echo "GCP_SA_KEY: ${{ secrets.GCP_SA_KEY != '' && 'SET' || 'NOT SET' }}"
+
+          if [ -z "${{ secrets.NEXT_PUBLIC_BASE_URL }}" ]; then
+            echo "❌ NEXT_PUBLIC_BASE_URL is not set"
+            exit 1
+          fi
+
+          if [ -z "${{ secrets.GCP_SA_KEY }}" ]; then
+            echo "❌ GCP_SA_KEY is not set"
+            exit 1
+          fi
+
+          echo "✅ All required environment variables are set"
+
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
@@ -45,10 +65,11 @@ jobs:
         with:
           images: ${{ env.IMAGE_NAME }}
           tags: |
-            type=ref,event=branch
-            type=sha,prefix=production-
-            # add latest tag for first deploy
             type=raw,value=latest
+            type=raw,value=main
+            type=sha,prefix=production-
+          flavor: |
+            latest=auto
 
       - name: Build and push Docker image
         id: build
@@ -63,6 +84,7 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             NODE_ENV=production
+            NEXT_PUBLIC_BASE_URL=${{ secrets.NEXT_PUBLIC_BASE_URL }}
 
       # add check for successful build
       - name: Verify image was pushed
@@ -70,6 +92,10 @@ jobs:
           echo "✅ Image built and pushed successfully"
           echo "Tags: ${{ steps.meta.outputs.tags }}"
           echo "Digest: ${{ steps.build.outputs.digest }}"
+
+          # check that image is really in registry
+          echo "🔍 Verifying image in registry..."
+          gcloud container images list-tags gcr.io/${{ env.PROJECT_ID }}/goods2load-frontend --limit=5
 
   deploy:
     needs: build-and-push
@@ -185,15 +211,43 @@ jobs:
         run: |
           echo "🚀 Deploying new container..."
 
-          # define image tag for use
-          IMAGE_TAG="${{ env.IMAGE_NAME }}:production-${{ github.sha }}"
-          echo "Using image tag: $IMAGE_TAG"
+          SHA_TAG="${{ env.IMAGE_NAME }}:production-${{ github.sha }}"
+          LATEST_TAG="${{ env.IMAGE_NAME }}:latest"
+          MAIN_TAG="${{ env.IMAGE_NAME }}:main"
 
-          # Pull new image with check
-          echo "📥 Pulling Docker image..."
-          gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+          echo "Trying to pull image with different tags..."
+
+          if gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
             --zone=${{ env.REGION }} \
-            --command="sudo docker pull $IMAGE_TAG"
+            --command="sudo docker pull $SHA_TAG" 2>/dev/null; then
+            IMAGE_TAG="$SHA_TAG"
+            echo "✅ Using SHA tag: $IMAGE_TAG"
+          elif gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker pull $LATEST_TAG" 2>/dev/null; then
+            IMAGE_TAG="$LATEST_TAG"
+            echo "✅ Using latest tag: $IMAGE_TAG"
+          elif gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+            --zone=${{ env.REGION }} \
+            --command="sudo docker pull $MAIN_TAG" 2>/dev/null; then
+            IMAGE_TAG="$MAIN_TAG"
+            echo "✅ Using main tag: $IMAGE_TAG"
+          else
+            echo "❌ No available image found in registry"
+            echo "🔧 Falling back to local build on server..."
+            
+            # local build on server
+            gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+              --zone=${{ env.REGION }} \
+              --command="cd /home/volodymyr/goods2load-FE && git pull origin main"
+            
+            gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
+              --zone=${{ env.REGION }} \
+              --command="cd /home/volodymyr/goods2load-FE && sudo docker build -t goods2load-frontend-local:latest ."
+            
+            IMAGE_TAG="goods2load-frontend-local:latest"
+            echo "✅ Using locally built image: $IMAGE_TAG"
+          fi
 
           # Verify .env file exists
           gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
@@ -201,7 +255,7 @@ jobs:
             --command="test -f /home/volodymyr/.env || (echo 'ERROR: .env file missing' && exit 1)"
 
           # Start new container
-          echo "🏃 Starting new container..."
+          echo "🏃 Starting new container with image: $IMAGE_TAG"
           gcloud compute ssh volodymyr@${{ env.INSTANCE_NAME }} \
             --zone=${{ env.REGION }} \
             --command="sudo docker run -d \
