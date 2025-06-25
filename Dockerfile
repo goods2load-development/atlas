@@ -11,7 +11,7 @@ COPY package*.json ./
 FROM base AS deps
 # Отключаем husky и скрипты для production сборки
 ENV HUSKY=0
-RUN npm install --omit=dev --ignore-scripts && npm cache clean --force
+RUN npm install --ignore-scripts && npm cache clean --force
 
 FROM base AS builder
 # Объявляем build arguments
