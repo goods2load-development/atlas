@@ -1,3 +1,65 @@
+// import path from 'path';
+// /** @type {import('next').NextConfig} */
+// const nextConfig = {
+//   experimental: {
+//     esmExternals: 'loose',
+//   },
+//   webpack: (config, { isServer }) => {
+//     // Ensure proper path resolution
+//     config.resolve.alias = {
+//       ...config.resolve.alias,
+//       '@': path.resolve(process.cwd(), './'),
+//     };
+//     return config;
+//   },
+//   headers: async () => {
+//     if (process.env.NODE_ENV === 'production') {
+//       return [
+//         {
+//           source: '/_next/static/:path*',
+//           headers: [
+//             {
+//               key: 'Cache-Control',
+//               value: 'public, max-age=31536000, immutable',
+//             },
+//           ],
+//         },
+//         {
+//           source: '/_next/image/:path*',
+//           headers: [
+//             {
+//               key: 'Cache-Control',
+//               value: 'public, max-age=604800, immutable',
+//             },
+//           ],
+//         },
+//         {
+//           source: '/scripts/:path*',
+//           headers: [
+//             {
+//               key: 'Cache-Control',
+//               value: 'public, max-age=3600, stale-while-revalidate=86400',
+//             },
+//           ],
+//         },
+//       ];
+//     }
+//     return [];
+//   },
+//   images: {
+//     formats: ['image/webp', 'image/avif'],
+//     domains: [
+//       'localhost',
+//       'api.dev.goods2load.com',
+//       'api.stage.goods2load.com',
+//       'lh3.googleusercontent.com',
+//       'api.dev.goods2load.com',
+//       'production-dubainight.s3.me-south-1.amazonaws.com',
+//     ],
+//   },
+//   compress: true,
+// };
+// export default nextConfig;
 import path from 'path';
 
 /** @type {import('next').NextConfig} */
@@ -6,7 +68,6 @@ const nextConfig = {
     esmExternals: 'loose',
   },
   webpack: (config, { isServer }) => {
-    // Ensure proper path resolution
     config.resolve.alias = {
       ...config.resolve.alias,
       '@': path.resolve(process.cwd(), './'),
@@ -45,18 +106,27 @@ const nextConfig = {
         },
       ];
     }
-
     return [];
   },
   images: {
     formats: ['image/webp', 'image/avif'],
-    domains: [
-      'localhost',
-      'api.dev.goods2load.com',
-      'api.stage.goods2load.com',
-      'lh3.googleusercontent.com',
-      'api.dev.goods2load.com',
-      'production-dubainight.s3.me-south-1.amazonaws.com',
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'localhost',
+      },
+      {
+        protocol: 'https',
+        hostname: 'api.stage.goods2load.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'lh3.googleusercontent.com',
+      },
+      {
+        protocol: 'https',
+        hostname: 'production-dubainight.s3.me-south-1.amazonaws.com',
+      },
     ],
   },
   compress: true,
