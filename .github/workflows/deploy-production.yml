@@ -90,7 +90,12 @@ jobs:
             NEXT_PUBLIC_WEGLOT_API_KEY=${{ secrets.NEXT_PUBLIC_WEGLOT_API_KEY }}
             NEXT_PUBLIC_GOOGLE_GTAG_SECRET=${{ secrets.NEXT_PUBLIC_GOOGLE_GTAG_SECRET }}
             NEXT_PUBLIC_RAPID_HS_CODES_KEY=${{ secrets.NEXT_PUBLIC_RAPID_HS_CODES_KEY }}
-            NEXT_PUBLIC_CLIENT_URL=${{ secrets.NEXT_PUBLIC_CLIENT_URL }}
+            NEXT_PUBLIC_TINY_KEY=${{ secrets.NEXT_PUBLIC_TINY_KEY }}
+            NEXT_PUBLIC_KEY_GET_GEOLOCATION=${{ secrets.NEXT_PUBLIC_KEY_GET_GEOLOCATION }}
+            NEXT_PUBLIC_DATALASTIC_API_KEY=${{ secrets.NEXT_PUBLIC_DATALASTIC_API_KEY }}
+            NEXT_PUBLIC_AVIATION_EDGE_API_KEY=${{ secrets.NEXT_PUBLIC_AVIATION_EDGE_API_KEY }}
+            NEXT_PUBLIC_GOOGLE_API_KEY=${{ secrets.NEXT_PUBLIC_GOOGLE_API_KEY }}
+            NEXT_PUBLIC_GEONAMES_API_KEY=${{ secrets.NEXT_PUBLIC_GEONAMES_API_KEY }}
 
       # add check for successful build
       - name: Verify image was pushed
@@ -189,7 +194,7 @@ jobs:
           NEXT_PUBLIC_WEGLOT_API_KEY=${{ secrets.NEXT_PUBLIC_WEGLOT_API_KEY }}
           WEGLOT_API_KEY=${{ secrets.WEGLOT_API_KEY }}
           AUTH_SECRET=${{ secrets.AUTH_SECRET }}
-          NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_URL=${{ secrets.NEXT_PUBLIC_CLIENT_URL }}
           GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }}
           GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }}
           JWT_ACCESS_SECRET=${{ secrets.JWT_ACCESS_SECRET }}
