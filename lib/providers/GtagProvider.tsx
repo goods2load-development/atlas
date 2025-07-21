@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 
-const GTM_ID = process.env.NEXT_PUBLIC_GOOGLE_GTAG_SECRET;
+const GTM_ID = 'GTM-P3CM7T6Q';
 
 const GTMProvider = () => {
   useEffect(() => {
