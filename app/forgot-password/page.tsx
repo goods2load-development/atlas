@@ -13,6 +13,10 @@ const ForgotPasswordLazy = dynamic(
 
 export const metadata: Metadata = {
   title: 'Forgot password',
+  description: 'Change your password here | GOODS2LOAD',
+  alternates: {
+    canonical: `${process.env.NEXT_PUBLIC_CLIENT_URL}/forgot-password`,
+  },
 };
 
 export default function Login() {

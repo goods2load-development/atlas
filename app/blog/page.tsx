@@ -4,7 +4,6 @@ import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
 
 import BigLayout from '@/components/BigLayout';
-import Blog from '@/components/Blog/Blog';
 import Footer from '@/components/Footer';
 
 const title = 'Blog - GOODS2LOAD | Insights and Updates on Logistics';
@@ -18,6 +17,9 @@ const BlogLazy = dynamic(() => import('@/components/Blog/Blog'), {
 export function generateMetadata(): Metadata {
   const defaultMetadata = generateDefaultMetadata();
 
+  const baseUrl =
+    process.env.NEXT_PUBLIC_CLIENT_URL || 'https://goods2load.com';
+
   return {
     title,
     description,
@@ -25,11 +27,15 @@ export function generateMetadata(): Metadata {
       ...defaultMetadata.openGraph,
       title,
       description,
+      url: `${baseUrl}/blog`,
     },
     twitter: {
       ...defaultMetadata.twitter,
       title,
       description,
+    },
+    alternates: {
+      canonical: `${baseUrl}/blog`,
     },
   };
 }

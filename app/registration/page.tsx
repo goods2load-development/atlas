@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: 'Registration - GOODS2LOAD',
     description:
       'Start using GOODS2LOAD by creating your account. Experience a better, digital-first approach to logistics.',
-    url: canonical,
+    url: 'https://goods2load.com/registration',
   },
   twitter: {
     title: 'Registration - GOODS2LOAD',
@@ -29,7 +29,7 @@ export const metadata: Metadata = {
     index: false,
   },
   alternates: {
-    canonical,
+    canonical: 'https://goods2load.com/registration',
   },
 };
 

@@ -599,9 +599,9 @@ function Registration() {
           {step === 0 && (
             <>
               <div className="text-center mb-10">
-                <span className="text-[40px]/[60px] italic font-normal">
+                <h1 className="text-[40px]/[60px] italic font-normal">
                   Welcome!
-                </span>
+                </h1>
                 <br />
                 <span className="text-[16px]/[20px] font-normal">
                   Please enter your details
