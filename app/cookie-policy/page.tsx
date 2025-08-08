@@ -7,7 +7,6 @@ import dynamic from 'next/dynamic';
 import Footer from '@/components/Footer';
 import DynamicMenu from '@/components/Header/DynamicMenu';
 import HeaderClient from '@/components/Header/HeaderClient';
-import LegacyPage from '@/components/Legacy/LegacyPage';
 
 const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/cookie-policy`;
 
@@ -21,10 +20,14 @@ export function generateMetadata(): Metadata {
   return {
     title,
     description,
+    alternates: {
+      canonical,
+    },
     openGraph: {
       ...defaultMetadata.openGraph,
       title,
       description,
+      url: canonical,
     },
     twitter: {
       ...defaultMetadata.twitter,

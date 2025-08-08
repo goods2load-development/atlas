@@ -115,6 +115,7 @@ const nextConfig = {
     minimumCacheTTL: 86400,
     dangerouslyAllowSVG: true,
     contentDispositionType: 'attachment',
+    domains: ['api.dev.goods2load.com', 'api.goods2load.com'],
     remotePatterns: [
       {
         protocol: 'http',

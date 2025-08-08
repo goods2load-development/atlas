@@ -17,10 +17,14 @@ export function generateMetadata(): Metadata {
   return {
     title,
     description,
+    alternates: {
+      canonical: '/catalogue',
+    },
     openGraph: {
       ...defaultMetadata.openGraph,
       title,
       description,
+      url: '/catalogue',
     },
     twitter: {
       ...defaultMetadata.twitter,
