@@ -12,7 +12,7 @@ const BlogCategoriesLazy = dynamic(
   { ssr: false },
 );
 
-export function slugifyCategory(str: string, strict: boolean = false): string {
+const slugifyCategory = (str: string, strict: boolean = true) => {
   let slug = str
     .toLowerCase()
     .trim()
@@ -27,7 +27,7 @@ export function slugifyCategory(str: string, strict: boolean = false): string {
   }
 
   return slug;
-}
+};
 
 export async function generateMetadata({
   params,
