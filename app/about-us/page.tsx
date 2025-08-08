@@ -44,9 +44,7 @@ export const generateMetadata = ({
   const title = data?.[key]?.title || data.company.title;
   const defaultMetadata = generateDefaultMetadata();
 
-  const canonical = key
-    ? `${process.env.NEXT_PUBLIC_CLIENT_URL}/about-us?${key}`
-    : `${process.env.NEXT_PUBLIC_CLIENT_URL}/about-us`;
+  const canonical = `${process.env.NEXT_PUBLIC_CLIENT_URL}/about-us`;
 
   return {
     title,
