@@ -30,7 +30,7 @@ export function generateMetadata(): Metadata {
   const baseUrl =
     process.env.NEXT_PUBLIC_CLIENT_URL || 'https://goods2load.com';
 
-  const pathname = '/careers';
+  const pathname = '/career';
   const canonicalUrl = `${baseUrl}${pathname}`;
 
   return {
