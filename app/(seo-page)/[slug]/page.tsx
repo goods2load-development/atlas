@@ -39,29 +39,52 @@ export async function generateMetadata({
   }
 
   const defaultMetadata = generateDefaultMetadata();
+  const canonical = `https://goods2load.com/${slug}`;
+
+  type ImageType = {
+    url: string;
+    alt?: string;
+    width?: number;
+    height?: number;
+  };
+
+  const defaultImage: ImageType = {
+    url: `${process.env.NEXT_PUBLIC_BASE_URL || ''}/default-image.jpg`,
+    alt: 'Goods2load',
+  };
+
+  const images: ImageType[] = Array.isArray(defaultMetadata.openGraph?.images)
+    ? (defaultMetadata.openGraph.images as ImageType[])
+    : defaultMetadata.openGraph?.images
+      ? [defaultMetadata.openGraph.images as ImageType]
+      : [defaultImage];
 
   return {
-    title: data?.title,
-    description: data?.description || 'Goods2load',
-    keywords: data?.category?.name || '',
+    title: data.title,
+    description: data.description || 'Goods2load',
+    keywords: data.category?.name || '',
+    alternates: {
+      canonical,
+    },
     openGraph: {
-      ...defaultMetadata.openGraph,
-      ...(!!data?.block1File && {
-        images: [
-          {
-            ...defaultMetadata.openGraph.images[0],
-            url: `${process.env.NEXT_PUBLIC_BASE_URL}${data?.block1File}`,
-            alt: data?.title,
-          },
-        ],
-      }),
-      title: data?.title,
-      description: data?.description,
+      ...(defaultMetadata.openGraph || {}),
+      title: data.title,
+      description: data.description,
+      url: canonical,
+      images: !!data.block1File
+        ? [
+            {
+              ...(images[0] || {}),
+              url: `${process.env.NEXT_PUBLIC_BASE_URL}${data.block1File}`,
+              alt: data.title,
+            },
+          ]
+        : images,
     },
     twitter: {
-      ...defaultMetadata.twitter,
-      title: data?.title,
-      description: data?.description,
+      ...(defaultMetadata.twitter || {}),
+      title: data.title,
+      description: data.description,
     },
   };
 }

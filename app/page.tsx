@@ -34,14 +34,21 @@ const description =
 
 export function generateMetadata(): Metadata {
   const defaultMetadata = generateDefaultMetadata();
+  const baseUrl =
+    process.env.NEXT_PUBLIC_CLIENT_URL || 'https://goods2load.com';
+  const canonical = `${baseUrl}/`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical,
+    },
     openGraph: {
       ...defaultMetadata.openGraph,
       title,
       description,
+      url: canonical,
     },
     twitter: {
       ...defaultMetadata.twitter,

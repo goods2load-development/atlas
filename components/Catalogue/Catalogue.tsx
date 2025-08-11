@@ -36,8 +36,11 @@ const renderIcon = (deliveryBy: string) => {
 
 export default function Catalogue() {
   const [searchOpened, setSearchOpened] = useState(false);
-  const { deliveryBy } = useFilterStore((state: any) => state);
-  const { partners, isPartnersLoading } = useFilterStore((state: any) => state);
+  const {
+    deliveryBy,
+    partners = [],
+    isPartnersLoading,
+  } = useFilterStore((state: any) => state);
 
   return (
     <div className=" lg:grid grid-cols-[auto_1fr] grid-rows-[auto_1fr] p-[24px_16px] max-w-[1328px] mx-auto gap-8 overflow-visible">
@@ -56,7 +59,7 @@ export default function Catalogue() {
             <SheetContent side="left" className="pt-[54px] overflow-y-auto">
               <p className="pb-[32px] text-[18px] font-medium">Filters</p>
               <PriceAlerts
-                isPulseAnimation={!!!partners.length && !isPartnersLoading}
+                isPulseAnimation={!partners.length && !isPartnersLoading}
               />
               <Filter />
             </SheetContent>

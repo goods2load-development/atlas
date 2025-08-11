@@ -10,9 +10,9 @@ import {
 export const FormStepFinalAgreement = ({ form }: { form: any }) => {
   return (
     <div>
-      <h1 className="font-semibold text-[16px]/[24px] mb-4 text-center">
+      <h2 className="font-semibold text-[16px]/[24px] mb-4 text-center">
         Services Subscription Agreement
-      </h1>
+      </h2>
 
       <div className="text-[10px]/[1.2em] border-b border-amber-600 pb-3.5">
         <p className="mb-4">

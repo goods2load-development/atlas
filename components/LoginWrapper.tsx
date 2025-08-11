@@ -21,9 +21,9 @@ export default function LoginWrapper(props: LoginWrapperProps) {
           <div className="sm:w-6/12 p-[16px] sm:py-16">
             <div className="max-w-[528px] mx-auto">
               <div className="text-center mb-10">
-                <span className="sm:text-[38px]/[42px] text-[40px]/[60px] italic font-normal">
+                <h1 className="sm:text-[38px]/[42px] text-[40px]/[60px] italic font-normal">
                   Welcome back!
-                </span>
+                </h1>
                 <br />
                 <span className="text-[16px]/[20px] font-normal">
                   Welcome back! Please, enter your details

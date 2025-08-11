@@ -1,5 +1,3 @@
-import CareerForm from '../_components/Career/CareerForm/CareerForm';
-import JoinOurTeam from '../_components/Career/JoinOurTeam/JoinOurTeam';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import { Metadata } from 'next';
@@ -29,6 +27,11 @@ const JoinOurTeamLazy = dynamic(
 
 export function generateMetadata(): Metadata {
   const defaultMetadata = generateDefaultMetadata();
+  const baseUrl =
+    process.env.NEXT_PUBLIC_CLIENT_URL || 'https://goods2load.com';
+
+  const pathname = '/career';
+  const canonicalUrl = `${baseUrl}${pathname}`;
 
   return {
     title,
@@ -37,14 +40,19 @@ export function generateMetadata(): Metadata {
       ...defaultMetadata.openGraph,
       title,
       description,
+      url: canonicalUrl,
     },
     twitter: {
       ...defaultMetadata.twitter,
       title,
       description,
     },
+    alternates: {
+      canonical: canonicalUrl,
+    },
   };
 }
+
 const Career = () => {
   return (
     <>

@@ -7,7 +7,6 @@ import dynamic from 'next/dynamic';
 
 import BigLayout from '@/components/BigLayout';
 import Footer from '@/components/Footer';
-import Help from '@/components/Help/Help';
 
 const data: Record<string, { title: string; description: string }> = {
   ship: {
@@ -39,11 +38,10 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const key = Object.keys(searchParams)?.[0];
   const meta = data[key] || data.default;
-  const defaultMetadata = generateDefaultMetadata();
 
-  const canonical = key
-    ? `${process.env.NEXT_PUBLIC_CLIENT_URL}/help?${key}`
-    : `${process.env.NEXT_PUBLIC_CLIENT_URL}/help`;
+  const canonical = 'https://goods2load.com/help'; // Always static
+
+  const defaultMetadata = generateDefaultMetadata();
 
   return {
     title: meta.title,

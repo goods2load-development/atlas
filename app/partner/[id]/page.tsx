@@ -1,8 +1,46 @@
+import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
 import BigLayout from '@/components/BigLayout';
 import Footer from '@/components/Footer';
 import PartnerDataPage from '@/components/PartnersDataPage/PartnerDataPage';
+
+const baseUrl = process.env.NEXT_PUBLIC_CLIENT_URL || 'https://goods2load.com';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/information`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ slug: params.id }),
+      cache: 'no-store',
+    },
+  );
+
+  const partnerData = await res.json();
+
+  if (!partnerData?.hasPage) {
+    return {
+      title: 'Partner not found',
+      description: 'Partner not available on our platform.',
+    };
+  }
+
+  return {
+    title: partnerData.name || 'Partner Profile',
+    description: partnerData.description || `Partner ${partnerData.name}`,
+    alternates: {
+      canonical: `${baseUrl}/partner/${params.id}`,
+    },
+  };
+}
 
 const Partner = async ({ params }: { params: { id: string } }) => {
   const [partnerData] = await Promise.all([
