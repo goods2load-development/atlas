@@ -92,6 +92,7 @@ const WhyChoose: React.FC = () => {
         <Link
           href={'mailto:hey@goods2load.com'}
           className="md:w-fit w-full py-2.5 px-8 mt-8 bg-[#FF6720] text-white border rounded-[48px] hover:bg-white hover:text-[#FF6720] text-center hover:border-[#FF6720] hover:no-underline transition duration-300 ease"
+          target={'_blank'}
         >
           Contact →
         </Link>
