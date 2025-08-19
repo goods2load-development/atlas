@@ -1,10 +1,13 @@
 import PartnersOurPartners from '@/app/_components/Partners/PartnersOurPartners/PartnersOurPartners';
+import Icon1 from '@/assets/images/WhyChooseUs/1.svg';
+import Icon2 from '@/assets/images/WhyChooseUs/3.svg';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
 import React from 'react';
 
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import Image from 'next/image';
 import Link from 'next/link';
 
 import Footer from '@/components/Footer';
@@ -38,8 +41,7 @@ const DynamicMenu = dynamic(() => import('@/components/Header/DynamicMenu'));
 
 const SliderMain = dynamic(() => import('@/components/SliderMain'));
 
-const title =
-  'Top Logistics Company | Cargo Services Globally and Across GCC Countries';
+const title = 'Find Trusted Freight Partners - or Grow as One';
 const description =
   'Discover the best cargo and logistics companies globally and across the GCC countries. Our top-rated services ensure efficient and reliable solutions for all shipping needs.';
 
@@ -206,9 +208,9 @@ export default function Home() {
         <HeaderClient variant="transparent" />
         <DynamicMenu variant="transparent" />
         <div className="px-4 max-w-[1250px] mx-auto text-center">
-          <h2 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
+          <h1 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
             Find <i>Trusted Freight Partners</i> - or Grow as One
-          </h2>
+          </h1>
           <p className="font-medium md:text-2xl mb-4">
             Goods2Load connects businesses with verified freight forwarders in
             the UAE and worldwide, without middlemen cost.
@@ -221,7 +223,7 @@ export default function Home() {
           </p>
           <Link
             href={'/partners'}
-            className="inline-block py-2.5 px-4 mt-8 border rounded-[48px] decoration-none hover:bg-white hover:text-[#FF6720] transition duration-300 ease"
+            className="inline-block py-2.5 px-4 mt-8 border rounded-[48px] decoration-none hover:bg-white hover:text-[#FF6720] hover:no-underline transition duration-300 ease"
           >
             Search Freight Providers
           </Link>
@@ -248,13 +250,45 @@ export default function Home() {
             — instead, we connect businesses with reliable freight partners who
             can.
           </strong>
-          <p className="max-w-full md:max-w-[75%] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
-            ✔️<strong>Shippers:</strong> Get free access to a network of vetted
-            freight forwarders — no subscription, no hidden fees.
-            <br />
-            ✔️ <strong>Freight Forwarders:</strong> Gain a powerful digital
-            sales tool that boosts your visibility, trust, and lead generation.
-          </p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-12 gap-4 my-8">
+            <div className="flex flex-row items-center gap-4 border border-[#FF6720] rounded-2xl p-4">
+              <Image
+                className="w-[160px] h-[160px] md:w-[160px] md:h-[160px] mx-[-30px] scale-125"
+                src={Icon1}
+                alt="image"
+                width={160}
+                height={160}
+              />
+              <div>
+                <h3 className="text-[18px] lg:text-[22px]/[24px] text-center font-medium mb-4">
+                  Shippers:
+                </h3>
+                <p className="text-black text-[16px] text-center pb-4">
+                  Get free access to a network of vetted freight forwarders — no
+                  subscription, no hidden fees.
+                </p>
+              </div>
+            </div>
+            <div className="flex flex-row items-center gap-4 border border-[#FF6720] rounded-2xl p-4">
+              <Image
+                className="w-[160px] h-[160px] md:w-[160px] md:h-[160px] mx-[-30px] scale-125"
+                src={Icon2}
+                alt="image"
+                width={160}
+                height={160}
+              />
+              <div>
+                <h3 className="text-[18px] lg:text-[22px]/[24px] text-center font-medium mb-4">
+                  Freight Forwarders:
+                </h3>
+                <p className="text-black text-[16px] text-center pb-4">
+                  Gain a powerful digital sales tool that boosts your
+                  visibility, trust, and lead generation.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
 
         <PartnersOurPartners />
