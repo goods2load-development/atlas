@@ -1,8 +1,11 @@
 import PartnersOurPartners from '@/app/_components/Partners/PartnersOurPartners/PartnersOurPartners';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 
+import React from 'react';
+
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
+import Link from 'next/link';
 
 import Footer from '@/components/Footer';
 import HeaderClient from '@/components/Header/HeaderClient';
@@ -17,6 +20,14 @@ const ConsentPopup = dynamic(() => import('@/components/common/ConsentPopup'), {
 
 const DigitalAlliances = dynamic(
   () => import('@/app/_components/Alliances/DigitalAliances'),
+);
+
+const ExpandYourReach = dynamic(
+  () => import('@/app/_components/ExpandYourReach/ExpandYourReach'),
+);
+
+const WhyChooseG2L = dynamic(
+  () => import('@/app/_components/WhyChooseG2L/WhyChoose'),
 );
 
 const QuestionsAndAnswers = dynamic(
@@ -119,38 +130,53 @@ const questionsContent = [
   },
   {
     number: '03',
-    title: 'WHAT HAPPEN AFTER I BOOK MY LOGISTIC SERVICES?',
+    title: 'What happens after you connect with a partner?',
     content:
       "After agreeing with the freight forwarders on the price, you will proceed to make the payment directly with them. Following this, you'll receive a confirmation of your booking from your chosen logistic provider. They will then initiate the logistics process, which could include picking up your goods, transporting them to the designated destination, and delivering them as per the agreed-upon terms. Throughout this process, you can monitor the progress of your shipment using the provided tracking information if provided.",
   },
   {
     number: '04',
+    title: 'How to join as a verified freight forwarder?',
+    content:
+      'Become a verified freight forwarder with a simple annual\n' +
+      'subscription and professional onboarding support. Your private digital ID\n' +
+      'page will showcase your company with a clear description, services\n' +
+      'offered, certifications, Google reviews and Maps, WhatsApp Business,\n' +
+      'YouTube interviews, and direct contact options for shippers, including your\n' +
+      'business email. We implement a targeted SEO strategy to drive traffic and\n' +
+      'generate qualified leads straight to your page. Your private dashboard lets\n' +
+      'you track leads, monitor sales performance, and analyze market\n' +
+      'trends—all while keeping full control over your pricing and lead generation,\n' +
+      'with no commission fees or bidding wars.',
+  },
+  {
+    number: '05',
     title: 'CAN I BOOK A LOGISTIC SERVICE THAT EMIT LESS CO2?',
     content:
       'Yes, many logistic service providers offer eco-friendly options that emit less CO2. When booking a logistic service through Goods2Load, you can use filters to search for environmentally friendly options. Look for providers that offer green or sustainable logistics solutions, such as those using electric or hybrid vehicles, optimizing routes for efficiency. Additionally, some providers may offer carbon offset programs to mitigate the environmental impact of shipping. Double-check how much carbon emissions you have saved and receive your GREENCOIN reward, facilitating purchases of more and more green services to help preserve the planet!',
   },
   {
-    number: '05',
+    number: '06',
     title: "WHAT IS 'SOLUTION FINDER?'",
     content:
       "'SOLUTION FINDER' is a feature that allows our users to set notifications for specific route and relevant details. When the SOLUTION of the selected service reaches the designated level, the user receives an alert via email, SMS, or through the platform itself. Solutions Finder are useful for consumers and investors who want to shipping options to make informed decisions about purchasing or selling goods globally.",
   },
   {
-    number: '06',
+    number: '07',
     title: 'How long does cargo shipping take from Dubai to other countries?',
     content: `Shipping times from Dubai vary depending on the destination and mode of transport. Air freight typically takes 1-5 days for most
 international destinations, while sea freight can range from 7-40 days. Factors such as customs clearance and local delivery also
 affect overall transit times.`,
   },
   {
-    number: '07',
+    number: '08',
     title: 'What documents are required for cargo shipping?',
     content: `Essential documents for cargo shipping include commercial invoices, packing lists, and certificates of origin. Depending on the
 nature of the goods, additional documents like import/export permits, health certificates, or dangerous goods declarations may be
 required. Our team can guide you through the specific documentation needed for your shipment.`,
   },
   {
-    number: '08',
+    number: '09',
     title: 'What is the difference between cargo and logistics services?',
     content: `Cargo services primarily focus on the transportation of goods from one point to another. Logistics services, on the other hand,
 encompass a broader range of activities including transportation, warehousing, inventory management, packaging, and
@@ -158,13 +184,13 @@ distribution. Logistics involves the entire supply chain process, ensuring effic
 consumer.`,
   },
   {
-    number: '09',
+    number: '10',
     title: 'How much does cargo shipping cost in Dubai?',
     content: `Cargo shipping costs in Dubai vary based on factors such as shipment size, destination, mode of transport, and service level. It can
 range from $3,000 to $9,000 and more.`,
   },
   {
-    number: '10',
+    number: '11',
     title:
       'What are the benefits of using a logistics company based in the UAE?',
     content: `Using a logistics company in the UAE offers numerous benefits, including expertise in local regulations, access to established
@@ -179,32 +205,65 @@ export default function Home() {
       <MainImageLayout>
         <HeaderClient variant="transparent" />
         <DynamicMenu variant="transparent" />
-        <div className="px-[16px] max-w-[1250px] mx-auto text-center">
-          <h1 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
-            Find Top <i>Logistics Services</i> and <i>Cargo Companies</i>{' '}
-            Globally and Across <i>GCC Countries</i>
-          </h1>
+        <div className="px-4 max-w-[1250px] mx-auto text-center">
+          <h2 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
+            Find <i>Trusted Freight Partners</i> - or Grow as One
+          </h2>
           <p className="font-medium md:text-2xl mb-4">
-            Get in touch with Cargo and Logistics Providers from around the
-            world.
+            Goods2Load connects businesses with verified freight forwarders in
+            the UAE and worldwide, without middlemen cost.
           </p>
-          <p className="max-w-[760px] mx-auto text-lg max-md:text-sm">
-            Goods2load stands out as a premier cargo and logistics provider. Our
-            comprehensive suite of services meets the needs of businesses of all
-            sizes, offering customized solutions for your shipping and supply
-            chain need
+          <p className="mx-auto text-lg max-md:text-sm">
+            The platform provides freight forwarders with digital tools to
+            enhance visibility and generate qualified leads. <br />
+            Shippers have free, instant access to a trusted network of providers
+            from all over the world.
           </p>
+          <Link
+            href={'/partners'}
+            className="inline-block py-2.5 px-4 mt-8 border rounded-[48px] decoration-none hover:bg-white hover:text-[#FF6720] transition duration-300 ease"
+          >
+            Search Freight Providers
+          </Link>
         </div>
       </MainImageLayout>
       <main className="flex min-h-screen flex-col p-74 justify-between colored-main max-w-full">
-        <div className="mt-[-120px] sm:mt-[-120px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
+        <div className="mt-[-130px] sm:mt-[-160px] mb-20 w-full px-[16px] max-w-[1328px] mx-auto">
           <SearchMain main />
         </div>
+
+        <section className="conecting-section w-full px-[16px] max-w-[1328px] mx-auto mb-12">
+          <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center">
+            Goods2Load — Connecting
+            <i className="bg-allTittleColor px-2 mx-1 rounded-md inline-block">
+              Shippers
+            </i>
+            and
+            <i className="bg-allTittleColor px-2 mx-1 rounded-md inline-block">
+              Freight Forwarders
+            </i>{' '}
+          </h2>
+          <strong className="block font-medium text-xl mb-4 text-center md:text-left">
+            Goods2Load is not a logistics company. We don’t move goods ourselves
+            — instead, we connect businesses with reliable freight partners who
+            can.
+          </strong>
+          <p className="max-w-full md:max-w-[75%] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
+            ✔️<strong>Shippers:</strong> Get free access to a network of vetted
+            freight forwarders — no subscription, no hidden fees.
+            <br />
+            ✔️ <strong>Freight Forwarders:</strong> Gain a powerful digital
+            sales tool that boosts your visibility, trust, and lead generation.
+          </p>
+        </section>
+
         <PartnersOurPartners />
         <SubHeaderMain />
-        <TailoredServices className="py-20 md:py-[104px]" />
+        <TailoredServices />
+        <ExpandYourReach />
         <SliderMain />
         <QuestionsAndAnswers data={questionsContent} />
+        <WhyChooseG2L />
         <DigitalAlliances />
       </main>
       <Footer />

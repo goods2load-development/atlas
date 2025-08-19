@@ -8,7 +8,7 @@ import Image from 'next/image';
 
 export default function SubHeaderMain() {
   return (
-    <section className="py-[54px] sm:py-[80px] bg-bgOptimize bg-cover bg-center">
+    <section className="py-[54px] sm:py-[80px] bg-bgOptimize bg-cover bg-center mb-20">
       <div className="px-4">
         <h2 className="max-w-[661px] text-[30px]/[34px] sm:text-[40px]/[48px] text-white text-center mb-4 mx-auto font-light">
           <i className="font-normal">Optimize</i> Efficiency{' '}
@@ -102,7 +102,7 @@ export default function SubHeaderMain() {
             />
             4 step
             <div className="text-white text-[16px]/[20px] sm:text-[20px]/[22px] mt-3">
-              Book your order
+              Book your service
             </div>
           </div>
         </div>
