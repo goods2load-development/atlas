@@ -1,8 +1,6 @@
 'use client';
 
-import defaultLogo from '@/assets/icons/default-logo-g2l.svg';
 import { usePartnersStore } from '@/lib/store';
-import { slugify } from '@/lib/utils';
 
 import React, { useEffect } from 'react';
 
@@ -33,12 +31,45 @@ const PartnersOurPartners: React.FC<PartnersOurPartnersProps> = ({
           className,
         )}
       >
-        <div className="text-black text-center font-light md:text-[40px]/[48px] text-[34px]/[38px] flex mb-8 justify-center lg:justify-start">
-          Our
-          <div className="font-normal italic bg-[#FEF1DF] rounded-[6px] md:h-[49px] px-[8px] ml-2 flex justify-center items-center">
-            partners
-          </div>
-        </div>
+        <h2
+          className="text-black text-[30px] sm:text-[40px] mb-6 text-center font-normal
+
+ "
+        >
+          Find Top
+          <i className="bg-allTittleColor px-2 mx-1 rounded-md font-medium inline-block">
+            Logistics & Cargo
+          </i>
+          Providers Instantly
+        </h2>
+
+        <p className="max-w-full text-center md:text-left text-lg mb-4 mx-auto md:mx-0">
+          From full container load and less than container load services, find
+          providers who match your needs and meet your standards, whether you
+          are shipping across the GCC or globally. Each verified partner profile
+          includes:
+        </p>
+
+        <ul className="flex flex-col gap-1 ml-2 md:ml-6 mb-4">
+          <li className="text-black text-[16px] sm:text-[18px] mb-2 items-center ">
+            ● Services offered (import, export, customs clearance, warehousing,
+            last-mile delivery, etc.)
+          </li>
+          <li className="text-black text-[16px] sm:text-[18px] mb-2 items-center ">
+            ● Global and regional locations served
+          </li>
+          <li className="text-black text-[16px] sm:text-[18px] mb-2 items-center ">
+            ● Certifications (ISO, AEO, Associations, sustainability
+            credentials)
+          </li>
+          <li className="text-black text-[16px] sm:text-[18px] mb-2 items-center ">
+            ● Google reviews for transparency
+          </li>
+          <li className="text-black text-[16px] sm:text-[18px] mb-2 items-center ">
+            ● Direct contact options — no middlemen
+          </li>
+        </ul>
+
         <div className="flex w-full text-black gap-2 flex-wrap justify-center lg:justify-start">
           {partners &&
             partners
