@@ -116,6 +116,7 @@ export default function SliderMain() {
               className="text-orangePrimary font-medium underline hover:no-underline"
               href="/registration?provider"
               aria-label="Learn more about partnering with GOODS2LOAD"
+              target={'_blank'}
             >
               Join as a Freight Partner
             </Link>

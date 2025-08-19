@@ -213,7 +213,8 @@ export default function Home() {
           </h1>
           <p className="font-medium md:text-2xl mb-4">
             Goods2Load connects businesses with verified freight forwarders in
-            the UAE and worldwide, without middlemen cost.
+            the UAE and worldwide, <br />
+            without middlemen cost.
           </p>
           <p className="mx-auto text-lg max-md:text-sm">
             The platform provides freight forwarders with digital tools to
@@ -224,6 +225,7 @@ export default function Home() {
           <Link
             href={'/partners'}
             className="inline-block py-2.5 px-4 mt-8 border rounded-[48px] decoration-none hover:bg-white hover:text-[#FF6720] hover:no-underline transition duration-300 ease"
+            target={'_blank'}
           >
             Search Freight Providers
           </Link>

@@ -34,6 +34,7 @@ const ExpandYourReach: React.FC = () => {
         <Link
           href={'/registration?provider'}
           className="inline-block self-center py-2.5 px-8 mt-8 bg-[#FF6720] text-white border rounded-[48px] hover:bg-white hover:text-[#FF6720] hover:border-[#FF6720] hover:no-underline transition duration-300 ease"
+          target={'_blank'}
         >
           Join the Platform →
         </Link>
