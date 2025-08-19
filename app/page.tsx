@@ -41,8 +41,7 @@ const DynamicMenu = dynamic(() => import('@/components/Header/DynamicMenu'));
 
 const SliderMain = dynamic(() => import('@/components/SliderMain'));
 
-const title =
-  'Top Logistics Company | Cargo Services Globally and Across GCC Countries';
+const title = 'Find Trusted Freight Partners - or Grow as One';
 const description =
   'Discover the best cargo and logistics companies globally and across the GCC countries. Our top-rated services ensure efficient and reliable solutions for all shipping needs.';
 
@@ -209,9 +208,9 @@ export default function Home() {
         <HeaderClient variant="transparent" />
         <DynamicMenu variant="transparent" />
         <div className="px-4 max-w-[1250px] mx-auto text-center">
-          <h2 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
+          <h1 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
             Find <i>Trusted Freight Partners</i> - or Grow as One
-          </h2>
+          </h1>
           <p className="font-medium md:text-2xl mb-4">
             Goods2Load connects businesses with verified freight forwarders in
             the UAE and worldwide, without middlemen cost.
