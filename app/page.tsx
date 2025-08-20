@@ -43,7 +43,7 @@ const SliderMain = dynamic(() => import('@/components/SliderMain'));
 
 const title = 'Find Trusted Freight Partners - or Grow as One';
 const description =
-  'Discover the best cargo and logistics companies globally and across the GCC countries. Our top-rated services ensure efficient and reliable solutions for all shipping needs.';
+  'Discover how Goods2Load connects businesses with verified freight forwarders in the UAE and worldwide, without middlemen cost.';
 
 export function generateMetadata(): Metadata {
   const defaultMetadata = generateDefaultMetadata();
