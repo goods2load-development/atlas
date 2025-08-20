@@ -3,6 +3,8 @@
 import FaqBg1 from '@/assets/images/faqmobile1.png';
 import FaqBg2 from '@/assets/images/faqmobile2.png';
 
+import React from 'react';
+
 import clsx from 'clsx';
 import Image from 'next/image';
 
@@ -63,13 +65,15 @@ export default function QuestionsAndAnswers({
         className="absolute top-0 right-0 md:hidden"
         alt="faqmobile2"
       />
-      <h2 className="text-center text-[34px] sm:text-[48px] mb-12 font-light">
-        <i className="bg-allTittleColor px-2 rounded-md font-normal">Answers</i>
-        <span> to Your Burning </span>
-        <i className="bg-allTittleColor px-2 rounded-md font-normal">
-          Questions
+      <h2 className="text-center text-[34px] sm:text-[48px] mb-4 md:mb-6 italic">
+        Still Have
+        <i className="bg-allTittleColor px-2 ml-2 rounded-md font-medium inline-block">
+          Questions?
         </i>
       </h2>
+      <p className="text-[22px] mb-6 font-light max-w-[884px] w-full self-center">
+        Check our <strong>FAQs</strong> to learn:
+      </p>
       <Accordion
         type="single"
         collapsible

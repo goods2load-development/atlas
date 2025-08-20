@@ -47,13 +47,13 @@ export default function TailoredServices({
         <div className="max-w-[1328px] mx-auto">
           {isTitle && (
             <>
-              <h2 className="text-black text-[30px] sm:text-[40px] mb-2 text-center md:text-left">
+              <h2 className="text-black text-[30px] sm:text-[40px] mb-8 text-center ">
                 <i className="bg-allTittleColor px-2 rounded-md">
                   Global Reach with
                 </i>{' '}
                 <span className="font-light">Local Expertise</span>
               </h2>
-              <strong className="block font-medium text-xl mb-4">
+              <strong className="block font-medium text-xl mb-4 text-center md:text-left">
                 Empower Your Business with Tailored Services.
               </strong>
               <p className="max-w-full md:max-w-[75%] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
