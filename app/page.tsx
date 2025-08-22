@@ -151,54 +151,61 @@ const questionsContent = [
       'trends—all while keeping full control over your pricing and lead generation,\n' +
       'with no commission fees or bidding wars.',
   },
+  // {
+  //   number: '05',
+  //   title: 'CAN I BOOK A LOGISTIC SERVICE THAT EMIT LESS CO2?',
+  //   content:
+  //     'Yes, many logistic service providers offer eco-friendly options that emit less CO2. When booking a logistic service through Goods2Load, you can use filters to search for environmentally friendly options. Look for providers that offer green or sustainable logistics solutions, such as those using electric or hybrid vehicles, optimizing routes for efficiency. Additionally, some providers may offer carbon offset programs to mitigate the environmental impact of shipping. Double-check how much carbon emissions you have saved and receive your GREENCOIN reward, facilitating purchases of more and more green services to help preserve the planet!',
+  // },
   {
     number: '05',
-    title: 'CAN I BOOK A LOGISTIC SERVICE THAT EMIT LESS CO2?',
-    content:
-      'Yes, many logistic service providers offer eco-friendly options that emit less CO2. When booking a logistic service through Goods2Load, you can use filters to search for environmentally friendly options. Look for providers that offer green or sustainable logistics solutions, such as those using electric or hybrid vehicles, optimizing routes for efficiency. Additionally, some providers may offer carbon offset programs to mitigate the environmental impact of shipping. Double-check how much carbon emissions you have saved and receive your GREENCOIN reward, facilitating purchases of more and more green services to help preserve the planet!',
-  },
-  {
-    number: '06',
     title: "WHAT IS 'SOLUTION FINDER?'",
     content:
       "'SOLUTION FINDER' is a feature that allows our users to set notifications for specific route and relevant details. When the SOLUTION of the selected service reaches the designated level, the user receives an alert via email, SMS, or through the platform itself. Solutions Finder are useful for consumers and investors who want to shipping options to make informed decisions about purchasing or selling goods globally.",
   },
   {
-    number: '07',
-    title: 'How long does cargo shipping take from Dubai to other countries?',
-    content: `Shipping times from Dubai vary depending on the destination and mode of transport. Air freight typically takes 1-5 days for most
-international destinations, while sea freight can range from 7-40 days. Factors such as customs clearance and local delivery also
-affect overall transit times.`,
-  },
-  {
-    number: '08',
-    title: 'What documents are required for cargo shipping?',
-    content: `Essential documents for cargo shipping include commercial invoices, packing lists, and certificates of origin. Depending on the
-nature of the goods, additional documents like import/export permits, health certificates, or dangerous goods declarations may be
-required. Our team can guide you through the specific documentation needed for your shipment.`,
-  },
-  {
-    number: '09',
-    title: 'What is the difference between cargo and logistics services?',
-    content: `Cargo services primarily focus on the transportation of goods from one point to another. Logistics services, on the other hand,
-encompass a broader range of activities including transportation, warehousing, inventory management, packaging, and
-distribution. Logistics involves the entire supply chain process, ensuring efficient flow of goods from manufacturer to end
-consumer.`,
-  },
-  {
-    number: '10',
-    title: 'How much does cargo shipping cost in Dubai?',
-    content: `Cargo shipping costs in Dubai vary based on factors such as shipment size, destination, mode of transport, and service level. It can
-range from $3,000 to $9,000 and more.`,
-  },
-  {
-    number: '11',
+    number: '06',
     title:
-      'What are the benefits of using a logistics company based in the UAE?',
-    content: `Using a logistics company in the UAE offers numerous benefits, including expertise in local regulations, access to established
-shipping networks, and cost-effective solutions through economies of scale. Logistics companies also provide value-added services
-like customs clearance, warehousing, and last-mile delivery, streamlining your entire supply chain process.`,
+      'How can I, as a shipper, use Goods2Load to find the right logistics partner?',
+    content:
+      'As a shipper, you can access Goods2Load completely free of charge. Our platform lets you filter verified freight forwarders by service type (air, sea, road), certifications, and CO2 offset options. Each provider has a professional digital ID page with clear service details, reviews, maps, and direct contact options—so you can connect instantly, without commissions or hidden fees. This ensures you choose the right logistics partner with full transparency, speed, and confidence.',
   },
+  //   {
+  //     number: '07',
+  //     title: 'How long does cargo shipping take from Dubai to other countries?',
+  //     content: `Shipping times from Dubai vary depending on the destination and mode of transport. Air freight typically takes 1-5 days for most
+  // international destinations, while sea freight can range from 7-40 days. Factors such as customs clearance and local delivery also
+  // affect overall transit times.`,
+  //   },
+  //   {
+  //     number: '08',
+  //     title: 'What documents are required for cargo shipping?',
+  //     content: `Essential documents for cargo shipping include commercial invoices, packing lists, and certificates of origin. Depending on the
+  // nature of the goods, additional documents like import/export permits, health certificates, or dangerous goods declarations may be
+  // required. Our team can guide you through the specific documentation needed for your shipment.`,
+  //   },
+  //   {
+  //     number: '09',
+  //     title: 'What is the difference between cargo and logistics services?',
+  //     content: `Cargo services primarily focus on the transportation of goods from one point to another. Logistics services, on the other hand,
+  // encompass a broader range of activities including transportation, warehousing, inventory management, packaging, and
+  // distribution. Logistics involves the entire supply chain process, ensuring efficient flow of goods from manufacturer to end
+  // consumer.`,
+  //   },
+  //   {
+  //     number: '10',
+  //     title: 'How much does cargo shipping cost in Dubai?',
+  //     content: `Cargo shipping costs in Dubai vary based on factors such as shipment size, destination, mode of transport, and service level. It can
+  // range from $3,000 to $9,000 and more.`,
+  //   },
+  //   {
+  //     number: '11',
+  //     title:
+  //       'What are the benefits of using a logistics company based in the UAE?',
+  //     content: `Using a logistics company in the UAE offers numerous benefits, including expertise in local regulations, access to established
+  // shipping networks, and cost-effective solutions through economies of scale. Logistics companies also provide value-added services
+  // like customs clearance, warehousing, and last-mile delivery, streamlining your entire supply chain process.`,
+  //   },
 ];
 
 export default function Home() {
@@ -298,9 +305,9 @@ export default function Home() {
         <TailoredServices />
         <ExpandYourReach />
         <SliderMain />
-        <QuestionsAndAnswers data={questionsContent} />
         <WhyChooseG2L />
         <DigitalAlliances />
+        <QuestionsAndAnswers data={questionsContent} />
       </main>
       <Footer />
       {/* <GDPRAiPopup /> */}
