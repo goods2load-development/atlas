@@ -84,8 +84,7 @@ export default function RootLayout({
             rel="noopener noreferrer"
           >
             <span className="hidden sm:inline self-center pr-[10px]">
-              Chat by WhatsApp
-              <br /> with us!
+              WhatsApp us!
             </span>
             <Image
               width={52}
