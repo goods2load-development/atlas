@@ -52,7 +52,7 @@ const WhyChoose: React.FC = () => {
   return (
     <section
       className={
-        'w-full flex flex-col items-center md:items-start mx-auto px-4 mb-20 bg-[#ffede4] py-12'
+        'w-full flex flex-col items-center md:items-start mx-auto px-4 mb-20 pt-20'
       }
     >
       <div className=" flex flex-col max-w-[1328px] mx-auto items-center ">
