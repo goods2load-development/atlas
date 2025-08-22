@@ -58,9 +58,9 @@ export default function TailoredServices({
               </strong>
               <p className="max-w-full md:max-w-[75%] text-center md:text-left text-lg mb-8 md:mb-10 mx-auto md:mx-0">
                 Discover value-added logistics services designed to optimize
-                your business in Dubai and across the UAE — from freight
-                forwarding support to smart operational solutions, we empower
-                your growth with local expertise and global reach.
+                your business in Dubai, UAE, GCC, and global trade routes — from
+                freight forwarding support to smart operational solutions, we
+                empower your growth with local expertise and global reach.
               </p>
             </>
           )}

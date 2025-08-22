@@ -63,7 +63,7 @@ export default function SubHeaderMain() {
             />
             Step 1
             <div className="text-white text-[16px]/[20px] sm:text-[20px]/[22px] mt-3">
-              Select the service
+              Select the Service
             </div>
           </div>
           <div className="px-1 flex flex-col text-[18px]/[22px] mb-10">
@@ -102,7 +102,7 @@ export default function SubHeaderMain() {
             />
             Step 4
             <div className="text-white text-[16px]/[20px] sm:text-[20px]/[22px] mt-3">
-              Get a free quote
+              Get a Free Quote
             </div>
           </div>
         </div>
