@@ -9,7 +9,7 @@ const DigitalAlliances = () => {
   return (
     <section
       id="our-allinces"
-      className={'w-full items-center max-w-[1328px] mx-auto px-4 mb-20'}
+      className={'w-full items-center max-w-[1328px] mx-auto px-4 mb-10 pt-10'}
     >
       <h2 className="text-black text-center font-light md:text-[40px]/[48px] text-[34px]/[38px] flex flex-wrap gap-1 mb-8 justify-center">
         <span className="font-normal italic bg-[#FEF1DF] rounded-[6px] px-[8px] mr-3 flex justify-center items-center">

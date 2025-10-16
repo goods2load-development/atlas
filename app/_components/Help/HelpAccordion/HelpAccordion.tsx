@@ -23,10 +23,16 @@ const HelpAccordion: React.FC<HelpAccordion> = ({ curAnswearCondition }) => {
   return (
     <div className="w-full pb-[104px] px-4  max-w-[990px] flex flex-col justify-center items-center sm:mt-52 mt-40">
       <div className="w-full flex justify-center items-center flex-col">
-        <h2 className="text-center text-black text-[34px]/[38px] sm:text-[48px]/[76px] mb-[40px]">
-          <i className="bg-allTittleColor px-2 rounded-md">Answers</i>
-          <span> to Your Burning </span>
-          <i className="bg-allTittleColor px-2 rounded-md">Questions</i>
+        {/*<h2 className="text-center text-black text-[34px]/[38px] sm:text-[48px]/[76px] mb-[40px]">*/}
+        {/*  <i className="bg-allTittleColor px-2 rounded-md">Answers</i>*/}
+        {/*  <span> to Your Burning </span>*/}
+        {/*  <i className="bg-allTittleColor px-2 rounded-md">Questions</i>*/}
+        {/*</h2>*/}
+        <h2 className="text-center text-[34px] sm:text-[48px] mb-4 md:mb-6 italic text-black">
+          Still Have
+          <i className="bg-allTittleColor px-2 ml-2 rounded-md font-medium inline-block">
+            Questions?
+          </i>
         </h2>
 
         <Accordion

@@ -139,7 +139,7 @@ export default function HeaderClient({
             >
               <NavigationMenuItem>
                 <Link
-                  className="rounded-[48px] px-2 py-1 transition bg-[#b7f218] hover:bg-[#a9e503] text-black no-underline"
+                  className="rounded-[48px] px-2 py-1 transition bg-[#b7f218] hover:bg-[#a9e503] text-[#2f2a58] no-underline"
                   target="_blank"
                   href="https://calendly.com/hey-goods2load/30min"
                 >
