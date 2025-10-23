@@ -332,7 +332,7 @@ export const FormStepFinalAgreement = ({ form }: { form: any }) => {
           </li>
           <li>
             <strong>Jurisdiction:</strong> <br />
-            Any disputes arising from this Agreement shall be subject to the
+            Any disputes arising from this Agreement shall be subject to the{' '}
             <strong>exclusive jurisdiction of the Dubai Courts.</strong>
           </li>
         </ol>
@@ -411,16 +411,16 @@ export const FormStepFinalAgreement = ({ form }: { form: any }) => {
         render={({ field }) => (
           <FormItem className="w-full mb-5 mt-4">
             <FormControl>
-              <div className="flex flex-col gap-4">
+              <div className="flex flex-col gap-2">
                 <label className="flex items-center gap-2">
                   <div
                     className={clsx(
-                      'w-4 h-4 rounded-[2px] border-2 border-gray-300 flex justify-center items-center cursor-pointer',
+                      'w-4 h-4 rounded-[4px] border border-gray-300 flex justify-center items-center cursor-pointer',
                     )}
                   >
                     <div
                       className={clsx(
-                        'w-2 h-2 rounded-[1px]',
+                        'w-2 h-2 rounded-[4px]',
                         field.value === true ? 'bg-primaryOrange' : 'bg-white',
                       )}
                     />
@@ -438,12 +438,12 @@ export const FormStepFinalAgreement = ({ form }: { form: any }) => {
                 <label className="flex items-center gap-2">
                   <div
                     className={clsx(
-                      'w-4 h-4 rounded-[2px] border-2 border-gray-300 flex justify-center items-center cursor-pointer',
+                      'w-4 h-4 rounded-[4px] border border-gray-300 flex justify-center items-center cursor-pointer',
                     )}
                   >
                     <div
                       className={clsx(
-                        'w-2 h-2 rounded-[1px]',
+                        'w-2 h-2 rounded-[4px]',
                         field.value === false || !field.value
                           ? 'bg-primaryOrange'
                           : 'bg-white',
