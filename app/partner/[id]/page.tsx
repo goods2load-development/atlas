@@ -1,3 +1,5 @@
+import { capitalizeWords } from '@/lib/utils';
+
 import { Metadata } from 'next';
 import { redirect } from 'next/navigation';
 
@@ -16,9 +18,7 @@ export async function generateMetadata({
     `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/information`,
     {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ slug: params.id }),
       cache: 'no-store',
     },
@@ -33,40 +33,44 @@ export async function generateMetadata({
     };
   }
 
+  const partnerName = capitalizeWords(
+    partnerData.name?.t || partnerData.name || 'Partner',
+  );
+
   return {
-    title: partnerData.name || 'Partner Profile',
-    description: partnerData.description || `Partner ${partnerData.name}`,
-    alternates: {
-      canonical: `${baseUrl}/partner/${params.id}`,
-    },
+    title: partnerName,
+    description: partnerData.description || `Partner ${partnerName}`,
+    alternates: { canonical: `${baseUrl}/partner/${params.id}` },
   };
 }
 
 const Partner = async ({ params }: { params: { id: string } }) => {
-  const [partnerData] = await Promise.all([
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/partners/information`, {
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}api/partners/information`,
+    {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ slug: params.id }),
       cache: 'no-store',
-    }).then((res) => res.json()),
-  ]);
+    },
+  );
+
+  const partnerData = await res.json();
 
   if (!partnerData.hasPage) {
     redirect('/');
   }
+
+  const partnerName = capitalizeWords(
+    partnerData.name?.t || partnerData.name || '',
+  );
+
   const url = `https://maps.googleapis.com/maps/api/place/details/json?fields=name%2Crating%2Creviews%2Curl%2Cuser_ratings_total&rating=5&place_id=${partnerData.placementId}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`;
-  const placeInfo = await (
-    await fetch(url, {
-      cache: 'no-store',
-    })
-  ).json();
+  const placeInfo = await (await fetch(url, { cache: 'no-store' })).json();
 
   return (
     <>
-      <BigLayout title={partnerData.name}>
+      <BigLayout title={partnerName}>
         <PartnerDataPage
           placeInfo={placeInfo}
           companyPhoto={partnerData.photo}

@@ -329,7 +329,7 @@ export function slugify(str: string, toSlug: boolean = true) {
 }
 
 export function calculatePercentages(data: any) {
-  if (!!!data.length) return data;
+  if (!data.length) return data;
 
   const totalSum = data.reduce((sum: any, item: any) => sum + item.value, 0);
 
@@ -355,4 +355,9 @@ export function calculatePercentages(data: any) {
   }
 
   return roundedPercentages;
+}
+
+export function capitalizeWords(str: string): string {
+  if (!str) return '';
+  return str.replace(/\b\w/g, (char) => char.toUpperCase());
 }
