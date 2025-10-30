@@ -357,7 +357,36 @@ export function calculatePercentages(data: any) {
   return roundedPercentages;
 }
 
-export function capitalizeWords(str: string): string {
+// List of words to keep lowercase (unless they are the first word)
+const smallWords = [
+  'and',
+  'or',
+  'the',
+  'of',
+  'in',
+  'on',
+  'at',
+  'a',
+  'an',
+  'to',
+  'for',
+  'by',
+];
+
+export function titleCase(str: string): string {
   if (!str) return '';
-  return str.replace(/\b\w/g, (char) => char.toUpperCase());
+
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word, index) => {
+      // Always capitalize the first word
+      if (index === 0) return word.charAt(0).toUpperCase() + word.slice(1);
+
+      // Capitalize unless it's a "small word"
+      if (smallWords.includes(word)) return word;
+
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
 }
