@@ -329,7 +329,7 @@ export function slugify(str: string, toSlug: boolean = true) {
 }
 
 export function calculatePercentages(data: any) {
-  if (!!!data.length) return data;
+  if (!data.length) return data;
 
   const totalSum = data.reduce((sum: any, item: any) => sum + item.value, 0);
 
@@ -355,4 +355,38 @@ export function calculatePercentages(data: any) {
   }
 
   return roundedPercentages;
+}
+
+// List of words to keep lowercase (unless they are the first word)
+const smallWords = [
+  'and',
+  'or',
+  'the',
+  'of',
+  'in',
+  'on',
+  'at',
+  'a',
+  'an',
+  'to',
+  'for',
+  'by',
+];
+
+export function titleCase(str: string): string {
+  if (!str) return '';
+
+  return str
+    .toLowerCase()
+    .split(' ')
+    .map((word, index) => {
+      // Always capitalize the first word
+      if (index === 0) return word.charAt(0).toUpperCase() + word.slice(1);
+
+      // Capitalize unless it's a "small word"
+      if (smallWords.includes(word)) return word;
+
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
 }
