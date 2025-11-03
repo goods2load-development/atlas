@@ -300,7 +300,7 @@ export default function Home() {
           </div>
         </section>
 
-        <PartnersOurPartners />
+        {/*<PartnersOurPartners />*/}
         <SubHeaderMain />
         <TailoredServices />
         <ExpandYourReach />
