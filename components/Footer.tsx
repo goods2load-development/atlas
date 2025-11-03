@@ -125,18 +125,15 @@ export default function Footer() {
             >
               Cookie Policy
             </Link>
-            <Link
-              className="mr-8 md:mr-12 relative link-with-line"
-              href="/privacy-policy"
-            >
+            <Link className="mr-8 md:mr-12 relative" href="/privacy-policy">
               Privacy Policy
             </Link>
-            <Link
-              className="mr-8 md:mr-12 relative max-md:link-with-line"
-              href="/sitemap"
-            >
-              Sitemap
-            </Link>
+            {/*<Link*/}
+            {/*  className="mr-8 md:mr-12 relative max-md:link-with-line"*/}
+            {/*  href="/sitemap"*/}
+            {/*>*/}
+            {/*  Sitemap*/}
+            {/*</Link>*/}
             <div className="md:hidden text-center">
               <ErrorBoundary>
                 <LangSwitcher />
