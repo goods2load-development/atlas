@@ -98,15 +98,15 @@ export const FormStepSeaFreight = ({
                 const seaports: any = await getSeaPortsByCountry(item.cca2);
 
                 if (
-                  !Array.isArray(seaports.data) ||
-                  seaports.data.length === 0
+                  !Array.isArray(seaports) ||
+                  seaports.length === 0
                 ) {
                   return;
                 }
 
                 return {
                   ...item,
-                  seaports: seaports.data,
+                  seaports: seaports,
                 };
               }),
             );
@@ -217,9 +217,9 @@ export const FormStepSeaFreight = ({
                       className="cursor-pointer"
                       onClick={() => {
                         let selectedSeaports = item.seaports
-                          ?.filter((seaport: any) => seaport.unlocode)
+                          ?.filter((seaport: any) => seaport.LOCODE)
                           ?.map((seaport: any) => {
-                            return `(${seaport.unlocode}) ${seaport.port_name}`;
+                            return `(${seaport.LOCODE}) ${seaport.PORT_NAME}`;
                           });
 
                         const existingSeaports =
@@ -249,7 +249,7 @@ export const FormStepSeaFreight = ({
                               ?.filter(
                                 (existSeaport: any) =>
                                   existSeaport !==
-                                  `(${seaport.unlocode}) ${seaport.port_name}`,
+                                  `(${seaport.LOCODE}) ${seaport.PORT_NAME}`,
                               ),
                           );
                         });
@@ -266,11 +266,11 @@ export const FormStepSeaFreight = ({
                         <FormControl>
                           <div className="pl-1 my-1">
                             {item.seaports.map((item: any, idx: number) => {
-                              if (!item.unlocode) {
+                              if (!item.LOCODE) {
                                 return;
                               }
 
-                              const seaportValue = `(${item.unlocode}) ${item.port_name}`;
+                              const seaportValue = `(${item.LOCODE}) ${item.PORT_NAME}`;
 
                               return (
                                 <label
@@ -295,12 +295,12 @@ export const FormStepSeaFreight = ({
                                   />
                                   <div className="text-[14px]f font-medium flex gap-1 items-center">
                                     <span className="text-[12px]">
-                                      ({item.unlocode})
+                                      ({item.LOCODE})
                                     </span>
                                     <span>
-                                      {item.port_name.includes('PORT')
-                                        ? item.port_name
-                                        : item.port_name + ' Port'}
+                                      {item.PORT_NAME.includes('PORT')
+                                        ? item.PORT_NAME
+                                        : item.PORT_NAME + ' Port'}
                                     </span>
                                   </div>
                                 </label>

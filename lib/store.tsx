@@ -116,10 +116,10 @@ export const usePortsStore = create((set) => ({
   },
   getSeaPortsByCountry: async (countryCode: string) => {
     try {
-      const response = await fetch(
-        `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&country_iso=${countryCode}&port_type=Port`,
+      const { default: allPorts } = await import('./data/ports.json');
+      return allPorts.filter(
+        (port: any) => port.COUNTRY_CODE === countryCode,
       );
-      return response.json();
     } catch (error) {
       return [];
     }
@@ -263,8 +263,8 @@ export const useUserStore = create((set) => ({
       data,
     }).then((userData: any) => {
       // TODO add redirect
-      localStorage.setItem('id', userData.data.id);
-      Cookie.set('access_token', userData.data.access_token, {
+      localStorage.setItem('id', userData?.data?.id);
+      Cookie.set('access_token', userData?.data?.access_token, {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
       set(() => ({ user: userData?.data }));
@@ -285,7 +285,7 @@ export const useUserStore = create((set) => ({
       url: `/oauth/authenticate`,
       params: { access_token: data },
     }).then((userData: any) => {
-      localStorage.setItem('id', userData.data.id);
+      localStorage.setItem('id', userData?.data?.id);
       set(() => ({ user: userData?.data }));
     });
   },
@@ -317,7 +317,7 @@ export const useUserStore = create((set) => ({
       data: formData,
     }).then((userData: any) => {
       set((state: any) => ({
-        user: { ...state.user, companyPhoto: userData.data },
+        user: { ...state.user, companyPhoto: userData?.data },
       }));
     });
   },
@@ -511,11 +511,11 @@ export const useRoutesStore = create((set) => ({
       message: data.message,
       ...(data.reasons.length
         ? {
-            reasons: data.reasons,
-          }
+          reasons: data.reasons,
+        }
         : {
-            reasons: [],
-          }),
+          reasons: [],
+        }),
     };
 
     return postRequest({

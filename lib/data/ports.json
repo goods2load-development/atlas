@@ -1,0 +1,1987 @@
+[
+  {
+    "LOCODE": "GBABD",
+    "PORT_NAME": "Aberdeen",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "CIABJ",
+    "PORT_NAME": "Abidjan",
+    "COUNTRY_CODE": "CI"
+  },
+  {
+    "LOCODE": "AEAUH",
+    "PORT_NAME": "Abu Dhabi",
+    "COUNTRY_CODE": "AE"
+  },
+  {
+    "LOCODE": "SVAQJ",
+    "PORT_NAME": "Acajutla",
+    "COUNTRY_CODE": "SV"
+  },
+  {
+    "LOCODE": "AUADL",
+    "PORT_NAME": "Adelaide",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "YEADE",
+    "PORT_NAME": "Aden",
+    "COUNTRY_CODE": "YE"
+  },
+  {
+    "LOCODE": "MAAGA",
+    "PORT_NAME": "Agadir",
+    "COUNTRY_CODE": "MA"
+  },
+  {
+    "LOCODE": "SAJBI",
+    "PORT_NAME": "Al Jubayl",
+    "COUNTRY_CODE": "SA"
+  },
+  {
+    "LOCODE": "EGALY",
+    "PORT_NAME": "Alexandria",
+    "COUNTRY_CODE": "EG"
+  },
+  {
+    "LOCODE": "ESALG",
+    "PORT_NAME": "Algeciras",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "DZALG",
+    "PORT_NAME": "Algiers",
+    "COUNTRY_CODE": "DZ"
+  },
+  {
+    "LOCODE": "TRAMB",
+    "PORT_NAME": "Ambarli",
+    "COUNTRY_CODE": "TR"
+  },
+  {
+    "LOCODE": "DZAAE",
+    "PORT_NAME": "Annaba",
+    "COUNTRY_CODE": "DZ"
+  },
+  {
+    "LOCODE": "BEANR",
+    "PORT_NAME": "Antwerp",
+    "COUNTRY_CODE": "BE"
+  },
+  {
+    "LOCODE": "NGAPP",
+    "PORT_NAME": "Apapa",
+    "COUNTRY_CODE": "NG"
+  },
+  {
+    "LOCODE": "JOAQB",
+    "PORT_NAME": "Al Aqabah",
+    "COUNTRY_CODE": "JO"
+  },
+  {
+    "LOCODE": "CLARI",
+    "PORT_NAME": "Arica",
+    "COUNTRY_CODE": "CL"
+  },
+  {
+    "LOCODE": "ILASH",
+    "PORT_NAME": "Ashdod",
+    "COUNTRY_CODE": "IL"
+  },
+  {
+    "LOCODE": "NZAKL",
+    "PORT_NAME": "Auckland",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "ARBHI",
+    "PORT_NAME": "Bahia Blanca",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "BHBAH",
+    "PORT_NAME": "Bahrain",
+    "COUNTRY_CODE": "BH"
+  },
+  {
+    "LOCODE": "PABLB",
+    "PORT_NAME": "Balboa",
+    "COUNTRY_CODE": "PA"
+  },
+  {
+    "LOCODE": "USBAL",
+    "PORT_NAME": "Baltimore",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "IRBND",
+    "PORT_NAME": "Bandar Abbas",
+    "COUNTRY_CODE": "IR"
+  },
+  {
+    "LOCODE": "GMBJL",
+    "PORT_NAME": "Banjul",
+    "COUNTRY_CODE": "GM"
+  },
+  {
+    "LOCODE": "ESBCN",
+    "PORT_NAME": "Barcelona",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "COBAQ",
+    "PORT_NAME": "Barranquilla",
+    "COUNTRY_CODE": "CO"
+  },
+  {
+    "LOCODE": "GQBSG",
+    "PORT_NAME": "Bata",
+    "COUNTRY_CODE": "GQ"
+  },
+  {
+    "LOCODE": "LBBEY",
+    "PORT_NAME": "Beirut",
+    "COUNTRY_CODE": "LB"
+  },
+  {
+    "LOCODE": "DZBJA",
+    "PORT_NAME": "Bejaia",
+    "COUNTRY_CODE": "DZ"
+  },
+  {
+    "LOCODE": "BZBZE",
+    "PORT_NAME": "Belize",
+    "COUNTRY_CODE": "BZ"
+  },
+  {
+    "LOCODE": "LYBEN",
+    "PORT_NAME": "Benghazi",
+    "COUNTRY_CODE": "LY"
+  },
+  {
+    "LOCODE": "NOBGO",
+    "PORT_NAME": "Bergen",
+    "COUNTRY_CODE": "NO"
+  },
+  {
+    "LOCODE": "GWOXB",
+    "PORT_NAME": "Bissau",
+    "COUNTRY_CODE": "GW"
+  },
+  {
+    "LOCODE": "CDBOA",
+    "PORT_NAME": "Boma",
+    "COUNTRY_CODE": "CD"
+  },
+  {
+    "LOCODE": "TRUSK",
+    "PORT_NAME": "Bosperus",
+    "COUNTRY_CODE": "TR"
+  },
+  {
+    "LOCODE": "DEBRV",
+    "PORT_NAME": "Bremerhaven",
+    "COUNTRY_CODE": "DE"
+  },
+  {
+    "LOCODE": "FRBES",
+    "PORT_NAME": "Brest",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "AUBNE",
+    "PORT_NAME": "Brisbane",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "COBUN",
+    "PORT_NAME": "Buenaventura",
+    "COUNTRY_CODE": "CO"
+  },
+  {
+    "LOCODE": "ARBUE",
+    "PORT_NAME": "Buenos Aires",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "KRPUS",
+    "PORT_NAME": "Busan",
+    "COUNTRY_CODE": "KR"
+  },
+  {
+    "LOCODE": "PECLL",
+    "PORT_NAME": "Callao",
+    "COUNTRY_CODE": "PE"
+  },
+  {
+    "LOCODE": "ZACPT",
+    "PORT_NAME": "Cape Town",
+    "COUNTRY_CODE": "ZA"
+  },
+  {
+    "LOCODE": "COCTG",
+    "PORT_NAME": "Cartagena",
+    "COUNTRY_CODE": "CO"
+  },
+  {
+    "LOCODE": "ESCAR",
+    "PORT_NAME": "Cartagena",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "MACAS",
+    "PORT_NAME": "Casablanca",
+    "COUNTRY_CODE": "MA"
+  },
+  {
+    "LOCODE": "DOCAU",
+    "PORT_NAME": "Caucedo",
+    "COUNTRY_CODE": "DO"
+  },
+  {
+    "LOCODE": "USCHS",
+    "PORT_NAME": "Charleston",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "INMAA",
+    "PORT_NAME": "Chennai",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "BDCGP",
+    "PORT_NAME": "Chittagong",
+    "COUNTRY_CODE": "BD"
+  },
+  {
+    "LOCODE": "CNCWN",
+    "PORT_NAME": "Chiwan",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "INCOK",
+    "PORT_NAME": "Cochin",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "LKCMB",
+    "PORT_NAME": "Colombo",
+    "COUNTRY_CODE": "LK"
+  },
+  {
+    "LOCODE": "GNCKY",
+    "PORT_NAME": "Conakry",
+    "COUNTRY_CODE": "GN"
+  },
+  {
+    "LOCODE": "ROCND",
+    "PORT_NAME": "Constanta",
+    "COUNTRY_CODE": "RO"
+  },
+  {
+    "LOCODE": "NICIO",
+    "PORT_NAME": "Corinto",
+    "COUNTRY_CODE": "NI"
+  },
+  {
+    "LOCODE": "IEORK",
+    "PORT_NAME": "Cork. Co Cork",
+    "COUNTRY_CODE": "IE"
+  },
+  {
+    "LOCODE": "BJCOO",
+    "PORT_NAME": "Cotonou",
+    "COUNTRY_CODE": "BJ"
+  },
+  {
+    "LOCODE": "VNDAD",
+    "PORT_NAME": "Da Nang",
+    "COUNTRY_CODE": "VN"
+  },
+  {
+    "LOCODE": "SNDKR",
+    "PORT_NAME": "Dakar",
+    "COUNTRY_CODE": "SN"
+  },
+  {
+    "LOCODE": "CNDLC",
+    "PORT_NAME": "Dalian",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "EGDAM",
+    "PORT_NAME": "Damietta",
+    "COUNTRY_CODE": "EG"
+  },
+  {
+    "LOCODE": "SADMM",
+    "PORT_NAME": "Dammam",
+    "COUNTRY_CODE": "SA"
+  },
+  {
+    "LOCODE": "TZDAR",
+    "PORT_NAME": "Dar es Salaam",
+    "COUNTRY_CODE": "TZ"
+  },
+  {
+    "LOCODE": "DJJIB",
+    "PORT_NAME": "Djibouti",
+    "COUNTRY_CODE": "DJ"
+  },
+  {
+    "LOCODE": "CMDLA",
+    "PORT_NAME": "Douala",
+    "COUNTRY_CODE": "CM"
+  },
+  {
+    "LOCODE": "IEDUB",
+    "PORT_NAME": "Dublin",
+    "COUNTRY_CODE": "IE"
+  },
+  {
+    "LOCODE": "FRDKK",
+    "PORT_NAME": "Dunkerque",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "ZADUR",
+    "PORT_NAME": "Durban",
+    "COUNTRY_CODE": "ZA"
+  },
+  {
+    "LOCODE": "USDUT",
+    "PORT_NAME": "Dutch Harbor",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "ZAELS",
+    "PORT_NAME": "East London",
+    "COUNTRY_CODE": "ZA"
+  },
+  {
+    "LOCODE": "MXESE",
+    "PORT_NAME": "Ensenada",
+    "COUNTRY_CODE": "MX"
+  },
+  {
+    "LOCODE": "ECESM",
+    "PORT_NAME": "Esmeraldas",
+    "COUNTRY_CODE": "EC"
+  },
+  {
+    "LOCODE": "WP081",
+    "PORT_NAME": "Fazendinha",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "GBFXT",
+    "PORT_NAME": "Felixstowe",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "FRFOS",
+    "PORT_NAME": "Fos sur Mer",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "SLFNA",
+    "PORT_NAME": "Freetown",
+    "COUNTRY_CODE": "SL"
+  },
+  {
+    "LOCODE": "AUFRE",
+    "PORT_NAME": "Fremantle",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "NOFUS",
+    "PORT_NAME": "Fusa",
+    "COUNTRY_CODE": "NO"
+  },
+  {
+    "LOCODE": "CNFOC",
+    "PORT_NAME": "Fuzhou",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "PLGDY",
+    "PORT_NAME": "Gdynia",
+    "COUNTRY_CODE": "PL"
+  },
+  {
+    "LOCODE": "PHGES",
+    "PORT_NAME": "General Santos City",
+    "COUNTRY_CODE": "PH"
+  },
+  {
+    "LOCODE": "ITGOA",
+    "PORT_NAME": "Genoa",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "ITGIT",
+    "PORT_NAME": "Gioia Tauro",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "SEGOT",
+    "PORT_NAME": "Gothenburg",
+    "COUNTRY_CODE": "SE"
+  },
+  {
+    "LOCODE": "GBGRG",
+    "PORT_NAME": "Grangemouth",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "ECGYE",
+    "PORT_NAME": "Guayaquil",
+    "COUNTRY_CODE": "EC"
+  },
+  {
+    "LOCODE": "ILHFA",
+    "PORT_NAME": "Haifa",
+    "COUNTRY_CODE": "IL"
+  },
+  {
+    "LOCODE": "VNHPH",
+    "PORT_NAME": "Haiphong",
+    "COUNTRY_CODE": "VN"
+  },
+  {
+    "LOCODE": "JPHKT",
+    "PORT_NAME": "Hakata",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "INHAL",
+    "PORT_NAME": "Haldia Port. India",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "DEHAM",
+    "PORT_NAME": "Hamburg",
+    "COUNTRY_CODE": "DE"
+  },
+  {
+    "LOCODE": "CUHAV",
+    "PORT_NAME": "Havana Cuba",
+    "COUNTRY_CODE": "CU"
+  },
+  {
+    "LOCODE": "TRHAY",
+    "PORT_NAME": "Haydarpasa Port. Istanbul",
+    "COUNTRY_CODE": "TR"
+  },
+  {
+    "LOCODE": "VNSGN",
+    "PORT_NAME": "Saigon",
+    "COUNTRY_CODE": "VN"
+  },
+  {
+    "LOCODE": "YEHOD",
+    "PORT_NAME": "Hodeidah",
+    "COUNTRY_CODE": "YE"
+  },
+  {
+    "LOCODE": "HKHKG",
+    "PORT_NAME": "Hong Kong",
+    "COUNTRY_CODE": "HK"
+  },
+  {
+    "LOCODE": "USHNL",
+    "PORT_NAME": "Honolulu",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "USHOU",
+    "PORT_NAME": "Houston",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "CNHUA",
+    "PORT_NAME": "Huangpu",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "UAILK",
+    "PORT_NAME": "Ilyichevsk",
+    "COUNTRY_CODE": "UA"
+  },
+  {
+    "LOCODE": "KRICH",
+    "PORT_NAME": "Inchon",
+    "COUNTRY_CODE": "KR"
+  },
+  {
+    "LOCODE": "CLIQQ",
+    "PORT_NAME": "Iquique",
+    "COUNTRY_CODE": "CL"
+  },
+  {
+    "LOCODE": "BRIGI",
+    "PORT_NAME": "Itaguai (Sepetiba)",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "BRITJ",
+    "PORT_NAME": "Itajai",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "TRIZM",
+    "PORT_NAME": "Izmir",
+    "COUNTRY_CODE": "TR"
+  },
+  {
+    "LOCODE": "TRIZE",
+    "PORT_NAME": "Izmit Korfezi",
+    "COUNTRY_CODE": "TR"
+  },
+  {
+    "LOCODE": "IDJKT",
+    "PORT_NAME": "Jakarta",
+    "COUNTRY_CODE": "ID"
+  },
+  {
+    "LOCODE": "INNSA",
+    "PORT_NAME": "Jawaharlal Nehru",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "AEJEA",
+    "PORT_NAME": "Jebel Ali",
+    "COUNTRY_CODE": "AE"
+  },
+  {
+    "LOCODE": "SAJED",
+    "PORT_NAME": "Jeddah",
+    "COUNTRY_CODE": "SA"
+  },
+  {
+    "LOCODE": "RUKGD",
+    "PORT_NAME": "Kaliningrad",
+    "COUNTRY_CODE": "RU"
+  },
+  {
+    "LOCODE": "INIXY",
+    "PORT_NAME": "Kandla",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "TWKHH",
+    "PORT_NAME": "Kaohsiung",
+    "COUNTRY_CODE": "TW"
+  },
+  {
+    "LOCODE": "PKKHI",
+    "PORT_NAME": "Karachi",
+    "COUNTRY_CODE": "PK"
+  },
+  {
+    "LOCODE": "TWKEL",
+    "PORT_NAME": "Keelung",
+    "COUNTRY_CODE": "TW"
+  },
+  {
+    "LOCODE": "WP082",
+    "PORT_NAME": "Kiel Kanal",
+    "COUNTRY_CODE": "DE"
+  },
+  {
+    "LOCODE": "JPUKB",
+    "PORT_NAME": "Kobe",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "INCCU",
+    "PORT_NAME": "Kolkata",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "SIKOP",
+    "PORT_NAME": "Koper",
+    "COUNTRY_CODE": "SI"
+  },
+  {
+    "LOCODE": "FIKTK",
+    "PORT_NAME": "Kotka",
+    "COUNTRY_CODE": "FI"
+  },
+  {
+    "LOCODE": "NOKRS",
+    "PORT_NAME": "Kristiansand",
+    "COUNTRY_CODE": "NO"
+  },
+  {
+    "LOCODE": "KRKAN",
+    "PORT_NAME": "Kwangyang",
+    "COUNTRY_CODE": "KR"
+  },
+  {
+    "LOCODE": "VELAG",
+    "PORT_NAME": "La Guaira",
+    "COUNTRY_CODE": "VE"
+  },
+  {
+    "LOCODE": "FRLPE",
+    "PORT_NAME": "La Pallice",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "THLCH",
+    "PORT_NAME": "Laem Chabang",
+    "COUNTRY_CODE": "TH"
+  },
+  {
+    "LOCODE": "NOLAR",
+    "PORT_NAME": "Larvik",
+    "COUNTRY_CODE": "NO"
+  },
+  {
+    "LOCODE": "ESLPA",
+    "PORT_NAME": "Las Palmas",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "MXLZC",
+    "PORT_NAME": "Lazaro Cardenas",
+    "COUNTRY_CODE": "MX"
+  },
+  {
+    "LOCODE": "FRLEH",
+    "PORT_NAME": "Le Havre",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "ITLIV",
+    "PORT_NAME": "Leghorn",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "PTLEI",
+    "PORT_NAME": "Leixoes",
+    "COUNTRY_CODE": "PT"
+  },
+  {
+    "LOCODE": "CNLYG",
+    "PORT_NAME": "Lianyungang",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "GALBV",
+    "PORT_NAME": "Libreville",
+    "COUNTRY_CODE": "GA"
+  },
+  {
+    "LOCODE": "CYLMS",
+    "PORT_NAME": "Limassol",
+    "COUNTRY_CODE": "CY"
+  },
+  {
+    "LOCODE": "CLLQN",
+    "PORT_NAME": "Lirquen",
+    "COUNTRY_CODE": "CL"
+  },
+  {
+    "LOCODE": "PTLIS",
+    "PORT_NAME": "Lisbon",
+    "COUNTRY_CODE": "PT"
+  },
+  {
+    "LOCODE": "AOLOB",
+    "PORT_NAME": "Lobito",
+    "COUNTRY_CODE": "AO"
+  },
+  {
+    "LOCODE": "TGLFW",
+    "PORT_NAME": "Lome",
+    "COUNTRY_CODE": "TG"
+  },
+  {
+    "LOCODE": "USLGB",
+    "PORT_NAME": "Long Beach",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "USLAX",
+    "PORT_NAME": "Los Angeles",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "AOLAD",
+    "PORT_NAME": "Luanda",
+    "COUNTRY_CODE": "AO"
+  },
+  {
+    "LOCODE": "NZLYT",
+    "PORT_NAME": "Lyttelton",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "ESAGP",
+    "PORT_NAME": "Malaga",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "BRMAO",
+    "PORT_NAME": "Manaus",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "PHMNL",
+    "PORT_NAME": "Manila",
+    "COUNTRY_CODE": "PH"
+  },
+  {
+    "LOCODE": "PAMIT",
+    "PORT_NAME": "Manzanillo",
+    "COUNTRY_CODE": "PA"
+  },
+  {
+    "LOCODE": "MTMAR",
+    "PORT_NAME": "Marsaxlokk",
+    "COUNTRY_CODE": "MT"
+  },
+  {
+    "LOCODE": "CDMAT",
+    "PORT_NAME": "Matadi",
+    "COUNTRY_CODE": "CD"
+  },
+  {
+    "LOCODE": "AUMEL",
+    "PORT_NAME": "Melbourne",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "ESMLN",
+    "PORT_NAME": "Melilla",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "TRMER",
+    "PORT_NAME": "Mersin",
+    "COUNTRY_CODE": "TR"
+  },
+  {
+    "LOCODE": "USMIA",
+    "PORT_NAME": "Miami",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "LYMRA",
+    "PORT_NAME": "Misuratah",
+    "COUNTRY_CODE": "LY"
+  },
+  {
+    "LOCODE": "USMOB",
+    "PORT_NAME": "Mobile",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "KEMBA",
+    "PORT_NAME": "Mombasa",
+    "COUNTRY_CODE": "KE"
+  },
+  {
+    "LOCODE": "LRMLW",
+    "PORT_NAME": "Monrovia",
+    "COUNTRY_CODE": "LR"
+  },
+  {
+    "LOCODE": "UYMVD",
+    "PORT_NAME": "Montevideo",
+    "COUNTRY_CODE": "UY"
+  },
+  {
+    "LOCODE": "FRMTX",
+    "PORT_NAME": "Montoir de Bretagne",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "CAMTR",
+    "PORT_NAME": "Montreal",
+    "COUNTRY_CODE": "CA"
+  },
+  {
+    "LOCODE": "OMMCT",
+    "PORT_NAME": "Muscat. Oman",
+    "COUNTRY_CODE": "OM"
+  },
+  {
+    "LOCODE": "NOMAY",
+    "PORT_NAME": "Maaloey",
+    "COUNTRY_CODE": "NO"
+  },
+  {
+    "LOCODE": "JPNGO",
+    "PORT_NAME": "Nagoya",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "AOMSZ",
+    "PORT_NAME": "Namibe",
+    "COUNTRY_CODE": "AO"
+  },
+  {
+    "LOCODE": "CNNSA",
+    "PORT_NAME": "Nansha New Port",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "NZNPE",
+    "PORT_NAME": "Napier",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "NZNSN",
+    "PORT_NAME": "Nelson",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "USMSY",
+    "PORT_NAME": "New Orleans",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "NZNPL",
+    "PORT_NAME": "New Plymouth",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "USEWR",
+    "PORT_NAME": "Newark",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "CNNGB",
+    "PORT_NAME": "Ningbo",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "USORF",
+    "PORT_NAME": "Norfolk",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "USNTS",
+    "PORT_NAME": "North Charleston",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "MRNDB",
+    "PORT_NAME": "Nouadhibou",
+    "COUNTRY_CODE": "MR"
+  },
+  {
+    "LOCODE": "MRNKC",
+    "PORT_NAME": "Nouakchott",
+    "COUNTRY_CODE": "MR"
+  },
+  {
+    "LOCODE": "USOAK",
+    "PORT_NAME": "Oakland",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "UAODS",
+    "PORT_NAME": "Odessa",
+    "COUNTRY_CODE": "UA"
+  },
+  {
+    "LOCODE": "NGONN",
+    "PORT_NAME": "Onne Seaport",
+    "COUNTRY_CODE": "NG"
+  },
+  {
+    "LOCODE": "DZORN",
+    "PORT_NAME": "Oran",
+    "COUNTRY_CODE": "DZ"
+  },
+  {
+    "LOCODE": "JPOSA",
+    "PORT_NAME": "Osaka",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "PEPAI",
+    "PORT_NAME": "Paita",
+    "COUNTRY_CODE": "PE"
+  },
+  {
+    "LOCODE": "BRPNG",
+    "PORT_NAME": "Paranagua",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "BRPEC",
+    "PORT_NAME": "Pecem",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "MYPEN",
+    "PORT_NAME": "Penang",
+    "COUNTRY_CODE": "MY"
+  },
+  {
+    "LOCODE": "USPHL",
+    "PORT_NAME": "Philadelphia",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "INPAV",
+    "PORT_NAME": "Pipavav",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "GRPIR",
+    "PORT_NAME": "Piraeus",
+    "COUNTRY_CODE": "GR"
+  },
+  {
+    "LOCODE": "CGPNR",
+    "PORT_NAME": "Pointe Noire",
+    "COUNTRY_CODE": "CG"
+  },
+  {
+    "LOCODE": "NZPOE",
+    "PORT_NAME": "Port Chalmers",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "ZAPLZ",
+    "PORT_NAME": "Port Elizabeth",
+    "COUNTRY_CODE": "ZA"
+  },
+  {
+    "LOCODE": "GAPOG",
+    "PORT_NAME": "Port Gentil",
+    "COUNTRY_CODE": "GA"
+  },
+  {
+    "LOCODE": "MYPKG",
+    "PORT_NAME": "Port Klang",
+    "COUNTRY_CODE": "MY"
+  },
+  {
+    "LOCODE": "MUPLU",
+    "PORT_NAME": "Port Louis",
+    "COUNTRY_CODE": "MU"
+  },
+  {
+    "LOCODE": "PKBQM",
+    "PORT_NAME": "Port Qasim",
+    "COUNTRY_CODE": "PK"
+  },
+  {
+    "LOCODE": "EGPSD",
+    "PORT_NAME": "Port Said",
+    "COUNTRY_CODE": "EG"
+  },
+  {
+    "LOCODE": "MAPTM",
+    "PORT_NAME": "Tangier",
+    "COUNTRY_CODE": "MA"
+  },
+  {
+    "LOCODE": "MXPGO",
+    "PORT_NAME": "Progreso",
+    "COUNTRY_CODE": "MX"
+  },
+  {
+    "LOCODE": "VEPBL",
+    "PORT_NAME": "Puerto Cabello",
+    "COUNTRY_CODE": "VE"
+  },
+  {
+    "LOCODE": "CRCAL",
+    "PORT_NAME": "Puerto Caldera",
+    "COUNTRY_CODE": "CR"
+  },
+  {
+    "LOCODE": "HNPCR",
+    "PORT_NAME": "Puerto Cortes",
+    "COUNTRY_CODE": "HN"
+  },
+  {
+    "LOCODE": "ARPUD",
+    "PORT_NAME": "Puerto Deseado",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "CRLIO",
+    "PORT_NAME": "Puerto Limon",
+    "COUNTRY_CODE": "CR"
+  },
+  {
+    "LOCODE": "ARPMY",
+    "PORT_NAME": "Puerto Madryn",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "CRMOB",
+    "PORT_NAME": "Puerto Limon-Moin",
+    "COUNTRY_CODE": "CR"
+  },
+  {
+    "LOCODE": "GTPRQ",
+    "PORT_NAME": "Puerto Quetzal",
+    "COUNTRY_CODE": "GT"
+  },
+  {
+    "LOCODE": "CNTAO",
+    "PORT_NAME": "Qingdao",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "FIRAU",
+    "PORT_NAME": "Rauma",
+    "COUNTRY_CODE": "FI"
+  },
+  {
+    "LOCODE": "BRRIG",
+    "PORT_NAME": "Rio Grande",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "NLRTM",
+    "PORT_NAME": "Rotterdam",
+    "COUNTRY_CODE": "NL"
+  },
+  {
+    "LOCODE": "FRURO",
+    "PORT_NAME": "Rouen",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "OMSLL",
+    "PORT_NAME": "Salalah",
+    "COUNTRY_CODE": "OM"
+  },
+  {
+    "LOCODE": "ITSAL",
+    "PORT_NAME": "Salerno",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "CLSAI",
+    "PORT_NAME": "San Antonio",
+    "COUNTRY_CODE": "CL"
+  },
+  {
+    "LOCODE": "CISPY",
+    "PORT_NAME": "San Pedro",
+    "COUNTRY_CODE": "CI"
+  },
+  {
+    "LOCODE": "GTSTC",
+    "PORT_NAME": "Santo Tomas de Castilla",
+    "COUNTRY_CODE": "GT"
+  },
+  {
+    "LOCODE": "BRSSZ",
+    "PORT_NAME": "Santos",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "BRSFS",
+    "PORT_NAME": "Sao Francisco do Sul",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "USSAV",
+    "PORT_NAME": "Savannah",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "USSEA",
+    "PORT_NAME": "Seattle",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "IDSRG",
+    "PORT_NAME": "Semarang",
+    "COUNTRY_CODE": "ID"
+  },
+  {
+    "LOCODE": "TNSFA",
+    "PORT_NAME": "Sfax",
+    "COUNTRY_CODE": "TN"
+  },
+  {
+    "LOCODE": "CNSHA",
+    "PORT_NAME": "Shanghai",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "AESHJ",
+    "PORT_NAME": "Sharjah",
+    "COUNTRY_CODE": "AE"
+  },
+  {
+    "LOCODE": "CNSHK",
+    "PORT_NAME": "Shekou",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "JPSMZ",
+    "PORT_NAME": "Shimizu",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "KWSAA",
+    "PORT_NAME": "Shuaiba",
+    "COUNTRY_CODE": "KW"
+  },
+  {
+    "LOCODE": "KWSWK",
+    "PORT_NAME": "Ash Shuwaykh",
+    "COUNTRY_CODE": "KW"
+  },
+  {
+    "LOCODE": "KHKOS",
+    "PORT_NAME": "Sihanoukville",
+    "COUNTRY_CODE": "KH"
+  },
+  {
+    "LOCODE": "SGSIN",
+    "PORT_NAME": "Singapore",
+    "COUNTRY_CODE": "SG"
+  },
+  {
+    "LOCODE": "GRSKA",
+    "PORT_NAME": "Skaramanga",
+    "COUNTRY_CODE": "GR"
+  },
+  {
+    "LOCODE": "DZSKI",
+    "PORT_NAME": "Skikda",
+    "COUNTRY_CODE": "DZ"
+  },
+  {
+    "LOCODE": "OMSOH",
+    "PORT_NAME": "Sohar",
+    "COUNTRY_CODE": "OM"
+  },
+  {
+    "LOCODE": "THSGZ",
+    "PORT_NAME": "Songkhla",
+    "COUNTRY_CODE": "TH"
+  },
+  {
+    "LOCODE": "GBSOU",
+    "PORT_NAME": "Southampton",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "AOSZA",
+    "PORT_NAME": "Soyo",
+    "COUNTRY_CODE": "AO"
+  },
+  {
+    "LOCODE": "RULED",
+    "PORT_NAME": "St Petersburg",
+    "COUNTRY_CODE": "RU"
+  },
+  {
+    "LOCODE": "NOSVG",
+    "PORT_NAME": "Stavanger",
+    "COUNTRY_CODE": "NO"
+  },
+  {
+    "LOCODE": "EGSUZ",
+    "PORT_NAME": "Suez Canal",
+    "COUNTRY_CODE": "EG"
+  },
+  {
+    "LOCODE": "IDSUB",
+    "PORT_NAME": "Surabaya",
+    "COUNTRY_CODE": "ID"
+  },
+  {
+    "LOCODE": "AUSYD",
+    "PORT_NAME": "Sydney",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "GHTKD",
+    "PORT_NAME": "Takoradi",
+    "COUNTRY_CODE": "GH"
+  },
+  {
+    "LOCODE": "MYTPP",
+    "PORT_NAME": "Tanjung Pelepas",
+    "COUNTRY_CODE": "MY"
+  },
+  {
+    "LOCODE": "ESTAR",
+    "PORT_NAME": "Tarragona",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "NZTRG",
+    "PORT_NAME": "Tauranga",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "GHTEM",
+    "PORT_NAME": "Tema",
+    "COUNTRY_CODE": "GH"
+  },
+  {
+    "LOCODE": "ESSCT",
+    "PORT_NAME": "Santa Cruz De Tenerife",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "GBTHP",
+    "PORT_NAME": "Thames Haven",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "GRSKG",
+    "PORT_NAME": "Thessaloniki",
+    "COUNTRY_CODE": "GR"
+  },
+  {
+    "LOCODE": "GBTIL",
+    "PORT_NAME": "Tilbury",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "NZTIU",
+    "PORT_NAME": "Timaru",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "NGTIN",
+    "PORT_NAME": "Tin Can Island Port",
+    "COUNTRY_CODE": "NG"
+  },
+  {
+    "LOCODE": "MGTMM",
+    "PORT_NAME": "Toamasina",
+    "COUNTRY_CODE": "MG"
+  },
+  {
+    "LOCODE": "JPTYO",
+    "PORT_NAME": "Tokyo",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "WP083",
+    "PORT_NAME": "Torres Strait",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "ITTRS",
+    "PORT_NAME": "Trieste",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "TNTUN",
+    "PORT_NAME": "Tunis",
+    "COUNTRY_CODE": "TN"
+  },
+  {
+    "LOCODE": "ARUSH",
+    "PORT_NAME": "Ushuaia",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "ESVLC",
+    "PORT_NAME": "Valencia",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "CAVAN",
+    "PORT_NAME": "Vancouver",
+    "COUNTRY_CODE": "CA"
+  },
+  {
+    "LOCODE": "BGVAR",
+    "PORT_NAME": "Varna",
+    "COUNTRY_CODE": "BG"
+  },
+  {
+    "LOCODE": "ESVGO",
+    "PORT_NAME": "Vigo",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "BRVLC",
+    "PORT_NAME": "Vila do Conde",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "BRVIX",
+    "PORT_NAME": "Vitoria",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "NAWVB",
+    "PORT_NAME": "Walvis Bay",
+    "COUNTRY_CODE": "NA"
+  },
+  {
+    "LOCODE": "NZWLG",
+    "PORT_NAME": "Wellington",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "USILM",
+    "PORT_NAME": "WilmingtonNC",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "CNXMN",
+    "PORT_NAME": "Xiamen",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "CNTXG",
+    "PORT_NAME": "Xingang",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "CNYTN",
+    "PORT_NAME": "Shenzhen",
+    "COUNTRY_CODE": "CN"
+  },
+  {
+    "LOCODE": "JPYOK",
+    "PORT_NAME": "Yokohama",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "ARZAE",
+    "PORT_NAME": "Zarate",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "BEZEE",
+    "PORT_NAME": "Zeebrugge",
+    "COUNTRY_CODE": "BE"
+  },
+  {
+    "LOCODE": "NOAES",
+    "PORT_NAME": "Alesund",
+    "COUNTRY_CODE": "NO"
+  },
+  {
+    "LOCODE": "DKAAR",
+    "PORT_NAME": "Aarhus",
+    "COUNTRY_CODE": "DK"
+  },
+  {
+    "LOCODE": "PAPCN",
+    "PORT_NAME": "Panama Canal",
+    "COUNTRY_CODE": "PA"
+  },
+  {
+    "LOCODE": "MXACA",
+    "PORT_NAME": "Acapulco",
+    "COUNTRY_CODE": "MX"
+  },
+  {
+    "LOCODE": "GHACC",
+    "PORT_NAME": "Accra",
+    "COUNTRY_CODE": "GH"
+  },
+  {
+    "LOCODE": "AUALH",
+    "PORT_NAME": "Albany",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "ESALC",
+    "PORT_NAME": "Alicante",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "ESLEI",
+    "PORT_NAME": "Almeria",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "NLAMS",
+    "PORT_NAME": "Amsterdam",
+    "COUNTRY_CODE": "NL"
+  },
+  {
+    "LOCODE": "ITAOI",
+    "PORT_NAME": "Ancona",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "CLANF",
+    "PORT_NAME": "Antofagasta",
+    "COUNTRY_CODE": "CL"
+  },
+  {
+    "LOCODE": "BRAJU",
+    "PORT_NAME": "Aracaju",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "ITATX",
+    "PORT_NAME": "Arbatax",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "AUARD",
+    "PORT_NAME": "Ardrossan",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "CANWP",
+    "PORT_NAME": "Argentia",
+    "COUNTRY_CODE": "CA"
+  },
+  {
+    "LOCODE": "PTAVE",
+    "PORT_NAME": "Aveiro",
+    "COUNTRY_CODE": "PT"
+  },
+  {
+    "LOCODE": "AUBWB",
+    "PORT_NAME": "Barrow Island",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "IDBLW",
+    "PORT_NAME": "Belawan",
+    "COUNTRY_CODE": "ID"
+  },
+  {
+    "LOCODE": "BRBEL",
+    "PORT_NAME": "Belem",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "FRBOD",
+    "PORT_NAME": "Bordeaux",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "ITBDS",
+    "PORT_NAME": "Brindisi",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "BRCDO",
+    "PORT_NAME": "Cabedelo",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "ESCAD",
+    "PORT_NAME": "Cadiz",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "ITCAG",
+    "PORT_NAME": "Cagliari",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "CUCAI",
+    "PORT_NAME": "Caibarien",
+    "COUNTRY_CODE": "CU"
+  },
+  {
+    "LOCODE": "AUCLN",
+    "PORT_NAME": "Cape Leeuwin",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "VECUP",
+    "PORT_NAME": "Carupano",
+    "COUNTRY_CODE": "VE"
+  },
+  {
+    "LOCODE": "PHCEB",
+    "PORT_NAME": "Cebu",
+    "COUNTRY_CODE": "PH"
+  },
+  {
+    "LOCODE": "ESCEU",
+    "PORT_NAME": "Ceuta",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "IRZBR",
+    "PORT_NAME": "Chah Bahar",
+    "COUNTRY_CODE": "IR"
+  },
+  {
+    "LOCODE": "JPCHW",
+    "PORT_NAME": "Chimu Wan",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "ITCVV",
+    "PORT_NAME": "Civitavecchia",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "CRCLN",
+    "PORT_NAME": "Colon",
+    "COUNTRY_CODE": "CR"
+  },
+  {
+    "LOCODE": "CADAR",
+    "PORT_NAME": "Dartmouth",
+    "COUNTRY_CODE": "CA"
+  },
+  {
+    "LOCODE": "PHDVO",
+    "PORT_NAME": "Davao",
+    "COUNTRY_CODE": "PH"
+  },
+  {
+    "LOCODE": "TRDRC",
+    "PORT_NAME": "Derince",
+    "COUNTRY_CODE": "TR"
+  },
+  {
+    "LOCODE": "GBDVR",
+    "PORT_NAME": "Dover",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "CAFAH",
+    "PORT_NAME": "Falmouth",
+    "COUNTRY_CODE": "CA"
+  },
+  {
+    "LOCODE": "TRFET",
+    "PORT_NAME": "Fethiye",
+    "COUNTRY_CODE": "TR"
+  },
+  {
+    "LOCODE": "ITFCO",
+    "PORT_NAME": "Fiumicino",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "USFLL",
+    "PORT_NAME": "Fort Lauderdale",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "PTFNC",
+    "PORT_NAME": "Funchal",
+    "COUNTRY_CODE": "PT"
+  },
+  {
+    "LOCODE": "USGLS",
+    "PORT_NAME": "Galveston",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "ITGEA",
+    "PORT_NAME": "Gela",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "AUGTT",
+    "PORT_NAME": "Georgetown",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "ESGIJ",
+    "PORT_NAME": "Gijon",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "LRGRE",
+    "PORT_NAME": "Greenville",
+    "COUNTRY_CODE": "LR"
+  },
+  {
+    "LOCODE": "JPHKD",
+    "PORT_NAME": "Hakodate",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "AUHAL",
+    "PORT_NAME": "Halifax",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "AUHLT",
+    "PORT_NAME": "Hamilton",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "AUHBA",
+    "PORT_NAME": "Hobart",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "PEILQ",
+    "PORT_NAME": "Ilo",
+    "COUNTRY_CODE": "PE"
+  },
+  {
+    "LOCODE": "PHILO",
+    "PORT_NAME": "Iloilo",
+    "COUNTRY_CODE": "PH"
+  },
+  {
+    "LOCODE": "GRNAI",
+    "PORT_NAME": "Iraklion",
+    "COUNTRY_CODE": "GR"
+  },
+  {
+    "LOCODE": "LKKNK",
+    "PORT_NAME": "Kankesanturai",
+    "COUNTRY_CODE": "LK"
+  },
+  {
+    "LOCODE": "SEKAA",
+    "PORT_NAME": "Karlskrona",
+    "COUNTRY_CODE": "SE"
+  },
+  {
+    "LOCODE": "JPKWS",
+    "PORT_NAME": "Kawasaki",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "AUKIT",
+    "PORT_NAME": "Kingston",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "DKCPH",
+    "PORT_NAME": "Kobenhavn",
+    "COUNTRY_CODE": "DK"
+  },
+  {
+    "LOCODE": "ESZGM",
+    "PORT_NAME": "Lagos",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "CYLCA",
+    "PORT_NAME": "Larnaca",
+    "COUNTRY_CODE": "CY"
+  },
+  {
+    "LOCODE": "GBLOW",
+    "PORT_NAME": "Lowestoft",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "MYMKZ",
+    "PORT_NAME": "Malacca",
+    "COUNTRY_CODE": "MY"
+  },
+  {
+    "LOCODE": "ARMDQ",
+    "PORT_NAME": "Mar Del Plata",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "FRETN",
+    "PORT_NAME": "Menton",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "ITMSN",
+    "PORT_NAME": "Messina",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "ITMNP",
+    "PORT_NAME": "Monopoli",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "MXMRE",
+    "PORT_NAME": "Morro Redondo",
+    "COUNTRY_CODE": "MX"
+  },
+  {
+    "LOCODE": "JPNGS",
+    "PORT_NAME": "Nagasaki",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "IDNAH",
+    "PORT_NAME": "Naha",
+    "COUNTRY_CODE": "ID"
+  },
+  {
+    "LOCODE": "ITNAP",
+    "PORT_NAME": "Napoli",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "BRNAT",
+    "PORT_NAME": "Natal",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "ITPMO",
+    "PORT_NAME": "Palermo",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "IDPNJ",
+    "PORT_NAME": "Panjang",
+    "COUNTRY_CODE": "ID"
+  },
+  {
+    "LOCODE": "SLPEP",
+    "PORT_NAME": "Pepel",
+    "COUNTRY_CODE": "SL"
+  },
+  {
+    "LOCODE": "GBPLY",
+    "PORT_NAME": "Plymouth",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "PTPDL",
+    "PORT_NAME": "Ponta Delgada",
+    "COUNTRY_CODE": "PT"
+  },
+  {
+    "LOCODE": "USNTD",
+    "PORT_NAME": "Port Hueneme",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "CAPRR",
+    "PORT_NAME": "Prince Rupert",
+    "COUNTRY_CODE": "CA"
+  },
+  {
+    "LOCODE": "CLPUQ",
+    "PORT_NAME": "Punta Arenas",
+    "COUNTRY_CODE": "CL"
+  },
+  {
+    "LOCODE": "VNUIH",
+    "PORT_NAME": "Qui Nhon",
+    "COUNTRY_CODE": "VN"
+  },
+  {
+    "LOCODE": "ITRAN",
+    "PORT_NAME": "Ravenna",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "BRREC",
+    "PORT_NAME": "Recife",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "AURDS",
+    "PORT_NAME": "Rhodes",
+    "COUNTRY_CODE": "AU"
+  },
+  {
+    "LOCODE": "ZARCB",
+    "PORT_NAME": "Richards Bay",
+    "COUNTRY_CODE": "ZA"
+  },
+  {
+    "LOCODE": "BRRIO",
+    "PORT_NAME": "Rio De Janeiro",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "PESVY",
+    "PORT_NAME": "Salaverry",
+    "COUNTRY_CODE": "PE"
+  },
+  {
+    "LOCODE": "ZASDB",
+    "PORT_NAME": "Saldanha Bay",
+    "COUNTRY_CODE": "ZA"
+  },
+  {
+    "LOCODE": "BRSSA",
+    "PORT_NAME": "Salvador",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "ESSCI",
+    "PORT_NAME": "San Ciprian",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "USSAN",
+    "PORT_NAME": "San Diego",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "ARSFE",
+    "PORT_NAME": "San Fernando",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "ARSFO",
+    "PORT_NAME": "San Francisco",
+    "COUNTRY_CODE": "AR"
+  },
+  {
+    "LOCODE": "PESNX",
+    "PORT_NAME": "San Nicolas",
+    "COUNTRY_CODE": "PE"
+  },
+  {
+    "LOCODE": "ESEAS",
+    "PORT_NAME": "San Sebastian",
+    "COUNTRY_CODE": "ES"
+  },
+  {
+    "LOCODE": "CUSCU",
+    "PORT_NAME": "Santiago De Cuba",
+    "COUNTRY_CODE": "CU"
+  },
+  {
+    "LOCODE": "CLSDO",
+    "PORT_NAME": "Santo Domingo",
+    "COUNTRY_CODE": "CL"
+  },
+  {
+    "LOCODE": "DESAS",
+    "PORT_NAME": "Sassnitz",
+    "COUNTRY_CODE": "DE"
+  },
+  {
+    "LOCODE": "GBSFW",
+    "PORT_NAME": "Scapa Flow",
+    "COUNTRY_CODE": "GB"
+  },
+  {
+    "LOCODE": "GHSEK",
+    "PORT_NAME": "Sekondi",
+    "COUNTRY_CODE": "GH"
+  },
+  {
+    "LOCODE": "JPSHS",
+    "PORT_NAME": "Shimonoseki",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "ITSIR",
+    "PORT_NAME": "Siracusa",
+    "COUNTRY_CODE": "IT"
+  },
+  {
+    "LOCODE": "SESLI",
+    "PORT_NAME": "Slite",
+    "COUNTRY_CODE": "SE"
+  },
+  {
+    "LOCODE": "IDSOQ",
+    "PORT_NAME": "Sorong",
+    "COUNTRY_CODE": "ID"
+  },
+  {
+    "LOCODE": "BESGS",
+    "PORT_NAME": "St Georges",
+    "COUNTRY_CODE": "BE"
+  },
+  {
+    "LOCODE": "USSJ4",
+    "PORT_NAME": "St Johns",
+    "COUNTRY_CODE": "US"
+  },
+  {
+    "LOCODE": "FRSNG",
+    "PORT_NAME": "St Nazaire",
+    "COUNTRY_CODE": "FR"
+  },
+  {
+    "LOCODE": "TWTXG",
+    "PORT_NAME": "Taichung",
+    "COUNTRY_CODE": "TW"
+  },
+  {
+    "LOCODE": "PETYL",
+    "PORT_NAME": "Talara",
+    "COUNTRY_CODE": "PE"
+  },
+  {
+    "LOCODE": "MXTAM",
+    "PORT_NAME": "Tampico",
+    "COUNTRY_CODE": "MX"
+  },
+  {
+    "LOCODE": "TZTGT",
+    "PORT_NAME": "Tanga",
+    "COUNTRY_CODE": "TZ"
+  },
+  {
+    "LOCODE": "JPTKY",
+    "PORT_NAME": "Tokuyama",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "BRTRM",
+    "PORT_NAME": "Tramandai",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "LKTRR",
+    "PORT_NAME": "Trincomalee",
+    "COUNTRY_CODE": "LK"
+  },
+  {
+    "LOCODE": "INTUT",
+    "PORT_NAME": "Tuticorin",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "JPUBJ",
+    "PORT_NAME": "Ube",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "BRVPO",
+    "PORT_NAME": "Valparaiso",
+    "COUNTRY_CODE": "BR"
+  },
+  {
+    "LOCODE": "INVVA",
+    "PORT_NAME": "Veraval",
+    "COUNTRY_CODE": "IN"
+  },
+  {
+    "LOCODE": "JPWTU",
+    "PORT_NAME": "Wakamatsu",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "JPWAK",
+    "PORT_NAME": "Wakayama",
+    "COUNTRY_CODE": "JP"
+  },
+  {
+    "LOCODE": "NZWAG",
+    "PORT_NAME": "Wanganui",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "NZWRE",
+    "PORT_NAME": "Whangarei",
+    "COUNTRY_CODE": "NZ"
+  },
+  {
+    "LOCODE": "DEWVN",
+    "PORT_NAME": "Wilhelmshaven",
+    "COUNTRY_CODE": "DE"
+  },
+  {
+    "LOCODE": "TZZNZ",
+    "PORT_NAME": "Zanzibar",
+    "COUNTRY_CODE": "TZ"
+  }
+]

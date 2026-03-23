@@ -97,8 +97,8 @@ interface FilterStoreProps {
   // products: any[];
   pagination: any;
   setFilter: (data: FilterStoreProps) => void;
-  portsDeparture: string[];
-  portsArrival: string[];
+  portsDeparture: { id: string; label: string }[];
+  portsArrival: { id: string; label: string }[];
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
   let savedSeachForm: any =
@@ -268,21 +268,27 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       }
 
       if (type === 'seaport') {
-        const response = await fetch(
-          `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&name=${encodeURIComponent(departure ? from : to)}&country_iso=${encodeURIComponent(iso2 as string)}&port_type=Port&fuzzy=1`,
-        );
-        const data = await response.json();
+        const portName = (departure ? from : to).toLowerCase();
+        const { default: allPorts } = await import('./data/ports.json');
 
-        const ports = data.data
-          .filter((item: any) => item.unlocode)
+        const filtered = allPorts.filter((item: any) => {
+          const matchCountry = item.COUNTRY_CODE === (iso2 as string);
+          const matchName = portName
+            ? item.PORT_NAME.toLowerCase().includes(portName)
+            : true;
+          return matchCountry && matchName;
+        });
+
+        const ports = filtered
+          .filter((item: any) => item.LOCODE)
           .map((item: any) => ({
-            id: item.unlocode,
-            label: `(${item.unlocode}) ${item.port_name}`,
+            id: item.LOCODE,
+            label: `(${item.LOCODE}) ${item.PORT_NAME}`,
           }));
 
-        const selected: any[] = data.data
-          .filter((item: any) => item.unlocode)
-          .map((item: any) => item.unlocode);
+        const selected: any[] = filtered
+          .filter((item: any) => item.LOCODE)
+          .map((item: any) => item.LOCODE);
 
         if (departure) {
           set(() => ({
