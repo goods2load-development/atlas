@@ -1,13 +1,11 @@
-#!/bin/sh
-
 # Format code
-npx -c yarn format
+yarn format
 
 # Check TypeScript types
-npx -c yarn tsc --noEmit
+yarn tsc --noEmit
 
 # Build the project
-npx -c yarn build
+yarn build
 git add public/sitemap.xml
 git add public/sitemap.json
 
