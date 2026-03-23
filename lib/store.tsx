@@ -117,9 +117,7 @@ export const usePortsStore = create((set) => ({
   getSeaPortsByCountry: async (countryCode: string) => {
     try {
       const { default: allPorts } = await import('./data/ports.json');
-      return allPorts.filter(
-        (port: any) => port.COUNTRY_CODE === countryCode,
-      );
+      return allPorts.filter((port: any) => port.COUNTRY_CODE === countryCode);
     } catch (error) {
       return [];
     }
@@ -511,11 +509,11 @@ export const useRoutesStore = create((set) => ({
       message: data.message,
       ...(data.reasons.length
         ? {
-          reasons: data.reasons,
-        }
+            reasons: data.reasons,
+          }
         : {
-          reasons: [],
-        }),
+            reasons: [],
+          }),
     };
 
     return postRequest({

@@ -79,7 +79,9 @@ export default function QuestionsAndAnswers({
         collapsible
         className="max-w-[884px] w-full self-center z-20"
       >
-        {data?.map((item) => <QuestionItem {...item} key={item.number} />)}
+        {data?.map((item) => (
+          <QuestionItem {...item} key={item.number} />
+        ))}
       </Accordion>
     </section>
   );

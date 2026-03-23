@@ -97,10 +97,7 @@ export const FormStepSeaFreight = ({
               sortedData[region].map(async (item: any) => {
                 const seaports: any = await getSeaPortsByCountry(item.cca2);
 
-                if (
-                  !Array.isArray(seaports) ||
-                  seaports.length === 0
-                ) {
+                if (!Array.isArray(seaports) || seaports.length === 0) {
                   return;
                 }
 
