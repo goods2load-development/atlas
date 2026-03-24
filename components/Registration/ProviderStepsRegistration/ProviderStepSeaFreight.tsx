@@ -97,13 +97,16 @@ export const FormStepSeaFreight = ({
               sortedData[region].map(async (item: any) => {
                 const seaports: any = await getSeaPortsByCountry(item.cca2);
 
-                if (!Array.isArray(seaports) || seaports.length === 0) {
+                if (
+                  !Array.isArray(seaports.data) ||
+                  seaports.data.length === 0
+                ) {
                   return;
                 }
 
                 return {
                   ...item,
-                  seaports: seaports,
+                  seaports: seaports.data,
                 };
               }),
             );
@@ -179,7 +182,7 @@ export const FormStepSeaFreight = ({
           value={activeCountryAccord}
           onValueChange={(value) => {
             handleScroll(value);
-            setActiveCountries((prev: any) => {});
+            setActiveCountries((prev: any) => { });
             setActiveCountryAccord(value);
           }}
         >
@@ -214,9 +217,9 @@ export const FormStepSeaFreight = ({
                       className="cursor-pointer"
                       onClick={() => {
                         let selectedSeaports = item.seaports
-                          ?.filter((seaport: any) => seaport.LOCODE)
+                          ?.filter((seaport: any) => seaport.unlocode)
                           ?.map((seaport: any) => {
-                            return `(${seaport.LOCODE}) ${seaport.PORT_NAME}`;
+                            return `(${seaport.unlocode}) ${seaport.port_name}`;
                           });
 
                         const existingSeaports =
@@ -246,7 +249,7 @@ export const FormStepSeaFreight = ({
                               ?.filter(
                                 (existSeaport: any) =>
                                   existSeaport !==
-                                  `(${seaport.LOCODE}) ${seaport.PORT_NAME}`,
+                                  `(${seaport.unlocode}) ${seaport.port_name}`,
                               ),
                           );
                         });
@@ -263,11 +266,11 @@ export const FormStepSeaFreight = ({
                         <FormControl>
                           <div className="pl-1 my-1">
                             {item.seaports.map((item: any, idx: number) => {
-                              if (!item.LOCODE) {
+                              if (!item.unlocode) {
                                 return;
                               }
 
-                              const seaportValue = `(${item.LOCODE}) ${item.PORT_NAME}`;
+                              const seaportValue = `(${item.unlocode}) ${item.port_name}`;
 
                               return (
                                 <label
@@ -285,19 +288,19 @@ export const FormStepSeaFreight = ({
                                       const newValue = checked
                                         ? [...(field.value || []), value]
                                         : field.value?.filter(
-                                            (v: string) => v !== value,
-                                          ) || [];
+                                          (v: string) => v !== value,
+                                        ) || [];
                                       field.onChange(newValue);
                                     }}
                                   />
                                   <div className="text-[14px]f font-medium flex gap-1 items-center">
                                     <span className="text-[12px]">
-                                      ({item.LOCODE})
+                                      ({item.unlocode})
                                     </span>
                                     <span>
-                                      {item.PORT_NAME.includes('PORT')
-                                        ? item.PORT_NAME
-                                        : item.PORT_NAME + ' Port'}
+                                      {item.port_name.includes('PORT')
+                                        ? item.port_name
+                                        : item.port_name + ' Port'}
                                     </span>
                                   </div>
                                 </label>
