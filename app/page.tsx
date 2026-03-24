@@ -216,15 +216,15 @@ export default function Home() {
         <DynamicMenu variant="transparent" />
         <div className="px-4 max-w-[1250px] mx-auto text-center">
           <h1 className="md:mt-[120px] mt-12 font-light text-[30px]/[36px] md:text-[50px]/[55px] mb-4">
-            Find <i>Trusted Logistics Partners</i> - or Grow as One
+            Find <i>Trusted Freight Partners</i> - or Grow as One
           </h1>
           <p className="font-medium md:text-2xl mb-4">
-            Goods2Load connects businesses with verified Logistics Providers in
+            Goods2Load connects businesses with verified freight forwarders in
             the UAE and worldwide, <br />
             without middlemen cost.
           </p>
           <p className="mx-auto text-lg max-md:text-sm">
-            The platform provides Logistics Providers with digital tools to
+            The platform provides freight forwarders with digital tools to
             enhance visibility and generate qualified leads. <br />
             Shippers have free, instant access to a trusted network of providers
             from all over the world.
