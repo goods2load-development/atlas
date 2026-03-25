@@ -5,6 +5,7 @@ import {
   patchRequest,
   postRequest,
 } from './utils';
+import portsData from '@/lib/data/ports.json';
 
 import { format } from 'date-fns';
 import { create } from 'zustand';
@@ -97,8 +98,8 @@ interface FilterStoreProps {
   // products: any[];
   pagination: any;
   setFilter: (data: FilterStoreProps) => void;
-  portsDeparture: string[];
-  portsArrival: string[];
+  portsDeparture: { id: string; label: string }[];
+  portsArrival: { id: string; label: string }[];
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
   let savedSeachForm: any =
@@ -132,7 +133,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     // filter options
 
     // Services
-    bestReviewed: true,
+    bestReviewed: false,
     carbonOffset: false,
     industryRecognition: false,
 
@@ -241,14 +242,32 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           withCredentials: false,
         }).then((data: any) => {
           if (!!data.length) {
-            const ports: any[] = data.map((item: any) => ({
+            const searchText = (departure ? from : to).toLowerCase();
+            const matchedAirports = data.filter((item: any) => {
+              const airportName = item.nameAirport?.toLowerCase?.() || '';
+              const municipalityName = item.nameCountry?.toLowerCase?.() || '';
+              const iataCode = item.codeIataAirport?.toLowerCase?.() || '';
+
+              return (
+                airportName.includes(searchText) ||
+                municipalityName.includes(searchText) ||
+                iataCode.includes(searchText)
+              );
+            });
+
+            const filteredAirports = matchedAirports.length
+              ? matchedAirports
+              : data;
+
+            const ports: any[] = filteredAirports.map((item: any) => ({
               id: item.codeIataAirport,
-              label: `(${item.codeIataAirport}) ${item.nameAirport.includes(' Airport')
+              label: `(${item.codeIataAirport}) ${
+                item.nameAirport.includes(' Airport')
                   ? item.nameAirport
                   : item.nameAirport + ' Airport'
-                }`,
+              }`,
             }));
-            const selected: any[] = data.map(
+            const selected: any[] = filteredAirports.map(
               (item: any) => item.codeIataAirport,
             );
             if (departure) {
@@ -267,19 +286,29 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       }
 
       if (type === 'seaport') {
-        const response = await fetch(
-          `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&name=${encodeURIComponent(departure ? from : to)}&country_iso=${encodeURIComponent(iso2 as string)}&port_type=Port&fuzzy=1`,
+        const searchText = (departure ? from : to).toLowerCase();
+        const countryPorts = (portsData as any[]).filter(
+          (port) => port.COUNTRY_CODE === iso2,
         );
-        const data = await response.json();
+        const matchedPorts = countryPorts.filter((port) =>
+          port.PORT_NAME.toLowerCase().includes(searchText),
+        );
+        const filteredPorts = (
+          matchedPorts.length ? matchedPorts : countryPorts
+        ).map((port) => ({
+          unlocode: port.LOCODE,
+          port_name: port.PORT_NAME,
+          country_code: port.COUNTRY_CODE,
+        }));
 
-        const ports = data.data
+        const ports = filteredPorts
           .filter((item: any) => item.unlocode)
           .map((item: any) => ({
             id: item.unlocode,
             label: `(${item.unlocode}) ${item.port_name}`,
           }));
 
-        const selected: any[] = data.data
+        const selected: any[] = filteredPorts
           .filter((item: any) => item.unlocode)
           .map((item: any) => item.unlocode);
 
@@ -352,6 +381,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         warehousing,
         custom_clearance,
       } = get();
+      const routeFrom = `${fromCountry}, ${from}`;
+      const routeTo = `${toCountry}, ${to}`;
+      const routeFromLower = routeFrom.toLowerCase();
+      const routeToLower = routeTo.toLowerCase();
+      const isSeaSearch = deliveryBy === DeliveryBy.ferry;
 
       localStorage.setItem(
         LOCAL_STORAGE_SEARCH_FORM_KEY,
@@ -380,8 +414,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         params: { page, take: 10 },
         data: {
           transportation: deliveryBy,
-          from: `${fromCountry}, ${from}`,
-          to: `${toCountry}, ${to}`,
+          from: routeFrom,
+          to: routeTo,
           departure,
           arrival,
           goods: typeOfGoods
@@ -395,13 +429,18 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           width: parseInt(width),
           height: parseInt(height),
           incoterm: incoterms,
-          logisticPartner: partnersSelected,
-          portDeparture: portsDepartureSelected.length
-            ? portsDepartureSelected
-            : undefined,
-          portArrival: portsArrivalSelected.length
-            ? portsArrivalSelected
-            : undefined,
+          keyword: '',
+          logisticPartner: partnersSelected?.length ? partnersSelected : [''],
+          portDeparture: isSeaSearch
+            ? [routeFromLower]
+            : portsDepartureSelected.length
+              ? portsDepartureSelected
+              : [routeFromLower],
+          portArrival: isSeaSearch
+            ? [routeToLower]
+            : portsArrivalSelected.length
+              ? portsArrivalSelected
+              : [routeToLower],
 
           goodsValue:
             parseInt(goodsValue) /

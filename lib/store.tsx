@@ -6,6 +6,7 @@ import {
   postRequest,
   putRequest,
 } from './utils';
+import portsData from '@/lib/data/ports.json';
 
 import axios from 'axios';
 import Cookie from 'js-cookie';
@@ -116,12 +117,16 @@ export const usePortsStore = create((set) => ({
   },
   getSeaPortsByCountry: async (countryCode: string) => {
     try {
-      const response = await fetch(
-        `https://api.datalastic.com/api/v0/port_find?api-key=${process.env.NEXT_PUBLIC_DATALASTIC_API_KEY}&country_iso=${countryCode}&port_type=Port`,
-      );
-      return response.json();
+      const filteredPorts = (portsData as any[])
+        .filter((port) => port.COUNTRY_CODE === countryCode)
+        .map((port) => ({
+          unlocode: port.LOCODE,
+          port_name: port.PORT_NAME,
+          country_code: port.COUNTRY_CODE,
+        }));
+      return { data: filteredPorts };
     } catch (error) {
-      return [];
+      return { data: [] };
     }
   },
 }));
@@ -407,7 +412,11 @@ export const useLangStore = create<ILangStore>((set) => ({
 }));
 
 export const useReferralsStore = create((set) => ({
-  referrals: {},
+  referrals: {
+    referals: [],
+    slicePerReferals: null,
+    referalIsInCatalog: true,
+  },
   isReferralsLoading: true,
   getAllReferrals: () => {
     set({ isReferralsLoading: true });
@@ -511,11 +520,11 @@ export const useRoutesStore = create((set) => ({
       message: data.message,
       ...(data.reasons.length
         ? {
-          reasons: data.reasons,
-        }
+            reasons: data.reasons,
+          }
         : {
-          reasons: [],
-        }),
+            reasons: [],
+          }),
     };
 
     return postRequest({
