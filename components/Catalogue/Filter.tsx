@@ -69,7 +69,7 @@ function GroupSelection({ selectAll, clearAll }: any) {
 }
 function FilterItem({ id, checked, onChange, label, price, fromValue }: any) {
   return (
-    <div className="flex items-top space-x-2 mb-3">
+    <div className="flex items-top space-x-2 mb-4">
       <Checkbox
         id={id}
         checked={checked}
