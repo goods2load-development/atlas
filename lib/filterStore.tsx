@@ -229,7 +229,13 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           `https://restcountries.com/v3.1/name/${departure ? fromCountry : toCountry}`,
         );
         const data = await reponse_iso2.json();
-        iso2 = data[0]?.cca2 || 'Country not found';
+        const searchCountry = departure ? fromCountry : toCountry;
+        const exactMatch = data.find(
+          (c: any) =>
+            c.name.common.toLowerCase() === searchCountry.toLowerCase() ||
+            c.name.official.toLowerCase() === searchCountry.toLowerCase(),
+        );
+        iso2 = (exactMatch || data[0])?.cca2 || 'Country not found';
       } catch (error) {
         iso2 = null;
       }
