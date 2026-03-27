@@ -6,7 +6,7 @@ import useBreakpoint from '@/app/hooks/useBreakpoint';
 import useDotButton from '@/app/hooks/useDotButton';
 import { useReferralsStore } from '@/lib/store';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
 import Autoplay from 'embla-carousel-autoplay';
@@ -25,13 +25,18 @@ export default function ReferalsSlider() {
   const { getAllReferrals, referrals: referralsData } = useReferralsStore(
     (state: any) => state,
   );
-  const { referals: referrals = [], slicePerReferals = null } = referralsData;
+  const { referals: referrals = [], slicePerReferals = null } = referralsData || {};
 
   const { isBelowSm } = useBreakpoint('sm');
 
+  const [mounted, setMounted] = useState(false);
+
   useEffect(() => {
+    setMounted(true);
     getAllReferrals();
   }, []);
+
+  if (!mounted) return null;
 
   return (
     <div className="min-h-[360px] mx-auto overflow-hidden" ref={emblaRef}>

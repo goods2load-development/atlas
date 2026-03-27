@@ -6,7 +6,7 @@ import {
   postRequest,
   putRequest,
 } from './utils';
-import portsData from '@/lib/data/ports.json';
+import portsData from '@/lib/data/ports_datalastic_full.json';
 
 import axios from 'axios';
 import Cookie from 'js-cookie';
@@ -118,11 +118,11 @@ export const usePortsStore = create((set) => ({
   getSeaPortsByCountry: async (countryCode: string) => {
     try {
       const filteredPorts = (portsData as any[])
-        .filter((port) => port.COUNTRY_CODE === countryCode)
+        .filter((port) => port.country_iso === countryCode)
         .map((port) => ({
-          unlocode: port.LOCODE,
-          port_name: port.PORT_NAME,
-          country_code: port.COUNTRY_CODE,
+          unlocode: port.unlocode,
+          port_name: port.port_name,
+          country_code: port.country_iso,
         }));
       return { data: filteredPorts };
     } catch (error) {

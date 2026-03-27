@@ -5,7 +5,7 @@ import {
   patchRequest,
   postRequest,
 } from './utils';
-import portsData from '@/lib/data/ports.json';
+import portsData from '@/lib/data/ports_datalastic_full.json';
 
 import { format } from 'date-fns';
 import { create } from 'zustand';
@@ -288,17 +288,17 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       if (type === 'seaport') {
         const searchText = (departure ? from : to).toLowerCase();
         const countryPorts = (portsData as any[]).filter(
-          (port) => port.COUNTRY_CODE === iso2,
+          (port) => port.country_iso === iso2,
         );
         const matchedPorts = countryPorts.filter((port) =>
-          port.PORT_NAME.toLowerCase().includes(searchText),
+          port.port_name.toLowerCase().includes(searchText),
         );
         const filteredPorts = (
           matchedPorts.length ? matchedPorts : countryPorts
         ).map((port) => ({
-          unlocode: port.LOCODE,
-          port_name: port.PORT_NAME,
-          country_code: port.COUNTRY_CODE,
+          unlocode: port.unlocode,
+          port_name: port.port_name,
+          country_code: port.country_iso,
         }));
 
         const ports = filteredPorts
