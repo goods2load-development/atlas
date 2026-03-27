@@ -296,9 +296,20 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         const countryPorts = (portsData as any[]).filter(
           (port) => port.country_iso === iso2,
         );
-        const matchedPorts = countryPorts.filter((port) =>
-          port.port_name.toLowerCase().includes(searchText),
-        );
+        const matchedPorts = countryPorts.filter((port) => {
+          const portName = port.port_name?.toLowerCase?.() || '';
+          const cityName = port.city?.toLowerCase?.() || '';
+          const provinceName = port.province?.toLowerCase?.() || '';
+          const unlocode = port.unlocode?.toLowerCase?.() || '';
+
+          return (
+            portName.includes(searchText) ||
+            cityName.includes(searchText) ||
+            provinceName.includes(searchText) ||
+            unlocode.includes(searchText) ||
+            (Array.isArray(port.alias) && port.alias.some((a: string) => a.toLowerCase().includes(searchText)))
+          );
+        });
         const filteredPorts = (
           matchedPorts.length ? matchedPorts : countryPorts
         ).map((port) => ({
