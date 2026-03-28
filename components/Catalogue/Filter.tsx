@@ -69,7 +69,7 @@ function GroupSelection({ selectAll, clearAll }: any) {
 }
 function FilterItem({ id, checked, onChange, label, price, fromValue }: any) {
   return (
-    <div className="flex items-top space-x-2 mb-3">
+    <div className="flex items-top space-x-2 mb-4">
       <Checkbox
         id={id}
         checked={checked}
@@ -98,7 +98,13 @@ function FilterItem({ id, checked, onChange, label, price, fromValue }: any) {
 interface FilterItemsListProps {
   items: any[];
   checkedList: string[];
-  onChange: (id: string, value: boolean, props: any) => void;
+  onChange: (
+    id: string,
+    value: boolean,
+    selectedArray: string[],
+    selectedKey: string,
+  ) => void;
+  selectedKey: string;
   label?: string;
   price?: string;
 }
@@ -106,6 +112,7 @@ function FilterItemList({
   items,
   checkedList,
   onChange,
+  selectedKey,
   label,
   price,
 }: FilterItemsListProps) {
@@ -116,7 +123,7 @@ function FilterItemList({
           id={item.id}
           checked={checkedList.includes(item.id)}
           onCheckedChange={(e: boolean) => {
-            onChange(item.id, e, checkedList);
+            onChange(item.id, e, checkedList, selectedKey);
           }}
         />
         <div className="grid gap-1.5 leading-none">
@@ -138,6 +145,10 @@ function FilterItemList({
 export default function Filter() {
   const {
     deliveryBy,
+    fromCountry,
+    from,
+    toCountry,
+    to,
 
     filterPartners,
     partnersSelected,
@@ -182,7 +193,7 @@ export default function Filter() {
   useEffect(() => {
     getPortsList(true);
     getPortsList();
-  }, []);
+  }, [deliveryBy, fromCountry, from, toCountry, to, getPortsList]);
 
   useEffect(() => {
     getPartners();
@@ -225,14 +236,20 @@ export default function Filter() {
     return value;
   };
 
-  function onCheckboxChange(id: string, e: any, selectedArray: string[]) {
-    const tempArray: string[] = selectedArray;
+  function onCheckboxChange(
+    id: string,
+    e: any,
+    selectedArray: string[],
+    selectedKey: string,
+  ) {
+    const tempArray = [...selectedArray];
     if (e) {
-      tempArray.push(id);
+      if (!tempArray.includes(id)) tempArray.push(id);
     } else {
-      tempArray.splice(selectedArray.indexOf(id), 1);
+      const index = tempArray.indexOf(id);
+      if (index !== -1) tempArray.splice(index, 1);
     }
-    setFilter({ selectedArray: tempArray });
+    setFilter({ [selectedKey]: tempArray });
     return e;
   }
   function selectAll(array: any[], arrayName: string, select?: boolean) {
@@ -351,6 +368,7 @@ export default function Filter() {
             items={filterPartners}
             checkedList={partnersSelected}
             onChange={onCheckboxChange}
+            selectedKey="partnersSelected"
             label="name"
           />
         </AccordionContent>
@@ -372,6 +390,7 @@ export default function Filter() {
                 items={portsDeparture}
                 checkedList={portsDepartureSelected}
                 onChange={onCheckboxChange}
+                selectedKey="portsDepartureSelected"
               />
             </AccordionContent>
           </AccordionItem>
@@ -388,6 +407,7 @@ export default function Filter() {
                 items={portsArrival}
                 checkedList={portsArrivalSelected}
                 onChange={onCheckboxChange}
+                selectedKey="portsArrivalSelected"
               />
             </AccordionContent>
           </AccordionItem>

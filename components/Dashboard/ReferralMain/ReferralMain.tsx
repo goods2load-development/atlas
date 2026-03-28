@@ -47,7 +47,7 @@ const ReferralMain = () => {
     referals: referrals = [],
     slicePerReferals = null,
     referalIsInCatalog = true,
-  } = referralsData;
+  } = referralsData || {};
   const { toast } = useToast();
 
   const [referralsItems, setReferralsItems] = useState<ReferralItemType[]>([]);

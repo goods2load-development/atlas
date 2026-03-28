@@ -253,6 +253,7 @@ function SolutionFinder({ isPulseAnimation }: { isPulseAnimation?: boolean }) {
     <Dialog onOpenChange={() => setStep(0)}>
       <DialogTrigger asChild>
         <UIButton
+          key={String(isPulseAnimation)}
           className={clsx(
             'w-full px-1',
             isPulseAnimation && 'animate-button-ping transition-shadow',
