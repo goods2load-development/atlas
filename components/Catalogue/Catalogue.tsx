@@ -59,7 +59,7 @@ export default function Catalogue() {
             <SheetContent side="left" className="pt-[54px] overflow-y-auto">
               <p className="pb-[32px] text-[18px] font-medium">Filters</p>
               <PriceAlerts
-                isPulseAnimation={!partners.length && !isPartnersLoading}
+                isPulseAnimation={true}
               />
               <Filter />
             </SheetContent>
@@ -84,7 +84,7 @@ export default function Catalogue() {
         <div className="lg:bg-[#F9F9F9] rounded-2xl w-full lg:w-[280px] hidden lg:block h-max">
           <div className="lg:p-4">
             <PriceAlerts
-              isPulseAnimation={!!!partners.length && !isPartnersLoading}
+              isPulseAnimation={true}
             />
             <Filter />
           </div>

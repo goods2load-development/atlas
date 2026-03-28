@@ -1,3 +1,5 @@
+'use client';
+
 import UIButton from '../common/Button';
 import Spinner from '../ui/spinner';
 import Product from './Product';
@@ -18,8 +20,10 @@ export default function Products() {
     setPartnersFilters,
   } = useFilterStore((state: any) => state);
   const [isFirstRequest, setIsFirstRequest] = useState<boolean>(true);
+  const [mounted, setMounted] = useState<boolean>(false);
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
   useEffect(() => {
+    setMounted(true);
     clearPartners();
     getPartners();
   }, []);
@@ -30,6 +34,8 @@ export default function Products() {
       setPartnersFilters(partners);
     }
   }, [partners]);
+
+  if (!mounted) return null;
 
   return partners?.length && !isPartnersLoading ? (
     <div className="bg-blue-000 space-y-[24px]">

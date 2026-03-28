@@ -1,3 +1,5 @@
+'use client';
+
 import CountryCode from '../common/CountryCode';
 import { useAnalyticsStore } from '@/lib/analyticsStore';
 import { useFilterStore } from '@/lib/filterStore';

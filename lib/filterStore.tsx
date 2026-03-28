@@ -398,6 +398,15 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         warehousing,
         custom_clearance,
       } = get();
+
+      // If partnersSelected is explicitly [] (all checkboxes unchecked),
+      // show empty results immediately — no API call needed.
+      // undefined means "no filter applied yet" (show all).
+      if (Array.isArray(partnersSelected) && partnersSelected.length === 0) {
+        set({ partners: [], pagination: {}, isPartnersLoading: false });
+        return;
+      }
+
       const routeFrom = `${fromCountry}, ${from}`;
       const routeTo = `${toCountry}, ${to}`;
       const routeFromLower = routeFrom.toLowerCase();
@@ -447,7 +456,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           height: parseInt(height),
           incoterm: incoterms,
           keyword: '',
-          logisticPartner: partnersSelected?.length ? partnersSelected : [''],
+          logisticPartner: partnersSelected === undefined ? [''] : partnersSelected,
           portDeparture: isSeaSearch
             ? [routeFromLower]
             : portsDepartureSelected.length
