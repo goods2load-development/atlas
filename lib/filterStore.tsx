@@ -98,37 +98,31 @@ interface FilterStoreProps {
   // products: any[];
   pagination: any;
   setFilter: (data: FilterStoreProps) => void;
+  hydrate: () => void;
   portsDeparture: { id: string; label: string }[];
   portsArrival: { id: string; label: string }[];
 }
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
-  let savedSeachForm: any =
-    typeof window !== 'undefined'
-      ? localStorage.getItem(LOCAL_STORAGE_SEARCH_FORM_KEY)
-      : null;
-
-  if (savedSeachForm) {
-    savedSeachForm = JSON.parse(savedSeachForm);
-  }
-
   return {
-    valid: validate(savedSeachForm),
-    deliveryBy: savedSeachForm?.deliveryBy || DeliveryBy.plane,
-    fromCountry: savedSeachForm?.fromCountry || '',
-    from: savedSeachForm?.from || '',
-    toCountry: savedSeachForm?.toCountry || '',
-    to: savedSeachForm?.to || '',
-    departure: savedSeachForm?.departure || '',
-    arrival: savedSeachForm?.arrival || '',
-    typeOfGoods: savedSeachForm?.typeOfGoods || '',
-    totalKg: savedSeachForm?.totalKg || '',
-    placementOfGoods: savedSeachForm?.placementOfGoods || 'Pallets',
-    quantity: savedSeachForm?.quantity || '',
-    length: savedSeachForm?.length || '',
-    width: savedSeachForm?.width || '',
-    height: savedSeachForm?.height || '',
-    goodsValue: savedSeachForm?.goodsValue || '0',
-    incoterms: savedSeachForm?.incoterms || 'Unknown',
+    // NOTE: localStorage is intentionally NOT read here to avoid SSR/client hydration mismatch.
+    // The hydrate() action is called from a useEffect on the client to restore saved search state.
+    valid: false,
+    deliveryBy: DeliveryBy.plane,
+    fromCountry: '',
+    from: '',
+    toCountry: '',
+    to: '',
+    departure: '',
+    arrival: '',
+    typeOfGoods: '',
+    totalKg: '',
+    placementOfGoods: 'Pallets',
+    quantity: '',
+    length: '',
+    width: '',
+    height: '',
+    goodsValue: '0',
+    incoterms: 'Unknown',
 
     // filter options
 
@@ -217,6 +211,37 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         valid: validate(requiredFields),
       }));
     },
+    hydrate: () => {
+      // Safe to call from useEffect only — reads localStorage client-side
+      try {
+        const raw = localStorage.getItem(LOCAL_STORAGE_SEARCH_FORM_KEY);
+        if (!raw) return;
+        const saved = JSON.parse(raw);
+        set((state: FilterStoreProps) => ({
+          ...state,
+          deliveryBy: saved.deliveryBy ?? state.deliveryBy,
+          fromCountry: saved.fromCountry ?? state.fromCountry,
+          from: saved.from ?? state.from,
+          toCountry: saved.toCountry ?? state.toCountry,
+          to: saved.to ?? state.to,
+          departure: saved.departure ?? state.departure,
+          arrival: saved.arrival ?? state.arrival,
+          typeOfGoods: saved.typeOfGoods ?? state.typeOfGoods,
+          totalKg: saved.totalKg ?? state.totalKg,
+          placementOfGoods: saved.placementOfGoods ?? state.placementOfGoods,
+          quantity: saved.quantity ?? state.quantity,
+          length: saved.length ?? state.length,
+          width: saved.width ?? state.width,
+          height: saved.height ?? state.height,
+          goodsValue: saved.goodsValue ?? state.goodsValue,
+          incoterms: saved.incoterms ?? state.incoterms,
+          valid: validate(saved),
+        }));
+      } catch {
+        // Ignore parse errors — localStorage may have stale/invalid data
+      }
+    },
+
     getPortsList: async (departure: boolean = false) => {
       const { deliveryBy, fromCountry, from, toCountry, to } = get();
       const type = deliveryBy === 'plane' ? 'airport' : 'seaport';
@@ -547,40 +572,47 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
       selectedCurrency,
     })),
   getCurrencies: async () => {
-    const exchangeRates = await getRequest({
-      url: '/currencies',
-    });
-    getRequest({
-      url: 'https://www.wixapis.com/currency_converter/v1/currencies',
-      withCredentials: false,
-    }).then((data) => {
-      const currenciesSorted = data.currencies.sort((a: any, b: any) => {
-        if (a.code < b.code) {
-          return -1;
-        } else if (b.code > a.code) {
-          return 1;
-        } else {
-          return 0;
-        }
+    try {
+      const exchangeRates = await getRequest({ url: '/currencies' });
+
+      // If the exchange rates API failed or returned a non-object, bail out gracefully
+      if (!exchangeRates || typeof exchangeRates !== 'object') return;
+
+      const data = await getRequest({
+        url: 'https://www.wixapis.com/currency_converter/v1/currencies',
+        withCredentials: false,
       });
+
+      if (!data?.currencies?.length) return;
+
+      const currenciesSorted = [...data.currencies].sort((a: any, b: any) => {
+        if (a.code < b.code) return -1;
+        if (b.code > a.code) return 1;
+        return 0;
+      });
+
       const majorCurrencies = currenciesSorted.filter(
         (i: any) => i.code === 'USD' || i.code === 'EUR' || i.code === 'GBP',
       );
+
       set(() => ({
         currencies: majorCurrencies
           .concat(
             currenciesSorted.filter(
               (i: any) =>
                 !(i.code === 'USD' || i.code === 'EUR' || i.code === 'GBP') &&
-                exchangeRates[i.code],
+                exchangeRates[i.code] != null,
             ),
           )
-          .map((item: any) => ({ ...item, rate: exchangeRates[item.code] })),
+          .map((item: any) => ({ ...item, rate: exchangeRates[item.code] ?? 1 })),
         selectedCurrency: {
           ...currenciesSorted.find((item: any) => item.code === 'USD'),
           rate: 1,
         },
       }));
-    });
+    } catch (error) {
+      console.error('Failed to load currencies:', error);
+    }
   },
 }));
+

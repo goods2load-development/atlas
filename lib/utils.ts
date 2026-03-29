@@ -3,7 +3,6 @@ import { type ClassValue, clsx } from 'clsx';
 import { format } from 'date-fns';
 import countries from 'i18n-iso-countries';
 import Cookie from 'js-cookie';
-import { signOut } from 'next-auth/react';
 import { twMerge } from 'tailwind-merge';
 
 countries.registerLocale(require('i18n-iso-countries/langs/en.json'));
@@ -15,18 +14,37 @@ export function cn(...inputs: ClassValue[]) {
 axios.defaults.baseURL = process.env.NEXT_PUBLIC_BASE_URL + 'api/';
 axios.defaults.withCredentials = true;
 
+// ─── Request interceptor ───────────────────────────────────────────────────
+// Attach the access_token as Authorization: Bearer on every request.
+// This is necessary because the frontend and backend are on different origins
+// (localhost vs api.dev.goods2load.com), so the browser never sends the
+// js-cookie access_token automatically via withCredentials.
+axios.interceptors.request.use(
+  function (config) {
+    const token = Cookie.get('access_token');
+    if (token) {
+      config.headers = config.headers ?? {};
+      config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
+  },
+  function (error) {
+    return Promise.reject(error);
+  },
+);
+
 async function handleTokenRefresh(originalRequest: any) {
   originalRequest._retry = true;
 
   try {
     const response = await axios.post(`/auth/refresh`);
     if (response.status === 201) {
-      Cookie.set('access_token', response.data.access_token, {
+      const newToken = response.data.access_token;
+      Cookie.set('access_token', newToken, {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
 
-      originalRequest.headers['Authorization'] =
-        `Bearer ${response.data.access_token}`;
+      originalRequest.headers['Authorization'] = `Bearer ${newToken}`;
 
       return axios(originalRequest);
     } else {
@@ -90,9 +108,13 @@ axios.interceptors.response.use(
       error.response.data.message === 'Invalid token' &&
       !originalRequest._retry
     ) {
-      signOut({ callbackUrl: '/' });
+      // Clear local auth state and redirect to sign-in
+      // Do NOT use next-auth signOut() — it causes unintended redirects for non-OAuth users
       localStorage.removeItem('id');
       Cookie.remove('access_token');
+      if (typeof window !== 'undefined') {
+        window.location.href = '/sign-in';
+      }
       return;
     }
 
@@ -105,10 +127,14 @@ axios.interceptors.response.use(
     return response;
   },
   function (error) {
-    window.dispatchEvent(new CustomEvent('errorHandler', { detail: error }));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('errorHandler', { detail: error }));
+    }
     return error;
   },
 );
+
+
 
 export function getRequest(params: any) {
   return axios.get(params.url, { ...params }).then(function (response: any) {

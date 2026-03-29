@@ -10,7 +10,7 @@ import { useEffect } from 'react';
 import { getSession, signIn } from 'next-auth/react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { useCookies } from 'react-cookie';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { useForm } from 'react-hook-form';
@@ -35,6 +35,7 @@ function SignIn() {
   const { executeRecaptcha } = useGoogleReCaptcha();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl');
+  const router = useRouter();
 
   const formSchema = z.object({
     email: z.string().email(),
@@ -87,8 +88,8 @@ function SignIn() {
   }, [cookies.accessToken]);
 
   useEffect(() => {
-    if (!!user?.id) redirect('/account');
-  }, [user?.id]);
+    if (!!user?.id) router.push('/account');
+  }, [user?.id, router]);
 
   return (
     <>
