@@ -45,6 +45,7 @@ export default function HeaderClient({
 }: HeaderProps) {
   const { user, getUser } = useUserStore((state: any) => state);
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   const { isBelowSm } = useBreakpoint('sm');
 
@@ -55,8 +56,9 @@ export default function HeaderClient({
   }, [getHeaderData]);
 
   useEffect(() => {
-    if (!user?.id) getUser();
-  }, [getUser, user?.id]);
+    // getUser reads localStorage then calls API — must be client-side only
+    getUser().finally(() => setMounted(true));
+  }, []);
 
   useLockBodyScroll(open && isBelowSm);
 
@@ -152,27 +154,30 @@ export default function HeaderClient({
               <NavigationMenuItem>
                 <Currencies />
               </NavigationMenuItem>
-              {user?.id ? (
-                <NavigationMenuItem>
-                  <Link href="/account" className="flex items-center">
-                    <Image
-                      width={26}
-                      height={26}
-                      src={UserWhite}
-                      alt={'user-white'}
-                    />
-                  </Link>
-                </NavigationMenuItem>
-              ) : (
-                <>
+              {mounted && (
+                user?.id ? (
                   <NavigationMenuItem>
-                    <Link href="/sign-in">Log in</Link>
+                    <Link href="/account" className="flex items-center">
+                      <Image
+                        width={26}
+                        height={26}
+                        src={UserWhite}
+                        alt={'user-white'}
+                      />
+                    </Link>
                   </NavigationMenuItem>
-                  <NavigationMenuItem>
-                    <Link href="/registration?user">Sign up</Link>
-                  </NavigationMenuItem>
-                </>
+                ) : (
+                  <>
+                    <NavigationMenuItem>
+                      <Link href="/sign-in">Log in</Link>
+                    </NavigationMenuItem>
+                    <NavigationMenuItem>
+                      <Link href="/registration?user">Sign up</Link>
+                    </NavigationMenuItem>
+                  </>
+                )
               )}
+
               <NavigationMenuItem>
                 <ErrorBoundary>
                   <LangSwitcher />

@@ -7,7 +7,7 @@ import UserIcon from '@/assets/icons/user.svg';
 import { useUserStore } from '@/lib/store';
 import { slugify } from '@/lib/utils';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { TrendingUp } from 'lucide-react';
 import { Bookmark } from 'lucide-react';
@@ -47,12 +47,22 @@ function RenderUserData({ data }: any) {
 }
 
 export default function Account() {
-  const { user, logoutUser, onDeleteSavedPartner } = useUserStore(
+  const { user, getUser, logoutUser, onDeleteSavedPartner } = useUserStore(
     (state: any) => state,
   );
+  const [loading, setLoading] = useState(!user?.id);
   const [edit, setEdit] = useState<
     'info' | 'address' | 'regional' | 'partners' | null
   >(null);
+
+  useEffect(() => {
+    if (!user?.id) {
+      setLoading(true);
+      getUser().finally(() => setLoading(false));
+    } else {
+      setLoading(false);
+    }
+  }, []);
 
   const onDeletePartner = (id: string) => {
     onDeleteSavedPartner(id);
@@ -114,6 +124,20 @@ export default function Account() {
       value: user?.country,
     },
   ];
+
+  if (loading) {
+    return (
+      <main className="flex min-h-screen flex-col py-5 sm:py-16 justify-center items-center colored-main px-[16px] max-w-[1328px] mx-auto">
+        <div className="flex flex-col gap-4 w-full max-w-2xl animate-pulse">
+          <div className="h-10 bg-gray-200 rounded w-1/3" />
+          <div className="h-32 bg-gray-200 rounded" />
+          <div className="h-32 bg-gray-200 rounded" />
+          <div className="h-32 bg-gray-200 rounded" />
+        </div>
+      </main>
+    );
+  }
+
   return (
     <>
       <main className="flex min-h-screen flex-col py-5 sm:py-16 justify-between colored-main px-[16px] max-w-[1328px] mx-auto">

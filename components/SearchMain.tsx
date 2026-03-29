@@ -160,6 +160,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
   } = useCountriesStore((state: any) => state);
   const {
     setFilter,
+    hydrate,
     deliveryBy,
     fromCountry,
     from,
@@ -185,8 +186,14 @@ export default function SearchMain({ main }: { main?: boolean }) {
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
 
   useEffect(() => {
+    // Restore saved search form state from localStorage (client-side only)
+    hydrate();
+  }, []);
+
+  useEffect(() => {
     if (!countriesList.length) getCountriesList();
   });
+
 
   function switchLocations() {
     const values = {

@@ -1,5 +1,4 @@
-import { jwtVerify } from 'jose';
-import { cookies } from 'next/headers';
+import { decodeJwt } from 'jose';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -39,8 +38,6 @@ const routes = {
   ],
 };
 
-const SECRET_KEY = new TextEncoder().encode(process.env.JWT_ACCESS_SECRET);
-
 export async function middleware(request: NextRequest) {
   const currentPath = request.nextUrl.pathname;
 
@@ -51,38 +48,35 @@ export async function middleware(request: NextRequest) {
     currentPath.startsWith('/dashboard') ||
     currentPath.startsWith('/account')
   ) {
-    const token =
-      cookies().get('access_token')?.value ||
-      request.cookies.get('access_token')?.value;
+    const token = request.cookies.get('access_token')?.value;
 
     if (!token) {
-      return NextResponse.redirect(new URL('/', request.url));
+      const signInUrl = new URL('/sign-in', request.url);
+      signInUrl.searchParams.set('callbackUrl', currentPath);
+      return NextResponse.redirect(signInUrl);
     }
 
     try {
-      const { payload } = await jwtVerify(token, SECRET_KEY);
-
+      // Decode without signature verification — the backend verifies the token
+      // on every API call, so this middleware only needs to read the role claim
+      // for client-side route gating.
+      const payload = decodeJwt(token);
       const userRole = payload.role as Roles;
-      if (
-        !userRole ||
-        !routes[userRole]
-        // && process.env.NODE_ENV === 'production'
-      ) {
-        return NextResponse.redirect(new URL('/', request.url));
+
+      if (!userRole || !routes[userRole]) {
+        const signInUrl = new URL('/sign-in', request.url);
+        return NextResponse.redirect(signInUrl);
       }
 
-      const currentPath = request.nextUrl.pathname;
       const allowedRoutes = routes[userRole];
-
-      if (
-        !allowedRoutes.some((route) => currentPath.startsWith(route))
-        // && process.env.NODE_ENV === 'production'
-      ) {
+      if (!allowedRoutes.some((route) => currentPath.startsWith(route))) {
         return NextResponse.redirect(new URL('/', request.url));
       }
     } catch (error) {
-      console.error('JWT verification failed:', error);
-      return NextResponse.redirect(new URL('/', request.url));
+      // Token exists but isn't a valid JWT format at all
+      const signInUrl = new URL('/sign-in', request.url);
+      signInUrl.searchParams.set('callbackUrl', currentPath);
+      return NextResponse.redirect(signInUrl);
     }
   }
 

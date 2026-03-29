@@ -267,24 +267,40 @@ export const useUserStore = create((set) => ({
       url: 'auth/login',
       data,
     }).then((userData: any) => {
-      // TODO add redirect
+      if (!userData?.data?.id) return; // login failed or unexpected response
       localStorage.setItem('id', userData.data.id);
       Cookie.set('access_token', userData.data.access_token, {
         expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
-      set(() => ({ user: userData?.data }));
+      set(() => ({ user: userData.data }));
+      // Full page navigation so middleware sees the fresh cookie
+      window.location.href = '/account';
     });
   },
+
   getUser: async () => {
-    const id = localStorage.getItem('id');
-    if (id)
-      await getRequest({
-        url: `/users/${id}`,
-      }).then((userData: any) => {
-        if (!userData) localStorage.removeItem('id');
-        set(() => ({ user: userData?.data }));
-      });
+    try {
+      const id = localStorage.getItem('id');
+      if (!id) return;
+      const userData: any = await getRequest({ url: `/users/${id}` });
+
+      // Handle both response shapes:
+      //   { data: { id, ... } }  — same shape as auth/login
+      //   { id, ... }            — user object returned directly
+      const user = userData?.data?.id ? userData.data : userData;
+
+      if (user?.id) {
+        set(() => ({ user }));
+      } else {
+        // No user found — clear stale id
+        localStorage.removeItem('id');
+      }
+    } catch {
+      // Network or auth errors are handled by axios interceptors
+    }
   },
+
+
   authenticateUser: async (data: any) => {
     await postRequest({
       url: `/oauth/authenticate`,
