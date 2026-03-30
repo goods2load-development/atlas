@@ -6,7 +6,7 @@ import Product from './Product';
 import NotFound from '@/assets/images/catalogue-no-products-found.png';
 import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import Image from 'next/image';
 
@@ -23,13 +23,24 @@ export default function Products() {
   } = useFilterStore((state: any) => state);
   const [isFirstRequest, setIsFirstRequest] = useState<boolean>(true);
   const [mounted, setMounted] = useState<boolean>(false);
+  const [allowInitialEmptyState, setAllowInitialEmptyState] =
+    useState<boolean>(false);
+  const hasRequestedInitialPartners = useRef(false);
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
 
   useEffect(() => {
     setMounted(true);
     hydrate();
+  }, [hydrate]);
+
+  useEffect(() => {
+    if (!hasHydrated || hasRequestedInitialPartners.current) {
+      return;
+    }
+
+    hasRequestedInitialPartners.current = true;
     getPartners();
-  }, [getPartners, hydrate]);
+  }, [getPartners, hasHydrated]);
 
   useEffect(() => {
     if (!!partners?.length && isFirstRequest) {
@@ -37,6 +48,36 @@ export default function Products() {
       setPartnersFilters(partners);
     }
   }, [isFirstRequest, partners, setPartnersFilters]);
+
+  useEffect(() => {
+    if (!hasHydrated || !hasRequestedInitialPartners.current) {
+      return;
+    }
+
+    if (isPartnersLoading) {
+      return;
+    }
+
+    if (partners && partners.length > 0) {
+      setAllowInitialEmptyState(true);
+      return;
+    }
+
+    if (allowInitialEmptyState) {
+      return;
+    }
+
+    const timer = setTimeout(() => {
+      setAllowInitialEmptyState(true);
+    }, 600);
+
+    return () => clearTimeout(timer);
+  }, [
+    allowInitialEmptyState,
+    hasHydrated,
+    isPartnersLoading,
+    partners,
+  ]);
 
   if (!mounted) return null;
 
@@ -53,7 +94,10 @@ export default function Products() {
   // Now partners starts as `undefined` (see filterStore fix), so we can
   // reliably gate on that to mean "not yet fetched".
   const shouldShowLoading =
-    !hasHydrated || isPartnersLoading || partners === undefined;
+    !hasHydrated ||
+    isPartnersLoading ||
+    partners === undefined ||
+    (!allowInitialEmptyState && Array.isArray(partners) && partners.length === 0);
 
   if (shouldShowLoading) {
     return (
