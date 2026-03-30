@@ -13,31 +13,58 @@ import Image from 'next/image';
 export default function Products() {
   const {
     partners,
+    hasHydrated,
+    hasLoadedPartners,
     isPartnersLoading,
     pagination,
     getPartners,
-    clearPartners,
+    hydrate,
     setPartnersFilters,
   } = useFilterStore((state: any) => state);
   const [isFirstRequest, setIsFirstRequest] = useState<boolean>(true);
   const [mounted, setMounted] = useState<boolean>(false);
   const { selectedCurrency } = useCurrenciesStore((state: any) => state);
+
   useEffect(() => {
     setMounted(true);
-    clearPartners();
+    hydrate();
     getPartners();
-  }, []);
+  }, [getPartners, hydrate]);
 
   useEffect(() => {
     if (!!partners?.length && isFirstRequest) {
       setIsFirstRequest(false);
       setPartnersFilters(partners);
     }
-  }, [partners]);
+  }, [isFirstRequest, partners, setPartnersFilters]);
 
   if (!mounted) return null;
 
-  return partners?.length && !isPartnersLoading ? (
+  // FIX: Show spinner when:
+  // - store not hydrated yet
+  // - actively loading
+  // - partners is undefined (first fetch hasn't completed yet — never show empty state here)
+  //
+  // Previously `!hasLoadedPartners` was used, but that caused a flash because:
+  // 1. isPartnersLoading starts false → spinner didn't show immediately
+  // 2. partners was [] → empty state flashed before data arrived
+  // 3. real data arrived → data shown
+  //
+  // Now partners starts as `undefined` (see filterStore fix), so we can
+  // reliably gate on that to mean "not yet fetched".
+  const shouldShowLoading =
+    !hasHydrated || isPartnersLoading || partners === undefined;
+
+  if (shouldShowLoading) {
+    return (
+      <div className="mb-auto mt-20">
+        <Spinner />
+      </div>
+    );
+  }
+
+  // At this point: hydrated, not loading, and partners is a real array ([] or [...])
+  return partners.length ? (
     <div className="bg-blue-000 space-y-[24px]">
       {partners.map((partner: any, index: number) => (
         <Product
@@ -45,7 +72,7 @@ export default function Products() {
           {...partner}
           currency={selectedCurrency}
           index={index}
-        /> // index for mocks data (GoogleReview)
+        />
       ))}
       {pagination.hasNextPage && (
         <div className="text-center pb-5">
@@ -54,10 +81,6 @@ export default function Products() {
           </UIButton>
         </div>
       )}
-    </div>
-  ) : isPartnersLoading ? (
-    <div className="mb-auto mt-20">
-      <Spinner />
     </div>
   ) : (
     <div className="text-center pt-10">
