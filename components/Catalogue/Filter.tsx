@@ -162,6 +162,7 @@ export default function Filter() {
     setFilter,
     getPortsList,
     getPartners,
+    consumeSkipNextPartnersFetch,
 
     bestReviewed,
     carbonOffset,
@@ -226,6 +227,10 @@ export default function Filter() {
       return;
     }
 
+    if (consumeSkipNextPartnersFetch()) {
+      return;
+    }
+
     const timer = setTimeout(() => {
       getPartners();
     }, 150);
@@ -239,6 +244,7 @@ export default function Filter() {
     // NOTE: Do NOT include `getPartners` here — it is a Zustand store action.
     // Including it causes the effect to re-run on every state update, firing
     // multiple simultaneous API requests which results in a 409 Conflict error.
+    consumeSkipNextPartnersFetch,
     bestReviewed,
     carbonOffset,
     industryRecognition,

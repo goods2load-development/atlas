@@ -41,6 +41,7 @@ interface FilterStoreProps {
   valid: boolean;
   hasHydrated: boolean;
   hasLoadedPartners: boolean;
+  skipNextPartnersFetch: boolean;
   partnersSelected: string[] | undefined;
   deliveryBy: DeliveryBy;
   fromCountry: string;
@@ -109,6 +110,7 @@ interface FilterStoreProps {
   clearPartners: () => void;
   getPartners: (page?: number) => Promise<void> | void;
   setPartnersFilters: (data: any) => Promise<void>;
+  consumeSkipNextPartnersFetch: () => boolean;
   _fetchPartners: (page?: number) => Promise<void>;
 }
 
@@ -127,6 +129,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     valid: false,
     hasHydrated: false,
     hasLoadedPartners: false,
+    skipNextPartnersFetch: false,
     deliveryBy: DeliveryBy.plane,
     fromCountry: '',
     from: '',
@@ -399,6 +402,13 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     clearPartners: () => {
       set({ partners: undefined });
     },
+    consumeSkipNextPartnersFetch: () => {
+      const { skipNextPartnersFetch } = get();
+      if (skipNextPartnersFetch) {
+        set({ skipNextPartnersFetch: false });
+      }
+      return skipNextPartnersFetch;
+    },
 
     getPartners: async (page?: number) => {
       // Pagination requests fire immediately — no debounce needed.
@@ -608,6 +618,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           label: item.companyName,
         })),
         partnersSelected: data.map((item: any) => item.partner.id),
+        skipNextPartnersFetch: true,
       }));
     },
   };
