@@ -152,6 +152,8 @@ export default function Filter() {
 
     filterPartners,
     partnersSelected,
+    hasHydrated,
+    hasLoadedPartners,
     portsDeparture,
     portsDepartureSelected,
     portsArrival,
@@ -191,6 +193,16 @@ export default function Filter() {
   } = useFilterStore((state: any) => state);
 
   const isInitialMount = useRef(true);
+  const hasHydratedRef = useRef(hasHydrated);
+  const hasLoadedPartnersRef = useRef(hasLoadedPartners);
+
+  useEffect(() => {
+    hasHydratedRef.current = hasHydrated;
+  }, [hasHydrated]);
+
+  useEffect(() => {
+    hasLoadedPartnersRef.current = hasLoadedPartners;
+  }, [hasLoadedPartners]);
 
   useEffect(() => {
     getPortsList(true);
@@ -200,9 +212,18 @@ export default function Filter() {
 
 
   useEffect(() => {
+    // Skip the very first render — Products.tsx already calls getPartners() on mount.
+    // This prevents a duplicate request that would cause: loading → empty → loading → data.
     if (isInitialMount.current) {
       isInitialMount.current = false;
-      return; // Skip — Products.tsx already calls getPartners() on mount
+      return;
+    }
+
+    // Don't fire until store is hydrated from localStorage AND the first
+    // partner load from Products.tsx has completed. This prevents Filter from
+    // triggering a redundant fetch while the initial load is still in flight.
+    if (!hasHydratedRef.current || !hasLoadedPartnersRef.current) {
+      return;
     }
 
     const timer = setTimeout(() => {
@@ -211,6 +232,7 @@ export default function Filter() {
 
     return () => clearTimeout(timer);
   }, [
+    getPartners,
     partnersSelected?.length,
     portsDepartureSelected.length,
     portsArrivalSelected.length,

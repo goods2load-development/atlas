@@ -39,6 +39,8 @@ export enum DeliveryBy {
 
 interface FilterStoreProps {
   valid: boolean;
+  hasHydrated: boolean;
+  hasLoadedPartners: boolean;
   partnersSelected: string[] | undefined;
   deliveryBy: DeliveryBy;
   fromCountry: string;
@@ -90,17 +92,23 @@ interface FilterStoreProps {
   warehousing: boolean;
   custom_clearance: boolean;
 
-  partners: any[];
+  // FIX: partners is undefined until first fetch completes, allowing the UI
+  // to distinguish "never loaded" (undefined) from "loaded but empty" ([]).
+  // This prevents the empty-state flash before the first API response arrives.
+  partners: any[] | undefined;
   filterPartners: any[];
   isPartnersLoading: boolean;
   portsDepartureSelected: string[];
   portsArrivalSelected: string[];
-  // products: any[];
   pagination: any;
   setFilter: (data: FilterStoreProps) => void;
   hydrate: () => void;
   portsDeparture: { id: string; label: string }[];
   portsArrival: { id: string; label: string }[];
+  getPortsList: (departure?: boolean) => void;
+  clearPartners: () => void;
+  getPartners: (page?: number) => Promise<void> | void;
+  setPartnersFilters: (data: any) => Promise<void>;
   _fetchPartners: (page?: number) => Promise<void>;
 }
 
@@ -110,12 +118,15 @@ interface FilterStoreProps {
 // variable means the timer is shared across all callers regardless of how the
 // action is invoked — from a useEffect, a button click, or another action.
 let _getPartnersTimer: ReturnType<typeof setTimeout> | null = null;
+let _latestPartnersRequestId = 0;
 
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
   return {
     // NOTE: localStorage is intentionally NOT read here to avoid SSR/client hydration mismatch.
     // The hydrate() action is called from a useEffect on the client to restore saved search state.
     valid: false,
+    hasHydrated: false,
+    hasLoadedPartners: false,
     deliveryBy: DeliveryBy.plane,
     fromCountry: '',
     from: '',
@@ -167,8 +178,14 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     warehousing: false,
     custom_clearance: false,
 
-    partners: [],
-    isPartnersLoading: true,
+    // FIX: Start as undefined, not [], so the UI knows "not yet fetched".
+    // The Products component should check `partners === undefined` to avoid
+    // showing an empty state before the first fetch completes.
+    partners: undefined,
+
+    isPartnersLoading: false, // FIX: was `true` — nothing is loading at store creation time.
+    // Setting true caused an immediate loading flash before
+    // getPartners() was ever called.
     partnersSelected: undefined,
     portsDeparture: [],
     portsDepartureSelected: [],
@@ -178,7 +195,6 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
 
     sortBy: null,
 
-    // products: [],
     pagination: {},
     setFilter: (newFilter: FilterStoreProps) => {
       const {
@@ -224,7 +240,10 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       // Safe to call from useEffect only — reads localStorage client-side
       try {
         const raw = localStorage.getItem(LOCAL_STORAGE_SEARCH_FORM_KEY);
-        if (!raw) return;
+        if (!raw) {
+          set({ hasHydrated: true });
+          return;
+        }
         const saved = JSON.parse(raw);
         set((state: FilterStoreProps) => ({
           ...state,
@@ -245,9 +264,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
           goodsValue: saved.goodsValue ?? state.goodsValue,
           incoterms: saved.incoterms ?? state.incoterms,
           valid: validate(saved),
+          hasHydrated: true,
         }));
       } catch {
         // Ignore parse errors — localStorage may have stale/invalid data
+        set({ hasHydrated: true });
       }
     },
 
@@ -376,7 +397,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       }
     },
     clearPartners: () => {
-      set({ partners: [] });
+      set({ partners: undefined });
     },
 
     getPartners: async (page?: number) => {
@@ -394,7 +415,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     },
 
     _fetchPartners: async (page?: number) => {
-      set({ isPartnersLoading: true });
+      const requestId = ++_latestPartnersRequestId;
+
+      // Read state first — before setting any loading flags.
       const {
         deliveryBy,
         fromCountry,
@@ -447,13 +470,25 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         custom_clearance,
       } = get();
 
-      // If partnersSelected is explicitly [] (all checkboxes unchecked),
-      // show empty results immediately — no API call needed.
+      // FIX: If partnersSelected is explicitly [] (all checkboxes unchecked),
+      // show empty results immediately — no API call needed, and NO loading
+      // state set, so the UI won't flash a loading spinner before showing empty.
       // undefined means "no filter applied yet" (show all).
       if (Array.isArray(partnersSelected) && partnersSelected.length === 0) {
-        set({ partners: [], pagination: {}, isPartnersLoading: false });
+        if (requestId === _latestPartnersRequestId) {
+          set({
+            partners: [],
+            pagination: {},
+            isPartnersLoading: false,
+            hasLoadedPartners: true,
+          });
+        }
         return;
       }
+
+      // FIX: Only set isPartnersLoading:true AFTER the early-return check above.
+      // This prevents a loading flash when we already know the result is empty.
+      set({ isPartnersLoading: true });
 
       const routeFrom = `${fromCountry}, ${from}`;
       const routeTo = `${toCountry}, ${to}`;
@@ -483,81 +518,88 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         }),
       );
 
-      postRequest({
-        url: 'partners/search',
-        params: { page, take: 10 },
-        data: {
-          transportation: deliveryBy,
-          from: routeFrom,
-          to: routeTo,
-          departure,
-          arrival,
-          goods: typeOfGoods
-            .split(' ')[0]
-            .replace(/00$/, '')
-            .replace(/\./g, ''),
-          kilogram: parseInt(totalKg),
-          placementOfGoods,
-          quantity: parseInt(quantity),
-          length: parseInt(length),
-          width: parseInt(width),
-          height: parseInt(height),
-          incoterm: incoterms,
-          keyword: '',
-          logisticPartner: partnersSelected === undefined ? [''] : partnersSelected,
-          portDeparture: isSeaSearch
-            ? [routeFromLower]
-            : portsDepartureSelected.length
-              ? portsDepartureSelected
-              : [routeFromLower],
-          portArrival: isSeaSearch
-            ? [routeToLower]
-            : portsArrivalSelected.length
-              ? portsArrivalSelected
-              : [routeToLower],
+      try {
+        const data = await postRequest({
+          url: 'partners/search',
+          params: { page, take: 10 },
+          data: {
+            transportation: deliveryBy,
+            from: routeFrom,
+            to: routeTo,
+            departure,
+            arrival,
+            goods: typeOfGoods
+              .split(' ')[0]
+              .replace(/00$/, '')
+              .replace(/\./g, ''),
+            kilogram: parseInt(totalKg),
+            placementOfGoods,
+            quantity: parseInt(quantity),
+            length: parseInt(length),
+            width: parseInt(width),
+            height: parseInt(height),
+            incoterm: incoterms,
+            keyword: '',
+            logisticPartner: partnersSelected === undefined ? [''] : partnersSelected,
+            portDeparture: isSeaSearch
+              ? [routeFromLower]
+              : portsDepartureSelected.length
+                ? portsDepartureSelected
+                : [routeFromLower],
+            portArrival: isSeaSearch
+              ? [routeToLower]
+              : portsArrivalSelected.length
+                ? portsArrivalSelected
+                : [routeToLower],
 
-          goodsValue:
-            parseInt(goodsValue) /
-            useCurrenciesStore.getState().selectedCurrency.rate,
+            goodsValue:
+              parseInt(goodsValue) /
+              useCurrenciesStore.getState().selectedCurrency.rate,
 
-          provider: {},
-          filters: {
-            pharmaceuticals: pharmaceuticals,
-            electronics: electronics,
-            automotive: automotive,
-            manufacturingRetail: manufacturing_retail,
-            exhibitionInteriorDesign: exhibition_interior_design,
-            apparelFashion: apparel_fashion,
-            ecommerce: ecommerce,
-            foodBeverage: food_beverage,
-            energy: energy,
-            coldChain: cold_chain,
-            dangerousGoods: dangerous_goods,
-            highValueGoods: high_value_goods,
-            lastMileDelivery: last_mile_delivery,
-            projectCargo: project_cargo,
-            generalSolutions: general_solutions,
-            whiteGlovesServices: white_gloves_services,
-            ecommerceFullfillment: ecommerce_fullfillment,
-            heavyEquipmentLogistics: heavy_equipment_logistics,
-            crossBorderExpansion: cross_border_expansion,
-            warehousing: warehousing,
-            customClearance: custom_clearance,
+            provider: {},
+            filters: {
+              pharmaceuticals: pharmaceuticals,
+              electronics: electronics,
+              automotive: automotive,
+              manufacturingRetail: manufacturing_retail,
+              exhibitionInteriorDesign: exhibition_interior_design,
+              apparelFashion: apparel_fashion,
+              ecommerce: ecommerce,
+              foodBeverage: food_beverage,
+              energy: energy,
+              coldChain: cold_chain,
+              dangerousGoods: dangerous_goods,
+              highValueGoods: high_value_goods,
+              lastMileDelivery: last_mile_delivery,
+              projectCargo: project_cargo,
+              generalSolutions: general_solutions,
+              whiteGlovesServices: white_gloves_services,
+              ecommerceFullfillment: ecommerce_fullfillment,
+              heavyEquipmentLogistics: heavy_equipment_logistics,
+              crossBorderExpansion: cross_border_expansion,
+              warehousing: warehousing,
+              customClearance: custom_clearance,
 
-            carbonOffset,
-            industryRecognition,
-            bestReviewed,
+              carbonOffset,
+              industryRecognition,
+              bestReviewed,
+            },
           },
-        },
-      })
-        .then((data: any) => {
-          let partners = data?.partners?.data;
-
-          set(() => ({ partners, pagination: data?.partners?.meta }));
-        })
-        .finally(() => {
-          set({ isPartnersLoading: false });
         });
+        if (requestId !== _latestPartnersRequestId) return;
+
+        const partners = data?.partners?.data ?? [];
+
+        set(() => ({
+          partners,
+          pagination: data?.partners?.meta ?? {},
+          hasLoadedPartners: true,
+        }));
+      } finally {
+        if (requestId === _latestPartnersRequestId) {
+          set({ isPartnersLoading: false, hasLoadedPartners: true });
+        }
+      }
     },
     setPartnersFilters: async (data: any) => {
       set(() => ({
