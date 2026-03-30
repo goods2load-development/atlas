@@ -101,7 +101,16 @@ interface FilterStoreProps {
   hydrate: () => void;
   portsDeparture: { id: string; label: string }[];
   portsArrival: { id: string; label: string }[];
+  _fetchPartners: (page?: number) => Promise<void>;
 }
+
+// FIX 3: Module-level debounce timer so rapid consecutive getPartners() calls
+// from the store itself (e.g. triggered by selectAllPartnerFilters looping
+// over setFilter) are coalesced into a single API request. Using a module-level
+// variable means the timer is shared across all callers regardless of how the
+// action is invoked — from a useEffect, a button click, or another action.
+let _getPartnersTimer: ReturnType<typeof setTimeout> | null = null;
+
 export const useFilterStore = create<FilterStoreProps>((set, get) => {
   return {
     // NOTE: localStorage is intentionally NOT read here to avoid SSR/client hydration mismatch.
@@ -292,11 +301,10 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
 
             const ports: any[] = filteredAirports.map((item: any) => ({
               id: item.codeIataAirport,
-              label: `(${item.codeIataAirport}) ${
-                item.nameAirport.includes(' Airport')
-                  ? item.nameAirport
-                  : item.nameAirport + ' Airport'
-              }`,
+              label: `(${item.codeIataAirport}) ${item.nameAirport.includes(' Airport')
+                ? item.nameAirport
+                : item.nameAirport + ' Airport'
+                }`,
             }));
             const selected: any[] = filteredAirports.map(
               (item: any) => item.codeIataAirport,
@@ -370,7 +378,22 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
     clearPartners: () => {
       set({ partners: [] });
     },
+
     getPartners: async (page?: number) => {
+      // Pagination requests fire immediately — no debounce needed.
+      if (page !== undefined) {
+        return get()._fetchPartners(page);
+      }
+
+      // Debounce non-pagination calls to coalesce rapid filter changes.
+      if (_getPartnersTimer) clearTimeout(_getPartnersTimer);
+      _getPartnersTimer = setTimeout(() => {
+        _getPartnersTimer = null;
+        get()._fetchPartners();
+      }, 150);
+    },
+
+    _fetchPartners: async (page?: number) => {
       set({ isPartnersLoading: true });
       const {
         deliveryBy,
@@ -615,4 +638,3 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
     }
   },
 }));
-

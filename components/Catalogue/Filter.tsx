@@ -2,7 +2,7 @@
 
 import { useCurrenciesStore, useFilterStore } from '@/lib/filterStore';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 import {
   Accordion,
@@ -190,19 +190,33 @@ export default function Filter() {
     custom_clearance,
   } = useFilterStore((state: any) => state);
 
+  const isInitialMount = useRef(true);
+
   useEffect(() => {
     getPortsList(true);
     getPortsList();
-  }, [deliveryBy, fromCountry, from, toCountry, to, getPortsList]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [deliveryBy, fromCountry, from, toCountry, to]);
+
 
   useEffect(() => {
-    getPartners();
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return; // Skip — Products.tsx already calls getPartners() on mount
+    }
+
+    const timer = setTimeout(() => {
+      getPartners();
+    }, 150);
+
+    return () => clearTimeout(timer);
   }, [
     partnersSelected?.length,
     portsDepartureSelected.length,
     portsArrivalSelected.length,
-
-    getPartners,
+    // NOTE: Do NOT include `getPartners` here — it is a Zustand store action.
+    // Including it causes the effect to re-run on every state update, firing
+    // multiple simultaneous API requests which results in a 409 Conflict error.
     bestReviewed,
     carbonOffset,
     industryRecognition,
@@ -366,7 +380,7 @@ export default function Filter() {
           />
           <FilterItemList
             items={filterPartners}
-            checkedList={partnersSelected}
+            checkedList={partnersSelected ?? []}
             onChange={onCheckboxChange}
             selectedKey="partnersSelected"
             label="name"
