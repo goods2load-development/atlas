@@ -161,6 +161,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
   const {
     setFilter,
     hydrate,
+    persistSearchForm,
     deliveryBy,
     fromCountry,
     from,
@@ -240,6 +241,7 @@ export default function SearchMain({ main }: { main?: boolean }) {
     e.preventDefault();
 
     if (valid) {
+      persistSearchForm();
       getPartners();
       if (main) router.push('/catalogue');
     }
@@ -312,13 +314,13 @@ export default function SearchMain({ main }: { main?: boolean }) {
     <>
       <form onSubmit={onSubmit}>
         <RadioGroup
+          value={deliveryBy}
           onValueChange={(e) => {
             setFilter({
               deliveryBy: e,
               incoterms: incotermsList[e as DeliveryBy][0].name,
             });
           }}
-          defaultValue={deliveryBy}
           className={`flex justify-center sm:justify-start custom-radio ${!main && 'catalogue'} pb-5 sm:pb-0`}
         >
           <CustomRadioGroupItem value={DeliveryBy.plane} imageNumber={1} />

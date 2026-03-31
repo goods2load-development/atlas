@@ -12,6 +12,34 @@ import { create } from 'zustand';
 
 export const LOCAL_STORAGE_SEARCH_FORM_KEY = 'search-from';
 
+function buildSearchFormSnapshot(state: FilterStoreProps) {
+  return {
+    deliveryBy: state.deliveryBy,
+    fromCountry: state.fromCountry,
+    from: state.from,
+    toCountry: state.toCountry,
+    to: state.to,
+    departure: state.departure,
+    arrival: state.arrival,
+    typeOfGoods: state.typeOfGoods,
+    totalKg: state.totalKg,
+    placementOfGoods: state.placementOfGoods,
+    quantity: state.quantity,
+    length: state.length,
+    width: state.width,
+    height: state.height,
+    goodsValue: state.goodsValue,
+    incoterms: state.incoterms,
+  };
+}
+
+function persistSearchFormSnapshot(state: FilterStoreProps) {
+  localStorage.setItem(
+    LOCAL_STORAGE_SEARCH_FORM_KEY,
+    JSON.stringify(buildSearchFormSnapshot(state)),
+  );
+}
+
 function validate(requiredFields: any) {
   let isValid = true;
 
@@ -112,6 +140,7 @@ interface FilterStoreProps {
   setPartnersFilters: (data: any) => Promise<void>;
   consumeSkipNextPartnersFetch: () => boolean;
   _fetchPartners: (page?: number) => Promise<void>;
+  persistSearchForm: () => void;
 }
 
 // FIX 3: Module-level debounce timer so rapid consecutive getPartners() calls
@@ -273,6 +302,9 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
         // Ignore parse errors — localStorage may have stale/invalid data
         set({ hasHydrated: true });
       }
+    },
+    persistSearchForm: () => {
+      persistSearchFormSnapshot(get());
     },
 
     getPortsList: async (departure: boolean = false) => {
@@ -506,27 +538,7 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
       const routeToLower = routeTo.toLowerCase();
       const isSeaSearch = deliveryBy === DeliveryBy.ferry;
 
-      localStorage.setItem(
-        LOCAL_STORAGE_SEARCH_FORM_KEY,
-        JSON.stringify({
-          deliveryBy,
-          fromCountry,
-          from,
-          toCountry,
-          to,
-          departure,
-          arrival,
-          typeOfGoods,
-          totalKg,
-          placementOfGoods,
-          quantity,
-          length,
-          width,
-          height,
-          goodsValue,
-          incoterms,
-        }),
-      );
+      persistSearchFormSnapshot(get());
 
       try {
         const data = await postRequest({
