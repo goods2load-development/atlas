@@ -18,27 +18,32 @@ const TopDeparturePoint = ({ data }: { data: any }) => {
   const getCoordinatesForCountry = useCallback(
     async (data: any) => {
       setIsLoading(true);
+
       const result = await Promise.all(
         data.map(async (item: any) => {
-          const result = await getRequest({
-            url: `https://maps.googleapis.com/maps/api/geocode/json?address=${item.label.replace(/,\s+/g, ', ')}&key=${process.env.NEXT_PUBLIC_GOOGLE_API_KEY}`,
-            withCredentials: false,
-          });
+          try {
+            // ✅ Call your own route — no CORS, no key exposure
+            const response = await fetch(
+              `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(item.label)}&format=json&limit=1`,
+              { headers: { 'Accept-Language': 'en' } }
+            );
+            const result = await response.json();
 
-          if (result?.status !== 'OK') {
+            if (!result?.length) return null;
+
+            return {
+              from: {
+                name: item.label,
+                coordinates: [
+                  parseFloat(result[0].lon),
+                  parseFloat(result[0].lat),
+                ],
+              },
+              to: null,
+            };
+          } catch {
             return null;
           }
-
-          return {
-            from: {
-              name: item.label,
-              coordinates: [
-                result?.results[0]?.geometry?.location?.lng,
-                result?.results[0]?.geometry?.location?.lat,
-              ],
-            },
-            to: null,
-          };
         }),
       );
 

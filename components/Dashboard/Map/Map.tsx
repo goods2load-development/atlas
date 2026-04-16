@@ -25,7 +25,7 @@ const Map = ({
   width,
   height,
 }: {
-  data: MarkersCoordinates[];
+  data: Array<MarkersCoordinates | null>;
   isTooltip?: boolean;
   width?: number;
   height?: number;
@@ -37,6 +37,16 @@ const Map = ({
   const handleMarkerHover = (nameMarker: string) => {
     setHoveredMarkerIndex(nameMarker);
   };
+
+  const validData = (data ?? []).filter(
+    (
+      marker,
+    ): marker is MarkersCoordinates =>
+      !!marker &&
+      !!marker.from &&
+      Array.isArray(marker.from.coordinates) &&
+      marker.from.coordinates.length === 2,
+  );
 
   return (
     <div className="max-w-[800px] pt-6 overflow-x-scroll overflow-y-hidden mt-4 mx-auto max-h-[514px]">
@@ -78,11 +88,10 @@ const Map = ({
             }
           </Geographies>
 
-          {data.map(({ from, to }, index) => (
-            <>
+          {validData.map(({ from, to }, index) => (
+            <React.Fragment key={`${from.name}-${index}`}>
               {to && (
                 <Line
-                  key={index}
                   from={from.coordinates}
                   to={to.coordinates}
                   stroke="url(#gradient)"
@@ -110,10 +119,10 @@ const Map = ({
                   />
                 </linearGradient>
               </defs>
-            </>
+            </React.Fragment>
           ))}
 
-          {data.map(({ from }, index) => (
+          {validData.map(({ from }) => (
             <Marker key={from.name} coordinates={from.coordinates}>
               <svg
                 width="20"
@@ -221,8 +230,8 @@ const Map = ({
             </Marker>
           ))}
 
-          {data.map(
-            ({ to }, index) =>
+          {validData.map(
+            ({ to }) =>
               to?.coordinates && (
                 <Marker key={to.name} coordinates={to.coordinates}>
                   <svg
