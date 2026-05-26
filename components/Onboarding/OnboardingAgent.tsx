@@ -232,21 +232,28 @@ export default function OnboardingAgent() {
   }
 
   function handleMultiSelectConfirm(field: string, selected: string[]) {
-    updateCollected({ [field]: selected } as any);
+    const patch = { [field]: selected } as any;
+    updateCollected(patch);
     const label = selected.length > 0 ? selected.join(', ') : 'none';
-    sendMessage(`Selected: ${label}`);
+    sendMessage(`Selected: ${label}`, patch);
   }
 
   function handleServiceMixConfirm(mix: any) {
-    updateCollected({ serviceMix: mix });
+    const patch = { serviceMix: mix };
+    updateCollected(patch);
     sendMessage(
       `Air ${mix.air}%, Sea ${mix.sea}%, Road ${mix.road}%${mix.other > 0 ? `, Other ${mix.other}%` : ''}`,
+      patch,
     );
   }
 
   function handleGeoFocusConfirm(entries: any[]) {
-    updateCollected({ geoFocus: entries });
-    sendMessage(entries.map((e: any) => `${e.country} ${e.pct}%`).join(', '));
+    const patch = { geoFocus: entries };
+    updateCollected(patch);
+    sendMessage(
+      entries.map((e: any) => `${e.country} ${e.pct}%`).join(', '),
+      patch,
+    );
   }
 
   const isComplete = step === 'complete';

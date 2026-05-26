@@ -52,7 +52,10 @@ export function useOnboardingState() {
     }, 50);
   }, []);
 
-  async function sendMessage(text: string) {
+  async function sendMessage(
+    text: string,
+    collectedPatch?: Partial<CollectedFields>,
+  ) {
     if (!text.trim() && step !== 'welcome') return;
 
     // Add user message
@@ -63,6 +66,12 @@ export function useOnboardingState() {
     setLoading(true);
     scrollToBottom();
 
+    // Merge patch with current collected so callers that update state
+    // right before calling sendMessage don't get stale data in the request
+    const effectiveCollected = collectedPatch
+      ? { ...collected, ...collectedPatch }
+      : collected;
+
     try {
       const res = await fetch('/api/onboarding-agent', {
         method: 'POST',
@@ -71,7 +80,7 @@ export function useOnboardingState() {
           message: text,
           session_id: sessionId,
           step,
-          collected,
+          collected: effectiveCollected,
         }),
       });
 

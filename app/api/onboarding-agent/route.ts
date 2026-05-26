@@ -298,18 +298,40 @@ Next: your **Google Business Profile**. All companies on Goods2Load must have on
 
     // ── Google Profile ─────────────────────────────────────────────────────────
     case 'google_profile': {
-      if (!collected.googleBusinessProfile) {
+      // First entry to this step: message may be empty (transition from documents)
+      if (!message.trim()) {
         reply = `Please paste your **Google Business Profile URL**.
 
 💡 To find it: log in to your Google account → go to your business dashboard → click "Share your Business Profile" to get the link.`;
         break;
       }
 
+      // Skip requirement option
+      if (
+        message.toLowerCase().includes('skip') ||
+        message.toLowerCase().includes("don't have") ||
+        message.toLowerCase().includes('no profile')
+      ) {
+        reply = `No problem — you can add it later from your dashboard.
+
+Now let's add your **industry certifications**. Select all that apply — these boost your ranking with shippers.`;
+        nextStep = 'certifications';
+        card = {
+          type: 'multi_select',
+          field: 'industryRecognitions',
+          label: 'Industry Certifications (select all that apply)',
+          options: CERTIFICATIONS,
+        };
+        break;
+      }
+
       if (
         !message.includes('maps.app.goo.gl') &&
-        !message.includes('google.com/maps')
+        !message.includes('google.com/maps') &&
+        !message.includes('g.co/') &&
+        !message.startsWith('http')
       ) {
-        reply = `That doesn't look like a Google Business Profile URL. It should start with maps.app.goo.gl or google.com/maps. Please try again.`;
+        reply = `That doesn't look like a Google Business Profile URL. It should contain maps.app.goo.gl or google.com/maps. Please try again, or type "skip" if you don't have one yet.`;
         break;
       }
 
@@ -333,11 +355,8 @@ Now let's add your **industry certifications**. Select all that apply — these 
         ? collected.industryRecognitions
         : [];
 
-      if (
-        !certs.length &&
-        !message.toLowerCase().includes('none') &&
-        !message.toLowerCase().includes('no cert')
-      ) {
+      if (!certs.length) {
+        // No certs selected yet — show the card
         reply = `Please select your certifications using the card above, or type "none" if you don't have any.`;
         card = {
           type: 'multi_select',
@@ -348,20 +367,22 @@ Now let's add your **industry certifications**. Select all that apply — these 
         break;
       }
 
+      // Certs selected (or "none selected" from card confirm)
       if (certs.length > 0) {
         reply = `${certs.join(', ')} — noted ✓
 
-Please upload proof documents for each certification (PDFs). Upload them one by one.`;
-        card = {
-          type: 'file_upload',
-          field: 'industryProofFile',
-          label: `Proof for ${certs[0]}`,
-          accept: 'application/pdf',
-        };
+You can upload proof documents from your dashboard later. Moving on to **sectors**.`;
       } else {
         reply = `No certifications — that's fine. You can add them later from your dashboard.`;
       }
       nextStep = 'sectors';
+      card = {
+        type: 'multi_select',
+        field: 'industries',
+        label: 'Sectors you serve',
+        options: SECTORS,
+      };
+      reply += `\n\nWhich **logistics sectors** do you specialise in? Select all that apply.`;
       break;
     }
 
@@ -378,7 +399,10 @@ Please upload proof documents for each certification (PDFs). Upload them one by 
         break;
       }
 
-      reply = `${collected.industries.join(', ')} — great focus areas ✓
+      const industryList = Array.isArray(collected.industries)
+        ? collected.industries.join(', ')
+        : collected.industries;
+      reply = `${industryList} — great focus areas ✓
 
 Now let's map your **freight capabilities**. Do you provide **air freight** services? (yes / no)`;
       nextStep = 'air_freight';
@@ -388,13 +412,25 @@ Now let's map your **freight capabilities**. Do you provide **air freight** serv
     // ── Air Freight ────────────────────────────────────────────────────────────
     case 'air_freight': {
       const lower = message.toLowerCase();
+
+      // Sub-step: collecting airports after user said yes
+      if (collected.providesAirFreight === true && !collected.airports) {
+        // User is providing airports/countries now
+        const airInfo = message.trim();
+        extracted = { airports: [airInfo] }; // store as raw string for now
+        reply = `Got it ✓ Do you provide **sea freight**? (yes / no)`;
+        nextStep = 'sea_freight';
+        break;
+      }
+
       if (lower.includes('no') || lower.includes('not')) {
         extracted = { providesAirFreight: false };
         reply = `Understood — no air freight. Do you provide **sea freight**? (yes / no)`;
         nextStep = 'sea_freight';
       } else {
         extracted = { providesAirFreight: true };
-        reply = `Air freight ✓ Which countries and airports do you serve? Type them or we can add them in your dashboard. (e.g. "UAE - DXB, AUH | Saudi Arabia - RUH")`;
+        reply = `Air freight ✓ Which countries and airports do you serve? (e.g. "UAE - DXB, AUH | Saudi Arabia - RUH") — or type "done" to add them from your dashboard later.`;
+        // stay on air_freight to collect airports
       }
       break;
     }
@@ -402,14 +438,24 @@ Now let's map your **freight capabilities**. Do you provide **air freight** serv
     // ── Sea Freight ────────────────────────────────────────────────────────────
     case 'sea_freight': {
       const lower = message.toLowerCase();
+
+      // Sub-step: collecting ports after user said yes
+      if (collected.providesSeaFreight === true && !collected.seaports) {
+        const seaInfo = message.trim();
+        extracted = { seaports: [seaInfo] };
+        reply = `Got it ✓ Do you provide **road freight**? (yes / no)`;
+        nextStep = 'road_freight';
+        break;
+      }
+
       if (lower.includes('no') || lower.includes('not')) {
         extracted = { providesSeaFreight: false };
         reply = `Understood — no sea freight. Do you provide **road freight**? (yes / no)`;
         nextStep = 'road_freight';
       } else {
         extracted = { providesSeaFreight: true };
-        reply = `Sea freight ✓ Which countries and ports do you serve? (e.g. "UAE - Jebel Ali | India - Nhava Sheva")`;
-        nextStep = 'road_freight';
+        reply = `Sea freight ✓ Which countries and ports do you serve? (e.g. "UAE - Jebel Ali | India - Nhava Sheva") — or type "done" to skip for now.`;
+        // stay on sea_freight to collect ports
       }
       break;
     }
@@ -484,22 +530,24 @@ Tell me in 2-3 sentences: what does ${collected.companyName ?? 'your company'} d
         message.toLowerCase() === 'looks good' ||
         message.toLowerCase() === 'ok'
       ) {
-        // Keep the draft
+        // Keep the draft, advance to final_agreement for mission
         reply = `About Us saved ✓
 
 Now your **Mission statement**. What is the core purpose that drives ${collected.companyName ?? 'your company'}? A sentence or two is fine and I'll craft it. Include what you stand for.`;
+        nextStep = 'final_agreement';
         break;
       }
 
-      if (wordCount < 50 || wordCount > 80) {
-        reply = `That's ${wordCount} words. I need between 50 and 80 words. Try expanding it a bit or type "help" and I'll suggest a draft.`;
+      if (wordCount < 20) {
+        reply = `That's a bit short (${wordCount} words). Try giving me a bit more detail, or type "yes" to keep the draft I generated.`;
         break;
       }
 
       extracted = { aboutUs: message };
       reply = `About Us saved ✓
 
-Now your **Mission statement** (50-80 words, must include at least one hashtag like #logistics). Tell me what drives your company.`;
+Now your **Mission statement**. What is the core purpose that drives ${collected.companyName ?? 'your company'}? Tell me what you stand for and I'll turn it into a polished statement.`;
+      nextStep = 'final_agreement';
       break;
     }
 
