@@ -1,8 +1,8 @@
 'use client';
 
-import { BOXMAN } from '../boxmanData';
-
 import { useEffect, useRef, useState } from 'react';
+
+import { Send } from 'lucide-react';
 
 const SUGGESTIONS = [
   'Which of my lanes has the most demand right now?',
@@ -52,11 +52,9 @@ export default function IntelligenceSection() {
 
   async function send(text: string) {
     if (!text.trim() || loading) return;
-    const userMsg: Message = { role: 'user', text: text.trim() };
-    setMessages((m) => [...m, userMsg]);
+    setMessages((m) => [...m, { role: 'user', text: text.trim() }]);
     setInput('');
     setLoading(true);
-
     try {
       const res = await fetch('/api/agent', {
         method: 'POST',
@@ -110,8 +108,8 @@ export default function IntelligenceSection() {
 
       {/* Context chips */}
       <div className="flex items-center gap-2 px-6 py-2.5 border-b border-border bg-gray-50/60 overflow-x-auto hide-scrollbar">
-        <span className="text-[10px] text-muted-foreground shrink-0">
-          Context loaded:
+        <span className="text-[10px] text-muted-foreground shrink-0 uppercase tracking-wide font-medium">
+          Context
         </span>
         {[
           'Air 50%',
@@ -123,7 +121,7 @@ export default function IntelligenceSection() {
         ].map((chip) => (
           <span
             key={chip}
-            className="text-[10px] font-semibold bg-primaryOrange/10 text-primaryOrange px-2 py-0.5 rounded-full shrink-0"
+            className="text-[10px] font-semibold bg-primaryOrange/8 text-primaryOrange px-2 py-0.5 rounded-full border border-primaryOrange/20 shrink-0"
           >
             {chip}
           </span>
@@ -141,7 +139,7 @@ export default function IntelligenceSection() {
             className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
             {m.role === 'atlas' && (
-              <div className="w-6 h-6 rounded-full bg-[#1a1a2e] flex items-center justify-center text-[10px] text-white font-bold shrink-0 mt-1 mr-2">
+              <div className="w-6 h-6 rounded-full bg-[#0d0d1a] flex items-center justify-center text-[9px] text-white font-bold shrink-0 mt-1 mr-2">
                 A
               </div>
             )}
@@ -159,7 +157,7 @@ export default function IntelligenceSection() {
 
         {loading && (
           <div className="flex justify-start items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-[#1a1a2e] flex items-center justify-center text-[10px] text-white font-bold shrink-0">
+            <div className="w-6 h-6 rounded-full bg-[#0d0d1a] flex items-center justify-center text-[9px] text-white font-bold shrink-0">
               A
             </div>
             <div className="bg-white border border-border rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-1.5">
@@ -174,14 +172,13 @@ export default function IntelligenceSection() {
           </div>
         )}
 
-        {/* Suggestion chips — only on fresh start */}
         {messages.length === 1 && (
           <div className="flex flex-wrap gap-2 pt-2">
             {SUGGESTIONS.map((s) => (
               <button
                 key={s}
                 onClick={() => send(s)}
-                className="text-[11px] text-primaryOrange border border-primaryOrange/30 rounded-full px-3 py-1.5 hover:bg-primaryOrange/5 transition-colors text-left"
+                className="text-[11px] text-primaryOrange border border-primaryOrange/25 rounded-full px-3 py-1.5 hover:bg-primaryOrange/5 transition-colors text-left"
               >
                 {s}
               </button>
@@ -207,19 +204,7 @@ export default function IntelligenceSection() {
             disabled={loading || !input.trim()}
             className="w-8 h-8 rounded-full bg-primaryOrange text-white flex items-center justify-center disabled:opacity-30 hover:opacity-90 transition-opacity shrink-0"
           >
-            <svg
-              width="12"
-              height="12"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="22" y1="2" x2="11" y2="13" />
-              <polygon points="22 2 15 22 11 13 2 9 22 2" />
-            </svg>
+            <Send size={12} strokeWidth={2} />
           </button>
         </div>
         <p className="text-[10px] text-muted-foreground text-center mt-2">

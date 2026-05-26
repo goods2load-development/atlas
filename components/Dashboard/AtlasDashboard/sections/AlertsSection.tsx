@@ -1,9 +1,18 @@
 'use client';
 
-import { BOXMAN, MARKET_RATES } from '../boxmanData';
+import { MARKET_RATES } from '../boxmanData';
 import { usePriceAlertsStore } from '@/lib/store';
 
 import { useEffect, useState } from 'react';
+
+import {
+  Minus,
+  Plane,
+  Ship,
+  TrendingDown,
+  TrendingUp,
+  Truck,
+} from 'lucide-react';
 
 interface LaneSubscription {
   id: string;
@@ -54,7 +63,8 @@ const DEMO_SUBSCRIPTIONS: LaneSubscription[] = [
   },
 ];
 
-const MODE_ICON = { air: '✈️', sea: '🚢', road: '🚛' };
+const MODE_ICON = { air: Plane, sea: Ship, road: Truck };
+const MODE_LABEL = { air: 'Air', sea: 'Sea', road: 'Road' };
 const MODE_COLOR = {
   air: 'bg-blue-50 text-blue-700 border-blue-200',
   sea: 'bg-cyan-50 text-cyan-700 border-cyan-200',
@@ -103,7 +113,6 @@ export default function AlertsSection() {
 
   return (
     <div className="flex flex-col h-full overflow-y-auto hide-scrollbar">
-      {/* Header */}
       <div className="px-6 pt-6 pb-4 border-b border-border">
         <div className="flex items-start justify-between">
           <div>
@@ -114,7 +123,7 @@ export default function AlertsSection() {
             </p>
           </div>
           <div className="flex items-center gap-1.5 bg-green-50 border border-green-200 rounded-full px-3 py-1">
-            <span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse" />
+            <span className="w-1.5 h-1.5 rounded-full bg-green-500" />
             <span className="text-[11px] font-semibold text-green-700">
               {activeCount} active
             </span>
@@ -123,10 +132,9 @@ export default function AlertsSection() {
       </div>
 
       <div className="flex-1 p-6 space-y-6">
-        {/* Lane subscriptions */}
         <div>
           <div className="flex items-center justify-between mb-3">
-            <h3 className="text-[12px] font-bold text-black uppercase tracking-wide">
+            <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider">
               Your lane subscriptions
             </h3>
             <button
@@ -137,48 +145,51 @@ export default function AlertsSection() {
             </button>
           </div>
 
-          <div className="space-y-3">
-            {subscriptions.map((sub) => (
-              <div
-                key={sub.id}
-                className={`rounded-xl border p-4 transition-colors ${sub.active ? 'border-primaryOrange/30 bg-primaryOrange/3' : 'border-border bg-gray-50/50'}`}
-              >
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3 min-w-0">
-                    <span
-                      className={`text-[10px] font-bold px-2 py-0.5 rounded-full border ${MODE_COLOR[sub.mode]}`}
-                    >
-                      {MODE_ICON[sub.mode]} {sub.mode}
-                    </span>
-                    <div className="min-w-0">
-                      <div className="text-[13px] font-semibold text-black truncate">
-                        {sub.origin} → {sub.destination}
-                      </div>
-                      <div className="text-[10px] text-muted-foreground mt-0.5 flex items-center gap-2">
-                        {sub.lastFired && (
-                          <span>Last fired: {sub.lastFired}</span>
-                        )}
-                        <span className="text-primaryOrange font-medium">
-                          {sub.leadsGenerated} lead
-                          {sub.leadsGenerated !== 1 ? 's' : ''} generated
-                        </span>
+          <div className="space-y-2.5">
+            {subscriptions.map((sub) => {
+              const Icon = MODE_ICON[sub.mode];
+              return (
+                <div
+                  key={sub.id}
+                  className={`rounded-xl border p-4 transition-colors ${sub.active ? 'border-primaryOrange/25 bg-white' : 'border-border bg-gray-50/50'}`}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex items-center gap-3 min-w-0">
+                      <span
+                        className={`flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full border shrink-0 ${MODE_COLOR[sub.mode]}`}
+                      >
+                        <Icon size={10} strokeWidth={2} />
+                        {MODE_LABEL[sub.mode]}
+                      </span>
+                      <div className="min-w-0">
+                        <div className="text-[13px] font-semibold text-black truncate">
+                          {sub.origin} → {sub.destination}
+                        </div>
+                        <div className="text-[10px] text-muted-foreground mt-0.5 flex items-center gap-2">
+                          {sub.lastFired && (
+                            <span>Last fired: {sub.lastFired}</span>
+                          )}
+                          <span className="text-primaryOrange font-medium">
+                            {sub.leadsGenerated} lead
+                            {sub.leadsGenerated !== 1 ? 's' : ''} generated
+                          </span>
+                        </div>
                       </div>
                     </div>
+                    <button
+                      onClick={() => toggle(sub.id)}
+                      className={`w-10 h-5 rounded-full transition-colors relative shrink-0 ${sub.active ? 'bg-primaryOrange' : 'bg-gray-200'}`}
+                    >
+                      <span
+                        className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${sub.active ? 'translate-x-5' : 'translate-x-0.5'}`}
+                      />
+                    </button>
                   </div>
-                  <button
-                    onClick={() => toggle(sub.id)}
-                    className={`w-10 h-5 rounded-full transition-colors relative shrink-0 ${sub.active ? 'bg-primaryOrange' : 'bg-gray-200'}`}
-                  >
-                    <span
-                      className={`absolute top-0.5 w-4 h-4 rounded-full bg-white shadow transition-transform ${sub.active ? 'translate-x-5' : 'translate-x-0.5'}`}
-                    />
-                  </button>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
 
-          {/* Add form */}
           {showForm && (
             <div className="mt-3 p-4 rounded-xl border border-border bg-gray-50 space-y-3">
               <div className="flex gap-2">
@@ -196,15 +207,19 @@ export default function AlertsSection() {
                 />
               </div>
               <div className="flex gap-2">
-                {(['air', 'sea', 'road'] as const).map((m) => (
-                  <button
-                    key={m}
-                    onClick={() => setMode(m)}
-                    className={`flex-1 text-[11px] font-semibold rounded-lg py-1.5 border transition-colors ${mode === m ? 'bg-primaryOrange text-white border-primaryOrange' : 'bg-white text-muted-foreground border-border'}`}
-                  >
-                    {MODE_ICON[m]} {m}
-                  </button>
-                ))}
+                {(['air', 'sea', 'road'] as const).map((m) => {
+                  const Icon = MODE_ICON[m];
+                  return (
+                    <button
+                      key={m}
+                      onClick={() => setMode(m)}
+                      className={`flex-1 flex items-center justify-center gap-1.5 text-[11px] font-semibold rounded-lg py-1.5 border transition-colors ${mode === m ? 'bg-primaryOrange text-white border-primaryOrange' : 'bg-white text-muted-foreground border-border'}`}
+                    >
+                      <Icon size={12} strokeWidth={2} />
+                      {MODE_LABEL[m]}
+                    </button>
+                  );
+                })}
               </div>
               <div className="flex gap-2">
                 <button
@@ -224,17 +239,15 @@ export default function AlertsSection() {
           )}
         </div>
 
-        {/* Market rate alerts from platform */}
         <div>
-          <h3 className="text-[12px] font-bold text-black uppercase tracking-wide mb-3">
-            Platform price alerts
+          <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-3">
+            Platform price alerts{' '}
             {isPriceAlertLoading && (
               <span className="text-[10px] font-normal text-muted-foreground ml-2">
                 Loading…
               </span>
             )}
           </h3>
-
           {Array.isArray(priceAlerts) && priceAlerts.length > 0 ? (
             <div className="space-y-2">
               {priceAlerts.slice(0, 5).map((alert: any) => (
@@ -266,9 +279,8 @@ export default function AlertsSection() {
           )}
         </div>
 
-        {/* Rate intelligence panel */}
         <div>
-          <h3 className="text-[12px] font-bold text-black uppercase tracking-wide mb-3">
+          <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-3">
             Live rate signals
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -277,12 +289,12 @@ export default function AlertsSection() {
                 key={i}
                 className="rounded-xl border border-border p-4 bg-white"
               >
-                <div className="flex items-center justify-between mb-1">
+                <div className="flex items-center justify-between mb-1.5">
                   <span className="text-[11px] font-semibold text-black">
                     {r.lane}
                   </span>
                   <span
-                    className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full ${
+                    className={`flex items-center gap-0.5 text-[9px] font-semibold px-1.5 py-0.5 rounded-full ${
                       r.trend === 'up'
                         ? 'bg-red-50 text-red-600'
                         : r.trend === 'down'
@@ -290,11 +302,18 @@ export default function AlertsSection() {
                           : 'bg-gray-100 text-gray-500'
                     }`}
                   >
+                    {r.trend === 'up' ? (
+                      <TrendingUp size={9} />
+                    ) : r.trend === 'down' ? (
+                      <TrendingDown size={9} />
+                    ) : (
+                      <Minus size={9} />
+                    )}
                     {r.trend === 'up'
-                      ? '↑ Rising'
+                      ? 'Rising'
                       : r.trend === 'down'
-                        ? '↓ Falling'
-                        : '→ Stable'}
+                        ? 'Falling'
+                        : 'Stable'}
                   </span>
                 </div>
                 <p className="text-base font-bold text-black">{r.rate}</p>

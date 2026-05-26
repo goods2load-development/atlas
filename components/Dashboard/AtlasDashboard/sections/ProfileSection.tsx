@@ -2,16 +2,18 @@
 
 import { BOXMAN } from '../boxmanData';
 
+import { AlertCircle, CheckCircle, Clock } from 'lucide-react';
+
 import Map from '@/components/Dashboard/Map/Map';
 
 const TRUST_SIGNALS = [
-  { label: 'ISO 9001:2015 Quality Management', status: 'verified', icon: '✓' },
-  { label: 'FIATA Member', status: 'verified', icon: '✓' },
-  { label: 'NAFL Member', status: 'verified', icon: '✓' },
-  { label: 'Trade License', status: 'verified', icon: '✓' },
-  { label: 'VAT / Issuing Authority', status: 'verified', icon: '✓' },
-  { label: 'Insurance Statement', status: 'missing', icon: '!' },
-  { label: 'Google Business Profile', status: 'pending', icon: '⏳' },
+  { label: 'ISO 9001:2015 Quality Management', status: 'verified' },
+  { label: 'FIATA Member', status: 'verified' },
+  { label: 'NAFL Member', status: 'verified' },
+  { label: 'Trade License', status: 'verified' },
+  { label: 'VAT / Issuing Authority', status: 'verified' },
+  { label: 'Insurance Statement', status: 'missing' },
+  { label: 'Google Business Profile', status: 'pending' },
 ];
 
 const LANE_MARKERS = [
@@ -65,7 +67,7 @@ function TrustScore({ score }: { score: number }) {
             r={r}
             fill="none"
             stroke="#f0f0f0"
-            strokeWidth="8"
+            strokeWidth="7"
           />
           <circle
             cx="56"
@@ -73,7 +75,7 @@ function TrustScore({ score }: { score: number }) {
             r={r}
             fill="none"
             stroke="#FF6720"
-            strokeWidth="8"
+            strokeWidth="7"
             strokeDasharray={`${dash} ${circ}`}
             strokeLinecap="round"
           />
@@ -85,8 +87,8 @@ function TrustScore({ score }: { score: number }) {
           </span>
         </div>
       </div>
-      <span className="text-[11px] font-bold text-primaryOrange mt-1">
-        VERIFIED
+      <span className="text-[10px] font-bold text-primaryOrange mt-1 tracking-widest uppercase">
+        Verified
       </span>
     </div>
   );
@@ -96,11 +98,9 @@ export default function ProfileSection() {
   const verifiedCount = TRUST_SIGNALS.filter(
     (s) => s.status === 'verified',
   ).length;
-  const maxScore = TRUST_SIGNALS.length;
 
   return (
     <div className="flex flex-col h-full overflow-y-auto hide-scrollbar">
-      {/* Header */}
       <div className="px-6 pt-6 pb-4 border-b border-border">
         <h2 className="text-lg font-bold text-black">Profile & Trust</h2>
         <p className="text-[12px] text-muted-foreground">
@@ -112,17 +112,20 @@ export default function ProfileSection() {
         {/* Profile hero */}
         <div className="bg-white rounded-xl border border-border p-6">
           <div className="flex items-start gap-6 flex-wrap">
-            {/* Logo placeholder */}
-            <div className="w-16 h-16 rounded-xl bg-[#1a1a2e] flex items-center justify-center text-white text-2xl font-black shrink-0">
-              BG
+            <div className="w-16 h-16 rounded-xl bg-[#0d0d1a] flex items-center justify-center shrink-0 overflow-hidden p-2">
+              <img
+                src="/boxman-logo.png"
+                alt="Boxman Global"
+                className="w-full h-full object-contain"
+              />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-lg font-black text-black">
                   {BOXMAN.companyName}
                 </h3>
-                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
-                  ✓ APPROVED
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-200">
+                  Approved
                 </span>
               </div>
               <p className="text-[12px] text-muted-foreground mt-0.5">
@@ -130,10 +133,10 @@ export default function ProfileSection() {
               </p>
               <div className="flex items-center gap-3 mt-2 flex-wrap">
                 <span className="text-[11px] text-muted-foreground">
-                  ✉️ {BOXMAN.email}
+                  {BOXMAN.email}
                 </span>
                 <span className="text-[11px] text-muted-foreground">
-                  📞 {BOXMAN.phone}
+                  {BOXMAN.phone}
                 </span>
               </div>
               <div className="flex items-center gap-2 mt-2 flex-wrap">
@@ -146,7 +149,7 @@ export default function ProfileSection() {
                   </span>
                 ))}
                 <span className="text-[11px] text-amber-600 font-medium">
-                  ⭐ 5.0 (21 reviews)*
+                  5.0 · 21 reviews
                 </span>
               </div>
             </div>
@@ -156,35 +159,45 @@ export default function ProfileSection() {
             {BOXMAN.description}
           </p>
           <p className="text-[10px] text-muted-foreground mt-2">
-            * Google rating from website — pending sync to G2L (Sufian: run
-            Google Places fetch for provider ID {BOXMAN.id.slice(0, 8)}…)
+            Google rating from website — pending sync to G2L (Sufian: run Google
+            Places fetch for provider ID {BOXMAN.id.slice(0, 8)}…)
           </p>
         </div>
 
         {/* Trust signals */}
         <div className="bg-white rounded-xl border border-border p-5">
           <div className="flex items-center justify-between mb-4">
-            <h3 className="text-[12px] font-bold text-black uppercase tracking-wide">
+            <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider">
               Verification signals
             </h3>
             <span className="text-[11px] font-semibold text-primaryOrange">
-              {verifiedCount}/{maxScore} complete
+              {verifiedCount}/{TRUST_SIGNALS.length} complete
             </span>
           </div>
           <div className="space-y-2.5">
             {TRUST_SIGNALS.map((sig, i) => (
               <div key={i} className="flex items-center gap-3">
-                <div
-                  className={`w-5 h-5 rounded-full flex items-center justify-center text-[10px] font-bold shrink-0 ${
-                    sig.status === 'verified'
-                      ? 'bg-green-100 text-green-700'
-                      : sig.status === 'missing'
-                        ? 'bg-red-100 text-red-600'
-                        : 'bg-amber-100 text-amber-600'
-                  }`}
-                >
-                  {sig.icon}
-                </div>
+                {sig.status === 'verified' && (
+                  <CheckCircle
+                    size={16}
+                    strokeWidth={2}
+                    className="text-green-500 shrink-0"
+                  />
+                )}
+                {sig.status === 'missing' && (
+                  <AlertCircle
+                    size={16}
+                    strokeWidth={2}
+                    className="text-red-500 shrink-0"
+                  />
+                )}
+                {sig.status === 'pending' && (
+                  <Clock
+                    size={16}
+                    strokeWidth={2}
+                    className="text-amber-500 shrink-0"
+                  />
+                )}
                 <span
                   className={`text-[12px] flex-1 ${sig.status === 'verified' ? 'text-black' : 'text-muted-foreground'}`}
                 >
@@ -210,7 +223,7 @@ export default function ProfileSection() {
           </div>
           <div className="mt-4 pt-4 border-t border-border">
             <p className="text-[11px] text-muted-foreground">
-              💡 Upload insurance statement to increase trust score from 84 →{' '}
+              Upload insurance statement to increase trust score from 84 →{' '}
               <span className="font-bold text-primaryOrange">89/100</span> and
               improve G2L ranking by ~2 positions
             </p>
@@ -223,24 +236,25 @@ export default function ProfileSection() {
             {
               title: 'Transport',
               items: BOXMAN.transportSolutions,
-              color: 'bg-blue-50 text-blue-700',
+              color: 'bg-blue-50 text-blue-700 border border-blue-100',
             },
             {
               title: 'Industries',
               items: BOXMAN.industrySolutions,
-              color: 'bg-primaryOrange/10 text-primaryOrange',
+              color:
+                'bg-primaryOrange/8 text-primaryOrange border border-primaryOrange/15',
             },
             {
               title: 'Services',
               items: BOXMAN.additionalServices,
-              color: 'bg-green-50 text-green-700',
+              color: 'bg-green-50 text-green-700 border border-green-100',
             },
           ].map(({ title, items, color }) => (
             <div
               key={title}
               className="bg-white rounded-xl border border-border p-4"
             >
-              <h4 className="text-[11px] font-bold text-black uppercase tracking-wide mb-3">
+              <h4 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-3">
                 {title}
               </h4>
               <div className="flex flex-wrap gap-1.5">
@@ -259,10 +273,10 @@ export default function ProfileSection() {
 
         {/* Notable clients */}
         <div className="bg-white rounded-xl border border-border p-5">
-          <h3 className="text-[12px] font-bold text-black uppercase tracking-wide mb-3">
+          <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-3">
             Notable clients
           </h3>
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
             {BOXMAN.notableClients.map((client) => (
               <div
                 key={client}
@@ -278,7 +292,7 @@ export default function ProfileSection() {
 
         {/* Lane map */}
         <div className="bg-white rounded-xl border border-border p-5">
-          <h3 className="text-[12px] font-bold text-black uppercase tracking-wide mb-1">
+          <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-1">
             Active freight lanes
           </h3>
           <p className="text-[11px] text-muted-foreground mb-3">

@@ -4,50 +4,29 @@ import { DEMO_LEADS, type DemoLead, MARKET_RATES } from '../boxmanData';
 
 import { useState } from 'react';
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+import {
+  ChevronRight,
+  Globe,
+  Mail,
+  MessageCircle,
+  Minus,
+  Plane,
+  Ship,
+  TrendingDown,
+  TrendingUp,
+  Truck,
+  X,
+} from 'lucide-react';
 
-const STAGES: { key: DemoLead['status']; label: string; color: string }[] = [
-  { key: 'new', label: 'New', color: 'bg-primaryOrange' },
-  { key: 'contacted', label: 'Contacted', color: 'bg-blue-500' },
-  { key: 'quoting', label: 'Quoting', color: 'bg-purple-500' },
-  { key: 'sent', label: 'Quote Sent', color: 'bg-amber-500' },
-  { key: 'won', label: 'Won', color: 'bg-green-500' },
-  { key: 'lost', label: 'Lost', color: 'bg-gray-400' },
-];
+// ── Win probability gauge ─────────────────────────────────────────────────────
 
-const CHANNEL_STYLE = {
-  whatsapp: {
-    bg: 'bg-[#25D366]/10',
-    text: 'text-[#25D366]',
-    icon: '💬',
-    label: 'WhatsApp',
-  },
-  email: {
-    bg: 'bg-blue-50',
-    text: 'text-blue-600',
-    icon: '✉️',
-    label: 'Email',
-  },
-  g2l: {
-    bg: 'bg-primaryOrange/10',
-    text: 'text-primaryOrange',
-    icon: '🔍',
-    label: 'G2L Search',
-  },
-};
-
-const MODE_ICON = { air: '✈️', sea: '🚢', road: '🚛' };
-
-function WinGauge({ pct, size = 52 }: { pct: number; size?: number }) {
-  const r = size / 2 - 5;
+function WinGauge({ pct, size = 40 }: { pct: number; size?: number }) {
+  const r = (size - 6) / 2;
   const circ = 2 * Math.PI * r;
   const dash = (pct / 100) * circ;
-  const color = pct >= 80 ? '#22c55e' : pct >= 60 ? '#f97316' : '#ef4444';
+  const color = pct >= 80 ? '#22c55e' : pct >= 60 ? '#FF6720' : '#ef4444';
   return (
-    <div
-      className="relative flex items-center justify-center"
-      style={{ width: size, height: size }}
-    >
+    <div className="relative shrink-0" style={{ width: size, height: size }}>
       <svg width={size} height={size} style={{ transform: 'rotate(-90deg)' }}>
         <circle
           cx={size / 2}
@@ -55,7 +34,7 @@ function WinGauge({ pct, size = 52 }: { pct: number; size?: number }) {
           r={r}
           fill="none"
           stroke="#f0f0f0"
-          strokeWidth="4"
+          strokeWidth="3"
         />
         <circle
           cx={size / 2}
@@ -63,17 +42,54 @@ function WinGauge({ pct, size = 52 }: { pct: number; size?: number }) {
           r={r}
           fill="none"
           stroke={color}
-          strokeWidth="4"
+          strokeWidth="3"
           strokeDasharray={`${dash} ${circ}`}
           strokeLinecap="round"
         />
       </svg>
-      <span className="absolute text-[11px] font-bold" style={{ color }}>
-        {pct}%
-      </span>
+      <div className="absolute inset-0 flex items-center justify-center">
+        <span className="text-[9px] font-bold" style={{ color }}>
+          {pct}%
+        </span>
+      </div>
     </div>
   );
 }
+
+// ── Channel & mode config ─────────────────────────────────────────────────────
+
+const CHANNEL_CONFIG = {
+  whatsapp: {
+    Icon: MessageCircle,
+    label: 'WhatsApp',
+    cls: 'bg-[#e8f8ef] text-[#25D366] border-[#b8edcf]',
+  },
+  g2l: {
+    Icon: Globe,
+    label: 'G2L',
+    cls: 'bg-primaryOrange/8 text-primaryOrange border-primaryOrange/20',
+  },
+  email: {
+    Icon: Mail,
+    label: 'Email',
+    cls: 'bg-gray-100 text-gray-600 border-gray-200',
+  },
+};
+
+const MODE_CONFIG = {
+  air: { Icon: Plane, label: 'Air', cls: 'text-blue-600' },
+  sea: { Icon: Ship, label: 'Sea', cls: 'text-cyan-600' },
+  road: { Icon: Truck, label: 'Road', cls: 'text-amber-600' },
+};
+
+const STAGES = [
+  { key: 'new', label: 'New', color: 'bg-primaryOrange' },
+  { key: 'contacted', label: 'Contacted', color: 'bg-blue-500' },
+  { key: 'quoting', label: 'Quoting', color: 'bg-purple-500' },
+  { key: 'sent', label: 'Quote Sent', color: 'bg-amber-500' },
+  { key: 'won', label: 'Won', color: 'bg-green-500' },
+  { key: 'lost', label: 'Lost', color: 'bg-gray-400' },
+] as const;
 
 // ── Lead detail panel ─────────────────────────────────────────────────────────
 
@@ -84,120 +100,125 @@ function LeadDetail({
   lead: DemoLead;
   onClose: () => void;
 }) {
-  const ch = CHANNEL_STYLE[lead.channel];
+  const ch = CHANNEL_CONFIG[lead.channel];
+  const md = MODE_CONFIG[lead.mode];
 
   return (
-    <div className="flex flex-col h-full overflow-y-auto hide-scrollbar">
+    <div className="flex flex-col h-full bg-white">
       {/* Header */}
-      <div className="flex items-start justify-between p-5 border-b border-border">
-        <div>
+      <div className="flex items-start justify-between px-5 pt-5 pb-4 border-b border-border">
+        <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2 mb-1">
             <span
-              className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${ch.bg} ${ch.text}`}
+              className={`flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full border ${ch.cls}`}
             >
-              {ch.icon} {ch.label}
+              <ch.Icon size={10} strokeWidth={2} />
+              {ch.label}
             </span>
-            <span
-              className={`text-[10px] font-bold px-2 py-0.5 rounded-full ${
-                lead.status === 'new'
-                  ? 'bg-primaryOrange/10 text-primaryOrange'
-                  : lead.status === 'lost'
-                    ? 'bg-gray-100 text-gray-500'
-                    : 'bg-blue-50 text-blue-600'
-              }`}
-            >
-              {STAGES.find((s) => s.key === lead.status)?.label}
-            </span>
+            {lead.status === 'new' && (
+              <span className="text-[9px] font-bold px-2 py-0.5 rounded-full bg-primaryOrange text-white uppercase tracking-wide">
+                New
+              </span>
+            )}
           </div>
-          <h3 className="text-base font-bold text-black">{lead.from}</h3>
-          <p className="text-[12px] text-muted-foreground">
-            {lead.company} · {lead.flag} {lead.country}
+          <h3 className="text-[15px] font-bold text-black leading-tight">
+            {lead.from}
+          </h3>
+          <p className="text-[11px] text-muted-foreground mt-0.5">
+            {lead.company} · <span>{lead.flag}</span> {lead.country}
           </p>
         </div>
         <button
           onClick={onClose}
-          className="text-muted-foreground hover:text-black text-lg leading-none"
+          className="p-1 rounded-lg hover:bg-gray-100 text-muted-foreground transition-colors shrink-0"
         >
-          ×
+          <X size={16} />
         </button>
       </div>
 
-      <div className="flex-1 p-5 space-y-4">
-        {/* Cargo summary */}
-        <div className="bg-gray-50 rounded-xl border border-border p-4">
-          <div className="flex items-start gap-3">
-            <span className="text-xl">{MODE_ICON[lead.mode]}</span>
+      <div className="flex-1 overflow-y-auto hide-scrollbar">
+        {/* Cargo details */}
+        <div className="px-5 py-4 border-b border-border">
+          <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
+              <div className={`flex items-center gap-1.5 mb-1.5 ${md.cls}`}>
+                <md.Icon size={13} strokeWidth={2} />
+                <span className="text-[10px] font-semibold uppercase tracking-wide">
+                  {md.label}
+                </span>
+              </div>
               <p className="text-[12px] font-semibold text-black leading-snug">
                 {lead.cargo}
               </p>
               <p className="text-[11px] text-muted-foreground mt-1">
                 {lead.origin} → {lead.destination}
-                {lead.weight && (
-                  <>
-                    {' '}
-                    · <span className="font-medium">{lead.weight}</span>
-                  </>
-                )}
+                {lead.weight && <span className="ml-1.5">· {lead.weight}</span>}
               </p>
             </div>
             {lead.value && (
               <div className="text-right shrink-0">
-                <div className="text-[11px] text-muted-foreground">
-                  Est. value
-                </div>
-                <div className="text-sm font-bold text-primaryOrange">
+                <p className="text-[10px] text-muted-foreground">Est. value</p>
+                <p className="text-[14px] font-bold text-primaryOrange">
                   {lead.value}
-                </div>
+                </p>
               </div>
             )}
           </div>
-          <div className="flex items-center gap-3 mt-3 pt-3 border-t border-border">
-            <div className="flex items-center gap-2">
-              <WinGauge pct={lead.winProbability} size={44} />
+        </div>
+
+        {/* Win probability + match */}
+        <div className="px-5 py-4 border-b border-border">
+          <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
+              <WinGauge pct={lead.winProbability} size={48} />
               <div>
-                <div className="text-[10px] text-muted-foreground uppercase tracking-wide">
+                <p className="text-[10px] text-muted-foreground uppercase tracking-wide">
                   Win probability
-                </div>
-                <div className="text-[11px] font-semibold text-black">
+                </p>
+                <p className="text-[11px] font-semibold text-black">
                   AI score: {lead.matchScore}/100
-                </div>
+                </p>
               </div>
             </div>
-            <div className="flex-1 min-w-0">
-              {lead.matchReasons.map((r, i) => (
-                <div
-                  key={i}
-                  className={`text-[10px] font-medium ${r.includes('✗') ? 'text-red-500' : 'text-green-600'}`}
-                >
-                  {r}
-                </div>
-              ))}
-            </div>
+            {lead.matchReasons.length > 0 && (
+              <div className="flex-1 space-y-1">
+                {lead.matchReasons.map((r) => (
+                  <div key={r} className="flex items-center gap-1.5">
+                    <div className="w-3.5 h-3.5 rounded-full bg-green-100 flex items-center justify-center shrink-0">
+                      <svg width="7" height="7" viewBox="0 0 7 7" fill="none">
+                        <path
+                          d="M1 3.5L3 5.5L6 1.5"
+                          stroke="#16a34a"
+                          strokeWidth="1.2"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </div>
+                    <span className="text-[10px] text-black">{r}</span>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
 
-        {/* Market rate intel */}
+        {/* Market rate */}
         {lead.marketRate && (
-          <div className="rounded-xl border border-border p-4">
-            <div className="flex items-center gap-1.5 mb-2">
-              <span className="text-sm">📊</span>
-              <span className="text-[11px] font-bold text-black uppercase tracking-wide">
-                Market Rate Intel — {lead.origin.split(' ')[0]} →{' '}
-                {lead.destination.split(' ')[0]}
-              </span>
-            </div>
+          <div className="px-5 py-4 border-b border-border">
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+              Market rate intel — {lead.origin.split(' ')[0]} →{' '}
+              {lead.destination.split(' ')[0]}
+            </p>
             <div className="flex items-center justify-between">
-              <div>
-                <span className="text-lg font-bold text-black">
-                  ${lead.marketRate.low}–{lead.marketRate.high}
-                </span>
-                <span className="text-[11px] text-muted-foreground ml-1">
+              <p className="text-[18px] font-bold text-black">
+                ${lead.marketRate.low}–{lead.marketRate.high}
+                <span className="text-[12px] font-normal text-muted-foreground ml-1">
                   {lead.marketRate.unit}
                 </span>
-              </div>
+              </p>
               <span
-                className={`text-[11px] font-semibold px-2 py-0.5 rounded-full ${
+                className={`flex items-center gap-1 text-[10px] font-semibold px-2 py-0.5 rounded-full ${
                   lead.marketRate.trend === 'up'
                     ? 'bg-red-50 text-red-600'
                     : lead.marketRate.trend === 'down'
@@ -205,53 +226,56 @@ function LeadDetail({
                       : 'bg-gray-100 text-gray-500'
                 }`}
               >
+                {lead.marketRate.trend === 'up' ? (
+                  <TrendingUp size={10} />
+                ) : lead.marketRate.trend === 'down' ? (
+                  <TrendingDown size={10} />
+                ) : (
+                  <Minus size={10} />
+                )}
                 {lead.marketRate.trend === 'up'
-                  ? '↑ Rising'
+                  ? 'Rising'
                   : lead.marketRate.trend === 'down'
-                    ? '↓ Falling'
-                    : '→ Stable'}
+                    ? 'Falling'
+                    : 'Stable'}
               </span>
             </div>
           </div>
         )}
 
-        {/* Momentum agent activity */}
+        {/* WhatsApp conversation */}
         {lead.momentumSent && (
-          <div className="rounded-xl border border-border overflow-hidden">
-            <div className="flex items-center gap-2 px-4 py-2.5 bg-[#1a1a2e]">
-              <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-              <span className="text-[11px] font-semibold text-white/80">
+          <div className="border-b border-border">
+            <div className="px-5 py-3 bg-gray-50 border-b border-border">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
                 Momentum Agent — responded in {lead.momentumTime}
-              </span>
+              </p>
             </div>
-
-            {/* WhatsApp-style conversation */}
-            <div className="bg-[#e5ddd5] p-3 space-y-2">
+            <div className="bg-[#e5ddd5] p-4 space-y-2.5">
               {/* Shipper message */}
               <div className="flex justify-start">
-                <div className="bg-white rounded-lg rounded-tl-none px-3 py-2 max-w-[85%] shadow-sm">
+                <div className="bg-white rounded-xl rounded-tl-sm px-3 py-2.5 max-w-[85%] shadow-sm">
                   <p className="text-[11px] text-black leading-relaxed">
                     {lead.cargo.split('—')[0].trim()}. {lead.origin} →{' '}
                     {lead.destination}.
-                    {lead.weight && ` Approx ${lead.weight}.`} How quickly can
-                    you quote?
+                    {lead.weight ? ` Approx ${lead.weight}.` : ''} How quickly
+                    can you quote?
                   </p>
-                  <p className="text-[9px] text-gray-400 text-right mt-0.5">
+                  <p className="text-[9px] text-gray-400 text-right mt-1">
                     {lead.time}
                   </p>
                 </div>
               </div>
-
-              {/* Atlas/Boxman reply */}
+              {/* Agent reply */}
               <div className="flex justify-end">
-                <div className="bg-[#dcf8c6] rounded-lg rounded-tr-none px-3 py-2 max-w-[85%] shadow-sm">
+                <div className="bg-[#dcf8c6] rounded-xl rounded-tr-sm px-3 py-2.5 max-w-[85%] shadow-sm">
                   <p className="text-[9px] font-semibold text-green-800 mb-1">
                     Atlas · Boxman Global
                   </p>
                   <p className="text-[11px] text-black leading-relaxed">
                     {lead.momentumMessage}
                   </p>
-                  <div className="flex items-center justify-end gap-1 mt-0.5">
+                  <div className="flex items-center justify-end gap-1 mt-1">
                     <p className="text-[9px] text-gray-400">
                       {lead.momentumTime}
                     </p>
@@ -259,16 +283,12 @@ function LeadDetail({
                   </div>
                 </div>
               </div>
-
-              {/* Shipper reply if exists */}
+              {/* Shipper reply */}
               {lead.shipperReply && (
                 <div className="flex justify-start">
-                  <div className="bg-white rounded-lg rounded-tl-none px-3 py-2 max-w-[85%] shadow-sm">
+                  <div className="bg-white rounded-xl rounded-tl-sm px-3 py-2.5 max-w-[85%] shadow-sm">
                     <p className="text-[11px] text-black leading-relaxed">
                       {lead.shipperReply}
-                    </p>
-                    <p className="text-[9px] text-gray-400 text-right mt-0.5">
-                      just now
                     </p>
                   </div>
                 </div>
@@ -277,56 +297,35 @@ function LeadDetail({
           </div>
         )}
 
+        {/* Lost deal autopsy */}
         {lead.status === 'lost' && (
-          <div className="rounded-xl border border-red-100 bg-red-50 p-4">
-            <p className="text-[11px] font-semibold text-red-700 mb-1">
-              ⚠️ Why this lead was flagged
+          <div className="px-5 py-4 border-b border-border bg-red-50/40">
+            <p className="text-[10px] font-semibold text-red-600 uppercase tracking-wider mb-1">
+              Deal autopsy
             </p>
-            <p className="text-[11px] text-red-600">
-              Low match score (41/100) — Nigeria is not a declared lane. Atlas
-              flagged this before Boxman invested time in rate generation.
-              Momentum Agent was not activated.
-            </p>
-            <p className="text-[11px] text-red-500 mt-1 font-medium">
-              Estimated time saved: 2.5 hours of quote generation.
+            <p className="text-[11px] text-muted-foreground">
+              Low match score (41%) — route outside core lanes, capability gap
+              identified. Estimated time saved: 2.5 hours of quote generation.
             </p>
           </div>
         )}
       </div>
 
       {/* Actions */}
-      {lead.status !== 'lost' && lead.status !== 'won' && (
-        <div className="p-4 border-t border-border flex gap-2">
-          {lead.status === 'new' || lead.status === 'contacted' ? (
-            <>
-              <button className="flex-1 bg-primaryOrange text-white text-[12px] font-bold rounded-lg py-2.5 hover:opacity-90 transition-opacity">
-                Generate proforma →
-              </button>
-              <button className="text-[12px] text-muted-foreground border border-border rounded-lg px-4 py-2.5 hover:border-primaryOrange transition-colors">
-                Reply via WhatsApp
-              </button>
-            </>
-          ) : lead.status === 'quoting' ? (
-            <>
-              <button className="flex-1 bg-primaryOrange text-white text-[12px] font-bold rounded-lg py-2.5 hover:opacity-90 transition-opacity">
-                Approve & send quote →
-              </button>
-              <button className="text-[12px] text-muted-foreground border border-border rounded-lg px-4 py-2.5 hover:border-primaryOrange transition-colors">
-                Edit rate
-              </button>
-            </>
-          ) : (
-            <button className="flex-1 bg-primaryOrange text-white text-[12px] font-bold rounded-lg py-2.5 hover:opacity-90 transition-opacity">
-              Follow up →
-            </button>
-          )}
-        </div>
-      )}
+      <div className="px-5 py-4 border-t border-border flex gap-2">
+        <button className="flex-1 bg-primaryOrange text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity">
+          Generate proforma
+        </button>
+        <button className="flex items-center gap-1.5 border border-[#25D366] text-[#25D366] text-[12px] font-semibold px-4 py-2.5 rounded-lg hover:bg-green-50 transition-colors">
+          <MessageCircle size={13} strokeWidth={2} />
+          Reply via WhatsApp
+        </button>
+      </div>
     </div>
   );
 }
 
-// ── Lead card (in pipeline) ───────────────────────────────────────────────────
+// ── Lead card ─────────────────────────────────────────────────────────────────
 
 function LeadCard({
   lead,
@@ -337,30 +336,32 @@ function LeadCard({
   onClick: () => void;
   active: boolean;
 }) {
-  const ch = CHANNEL_STYLE[lead.channel];
+  const ch = CHANNEL_CONFIG[lead.channel];
+  const md = MODE_CONFIG[lead.mode];
   const isNew = lead.status === 'new';
 
   return (
     <button
       onClick={onClick}
-      className={`w-full text-left rounded-xl border p-3 transition-all hover:shadow-md ${
+      className={`w-full text-left rounded-xl border p-3.5 transition-all hover:shadow-sm ${
         active
-          ? 'border-primaryOrange shadow-sm shadow-primaryOrange/20'
+          ? 'border-primaryOrange shadow-sm shadow-primaryOrange/10 bg-primaryOrange/3'
           : isNew
-            ? 'border-primaryOrange/40 bg-primaryOrange/3'
+            ? 'border-primaryOrange/30 bg-white'
             : 'border-border bg-white'
-      } ${lead.status === 'lost' ? 'opacity-60' : ''}`}
+      } ${lead.status === 'lost' ? 'opacity-50' : ''}`}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
         <div className="flex items-center gap-1.5 min-w-0">
           <span
-            className={`text-[9px] font-bold px-1.5 py-0.5 rounded-full shrink-0 ${ch.bg} ${ch.text}`}
+            className={`flex items-center gap-1 text-[9px] font-semibold px-1.5 py-0.5 rounded-full border shrink-0 ${ch.cls}`}
           >
-            {ch.icon} {ch.label}
+            <ch.Icon size={9} strokeWidth={2} />
+            {ch.label}
           </span>
           {isNew && (
-            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primaryOrange text-white animate-pulse shrink-0">
-              NEW
+            <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primaryOrange text-white">
+              New
             </span>
           )}
         </div>
@@ -379,16 +380,17 @@ function LeadCard({
         </span>
       </div>
 
-      <p className="text-[11px] text-muted-foreground line-clamp-1 mb-2">
-        {MODE_ICON[lead.mode]} {lead.cargo}
-      </p>
+      <div className="flex items-center gap-1 mb-2">
+        <md.Icon size={11} strokeWidth={2} className={md.cls} />
+        <p className="text-[10px] text-muted-foreground line-clamp-1">
+          {lead.cargo}
+        </p>
+      </div>
 
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-1.5">
-          <div className="text-[9px] text-muted-foreground">
-            {lead.origin.split(' ')[0]} → {lead.destination.split(' ')[0]}
-          </div>
-        </div>
+        <span className="text-[9px] text-muted-foreground">
+          {lead.origin.split(' ')[0]} → {lead.destination.split(' ')[0]}
+        </span>
         <div className="flex items-center gap-2">
           {lead.value && (
             <span className="text-[10px] font-semibold text-primaryOrange">
@@ -400,10 +402,10 @@ function LeadCard({
       </div>
 
       {lead.momentumSent && (
-        <div className="mt-2 pt-2 border-t border-border flex items-center gap-1">
+        <div className="mt-2.5 pt-2.5 border-t border-border flex items-center gap-1.5">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
           <span className="text-[9px] text-green-600 font-medium">
-            Momentum Agent replied in {lead.momentumTime}
+            Momentum replied in {lead.momentumTime}
           </span>
         </div>
       )}
@@ -411,7 +413,7 @@ function LeadCard({
   );
 }
 
-// ── Pipeline stage column ─────────────────────────────────────────────────────
+// ── Stage column ──────────────────────────────────────────────────────────────
 
 function StageColumn({
   stage,
@@ -428,7 +430,7 @@ function StageColumn({
     <div className="flex flex-col min-w-[220px] max-w-[220px]">
       <div className="flex items-center gap-2 mb-3">
         <div className={`w-2 h-2 rounded-full ${stage.color}`} />
-        <span className="text-[11px] font-bold text-black uppercase tracking-wide">
+        <span className="text-[10px] font-semibold text-black uppercase tracking-wider">
           {stage.label}
         </span>
         {leads.length > 0 && (
@@ -461,6 +463,8 @@ function StageColumn({
 
 // ── Main component ────────────────────────────────────────────────────────────
 
+const TREND_ICON = { up: TrendingUp, down: TrendingDown, flat: Minus };
+
 export default function LeadsSection() {
   const [activeLead, setActiveLead] = useState<DemoLead | null>(DEMO_LEADS[0]);
   const [filterMode, setFilterMode] = useState<'all' | 'air' | 'sea' | 'road'>(
@@ -471,95 +475,99 @@ export default function LeadsSection() {
     filterMode === 'all'
       ? DEMO_LEADS
       : DEMO_LEADS.filter((l) => l.mode === filterMode);
-
-  const byStage = STAGES.reduce(
-    (acc, s) => {
-      acc[s.key] = filtered.filter((l) => l.status === s.key);
-      return acc;
-    },
-    {} as Record<string, DemoLead[]>,
+  const byStage = Object.fromEntries(
+    STAGES.map((s) => [s.key, filtered.filter((l) => l.status === s.key)]),
   );
-
-  const newCount = DEMO_LEADS.filter((l) => l.status === 'new').length;
-  const totalPipeline = DEMO_LEADS.filter(
-    (l) => !['lost', 'won'].includes(l.status),
+  const pipelineValue = DEMO_LEADS.filter(
+    (l) => l.status !== 'lost' && l.value,
   ).reduce(
-    (sum, l) =>
-      sum + parseFloat((l.value || '$0').replace(/[^0-9]/g, '')) / 1000,
+    (sum, l) => sum + parseFloat((l.value || '0').replace(/[^0-9.]/g, '')),
     0,
   );
 
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex items-start justify-between px-6 pt-6 pb-4 border-b border-border flex-wrap gap-3">
-        <div>
-          <h2 className="text-lg font-bold text-black">Lead Pipeline</h2>
-          <p className="text-[12px] text-muted-foreground">
-            Momentum Agent has contacted{' '}
-            {DEMO_LEADS.filter((l) => l.momentumSent).length} of{' '}
-            {DEMO_LEADS.length} leads automatically
-          </p>
-        </div>
-        <div className="flex items-center gap-3 flex-wrap">
-          {/* Pipeline value */}
-          <div className="bg-primaryOrange/10 rounded-lg px-3 py-1.5 text-center">
-            <div className="text-[10px] text-muted-foreground uppercase tracking-wide">
-              Pipeline value
-            </div>
-            <div className="text-sm font-bold text-primaryOrange">
-              ~${Math.round(totalPipeline * 1000).toLocaleString()}
-            </div>
+      <div className="px-6 pt-5 pb-4 border-b border-border">
+        <div className="flex items-start justify-between gap-4">
+          <div>
+            <h2 className="text-lg font-bold text-black">Lead Pipeline</h2>
+            <p className="text-[12px] text-muted-foreground">
+              Momentum Agent has contacted{' '}
+              {DEMO_LEADS.filter((l) => l.momentumSent).length} of{' '}
+              {DEMO_LEADS.length} leads automatically
+            </p>
           </div>
-          {/* Filter */}
-          <div className="flex rounded-lg border border-border overflow-hidden text-[11px] font-medium">
-            {(['all', 'air', 'sea', 'road'] as const).map((m) => (
-              <button
-                key={m}
-                onClick={() => setFilterMode(m)}
-                className={`px-2.5 py-1.5 transition-colors ${filterMode === m ? 'bg-primaryOrange text-white' : 'bg-white text-muted-foreground hover:bg-gray-50'}`}
-              >
-                {m === 'all'
-                  ? 'All'
-                  : m === 'air'
-                    ? '✈️ Air'
-                    : m === 'sea'
-                      ? '🚢 Sea'
-                      : '🚛 Road'}
-              </button>
-            ))}
+          <div className="flex items-center gap-3 shrink-0">
+            <div className="text-right">
+              <p className="text-[9px] text-muted-foreground uppercase tracking-wider font-medium">
+                Pipeline value
+              </p>
+              <p className="text-[15px] font-bold text-primaryOrange">
+                ~${pipelineValue.toLocaleString()}
+              </p>
+            </div>
+            {/* Mode filter */}
+            <div className="flex rounded-lg border border-border overflow-hidden">
+              {(['all', 'air', 'sea', 'road'] as const).map((m) => (
+                <button
+                  key={m}
+                  onClick={() => setFilterMode(m)}
+                  className={`px-2.5 py-1.5 text-[10px] font-semibold uppercase tracking-wide transition-colors ${
+                    filterMode === m
+                      ? 'bg-primaryOrange text-white'
+                      : 'text-muted-foreground hover:bg-gray-50'
+                  }`}
+                >
+                  {m === 'all'
+                    ? 'All'
+                    : m === 'air'
+                      ? 'Air'
+                      : m === 'sea'
+                        ? 'Sea'
+                        : 'Road'}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Market rate ticker */}
-      <div className="flex items-center gap-0 border-b border-border bg-[#1a1a2e] px-4 py-2 overflow-x-auto hide-scrollbar">
-        <span className="text-[10px] text-white/50 font-semibold uppercase tracking-widest mr-4 shrink-0">
-          Live rates
-        </span>
-        {MARKET_RATES.map((r, i) => (
-          <div key={i} className="flex items-center gap-2 shrink-0 mr-6">
-            <span className="text-[10px] text-white/70">{r.lane}</span>
-            <span className="text-[10px] font-bold text-white">{r.rate}</span>
-            <span
-              className={`text-[9px] font-semibold ${
-                r.trend === 'up'
-                  ? 'text-red-400'
-                  : r.trend === 'down'
-                    ? 'text-green-400'
-                    : 'text-white/40'
-              }`}
-            >
-              {r.trend === 'up' ? '↑' : r.trend === 'down' ? '↓' : '→'}{' '}
-              {r.delta}
-            </span>
-          </div>
-        ))}
+      {/* Live rate ticker */}
+      <div className="bg-[#0d0d1a] px-5 py-2.5 overflow-hidden">
+        <div className="flex items-center gap-6 overflow-x-auto hide-scrollbar">
+          <span className="text-[9px] font-semibold text-white/40 uppercase tracking-widest shrink-0">
+            Live rates
+          </span>
+          {MARKET_RATES.map((r, i) => {
+            const TrendIcon = TREND_ICON[r.trend as keyof typeof TREND_ICON];
+            return (
+              <div key={i} className="flex items-center gap-2 shrink-0">
+                <span className="text-[10px] text-white/60">{r.lane}</span>
+                <span className="text-[11px] font-bold text-white">
+                  {r.rate}
+                </span>
+                <span
+                  className={`flex items-center gap-0.5 text-[9px] font-semibold ${
+                    r.trend === 'up'
+                      ? 'text-red-400'
+                      : r.trend === 'down'
+                        ? 'text-green-400'
+                        : 'text-white/40'
+                  }`}
+                >
+                  <TrendIcon size={9} />
+                  {r.delta}
+                </span>
+              </div>
+            );
+          })}
+        </div>
       </div>
 
-      {/* Body: pipeline + detail */}
+      {/* Body */}
       <div className="flex flex-1 overflow-hidden">
-        {/* Kanban board */}
+        {/* Kanban */}
         <div className="flex-1 min-w-0 overflow-x-auto overflow-y-auto p-5">
           <div className="flex gap-4 h-full min-w-max">
             {STAGES.map((stage) => (
@@ -574,7 +582,7 @@ export default function LeadsSection() {
           </div>
         </div>
 
-        {/* Lead detail panel */}
+        {/* Detail panel */}
         {activeLead && (
           <div className="w-[380px] border-l border-border shrink-0 overflow-hidden">
             <LeadDetail lead={activeLead} onClose={() => setActiveLead(null)} />
