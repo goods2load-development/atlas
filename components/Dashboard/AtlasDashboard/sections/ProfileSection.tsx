@@ -1,10 +1,9 @@
 'use client';
 
 import { BOXMAN } from '../boxmanData';
+import AtlasLaneMap from './AtlasLaneMap';
 
 import { AlertCircle, CheckCircle, Clock } from 'lucide-react';
-
-import Map from '@/components/Dashboard/Map/Map';
 
 const TRUST_SIGNALS = [
   { label: 'ISO 9001:2015 Quality Management', status: 'verified' },
@@ -14,43 +13,6 @@ const TRUST_SIGNALS = [
   { label: 'VAT / Issuing Authority', status: 'verified' },
   { label: 'Insurance Statement', status: 'missing' },
   { label: 'Google Business Profile', status: 'pending' },
-];
-
-const LANE_MARKERS = [
-  {
-    from: {
-      name: 'Dubai (DXB)',
-      coordinates: [55.2708, 25.2048] as [number, number],
-    },
-    to: {
-      name: 'Frankfurt',
-      coordinates: [8.6821, 50.1109] as [number, number],
-    },
-  },
-  {
-    from: {
-      name: 'Jebel Ali',
-      coordinates: [55.0272, 24.9857] as [number, number],
-    },
-    to: {
-      name: 'Shanghai',
-      coordinates: [121.4737, 31.2304] as [number, number],
-    },
-  },
-  {
-    from: {
-      name: 'Dubai (DXB)',
-      coordinates: [55.2708, 25.2048] as [number, number],
-    },
-    to: { name: 'Mumbai', coordinates: [72.8777, 19.076] as [number, number] },
-  },
-  {
-    from: {
-      name: 'Dubai',
-      coordinates: [55.2708, 25.2048] as [number, number],
-    },
-    to: { name: 'Riyadh', coordinates: [46.7219, 24.6877] as [number, number] },
-  },
 ];
 
 function TrustScore({ score }: { score: number }) {
@@ -291,15 +253,21 @@ export default function ProfileSection() {
         </div>
 
         {/* Lane map */}
-        <div className="bg-white rounded-xl border border-border p-5">
-          <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-1">
-            Active freight lanes
-          </h3>
-          <p className="text-[11px] text-muted-foreground mb-3">
-            FRA · SHA · BOM · RUH — declared hubs with active shipments
-          </p>
-          {/* @ts-ignore */}
-          <Map data={LANE_MARKERS} height={280} width={700} />
+        <div className="bg-[#0d111c] rounded-xl border border-[#1a2235] overflow-hidden">
+          <div className="px-5 pt-4 pb-1 flex items-center justify-between">
+            <div>
+              <h3 className="text-[11px] font-semibold text-white/70 uppercase tracking-wider">
+                Active freight lanes
+              </h3>
+              <p className="text-[11px] text-white/40 mt-0.5">
+                DXB · JEA · FRA · SHA · BOM · RUH
+              </p>
+            </div>
+            <span className="text-[10px] font-semibold px-2 py-0.5 rounded-full bg-green-500/10 text-green-400 border border-green-500/20">
+              Live
+            </span>
+          </div>
+          <AtlasLaneMap />
         </div>
       </div>
     </div>
