@@ -11,6 +11,8 @@ import {
 
 // @ts-nocheck
 
+// @ts-nocheck
+
 const LANES = [
   {
     from: {
@@ -96,6 +98,16 @@ function arcPoints(
   return pts;
 }
 
+// Per-city label offsets to avoid crowding in the Gulf cluster
+const LABEL_OFFSET: Record<string, { x: number; y: number; anchor: string }> = {
+  DXB: { x: 6, y: -10, anchor: 'start' }, // Dubai — up-right
+  JEA: { x: -6, y: 12, anchor: 'end' }, // Jebel Ali — down-left
+  RUH: { x: -8, y: -10, anchor: 'end' }, // Riyadh — up-left
+  FRA: { x: 0, y: -10, anchor: 'middle' }, // Frankfurt — up
+  SHA: { x: 6, y: -10, anchor: 'start' }, // Shanghai — up-right
+  BOM: { x: 6, y: -10, anchor: 'start' }, // Mumbai — up-right
+};
+
 /** Collect unique city dots, dedup by code */
 function uniqueCities() {
   const seen = new Set<string>();
@@ -173,29 +185,37 @@ export default function AtlasLaneMap() {
         ))}
 
         {/* City dots + labels */}
-        {uniqueCities().map((city) => (
-          <Marker key={city.code} coordinates={city.coords}>
-            {/* Outer glow ring */}
-            <circle r={5} fill="#FF6720" fillOpacity={0.15} />
-            {/* Dot */}
-            <circle r={3} fill="#FF6720" stroke="#0d111c" strokeWidth={1} />
-            {/* Label */}
-            <text
-              textAnchor="middle"
-              y={-10}
-              style={{
-                fontFamily: 'inherit',
-                fontSize: '8px',
-                fontWeight: 600,
-                fill: 'rgba(255,255,255,0.75)',
-                letterSpacing: '0.04em',
-                pointerEvents: 'none',
-              }}
-            >
-              {city.code}
-            </text>
-          </Marker>
-        ))}
+        {uniqueCities().map((city) => {
+          const off = LABEL_OFFSET[city.code] ?? {
+            x: 0,
+            y: -10,
+            anchor: 'middle',
+          };
+          return (
+            <Marker key={city.code} coordinates={city.coords}>
+              {/* Outer glow ring */}
+              <circle r={5} fill="#FF6720" fillOpacity={0.15} />
+              {/* Dot */}
+              <circle r={3} fill="#FF6720" stroke="#0d111c" strokeWidth={1} />
+              {/* Label */}
+              <text
+                x={off.x}
+                y={off.y}
+                textAnchor={off.anchor}
+                style={{
+                  fontFamily: 'inherit',
+                  fontSize: '8px',
+                  fontWeight: 600,
+                  fill: 'rgba(255,255,255,0.8)',
+                  letterSpacing: '0.05em',
+                  pointerEvents: 'none',
+                }}
+              >
+                {city.code}
+              </text>
+            </Marker>
+          );
+        })}
       </ComposableMap>
     </div>
   );

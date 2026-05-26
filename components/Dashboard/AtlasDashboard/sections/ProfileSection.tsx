@@ -120,10 +120,14 @@ export default function ProfileSection() {
           <p className="text-[12px] text-muted-foreground leading-relaxed mt-4 border-t border-border pt-4">
             {BOXMAN.description}
           </p>
-          <p className="text-[10px] text-muted-foreground mt-2">
-            Google rating from website — pending sync to G2L (Sufian: run Google
-            Places fetch for provider ID {BOXMAN.id.slice(0, 8)}…)
-          </p>
+          <div className="flex items-center gap-2 mt-2">
+            <span className="text-[11px] text-amber-600 font-medium">
+              ★ 5.0
+            </span>
+            <span className="text-[11px] text-muted-foreground">
+              21 Google reviews · Al Garhoud, Dubai
+            </span>
+          </div>
         </div>
 
         {/* Trust signals */}
