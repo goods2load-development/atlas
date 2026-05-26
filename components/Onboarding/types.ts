@@ -126,7 +126,7 @@ export type OnboardingCard =
   | { type: 'service_mix' }
   | { type: 'geo_focus' }
   | { type: 'payment' }
-  | { type: 'summary'; fields: CollectedFields }
+  | { type: 'summary'; fields: CollectedFields; confirmed?: boolean }
   | { type: 'progress'; step: number; total: number; label: string };
 
 // Step metadata for progress bar

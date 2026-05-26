@@ -1063,7 +1063,17 @@ export function PaymentCard({
 
 // ── Summary Card ──────────────────────────────────────────────────────────────
 
-export function SummaryCard({ fields }: { fields: CollectedFields }) {
+export function SummaryCard({
+  fields,
+  confirmed,
+  onConfirm,
+  onEdit,
+}: {
+  fields: CollectedFields;
+  confirmed?: boolean;
+  onConfirm?: () => void;
+  onEdit?: () => void;
+}) {
   const rows: [string, string][] = [
     ['Company', fields.companyName ?? '—'],
     ['Email', fields.email ?? '—'],
@@ -1127,6 +1137,32 @@ export function SummaryCard({ fields }: { fields: CollectedFields }) {
           </div>
         ))}
       </div>
+
+      {/* Action buttons — only shown before final confirmation */}
+      {!confirmed && (onConfirm || onEdit) && (
+        <div className="px-4 pb-4 pt-2 flex gap-2 border-t border-border">
+          <button
+            onClick={onConfirm}
+            className="flex-1 rounded-lg bg-primaryOrange text-white text-xs font-bold py-2.5 hover:opacity-90 transition-opacity flex items-center justify-center gap-1.5"
+          >
+            <span>✓</span> Confirm — looks good
+          </button>
+          <button
+            onClick={onEdit}
+            className="rounded-lg border border-border text-xs text-muted-foreground px-4 py-2.5 hover:border-primaryOrange hover:text-black transition-colors"
+          >
+            ✎ Edit
+          </button>
+        </div>
+      )}
+
+      {confirmed && (
+        <div className="px-4 pb-3 pt-2 border-t border-border">
+          <p className="text-xs text-green-700 font-medium text-center">
+            ✓ Profile confirmed — proceeding to payment
+          </p>
+        </div>
+      )}
     </CardShell>
   );
 }

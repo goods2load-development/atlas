@@ -62,6 +62,8 @@ function MessageBubble({
   onGeoFocusConfirm,
   onPaymentConfirm,
   onPaymentStandby,
+  onSummaryConfirm,
+  onSummaryEdit,
 }: {
   message: ReturnType<typeof useOnboardingState>['messages'][number];
   onFileUploaded: (field: string, file: File) => void;
@@ -73,6 +75,8 @@ function MessageBubble({
   onGeoFocusConfirm: (entries: any[]) => void;
   onPaymentConfirm: () => void;
   onPaymentStandby: () => void;
+  onSummaryConfirm: () => void;
+  onSummaryEdit: () => void;
 }) {
   const isUser = message.role === 'user';
 
@@ -125,7 +129,14 @@ function MessageBubble({
               />
             )}
             {message.card.type === 'summary' && (
-              <SummaryCard fields={message.card.fields} />
+              <SummaryCard
+                fields={message.card.fields}
+                confirmed={message.card.confirmed}
+                onConfirm={
+                  message.card.confirmed ? undefined : onSummaryConfirm
+                }
+                onEdit={message.card.confirmed ? undefined : onSummaryEdit}
+              />
             )}
           </>
         )}
@@ -333,6 +344,14 @@ export default function OnboardingAgent() {
     sendMessage('Save application for later', patch);
   }
 
+  function handleSummaryConfirm() {
+    sendMessage('confirm');
+  }
+
+  function handleSummaryEdit() {
+    sendMessage('I need to make some changes');
+  }
+
   const isComplete = step === 'complete';
   const isStandby = step === 'standby';
   const isDone = isComplete || isStandby;
@@ -382,6 +401,8 @@ export default function OnboardingAgent() {
             onGeoFocusConfirm={handleGeoFocusConfirm}
             onPaymentConfirm={handlePaymentConfirm}
             onPaymentStandby={handlePaymentStandby}
+            onSummaryConfirm={handleSummaryConfirm}
+            onSummaryEdit={handleSummaryEdit}
           />
         ))}
 
