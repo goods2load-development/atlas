@@ -31,21 +31,36 @@ const CERTIFICATIONS = [
   },
   { code: 'SFFA', name: 'Singapore Freight Forwarders Association' },
   { code: 'NAFL', name: 'National Association of Freight Logistics' },
+  { code: 'ISO9001', name: 'ISO 9001 Quality Management' },
+  { code: 'ISO14001', name: 'ISO 14001 Environmental Management' },
+  { code: 'AEO', name: 'Authorised Economic Operator' },
+  { code: 'TAPA', name: 'Transported Asset Protection Association' },
+  { code: 'CEIV', name: 'IATA CEIV Pharma / Fresh / Live Animals' },
 ];
 
 const SECTORS = [
   { code: 'retail', name: 'Retail & E-commerce' },
   { code: 'manufacturing', name: 'Manufacturing' },
   { code: 'automotive', name: 'Automotive' },
-  { code: 'pharma', name: 'Pharmaceutical' },
-  { code: 'electronics', name: 'Electronics' },
+  { code: 'pharma', name: 'Pharmaceutical & Healthcare' },
+  { code: 'electronics', name: 'Electronics & Technology' },
   { code: 'apparel', name: 'Apparel & Fashion' },
   { code: 'food', name: 'Food & Beverage' },
-  { code: 'construction', name: 'Construction' },
-  { code: 'energy', name: 'Energy & Oil & Gas' },
-  { code: 'aerospace', name: 'Aerospace' },
-  { code: 'dg', name: 'Dangerous Goods' },
-  { code: 'coldchain', name: 'Cold Chain / Perishables' },
+  { code: 'construction', name: 'Construction & Building Materials' },
+  { code: 'energy', name: 'Energy, Oil & Gas' },
+  { code: 'aerospace', name: 'Aerospace & Defence' },
+  { code: 'dg', name: 'Dangerous Goods (DG / Hazmat)' },
+  { code: 'coldchain', name: 'Cold Chain & Perishables' },
+  { code: 'live_animals', name: 'Live Animals' },
+  { code: 'personal_effects', name: 'Personal Effects & Relocation' },
+  { code: 'project_cargo', name: 'Project Cargo & OOG (Out-of-Gauge)' },
+  { code: 'fine_art', name: 'Fine Art & High-Value Cargo' },
+  { code: 'bulk', name: 'Bulk & Break-Bulk' },
+  { code: 'roro', name: 'RoRo (Roll-on / Roll-off)' },
+  { code: 'mining', name: 'Mining & Minerals' },
+  { code: 'medical', name: 'Medical Devices & Equipment' },
+  { code: 'government', name: 'Government & Defence Logistics' },
+  { code: 'events', name: 'Entertainment & Events Logistics' },
 ];
 
 // ── Helper: call Gemini via Atlas backend ─────────────────────────────────────
@@ -111,7 +126,6 @@ export async function POST(req: NextRequest) {
   const isFileUpload =
     typeof message === 'string' && message.startsWith('[FILE_UPLOADED:');
 
-  // Extract file info from special message format
   let uploadedField = '';
   let uploadedFileName = '';
   if (isFileUpload) {
@@ -203,7 +217,7 @@ What's your **business email address**?`;
 
       if (isFileUpload && uploadedField === 'companyPhoto') {
         extracted = {};
-        reply = `Logo uploaded ✓ Now let's set your **password**. Please type a password (min 8 characters) — I'll keep it secure.`;
+        reply = `Logo uploaded ✓ Now let's set your **password**. Please type a password (min 8 characters).`;
         break;
       }
 
@@ -245,7 +259,7 @@ Now let's collect your **legal documents**. These verify your company and enable
           field: 'insuranceStatement',
           label: 'Insurance Statement',
           accept: 'application/pdf',
-          hint: 'PDF only, max 2MB',
+          hint: 'PDF only, max 5MB',
         };
         break;
       }
@@ -259,7 +273,7 @@ Now your **VAT Registration** document (PDF).`;
           field: 'issuingAuthority',
           label: 'VAT Registration',
           accept: 'application/pdf',
-          hint: 'PDF only, max 2MB',
+          hint: 'PDF only, max 5MB',
         };
         break;
       }
@@ -273,7 +287,7 @@ Last document: your **Trade License** (PDF).`;
           field: 'tradeLicenseNumber',
           label: 'Trade License',
           accept: 'application/pdf',
-          hint: 'PDF only, max 2MB',
+          hint: 'PDF only, max 5MB',
         };
         break;
       }
@@ -298,21 +312,19 @@ Next: your **Google Business Profile**. All companies on Goods2Load must have on
 
     // ── Google Profile ─────────────────────────────────────────────────────────
     case 'google_profile': {
-      // First entry to this step: message may be empty (transition from documents)
       if (!message.trim()) {
         reply = `Please paste your **Google Business Profile URL**.
 
-💡 To find it: log in to your Google account → go to your business dashboard → click "Share your Business Profile" to get the link.`;
+💡 To find it: open Google Maps → search your company → click "Share" to copy the link.`;
         break;
       }
 
-      // Skip requirement option
       if (
         message.toLowerCase().includes('skip') ||
         message.toLowerCase().includes("don't have") ||
         message.toLowerCase().includes('no profile')
       ) {
-        reply = `No problem — you can add it later from your dashboard.
+        reply = `No problem — you can add it from your dashboard later.
 
 Now let's add your **industry certifications**. Select all that apply — these boost your ranking with shippers.`;
         nextStep = 'certifications';
@@ -331,7 +343,7 @@ Now let's add your **industry certifications**. Select all that apply — these 
         !message.includes('g.co/') &&
         !message.startsWith('http')
       ) {
-        reply = `That doesn't look like a Google Business Profile URL. It should contain maps.app.goo.gl or google.com/maps. Please try again, or type "skip" if you don't have one yet.`;
+        reply = `That doesn't look like a Google Business Profile URL. It should contain maps.app.goo.gl or google.com/maps. Please try again, or type "skip" to add it later.`;
         break;
       }
 
@@ -355,9 +367,9 @@ Now let's add your **industry certifications**. Select all that apply — these 
         ? collected.industryRecognitions
         : [];
 
+      // No certs selected yet — show the card
       if (!certs.length) {
-        // No certs selected yet — show the card
-        reply = `Please select your certifications using the card above, or type "none" if you don't have any.`;
+        reply = `Please select your certifications using the card above, or confirm with none selected.`;
         card = {
           type: 'multi_select',
           field: 'industryRecognitions',
@@ -367,14 +379,27 @@ Now let's add your **industry certifications**. Select all that apply — these 
         break;
       }
 
-      // Certs selected (or "none selected" from card confirm)
-      if (certs.length > 0) {
+      // Certs selected but proof not yet uploaded
+      if (certs.length > 0 && !collected.certProofFiles) {
         reply = `${certs.join(', ')} — noted ✓
 
-You can upload proof documents from your dashboard later. Moving on to **sectors**.`;
-      } else {
-        reply = `No certifications — that's fine. You can add them later from your dashboard.`;
+Our legal team will verify these for due diligence. Please upload proof documents (one PDF per certification).`;
+        card = {
+          type: 'cert_upload',
+          certs,
+        };
+        break;
       }
+
+      // Cert proofs uploaded (or no certs) — advance to sectors
+      const certSummary =
+        certs.length > 0
+          ? `Documents received ✓`
+          : `No certifications — that's fine. You can add them later.`;
+
+      reply = `${certSummary}
+
+Which **logistics sectors** do you specialise in? Select all that apply.`;
       nextStep = 'sectors';
       card = {
         type: 'multi_select',
@@ -382,7 +407,6 @@ You can upload proof documents from your dashboard later. Moving on to **sectors
         label: 'Sectors you serve',
         options: SECTORS,
       };
-      reply += `\n\nWhich **logistics sectors** do you specialise in? Select all that apply.`;
       break;
     }
 
@@ -413,24 +437,41 @@ Now let's map your **freight capabilities**. Do you provide **air freight** serv
     case 'air_freight': {
       const lower = message.toLowerCase();
 
-      // Sub-step: collecting airports after user said yes
-      if (collected.providesAirFreight === true && !collected.airports) {
-        // User is providing airports/countries now
-        const airInfo = message.trim();
-        extracted = { airports: [airInfo] }; // store as raw string for now
-        reply = `Got it ✓ Do you provide **sea freight**? (yes / no)`;
+      // Sub-step: waiting for hub selection
+      if (
+        collected.providesAirFreight === true &&
+        !collected.airports?.length
+      ) {
+        reply = `Please select your air freight hubs using the picker above, or click Skip.`;
+        card = { type: 'freight_lanes', mode: 'air' };
+        break;
+      }
+
+      // Hub selection confirmed — advance
+      if (
+        collected.providesAirFreight === true &&
+        collected.airports !== undefined
+      ) {
+        const hubList =
+          collected.airports.length > 0
+            ? `${collected.airports.slice(0, 5).join(', ')}${collected.airports.length > 5 ? ` +${collected.airports.length - 5} more` : ''} ✓`
+            : 'No specific hubs selected';
+        reply = `${hubList}
+
+Do you provide **sea freight** services? (yes / no)`;
         nextStep = 'sea_freight';
         break;
       }
 
+      // Initial yes/no
       if (lower.includes('no') || lower.includes('not')) {
         extracted = { providesAirFreight: false };
         reply = `Understood — no air freight. Do you provide **sea freight**? (yes / no)`;
         nextStep = 'sea_freight';
       } else {
         extracted = { providesAirFreight: true };
-        reply = `Air freight ✓ Which countries and airports do you serve? (e.g. "UAE - DXB, AUH | Saudi Arabia - RUH") — or type "done" to add them from your dashboard later.`;
-        // stay on air_freight to collect airports
+        reply = `Air freight ✓ Select the airports and hubs you operate through.`;
+        card = { type: 'freight_lanes', mode: 'air' };
       }
       break;
     }
@@ -439,23 +480,41 @@ Now let's map your **freight capabilities**. Do you provide **air freight** serv
     case 'sea_freight': {
       const lower = message.toLowerCase();
 
-      // Sub-step: collecting ports after user said yes
-      if (collected.providesSeaFreight === true && !collected.seaports) {
-        const seaInfo = message.trim();
-        extracted = { seaports: [seaInfo] };
-        reply = `Got it ✓ Do you provide **road freight**? (yes / no)`;
+      // Sub-step: waiting for port selection
+      if (
+        collected.providesSeaFreight === true &&
+        !collected.seaports?.length
+      ) {
+        reply = `Please select your sea freight ports using the picker above, or click Skip.`;
+        card = { type: 'freight_lanes', mode: 'sea' };
+        break;
+      }
+
+      // Port selection confirmed — advance
+      if (
+        collected.providesSeaFreight === true &&
+        collected.seaports !== undefined
+      ) {
+        const portList =
+          collected.seaports.length > 0
+            ? `${collected.seaports.slice(0, 4).join(', ')}${collected.seaports.length > 4 ? ` +${collected.seaports.length - 4} more` : ''} ✓`
+            : 'No specific ports selected';
+        reply = `${portList}
+
+Do you provide **road freight** services? (yes / no)`;
         nextStep = 'road_freight';
         break;
       }
 
+      // Initial yes/no
       if (lower.includes('no') || lower.includes('not')) {
         extracted = { providesSeaFreight: false };
         reply = `Understood — no sea freight. Do you provide **road freight**? (yes / no)`;
         nextStep = 'road_freight';
       } else {
         extracted = { providesSeaFreight: true };
-        reply = `Sea freight ✓ Which countries and ports do you serve? (e.g. "UAE - Jebel Ali | India - Nhava Sheva") — or type "done" to skip for now.`;
-        // stay on sea_freight to collect ports
+        reply = `Sea freight ✓ Select the ports and regions you operate through.`;
+        card = { type: 'freight_lanes', mode: 'sea' };
       }
       break;
     }
@@ -463,16 +522,47 @@ Now let's map your **freight capabilities**. Do you provide **air freight** serv
     // ── Road Freight ───────────────────────────────────────────────────────────
     case 'road_freight': {
       const lower = message.toLowerCase();
+
+      // Sub-step: waiting for country selection
+      if (
+        collected.providesRoadFreight === true &&
+        !collected.roadCountries?.length
+      ) {
+        reply = `Please select the countries/markets you cover by road, or click Skip.`;
+        card = { type: 'freight_lanes', mode: 'road' };
+        break;
+      }
+
+      // Country selection confirmed — advance
+      if (
+        collected.providesRoadFreight === true &&
+        collected.roadCountries !== undefined
+      ) {
+        const countryList =
+          collected.roadCountries.length > 0
+            ? `${collected.roadCountries.slice(0, 5).join(', ')}${collected.roadCountries.length > 5 ? ` +${collected.roadCountries.length - 5} more` : ''} ✓`
+            : 'No specific countries selected';
+        reply = `${countryList}
+
+Now I need to understand your **business mix**. What percentage of your freight volume is air, sea, road, and other?`;
+        nextStep = 'service_mix';
+        card = { type: 'service_mix' };
+        break;
+      }
+
+      // Initial yes/no
       if (lower.includes('no') || lower.includes('not')) {
         extracted = { providesRoadFreight: false };
+        reply = `Got it ✓
+
+Now I need to understand your **business mix**. What percentage of your freight volume is air, sea, road, and other?`;
+        nextStep = 'service_mix';
+        card = { type: 'service_mix' };
       } else {
         extracted = { providesRoadFreight: true };
+        reply = `Road freight ✓ Select the countries and markets you cover.`;
+        card = { type: 'freight_lanes', mode: 'road' };
       }
-      reply = `Got it ✓
-
-Now I need to understand your **business mix**. What percentage of your freight volume is air, sea, and road? Use the sliders below.`;
-      nextStep = 'service_mix';
-      card = { type: 'service_mix' };
       break;
     }
 
@@ -514,39 +604,37 @@ Tell me in 2-3 sentences: what does ${collected.companyName ?? 'your company'} d
     // ── About Us ───────────────────────────────────────────────────────────────
     case 'about_us': {
       if (!collected.aboutUs) {
-        // Generate draft from user's description
         const draft = await draftAboutUs(
           collected.companyName ?? 'your company',
           message,
         );
         extracted = { aboutUs: draft };
-        reply = `Here's a draft **About Us** based on what you told me:\n\n"${draft}"\n\nDoes this look good? Reply "yes" to keep it or type your own version (50-80 words).`;
+        reply = `Here's a draft **About Us** based on what you told me:\n\n"${draft}"\n\nDoes this look good? Reply "yes" to keep it or type your own version.`;
         break;
       }
 
-      const wordCount = message.trim().split(/\s+/).length;
       if (
         message.toLowerCase() === 'yes' ||
         message.toLowerCase() === 'looks good' ||
         message.toLowerCase() === 'ok'
       ) {
-        // Keep the draft, advance to final_agreement for mission
         reply = `About Us saved ✓
 
-Now your **Mission statement**. What is the core purpose that drives ${collected.companyName ?? 'your company'}? A sentence or two is fine and I'll craft it. Include what you stand for.`;
+Now your **Mission statement**. What is the core purpose that drives ${collected.companyName ?? 'your company'}? A sentence or two is fine and I'll craft it.`;
         nextStep = 'final_agreement';
         break;
       }
 
+      const wordCount = message.trim().split(/\s+/).length;
       if (wordCount < 20) {
-        reply = `That's a bit short (${wordCount} words). Try giving me a bit more detail, or type "yes" to keep the draft I generated.`;
+        reply = `That's a bit short (${wordCount} words). Give me a bit more detail, or type "yes" to keep the draft.`;
         break;
       }
 
       extracted = { aboutUs: message };
       reply = `About Us saved ✓
 
-Now your **Mission statement**. What is the core purpose that drives ${collected.companyName ?? 'your company'}? Tell me what you stand for and I'll turn it into a polished statement.`;
+Now your **Mission statement**. What is the core purpose that drives ${collected.companyName ?? 'your company'}? Tell me what you stand for.`;
       nextStep = 'final_agreement';
       break;
     }
@@ -556,13 +644,12 @@ Now your **Mission statement**. What is the core purpose that drives ${collected
       const lower = message.toLowerCase();
 
       if (!collected.ourMission) {
-        // Still in about_us phase — generate mission
         const missionDraft = await draftMission(
           collected.companyName ?? 'your company',
           message,
         );
         extracted = { ourMission: missionDraft };
-        reply = `Here's a draft **Mission Statement**:\n\n"${missionDraft}"\n\nReply "yes" to keep it or write your own (50-80 words, include a #hashtag).`;
+        reply = `Here's a draft **Mission Statement**:\n\n"${missionDraft}"\n\nReply "yes" to keep it or write your own.`;
         break;
       }
 
@@ -572,22 +659,47 @@ Now your **Mission statement**. What is the core purpose that drives ${collected
         lower.includes('confirm')
       ) {
         extracted = { finalAgreement: true };
-        reply = `🎉 **All done!**\n\nHere's a summary of your profile before I submit it.`;
-        nextStep = 'complete';
+        reply = `🎉 **Profile complete!**\n\nHere's a summary before we activate your account.`;
         card = {
           type: 'summary',
           fields: { ...collected, finalAgreement: true },
         };
+        // After summary confirmation, advance to payment
         break;
       }
 
-      reply = `Here's what I've collected. Please review the summary above and type **"confirm"** to submit your application, or tell me anything you'd like to change.`;
+      // Show summary + ask for confirmation
+      reply = `Please review the summary above and type **"confirm"** to proceed to payment, or let me know what to change.`;
       card = { type: 'summary', fields: collected };
+      break;
+    }
+
+    // ── Payment ────────────────────────────────────────────────────────────────
+    case 'payment': {
+      if (!collected.finalAgreement) {
+        // Shouldn't normally land here without agreement
+        reply = `Let's activate your profile. One last step — the annual membership fee.`;
+      } else {
+        reply = `Almost there! Your profile is ready. Activate it with our **annual membership** to start receiving shipper requests.`;
+      }
+      nextStep = 'payment';
+      card = { type: 'payment' };
       break;
     }
 
     default:
       reply = `I didn't catch that. Could you repeat your answer?`;
+  }
+
+  // After final_agreement confirm, advance to payment step
+  if (
+    step === 'final_agreement' &&
+    (message.toLowerCase() === 'yes' ||
+      message.toLowerCase().includes('agree') ||
+      message.toLowerCase().includes('confirm')) &&
+    collected.ourMission
+  ) {
+    nextStep = 'payment';
   }
 
   return NextResponse.json({

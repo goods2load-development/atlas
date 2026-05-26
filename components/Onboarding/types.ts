@@ -15,7 +15,9 @@ export type OnboardingStep =
   | 'geo_focus'
   | 'about_us'
   | 'final_agreement'
-  | 'complete';
+  | 'payment'
+  | 'complete'
+  | 'standby';
 
 export interface ServiceMix {
   air: number;
@@ -44,7 +46,7 @@ export interface CollectedFields {
   privacy?: boolean;
   communication?: boolean;
 
-  // Files (stored as File objects)
+  // Files (stored as File objects client-side, filenames server-side)
   companyPhoto?: File;
   insuranceStatement?: File;
   issuingAuthority?: File; // VAT registration
@@ -55,6 +57,7 @@ export interface CollectedFields {
 
   // Certifications
   industryRecognitions?: string[];
+  certProofFiles?: Record<string, string>; // cert code → filename
   industryProofFile?: File[];
   industryRecognitionsSecondary?: string[];
   industryProofFileSecondary?: File[];
@@ -63,28 +66,32 @@ export interface CollectedFields {
   // Sectors
   industries?: string[];
 
-  // Freight capabilities
+  // Freight capabilities — structured hub codes
   providesAirFreight?: boolean;
-  airports?: string[];
+  airports?: string[]; // IATA codes from hub picker
   airCountries?: string[];
 
   providesSeaFreight?: boolean;
-  seaports?: string[];
+  seaports?: string[]; // port names from hub picker
   seaCountries?: string[];
 
   providesRoadFreight?: boolean;
   roadStates?: string[];
-  roadCountries?: string[];
+  roadCountries?: string[]; // countries from hub picker
 
-  // NEW: Service mix
+  // Service mix
   serviceMix?: ServiceMix;
 
-  // NEW: Geographic focus
+  // Geographic focus
   geoFocus?: GeoFocusEntry[];
 
   // About us
   aboutUs?: string;
   ourMission?: string;
+
+  // Payment
+  paymentStatus?: 'paid' | 'standby';
+  paymentSessionId?: string;
 
   // Final
   finalAgreement?: boolean;
@@ -114,8 +121,11 @@ export type OnboardingCard =
       label: string;
       options: { code: string; name: string }[];
     }
+  | { type: 'cert_upload'; certs: string[] }
+  | { type: 'freight_lanes'; mode: 'air' | 'sea' | 'road' }
   | { type: 'service_mix' }
   | { type: 'geo_focus' }
+  | { type: 'payment' }
   | { type: 'summary'; fields: CollectedFields }
   | { type: 'progress'; step: number; total: number; label: string };
 
@@ -139,7 +149,8 @@ export const ONBOARDING_STEPS: {
   { id: 'geo_focus', label: 'Markets', stepNumber: 11 },
   { id: 'about_us', label: 'About You', stepNumber: 12 },
   { id: 'final_agreement', label: 'Agreement', stepNumber: 13 },
-  { id: 'complete', label: 'Done', stepNumber: 14 },
+  { id: 'payment', label: 'Payment', stepNumber: 14 },
+  { id: 'complete', label: 'Done', stepNumber: 15 },
 ];
 
 export const TOTAL_STEPS = ONBOARDING_STEPS.length - 1; // exclude 'complete'

@@ -1,9 +1,12 @@
 'use client';
 
 import {
+  CertUploadCard,
   FileUploadCard,
+  FreightLaneCard,
   GeoFocusCard,
   MultiSelectCard,
+  PaymentCard,
   ServiceMixCard,
   SummaryCard,
 } from './OnboardingCards';
@@ -52,14 +55,24 @@ function MessageBubble({
   message,
   onFileUploaded,
   onMultiSelectConfirm,
+  onCertUploadConfirm,
+  onCertUploadSkip,
+  onFreightLanesConfirm,
   onServiceMixConfirm,
   onGeoFocusConfirm,
+  onPaymentConfirm,
+  onPaymentStandby,
 }: {
   message: ReturnType<typeof useOnboardingState>['messages'][number];
   onFileUploaded: (field: string, file: File) => void;
   onMultiSelectConfirm: (field: string, selected: string[]) => void;
+  onCertUploadConfirm: (files: Record<string, string>) => void;
+  onCertUploadSkip: () => void;
+  onFreightLanesConfirm: (mode: 'air' | 'sea' | 'road', hubs: string[]) => void;
   onServiceMixConfirm: (mix: any) => void;
   onGeoFocusConfirm: (entries: any[]) => void;
+  onPaymentConfirm: () => void;
+  onPaymentStandby: () => void;
 }) {
   const isUser = message.role === 'user';
 
@@ -86,11 +99,30 @@ function MessageBubble({
                 onConfirm={onMultiSelectConfirm}
               />
             )}
+            {message.card.type === 'cert_upload' && (
+              <CertUploadCard
+                certs={message.card.certs}
+                onConfirm={onCertUploadConfirm}
+                onSkip={onCertUploadSkip}
+              />
+            )}
+            {message.card.type === 'freight_lanes' && (
+              <FreightLaneCard
+                mode={message.card.mode}
+                onConfirm={onFreightLanesConfirm}
+              />
+            )}
             {message.card.type === 'service_mix' && (
               <ServiceMixCard onConfirm={onServiceMixConfirm} />
             )}
             {message.card.type === 'geo_focus' && (
               <GeoFocusCard onConfirm={onGeoFocusConfirm} />
+            )}
+            {message.card.type === 'payment' && (
+              <PaymentCard
+                onConfirm={onPaymentConfirm}
+                onStandby={onPaymentStandby}
+              />
             )}
             {message.card.type === 'summary' && (
               <SummaryCard fields={message.card.fields} />
@@ -227,7 +259,6 @@ export default function OnboardingAgent() {
 
   function handleFileUploaded(field: string, file: File) {
     updateCollected({ [field]: file } as any);
-    // Send confirmation back to agent
     sendMessage(`[FILE_UPLOADED:${field}:${file.name}]`);
   }
 
@@ -236,6 +267,38 @@ export default function OnboardingAgent() {
     updateCollected(patch);
     const label = selected.length > 0 ? selected.join(', ') : 'none';
     sendMessage(`Selected: ${label}`, patch);
+  }
+
+  function handleCertUploadConfirm(files: Record<string, string>) {
+    const patch = { certProofFiles: files };
+    updateCollected(patch);
+    const count = Object.keys(files).length;
+    sendMessage(
+      `Uploaded ${count} certification document${count !== 1 ? 's' : ''}`,
+      patch,
+    );
+  }
+
+  function handleCertUploadSkip() {
+    const patch = { certProofFiles: {} };
+    updateCollected(patch);
+    sendMessage('Skipping cert upload for now', patch);
+  }
+
+  function handleFreightLanesConfirm(
+    mode: 'air' | 'sea' | 'road',
+    hubs: string[],
+  ) {
+    let patch: Partial<typeof collected> = {};
+    if (mode === 'air') patch = { airports: hubs };
+    else if (mode === 'sea') patch = { seaports: hubs };
+    else patch = { roadCountries: hubs };
+    updateCollected(patch);
+    const label =
+      hubs.length > 0
+        ? `Selected ${mode} hubs: ${hubs.join(', ')}`
+        : `No specific ${mode} hubs selected`;
+    sendMessage(label, patch);
   }
 
   function handleServiceMixConfirm(mix: any) {
@@ -256,12 +319,28 @@ export default function OnboardingAgent() {
     );
   }
 
+  function handlePaymentConfirm() {
+    const patch = { paymentStatus: 'paid' as const };
+    updateCollected(patch);
+    advanceStep('complete');
+    sendMessage('Payment confirmed', patch);
+  }
+
+  function handlePaymentStandby() {
+    const patch = { paymentStatus: 'standby' as const };
+    updateCollected(patch);
+    advanceStep('standby');
+    sendMessage('Save application for later', patch);
+  }
+
   const isComplete = step === 'complete';
+  const isStandby = step === 'standby';
+  const isDone = isComplete || isStandby;
 
   return (
     <div className="mx-auto flex h-[calc(100vh-112px)] max-w-3xl flex-col">
       {/* Progress */}
-      {step !== 'welcome' && !isComplete && (
+      {step !== 'welcome' && !isDone && (
         <ProgressBar
           stepNumber={stepNumber}
           label={currentStepMeta?.label ?? ''}
@@ -296,24 +375,30 @@ export default function OnboardingAgent() {
             message={m}
             onFileUploaded={handleFileUploaded}
             onMultiSelectConfirm={handleMultiSelectConfirm}
+            onCertUploadConfirm={handleCertUploadConfirm}
+            onCertUploadSkip={handleCertUploadSkip}
+            onFreightLanesConfirm={handleFreightLanesConfirm}
             onServiceMixConfirm={handleServiceMixConfirm}
             onGeoFocusConfirm={handleGeoFocusConfirm}
+            onPaymentConfirm={handlePaymentConfirm}
+            onPaymentStandby={handlePaymentStandby}
           />
         ))}
 
         {loading && <Thinking />}
 
+        {/* ── Success screen ── */}
         {isComplete && (
           <div className="flex flex-col items-center gap-4 pt-8 text-center">
             <div className="flex items-center justify-center w-16 h-16 rounded-full bg-green-100">
               <span className="text-3xl">🎉</span>
             </div>
             <h2 className="text-lg font-bold text-black">
-              You&apos;re on Goods2Load!
+              You&apos;re live on Goods2Load!
             </h2>
             <p className="text-sm text-muted-foreground max-w-xs">
-              Your profile is live. Shippers matching your lanes will reach you
-              within 24 hours.
+              Your verified profile is active. Shippers matching your lanes will
+              reach you within 24 hours.
             </p>
             <Link
               href="/sign-in"
@@ -323,10 +408,41 @@ export default function OnboardingAgent() {
             </Link>
           </div>
         )}
+
+        {/* ── Standby screen ── */}
+        {isStandby && (
+          <div className="flex flex-col items-center gap-4 pt-8 text-center">
+            <div className="flex items-center justify-center w-16 h-16 rounded-full bg-amber-100">
+              <span className="text-3xl">📋</span>
+            </div>
+            <h2 className="text-lg font-bold text-black">Application saved!</h2>
+            <p className="text-sm text-muted-foreground max-w-xs">
+              Your profile is ready — complete payment whenever you&apos;re
+              ready to go live. Our team will follow up within 24 hours.
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={handlePaymentConfirm}
+                className="rounded-full bg-primaryOrange text-white text-sm font-semibold px-5 py-2.5 hover:opacity-90 transition-opacity"
+              >
+                Complete payment — $699 →
+              </button>
+              <Link
+                href="/"
+                className="rounded-full border border-border text-sm text-muted-foreground px-5 py-2.5 hover:border-primaryOrange hover:text-black transition-colors"
+              >
+                Back to homepage
+              </Link>
+            </div>
+            <p className="text-[11px] text-muted-foreground">
+              Application reference: {collected.email ?? 'saved'}
+            </p>
+          </div>
+        )}
       </div>
 
       {/* Input */}
-      {!isComplete && (
+      {!isDone && (
         <div className="border-t border-border pt-4 pb-2 px-2">
           <InputBar onSend={sendMessage} disabled={loading} />
           <p className="mt-2 text-center text-[11px] text-muted-foreground">

@@ -1,3 +1,4 @@
+// @ts-nocheck — react-simple-maps types are incompatible with React 19 JSX types; fix when upgrading the library
 import React, { useState } from 'react';
 
 import { Point } from 'react-simple-maps';
@@ -39,9 +40,7 @@ const Map = ({
   };
 
   const validData = (data ?? []).filter(
-    (
-      marker,
-    ): marker is MarkersCoordinates =>
+    (marker): marker is MarkersCoordinates =>
       !!marker &&
       !!marker.from &&
       Array.isArray(marker.from.coordinates) &&
