@@ -560,7 +560,7 @@ export default function LeadsSection() {
       {/* Body: pipeline + detail */}
       <div className="flex flex-1 overflow-hidden">
         {/* Kanban board */}
-        <div className="flex-1 overflow-x-auto overflow-y-auto p-5">
+        <div className="flex-1 min-w-0 overflow-x-auto overflow-y-auto p-5">
           <div className="flex gap-4 h-full min-w-max">
             {STAGES.map((stage) => (
               <StageColumn

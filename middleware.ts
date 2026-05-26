@@ -16,6 +16,7 @@ const routes = {
     '/dashboard/performance',
     '/dashboard/market-trends',
     '/dashboard/opportunities',
+    '/dashboard/atlas',
   ],
   [Roles.ADMIN]: [
     '/account',
@@ -27,6 +28,7 @@ const routes = {
     '/dashboard/footer',
     '/dashboard/template',
     '/dashboard/template/create',
+    '/dashboard/atlas',
   ],
   [Roles.EDITOR]: [
     '/account',
@@ -43,6 +45,14 @@ export async function middleware(request: NextRequest) {
 
   const response = NextResponse.next();
   response.headers.set('x-url', currentPath);
+
+  // Dev bypass — atlas dashboard is all demo data, no backend needed for local testing
+  if (
+    process.env.NODE_ENV === 'development' &&
+    currentPath.startsWith('/dashboard/atlas')
+  ) {
+    return response;
+  }
 
   if (
     currentPath.startsWith('/dashboard') ||

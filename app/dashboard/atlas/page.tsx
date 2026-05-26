@@ -1,5 +1,3 @@
-import DashboardLayout from '@/app/_components/DashboardLayout/DashboardLayout';
-
 import type { Metadata } from 'next';
 
 import AtlasDashboard from '@/components/Dashboard/AtlasDashboard/AtlasDashboard';
@@ -11,9 +9,6 @@ export const metadata: Metadata = {
 };
 
 export default function AtlasPage() {
-  return (
-    <DashboardLayout>
-      <AtlasDashboard />
-    </DashboardLayout>
-  );
+  // Atlas has its own full-screen sidebar — no outer DashboardLayout wrapper needed
+  return <AtlasDashboard />;
 }
