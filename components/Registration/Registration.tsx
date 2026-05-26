@@ -598,6 +598,31 @@ function Registration() {
         <form onSubmit={form.handleSubmit(onSubmit)}>
           {step === 0 && (
             <>
+              {/* ── AI-guided onboarding banner (provider only) ──────────────── */}
+              {!userRegistration && (
+                <div className="mb-8 rounded-xl border border-primaryOrange/30 bg-lightOrange overflow-hidden">
+                  <div className="flex items-start gap-3 px-4 py-3.5">
+                    <span className="text-xl shrink-0 mt-0.5">✨</span>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-sm font-semibold text-black">
+                        Try AI-guided onboarding
+                      </p>
+                      <p className="text-xs text-muted-foreground mt-0.5 leading-relaxed">
+                        Let Atlas walk you through it — answer questions in
+                        plain language, get your About Us drafted for you, done
+                        in 5 minutes.
+                      </p>
+                    </div>
+                    <Link
+                      href="/agent/onboarding"
+                      className="shrink-0 rounded-full bg-primaryOrange text-white text-xs font-semibold px-3 py-1.5 hover:opacity-90 transition-opacity whitespace-nowrap"
+                    >
+                      Try it →
+                    </Link>
+                  </div>
+                </div>
+              )}
+
               <div className="text-center mb-10">
                 <h1 className="text-[40px]/[60px] italic font-normal">
                   Welcome!
