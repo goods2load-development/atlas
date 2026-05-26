@@ -32,6 +32,11 @@ const Sidebar: React.FC = () => {
       href: '/dashboard/market-trends',
       active: false,
     },
+    {
+      title: 'Atlas Command',
+      href: '/dashboard/atlas',
+      active: false,
+    },
   ]);
 
   useEffect(() => {

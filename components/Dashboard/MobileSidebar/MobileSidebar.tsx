@@ -38,6 +38,11 @@ const MobileSidebar: React.FC = () => {
       href: '/dashboard/opportunities',
       active: false,
     },
+    {
+      title: '✨ Atlas Command',
+      href: '/dashboard/atlas',
+      active: false,
+    },
   ]);
 
   useEffect(() => {
