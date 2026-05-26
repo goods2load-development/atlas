@@ -12,11 +12,19 @@ export interface ChatMessage {
   data?: ChatMessageData;
 }
 
+export interface BookingConfirmation {
+  provider: MatchedProvider;
+  reference: string; // e.g. "G2L-20260526-4891"
+  status: 'submitted';
+  whatsapp_url: string; // pre-filled WA link to Goods2Load (not the forwarder directly)
+}
+
 export interface ChatMessageData {
   intent?: Record<string, unknown>;
   matches?: MatchedProvider[];
   recommendation?: string; // Atlas C5 Ranker recommendation_summary
   rag_hints?: string[]; // Historical forwarder hints from C1.5 RAG
+  booking?: BookingConfirmation;
 }
 
 export interface MatchedProvider {
@@ -38,6 +46,21 @@ export interface MatchedProvider {
   strengths?: string[];
   watch_outs?: string[];
   capabilities?: string[];
+}
+
+// ── Atlas pipeline streaming events (SSE from /api/agent/stream) ─────────────
+// Emitted by each C1→C5 agent as it runs. ThinkingPanel consumes these.
+export interface PipelineEvent {
+  type: 'step_start' | 'step_done' | 'step_progress' | 'complete';
+  step: string; // 'C1' | 'C1.5' | 'C2' | 'C3' | 'C4' | 'C5'
+  label?: string;
+  elapsed_ms: number; // ms since the full request started
+  meta?: {
+    records?: number; // total records in the pool
+    records_checked?: number; // how many processed so far
+  };
+  // Only present on type === 'complete'
+  data?: AgentResponse;
 }
 
 // Request/response contract for POST /api/agent

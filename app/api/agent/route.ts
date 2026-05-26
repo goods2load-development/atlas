@@ -8,15 +8,59 @@ import type {
 
 /**
  * POST /api/agent
- * -----------------------------------------------------------------------------
  * Proxies to the Atlas multi-agent matching engine (Python FastAPI).
- * Set ATLAS_API_URL=https://your-atlas-service.run.app in .env.local.
- * Falls back to a "preview mode" message when the env var is not set.
- * -----------------------------------------------------------------------------
+ * Set ATLAS_API_URL in .env.local. Falls back to preview mode when unset.
  */
 
 const ATLAS_URL = process.env.ATLAS_API_URL?.replace(/\/$/, '');
 
+// ── Language detection ────────────────────────────────────────────────────────
+// Japanese kana checked BEFORE CJK so Kanji-containing Japanese text isn't
+// misidentified as Chinese.
+function detectLanguage(text: string): string | null {
+  if (/[぀-ゟ゠-ヿ]/.test(text)) return 'Japanese';
+  if (/[؀-ۿݐ-ݿﭐ-﷿ﹰ-﻿]/.test(text)) return 'Arabic';
+  if (/[一-鿿㐀-䶿]/.test(text)) return 'Chinese';
+  if (/[가-힯ᄀ-ᇿ]/.test(text)) return 'Korean';
+  if (/[ऀ-ॿ]/.test(text)) return 'Hindi';
+  if (/[Ѐ-ӿ]/.test(text)) return 'Russian';
+  if (/[֐-׿]/.test(text)) return 'Hebrew';
+  if (/[฀-๿]/.test(text)) return 'Thai';
+  return null;
+}
+
+const LANG_CODES: Record<string, string> = {
+  Arabic: 'ar',
+  Chinese: 'zh-CN',
+  Japanese: 'ja',
+  Korean: 'ko',
+  Hindi: 'hi',
+  Russian: 'ru',
+  Hebrew: 'he',
+  Thai: 'th',
+};
+
+// ── Translation — one call, reply text only, hard timeout, silent fallback ────
+async function translate(text: string, lang: string): Promise<string> {
+  const code = LANG_CODES[lang];
+  if (!code || !text.trim()) return text;
+  try {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), 4000);
+    const res = await fetch(
+      `https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${code}&dt=t&q=${encodeURIComponent(text)}`,
+      { signal: controller.signal },
+    );
+    clearTimeout(timer);
+    if (!res.ok) return text;
+    const data = await res.json();
+    return (data[0] as [string][]).map(([c]) => c).join('') || text;
+  } catch {
+    return text; // always return something — never throw
+  }
+}
+
+// ── Provider card mapping ─────────────────────────────────────────────────────
 function mapCandidate(
   c: Record<string, unknown>,
   idx: number,
@@ -49,6 +93,7 @@ function mapCandidate(
   };
 }
 
+// ── Route handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
   let body: AgentRequest;
   try {
@@ -61,15 +106,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'messages[] required' }, { status: 400 });
   }
 
-  // Preview mode — Atlas service not yet connected
+  const latestMessage = body.messages[body.messages.length - 1].content;
+  const detectedLang = detectLanguage(latestMessage);
+
+  // Preview mode
   if (!ATLAS_URL) {
     return NextResponse.json<AgentResponse>({
       reply:
-        "I'm running in preview mode — the Atlas matching engine isn't connected yet. Once ATLAS_API_URL is set, I'll parse your request and match you with verified freight forwarders across MENA and 30+ countries.",
+        "I'm running in preview mode — the Atlas matching engine isn't connected yet.",
     });
   }
-
-  const latestMessage = body.messages[body.messages.length - 1].content;
 
   try {
     const res = await fetch(`${ATLAS_URL}/chat`, {
@@ -78,6 +124,7 @@ export async function POST(req: NextRequest) {
       body: JSON.stringify({
         message: latestMessage,
         session_id: body.session_id ?? null,
+        response_language: detectedLang ?? 'English',
       }),
     });
 
@@ -96,12 +143,25 @@ export async function POST(req: NextRequest) {
       atlas.shortlist?.candidates ?? []
     ).map((c: Record<string, unknown>, i: number) => mapCandidate(c, i));
 
+    const rawReply: string =
+      atlas.text ?? "I couldn't process that — please try again.";
+    const rawReco: string = atlas.shortlist?.recommendation_summary ?? '';
+
+    // Translate reply + recommendation only — two small, independent calls.
+    // Provider card text stays in English. Falls back silently on any error.
+    const [reply, recommendation] = detectedLang
+      ? await Promise.all([
+          translate(rawReply, detectedLang),
+          rawReco ? translate(rawReco, detectedLang) : Promise.resolve(''),
+        ])
+      : [rawReply, rawReco];
+
     return NextResponse.json<AgentResponse>({
-      reply: atlas.text ?? "I couldn't process that — please try again.",
+      reply,
       session_id: atlas.session_id,
       data: {
         matches: candidates,
-        recommendation: atlas.shortlist?.recommendation_summary ?? '',
+        recommendation,
         rag_hints: atlas.debug?.rag_forwarder_hints ?? [],
       },
     });
