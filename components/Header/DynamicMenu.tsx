@@ -91,11 +91,16 @@ interface IMenuData {
 }
 
 const DynamicMenu = async ({ variant = 'primary' }: any) => {
-  const menuData: IMenuData = await (
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}api/dynamic-menu/header`, {
-      cache: 'no-store',
-    })
-  ).json();
+  let menuData: IMenuData | null = null;
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}api/dynamic-menu/header`,
+      { cache: 'no-store' },
+    );
+    if (res.ok) menuData = await res.json();
+  } catch {
+    // Backend offline (local dev without API server) — render empty nav
+  }
 
   if (!menuData || !menuData?.json?.length) {
     return <div className="h-14"></div>;
