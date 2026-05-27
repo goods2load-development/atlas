@@ -46,13 +46,8 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
   response.headers.set('x-url', currentPath);
 
-  // Atlas dashboard bypass — demo data only, no backend needed
-  // Works in dev and in production demo mode (ATLAS_DEMO=true)
-  if (
-    currentPath.startsWith('/dashboard/atlas') &&
-    (process.env.NODE_ENV === 'development' ||
-      process.env.ATLAS_DEMO === 'true')
-  ) {
+  // Atlas dashboard is always public — demo data only, no auth needed
+  if (currentPath.startsWith('/dashboard/atlas')) {
     return response;
   }
 
