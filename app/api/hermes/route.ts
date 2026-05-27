@@ -26,27 +26,32 @@ async function send(to: string, body: string): Promise<string> {
   return msg.sid;
 }
 
-function formatReply(data: Record<string, unknown>): string {
-  const text =
+// Returns [summaryMessage, shortlistMessage] — sent as two WhatsApp messages
+function formatReply(data: Record<string, unknown>): [string, string | null] {
+  const fullText =
     (data.text as string) ?? "I couldn't find a match. Please try again.";
   const shortlist = data.shortlist as Record<string, unknown> | null;
   const candidates = (shortlist?.candidates as Record<string, unknown>[]) ?? [];
 
-  if (!candidates.length) return text;
+  // Trim Atlas text to first 2 sentences to keep it concise
+  const sentences = fullText.match(/[^.!?]+[.!?]+/g) ?? [fullText];
+  const summary = sentences.slice(0, 2).join(' ').trim().slice(0, 600);
+
+  if (!candidates.length) return [summary, null];
 
   const lines = candidates.slice(0, 3).map((c, i) => {
     const name = c.name as string;
     const conf = c.confidence_tier as string;
-    const summary = c.enrichment_summary as string;
+    const summary = (c.enrichment_summary as string).slice(0, 120);
     return `${i + 1}. *${name}* — ${conf}\n   ${summary}`;
   });
 
-  return (
-    `${text}\n\n` +
+  const shortlistMsg =
     `*Top matches from the Goods2Load network:*\n\n` +
     lines.join('\n\n') +
-    `\n\n_Reply with a name or number to request a rate quote._`
-  );
+    `\n\n_Reply with a name or number to request a rate quote._`;
+
+  return [summary, shortlistMsg];
 }
 
 export async function POST(req: NextRequest) {
@@ -101,7 +106,9 @@ export async function POST(req: NextRequest) {
     const data = (await res.json()) as Record<string, unknown>;
     console.log('[Hermes] atlas ok, sending results');
 
-    await send(from, formatReply(data));
+    const [summary, shortlist] = formatReply(data);
+    await send(from, summary);
+    if (shortlist) await send(from, shortlist);
   } catch (err) {
     console.error('[Hermes] pipeline error:', err);
     await send(from, `⚠️ Sorry — Atlas had trouble: ${String(err)}`).catch(
