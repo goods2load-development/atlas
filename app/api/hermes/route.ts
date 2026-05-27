@@ -98,7 +98,11 @@ export async function POST(req: NextRequest) {
     const res = await fetch(`${ATLAS_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message, session_id: null }),
+      // Use phone number as session key so follow-up messages have context
+      body: JSON.stringify({
+        message,
+        session_id: from.replace('whatsapp:', ''),
+      }),
       signal: AbortSignal.timeout(55_000),
     });
 
