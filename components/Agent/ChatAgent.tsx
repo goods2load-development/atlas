@@ -73,19 +73,29 @@ function findTargetProvider(
   if (!candidates.length) return null;
   const lower = message.toLowerCase();
 
-  // Match by company name (longest match wins to avoid false positives)
+  // 1. Exact company name match (longest wins)
   const byName = candidates
     .filter((c) => lower.includes(c.company_name.toLowerCase()))
     .sort((a, b) => b.company_name.length - a.company_name.length);
   if (byName.length) return byName[0];
 
-  // Match by rank number or ordinal
+  // 2. Fuzzy: any word in the company name appears in the message
+  const byWord = candidates.filter((c) =>
+    c.company_name
+      .toLowerCase()
+      .split(/\W+/)
+      .filter((w) => w.length > 2)
+      .some((w) => lower.includes(w)),
+  );
+  if (byWord.length === 1) return byWord[0]; // only if unambiguous
+
+  // 3. Match by rank number or ordinal
   if (/\b(#?1|first|top|number one)\b/.test(lower))
     return candidates[0] ?? null;
   if (/\b(#?2|second)\b/.test(lower)) return candidates[1] ?? null;
   if (/\b(#?3|third)\b/.test(lower)) return candidates[2] ?? null;
 
-  // Single candidate — unambiguous
+  // 4. Single candidate — unambiguous
   if (candidates.length === 1) return candidates[0];
 
   return null;
@@ -157,19 +167,39 @@ export default function ChatAgent() {
     setMessages(next);
 
     // ── Booking intent: resolve client-side, never send to Atlas ─────────────
-    const earlyBooking = resolveBooking(text, lastMatchesRef.current);
-    if (earlyBooking) {
-      setMessages((m) => [
-        ...m,
-        {
-          id: uid(),
-          role: 'assistant',
-          content: `Done! I've submitted a rate request to ${earlyBooking.provider.company_name} on your behalf. Use the reference below to follow up — Goods2Load will connect you within 24 hours.`,
-          createdAt: Date.now(),
-          data: { booking: earlyBooking },
-        },
-      ]);
-      return;
+    if (detectBookingIntent(text) && lastMatchesRef.current.length) {
+      const target = findTargetProvider(text, lastMatchesRef.current);
+      if (target) {
+        // Named provider found — confirm booking immediately
+        const earlyBooking = makeBookingConfirmation(target);
+        setMessages((m) => [
+          ...m,
+          {
+            id: uid(),
+            role: 'assistant',
+            content: `Done! I've submitted a rate request to ${earlyBooking.provider.company_name} on your behalf. Use the reference below to follow up — Goods2Load will connect you within 24 hours.`,
+            createdAt: Date.now(),
+            data: { booking: earlyBooking },
+          },
+        ]);
+        return;
+      } else {
+        // Booking intent but name not matched — ask to clarify, don't call Atlas
+        const names = lastMatchesRef.current
+          .slice(0, 5)
+          .map((c, i) => `${i + 1}. ${c.company_name}`)
+          .join('\n');
+        setMessages((m) => [
+          ...m,
+          {
+            id: uid(),
+            role: 'assistant',
+            content: `Which forwarder would you like to contact? Here are your current matches:\n\n${names}\n\nJust reply with the name or number.`,
+            createdAt: Date.now(),
+          },
+        ]);
+        return;
+      }
     }
 
     setLoading(true);
