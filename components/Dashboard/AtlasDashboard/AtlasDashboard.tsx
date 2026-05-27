@@ -7,9 +7,132 @@ import LeadsSection from './sections/LeadsSection';
 import OverviewSection from './sections/OverviewSection';
 import ProfileSection from './sections/ProfileSection';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { BarChart3, Bell, Brain, Inbox, ShieldCheck } from 'lucide-react';
+import {
+  BarChart3,
+  Bell,
+  Brain,
+  CheckCircle,
+  Inbox,
+  Loader2,
+  ShieldCheck,
+} from 'lucide-react';
+
+// ── Demo sign-up gate ─────────────────────────────────────────────────────────
+function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [done, setDone] = useState(false);
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email) return;
+    setLoading(true);
+    // Simulate account creation delay
+    setTimeout(() => {
+      setLoading(false);
+      setDone(true);
+      const displayName = name.trim() || email.split('@')[0];
+      setTimeout(() => onSuccess(displayName), 1400);
+    }, 1200);
+  }
+
+  return (
+    <div className="min-h-screen bg-[#f5f4f3] flex items-center justify-center p-4 font-poppins">
+      <div className="w-full max-w-md">
+        {/* Logo */}
+        <div className="text-center mb-8">
+          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primaryOrange mb-4">
+            <span className="text-white text-2xl font-bold">G</span>
+          </div>
+          <h1 className="text-2xl font-bold text-black">Join Goods2Load</h1>
+          <p className="text-sm text-muted-foreground mt-1">
+            Access your Atlas-powered freight dashboard
+          </p>
+        </div>
+
+        {/* Card */}
+        <div className="bg-white rounded-2xl shadow-sm border border-border p-8">
+          {done ? (
+            <div className="flex flex-col items-center gap-3 py-6 text-center">
+              <CheckCircle className="text-green-500 w-12 h-12" />
+              <p className="font-semibold text-black text-lg">
+                Account created!
+              </p>
+              <p className="text-sm text-muted-foreground">
+                Taking you to your dashboard…
+              </p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="text-xs font-semibold text-black uppercase tracking-wide">
+                  Full name
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Jessica Panigari"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-black uppercase tracking-wide">
+                  Work email
+                </label>
+                <input
+                  type="email"
+                  required
+                  placeholder="judge@google.com"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
+                />
+              </div>
+              <div>
+                <label className="text-xs font-semibold text-black uppercase tracking-wide">
+                  Password
+                </label>
+                <input
+                  type="password"
+                  required
+                  placeholder="Any password works"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
+                />
+              </div>
+
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full py-3 rounded-xl bg-primaryOrange text-white font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
+              >
+                {loading ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Creating
+                    account…
+                  </>
+                ) : (
+                  'Create free account'
+                )}
+              </button>
+            </form>
+          )}
+        </div>
+
+        {/* Trust note */}
+        <p className="text-center text-xs text-muted-foreground mt-4">
+          🔒 Demo environment · No real data stored · Powered by Atlas
+        </p>
+      </div>
+    </div>
+  );
+}
 
 type Section = 'overview' | 'leads' | 'alerts' | 'intelligence' | 'profile';
 
@@ -33,6 +156,26 @@ const NAV: {
 
 export default function AtlasDashboard() {
   const [section, setSection] = useState<Section>('leads');
+  const [user, setUser] = useState<string | null>(null);
+  const [hydrated, setHydrated] = useState(false);
+
+  // Read from sessionStorage after mount (avoids SSR mismatch)
+  useEffect(() => {
+    const saved = sessionStorage.getItem('atlas_demo_user');
+    if (saved) setUser(saved);
+    setHydrated(true);
+  }, []);
+
+  function handleSignUp(name: string) {
+    sessionStorage.setItem('atlas_demo_user', name);
+    setUser(name);
+  }
+
+  // Show nothing until hydrated (avoids flash)
+  if (!hydrated) return null;
+
+  // Show sign-up gate if not authenticated
+  if (!user) return <DemoSignUp onSuccess={handleSignUp} />;
 
   return (
     <div className="flex h-screen bg-[#f5f4f3] overflow-hidden font-poppins">
@@ -151,6 +294,22 @@ export default function AtlasDashboard() {
 
       {/* ── Section content ── */}
       <div className="flex-1 min-w-0 overflow-hidden flex flex-col">
+        {/* Welcome banner */}
+        <div className="shrink-0 px-6 py-2.5 bg-primaryOrange/8 border-b border-primaryOrange/15 flex items-center justify-between">
+          <p className="text-xs text-primaryOrange font-medium">
+            👋 Welcome, <span className="font-bold">{user}</span> — Atlas is
+            active and monitoring your network.
+          </p>
+          <button
+            onClick={() => {
+              sessionStorage.removeItem('atlas_demo_user');
+              setUser(null);
+            }}
+            className="text-[10px] text-muted-foreground hover:text-black transition-colors"
+          >
+            Sign out
+          </button>
+        </div>
         {section === 'overview' && <OverviewSection />}
         {section === 'leads' && <LeadsSection />}
         {section === 'alerts' && <AlertsSection />}
