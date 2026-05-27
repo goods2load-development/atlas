@@ -40,6 +40,7 @@
     "@react-google-maps/api": "^2.19.3",
     "@tinymce/tinymce-react": "5.0.1",
     "@types/js-cookie": "^3.0.6",
+    "@vercel/functions": "^3.6.0",
     "autoprefixer": "^10.4.20",
     "axios": "^1.6.8",
     "class-variance-authority": "^0.7.0",
@@ -86,6 +87,7 @@
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-scoped-groups": "^2.0.0",
+    "twilio": "^6.0.2",
     "vaul": "^0.9.1",
     "zod": "^3.22.4",
     "zustand": "^4.5.2"
