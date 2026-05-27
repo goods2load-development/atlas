@@ -17,6 +17,64 @@ const ATLAS_URL = process.env.ATLAS_API_URL?.replace(/\/$/, '');
 const EMPTY_TWIML =
   '<?xml version="1.0" encoding="UTF-8"?><Response></Response>';
 
+// ── Booking intent detection ──────────────────────────────────────────────────
+const BOOKING_KEYWORDS = [
+  'book',
+  'rate request',
+  'request rate',
+  'send rate',
+  'get rate',
+  'get quote',
+  'request quote',
+  'send quote',
+  'contact',
+  'reach out',
+  'connect me',
+  'proceed with',
+  'go with',
+  'go ahead',
+  'choose',
+  'select',
+  'use this',
+  'hire',
+  'enquire',
+  'inquire',
+  'work with',
+];
+
+function detectBookingIntent(msg: string): boolean {
+  const lower = msg.toLowerCase();
+  return BOOKING_KEYWORDS.some((k) => lower.includes(k));
+}
+
+// Extract provider name from messages like "book with ADSO" or "go with Avgo"
+function extractProviderName(msg: string): string | null {
+  const patterns = [
+    /(?:book|go|proceed|work)\s+with\s+(.+)/i,
+    /(?:choose|select|hire|contact|use)\s+(.+)/i,
+    /(?:send|get|request)\s+(?:rate|quote)\s+(?:for|to|from)\s+(.+)/i,
+    /(?:rate request|quote)\s+(?:for|to)\s+(.+)/i,
+  ];
+  for (const re of patterns) {
+    const m = msg.match(re);
+    if (m) return m[1].replace(/[.!?,]$/, '').trim();
+  }
+  return null;
+}
+
+function makeBookingConfirmation(providerName: string): string {
+  const date = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  const rand = Math.floor(Math.random() * 9000) + 1000;
+  const ref = `G2L-${date}-${rand}`;
+  return (
+    `✅ *Rate request submitted!*\n\n` +
+    `*Forwarder:* ${providerName}\n` +
+    `*Reference:* ${ref}\n\n` +
+    `Goods2Load will connect you within 24 hours.\n` +
+    `For urgent follow-up, WhatsApp us: +971 50 557 4291`
+  );
+}
+
 async function send(to: string, body: string): Promise<string> {
   if (!ACCOUNT_SID || !AUTH_TOKEN) {
     throw new Error('Twilio credentials not configured');
@@ -70,6 +128,25 @@ export async function POST(req: NextRequest) {
   });
 
   if (!from.startsWith('whatsapp:') || !message) {
+    return new NextResponse(EMPTY_TWIML, {
+      headers: { 'Content-Type': 'text/xml' },
+    });
+  }
+
+  // ── Booking intent: handle without calling Atlas ─────────────────────────
+  if (detectBookingIntent(message)) {
+    const provider = extractProviderName(message);
+    if (provider) {
+      await send(from, makeBookingConfirmation(provider));
+      return new NextResponse(EMPTY_TWIML, {
+        headers: { 'Content-Type': 'text/xml' },
+      });
+    }
+    // Intent detected but no name found — ask to clarify
+    await send(
+      from,
+      'Which forwarder would you like to book with? Reply with the name from your last search.',
+    );
     return new NextResponse(EMPTY_TWIML, {
       headers: { 'Content-Type': 'text/xml' },
     });
