@@ -25,7 +25,8 @@ export default function ReferalsSlider() {
   const { getAllReferrals, referrals: referralsData } = useReferralsStore(
     (state: any) => state,
   );
-  const { referals: referrals = [], slicePerReferals = null } = referralsData || {};
+  const { referals: referrals = [], slicePerReferals = null } =
+    referralsData || {};
 
   const { isBelowSm } = useBreakpoint('sm');
 

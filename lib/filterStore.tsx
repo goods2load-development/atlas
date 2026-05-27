@@ -357,10 +357,11 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
 
             const ports: any[] = filteredAirports.map((item: any) => ({
               id: item.codeIataAirport,
-              label: `(${item.codeIataAirport}) ${item.nameAirport.includes(' Airport')
-                ? item.nameAirport
-                : item.nameAirport + ' Airport'
-                }`,
+              label: `(${item.codeIataAirport}) ${
+                item.nameAirport.includes(' Airport')
+                  ? item.nameAirport
+                  : item.nameAirport + ' Airport'
+              }`,
             }));
             const selected: any[] = filteredAirports.map(
               (item: any) => item.codeIataAirport,
@@ -396,7 +397,10 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             cityName.includes(searchText) ||
             provinceName.includes(searchText) ||
             unlocode.includes(searchText) ||
-            (Array.isArray(port.alias) && port.alias.some((a: string) => a.toLowerCase().includes(searchText)))
+            (Array.isArray(port.alias) &&
+              port.alias.some((a: string) =>
+                a.toLowerCase().includes(searchText),
+              ))
           );
         });
         const filteredPorts = (
@@ -562,7 +566,8 @@ export const useFilterStore = create<FilterStoreProps>((set, get) => {
             height: parseInt(height),
             incoterm: incoterms,
             keyword: '',
-            logisticPartner: partnersSelected === undefined ? [''] : partnersSelected,
+            logisticPartner:
+              partnersSelected === undefined ? [''] : partnersSelected,
             portDeparture: isSeaSearch
               ? [routeFromLower]
               : portsDepartureSelected.length
@@ -692,7 +697,10 @@ export const useCurrenciesStore = create<CurrenciesStoreProps>((set, get) => ({
                 exchangeRates[i.code] != null,
             ),
           )
-          .map((item: any) => ({ ...item, rate: exchangeRates[item.code] ?? 1 })),
+          .map((item: any) => ({
+            ...item,
+            rate: exchangeRates[item.code] ?? 1,
+          })),
         selectedCurrency: {
           ...currenciesSorted.find((item: any) => item.code === 'USD'),
           rate: 1,

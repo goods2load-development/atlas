@@ -182,7 +182,7 @@ export const FormStepSeaFreight = ({
           value={activeCountryAccord}
           onValueChange={(value) => {
             handleScroll(value);
-            setActiveCountries((prev: any) => { });
+            setActiveCountries((prev: any) => {});
             setActiveCountryAccord(value);
           }}
         >
@@ -288,8 +288,8 @@ export const FormStepSeaFreight = ({
                                       const newValue = checked
                                         ? [...(field.value || []), value]
                                         : field.value?.filter(
-                                          (v: string) => v !== value,
-                                        ) || [];
+                                            (v: string) => v !== value,
+                                          ) || [];
                                       field.onChange(newValue);
                                     }}
                                   />

@@ -58,9 +58,7 @@ export default function Catalogue() {
             </SheetTrigger>
             <SheetContent side="left" className="pt-[54px] overflow-y-auto">
               <p className="pb-[32px] text-[18px] font-medium">Filters</p>
-              <PriceAlerts
-                isPulseAnimation={true}
-              />
+              <PriceAlerts isPulseAnimation={true} />
               <Filter />
             </SheetContent>
           </Sheet>
@@ -83,9 +81,7 @@ export default function Catalogue() {
       <div>
         <div className="lg:bg-[#F9F9F9] rounded-2xl w-full lg:w-[280px] hidden lg:block h-max">
           <div className="lg:p-4">
-            <PriceAlerts
-              isPulseAnimation={true}
-            />
+            <PriceAlerts isPulseAnimation={true} />
             <Filter />
           </div>
         </div>

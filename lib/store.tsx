@@ -300,7 +300,6 @@ export const useUserStore = create((set) => ({
     }
   },
 
-
   authenticateUser: async (data: any) => {
     await postRequest({
       url: `/oauth/authenticate`,

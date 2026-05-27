@@ -134,8 +134,6 @@ axios.interceptors.response.use(
   },
 );
 
-
-
 export function getRequest(params: any) {
   return axios.get(params.url, { ...params }).then(function (response: any) {
     return response.data;

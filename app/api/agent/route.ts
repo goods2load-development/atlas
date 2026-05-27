@@ -6,6 +6,9 @@ import type {
   MatchedProvider,
 } from '@/components/Agent/types';
 
+// Allow up to 60 s — Atlas pipeline needs ~15-30 s on a warm instance
+export const maxDuration = 60;
+
 /**
  * POST /api/agent
  * Proxies to the Atlas multi-agent matching engine (Python FastAPI).
@@ -118,6 +121,8 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 55_000); // 55 s — just under maxDuration
     const res = await fetch(`${ATLAS_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -126,7 +131,9 @@ export async function POST(req: NextRequest) {
         session_id: body.session_id ?? null,
         response_language: detectedLang ?? 'English',
       }),
+      signal: controller.signal,
     });
+    clearTimeout(timeout);
 
     if (!res.ok) {
       const detail = await res.text();

@@ -25,7 +25,7 @@ const TopDeparturePoint = ({ data }: { data: any }) => {
             // ✅ Call your own route — no CORS, no key exposure
             const response = await fetch(
               `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(item.label)}&format=json&limit=1`,
-              { headers: { 'Accept-Language': 'en' } }
+              { headers: { 'Accept-Language': 'en' } },
             );
             const result = await response.json();
 

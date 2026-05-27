@@ -195,7 +195,6 @@ export default function SearchMain({ main }: { main?: boolean }) {
     if (!countriesList.length) getCountriesList();
   });
 
-
   function switchLocations() {
     const values = {
       fromCountry: fromCountry,

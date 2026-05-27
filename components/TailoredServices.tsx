@@ -28,7 +28,8 @@ export default function TailoredServices({
   const { getAllReferrals, referrals: referralsData } = useReferralsStore(
     (state: any) => state,
   );
-  const { referals: referrals = [], slicePerReferals = null } = referralsData || {};
+  const { referals: referrals = [], slicePerReferals = null } =
+    referralsData || {};
 
   const { isBelowSm } = useBreakpoint('sm');
 

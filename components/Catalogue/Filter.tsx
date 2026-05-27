@@ -211,7 +211,6 @@ export default function Filter() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [deliveryBy, fromCountry, from, toCountry, to]);
 
-
   useEffect(() => {
     // Skip the very first render — Products.tsx already calls getPartners() on mount.
     // This prevents a duplicate request that would cause: loading → empty → loading → data.

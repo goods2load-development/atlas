@@ -154,8 +154,8 @@ export default function HeaderClient({
               <NavigationMenuItem>
                 <Currencies />
               </NavigationMenuItem>
-              {mounted && (
-                user?.id ? (
+              {mounted &&
+                (user?.id ? (
                   <NavigationMenuItem>
                     <Link href="/account" className="flex items-center">
                       <Image
@@ -175,8 +175,7 @@ export default function HeaderClient({
                       <Link href="/registration?user">Sign up</Link>
                     </NavigationMenuItem>
                   </>
-                )
-              )}
+                ))}
 
               <NavigationMenuItem>
                 <ErrorBoundary>

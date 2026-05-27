@@ -72,12 +72,7 @@ export default function Products() {
     }, 600);
 
     return () => clearTimeout(timer);
-  }, [
-    allowInitialEmptyState,
-    hasHydrated,
-    isPartnersLoading,
-    partners,
-  ]);
+  }, [allowInitialEmptyState, hasHydrated, isPartnersLoading, partners]);
 
   if (!mounted) return null;
 
@@ -97,7 +92,9 @@ export default function Products() {
     !hasHydrated ||
     isPartnersLoading ||
     partners === undefined ||
-    (!allowInitialEmptyState && Array.isArray(partners) && partners.length === 0);
+    (!allowInitialEmptyState &&
+      Array.isArray(partners) &&
+      partners.length === 0);
 
   if (shouldShowLoading) {
     return (
