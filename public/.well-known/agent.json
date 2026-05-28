@@ -1,0 +1,92 @@
+{
+  "name": "Atlas Freight Agent",
+  "description": "Atlas is a hierarchical multi-agent system for autonomous freight matching and booking. Layer 1 (Atlas Orchestrator) parses cargo inquiries from WhatsApp, email, and web; runs a 6-stage pipeline (intent → retrieval → verification → enrichment → ranking → session memory); and routes confirmed leads to Forwarder Agents via A2A. Layer 2 (Forwarder Agent) autonomously ACKs cargo owners and returns rate quotes without human intervention. Layer 3 (Carrier Agents) provides live schedule and rate data from carriers such as Maersk.",
+  "url": "https://atlas.goods2load.com/api/a2a",
+  "version": "2.0.0",
+  "provider": {
+    "organization": "Goods2Load",
+    "url": "https://goods2load.com"
+  },
+  "capabilities": {
+    "streaming": false,
+    "pushNotifications": true,
+    "stateTransitionHistory": true
+  },
+  "authentication": {
+    "schemes": ["none"]
+  },
+  "defaultInputModes": ["text/plain", "application/json"],
+  "defaultOutputModes": ["application/json", "text/plain"],
+  "architecture": {
+    "layers": [
+      {
+        "layer": 1,
+        "name": "Atlas Orchestrator",
+        "role": "Routes cargo inquiries to the best-matched Forwarder Agents. Learns across all forwarders via RAG corpus and ranking feedback.",
+        "endpoint": "POST /api/a2a"
+      },
+      {
+        "layer": 2,
+        "name": "Forwarder Agent",
+        "role": "Autonomous worker. On lead arrival: ACKs cargo owner immediately. On booking: queries Carrier Agents for live rates and returns a rate quote — no human input required.",
+        "endpoint": "POST /api/a2a (type: lead_notification | booking_notification)"
+      },
+      {
+        "layer": 3,
+        "name": "Carrier Agents",
+        "role": "Data providers for live schedules and rates. Planned: Maersk Ocean P2P, airline GDS, road fleet APIs.",
+        "status": "in-progress"
+      }
+    ]
+  },
+  "skills": [
+    {
+      "id": "freight-match",
+      "name": "Freight Matching",
+      "description": "Parses a cargo inquiry (origin, destination, mode, cargo type, weight) and returns the top-ranked verified freight forwarders from the Goods2Load network. Uses BigQuery VECTOR_SEARCH + Gemini Pro for intent extraction and ranking.",
+      "tags": ["freight", "logistics", "matching", "ranking"],
+      "inputModes": ["text/plain"],
+      "outputModes": ["application/json"],
+      "examples": [
+        "I need air freight for 500kg pharma Frankfurt to Dubai, GDP certified",
+        "FCL 2x40ft Jebel Ali to Mumbai, what are my options?",
+        "Cold chain 2-8C road freight Dubai to Baghdad"
+      ]
+    },
+    {
+      "id": "booking-route",
+      "name": "Booking Router + Forwarder Agent Trigger",
+      "description": "When a cargo owner confirms a forwarder, Atlas (Layer 1) routes the booking to the Forwarder Agent (Layer 2). The Forwarder Agent autonomously queries Carrier Agents and sends a rate quote to the cargo owner via WhatsApp — closing the loop without human input.",
+      "tags": ["booking", "routing", "lead-delivery", "a2a", "autonomous"],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "messageTypes": [
+        {
+          "type": "booking_notification",
+          "description": "Forwarder Agent receives booking and sends rate quote to cargo owner via WhatsApp"
+        },
+        {
+          "type": "lead_notification",
+          "description": "Forwarder Agent ACKs cargo owner immediately after Atlas shortlist is dispatched"
+        }
+      ]
+    },
+    {
+      "id": "forwarder-leads",
+      "name": "Forwarder Lead Feed",
+      "description": "Returns all active leads and confirmed bookings routed to a specific freight forwarder, parsed from live Twilio message history. Used by forwarder agent dashboards.",
+      "tags": ["leads", "forwarder", "dashboard"],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "endpoint": "GET /api/a2a?forwarder=<name>"
+    },
+    {
+      "id": "hermes-email",
+      "name": "Hermes Email Gateway",
+      "description": "Ingests cargo inquiries arriving by email at atlas@goods2load.com via Google Apps Script, runs the full Atlas pipeline, and replies with a forwarder shortlist via Brevo transactional email.",
+      "tags": ["email", "hermes", "gateway"],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"]
+    }
+  ]
+}
