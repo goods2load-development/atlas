@@ -2,10 +2,12 @@
 
 import { BOXMAN, DEMO_LEADS } from './boxmanData';
 import AlertsSection from './sections/AlertsSection';
+import CalendarSection from './sections/CalendarSection';
 import IntelligenceSection from './sections/IntelligenceSection';
 import LeadsSection from './sections/LeadsSection';
 import OverviewSection from './sections/OverviewSection';
 import ProfileSection from './sections/ProfileSection';
+import WhatsAppForwarderSection from './sections/WhatsAppForwarderSection';
 import GoogleIcon from '@/assets/icons/google-icon.svg';
 
 import { useEffect, useState } from 'react';
@@ -14,15 +16,23 @@ import {
   BarChart3,
   Bell,
   Brain,
+  Calendar,
   CheckCircle,
   Inbox,
   Loader2,
+  MessageCircle,
   ShieldCheck,
+  Truck,
 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
 
 // ── Demo sign-up gate ─────────────────────────────────────────────────────────
+// Used internally for live API data — never shown in UI
+const DEMO_COMPANY = 'ADSO';
+// Generic display name shown in UI
+const DEMO_DISPLAY = 'Freight Forwarding Co.';
+
 function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -32,9 +42,8 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (!email) return;
+    if (!email || !password) return;
     setLoading(true);
-    // Simulate account creation delay
     setTimeout(() => {
       setLoading(false);
       setDone(true);
@@ -44,13 +53,12 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
   }
 
   function handleGoogleSignIn() {
-    signIn('google', { callbackUrl: '/dashboard/atlas' });
+    signIn('google', { callbackUrl: '/dashboard/freightforwardingcompany' });
   }
 
   return (
     <div className="min-h-screen bg-[#f5f4f3] flex items-center justify-center p-4 font-poppins">
       <div className="w-full max-w-md">
-        {/* Logo — mix-blend-multiply removes the white circle background */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center justify-center mb-4">
             <Image
@@ -68,7 +76,6 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
           </p>
         </div>
 
-        {/* Card */}
         <div className="bg-white rounded-2xl shadow-sm border border-border p-8">
           {done ? (
             <div className="flex flex-col items-center gap-3 py-6 text-center">
@@ -82,7 +89,6 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
             </div>
           ) : (
             <>
-              {/* Google Sign-In */}
               <button
                 type="button"
                 onClick={handleGoogleSignIn}
@@ -107,7 +113,7 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Jessica Panigari"
+                    placeholder="e.g. Your full name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
@@ -120,7 +126,7 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
                   <input
                     type="email"
                     required
-                    placeholder="judge@google.com"
+                    placeholder="you@yourcompany.com"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
@@ -151,7 +157,7 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
                       account…
                     </>
                   ) : (
-                    'Create free account'
+                    'Access my dashboard'
                   )}
                 </button>
               </form>
@@ -159,7 +165,6 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
           )}
         </div>
 
-        {/* Trust note */}
         <p className="text-center text-xs text-muted-foreground mt-4">
           🔒 Demo environment · No real data stored · Powered by Atlas
         </p>
@@ -168,7 +173,14 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
   );
 }
 
-type Section = 'overview' | 'leads' | 'alerts' | 'intelligence' | 'profile';
+type Section =
+  | 'overview'
+  | 'leads'
+  | 'alerts'
+  | 'intelligence'
+  | 'profile'
+  | 'calendar'
+  | 'whatsapp';
 
 const NAV: {
   id: Section;
@@ -185,6 +197,8 @@ const NAV: {
   },
   { id: 'alerts', label: 'Lane Alerts', Icon: Bell, badge: 3 },
   { id: 'intelligence', label: 'Intelligence', Icon: Brain },
+  { id: 'calendar', label: 'Calendar', Icon: Calendar },
+  { id: 'whatsapp', label: 'WhatsApp', Icon: MessageCircle },
   { id: 'profile', label: 'Profile & Trust', Icon: ShieldCheck },
 ];
 
@@ -218,19 +232,15 @@ export default function AtlasDashboard() {
         {/* Company header */}
         <div className="px-4 py-5 border-b border-border">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-lg bg-[#0d0d1a] flex items-center justify-center shrink-0 overflow-hidden p-1">
-              <img
-                src="/boxman-logo.png"
-                alt="Boxman Global"
-                className="w-full h-full object-contain"
-              />
+            <div className="w-9 h-9 rounded-lg bg-primaryOrange flex items-center justify-center shrink-0">
+              <Truck size={18} className="text-white" />
             </div>
             <div className="min-w-0">
               <p className="text-[12px] font-bold text-black leading-tight truncate">
-                Boxman Global
+                Freight Dashboard
               </p>
               <p className="text-[10px] text-muted-foreground truncate">
-                Dubai, UAE
+                Powered by Atlas
               </p>
             </div>
           </div>
@@ -332,7 +342,7 @@ export default function AtlasDashboard() {
         <div className="shrink-0 px-6 py-2.5 bg-primaryOrange/8 border-b border-primaryOrange/15 flex items-center justify-between">
           <p className="text-xs text-primaryOrange font-medium">
             👋 Welcome, <span className="font-bold">{user}</span> — Atlas is
-            active and monitoring your network.
+            active and routing leads to your dashboard.
           </p>
           <button
             onClick={() => {
@@ -345,9 +355,13 @@ export default function AtlasDashboard() {
           </button>
         </div>
         {section === 'overview' && <OverviewSection />}
-        {section === 'leads' && <LeadsSection />}
+        {section === 'leads' && <LeadsSection forwarder={DEMO_COMPANY} />}
         {section === 'alerts' && <AlertsSection />}
-        {section === 'intelligence' && <IntelligenceSection />}
+        {section === 'intelligence' && (
+          <IntelligenceSection company={DEMO_DISPLAY} />
+        )}
+        {section === 'calendar' && <CalendarSection />}
+        {section === 'whatsapp' && <WhatsAppForwarderSection />}
         {section === 'profile' && <ProfileSection />}
       </div>
     </div>

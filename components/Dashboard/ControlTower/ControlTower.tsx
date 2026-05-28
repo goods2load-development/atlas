@@ -2,11 +2,12 @@
 
 import GoogleIcon from '@/assets/icons/google-icon.svg';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   Activity,
   Bot,
+  Brain,
   Building2,
   CheckCircle,
   CheckCircle2,
@@ -197,7 +198,7 @@ function OpsLogin({ onSuccess }: { onSuccess: (name: string) => void }) {
               className="mix-blend-multiply"
             />
           </div>
-          <h1 className="text-2xl font-bold text-black">Goods2Load Ops</h1>
+          <h1 className="text-2xl font-bold text-black">Atlas · Goods2Load</h1>
           <p className="text-sm text-muted-foreground mt-1">
             Access the Atlas Control Tower
           </p>
@@ -242,7 +243,7 @@ function OpsLogin({ onSuccess }: { onSuccess: (name: string) => void }) {
                   </label>
                   <input
                     type="text"
-                    placeholder="e.g. Jessica Panigari"
+                    placeholder="e.g. Your full name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
@@ -763,7 +764,7 @@ function HermesSection() {
               </span>
             </div>
             <p className="text-[11px] text-muted-foreground font-mono">
-              ops@goods2load.com
+              atlas@goods2load.com
             </p>
           </div>
           <span className="text-[12px] font-bold text-black shrink-0">
@@ -1095,11 +1096,11 @@ function EmailSection() {
         <div className="flex items-center gap-2">
           <div className="w-2 h-2 rounded-full bg-blue-400" />
           <span className="text-xs text-muted-foreground">
-            Goods2Load Ops Inbox · Hermes-processed freight enquiries
+            Atlas Inbox · Hermes-processed freight enquiries
           </span>
         </div>
         <a
-          href="https://mail.google.com/mail/u/0/?authuser=ahmed@goods2load.com#inbox"
+          href="https://mail.google.com/mail/u/0/?authuser=atlas@goods2load.com#inbox"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 text-[11px] font-medium text-primaryOrange hover:underline"
@@ -1212,7 +1213,7 @@ function CalendarSection() {
       </div>
       <div className="flex-1 rounded-xl overflow-hidden border border-border shadow-sm bg-white">
         <iframe
-          src="https://calendar.google.com/calendar/embed?src=ahmed%40goods2load.com&ctz=Asia%2FDubai&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&mode=WEEK"
+          src="https://calendar.google.com/calendar/embed?src=atlas%40goods2load.com&ctz=Asia%2FDubai&showTitle=0&showNav=1&showDate=1&showPrint=0&showTabs=1&showCalendars=0&mode=WEEK"
           className="w-full h-full min-h-[600px]"
           title="Google Calendar"
           frameBorder="0"
@@ -1229,155 +1230,257 @@ function CalendarSection() {
 
 // ── WhatsApp section ──────────────────────────────────────────────────────────
 
-const WA_MESSAGES = [
-  {
-    id: 'w1',
-    from: '+971 55 265 5499',
-    direction: 'in' as const,
-    text: 'Hi, I need air freight for pharma from Frankfurt to Baghdad, 2–8°C, GDP certified. Urgent.',
-    time: '09:12',
-    matched: 'Mateen Express & Logistics Iraq',
-  },
-  {
-    id: 'w2',
-    from: '+971 55 265 5499',
-    direction: 'out' as const,
-    text: '👋 Hi! Atlas found 3 matches for your GDP cold-chain shipment to Baghdad:\n1. Mateen Express — Iraq specialist, CROSS_BORDER, COLD_CHAIN\n2. SOLITAIR CARGO EXPRESS — Air cargo airline, DWC hub\n3. ADSO — Verified, pharma experience',
-    time: '09:13',
-    matched: null,
-  },
-  {
-    id: 'w3',
-    from: '+44 7700 900142',
-    direction: 'in' as const,
-    text: 'FCL 2×40ft containers Jebel Ali to Mumbai, need rate and transit time',
-    time: '14:05',
-    matched: 'SMLX Freight',
-  },
-  {
-    id: 'w4',
-    from: '+44 7700 900142',
-    direction: 'out' as const,
-    text: '📦 Top matches for FCL Jebel Ali → Mumbai:\n1. SMLX Freight — Sea freight specialist, weekly service\n2. Avgo Logistics — Verified, India coverage\n3. gtf shipping services — LCL/FCL, Asia lanes',
-    time: '14:05',
-    matched: null,
-  },
-  {
-    id: 'w5',
-    from: '+966 50 123 4567',
-    direction: 'in' as const,
-    text: 'Need GCC trucking from Riyadh to Dubai, 3 pallets FMCG with border clearance',
-    time: '16:40',
-    matched: 'Me Freight',
-  },
-  {
-    id: 'w6',
-    from: '+966 50 123 4567',
-    direction: 'out' as const,
-    text: '🚛 Road freight matches for Riyadh → Dubai:\n1. Me Freight — GCC road specialist, CUSTOMS_CLEARANCE\n2. Gulfwaves Logistics — UAE-based, CROSS_BORDER\n3. Naqel Express — FMCG certified, GCC network',
-    time: '16:41',
-    matched: null,
-  },
-];
+interface WaConversation {
+  phone: string;
+  displayPhone: string;
+  messages: {
+    sid: string;
+    direction: 'inbound' | 'outbound';
+    body: string;
+    dateCreated: string;
+    status: string;
+  }[];
+  lastActivity: string;
+  inquiryText: string;
+  hasAtlasReply: boolean;
+  matchedForwarders: string[];
+}
+
+function formatTime(iso: string): string {
+  try {
+    return new Date(iso).toLocaleTimeString('en-GB', {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  } catch {
+    return '';
+  }
+}
 
 function WhatsAppSection() {
-  const convos = Array.from(new Set(WA_MESSAGES.map((m) => m.from)));
+  const [conversations, setConversations] = useState<WaConversation[]>([]);
+  const [activePhone, setActivePhone] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [lastFetch, setLastFetch] = useState<Date | null>(null);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const bottomRef = useRef<HTMLDivElement>(null);
+
+  async function fetchConversations() {
+    try {
+      const res = await fetch('/api/twilio-messages');
+      if (!res.ok) return;
+      const data = await res.json();
+      if (data.conversations) {
+        setConversations(data.conversations);
+        setLastFetch(new Date());
+        if (!activePhone && data.conversations.length > 0) {
+          setActivePhone(data.conversations[0].phone);
+        }
+      }
+    } catch (e) {
+      console.error('[WhatsAppSection]', e);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    fetchConversations();
+    pollRef.current = setInterval(fetchConversations, 15_000);
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [activePhone, conversations]);
+
+  const activeConvo = conversations.find((c) => c.phone === activePhone);
 
   return (
-    <div className="grid grid-cols-3 gap-4 h-full">
-      {/* Conversation list */}
-      <div className="col-span-1 space-y-2">
-        <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-3">
-          Conversations
-        </p>
-        {convos.map((from) => {
-          const last = WA_MESSAGES.filter((m) => m.from === from).at(-1);
-          const inbound = WA_MESSAGES.filter(
-            (m) => m.from === from && m.direction === 'in',
-          ).length;
-          return (
-            <div
-              key={from}
-              className="p-3 rounded-xl bg-white border border-border hover:border-primaryOrange/40 cursor-pointer transition-colors"
-            >
-              <div className="flex items-center gap-2 mb-1">
-                <div className="w-7 h-7 rounded-full bg-[#25D366]/15 flex items-center justify-center shrink-0">
-                  <MessageSquare size={12} className="text-[#25D366]" />
-                </div>
-                <span className="text-[11px] font-semibold text-black truncate">
-                  {from}
-                </span>
-              </div>
-              <p className="text-[10px] text-muted-foreground truncate">
-                {last?.text.slice(0, 50)}…
+    <div className="flex h-full gap-0 overflow-hidden">
+      {/* ── Sidebar: conversation list ── */}
+      <div className="w-[220px] shrink-0 border-r border-border flex flex-col overflow-hidden">
+        <div className="px-4 py-3 border-b border-border flex items-center justify-between">
+          <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
+            Conversations
+          </p>
+          <span className="flex items-center gap-1 text-[9px] text-[#25D366] font-semibold">
+            <span className="w-1.5 h-1.5 rounded-full bg-[#25D366] animate-pulse" />
+            Live
+          </span>
+        </div>
+        <div className="flex-1 overflow-y-auto p-2 space-y-1.5">
+          {loading && (
+            <p className="text-[10px] text-muted-foreground text-center py-4">
+              Loading…
+            </p>
+          )}
+          {!loading && conversations.length === 0 && (
+            <div className="text-center py-6 px-3">
+              <MessageSquare
+                size={20}
+                className="mx-auto text-muted-foreground mb-2 opacity-40"
+              />
+              <p className="text-[10px] text-muted-foreground">
+                No WhatsApp messages yet.
               </p>
-              <div className="flex items-center justify-between mt-1.5">
-                <span className="text-[9px] text-muted-foreground">
-                  {last?.time}
-                </span>
-                <span className="text-[9px] bg-[#25D366]/10 text-[#25D366] px-1.5 py-0.5 rounded-full font-medium">
-                  {inbound} msgs
-                </span>
-              </div>
+              <p className="text-[9px] text-muted-foreground mt-1 opacity-70">
+                Waiting for incoming messages on the Twilio number.
+              </p>
             </div>
-          );
-        })}
-        <div className="pt-2 border-t border-border">
-          <p className="text-[10px] text-muted-foreground text-center">
-            Via Twilio WhatsApp Sandbox
+          )}
+          {conversations.map((conv) => {
+            const isActive = conv.phone === activePhone;
+            const inboundCount = conv.messages.filter(
+              (m) => m.direction === 'inbound',
+            ).length;
+            return (
+              <button
+                key={conv.phone}
+                onClick={() => setActivePhone(conv.phone)}
+                className={`w-full text-left p-2.5 rounded-lg transition-colors ${
+                  isActive
+                    ? 'bg-[#25D366]/10 border border-[#25D366]/30'
+                    : 'bg-white border border-border hover:border-[#25D366]/30'
+                }`}
+              >
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-6 h-6 rounded-full bg-[#25D366]/15 flex items-center justify-center shrink-0">
+                    <MessageSquare size={10} className="text-[#25D366]" />
+                  </div>
+                  <span className="text-[10px] font-semibold text-black truncate">
+                    {conv.displayPhone}
+                  </span>
+                </div>
+                <p className="text-[9px] text-muted-foreground truncate">
+                  {conv.inquiryText.slice(0, 45)}
+                  {conv.inquiryText.length > 45 ? '…' : ''}
+                </p>
+                <div className="flex items-center justify-between mt-1">
+                  <span className="text-[8px] text-muted-foreground">
+                    {formatTime(conv.lastActivity)}
+                  </span>
+                  <div className="flex items-center gap-1">
+                    {conv.hasAtlasReply && (
+                      <span className="text-[8px] bg-primaryOrange/10 text-primaryOrange px-1 py-0.5 rounded-full font-semibold">
+                        Atlas matched
+                      </span>
+                    )}
+                    <span className="text-[8px] bg-[#25D366]/10 text-[#25D366] px-1 py-0.5 rounded-full">
+                      {inboundCount}
+                    </span>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
+        <div className="px-3 py-2 border-t border-border">
+          <p className="text-[8px] text-muted-foreground text-center">
+            via Twilio · +971 55 265 5499
+            {lastFetch && (
+              <span className="block opacity-60">
+                Updated {formatTime(lastFetch.toISOString())}
+              </span>
+            )}
           </p>
         </div>
       </div>
 
-      {/* Message thread */}
-      <div className="col-span-2 flex flex-col bg-white rounded-xl border border-border overflow-hidden">
-        <div className="px-4 py-3 border-b border-border flex items-center gap-2">
-          <div className="w-6 h-6 rounded-full bg-[#25D366] flex items-center justify-center">
-            <MessageSquare size={12} className="text-white" />
+      {/* ── Main: message thread ── */}
+      <div className="flex-1 flex flex-col overflow-hidden">
+        {/* Thread header */}
+        <div className="shrink-0 px-5 py-3 border-b border-border bg-white flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-[#25D366] flex items-center justify-center shrink-0">
+            <MessageSquare size={14} className="text-white" />
           </div>
-          <span className="text-[12px] font-semibold text-black">
-            All conversations
-          </span>
-          <span className="ml-auto text-[9px] bg-green-50 text-green-700 border border-green-200 px-2 py-0.5 rounded-full font-medium">
+          <div className="flex-1 min-w-0">
+            <p className="text-[13px] font-semibold text-black truncate">
+              {activeConvo ? activeConvo.displayPhone : 'Select a conversation'}
+            </p>
+            {activeConvo?.matchedForwarders.length ? (
+              <p className="text-[10px] text-primaryOrange font-medium truncate">
+                Atlas matched:{' '}
+                {activeConvo.matchedForwarders.slice(0, 2).join(', ')}
+              </p>
+            ) : (
+              <p className="text-[10px] text-muted-foreground">
+                {activeConvo
+                  ? 'Pending Atlas match'
+                  : 'WhatsApp · Twilio gateway'}
+              </p>
+            )}
+          </div>
+          <span className="shrink-0 text-[9px] bg-green-50 text-green-700 border border-green-200 px-2 py-1 rounded-full font-semibold">
             ● Live
           </span>
         </div>
-        <div className="flex-1 overflow-y-auto p-4 space-y-3">
-          {WA_MESSAGES.map((msg) => (
+
+        {/* Messages */}
+        <div className="flex-1 overflow-y-auto p-4 space-y-2.5 bg-[#e5ddd5]">
+          {!activeConvo && !loading && (
+            <div className="flex items-center justify-center h-full">
+              <p className="text-[11px] text-muted-foreground">
+                {conversations.length === 0
+                  ? 'No conversations yet. Send a WhatsApp to +971 55 265 5499 to begin.'
+                  : 'Select a conversation from the left.'}
+              </p>
+            </div>
+          )}
+          {activeConvo?.messages.map((msg) => (
             <div
-              key={msg.id}
-              className={`flex ${msg.direction === 'out' ? 'justify-end' : 'justify-start'}`}
+              key={msg.sid}
+              className={`flex ${msg.direction === 'outbound' ? 'justify-end' : 'justify-start'}`}
             >
               <div
-                className={`max-w-[75%] rounded-2xl px-3 py-2 text-[11px] leading-relaxed whitespace-pre-line ${
-                  msg.direction === 'out'
-                    ? 'bg-[#25D366]/15 text-black rounded-br-sm'
-                    : 'bg-gray-100 text-black rounded-bl-sm'
+                className={`max-w-[78%] rounded-2xl px-3 py-2 text-[11px] leading-relaxed whitespace-pre-line shadow-sm ${
+                  msg.direction === 'outbound'
+                    ? 'bg-[#dcf8c6] text-black rounded-tr-sm'
+                    : 'bg-white text-black rounded-tl-sm'
                 }`}
               >
-                {msg.direction === 'in' && (
-                  <p className="text-[9px] font-semibold text-muted-foreground mb-1">
-                    {msg.from}
+                {msg.direction === 'outbound' && (
+                  <p className="text-[9px] font-semibold text-green-700 mb-0.5">
+                    Atlas · Goods2Load
                   </p>
                 )}
-                {msg.text}
+                {msg.body}
                 <div className="flex items-center justify-end gap-1 mt-1">
-                  <span className="text-[9px] text-muted-foreground">
-                    {msg.time}
+                  <span className="text-[8px] text-gray-400">
+                    {formatTime(msg.dateCreated)}
                   </span>
-                  {msg.direction === 'out' && (
+                  {msg.direction === 'outbound' && (
                     <CheckCircle2 size={9} className="text-[#25D366]" />
                   )}
                 </div>
-                {msg.matched && (
-                  <span className="inline-block mt-1 text-[9px] bg-primaryOrange/10 text-primaryOrange px-1.5 py-0.5 rounded-full">
-                    → {msg.matched}
-                  </span>
-                )}
               </div>
             </div>
           ))}
+          <div ref={bottomRef} />
         </div>
+
+        {/* Atlas analysis bar */}
+        {activeConvo?.matchedForwarders.length ? (
+          <div className="shrink-0 px-5 py-3 bg-primaryOrange/6 border-t border-primaryOrange/15 flex items-center gap-3">
+            <div className="w-5 h-5 rounded-full bg-primaryOrange/20 flex items-center justify-center shrink-0">
+              <Brain size={11} className="text-primaryOrange" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-[10px] font-semibold text-primaryOrange">
+                Atlas ranked {activeConvo.matchedForwarders.length} forwarders
+                for this inquiry
+              </p>
+              <p className="text-[10px] text-muted-foreground truncate">
+                Top: {activeConvo.matchedForwarders.join(' · ')}
+              </p>
+            </div>
+            <span className="text-[9px] text-muted-foreground shrink-0">
+              Lead sent to forwarder dashboards
+            </span>
+          </div>
+        ) : null}
       </div>
     </div>
   );
@@ -1402,7 +1505,7 @@ const NAV: {
   { id: 'roster', label: 'Forwarder Roster', Icon: Building2 },
   { id: 'hermes', label: 'Hermes Inbox', Icon: Inbox, badge: 3 },
   { id: 'pipeline', label: 'Pipeline & Agents', Icon: Activity },
-  { id: 'email', label: 'Ops Inbox', Icon: Mail },
+  { id: 'email', label: 'Atlas Inbox', Icon: Mail },
   { id: 'calendar', label: 'Calendar', Icon: Globe },
   { id: 'whatsapp', label: 'WhatsApp', Icon: MessageSquare },
 ];
@@ -1475,7 +1578,7 @@ export default function ControlTower() {
               <p className="text-[12px] font-bold text-white leading-tight">
                 Control Tower
               </p>
-              <p className="text-[10px] text-gray-500">Goods2Load Ops</p>
+              <p className="text-[10px] text-gray-500">Atlas · Goods2Load</p>
             </div>
           </div>
         </div>
@@ -1536,8 +1639,9 @@ export default function ControlTower() {
         {/* Welcome banner */}
         <div className="shrink-0 px-6 py-2.5 bg-primaryOrange/8 border-b border-primaryOrange/15 flex items-center justify-between">
           <p className="text-xs text-primaryOrange font-medium">
-            👋 Welcome, <span className="font-bold">{user}</span> — you&apos;re
-            viewing the Goods2Load internal ops dashboard.
+            👋 Welcome to the{' '}
+            <span className="font-bold">Atlas Control Tower</span> — live
+            pipeline, forwarder roster &amp; freight intelligence.
           </p>
           <button
             onClick={() => {
@@ -1562,7 +1666,7 @@ export default function ControlTower() {
                   : section === 'pipeline'
                     ? 'Pipeline & Agent Status'
                     : section === 'email'
-                      ? 'Goods2Load Ops Inbox'
+                      ? 'Atlas Inbox'
                       : section === 'calendar'
                         ? 'Calendar — Goods2Load'
                         : 'WhatsApp — Hermes Gateway'}

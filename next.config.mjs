@@ -136,6 +136,20 @@ const nextConfig = {
     ],
   },
   compress: true,
+  async redirects() {
+    return [
+      {
+        source: '/dashboard/atlas',
+        destination: '/dashboard/freightforwardingcompany',
+        permanent: false,
+      },
+      {
+        source: '/',
+        destination: '/agent',
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

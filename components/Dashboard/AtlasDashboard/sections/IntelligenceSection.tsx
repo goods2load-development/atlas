@@ -13,29 +13,26 @@ const SUGGESTIONS = [
   'How do I rank higher for pharma freight on G2L?',
 ];
 
-const SYSTEM_CONTEXT = `You are Atlas, the AI freight intelligence assistant for Boxman Global Logistics — a Dubai-based freight forwarder (Al Garhoud, Airport Road).
+function buildSystemContext(company: string) {
+  return `You are Atlas, the AI freight intelligence assistant for ${company} — a freight forwarder on the Goods2Load network.
 
-Key facts about Boxman:
-- Mode mix: Air 50%, Sea 30%, Road 20%
-- Specialisations: Cold Chain, Dangerous Goods, Automotive, Pharma, Electronics, Exhibition logistics
-- Key lanes: FRA↔DXB (air), SHA/SZX→Jebel Ali (sea), BOM↔DXB (air), Dubai→GCC (road)
-- Certifications: ISO 9001:2015, FIATA, NAFL
-- Current trust score: 84/100
-- Current win rate: 61% (G2L target: 78%)
-- Notable clients: Aston Martin, Leader Healthcare, Patriot Sealing
-
-Answer all questions specifically for Boxman's situation. Be concise, actionable, and use real freight industry knowledge.`;
+Answer all questions specifically for ${company}'s situation. Be concise, actionable, and use real freight industry knowledge. If you don't have specific data for ${company}, give relevant general freight industry advice for a forwarder with their profile.`;
+}
 
 interface Message {
   role: 'user' | 'atlas';
   text: string;
 }
 
-export default function IntelligenceSection() {
+export default function IntelligenceSection({
+  company = 'your company',
+}: {
+  company?: string;
+}) {
   const [messages, setMessages] = useState<Message[]>([
     {
       role: 'atlas',
-      text: `Good morning. I'm Atlas — your freight intelligence layer. I know Boxman's lanes, your 61% win rate, your DG and cold chain capabilities, and the current market rates on your top corridors.\n\nWhat do you want to work on today?`,
+      text: `Good morning. I'm Atlas — your freight intelligence layer. I know ${company}'s lanes, capabilities, and the current market rates on your top corridors.\n\nWhat do you want to work on today?`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -63,7 +60,7 @@ export default function IntelligenceSection() {
           messages: [
             {
               role: 'user',
-              content: `${SYSTEM_CONTEXT}\n\nBoxman forwarder asks: ${text.trim()}`,
+              content: `${buildSystemContext(company)}\n\n${company} forwarder asks: ${text.trim()}`,
             },
           ],
         }),
@@ -208,7 +205,7 @@ export default function IntelligenceSection() {
           </button>
         </div>
         <p className="text-[10px] text-muted-foreground text-center mt-2">
-          Atlas knows Boxman&apos;s full profile, market rates, and G2L platform
+          Atlas knows {company}&apos;s profile, market rates, and G2L platform
           data
         </p>
       </div>

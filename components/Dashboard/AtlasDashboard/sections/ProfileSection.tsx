@@ -3,7 +3,7 @@
 import { BOXMAN } from '../boxmanData';
 import AtlasLaneMap from './AtlasLaneMap';
 
-import { AlertCircle, CheckCircle, Clock } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, Truck } from 'lucide-react';
 
 const TRUST_SIGNALS = [
   { label: 'ISO 9001:2015 Quality Management', status: 'verified' },
@@ -66,7 +66,7 @@ export default function ProfileSection() {
       <div className="px-6 pt-6 pb-4 border-b border-border">
         <h2 className="text-lg font-bold text-black">Profile & Trust</h2>
         <p className="text-[12px] text-muted-foreground">
-          How Boxman appears to shippers — and how Atlas scores you
+          How your company appears to shippers — and how Atlas scores you
         </p>
       </div>
 
@@ -74,33 +74,21 @@ export default function ProfileSection() {
         {/* Profile hero */}
         <div className="bg-white rounded-xl border border-border p-6">
           <div className="flex items-start gap-6 flex-wrap">
-            <div className="w-16 h-16 rounded-xl bg-[#0d0d1a] flex items-center justify-center shrink-0 overflow-hidden p-2">
-              <img
-                src="/boxman-logo.png"
-                alt="Boxman Global"
-                className="w-full h-full object-contain"
-              />
+            <div className="w-16 h-16 rounded-xl bg-primaryOrange flex items-center justify-center shrink-0">
+              <Truck size={28} className="text-white" />
             </div>
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2 flex-wrap">
                 <h3 className="text-lg font-black text-black">
-                  {BOXMAN.companyName}
+                  Freight Forwarding Co.
                 </h3>
                 <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700 border border-green-200">
                   Approved
                 </span>
               </div>
               <p className="text-[12px] text-muted-foreground mt-0.5">
-                {BOXMAN.city}, {BOXMAN.country} · {BOXMAN.address}
+                Dubai, United Arab Emirates · Business Bay
               </p>
-              <div className="flex items-center gap-3 mt-2 flex-wrap">
-                <span className="text-[11px] text-muted-foreground">
-                  {BOXMAN.email}
-                </span>
-                <span className="text-[11px] text-muted-foreground">
-                  {BOXMAN.phone}
-                </span>
-              </div>
               <div className="flex items-center gap-2 mt-2 flex-wrap">
                 {BOXMAN.certifications.map((cert) => (
                   <span
@@ -118,14 +106,17 @@ export default function ProfileSection() {
             <TrustScore score={BOXMAN.trustScore} />
           </div>
           <p className="text-[12px] text-muted-foreground leading-relaxed mt-4 border-t border-border pt-4">
-            {BOXMAN.description}
+            Dubai-based freight forwarder specialising in air, sea, and road
+            logistics across the Middle East, Asia, and Europe. ISO 9001:2015
+            certified with a strong track record in pharma, cold chain, and
+            dangerous goods handling.
           </p>
           <div className="flex items-center gap-2 mt-2">
             <span className="text-[11px] text-amber-600 font-medium">
-              ★ 5.0
+              ★ 4.8
             </span>
             <span className="text-[11px] text-muted-foreground">
-              21 Google reviews · Al Garhoud, Dubai
+              Google reviews · Dubai, UAE
             </span>
           </div>
         </div>
@@ -242,17 +233,19 @@ export default function ProfileSection() {
           <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-3">
             Notable clients
           </h3>
-          <div className="flex items-center gap-3">
-            {BOXMAN.notableClients.map((client) => (
-              <div
-                key={client}
-                className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 border border-border"
-              >
-                <span className="text-[13px] font-bold text-black">
-                  {client}
-                </span>
-              </div>
-            ))}
+          <div className="flex items-center gap-3 flex-wrap">
+            {['Global Pharma Group', 'AeroTrade LLC', 'MedSupply MENA'].map(
+              (client) => (
+                <div
+                  key={client}
+                  className="flex items-center gap-2 px-4 py-2 rounded-lg bg-gray-50 border border-border"
+                >
+                  <span className="text-[13px] font-bold text-black">
+                    {client}
+                  </span>
+                </div>
+              ),
+            )}
           </div>
         </div>
 

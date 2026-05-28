@@ -46,8 +46,12 @@ export async function middleware(request: NextRequest) {
   const response = NextResponse.next();
   response.headers.set('x-url', currentPath);
 
-  // Atlas dashboard is always public — demo data only, no auth needed
-  if (currentPath.startsWith('/dashboard/atlas')) {
+  // Atlas & Ops dashboards are always public — auth gate handled client-side
+  if (
+    currentPath.startsWith('/dashboard/atlas') ||
+    currentPath.startsWith('/dashboard/ops') ||
+    currentPath.startsWith('/dashboard/freightforwardingcompany')
+  ) {
     return response;
   }
 

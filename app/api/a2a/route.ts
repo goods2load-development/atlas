@@ -441,25 +441,44 @@ export async function POST(req: NextRequest) {
 
       // TODO Layer 3: replace with live Maersk Ocean P2P or Schedules API call
       // const maerskRate = await fetchMaerskRate(parseRoute(cargo));
-      try {
-        await sendWhatsApp(
-          clientPhone,
-          buildRateQuote(forwarder, reference, cargo),
-        );
-        console.log('[ForwarderAgent] rate quote sent to', clientPhone);
-      } catch (e) {
-        console.error('[ForwarderAgent] quote failed', e);
-      }
+      //
+      // NOTE: Atlas does NOT auto-send to cargo owner here.
+      // The forwarder reviews the booking in their dashboard and clicks
+      // "Send Introduction" or "Send Rate Quote" — messages go via /api/reply-wa.
+      // This preserves the correct architecture: forwarder speaks, not Atlas.
+      const route = parseRoute(cargo ?? '');
+      const mode = guessMode(cargo ?? '');
+      const rateData = estimateRate(
+        cargo ?? '',
+        route.origin,
+        route.destination,
+        mode,
+      );
+
+      console.log(
+        '[ForwarderAgent] booking received — dashboard action required for',
+        reference,
+      );
 
       return NextResponse.json({
         id: taskId,
         status: { state: 'completed' },
         type: 'booking_notification',
-        agentAction: 'rate_quote_sent',
+        agentAction: 'booking_received',
+        draftedMessages: {
+          introduction: buildForwarderACK(forwarder, cargo ?? '', route),
+          rateQuote: buildRateQuote(forwarder, reference, cargo ?? ''),
+        },
+        estimatedRate: {
+          min: rateData.min,
+          max: rateData.max,
+          transit: rateData.transit,
+          mode,
+        },
         artifacts: [
           {
             type: 'text/plain',
-            data: `Booking ${reference} routed to ${forwarder}. Rate quote dispatched to ${clientPhone}.`,
+            data: `Booking ${reference} routed to ${forwarder}. Action required: open dashboard to send introduction and rate quote.`,
           },
         ],
         routing: {

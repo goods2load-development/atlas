@@ -2,7 +2,7 @@
 
 import { DEMO_LEADS, type DemoLead, MARKET_RATES } from '../boxmanData';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   ChevronRight,
@@ -11,6 +11,7 @@ import {
   MessageCircle,
   Minus,
   Plane,
+  Radio,
   Ship,
   TrendingDown,
   TrendingUp,
@@ -91,15 +92,143 @@ const STAGES = [
   { key: 'lost', label: 'Lost', color: 'bg-gray-400' },
 ] as const;
 
+// ── Forwarder Agent draft messages ────────────────────────────────────────────
+// Client-side equivalents of the server buildForwarderACK / buildRateQuote helpers.
+// Used by the dashboard to pre-fill the reply box — forwarder clicks "Send" when ready.
+
+function buildDraftIntro(lead: {
+  bookingForwarder?: string;
+  bookingRef?: string;
+  cargo?: string;
+  mode?: string;
+  origin?: string;
+  destination?: string;
+}): string {
+  const forwarder = lead.bookingForwarder ?? 'Freight Forwarding Co.';
+  const mode =
+    lead.mode === 'air' ? 'air' : lead.mode === 'sea' ? 'sea' : 'road';
+  const cold = /cold|pharma|2-8|temperature|vaccine|gdp/i.test(
+    lead.cargo ?? '',
+  );
+  return (
+    `🚛 *${forwarder}* · via Goods2Load\n\n` +
+    `Hi! We received your${cold ? ' cold-chain' : ''} ${mode} freight inquiry ` +
+    `(Ref: ${lead.bookingRef ?? ''}) through the Atlas network.\n\n` +
+    `We specialise in this lane and are preparing your rate quote right now. ` +
+    `Could you confirm the cargo weight and any special handling requirements?\n\n` +
+    `We'll send a full quote within the hour.\n\n` +
+    `_${forwarder} · Goods2Load Partner_`
+  );
+}
+
+function buildDraftRateQuote(lead: {
+  bookingForwarder?: string;
+  bookingRef?: string;
+  cargo?: string;
+  mode?: string;
+  origin?: string;
+  destination?: string;
+}): string {
+  const forwarder = lead.bookingForwarder ?? 'Freight Forwarding Co.';
+  const ref = lead.bookingRef ?? '';
+  const both = `${lead.origin ?? ''} ${lead.destination ?? ''}`.toLowerCase();
+
+  let min = 2000,
+    max = 2800,
+    transit = '4-6 days';
+  if (both.match(/uae|dubai|dxb/) && both.match(/iraq|baghdad|basra/)) {
+    min = 1600;
+    max = 2200;
+    transit = '3-5 days';
+  } else if (both.match(/uae|dubai/) && both.match(/saudi|riyadh|jeddah/)) {
+    min = 700;
+    max = 1200;
+    transit = '1-2 days';
+  } else if (both.match(/uae|dubai/) && both.match(/mumbai|india/)) {
+    min = 1000;
+    max = 1600;
+    transit = '2-4 days';
+  } else if (both.match(/uae|dubai/) && both.match(/amman|jordan/)) {
+    min = 1400;
+    max = 2000;
+    transit = '2-4 days';
+  }
+  if (lead.mode === 'air') {
+    min = Math.round(min * 2.8);
+    max = Math.round(max * 3.2);
+    transit = '24-48 hours';
+  }
+  if (lead.mode === 'sea') {
+    min = Math.round(min * 0.65);
+    max = Math.round(max * 0.75);
+    transit = '7-12 days';
+  }
+  const cold = /cold|pharma|2-8/i.test(lead.cargo ?? '');
+  if (cold) {
+    min += 300;
+    max += 550;
+  }
+  min = Math.round(min / 50) * 50;
+  max = Math.round(max / 50) * 50;
+
+  const modeIcon =
+    lead.mode === 'air' ? '✈️' : lead.mode === 'sea' ? '🚢' : '🚛';
+  const coldLabel = cold ? ' · Cold Chain 2–8°C' : '';
+  const origin = lead.origin ?? 'Origin';
+  const dest = lead.destination ?? 'Destination';
+
+  return (
+    `📋 *Rate Quote — ${ref}*\n\n` +
+    `${modeIcon} *${origin} → ${dest}*${coldLabel}\n` +
+    `*Estimated Rate:* $${min.toLocaleString()}–$${max.toLocaleString()} USD\n` +
+    `*Transit:* ${transit}\n` +
+    `*Forwarder:* ${forwarder}\n\n` +
+    `Reply *YES* to confirm, or ask any questions — our team is standing by.\n\n` +
+    `_Rate Quote · ${forwarder}_`
+  );
+}
+
 // ── Lead detail panel ─────────────────────────────────────────────────────────
 
 function LeadDetail({
   lead,
   onClose,
 }: {
-  lead: DemoLead;
+  lead: DemoLead & {
+    rawPhone?: string;
+    isLive?: boolean;
+    isBooking?: boolean;
+    bookingRef?: string;
+    bookingForwarder?: string;
+    cargo?: string;
+    mode?: string;
+    origin?: string;
+    destination?: string;
+  };
   onClose: () => void;
 }) {
+  const [replying, setReplying] = useState(false);
+  const [replyText, setReplyText] = useState('');
+  const [replySent, setReplySent] = useState(false);
+
+  async function sendReply() {
+    if (!replyText.trim() || !lead.rawPhone) return;
+    setReplying(true);
+    try {
+      await fetch('/api/reply-wa', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ to: lead.rawPhone, message: replyText }),
+      });
+      setReplySent(true);
+      setReplyText('');
+    } catch (e) {
+      console.error(e);
+    } finally {
+      setReplying(false);
+    }
+  }
+
   const ch = CHANNEL_CONFIG[lead.channel];
   const md = MODE_CONFIG[lead.mode];
 
@@ -312,14 +441,92 @@ function LeadDetail({
       </div>
 
       {/* Actions */}
-      <div className="px-5 py-4 border-t border-border flex gap-2">
-        <button className="flex-1 bg-primaryOrange text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity">
-          Generate proforma
-        </button>
-        <button className="flex items-center gap-1.5 border border-[#25D366] text-[#25D366] text-[12px] font-semibold px-4 py-2.5 rounded-lg hover:bg-green-50 transition-colors">
-          <MessageCircle size={13} strokeWidth={2} />
-          Reply via WhatsApp
-        </button>
+      <div className="px-5 py-4 border-t border-border space-y-3">
+        {/* Forwarder Agent pre-drafted messages — only for confirmed bookings */}
+        {lead.isBooking && lead.rawPhone && (
+          <div className="space-y-2">
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">
+              Forwarder Agent — send to cargo owner
+            </p>
+            {/* Introduction card */}
+            <button
+              onClick={() => setReplyText(buildDraftIntro(lead))}
+              className="w-full text-left p-3 rounded-lg border border-[#25D366]/40 bg-[#e8f8ef] hover:bg-[#d4f2e0] transition-colors group"
+            >
+              <p className="text-[10px] font-bold text-[#128C7E] mb-1 flex items-center gap-1.5">
+                <MessageCircle size={10} strokeWidth={2.5} />
+                Send Introduction
+              </p>
+              <p className="text-[10px] text-gray-600 line-clamp-2">
+                Introduce {lead.bookingForwarder ?? 'your company'}, acknowledge
+                the booking ref, ask for cargo details.
+              </p>
+            </button>
+            {/* Rate Quote card */}
+            <button
+              onClick={() => setReplyText(buildDraftRateQuote(lead))}
+              className="w-full text-left p-3 rounded-lg border border-primaryOrange/30 bg-orange-50 hover:bg-orange-100 transition-colors group"
+            >
+              <p className="text-[10px] font-bold text-primaryOrange mb-1 flex items-center gap-1.5">
+                <span className="text-[10px]">📋</span>
+                Send Rate Quote
+              </p>
+              <p className="text-[10px] text-gray-600 line-clamp-2">
+                Pre-computed rate estimate for {lead.origin} →{' '}
+                {lead.destination} · {lead.mode}. Click to review, then send.
+              </p>
+            </button>
+          </div>
+        )}
+
+        {/* Reply box for live WhatsApp leads (bookings + regular) */}
+        {lead.isLive && lead.rawPhone && (
+          <div className="space-y-2">
+            {replySent && (
+              <p className="text-[10px] text-green-600 font-semibold flex items-center gap-1">
+                <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
+                Reply sent via WhatsApp
+              </p>
+            )}
+            <div className="flex gap-2">
+              <textarea
+                value={replyText}
+                onChange={(e) => setReplyText(e.target.value)}
+                onKeyDown={(e) =>
+                  e.key === 'Enter' &&
+                  e.shiftKey === false &&
+                  (e.preventDefault(), sendReply())
+                }
+                placeholder={
+                  lead.isBooking
+                    ? 'Click a card above to pre-fill, then review and send…'
+                    : 'Type reply to cargo owner…'
+                }
+                rows={replyText.length > 80 ? 4 : 2}
+                className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-[#25D366]/50 focus:outline-none focus:ring-1 focus:ring-[#25D366] bg-gray-50 resize-none"
+              />
+              <button
+                onClick={sendReply}
+                disabled={replying || !replyText.trim()}
+                className="flex items-center gap-1.5 border border-[#25D366] bg-[#25D366] text-white text-[11px] font-semibold px-3 py-2 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40 self-end"
+              >
+                <MessageCircle size={12} strokeWidth={2} />
+                {replying ? '…' : 'Send'}
+              </button>
+            </div>
+          </div>
+        )}
+        <div className="flex gap-2">
+          <button className="flex-1 bg-primaryOrange text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity">
+            Generate proforma
+          </button>
+          {!lead.isLive && (
+            <button className="flex items-center gap-1.5 border border-[#25D366] text-[#25D366] text-[12px] font-semibold px-4 py-2.5 rounded-lg hover:bg-green-50 transition-colors">
+              <MessageCircle size={13} strokeWidth={2} />
+              Reply via WhatsApp
+            </button>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -332,7 +539,7 @@ function LeadCard({
   onClick,
   active,
 }: {
-  lead: DemoLead;
+  lead: LiveLead;
   onClick: () => void;
   active: boolean;
 }) {
@@ -344,11 +551,15 @@ function LeadCard({
     <button
       onClick={onClick}
       className={`w-full text-left rounded-xl border p-3.5 transition-all hover:shadow-sm ${
-        active
-          ? 'border-primaryOrange shadow-sm shadow-primaryOrange/10 bg-primaryOrange/3'
-          : isNew
-            ? 'border-primaryOrange/30 bg-white'
-            : 'border-border bg-white'
+        lead.isBooking
+          ? 'border-green-400 shadow-sm shadow-green-100 bg-green-50'
+          : lead.isLive
+            ? 'border-[#25D366]/60 shadow-sm shadow-green-100 bg-green-50/30'
+            : active
+              ? 'border-primaryOrange shadow-sm shadow-primaryOrange/10 bg-primaryOrange/3'
+              : isNew
+                ? 'border-primaryOrange/30 bg-white'
+                : 'border-border bg-white'
       } ${lead.status === 'lost' ? 'opacity-50' : ''}`}
     >
       <div className="flex items-start justify-between gap-2 mb-2">
@@ -359,7 +570,18 @@ function LeadCard({
             <ch.Icon size={9} strokeWidth={2} />
             {ch.label}
           </span>
-          {isNew && (
+          {lead.isBooking && (
+            <span className="flex items-center gap-0.5 text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-green-500 text-white">
+              ✅ BOOKED
+            </span>
+          )}
+          {lead.isLive && !lead.isBooking && (
+            <span className="flex items-center gap-0.5 text-[8px] font-bold px-1.5 py-0.5 rounded-full bg-[#25D366] text-white animate-pulse">
+              <Radio size={7} strokeWidth={2.5} />
+              LIVE
+            </span>
+          )}
+          {isNew && !lead.isLive && (
             <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full bg-primaryOrange text-white">
               New
             </span>
@@ -422,9 +644,9 @@ function StageColumn({
   onSelect,
 }: {
   stage: (typeof STAGES)[number];
-  leads: DemoLead[];
+  leads: LiveLead[];
   activeLead: string | null;
-  onSelect: (lead: DemoLead) => void;
+  onSelect: (lead: LiveLead) => void;
 }) {
   return (
     <div className="flex flex-col min-w-[220px] max-w-[220px]">
@@ -465,25 +687,126 @@ function StageColumn({
 
 const TREND_ICON = { up: TrendingUp, down: TrendingDown, flat: Minus };
 
-export default function LeadsSection() {
-  const [activeLead, setActiveLead] = useState<DemoLead | null>(DEMO_LEADS[0]);
+type LiveLead = DemoLead & {
+  isLive?: boolean;
+  rawPhone?: string;
+  rawText?: string;
+  isBooking?: boolean;
+  bookingRef?: string;
+  bookingForwarder?: string;
+};
+
+export default function LeadsSection({
+  forwarder = '',
+}: {
+  forwarder?: string;
+}) {
+  const [activeLead, setActiveLead] = useState<LiveLead | null>(DEMO_LEADS[0]);
   const [filterMode, setFilterMode] = useState<'all' | 'air' | 'sea' | 'road'>(
     'all',
   );
+  const [liveLeads, setLiveLeads] = useState<LiveLead[]>([]);
+  const [bookingCount, setBookingCount] = useState(0);
+  const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  // Poll /api/a2a?forwarder=X every 20s
+  useEffect(() => {
+    async function fetchLive() {
+      try {
+        const param = forwarder
+          ? `?forwarder=${encodeURIComponent(forwarder)}`
+          : '';
+        const res = await fetch(`/api/a2a${param}`);
+        if (!res.ok) return;
+        const data = await res.json();
+
+        const leads: LiveLead[] = (data.leads ?? []).map(
+          (l: Record<string, unknown>) => ({
+            id: l.id as string,
+            channel: 'whatsapp' as const,
+            status: 'new' as const,
+            from: l.from as string,
+            company: (l.company as string) ?? '',
+            country: 'UAE',
+            flag: '🌍',
+            cargo: l.cargo as string,
+            mode: (l.mode as 'air' | 'sea' | 'road') ?? 'road',
+            origin: l.origin as string,
+            destination: l.destination as string,
+            time: l.receivedAt as string,
+            matchScore: 82,
+            winProbability: 70,
+            matchReasons: [
+              `Atlas rank #${l.atlasRank ?? 1} match`,
+              `Route: ${l.origin} → ${l.destination}`,
+            ],
+            momentumSent: true,
+            momentumTime: l.receivedAt as string,
+            momentumMessage: `Atlas routed this inquiry to you as rank #${l.atlasRank ?? 1} match.`,
+            isLive: true,
+            rawPhone: l.rawPhone as string,
+            rawText: l.rawText as string,
+          }),
+        );
+
+        const bookings: LiveLead[] = (data.bookings ?? []).map(
+          (b: Record<string, unknown>) => ({
+            id: b.id as string,
+            channel: 'whatsapp' as const,
+            status: 'new' as const,
+            from: `WhatsApp ${(b.phone as string)?.slice(-7)}`,
+            company: `✅ CONFIRMED — Ref: ${b.reference ?? ''}`,
+            country: 'UAE',
+            flag: '✅',
+            cargo: b.cargo as string,
+            mode: (b.mode as 'air' | 'sea' | 'road') ?? 'road',
+            origin: b.origin as string,
+            destination: b.destination as string,
+            time: b.bookedAt as string,
+            matchScore: 95,
+            winProbability: 95,
+            matchReasons: [
+              'Cargo owner confirmed booking',
+              `Reference: ${b.reference ?? ''}`,
+              'Action required: send proforma',
+            ],
+            momentumSent: false,
+            isLive: true,
+            isBooking: true,
+            bookingRef: b.reference as string,
+            bookingForwarder: b.forwarder as string,
+            rawPhone: b.phone as string,
+          }),
+        );
+
+        setLiveLeads([...bookings, ...leads]);
+        setBookingCount(bookings.length);
+      } catch {
+        // silent fallback
+      }
+    }
+    fetchLive();
+    pollRef.current = setInterval(fetchLive, 20_000);
+    return () => {
+      if (pollRef.current) clearInterval(pollRef.current);
+    };
+  }, [forwarder]);
+
+  const allLeads: LiveLead[] = [...liveLeads, ...DEMO_LEADS];
 
   const filtered =
     filterMode === 'all'
-      ? DEMO_LEADS
-      : DEMO_LEADS.filter((l) => l.mode === filterMode);
+      ? allLeads
+      : allLeads.filter((l) => l.mode === filterMode);
   const byStage = Object.fromEntries(
     STAGES.map((s) => [s.key, filtered.filter((l) => l.status === s.key)]),
   );
-  const pipelineValue = DEMO_LEADS.filter(
-    (l) => l.status !== 'lost' && l.value,
-  ).reduce(
-    (sum, l) => sum + parseFloat((l.value || '0').replace(/[^0-9.]/g, '')),
-    0,
-  );
+  const pipelineValue = allLeads
+    .filter((l) => l.status !== 'lost' && l.value)
+    .reduce(
+      (sum, l) => sum + parseFloat((l.value || '0').replace(/[^0-9.]/g, '')),
+      0,
+    );
 
   return (
     <div className="flex flex-col h-full">
@@ -492,10 +815,19 @@ export default function LeadsSection() {
         <div className="flex items-start justify-between gap-4">
           <div>
             <h2 className="text-lg font-bold text-black">Lead Pipeline</h2>
-            <p className="text-[12px] text-muted-foreground">
-              Momentum Agent has contacted{' '}
-              {DEMO_LEADS.filter((l) => l.momentumSent).length} of{' '}
-              {DEMO_LEADS.length} leads automatically
+            <p className="text-[12px] text-muted-foreground flex items-center gap-1.5 flex-wrap">
+              {bookingCount > 0 && (
+                <span className="inline-flex items-center gap-1 text-green-600 font-semibold bg-green-50 border border-green-200 px-2 py-0.5 rounded-full text-[10px]">
+                  ✅ {bookingCount} confirmed booking
+                  {bookingCount > 1 ? 's' : ''}
+                </span>
+              )}
+              {liveLeads.filter((l) => !l.isBooking).length > 0 && (
+                <span className="inline-flex items-center gap-1 text-[#25D366] font-semibold text-[10px]">
+                  <Radio size={9} strokeWidth={2.5} className="animate-pulse" />
+                  {liveLeads.filter((l) => !l.isBooking).length} live WhatsApp
+                </span>
+              )}
             </p>
           </div>
           <div className="flex items-center gap-3 shrink-0">
