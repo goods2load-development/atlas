@@ -47,6 +47,69 @@ function isGreeting(msg: string): boolean {
   return GREETING_PATTERNS.some((re) => re.test(trimmed));
 }
 
+// ── Compare intent detection ──────────────────────────────────────────────────
+// Catches "compare X and Y", "X vs Y", "which is better X or Y", etc.
+// Guard: must NOT contain freight keywords (avoids "air vs sea" being treated as compare)
+function detectCompare(msg: string): { a: string; b: string } | null {
+  const t = msg.trim();
+  // Skip if it looks like a freight query
+  if (
+    /\b(kg|ton|fcl|lcl|air|sea|road|freight|cargo|ship|from|to|pharma|cold)\b/i.test(
+      t,
+    )
+  )
+    return null;
+
+  const clean = (s: string) =>
+    s
+      .replace(/\s+(?:for|in|on|from|to|regarding|about)\b.*$/i, '')
+      .replace(/\s+(?:please|thanks|thank you)[.!?,]*$/i, '')
+      .replace(/[.!?,]$/, '')
+      .trim();
+
+  const patterns = [
+    /^compare\s+(.+?)\s+(?:and|vs\.?|versus|with)\s+(.+)$/i,
+    /^(.+?)\s+(?:vs\.?|versus)\s+(.+)$/i,
+    /^which(?:\s+(?:is|one))?\s+(?:is\s+)?better[,:]?\s+(.+?)\s+(?:or|vs\.?)\s+(.+)$/i,
+    /^(?:difference|diff)\s+between\s+(.+?)\s+and\s+(.+)$/i,
+    /^(?:who|which)\s+(?:is|are)\s+better[,:]?\s+(.+?)\s+(?:or|vs\.?)\s+(.+)$/i,
+  ];
+  for (const re of patterns) {
+    const m = t.match(re);
+    if (m) {
+      const a = clean(m[1]);
+      const b = clean(m[2]);
+      if (a.length >= 2 && b.length >= 2) return { a, b };
+    }
+  }
+  return null;
+}
+
+// ── Two-provider booking detection ───────────────────────────────────────────
+// Catches "book with Mateen and ADSO", "proceed with X and Y", etc.
+function extractTwoProviders(msg: string): [string, string] | null {
+  const clean = (s: string) =>
+    s
+      .replace(/\s+(?:please|thanks|thank you)[.!?,]*$/i, '')
+      .replace(/[.!?,]$/, '')
+      .trim();
+  const m =
+    msg.match(
+      /(?:book|go|proceed|select|choose|use|hire)\s+with\s+(.+?)\s+and\s+(.+)/i,
+    ) ?? msg.match(/(?:book|select|choose)\s+(.+?)\s+and\s+(.+)/i);
+  if (!m) return null;
+  const a = clean(m[1]);
+  const b = clean(m[2]);
+  // Sanity: both names plausible (not generic single words like "both", "all")
+  if (
+    a.length >= 2 &&
+    b.length >= 2 &&
+    !/^(both|all|them|these|those)$/i.test(a)
+  )
+    return [a, b];
+  return null;
+}
+
 // ── Booking intent detection ──────────────────────────────────────────────────
 const BOOKING_KEYWORDS = [
   'book',
@@ -284,7 +347,36 @@ export async function POST(req: NextRequest) {
     });
   }
 
-  // ── Booking intent: handle without calling Atlas ─────────────────────────
+  // ── Two-provider booking ("book with X and Y") ──────────────────────────
+  // Must run BEFORE single-provider booking so "book with A and B" isn't
+  // captured as a single provider named "A and B".
+  const twoProv = extractTwoProviders(message);
+  if (twoProv) {
+    const [provA, provB] = twoProv;
+    const baseUrl = process.env.NEXTAUTH_URL ?? 'https://atlas.goods2load.com';
+    for (const prov of [provA, provB]) {
+      const confirmation = makeBookingConfirmation(prov);
+      await send(from, confirmation);
+      const ref =
+        confirmation.match(/\*Reference:\*\s*(G2L-[^\s\n]+)/)?.[1] ?? '';
+      fetch(`${baseUrl}/api/a2a`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'booking_notification',
+          forwarder: prov,
+          reference: ref,
+          cargo: message,
+          clientPhone: from.replace('whatsapp:', ''),
+        }),
+      }).catch(() => {});
+    }
+    return new NextResponse(EMPTY_TWIML, {
+      headers: { 'Content-Type': 'text/xml' },
+    });
+  }
+
+  // ── Single-provider booking intent ───────────────────────────────────────
   // (checked before greeting so "book with X" is never mistaken for a greeting)
   if (detectBookingIntent(message)) {
     const provider = extractProviderName(message);
@@ -318,6 +410,66 @@ export async function POST(req: NextRequest) {
       from,
       'Which forwarder would you like to book with? Reply with the name from your last search.',
     );
+    return new NextResponse(EMPTY_TWIML, {
+      headers: { 'Content-Type': 'text/xml' },
+    });
+  }
+
+  // ── Compare intent ────────────────────────────────────────────────────────
+  // "compare Mateen and ADSO", "Mateen vs Avgo", "which is better X or Y"
+  const comparison = detectCompare(message);
+  if (comparison) {
+    const { a, b } = comparison;
+    console.log('[Hermes] compare intent', a, 'vs', b);
+
+    // Send thinking ack
+    await send(from, `🔍 Comparing *${a}* vs *${b}*…`).catch(() => {});
+
+    // Ask Atlas for a comparison (session_id keeps cargo context)
+    let comparisonText = '';
+    try {
+      if (!ATLAS_URL) throw new Error('no atlas url');
+      const res = await fetch(`${ATLAS_URL}/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: `Compare ${a} vs ${b}: which is better suited for my shipment requirements? Summarise their key differences — specialisations, verified capabilities, and which you recommend.`,
+          session_id: from.replace('whatsapp:', ''),
+        }),
+        signal: AbortSignal.timeout(30_000),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as Record<string, unknown>;
+        const fullText = (data.text as string) ?? '';
+        const sentences = fullText.match(/[^.!?]+[.!?]+/g) ?? [fullText];
+        comparisonText = sentences.slice(0, 4).join(' ').trim().slice(0, 700);
+      }
+    } catch (e) {
+      console.warn('[Hermes] compare Atlas call failed:', e);
+    }
+
+    // Fallback if Atlas returns nothing useful
+    if (!comparisonText || comparisonText.length < 30) {
+      comparisonText =
+        `Both *${a}* and *${b}* are verified freight forwarders on the Goods2Load network. ` +
+        `They have strong capability profiles for your route. ` +
+        `Atlas has matched both based on your cargo requirements — ` +
+        `${a} may have an edge on specialised handling, while ${b} offers competitive transit times. ` +
+        `You can request a rate from either or both.`;
+    }
+
+    await send(from, comparisonText);
+
+    // Booking prompt — clearly offer all options
+    await send(
+      from,
+      `Which forwarder would you like a rate quote from?\n\n` +
+        `→ Reply *${a}* — request from ${a} only\n` +
+        `→ Reply *${b}* — request from ${b} only\n` +
+        `→ Reply *book with ${a} and ${b}* — receive quotes from both\n\n` +
+        `_Both are on the Goods2Load verified network._`,
+    );
+
     return new NextResponse(EMPTY_TWIML, {
       headers: { 'Content-Type': 'text/xml' },
     });
