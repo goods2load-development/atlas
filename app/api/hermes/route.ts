@@ -17,6 +17,36 @@ const ATLAS_URL = process.env.ATLAS_API_URL?.replace(/\/$/, '');
 const EMPTY_TWIML =
   '<?xml version="1.0" encoding="UTF-8"?><Response></Response>';
 
+const WELCOME_MESSAGE =
+  `Hey! This is Atlas 👋\n` +
+  `What's your shipment requirement today?\n\n` +
+  `Send your shipment details to get matched with the right logistics providers on Goods2Load.\n` +
+  `More details = better matches.`;
+
+// ── Greeting detection ────────────────────────────────────────────────────────
+const GREETING_PATTERNS = [
+  /^(hi|hey|hello|hola|howdy|greetings|sup|yo|salut|ciao|hiya|bonjour)[\s!.,?]*$/i,
+  /^(good\s+(morning|afternoon|evening|day|night))[\s!.,?]*$/i,
+  /^(how are you|how r u|what's up|whats up|wassup|wazzup)[\s!.,?]*$/i,
+  /^(start|begin|help|menu|info|test|ping|ok|okay|k|sure|yes|no|maybe)[\s!.,?]*$/i,
+  /^(who are you|what are you|what can you do|what do you do)[\s!.,?]*$/i,
+  /^(thanks|thank you|thx|ty|cheers|noted|got it|great|nice|cool|awesome|perfect)[\s!.,?]*$/i,
+];
+
+function isGreeting(msg: string): boolean {
+  const trimmed = msg.trim();
+  // Short messages with no freight keywords are likely greetings
+  if (
+    trimmed.length < 15 &&
+    !/\b(kg|ton|fcl|lcl|air|sea|road|freight|cargo|ship|from|to)\b/i.test(
+      trimmed,
+    )
+  ) {
+    return true;
+  }
+  return GREETING_PATTERNS.some((re) => re.test(trimmed));
+}
+
 // ── Booking intent detection ──────────────────────────────────────────────────
 const BOOKING_KEYWORDS = [
   'book',
@@ -152,6 +182,7 @@ export async function POST(req: NextRequest) {
   }
 
   // ── Booking intent: handle without calling Atlas ─────────────────────────
+  // (checked before greeting so "book with X" is never mistaken for a greeting)
   if (detectBookingIntent(message)) {
     const provider = extractProviderName(message);
     if (provider) {
@@ -184,6 +215,14 @@ export async function POST(req: NextRequest) {
       from,
       'Which forwarder would you like to book with? Reply with the name from your last search.',
     );
+    return new NextResponse(EMPTY_TWIML, {
+      headers: { 'Content-Type': 'text/xml' },
+    });
+  }
+
+  // ── Greeting: respond with welcome, don't run the pipeline ──────────────
+  if (isGreeting(message)) {
+    await send(from, WELCOME_MESSAGE);
     return new NextResponse(EMPTY_TWIML, {
       headers: { 'Content-Type': 'text/xml' },
     });
