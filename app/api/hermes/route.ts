@@ -209,30 +209,10 @@ export async function POST(req: NextRequest) {
     const [summary, shortlist] = formatReply(data);
     await send(from, summary);
     if (shortlist) await send(from, shortlist);
-
-    // ── A2A: Layer 1 → Layer 2: notify Forwarder Agents about new lead ────
-    // The top-ranked Forwarder Agent will ACK the cargo owner autonomously.
-    const shortlistData = data.shortlist as Record<string, unknown> | null;
-    const candidates =
-      (shortlistData?.candidates as Record<string, unknown>[]) ?? [];
-    if (candidates.length > 0) {
-      const baseUrl =
-        process.env.NEXTAUTH_URL ?? 'https://atlas.goods2load.com';
-      fetch(`${baseUrl}/api/a2a`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          type: 'lead_notification',
-          forwarders: candidates.slice(0, 3).map((c, i) => ({
-            name: c.name,
-            rank: i + 1,
-            confidence: c.confidence_tier,
-          })),
-          cargo: message,
-          clientPhone: from.replace('whatsapp:', ''),
-        }),
-      }).catch(() => {}); // fire-and-forget — Atlas continues regardless
-    }
+    // NOTE: Forwarder Agent (Layer 2) is NOT triggered here.
+    // It only activates on explicit booking intent ("Book with X") below.
+    // Sending an unsolicited ACK from a forwarder after the shortlist
+    // is premature — the cargo owner needs space to ask questions first.
   } catch (err) {
     console.error('[Hermes] pipeline error:', err);
     await send(from, `⚠️ Sorry — Atlas had trouble: ${String(err)}`).catch(
