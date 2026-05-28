@@ -226,7 +226,26 @@ function formatReply(
 
   if (!candidates.length) return [summary, null];
 
-  const lines = candidates.slice(0, 3).map((c, i) => {
+  // ── Consistency guard ─────────────────────────────────────────────────────
+  // Atlas text and the candidates array can be ranked differently.
+  // If the summary mentions a forwarder that sits outside the top-3 window,
+  // move it to position 0 so the #1 recommendation is always visible.
+  const summaryLower = summary.toLowerCase();
+  const reranked = [...candidates];
+  const prominentIdx = reranked.findIndex((c) => {
+    // Match any word of the forwarder name that's >3 chars (avoids noise words)
+    return (c.name as string)
+      .toLowerCase()
+      .split(/\s+/)
+      .some((part) => part.length > 3 && summaryLower.includes(part));
+  });
+  if (prominentIdx > 0) {
+    // Candidate is in the list but not at position 0 — promote it
+    const [top] = reranked.splice(prominentIdx, 1);
+    reranked.unshift(top);
+  }
+
+  const lines = reranked.slice(0, 3).map((c, i) => {
     const name = c.name as string;
     const conf = c.confidence_tier as string;
     const enrichment = (c.enrichment_summary as string).slice(0, 120);
