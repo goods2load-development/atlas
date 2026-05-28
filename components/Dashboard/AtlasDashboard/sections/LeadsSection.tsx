@@ -171,8 +171,40 @@ function buildDraftRateQuote(lead: {
   min = Math.round(min / 50) * 50;
   max = Math.round(max / 50) * 50;
 
-  const modeIcon =
-    lead.mode === 'air' ? '✈️' : lead.mode === 'sea' ? '🚢' : '🚛';
+  // GLEC v3.1 CO₂e estimate (kg per tonne)
+  const glecFactors = { road: 0.062, sea: 0.015, air: 0.57 };
+  const corridors: Record<
+    string,
+    { road?: number; sea?: number; air: number }
+  > = {
+    'iraq|baghdad|basra': { road: 1450, sea: 850, air: 2200 },
+    'saudi|riyadh|jeddah': { road: 880, air: 1000 },
+    'india|mumbai': { sea: 1900, air: 2200 },
+    'jordan|amman': { road: 2400, sea: 3100, air: 2600 },
+    'egypt|cairo': { road: 3600, sea: 3700, air: 3200 },
+  };
+  const mode = (lead.mode ?? 'road') as 'air' | 'sea' | 'road';
+  let distKm = mode === 'road' ? 2000 : mode === 'sea' ? 3000 : 2500;
+  let airKm = 2500;
+  for (const [destPat, c] of Object.entries(corridors)) {
+    if (new RegExp(destPat).test(both)) {
+      const d = mode === 'road' ? c.road : mode === 'sea' ? c.sea : c.air;
+      if (d) distKm = d;
+      airKm = c.air;
+      break;
+    }
+  }
+  let co2 = distKm * glecFactors[mode];
+  if (cold) co2 *= mode === 'road' ? 1.3 : mode === 'sea' ? 1.2 : 1.05;
+  const co2Kg = Math.round(co2);
+  const airCO2 = Math.round(airKm * glecFactors.air * (cold ? 1.05 : 1));
+  const co2Times = (airCO2 / co2Kg).toFixed(1);
+  const co2Line =
+    mode === 'air'
+      ? `🌱 *CO₂e:* ~${co2Kg.toLocaleString()} kg`
+      : `🌱 *CO₂e:* ~${co2Kg.toLocaleString()} kg _(✈️ air: ~${airCO2.toLocaleString()} kg · ${co2Times}× more)_`;
+
+  const modeIcon = mode === 'air' ? '✈️' : mode === 'sea' ? '🚢' : '🚛';
   const coldLabel = cold ? ' · Cold Chain 2–8°C' : '';
   const origin = lead.origin ?? 'Origin';
   const dest = lead.destination ?? 'Destination';
@@ -182,9 +214,10 @@ function buildDraftRateQuote(lead: {
     `${modeIcon} *${origin} → ${dest}*${coldLabel}\n` +
     `*Estimated Rate:* $${min.toLocaleString()}–$${max.toLocaleString()} USD\n` +
     `*Transit:* ${transit}\n` +
+    `${co2Line}\n` +
     `*Forwarder:* ${forwarder}\n\n` +
     `Reply *YES* to confirm, or ask any questions — our team is standing by.\n\n` +
-    `_Rate Quote · ${forwarder}_`
+    `_Rate Quote · ${forwarder} · Goods2Load_`
   );
 }
 
@@ -210,6 +243,34 @@ function LeadDetail({
   const [replying, setReplying] = useState(false);
   const [replyText, setReplyText] = useState('');
   const [replySent, setReplySent] = useState(false);
+  const [trackInput, setTrackInput] = useState('');
+  const [trackResult, setTrackResult] = useState<string | null>(null);
+  const [tracking, setTracking] = useState(false);
+
+  async function trackShipment() {
+    if (!trackInput.trim()) return;
+    setTracking(true);
+    setTrackResult(null);
+    try {
+      // Calls Maersk Track & Trace API (free) via our proxy
+      // Add MAERSK_API_KEY to Vercel env to activate live data
+      const res = await fetch(
+        `/api/maersk-track?ref=${encodeURIComponent(trackInput.trim())}`,
+      );
+      const data = await res.json();
+      setTrackResult(
+        data.status
+          ? `${data.status} · ${data.location ?? ''} · ${data.timestamp ?? ''}`
+          : 'No events found — check the container/B/L number.',
+      );
+    } catch {
+      setTrackResult(
+        'Track & Trace unavailable — add MAERSK_API_KEY to enable.',
+      );
+    } finally {
+      setTracking(false);
+    }
+  }
 
   async function sendReply() {
     if (!replyText.trim() || !lead.rawPhone) return;
@@ -516,6 +577,43 @@ function LeadDetail({
             </div>
           </div>
         )}
+        {/* Maersk Layer 3 Track & Trace */}
+        {lead.isBooking && (
+          <div className="space-y-1.5">
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
+              <span className="text-[11px]">⚓</span>
+              Maersk Track & Trace · Layer 3 Carrier Agent
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={trackInput}
+                onChange={(e) => setTrackInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && trackShipment()}
+                placeholder="Container / B/L number…"
+                className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-blue-200 focus:outline-none focus:ring-1 focus:ring-blue-400 bg-blue-50/50"
+              />
+              <button
+                onClick={trackShipment}
+                disabled={tracking || !trackInput.trim()}
+                className="text-[11px] font-semibold px-3 py-2 rounded-lg border border-blue-400 text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors disabled:opacity-40"
+              >
+                {tracking ? '…' : 'Track'}
+              </button>
+            </div>
+            {trackResult && (
+              <p className="text-[10px] text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-200">
+                {trackResult}
+              </p>
+            )}
+            {!process.env.NEXT_PUBLIC_MAERSK_ACTIVE && (
+              <p className="text-[9px] text-muted-foreground italic">
+                Add MAERSK_API_KEY to Vercel env for live tracking data
+              </p>
+            )}
+          </div>
+        )}
+
         <div className="flex gap-2">
           <button className="flex-1 bg-primaryOrange text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity">
             Generate proforma

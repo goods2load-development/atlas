@@ -87,6 +87,200 @@ function formatRelativeTime(d: Date): string {
   return `${Math.floor(hrs / 24)}d ago`;
 }
 
+// ── Sustainability: GLEC v3.1 CO₂ estimator ───────────────────────────────────
+
+/** Emission intensity factors (kg CO₂e per tonne-km) — GLEC Framework v3.1 */
+const EMISSION_FACTORS = {
+  road: 0.062, // TL diesel HGV
+  sea: 0.015, // container / general cargo vessel
+  air: 0.57, // weighted belly + full-freighter average
+} as const;
+
+/** Approximate distances (km) for UAE-origin corridors */
+const CORRIDOR_KM: {
+  orig: RegExp;
+  dest: RegExp;
+  road?: number;
+  sea?: number;
+  air: number;
+}[] = [
+  {
+    orig: /dubai|dxb|uae/,
+    dest: /iraq|baghdad|basra|bgw|mosul/,
+    road: 1450,
+    sea: 850,
+    air: 2200,
+  },
+  { orig: /dubai|uae/, dest: /riyadh|jeddah|saudi|ksa/, road: 880, air: 1000 },
+  { orig: /dubai|uae/, dest: /mumbai|india|bom/, sea: 1900, air: 2200 },
+  {
+    orig: /dubai|uae/,
+    dest: /amman|jordan/,
+    road: 2400,
+    sea: 3100,
+    air: 2600,
+  },
+  {
+    orig: /dubai|uae/,
+    dest: /beirut|lebanon/,
+    road: 3200,
+    sea: 2900,
+    air: 3000,
+  },
+  {
+    orig: /dubai|uae/,
+    dest: /cairo|egypt/,
+    road: 3600,
+    sea: 3700,
+    air: 3200,
+  },
+  {
+    orig: /dubai|uae/,
+    dest: /karachi|pakistan/,
+    sea: 1500,
+    air: 1800,
+  },
+];
+
+function estimateCO2(
+  origin: string,
+  destination: string,
+  mode: 'air' | 'sea' | 'road',
+  weightKg = 1000,
+  isColdChain = false,
+): { co2Kg: number; altCo2Kg?: number; altMode?: 'air' | 'sea' | 'road' } {
+  const orig = origin.toLowerCase();
+  const dest = destination.toLowerCase();
+
+  // Find corridor
+  let roadKm: number | undefined;
+  let seaKm: number | undefined;
+  let airKm = 2500;
+  for (const c of CORRIDOR_KM) {
+    if (
+      (c.orig.test(orig) || c.orig.test(dest)) &&
+      (c.dest.test(dest) || c.dest.test(orig))
+    ) {
+      if (c.road !== undefined) roadKm = c.road;
+      if (c.sea !== undefined) seaKm = c.sea;
+      airKm = c.air;
+      break;
+    }
+  }
+
+  const distKm =
+    mode === 'road'
+      ? (roadKm ?? 2000)
+      : mode === 'sea'
+        ? (seaKm ?? 3000)
+        : airKm;
+  const wt = weightKg / 1000;
+  let co2Kg = distKm * EMISSION_FACTORS[mode] * wt;
+  if (isColdChain) co2Kg *= mode === 'road' ? 1.3 : mode === 'sea' ? 1.2 : 1.05;
+  co2Kg = Math.round(co2Kg);
+
+  // Best alternative for comparison
+  let altCo2Kg: number | undefined;
+  let altMode: 'air' | 'sea' | 'road' | undefined;
+  if (mode === 'air') {
+    const altDist = roadKm ?? seaKm;
+    if (altDist) {
+      altMode = roadKm ? 'road' : 'sea';
+      let alt = altDist * EMISSION_FACTORS[altMode] * wt;
+      if (isColdChain) alt *= altMode === 'road' ? 1.3 : 1.2;
+      altCo2Kg = Math.round(alt);
+    }
+  } else {
+    // Show what air would cost — makes road/sea look great
+    let alt = airKm * EMISSION_FACTORS['air'] * wt;
+    if (isColdChain) alt *= 1.05;
+    altCo2Kg = Math.round(alt);
+    altMode = 'air';
+  }
+
+  return { co2Kg, altCo2Kg, altMode };
+}
+
+// ── Layer 3: Maersk Carrier Agent ─────────────────────────────────────────────
+
+/**
+ * Fetches live schedule data from Maersk Point-to-Point Schedules API (Layer 3).
+ * Requires MAERSK_API_KEY env var — request Premium access at:
+ *   developer.maersk.com → Ocean Commercial Schedules [DCSA] → Request Access
+ *
+ * Track & Trace (free) also available once app is registered at developer.maersk.com.
+ * Falls back to corridor-based estimates until the key is configured.
+ */
+async function fetchMaerskCarrierData(
+  origin: string,
+  destination: string,
+  mode: 'air' | 'sea' | 'road',
+): Promise<{
+  transitDays: string;
+  nextDeparture: string | null;
+  carrier: string;
+  source: 'maersk_api' | 'estimate';
+}> {
+  const apiKey = process.env.MAERSK_API_KEY;
+
+  if (apiKey && mode === 'sea') {
+    try {
+      // Maersk Point-to-Point Schedules — DCSA standard
+      const url = new URL('https://api.maersk.com/products/ocean-products');
+      url.searchParams.set('portOfLoad', origin);
+      url.searchParams.set('portOfDischarge', destination);
+      const res = await fetch(url.toString(), {
+        headers: { 'Consumer-Key': apiKey, Accept: 'application/json' },
+        signal: AbortSignal.timeout(8000),
+      });
+      if (res.ok) {
+        const data = (await res.json()) as Record<string, unknown>;
+        const products = data?.oceanProducts as
+          | Record<string, unknown>[]
+          | undefined;
+        const first = products?.[0];
+        if (first) {
+          const transitHours = (first.transitTime as number) ?? 240;
+          const departure =
+            (first.departureDateTime as string)?.slice(0, 10) ?? null;
+          return {
+            transitDays: `${Math.round(transitHours / 24)} days`,
+            nextDeparture: departure,
+            carrier: 'Maersk',
+            source: 'maersk_api',
+          };
+        }
+      }
+    } catch (e) {
+      console.warn('[MaerskAgent] API unavailable, using estimate:', e);
+    }
+  }
+
+  // Fallback: corridor-based schedule estimate
+  const both = `${origin} ${destination}`.toLowerCase();
+  let transitDays =
+    mode === 'sea' ? '7-12 days' : mode === 'air' ? '24-48 hours' : '4-6 days';
+  if (both.match(/dubai|uae/) && both.match(/iraq|basra/)) {
+    transitDays =
+      mode === 'sea'
+        ? '5-7 days (Umm Qasr)'
+        : mode === 'road'
+          ? '3-5 days'
+          : '24-48 hours';
+  } else if (both.match(/dubai|uae/) && both.match(/mumbai|india/)) {
+    transitDays = mode === 'sea' ? '7-10 days' : '24-48 hours';
+  } else if (both.match(/dubai|uae/) && both.match(/cairo|egypt/)) {
+    transitDays = mode === 'sea' ? '8-12 days' : '3-4 days';
+  }
+
+  return {
+    transitDays,
+    nextDeparture: null,
+    carrier: 'Maersk',
+    source: 'estimate',
+  };
+}
+
 // ── Forwarder Agent helpers ────────────────────────────────────────────────────
 
 /**
@@ -205,14 +399,36 @@ function buildRateQuote(
     route.destination,
     mode,
   );
+  const { co2Kg, altCo2Kg, altMode } = estimateCO2(
+    route.origin,
+    route.destination,
+    mode,
+    1000,
+    isColdChain,
+  );
+
   const modeIcon = mode === 'air' ? '✈️' : mode === 'sea' ? '🚢' : '🚛';
   const coldLabel = isColdChain ? ' · Cold Chain 2–8°C' : '';
+
+  // CO2 line with comparison hint
+  let co2Line = `🌱 *CO₂e:* ~${co2Kg.toLocaleString()} kg`;
+  if (altCo2Kg !== undefined && altMode) {
+    const altIcon = altMode === 'air' ? '✈️' : altMode === 'sea' ? '🚢' : '🚛';
+    if (altCo2Kg > co2Kg) {
+      const times = (altCo2Kg / co2Kg).toFixed(1);
+      co2Line += ` _(${altIcon} air: ~${altCo2Kg.toLocaleString()} kg · ${times}× more)_`;
+    } else {
+      const pct = Math.round((1 - altCo2Kg / co2Kg) * 100);
+      co2Line += ` _(${altIcon} ${altMode}: ~${altCo2Kg.toLocaleString()} kg · ${pct}% less)_`;
+    }
+  }
 
   return (
     `📋 *Rate Quote — ${reference}*\n\n` +
     `${modeIcon} *${route.origin} → ${route.destination}*${coldLabel}\n` +
     `*Estimated Rate:* $${min.toLocaleString()}–$${max.toLocaleString()} USD\n` +
     `*Transit:* ${transit}\n` +
+    `${co2Line}\n` +
     `*Forwarder:* ${forwarder}\n\n` +
     `Reply *YES* to confirm, or ask any questions — our agent is standing by.\n\n` +
     `_Atlas Autonomous Quote · Goods2Load_`
@@ -439,13 +655,10 @@ export async function POST(req: NextRequest) {
         clientPhone,
       );
 
-      // TODO Layer 3: replace with live Maersk Ocean P2P or Schedules API call
-      // const maerskRate = await fetchMaerskRate(parseRoute(cargo));
-      //
-      // NOTE: Atlas does NOT auto-send to cargo owner here.
-      // The forwarder reviews the booking in their dashboard and clicks
-      // "Send Introduction" or "Send Rate Quote" — messages go via /api/reply-wa.
-      // This preserves the correct architecture: forwarder speaks, not Atlas.
+      // ── Layer 3: Maersk Carrier Agent call ───────────────────────────────
+      // Atlas (L1) → Forwarder Agent (L2) → Maersk Carrier Agent (L3)
+      // NOTE: Atlas does NOT auto-send to cargo owner here. The forwarder
+      // reviews in their dashboard and clicks "Send Introduction" / "Send Rate Quote".
       const route = parseRoute(cargo ?? '');
       const mode = guessMode(cargo ?? '');
       const rateData = estimateRate(
@@ -454,7 +667,25 @@ export async function POST(req: NextRequest) {
         route.destination,
         mode,
       );
+      const { co2Kg, altCo2Kg, altMode } = estimateCO2(
+        route.origin,
+        route.destination,
+        mode,
+        1000,
+        rateData.isColdChain,
+      );
 
+      // Fire Layer 3 — non-blocking, falls back gracefully
+      const maerskSchedule = await fetchMaerskCarrierData(
+        route.origin,
+        route.destination,
+        mode,
+      );
+      console.log(
+        '[MaerskAgent →]',
+        maerskSchedule.source,
+        maerskSchedule.transitDays,
+      );
       console.log(
         '[ForwarderAgent] booking received — dashboard action required for',
         reference,
@@ -469,16 +700,33 @@ export async function POST(req: NextRequest) {
           introduction: buildForwarderACK(forwarder, cargo ?? '', route),
           rateQuote: buildRateQuote(forwarder, reference, cargo ?? ''),
         },
+        carrierData: {
+          carrier: maerskSchedule.carrier,
+          transitDays: maerskSchedule.transitDays,
+          nextDeparture: maerskSchedule.nextDeparture,
+          source: maerskSchedule.source,
+          upgradeNote:
+            maerskSchedule.source === 'estimate'
+              ? 'Add MAERSK_API_KEY to Vercel env for live Maersk schedules'
+              : null,
+        },
+        sustainability: {
+          co2Kg,
+          altCo2Kg,
+          altMode,
+          methodology: 'GLEC Framework v3.1',
+          weightAssumption: '1,000 kg',
+        },
         estimatedRate: {
           min: rateData.min,
           max: rateData.max,
-          transit: rateData.transit,
+          transit: maerskSchedule.transitDays,
           mode,
         },
         artifacts: [
           {
             type: 'text/plain',
-            data: `Booking ${reference} routed to ${forwarder}. Action required: open dashboard to send introduction and rate quote.`,
+            data: `Booking ${reference} routed to ${forwarder}. Maersk: ${maerskSchedule.transitDays} (${maerskSchedule.source}). CO₂e: ~${co2Kg} kg. Dashboard action required.`,
           },
         ],
         routing: {

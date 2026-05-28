@@ -132,8 +132,89 @@ async function send(to: string, body: string): Promise<string> {
   return msg.sid;
 }
 
+// GLEC v3.1 emission factors (kg CO₂e per tonne-km) — mirrors a2a/route.ts
+const HERMES_EMISSION_FACTORS = { road: 0.062, sea: 0.015, air: 0.57 } as const;
+const HERMES_CORRIDORS: {
+  orig: RegExp;
+  dest: RegExp;
+  road?: number;
+  sea?: number;
+  air: number;
+}[] = [
+  {
+    orig: /dubai|uae/,
+    dest: /iraq|baghdad|basra/,
+    road: 1450,
+    sea: 850,
+    air: 2200,
+  },
+  { orig: /dubai|uae/, dest: /riyadh|jeddah|saudi/, road: 880, air: 1000 },
+  { orig: /dubai|uae/, dest: /mumbai|india/, sea: 1900, air: 2200 },
+  { orig: /dubai|uae/, dest: /amman|jordan/, road: 2400, sea: 3100, air: 2600 },
+  { orig: /dubai|uae/, dest: /cairo|egypt/, road: 3600, sea: 3700, air: 3200 },
+];
+
+function quickCO2Note(message: string): string | null {
+  const routeMatch = message.match(
+    /from\s+([A-Za-z\s]+?)\s+to\s+([A-Za-z\s,]+?)(?:\s*[,.\n!?]|$)/i,
+  );
+  if (!routeMatch) return null;
+  const orig = routeMatch[1].trim().slice(0, 20).toLowerCase();
+  const dest = routeMatch[2].trim().slice(0, 20).toLowerCase();
+  const msg = message.toLowerCase();
+  const mode: 'air' | 'sea' | 'road' = /\bair\b|flight|urgent/.test(msg)
+    ? 'air'
+    : /sea|ocean|fcl|lcl/.test(msg)
+      ? 'sea'
+      : 'road';
+  const cold = /cold|pharma|2-8|temperature|vaccine/i.test(message);
+
+  let distKm = mode === 'road' ? 2000 : mode === 'sea' ? 3000 : 2500;
+  let altDistKm: number | undefined;
+  const altMode: 'air' | 'sea' | 'road' = mode === 'air' ? 'road' : 'air';
+
+  for (const c of HERMES_CORRIDORS) {
+    if (
+      (c.orig.test(orig) || c.orig.test(dest)) &&
+      (c.dest.test(dest) || c.dest.test(orig))
+    ) {
+      const d = mode === 'road' ? c.road : mode === 'sea' ? c.sea : c.air;
+      if (d) distKm = d;
+      altDistKm = altMode === 'road' ? c.road : c.air;
+      break;
+    }
+  }
+
+  const wt = 1; // 1 tonne default
+  let co2 = distKm * HERMES_EMISSION_FACTORS[mode] * wt;
+  if (cold) co2 *= mode === 'road' ? 1.3 : mode === 'sea' ? 1.2 : 1.05;
+  const co2Kg = Math.round(co2);
+
+  const modeIcon = mode === 'air' ? '✈️' : mode === 'sea' ? '🚢' : '🚛';
+  let note = `🌱 ${modeIcon} ~${co2Kg} kg CO₂e`;
+
+  if (altDistKm) {
+    let altCO2 = altDistKm * HERMES_EMISSION_FACTORS[altMode] * wt;
+    if (cold) altCO2 *= altMode === 'road' ? 1.3 : 1.05;
+    const altCo2Kg = Math.round(altCO2);
+    const altIcon = altMode === 'air' ? '✈️' : '🚛';
+    if (altCo2Kg > co2Kg) {
+      const times = (altCo2Kg / co2Kg).toFixed(1);
+      note += ` · ${altIcon} air: ~${altCo2Kg} kg (${times}× more)`;
+    } else if (altCo2Kg < co2Kg) {
+      const pct = Math.round((1 - altCo2Kg / co2Kg) * 100);
+      note += ` · ${altIcon} ${altMode}: ~${altCo2Kg} kg (${pct}% less)`;
+    }
+  }
+
+  return note;
+}
+
 // Returns [summaryMessage, shortlistMessage] — sent as two WhatsApp messages
-function formatReply(data: Record<string, unknown>): [string, string | null] {
+function formatReply(
+  data: Record<string, unknown>,
+  originalMessage = '',
+): [string, string | null] {
   const fullText =
     (data.text as string) ?? "I couldn't find a match. Please try again.";
   const shortlist = data.shortlist as Record<string, unknown> | null;
@@ -148,14 +229,17 @@ function formatReply(data: Record<string, unknown>): [string, string | null] {
   const lines = candidates.slice(0, 3).map((c, i) => {
     const name = c.name as string;
     const conf = c.confidence_tier as string;
-    const summary = (c.enrichment_summary as string).slice(0, 120);
-    return `${i + 1}. *${name}* — ${conf}\n   ${summary}`;
+    const enrichment = (c.enrichment_summary as string).slice(0, 120);
+    return `${i + 1}. *${name}* — ${conf}\n   ${enrichment}`;
   });
+
+  const co2Note = originalMessage ? quickCO2Note(originalMessage) : null;
 
   const shortlistMsg =
     `*Top matches from the Goods2Load network:*\n\n` +
     lines.join('\n\n') +
-    `\n\n_Reply with a name or number to request a rate quote._`;
+    `\n\n_Reply with a name or number to request a rate quote._` +
+    (co2Note ? `\n\n_${co2Note}_` : '');
 
   return [summary, shortlistMsg];
 }
@@ -263,7 +347,7 @@ export async function POST(req: NextRequest) {
     const data = (await res.json()) as Record<string, unknown>;
     console.log('[Hermes] atlas ok, sending results');
 
-    const [summary, shortlist] = formatReply(data);
+    const [summary, shortlist] = formatReply(data, message);
     await send(from, summary);
     if (shortlist) await send(from, shortlist);
     // NOTE: Forwarder Agent (Layer 2) is NOT triggered here.
