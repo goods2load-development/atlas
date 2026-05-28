@@ -763,7 +763,7 @@ function HermesSection() {
               </span>
             </div>
             <p className="text-[11px] text-muted-foreground font-mono">
-              ahmed@goods2load.com
+              ops@goods2load.com
             </p>
           </div>
           <span className="text-[12px] font-bold text-black shrink-0">
@@ -821,7 +821,7 @@ function HermesSection() {
           <Mail size={14} className="text-blue-500" />
           <h3 className="text-sm font-semibold text-black">Email Inbox</h3>
           <span className="text-[11px] text-muted-foreground ml-1">
-            ahmed@goods2load.com → Atlas pipeline
+            Goods2Load Ops → Atlas pipeline
           </span>
         </div>
         <div className="divide-y divide-border">
@@ -1032,36 +1032,162 @@ function PipelineSection() {
 
 // ── Email section ─────────────────────────────────────────────────────────────
 
+const HERMES_EMAILS = [
+  {
+    id: 'e1',
+    from: 'geodis.ops@geodis.com',
+    subject: 'Urgent: Pharma cold-chain transport 2–8°C to Iraq',
+    preview:
+      'We require GDP-certified cold-truck service for pharmaceutical cargo from Dubai to Baghdad. Delivery needed within 5 days.',
+    time: '09:14',
+    date: 'Today',
+    matched: 'Mateen Express & Logistics Iraq',
+  },
+  {
+    id: 'e2',
+    from: 'logistics@amg-global.com',
+    subject: 'Air freight inquiry — Frankfurt to Dubai, automotive parts',
+    preview:
+      'Looking for a reliable air cargo partner for 500kg automotive spare parts shipment, mid-June departure from Frankfurt.',
+    time: '08:02',
+    date: 'Today',
+    matched: 'SOLITAIR CARGO EXPRESS DWC',
+  },
+  {
+    id: 'e3',
+    from: 'supply@retailgroup.ae',
+    subject: 'FCL sea freight Ningbo to Jebel Ali — 2×40HC',
+    preview:
+      'We need a forwarding partner for two 40HC containers of retail display fixtures from Ningbo port.',
+    time: '17:30',
+    date: 'Yesterday',
+    matched: 'SMLX Freight',
+  },
+  {
+    id: 'e4',
+    from: 'import@foodtrading.iq',
+    subject: 'Foodstuff import Iraq via UAE — regular basis',
+    preview:
+      'Looking for a freight forwarder to handle monthly foodstuff shipments from Malaysia via Jebel Ali into Iraq.',
+    time: '14:12',
+    date: 'Yesterday',
+    matched: 'Mateen Express & Logistics Iraq',
+  },
+  {
+    id: 'e5',
+    from: 'procurement@solarco.sa',
+    subject: 'Solar equipment from China to Saudi Arabia — project cargo',
+    preview:
+      'Large-scale solar panel shipment from Shenzhen to Dammam, oversized. Need experienced project cargo handler.',
+    time: '11:05',
+    date: 'Yesterday',
+    matched: 'ADSO',
+  },
+];
+
 function EmailSection() {
+  const [selected, setSelected] = useState<string | null>('e1');
+  const selectedEmail = HERMES_EMAILS.find((e) => e.id === selected);
+
   return (
-    <div className="h-full flex flex-col">
-      <div className="mb-4 flex items-center justify-between">
-        <div>
-          <p className="text-xs text-muted-foreground">
-            ahmed@goods2load.com · Google Workspace
-          </p>
+    <div className="flex flex-col h-full gap-4">
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-blue-400" />
+          <span className="text-xs text-muted-foreground">
+            Goods2Load Ops Inbox · Hermes-processed freight enquiries
+          </span>
         </div>
         <a
-          href="https://mail.google.com/mail/u/0/#inbox"
+          href="https://mail.google.com/mail/u/0/?authuser=ahmed@goods2load.com#inbox"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-1.5 text-[11px] font-medium text-primaryOrange hover:underline"
         >
-          <Mail size={11} /> Open in Gmail ↗
+          <Mail size={11} /> Open inbox ↗
         </a>
       </div>
-      <div className="flex-1 rounded-xl overflow-hidden border border-border shadow-sm bg-white">
-        <iframe
-          src="https://mail.google.com/mail/u/0/#inbox?embedded=true"
-          className="w-full h-full min-h-[600px]"
-          title="Gmail Inbox"
-          allow="clipboard-read; clipboard-write"
-        />
+
+      <div className="flex gap-4 flex-1 min-h-0">
+        {/* Email list */}
+        <div className="w-80 shrink-0 flex flex-col gap-1.5 overflow-y-auto">
+          {HERMES_EMAILS.map((email) => (
+            <button
+              key={email.id}
+              onClick={() => setSelected(email.id)}
+              className={`w-full text-left p-3 rounded-xl border transition-colors ${selected === email.id ? 'bg-white border-primaryOrange/40 shadow-sm' : 'bg-white border-border hover:border-primaryOrange/20'}`}
+            >
+              <div className="flex items-start justify-between gap-2 mb-1">
+                <span className="text-[11px] font-semibold text-black truncate">
+                  {email.from}
+                </span>
+                <span className="text-[9px] text-muted-foreground shrink-0">
+                  {email.date}
+                </span>
+              </div>
+              <p className="text-[11px] font-medium text-black truncate mb-1">
+                {email.subject}
+              </p>
+              <div className="flex items-center gap-1.5 mt-1">
+                <span className="text-[9px] bg-green-50 text-green-700 border border-green-200 px-1.5 py-0.5 rounded-full">
+                  ✓ Replied by Atlas
+                </span>
+              </div>
+            </button>
+          ))}
+        </div>
+
+        {/* Email detail */}
+        {selectedEmail && (
+          <div className="flex-1 bg-white rounded-xl border border-border overflow-hidden flex flex-col">
+            <div className="px-5 py-4 border-b border-border">
+              <h3 className="text-sm font-semibold text-black mb-1">
+                {selectedEmail.subject}
+              </h3>
+              <div className="flex items-center gap-3 text-[11px] text-muted-foreground">
+                <span>From: {selectedEmail.from}</span>
+                <span>·</span>
+                <span>
+                  {selectedEmail.date} at {selectedEmail.time}
+                </span>
+              </div>
+            </div>
+            <div className="p-5 flex-1 overflow-y-auto space-y-4">
+              <div className="bg-gray-50 rounded-lg p-4">
+                <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+                  Incoming enquiry
+                </p>
+                <p className="text-[12px] text-black leading-relaxed">
+                  {selectedEmail.preview}
+                </p>
+              </div>
+              <div className="bg-primaryOrange/5 border border-primaryOrange/20 rounded-lg p-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Bot size={12} className="text-primaryOrange" />
+                  <p className="text-[10px] font-semibold text-primaryOrange uppercase tracking-wider">
+                    Atlas reply — sent automatically
+                  </p>
+                </div>
+                <p className="text-[12px] text-black leading-relaxed mb-3">
+                  Thank you for reaching out to Goods2Load. Based on your
+                  requirements, here is our top match from the verified network:
+                </p>
+                <div className="flex items-center gap-2 text-[11px] bg-white rounded-lg px-3 py-2 border border-border">
+                  <span className="w-5 h-5 rounded-full bg-primaryOrange text-white flex items-center justify-center text-[9px] font-bold shrink-0">
+                    #1
+                  </span>
+                  <span className="font-semibold text-black">
+                    {selectedEmail.matched}
+                  </span>
+                  <span className="ml-auto text-[9px] bg-green-50 text-green-700 border border-green-200 px-1.5 py-0.5 rounded-full">
+                    Best match
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
-      <p className="text-[10px] text-muted-foreground mt-2 text-center">
-        If the inbox doesn&apos;t load, click &ldquo;Open in Gmail&rdquo; above
-        — Google blocks embedding for security.
-      </p>
     </div>
   );
 }
@@ -1276,7 +1402,7 @@ const NAV: {
   { id: 'roster', label: 'Forwarder Roster', Icon: Building2 },
   { id: 'hermes', label: 'Hermes Inbox', Icon: Inbox, badge: 3 },
   { id: 'pipeline', label: 'Pipeline & Agents', Icon: Activity },
-  { id: 'email', label: 'Email — Ahmed', Icon: Mail },
+  { id: 'email', label: 'Ops Inbox', Icon: Mail },
   { id: 'calendar', label: 'Calendar', Icon: Globe },
   { id: 'whatsapp', label: 'WhatsApp', Icon: MessageSquare },
 ];
@@ -1436,7 +1562,7 @@ export default function ControlTower() {
                   : section === 'pipeline'
                     ? 'Pipeline & Agent Status'
                     : section === 'email'
-                      ? 'Email — ahmed@goods2load.com'
+                      ? 'Goods2Load Ops Inbox'
                       : section === 'calendar'
                         ? 'Calendar — Goods2Load'
                         : 'WhatsApp — Hermes Gateway'}
