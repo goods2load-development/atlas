@@ -47,17 +47,35 @@ function detectBookingIntent(msg: string): boolean {
   return BOOKING_KEYWORDS.some((k) => lower.includes(k));
 }
 
-// Extract provider name from messages like "book with ADSO" or "go with Avgo"
+// Extract provider name from natural-language booking phrases
 function extractProviderName(msg: string): string | null {
   const patterns = [
-    /(?:book|go|proceed|work)\s+with\s+(.+)/i,
+    // "book / go / proceed / work / connect / partner with X"
+    /(?:book|go|proceed|work|connect|partner)\s+with\s+(.+)/i,
+    // "choose / select / hire / contact / use X"
     /(?:choose|select|hire|contact|use)\s+(.+)/i,
-    /(?:send|get|request)\s+(?:rate|quote)\s+(?:for|to|from)\s+(.+)/i,
-    /(?:rate request|quote)\s+(?:for|to)\s+(.+)/i,
+    // "send / get rate|quote to / for / from X"
+    /(?:send|get)\s+(?:a\s+)?(?:rates?|quotes?)\s+(?:request\s+)?(?:to|for|from)\s+(.+)/i,
+    // "request a rate / quote from / for / to X"
+    /request\s+(?:a\s+)?(?:rates?|quotes?)\s+(?:request\s+)?(?:from|for|to)\s+(.+)/i,
+    // "rate request / quote for / to X"
+    /(?:rate\s+request|quote)\s+(?:for|to)\s+(.+)/i,
+    // "reach out to X"
+    /reach\s+out\s+(?:to\s+)?(.+)/i,
+    // "connect me to / with X"
+    /connect\s+me\s+(?:to|with)\s+(.+)/i,
+    // "enquire / inquire with / about X"
+    /(?:enquire|inquire)\s+(?:with|about)?\s*(.+)/i,
   ];
   for (const re of patterns) {
     const m = msg.match(re);
-    if (m) return m[1].replace(/[.!?,]$/, '').trim();
+    if (m) {
+      // Strip trailing filler words and punctuation
+      return m[1]
+        .replace(/\s+(?:please|thanks|thank you)[.!?,]*$/i, '')
+        .replace(/[.!?,]$/, '')
+        .trim();
+    }
   }
   return null;
 }
