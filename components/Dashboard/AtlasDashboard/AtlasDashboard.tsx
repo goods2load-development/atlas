@@ -6,6 +6,7 @@ import IntelligenceSection from './sections/IntelligenceSection';
 import LeadsSection from './sections/LeadsSection';
 import OverviewSection from './sections/OverviewSection';
 import ProfileSection from './sections/ProfileSection';
+import GoogleIcon from '@/assets/icons/google-icon.svg';
 
 import { useEffect, useState } from 'react';
 
@@ -18,6 +19,8 @@ import {
   Loader2,
   ShieldCheck,
 } from 'lucide-react';
+import { signIn } from 'next-auth/react';
+import Image from 'next/image';
 
 // ── Demo sign-up gate ─────────────────────────────────────────────────────────
 function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
@@ -40,13 +43,24 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
     }, 1200);
   }
 
+  function handleGoogleSignIn() {
+    signIn('google', { callbackUrl: '/dashboard/atlas' });
+  }
+
   return (
     <div className="min-h-screen bg-[#f5f4f3] flex items-center justify-center p-4 font-poppins">
       <div className="w-full max-w-md">
-        {/* Logo */}
+        {/* Logo — mix-blend-multiply removes the white circle background */}
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-primaryOrange mb-4">
-            <span className="text-white text-2xl font-bold">G</span>
+          <div className="inline-flex items-center justify-center mb-4">
+            <Image
+              src="/g2l-logo-circle.png"
+              alt="Goods2Load"
+              width={72}
+              height={72}
+              priority
+              className="mix-blend-multiply"
+            />
           </div>
           <h1 className="text-2xl font-bold text-black">Join Goods2Load</h1>
           <p className="text-sm text-muted-foreground mt-1">
@@ -67,61 +81,81 @@ function DemoSignUp({ onSuccess }: { onSuccess: (name: string) => void }) {
               </p>
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="text-xs font-semibold text-black uppercase tracking-wide">
-                  Full name
-                </label>
-                <input
-                  type="text"
-                  placeholder="e.g. Jessica Panigari"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-black uppercase tracking-wide">
-                  Work email
-                </label>
-                <input
-                  type="email"
-                  required
-                  placeholder="judge@google.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
-                />
-              </div>
-              <div>
-                <label className="text-xs font-semibold text-black uppercase tracking-wide">
-                  Password
-                </label>
-                <input
-                  type="password"
-                  required
-                  placeholder="Any password works"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
-                />
+            <>
+              {/* Google Sign-In */}
+              <button
+                type="button"
+                onClick={handleGoogleSignIn}
+                className="w-full flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-[#e5630a] text-sm font-semibold text-black hover:bg-orange-50 transition-colors mb-4"
+              >
+                <Image src={GoogleIcon} width={20} height={20} alt="Google" />
+                Sign in with Google
+              </button>
+
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex-1 h-px bg-border" />
+                <span className="text-xs text-muted-foreground">
+                  or sign up with email
+                </span>
+                <div className="flex-1 h-px bg-border" />
               </div>
 
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3 rounded-xl bg-primaryOrange text-white font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
-              >
-                {loading ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Creating
-                    account…
-                  </>
-                ) : (
-                  'Create free account'
-                )}
-              </button>
-            </form>
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="text-xs font-semibold text-black uppercase tracking-wide">
+                    Full name
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="e.g. Jessica Panigari"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-black uppercase tracking-wide">
+                    Work email
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="judge@google.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
+                  />
+                </div>
+                <div>
+                  <label className="text-xs font-semibold text-black uppercase tracking-wide">
+                    Password
+                  </label>
+                  <input
+                    type="password"
+                    required
+                    placeholder="Any password works"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    className="mt-1.5 w-full px-4 py-2.5 rounded-lg border border-border text-sm focus:outline-none focus:ring-2 focus:ring-primaryOrange/40 bg-gray-50"
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-3 rounded-xl bg-primaryOrange text-white font-semibold text-sm flex items-center justify-center gap-2 hover:opacity-90 transition-opacity disabled:opacity-60 mt-2"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" /> Creating
+                      account…
+                    </>
+                  ) : (
+                    'Create free account'
+                  )}
+                </button>
+              </form>
+            </>
           )}
         </div>
 
