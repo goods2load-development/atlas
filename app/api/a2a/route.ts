@@ -220,7 +220,7 @@ function buildRateQuote(
 }
 
 async function sendWhatsApp(to: string, body: string): Promise<void> {
-  if (!ACCOUNT_SID || !AUTH_TOKEN) return;
+  if (!to || !ACCOUNT_SID || !AUTH_TOKEN) return;
   const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
   const dest = to.startsWith('whatsapp:') ? to : `whatsapp:${to}`;
   await client.messages.create({ from: FROM, to: dest, body });
