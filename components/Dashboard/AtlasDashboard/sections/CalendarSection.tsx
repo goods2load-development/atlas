@@ -30,10 +30,10 @@ const DEMO_EVENTS = [
   {
     day: 'Tue 3',
     time: '16:00',
-    title: 'Atlas Lead Follow-up — GEODIS Inquiry',
-    tag: 'Atlas',
-    tagColor: 'bg-purple-50 text-purple-700 border-purple-100',
-    dot: 'bg-purple-500',
+    title: 'Momentum Lead Follow-up — GEODIS Inquiry',
+    tag: 'Momentum',
+    tagColor: 'bg-primaryOrange/8 text-primaryOrange border-primaryOrange/20',
+    dot: 'bg-primaryOrange',
   },
   {
     day: 'Wed 4',
@@ -47,9 +47,9 @@ const DEMO_EVENTS = [
     day: 'Thu 5',
     time: '11:00',
     title: 'New Shipper Onboarding — Cold Chain',
-    tag: 'Atlas',
-    tagColor: 'bg-purple-50 text-purple-700 border-purple-100',
-    dot: 'bg-purple-500',
+    tag: 'Momentum',
+    tagColor: 'bg-primaryOrange/8 text-primaryOrange border-primaryOrange/20',
+    dot: 'bg-primaryOrange',
   },
 ];
 
@@ -60,7 +60,7 @@ export default function CalendarSection() {
       <div className="px-6 pt-6 pb-4 border-b border-border">
         <h2 className="text-lg font-bold text-black">Calendar</h2>
         <p className="text-[12px] text-muted-foreground">
-          Atlas monitors your schedule and coordinates freight activities
+          Momentum monitors your schedule and coordinates freight activities
           automatically
         </p>
       </div>
@@ -76,9 +76,9 @@ export default function CalendarSection() {
               Connect your Google Calendar
             </p>
             <p className="text-[11px] text-white/50 mt-0.5 leading-relaxed">
-              When connected, Atlas monitors your schedule, auto-creates events
-              for new shipments, and sends follow-up reminders when leads go
-              quiet.
+              When connected, Momentum monitors your schedule, auto-creates
+              events for new shipments, and sends follow-up reminders when leads
+              go quiet.
             </p>
             <button className="mt-3 flex items-center gap-1.5 text-[11px] font-semibold text-primaryOrange border border-primaryOrange/30 rounded-full px-3 py-1 hover:bg-primaryOrange/10 transition-colors">
               <Link2 size={10} /> Connect calendar — go live
@@ -96,7 +96,7 @@ export default function CalendarSection() {
               This week — June 2–6
             </p>
             <span className="text-[10px] text-muted-foreground">
-              4 Atlas-generated events
+              4 Momentum-generated events
             </span>
           </div>
 
@@ -133,7 +133,7 @@ export default function CalendarSection() {
         {/* What Atlas does */}
         <div className="bg-white rounded-xl border border-border p-5">
           <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-3">
-            What Atlas does with your calendar
+            What Momentum does with your calendar
           </h3>
           <div className="space-y-3">
             {[

@@ -3,6 +3,7 @@
 import { BOXMAN, DEMO_LEADS } from './boxmanData';
 import AlertsSection from './sections/AlertsSection';
 import CalendarSection from './sections/CalendarSection';
+import EmailSection from './sections/EmailSection';
 import IntelligenceSection from './sections/IntelligenceSection';
 import LeadsSection from './sections/LeadsSection';
 import OverviewSection from './sections/OverviewSection';
@@ -20,6 +21,7 @@ import {
   CheckCircle,
   Inbox,
   Loader2,
+  Mail,
   MessageCircle,
   ShieldCheck,
   Truck,
@@ -180,7 +182,8 @@ type Section =
   | 'intelligence'
   | 'profile'
   | 'calendar'
-  | 'whatsapp';
+  | 'whatsapp'
+  | 'email';
 
 // Baseline counts — computed once from static demo data
 const DEMO_NEW_LEADS = DEMO_LEADS.filter((l) => l.status === 'new').length;
@@ -190,6 +193,7 @@ const DEMO_ACTIVE_ALERTS = 3;
 const NAV: { id: Section; label: string; Icon: React.ElementType }[] = [
   { id: 'leads', label: 'Leads', Icon: Inbox },
   { id: 'whatsapp', label: 'WhatsApp', Icon: MessageCircle },
+  { id: 'email', label: 'Email', Icon: Mail },
   { id: 'overview', label: 'Overview', Icon: BarChart3 },
   { id: 'alerts', label: 'Lane Alerts', Icon: Bell },
   { id: 'intelligence', label: 'Intelligence', Icon: Brain },
@@ -395,6 +399,7 @@ export default function AtlasDashboard() {
         {section === 'intelligence' && (
           <IntelligenceSection company={DEMO_DISPLAY} />
         )}
+        {section === 'email' && <EmailSection />}
         {section === 'calendar' && <CalendarSection />}
         {section === 'whatsapp' && <WhatsAppForwarderSection />}
         {section === 'profile' && <ProfileSection />}

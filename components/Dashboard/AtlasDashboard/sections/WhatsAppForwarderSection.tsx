@@ -16,8 +16,8 @@ const DEMO_THREADS = [
     time: '1 hr ago',
     last: 'Can you handle 2-8°C cold chain from Dubai to Amman?',
     unread: 0,
-    tag: 'Atlas lead',
-    tagColor: 'bg-purple-50 text-purple-700 border-purple-100',
+    tag: 'Momentum lead',
+    tagColor: 'bg-primaryOrange/8 text-primaryOrange border-primaryOrange/20',
   },
   {
     name: 'MedSupply MENA',
@@ -28,7 +28,7 @@ const DEMO_THREADS = [
     tagColor: 'bg-blue-50 text-blue-700 border-blue-100',
   },
   {
-    name: 'Atlas (auto-reply)',
+    name: 'Momentum (auto-reply)',
     time: 'Yesterday',
     last: '🔍 Searching the Goods2Load network for best matches…',
     unread: 0,
@@ -45,8 +45,8 @@ export default function WhatsAppForwarderSection() {
       <div className="px-6 pt-6 pb-4 border-b border-border">
         <h2 className="text-lg font-bold text-black">WhatsApp</h2>
         <p className="text-[12px] text-muted-foreground">
-          Atlas handles shipper messages and routes confirmed bookings directly
-          to you
+          Momentum handles shipper messages and routes confirmed bookings
+          directly to you
         </p>
       </div>
 
@@ -61,7 +61,7 @@ export default function WhatsAppForwarderSection() {
               Connect your WhatsApp Business
             </p>
             <p className="text-[11px] text-white/50 mt-0.5 leading-relaxed">
-              When connected, Atlas routes incoming shipper messages to your
+              When connected, Momentum routes incoming shipper messages to your
               dashboard, sends auto-acknowledgements, and notifies you instantly
               when a booking is confirmed.
             </p>
@@ -80,7 +80,7 @@ export default function WhatsAppForwarderSection() {
             <div className="flex items-center gap-2">
               <span className="w-2 h-2 rounded-full bg-[#25D366] animate-pulse" />
               <p className="text-[11px] font-semibold text-black uppercase tracking-wider">
-                Inbox — routed by Atlas
+                Inbox — routed by Momentum
               </p>
             </div>
             <span className="text-[10px] text-muted-foreground">
@@ -97,7 +97,7 @@ export default function WhatsAppForwarderSection() {
                 <div
                   className={`w-9 h-9 rounded-full flex items-center justify-center text-[12px] font-bold text-white shrink-0 ${t.isAtlas ? 'bg-[#0d0d1a]' : 'bg-primaryOrange'}`}
                 >
-                  {t.isAtlas ? 'A' : t.name[0]}
+                  {t.isAtlas ? 'M' : t.name[0]}
                 </div>
                 <div className="flex-1 min-w-0">
                   <div className="flex items-center justify-between gap-2 mb-0.5">
@@ -130,7 +130,7 @@ export default function WhatsAppForwarderSection() {
         {/* What Atlas does */}
         <div className="bg-white rounded-xl border border-border p-5">
           <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider mb-3">
-            What Atlas does with your WhatsApp
+            What Momentum does with your WhatsApp
           </h3>
           <div className="space-y-3">
             {[
