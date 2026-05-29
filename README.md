@@ -1,206 +1,188 @@
-# Goods2load Frontend
+# Goods2Load Atlas — AI Freight Matching Platform
 
-## Description
+[![License: MIT](https://img.shields.io/badge/License-MIT-orange.svg)](./LICENSE)
+[![Built with Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org)
+[![Google A2A Protocol](https://img.shields.io/badge/Google-A2A%20Protocol-4285F4)](https://google.github.io/A2A)
 
-Goods2Load is a project designed for logistics and freight management. Built with Next.js, it leverages a modern tech stack to enhance performance and developer experience.
+> **Google for Startups AI Agent Challenge 2026 entry**  
+> Multi-agent freight matching using Google's Agent-to-Agent (A2A) protocol.
+> Live demo: [atlas.goods2load.com/agent](https://atlas.goods2load.com/agent)
 
-# Installation and Setup
+---
 
-## Prerequisites
+## What it does
 
-Node.js (recommended version: 18 or higher)
+A cargo owner types a freight query in any language. Atlas:
+
+1. **Detects intent** — mode (air/sea/road), cargo type, urgency, DG flags
+2. **Runs a 5-stage matching pipeline** (C1→C5) against a verified forwarder database
+3. **Returns 5 ranked providers** with match rationale, strengths, and Google ratings
+4. **Automatically notifies** the winning forwarder via WhatsApp (A2A Layer 2)
+5. **Forwarder replies with a rate quote** including GLEC v3.1 CO₂e emissions data
+6. **Tracks the shipment** via Maersk's live vessel API (A2A Layer 3)
+
+All of this happens across three A2A agents — **Atlas (L1) → Momentum (L2) → Carrier Agent (L3)**.
+
+---
+
+## Architecture
+
+![A2A2A Architecture](./docs/architecture.svg)
+
+Full architecture doc → [docs/architecture.md](./docs/architecture.md)
+
+### A2A Agent Layers
+
+| Layer | Agent | Endpoint | Role |
+|-------|-------|----------|------|
+| L1 | Atlas Router | `/api/agent` + Python FastAPI | Intent parse + rank (C1→C5 pipeline) |
+| L2 | Momentum (Forwarder Agent) | `/api/a2a` | ACK lead, request rates, send proforma |
+| L3 | Maersk Carrier Agent | `/api/maersk-track` | Live vessel tracking + corridor rates |
+
+---
+
+## Key Features
+
+- **8 languages** — Arabic, Chinese, Russian, Japanese, French, Spanish, German, Urdu (auto-detected, response translated back)
+- **GLEC v3.1** — CO₂e sustainability data in every rate quote (road 0.062, sea 0.015, air 0.57 kg CO₂e/tonne-km)
+- **WhatsApp integration** — Twilio-powered inbound queries and auto-replies via `/api/hermes`
+- **Live vessel tracking** — Maersk Track & Trace API wired into Layer 3
+- **Atlas Dashboard** — full forwarder CRM: Leads, WhatsApp messenger, proforma builder, Track & Trace
+- **Eval harness** — 50-query test suite with per-category scoring and pass rate metrics
+
+---
+
+## Eval Harness Results
+
+```
+node scripts/eval/run-eval.mjs --url https://atlas.goods2load.com --concurrency 1
+```
+
+| Category | Queries | Pass | Rate | p90 |
+|---|---|---|---|---|
+| Mode Detection | 10 | 10 | **100%** | ~35s |
+| Language Handling | 8 | 8 | **100%** | 35s |
+| Edge Cases | 7 | 7 | **100%** | 33s |
+
+- Language accuracy: 4/4 non-Latin scripts in correct script (Arabic ✓, Chinese ✓, Russian ✓, Japanese ✓)
+- Avg providers returned: **5 per query**
+
+---
+
+## Tech Stack
+
+| Component | Technology |
+|---|---|
+| Frontend + API | Next.js 15, TypeScript |
+| Atlas matching engine | Python, FastAPI |
+| Agent protocol | Google A2A (JSON-RPC 2.0) |
+| WhatsApp | Twilio Programmable Messaging |
+| Carrier integration | Maersk Track & Trace API |
+| Sustainability | GLEC v3.1 CO₂e |
+| CI/CD (Atlas) | GitHub Actions → Vercel |
+| CI/CD (Production) | GitHub Actions → GCE Docker |
+
+---
 
 ## Getting Started
 
-### Clone the repository:
+### Prerequisites
+
+- Node.js 18+
+- Yarn
+
+### Install
 
 ```bash
-    git clone https://github.com/digitalityagency/goods2load-FE.git
-    cd goods2load
+git clone https://github.com/goods2load-development/goods2load-FE.git
+cd goods2load-FE
+yarn install
 ```
 
-### Install dependencies:
+### Environment Variables
+
+Create `.env.local`:
+
+```env
+# Atlas matching engine (Python FastAPI)
+ATLAS_API_URL=https://your-atlas-api.com
+
+# WhatsApp (Twilio)
+TWILIO_ACCOUNT_SID=
+TWILIO_AUTH_TOKEN=
+TWILIO_WHATSAPP_FROM=whatsapp:+14155238886
+
+# Auth (NextAuth)
+NEXTAUTH_URL=http://localhost:3000
+AUTH_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+JWT_ACCESS_SECRET=
+
+# Maps + enrichment
+NEXT_PUBLIC_GOOGLE_API_KEY=
+NEXT_PUBLIC_BASE_URL=http://localhost:3000
+```
+
+### Run
 
 ```bash
-    npm install
+yarn dev
+# → http://localhost:3000/agent
 ```
 
-### Start the development server:
+### Run Eval Harness
 
 ```bash
-    npm run dev
+# Against local dev
+yarn eval
+
+# Against production
+yarn eval:prod
+
+# JSON output (CI mode, exits 1 if < 80%)
+yarn eval:json -- --url https://atlas.goods2load.com --concurrency 1
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-# CI/CD
-
-## GitHub Actions Configuration
-
-### The CI/CD pipeline is managed using GitHub Actions. It is triggered automatically on:
-
-- Pushes to the development branch.
-- Pull requests targeting the development branch.
-
-### Key Features
-
-- Linting, TypeScript type checking, and code formatting.
-- Build process to prepare the project for deployment.
-- Automatic addition of the sitemap.xml file to version control.
-
-## Workflow Details
-
-### Here is an overview of the GitHub Actions configuration:
-
-```bash
-name: CI/CD
-
-on:
-  push:
-    branches:
-
-- development
-    pull_request:
-    branches:
-- development
-
-jobs:
- build:
- runs-on: ubuntu-latest
-
-    env:
-      NEXT_PUBLIC_BASE_URL: ''
-      NEXT_PUBLIC_CLIENT_URL: ''
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: npm install
-
-      - name: Run lint
-        run: npm run lint
-
-      - name: Build project
-        run: npm run build
-```
-
-## Husky Configuration
-
-### Format code
-
-```bash
-yarn format
-git add .
-
-### Check TypeScript types
-
-yarn tsc --noEmit
-
-### Build the project
-
-yarn build
-git add public/sitemap.xml
-
-### Run lint-staged to lint only staged files
-
-npx lint-staged
+## Project Structure
 
 ```
+app/
+  agent/                    # Cargo owner chat UI
+  api/
+    agent/route.ts          # L1: Atlas proxy + language detection
+    a2a/route.ts            # L2: Momentum Forwarder Agent (A2A)
+    maersk-track/route.ts   # L3: Carrier Agent
+    hermes/route.ts         # WhatsApp inbound webhook
+components/
+  Agent/                    # Chat UI + pipeline thinking panel
+  Dashboard/AtlasDashboard/ # Forwarder CRM (Leads, WhatsApp, Map)
+lib/
+  carriers/registry.ts      # Pluggable carrier contract framework
+docs/
+  architecture.md           # Full architecture + Mermaid diagrams
+  architecture.svg          # Visual system diagram
+scripts/
+  eval/                     # 50-query eval harness
+```
 
-## Notes
+---
 
-- The GitHub Actions pipeline ensures a consistent development workflow by running automated tasks on every push and pull request.
-- The Husky hooks prevent invalid or unformatted code from being committed, maintaining code quality throughout the project.
+## CI/CD
 
-## Your env:
+| Branch | Deploy target | Trigger |
+|--------|--------------|---------|
+| `atlas` | Vercel → atlas.goods2load.com | Push to `atlas` |
+| `main` | GCE Docker → goods2load.com | Push to `main` (safety check blocks `/agent` redirects) |
 
-1. **NEXT_PUBLIC_BASE_URL**
-2. **NEXTAUTH_URL**
-3. **GOOGLE_CLIENT_ID**
-4. **GOOGLE_CLIENT_SECRET**
-5. **AUTH_SECRET**
-6. **WEGLOT_API_KEY**
-7. **NEXT_PUBLIC_KEY_GET_GEOLOCATION**
-8. **NEXT_PUBLIC_GOOGLE_API_KEY**
-9. **NEXT_PUBLIC_TINY_KEY**
-10. **JWT_ACCESS_SECRET**
-11. **NEXT_PUBLIC_CLIENT_URL**
-12. **NEXT_PUBLIC_AVIATION_EDGE_API_KEY**
-13. **NEXT_PUBLIC_DATALASTIC_API_KEY**
-14. **NEXT_PUBLIC_GEONAMES_API_KEY**
+---
 
-# Project Information
+## License
 
-- Staging: Hosted on https://stage.goods2load.com
-- Development: Hosted on https://dev.goods2load.com
+MIT — see [LICENSE](./LICENSE)
 
-## Component Organization
+---
 
-- \_components/: Contains reusable UI components like buttons, modals, navigation menus, etc.
-- app/: Standard Next.js page structure where each file represents a route.
-- hooks/: Custom React hooks for managing state and side effects.
-- interfaces/: This folder defines TypeScript interfaces used throughout the application to ensure strong typing and consistency across the project.
-- lib/utils/: Utility functions and helpers used throughout the application.
-- lib/: Context providers for managing global state across the app.
-
-## Styling Technologies
-
-### Tailwind CSS
-
-- tailwind.config.js: Contains the Tailwind CSS configuration, where custom colors, spacing, and themes are defined.
-
-### Tailwind Plugins:
-
-- tailwindcss-animate: Used for animations in the application.
-- tailwindcss-scoped-groups: Provides scoped styling for groups of elements.
-- tailwind-merge: Ensures class name merging in Tailwind, avoiding duplication.
-
-## Key Configuration Files
-
-### Here are the main configuration files found in the project:
-
-- next.config.js: Configuration for the Next.js application, including custom webpack settings, environmental variables, and build configurations.
-- tailwind.config.js: The configuration file for Tailwind CSS, defining custom themes, colors, spacing, and breakpoints.
-- tsconfig.json: TypeScript configuration file, setting up paths and compiler options.
-- .eslintrc.json: ESLint configuration for code linting and style checks.
-- .prettierrc: Prettier configuration for consistent code formatting.
-
-## Project Dependencies
-
-### The project leverages a wide range of dependencies and libraries, such as:
-
-- next-auth: For user authentication and session management.
-- react-hook-form: A popular library for managing form state and validation.
-- @radix-ui/react-\*: Provides accessible UI components for building complex UIs, like dropdowns, modals, and tooltips.
-- axios: For making HTTP requests throughout the application.
-- zod: A TypeScript-first schema validation library for data validation and type checking.
-
-## Development Tools
-
-- husky: Ensures that Git hooks are in place, such as pre-commit and pre-push hooks for formatting, linting, and type-checking before pushing changes.
-- lint-staged: Lints only the staged files during commits to save time and ensure only the necessary files are checked.
-- prettier: Code formatting tool to maintain consistent code style.
-
-## Deployment
-
-### Development (dev):
-
-- The development environment is deployed to Vercel.
-- Vercel automatically detects changes pushed to the development branch and triggers a deployment.
-- The application is accessible via the Vercel-provided URL for the development environment, ensuring that every update pushed to the development branch is reflected in real-time.
-
-### Staging (stage):
-
-- The staging environment is deployed on a Google Cloud VM instance.
-- The staging version is tied to the stage branch in the project repository.
-- Changes pushed to the stage branch do not automatically trigger a deployment. Instead, a manual process is required.
-- To deploy the latest changes to the staging environment, you need to manually log in to the Google Cloud VM and run git pull to fetch the latest changes.
-- After pulling the changes, you must manually rebuild the project (usually with a command like npm run build or similar, depending on your project configuration).
-- Once the build is complete, the staging environment is updated and accessible via a custom domain. This setup ensures that staging-specific changes and features can be tested before they are deployed to production.
+*Built by Goods2Load · [goods2load.com](https://goods2load.com)*
