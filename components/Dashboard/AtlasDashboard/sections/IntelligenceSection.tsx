@@ -14,13 +14,17 @@ const SUGGESTIONS = [
 ];
 
 function buildSystemContext(company: string) {
-  return `You are Atlas, the AI freight intelligence assistant for ${company} — a freight forwarder on the Goods2Load network.
+  return `You are Momentum, ${company}'s dedicated operational intelligence agent on the Goods2Load network.
 
-Answer all questions specifically for ${company}'s situation. Be concise, actionable, and use real freight industry knowledge. If you don't have specific data for ${company}, give relevant general freight industry advice for a forwarder with their profile.`;
+You learn exclusively from ${company}'s own operational data — their lanes, win rates, response times, cargo types, customer interactions, and performance patterns. You never share or expose data from other freight forwarding companies on the network.
+
+Your role is to maximise the performance of ${company}'s human team by giving them precise, company-specific intelligence and actionable recommendations. Be concise and direct. Use real freight industry knowledge. If you lack specific data, give relevant advice calibrated to a forwarder with ${company}'s profile (Air 50% / Sea 30% / Road 20%, Trust 84/100, Win rate 61%, top lanes DXB·FRA·SHA·BOM).
+
+You are distinct from Atlas. Atlas is the Goods2Load network orchestration layer — it routes leads, collects structured feedback, and governs ecosystem-level intelligence. You operate exclusively within ${company}'s environment and report to Atlas only for agreed network functions: lead reception, structured feedback, and performance signals. Everything else stays inside ${company}.`;
 }
 
 interface Message {
-  role: 'user' | 'atlas';
+  role: 'user' | 'momentum';
   text: string;
 }
 
@@ -31,8 +35,8 @@ export default function IntelligenceSection({
 }) {
   const [messages, setMessages] = useState<Message[]>([
     {
-      role: 'atlas',
-      text: `Good morning. I'm Atlas — your freight intelligence layer. I know ${company}'s lanes, capabilities, and the current market rates on your top corridors.\n\nWhat do you want to work on today?`,
+      role: 'momentum',
+      text: `Good morning. I'm Momentum — ${company}'s operational intelligence agent.\n\nI know your lanes, your win rate, how your team performs, and the live market rates on your corridors. Everything I learn stays inside ${company}.\n\nWhat do you want to work on today?`,
     },
   ]);
   const [input, setInput] = useState('');
@@ -60,7 +64,7 @@ export default function IntelligenceSection({
           messages: [
             {
               role: 'user',
-              content: `${buildSystemContext(company)}\n\n${company} forwarder asks: ${text.trim()}`,
+              content: `${buildSystemContext(company)}\n\n${company} team member asks: ${text.trim()}`,
             },
           ],
         }),
@@ -69,7 +73,7 @@ export default function IntelligenceSection({
       setMessages((m) => [
         ...m,
         {
-          role: 'atlas',
+          role: 'momentum',
           text: json.reply ?? 'Connection error — please try again.',
         },
       ]);
@@ -77,8 +81,8 @@ export default function IntelligenceSection({
       setMessages((m) => [
         ...m,
         {
-          role: 'atlas',
-          text: 'Could not reach Atlas — check your backend connection.',
+          role: 'momentum',
+          text: 'Could not reach Momentum — check your connection.',
         },
       ]);
     } finally {
@@ -92,9 +96,10 @@ export default function IntelligenceSection({
       {/* Header */}
       <div className="px-6 pt-6 pb-4 border-b border-border flex items-center justify-between">
         <div>
-          <h2 className="text-lg font-bold text-black">Atlas Intelligence</h2>
+          <h2 className="text-lg font-bold text-black">Momentum</h2>
           <p className="text-[12px] text-muted-foreground">
-            Knows your lanes, your win rate, live market rates — ask anything
+            {company}&apos;s operational intelligence — your lanes, your data,
+            your performance
           </p>
         </div>
         <div className="flex items-center gap-1.5 bg-green-50 border border-green-200 rounded-full px-3 py-1">
@@ -135,9 +140,9 @@ export default function IntelligenceSection({
             key={i}
             className={`flex ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}
           >
-            {m.role === 'atlas' && (
-              <div className="w-6 h-6 rounded-full bg-[#0d0d1a] flex items-center justify-center text-[9px] text-white font-bold shrink-0 mt-1 mr-2">
-                A
+            {m.role === 'momentum' && (
+              <div className="w-6 h-6 rounded-full bg-primaryOrange flex items-center justify-center text-[9px] text-white font-bold shrink-0 mt-1 mr-2">
+                M
               </div>
             )}
             <div
@@ -154,8 +159,8 @@ export default function IntelligenceSection({
 
         {loading && (
           <div className="flex justify-start items-center gap-2">
-            <div className="w-6 h-6 rounded-full bg-[#0d0d1a] flex items-center justify-center text-[9px] text-white font-bold shrink-0">
-              A
+            <div className="w-6 h-6 rounded-full bg-primaryOrange flex items-center justify-center text-[9px] text-white font-bold shrink-0">
+              M
             </div>
             <div className="bg-white border border-border rounded-2xl rounded-bl-sm px-4 py-3 flex items-center gap-1.5">
               {[0, 1, 2].map((i) => (
@@ -193,7 +198,7 @@ export default function IntelligenceSection({
             onChange={(e) => setInput(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && send(input)}
             disabled={loading}
-            placeholder="Ask Atlas about your business, lanes, or market…"
+            placeholder="Ask Momentum about your business, lanes, or performance…"
             className="flex-1 text-[13px] bg-transparent outline-none placeholder:text-muted-foreground"
           />
           <button
@@ -205,8 +210,8 @@ export default function IntelligenceSection({
           </button>
         </div>
         <p className="text-[10px] text-muted-foreground text-center mt-2">
-          Atlas knows {company}&apos;s profile, market rates, and G2L platform
-          data
+          Momentum learns exclusively from {company}&apos;s operational data —
+          isolated from all other companies on the network
         </p>
       </div>
     </div>
