@@ -329,54 +329,51 @@ export default function ChatAgent() {
   const showSuggestions = messages.length === 1 && !loading;
 
   return (
-    <div className="mx-auto flex h-[calc(100vh-112px)] max-w-6xl gap-6 px-4">
-      {/* ── Chat column ── */}
-      <div className="flex flex-1 flex-col min-w-0">
-        {/* Messages */}
-        <div ref={scrollRef} className="hide-scrollbar flex-1 overflow-y-auto">
-          {showSuggestions ? (
-            /* ── Gemini-style centred intro ── */
-            <div className="flex flex-col items-center px-4 pt-28 gap-8">
-              <div className="flex flex-col items-center gap-4 max-w-xl text-center">
-                <p className="text-base text-muted-foreground leading-relaxed">
-                  {WELCOME.content}
-                </p>
-              </div>
-              <div className="flex flex-wrap justify-center gap-2 max-w-2xl">
-                {SUGGESTIONS.map((s) => (
-                  <button
-                    key={s}
-                    onClick={() => send(s)}
-                    className="rounded-full border border-primaryOrange/40 bg-lightOrange px-3 py-1.5 text-xs text-black transition-colors hover:bg-primaryOrange hover:text-customWhite"
-                  >
-                    {s}
-                  </button>
-                ))}
-              </div>
-            </div>
-          ) : (
-            /* ── Normal conversation ── */
-            <div className="space-y-5 py-8 px-1">
-              {messages.map((m) => (
-                <ChatMessageBubble key={m.id} message={m} />
-              ))}
-              {loading && <ThinkingPanel events={pipelineEvents} />}
-            </div>
-          )}
-        </div>
+    <div className="mx-auto flex h-[calc(100vh-112px)] max-w-4xl flex-col px-4">
+      {/* ── Sponsored panel — fixed to viewport right edge, doesn't affect chat layout ── */}
+      <SponsoredPanel messages={messages} />
 
-        {/* Composer */}
-        <div className="border-t border-border pt-5 pb-2">
-          <ChatInput onSend={send} disabled={loading} />
-          <p className="mt-3 text-center text-[11px] text-muted-foreground">
-            Goods2Load connects you with verified freight forwarders. No
-            transaction fees.
-          </p>
-        </div>
+      {/* Messages */}
+      <div ref={scrollRef} className="hide-scrollbar flex-1 overflow-y-auto">
+        {showSuggestions ? (
+          /* ── Gemini-style centred intro ── */
+          <div className="flex flex-col items-center px-4 pt-28 gap-8">
+            <div className="flex flex-col items-center gap-4 max-w-xl text-center">
+              <p className="text-base text-muted-foreground leading-relaxed">
+                {WELCOME.content}
+              </p>
+            </div>
+            <div className="flex flex-wrap justify-center gap-2 max-w-2xl">
+              {SUGGESTIONS.map((s) => (
+                <button
+                  key={s}
+                  onClick={() => send(s)}
+                  className="rounded-full border border-primaryOrange/40 bg-lightOrange px-3 py-1.5 text-xs text-black transition-colors hover:bg-primaryOrange hover:text-customWhite"
+                >
+                  {s}
+                </button>
+              ))}
+            </div>
+          </div>
+        ) : (
+          /* ── Normal conversation ── */
+          <div className="space-y-5 py-8 px-1">
+            {messages.map((m) => (
+              <ChatMessageBubble key={m.id} message={m} />
+            ))}
+            {loading && <ThinkingPanel events={pipelineEvents} />}
+          </div>
+        )}
       </div>
 
-      {/* ── Sponsored panel (desktop only) ── */}
-      <SponsoredPanel messages={messages} />
+      {/* Composer */}
+      <div className="border-t border-border pt-5 pb-2">
+        <ChatInput onSend={send} disabled={loading} />
+        <p className="mt-3 text-center text-[11px] text-muted-foreground">
+          Goods2Load connects you with verified freight forwarders. No
+          transaction fees.
+        </p>
+      </div>
     </div>
   );
 }
