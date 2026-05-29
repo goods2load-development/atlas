@@ -143,11 +143,6 @@ const nextConfig = {
         destination: '/dashboard/freightforwardingcompany',
         permanent: false,
       },
-      {
-        source: '/',
-        destination: '/agent',
-        permanent: false,
-      },
     ];
   },
 };
