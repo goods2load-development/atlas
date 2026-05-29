@@ -85,7 +85,7 @@
     "recharts": "^2.12.7",
     "sharp": "^0.34.5",
     "sitemap": "^8.0.0",
-    "stripe": "^22.1.1",
+    "stripe": "^22.2.0",
     "tailwind-merge": "^2.2.2",
     "tailwindcss-animate": "^1.0.7",
     "tailwindcss-scoped-groups": "^2.0.0",

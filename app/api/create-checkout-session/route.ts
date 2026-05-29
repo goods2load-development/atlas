@@ -18,7 +18,7 @@ export async function POST(req: NextRequest) {
   try {
     // Dynamic import so the build doesn't fail when stripe isn't configured
     const Stripe = (await import('stripe')).default;
-    const stripe = new Stripe(stripeKey, { apiVersion: '2026-04-22.dahlia' });
+    const stripe = new Stripe(stripeKey, { apiVersion: '2026-05-27.dahlia' });
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000';
 
