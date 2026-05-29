@@ -96,6 +96,17 @@ const STAGES = [
 // Client-side equivalents of the server buildForwarderACK / buildRateQuote helpers.
 // Used by the dashboard to pre-fill the reply box — forwarder clicks "Send" when ready.
 
+// Normalize internal forwarder IDs to display names — never expose ADSO/Boxman in UI copy
+const FORWARDER_DISPLAY: Record<string, string> = {
+  ADSO: 'Freight Forwarding Co.',
+  Boxman: 'Freight Forwarding Co.',
+  'Boxman Global': 'Freight Forwarding Co.',
+};
+function displayName(raw?: string): string {
+  if (!raw) return 'Freight Forwarding Co.';
+  return FORWARDER_DISPLAY[raw] ?? raw;
+}
+
 function buildDraftIntro(lead: {
   bookingForwarder?: string;
   bookingRef?: string;
@@ -104,7 +115,7 @@ function buildDraftIntro(lead: {
   origin?: string;
   destination?: string;
 }): string {
-  const forwarder = lead.bookingForwarder ?? 'Freight Forwarding Co.';
+  const forwarder = displayName(lead.bookingForwarder);
   const mode =
     lead.mode === 'air' ? 'air' : lead.mode === 'sea' ? 'sea' : 'road';
   const cold = /cold|pharma|2-8|temperature|vaccine|gdp/i.test(
@@ -129,7 +140,7 @@ function buildDraftRateQuote(lead: {
   origin?: string;
   destination?: string;
 }): string {
-  const forwarder = lead.bookingForwarder ?? 'Freight Forwarding Co.';
+  const forwarder = displayName(lead.bookingForwarder);
   const ref = lead.bookingRef ?? '';
   const both = `${lead.origin ?? ''} ${lead.destination ?? ''}`.toLowerCase();
 
@@ -460,7 +471,7 @@ function LeadDetail({
               <div className="flex justify-end">
                 <div className="bg-[#dcf8c6] rounded-xl rounded-tr-sm px-3 py-2.5 max-w-[85%] shadow-sm">
                   <p className="text-[9px] font-semibold text-green-800 mb-1">
-                    Atlas · Freight Forwarding Co.
+                    Momentum · Freight Forwarding Co.
                   </p>
                   <p className="text-[11px] text-black leading-relaxed">
                     {lead.momentumMessage}
@@ -518,8 +529,8 @@ function LeadDetail({
                   Send Introduction
                 </p>
                 <p className="text-[10px] text-gray-600 line-clamp-2">
-                  Introduce {lead.bookingForwarder ?? 'your company'},
-                  acknowledge the booking ref, ask for cargo details.
+                  Introduce {displayName(lead.bookingForwarder)}, acknowledge
+                  the booking ref, ask for cargo details.
                 </p>
               </button>
               {/* Rate Quote card */}
@@ -833,12 +844,12 @@ export default function LeadsSection({
             matchScore: 82,
             winProbability: 70,
             matchReasons: [
-              `Atlas rank #${l.atlasRank ?? 1} match`,
+              `Goods2Load rank #${l.atlasRank ?? 1} match`,
               `Route: ${l.origin} → ${l.destination}`,
             ],
             momentumSent: true,
             momentumTime: l.receivedAt as string,
-            momentumMessage: `Atlas routed this inquiry to you as rank #${l.atlasRank ?? 1} match.`,
+            momentumMessage: `Momentum routed this inquiry to you as rank #${l.atlasRank ?? 1} match on the network.`,
             isLive: true,
             rawPhone: l.rawPhone as string,
             rawText: l.rawText as string,
@@ -870,7 +881,7 @@ export default function LeadsSection({
             isLive: true,
             isBooking: true,
             bookingRef: b.reference as string,
-            bookingForwarder: b.forwarder as string,
+            bookingForwarder: displayName(b.forwarder as string),
             rawPhone: b.phone as string,
           }),
         );
