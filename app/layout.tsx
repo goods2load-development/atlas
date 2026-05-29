@@ -2,7 +2,6 @@ import './globals.css';
 import OpenWidget from './openwidget/OpenWidget';
 import { OpenWidgetProvider } from './openwidget/OpenWidgetProvider';
 import { WeglotProvider } from './weglot/WeglotProvider';
-import WhatsupIcon from '@/assets/icons/whatsupicon.svg';
 import { generateDefaultMetadata } from '@/lib/metadataUtils';
 import GtagProvider from '@/lib/providers/GtagProvider';
 
@@ -13,6 +12,7 @@ import NextTopLoader from 'nextjs-toploader';
 
 import ToasterWrapper from '@/components/Interceptor';
 import NextAuthProvider from '@/components/NextAuthProvider';
+import WhatsAppFloatingButton from '@/components/WhatsAppFloatingButton';
 import { Toaster } from '@/components/ui/toaster';
 
 const poppins = Poppins({
@@ -76,24 +76,8 @@ export default function RootLayout({
             speed={200}
           />
 
-          {/* WhatsApp Chat Button */}
-          <a
-            href="https://wa.me/+971505574291"
-            className="sm:pl-[20px] text-[14px]/[16px] bg-white rounded-full flex flex-row border-[1px] shadow-lg border-white fixed z-50 bottom-[16px] sm:bottom-[40px] right-[16px] sm:right-[40px]"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <span className="hidden sm:inline self-center pr-[10px]">
-              WhatsApp us!
-            </span>
-            <Image
-              width={52}
-              height={52}
-              src={WhatsupIcon}
-              alt="whatsup"
-              className="float-right w-[52px] h-[52px]"
-            />
-          </a>
+          {/* WhatsApp Chat Button — hidden on /dashboard and /agent routes */}
+          <WhatsAppFloatingButton />
 
           {/* Children and Other Components */}
           <ToasterWrapper>{children}</ToasterWrapper>
