@@ -182,20 +182,15 @@ type Section =
   | 'calendar'
   | 'whatsapp';
 
-const NAV: {
-  id: Section;
-  label: string;
-  Icon: React.ElementType;
-  badge?: number;
-}[] = [
+// Baseline counts — computed once from static demo data
+const DEMO_NEW_LEADS = DEMO_LEADS.filter((l) => l.status === 'new').length;
+// 3 active lane subscriptions in AlertsSection (FRA→DXB, SHA→Jebel Ali, BOM→DXB)
+const DEMO_ACTIVE_ALERTS = 3;
+
+const NAV: { id: Section; label: string; Icon: React.ElementType }[] = [
   { id: 'overview', label: 'Overview', Icon: BarChart3 },
-  {
-    id: 'leads',
-    label: 'Leads',
-    Icon: Inbox,
-    badge: DEMO_LEADS.filter((l) => l.status === 'new').length,
-  },
-  { id: 'alerts', label: 'Lane Alerts', Icon: Bell, badge: 3 },
+  { id: 'leads', label: 'Leads', Icon: Inbox },
+  { id: 'alerts', label: 'Lane Alerts', Icon: Bell },
   { id: 'intelligence', label: 'Intelligence', Icon: Brain },
   { id: 'calendar', label: 'Calendar', Icon: Calendar },
   { id: 'whatsapp', label: 'WhatsApp', Icon: MessageCircle },
@@ -207,12 +202,46 @@ export default function AtlasDashboard() {
   const [user, setUser] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
+  // Live lead count from API — polled every 20 s
+  const [liveLeadCount, setLiveLeadCount] = useState(0);
+  // "Last seen" counts — badges reset to 0 when user visits the section
+  const [seenLeadCount, setSeenLeadCount] = useState(0);
+  const [seenAlertCount, setSeenAlertCount] = useState(0);
+
   // Read from sessionStorage after mount (avoids SSR mismatch)
   useEffect(() => {
     const saved = sessionStorage.getItem('atlas_demo_user');
     if (saved) setUser(saved);
     setHydrated(true);
   }, []);
+
+  // Poll live leads so badge stays current
+  useEffect(() => {
+    if (!hydrated || !user) return;
+    async function fetchLive() {
+      try {
+        const r = await fetch(`/api/agent/leads?forwarder=${DEMO_COMPANY}`);
+        const d = await r.json();
+        setLiveLeadCount((d.leads ?? []).length);
+      } catch {
+        /* silent — badge just shows demo count */
+      }
+    }
+    fetchLive();
+    const t = setInterval(fetchLive, 20_000);
+    return () => clearInterval(t);
+  }, [hydrated, user]);
+
+  // Computed badge values — clear to 0 when section is visited
+  const totalNewLeads = DEMO_NEW_LEADS + liveLeadCount;
+  const leadBadge = Math.max(0, totalNewLeads - seenLeadCount);
+  const alertBadge = Math.max(0, DEMO_ACTIVE_ALERTS - seenAlertCount);
+
+  function handleNav(id: Section) {
+    setSection(id);
+    if (id === 'leads') setSeenLeadCount(totalNewLeads);
+    if (id === 'alerts') setSeenAlertCount(DEMO_ACTIVE_ALERTS);
+  }
 
   function handleSignUp(name: string) {
     sessionStorage.setItem('atlas_demo_user', name);
@@ -264,12 +293,14 @@ export default function AtlasDashboard() {
 
         {/* Nav */}
         <nav className="flex-1 py-3 px-2 space-y-0.5">
-          {NAV.map(({ id, label, Icon, badge }) => {
+          {NAV.map(({ id, label, Icon }) => {
             const active = section === id;
+            const badge =
+              id === 'leads' ? leadBadge : id === 'alerts' ? alertBadge : 0;
             return (
               <button
                 key={id}
-                onClick={() => setSection(id)}
+                onClick={() => handleNav(id)}
                 className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-left transition-colors ${
                   active
                     ? 'bg-primaryOrange/8 text-primaryOrange'
@@ -282,7 +313,7 @@ export default function AtlasDashboard() {
                   className="shrink-0"
                 />
                 <span className="text-[12px] font-medium flex-1">{label}</span>
-                {badge != null && badge > 0 && (
+                {badge > 0 && (
                   <span className="text-[9px] font-bold px-1.5 py-0.5 rounded-full min-w-[16px] text-center bg-primaryOrange text-white">
                     {badge}
                   </span>
@@ -317,23 +348,27 @@ export default function AtlasDashboard() {
 
       {/* ── Mobile nav ── */}
       <div className="md:hidden fixed bottom-0 left-0 right-0 z-20 bg-white border-t border-border flex">
-        {NAV.map(({ id, label, Icon, badge }) => (
-          <button
-            key={id}
-            onClick={() => setSection(id)}
-            className={`flex-1 flex flex-col items-center gap-0.5 py-2 relative ${section === id ? 'text-primaryOrange' : 'text-muted-foreground'}`}
-          >
-            <Icon size={18} strokeWidth={1.75} />
-            <span className="text-[9px] font-medium">
-              {label.split(' ')[0]}
-            </span>
-            {badge != null && badge > 0 && (
-              <span className="absolute top-1 right-1/4 w-3.5 h-3.5 rounded-full bg-primaryOrange text-white text-[8px] font-bold flex items-center justify-center">
-                {badge}
+        {NAV.map(({ id, label, Icon }) => {
+          const badge =
+            id === 'leads' ? leadBadge : id === 'alerts' ? alertBadge : 0;
+          return (
+            <button
+              key={id}
+              onClick={() => handleNav(id)}
+              className={`flex-1 flex flex-col items-center gap-0.5 py-2 relative ${section === id ? 'text-primaryOrange' : 'text-muted-foreground'}`}
+            >
+              <Icon size={18} strokeWidth={1.75} />
+              <span className="text-[9px] font-medium">
+                {label.split(' ')[0]}
               </span>
-            )}
-          </button>
-        ))}
+              {badge > 0 && (
+                <span className="absolute top-1 right-1/4 w-3.5 h-3.5 rounded-full bg-primaryOrange text-white text-[8px] font-bold flex items-center justify-center">
+                  {badge}
+                </span>
+              )}
+            </button>
+          );
+        })}
       </div>
 
       {/* ── Section content ── */}
