@@ -1,6 +1,7 @@
 'use client';
 
 import { DEMO_LEADS, type DemoLead, MARKET_RATES } from '../boxmanData';
+import { findClientByCompany } from '@/lib/clientPortfolio';
 
 import { useEffect, useRef, useState } from 'react';
 
@@ -16,6 +17,7 @@ import {
   TrendingDown,
   TrendingUp,
   Truck,
+  Users,
   X,
 } from 'lucide-react';
 
@@ -304,6 +306,9 @@ function LeadDetail({
   const ch = CHANNEL_CONFIG[lead.channel];
   const md = MODE_CONFIG[lead.mode];
 
+  // Cross-reference against client portfolio
+  const portfolioClient = findClientByCompany(lead.company || lead.from);
+
   return (
     <div className="flex flex-col h-full bg-white">
       {/* Header */}
@@ -336,6 +341,50 @@ function LeadDetail({
           <X size={16} />
         </button>
       </div>
+
+      {/* Returning-client banner — Momentum memory surface */}
+      {portfolioClient && (
+        <div className="px-5 py-3 bg-blue-50 border-b border-blue-100 flex items-start gap-2.5">
+          <div className="w-6 h-6 rounded-full bg-blue-100 flex items-center justify-center shrink-0 mt-0.5">
+            <Users size={11} className="text-blue-600" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-1.5 flex-wrap">
+              <p className="text-[11px] font-bold text-blue-800">
+                Existing client
+              </p>
+              <span className="text-[9px] font-semibold bg-blue-100 text-blue-600 px-1.5 py-0.5 rounded-full border border-blue-200">
+                {portfolioClient.shipments} shipments ·{' '}
+                {portfolioClient.totalRevenue}
+              </span>
+              {portfolioClient.status === 'active' && (
+                <span className="text-[9px] font-semibold bg-green-50 text-green-600 px-1.5 py-0.5 rounded-full border border-green-200">
+                  Active
+                </span>
+              )}
+            </div>
+            <p className="text-[10px] text-blue-700 mt-0.5">
+              <span className="font-semibold">
+                {portfolioClient.assignedSeat}
+              </span>{' '}
+              owns this account · last contact {portfolioClient.lastContact}
+            </p>
+            {portfolioClient.tags.slice(0, 3).length > 0 && (
+              <div className="flex items-center gap-1 mt-1 flex-wrap">
+                {portfolioClient.tags.slice(0, 3).map((t) => (
+                  <span
+                    key={t}
+                    className="text-[8px] font-semibold px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-600"
+                  >
+                    {t}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+          <ChevronRight size={12} className="text-blue-400 shrink-0 mt-1" />
+        </div>
+      )}
 
       <div className="flex-1 overflow-y-auto">
         {/* Cargo details */}

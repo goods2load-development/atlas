@@ -1,5 +1,7 @@
 'use client';
 
+import { buildClientContext, findClientByCompany } from '@/lib/clientPortfolio';
+
 import { useEffect, useRef, useState } from 'react';
 
 import { Send } from 'lucide-react';
@@ -62,6 +64,13 @@ export default function IntelligenceSection({
     setMessages((m) => [...m, { role: 'user', text: text.trim() }]);
     setInput('');
     setLoading(true);
+
+    // Detect if the message references a known client and inject memory
+    const detectedClient = findClientByCompany(text);
+    const clientContext = detectedClient
+      ? `\n\nCLIENT PORTFOLIO CONTEXT:\n${buildClientContext(detectedClient)}`
+      : '';
+
     try {
       const res = await fetch('/api/agent', {
         method: 'POST',
@@ -70,7 +79,7 @@ export default function IntelligenceSection({
           messages: [
             {
               role: 'user',
-              content: `${buildSystemContext(company)}\n\n${company} team member asks: ${text.trim()}`,
+              content: `${buildSystemContext(company)}${clientContext}\n\n${company} team member asks: ${text.trim()}`,
             },
           ],
         }),

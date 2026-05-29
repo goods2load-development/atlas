@@ -3,6 +3,7 @@
 import { BOXMAN, DEMO_LEADS } from './boxmanData';
 import AlertsSection from './sections/AlertsSection';
 import CalendarSection from './sections/CalendarSection';
+import ClientPortfolioSection from './sections/ClientPortfolioSection';
 import EmailSection from './sections/EmailSection';
 import IntelligenceSection from './sections/IntelligenceSection';
 import LeadsSection from './sections/LeadsSection';
@@ -25,6 +26,7 @@ import {
   MessageCircle,
   ShieldCheck,
   Truck,
+  Users,
 } from 'lucide-react';
 import { signIn } from 'next-auth/react';
 import Image from 'next/image';
@@ -183,7 +185,8 @@ type Section =
   | 'profile'
   | 'calendar'
   | 'whatsapp'
-  | 'email';
+  | 'email'
+  | 'clients';
 
 // Baseline counts — computed once from static demo data
 const DEMO_NEW_LEADS = DEMO_LEADS.filter((l) => l.status === 'new').length;
@@ -194,6 +197,7 @@ const NAV: { id: Section; label: string; Icon: React.ElementType }[] = [
   { id: 'leads', label: 'Leads', Icon: Inbox },
   { id: 'whatsapp', label: 'WhatsApp', Icon: MessageCircle },
   { id: 'email', label: 'Email', Icon: Mail },
+  { id: 'clients', label: 'Clients', Icon: Users },
   { id: 'overview', label: 'Overview', Icon: BarChart3 },
   { id: 'alerts', label: 'Lane Alerts', Icon: Bell },
   { id: 'intelligence', label: 'Intelligence', Icon: Brain },
@@ -400,6 +404,7 @@ export default function AtlasDashboard() {
           <IntelligenceSection company={DEMO_DISPLAY} />
         )}
         {section === 'email' && <EmailSection />}
+        {section === 'clients' && <ClientPortfolioSection />}
         {section === 'calendar' && <CalendarSection />}
         {section === 'whatsapp' && <WhatsAppForwarderSection />}
         {section === 'profile' && <ProfileSection />}
