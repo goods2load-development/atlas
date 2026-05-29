@@ -326,7 +326,7 @@ function LeadDetail({
         </button>
       </div>
 
-      <div className="flex-1 overflow-y-auto hide-scrollbar">
+      <div className="flex-1 overflow-y-auto">
         {/* Cargo details */}
         <div className="px-5 py-4 border-b border-border">
           <div className="flex items-start justify-between gap-3">
@@ -499,129 +499,129 @@ function LeadDetail({
             </p>
           </div>
         )}
-      </div>
 
-      {/* Actions */}
-      <div className="px-5 py-4 border-t border-border space-y-3">
-        {/* Forwarder Agent pre-drafted messages — only for confirmed bookings */}
-        {lead.isBooking && lead.rawPhone && (
-          <div className="space-y-2">
-            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">
-              Forwarder Agent — send to cargo owner
-            </p>
-            {/* Introduction card */}
-            <button
-              onClick={() => setReplyText(buildDraftIntro(lead))}
-              className="w-full text-left p-3 rounded-lg border border-[#25D366]/40 bg-[#e8f8ef] hover:bg-[#d4f2e0] transition-colors group"
-            >
-              <p className="text-[10px] font-bold text-[#128C7E] mb-1 flex items-center gap-1.5">
-                <MessageCircle size={10} strokeWidth={2.5} />
-                Send Introduction
+        {/* Actions */}
+        <div className="px-5 py-4 border-t border-border space-y-3">
+          {/* Forwarder Agent pre-drafted messages — only for confirmed bookings */}
+          {lead.isBooking && lead.rawPhone && (
+            <div className="space-y-2">
+              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">
+                Forwarder Agent — send to cargo owner
               </p>
-              <p className="text-[10px] text-gray-600 line-clamp-2">
-                Introduce {lead.bookingForwarder ?? 'your company'}, acknowledge
-                the booking ref, ask for cargo details.
-              </p>
-            </button>
-            {/* Rate Quote card */}
-            <button
-              onClick={() => setReplyText(buildDraftRateQuote(lead))}
-              className="w-full text-left p-3 rounded-lg border border-primaryOrange/30 bg-orange-50 hover:bg-orange-100 transition-colors group"
-            >
-              <p className="text-[10px] font-bold text-primaryOrange mb-1 flex items-center gap-1.5">
-                <span className="text-[10px]">📋</span>
-                Send Rate Quote
-              </p>
-              <p className="text-[10px] text-gray-600 line-clamp-2">
-                Pre-computed rate estimate for {lead.origin} →{' '}
-                {lead.destination} · {lead.mode}. Click to review, then send.
-              </p>
-            </button>
-          </div>
-        )}
-
-        {/* Reply box for live WhatsApp leads (bookings + regular) */}
-        {lead.isLive && lead.rawPhone && (
-          <div className="space-y-2">
-            {replySent && (
-              <p className="text-[10px] text-green-600 font-semibold flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
-                Reply sent via WhatsApp
-              </p>
-            )}
-            <div className="flex gap-2">
-              <textarea
-                value={replyText}
-                onChange={(e) => setReplyText(e.target.value)}
-                onKeyDown={(e) =>
-                  e.key === 'Enter' &&
-                  e.shiftKey === false &&
-                  (e.preventDefault(), sendReply())
-                }
-                placeholder={
-                  lead.isBooking
-                    ? 'Click a card above to pre-fill, then review and send…'
-                    : 'Type reply to cargo owner…'
-                }
-                rows={replyText.length > 80 ? 4 : 2}
-                className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-[#25D366]/50 focus:outline-none focus:ring-1 focus:ring-[#25D366] bg-gray-50 resize-none"
-              />
+              {/* Introduction card */}
               <button
-                onClick={sendReply}
-                disabled={replying || !replyText.trim()}
-                className="flex items-center gap-1.5 border border-[#25D366] bg-[#25D366] text-white text-[11px] font-semibold px-3 py-2 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40 self-end"
+                onClick={() => setReplyText(buildDraftIntro(lead))}
+                className="w-full text-left p-3 rounded-lg border border-[#25D366]/40 bg-[#e8f8ef] hover:bg-[#d4f2e0] transition-colors group"
               >
-                <MessageCircle size={12} strokeWidth={2} />
-                {replying ? '…' : 'Send'}
+                <p className="text-[10px] font-bold text-[#128C7E] mb-1 flex items-center gap-1.5">
+                  <MessageCircle size={10} strokeWidth={2.5} />
+                  Send Introduction
+                </p>
+                <p className="text-[10px] text-gray-600 line-clamp-2">
+                  Introduce {lead.bookingForwarder ?? 'your company'},
+                  acknowledge the booking ref, ask for cargo details.
+                </p>
+              </button>
+              {/* Rate Quote card */}
+              <button
+                onClick={() => setReplyText(buildDraftRateQuote(lead))}
+                className="w-full text-left p-3 rounded-lg border border-primaryOrange/30 bg-orange-50 hover:bg-orange-100 transition-colors group"
+              >
+                <p className="text-[10px] font-bold text-primaryOrange mb-1 flex items-center gap-1.5">
+                  <span className="text-[10px]">📋</span>
+                  Send Rate Quote
+                </p>
+                <p className="text-[10px] text-gray-600 line-clamp-2">
+                  Pre-computed rate estimate for {lead.origin} →{' '}
+                  {lead.destination} · {lead.mode}. Click to review, then send.
+                </p>
               </button>
             </div>
-          </div>
-        )}
-        {/* Maersk Layer 3 Track & Trace — available on all leads */}
-        <div className="space-y-1.5">
-          <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
-            <span className="text-[11px]">⚓</span>
-            Maersk Track & Trace · Layer 3 Carrier Agent
-          </p>
-          <div className="flex gap-2">
-            <input
-              type="text"
-              value={trackInput}
-              onChange={(e) => setTrackInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && trackShipment()}
-              placeholder="Container / B/L number…"
-              className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-blue-200 focus:outline-none focus:ring-1 focus:ring-blue-400 bg-blue-50/50"
-            />
-            <button
-              onClick={trackShipment}
-              disabled={tracking || !trackInput.trim()}
-              className="text-[11px] font-semibold px-3 py-2 rounded-lg border border-blue-400 text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors disabled:opacity-40"
-            >
-              {tracking ? '…' : 'Track'}
-            </button>
-          </div>
-          {trackResult && (
-            <p className="text-[10px] text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-200">
-              {trackResult}
-            </p>
           )}
-          {!process.env.NEXT_PUBLIC_MAERSK_ACTIVE && (
-            <p className="text-[9px] text-muted-foreground italic">
-              Add MAERSK_API_KEY to Vercel env for live tracking data
-            </p>
-          )}
-        </div>
 
-        <div className="flex gap-2">
-          <button className="flex-1 bg-primaryOrange text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity">
-            Generate proforma
-          </button>
-          {!lead.isLive && (
-            <button className="flex items-center gap-1.5 border border-[#25D366] text-[#25D366] text-[12px] font-semibold px-4 py-2.5 rounded-lg hover:bg-green-50 transition-colors">
-              <MessageCircle size={13} strokeWidth={2} />
-              Reply via WhatsApp
-            </button>
+          {/* Reply box for live WhatsApp leads (bookings + regular) */}
+          {lead.isLive && lead.rawPhone && (
+            <div className="space-y-2">
+              {replySent && (
+                <p className="text-[10px] text-green-600 font-semibold flex items-center gap-1">
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
+                  Reply sent via WhatsApp
+                </p>
+              )}
+              <div className="flex gap-2">
+                <textarea
+                  value={replyText}
+                  onChange={(e) => setReplyText(e.target.value)}
+                  onKeyDown={(e) =>
+                    e.key === 'Enter' &&
+                    e.shiftKey === false &&
+                    (e.preventDefault(), sendReply())
+                  }
+                  placeholder={
+                    lead.isBooking
+                      ? 'Click a card above to pre-fill, then review and send…'
+                      : 'Type reply to cargo owner…'
+                  }
+                  rows={replyText.length > 80 ? 4 : 2}
+                  className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-[#25D366]/50 focus:outline-none focus:ring-1 focus:ring-[#25D366] bg-gray-50 resize-none"
+                />
+                <button
+                  onClick={sendReply}
+                  disabled={replying || !replyText.trim()}
+                  className="flex items-center gap-1.5 border border-[#25D366] bg-[#25D366] text-white text-[11px] font-semibold px-3 py-2 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40 self-end"
+                >
+                  <MessageCircle size={12} strokeWidth={2} />
+                  {replying ? '…' : 'Send'}
+                </button>
+              </div>
+            </div>
           )}
+          {/* Maersk Layer 3 Track & Trace — available on all leads */}
+          <div className="space-y-1.5">
+            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
+              <span className="text-[11px]">⚓</span>
+              Maersk Track & Trace · Layer 3 Carrier Agent
+            </p>
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={trackInput}
+                onChange={(e) => setTrackInput(e.target.value)}
+                onKeyDown={(e) => e.key === 'Enter' && trackShipment()}
+                placeholder="Container / B/L number…"
+                className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-blue-200 focus:outline-none focus:ring-1 focus:ring-blue-400 bg-blue-50/50"
+              />
+              <button
+                onClick={trackShipment}
+                disabled={tracking || !trackInput.trim()}
+                className="text-[11px] font-semibold px-3 py-2 rounded-lg border border-blue-400 text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors disabled:opacity-40"
+              >
+                {tracking ? '…' : 'Track'}
+              </button>
+            </div>
+            {trackResult && (
+              <p className="text-[10px] text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-200">
+                {trackResult}
+              </p>
+            )}
+            {!process.env.NEXT_PUBLIC_MAERSK_ACTIVE && (
+              <p className="text-[9px] text-muted-foreground italic">
+                Add MAERSK_API_KEY to Vercel env for live tracking data
+              </p>
+            )}
+          </div>
+
+          <div className="flex gap-2 pb-6">
+            <button className="flex-1 bg-primaryOrange text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity">
+              Generate proforma
+            </button>
+            {!lead.isLive && (
+              <button className="flex items-center gap-1.5 border border-[#25D366] text-[#25D366] text-[12px] font-semibold px-4 py-2.5 rounded-lg hover:bg-green-50 transition-colors">
+                <MessageCircle size={13} strokeWidth={2} />
+                Reply via WhatsApp
+              </button>
+            )}
+          </div>
         </div>
       </div>
     </div>
