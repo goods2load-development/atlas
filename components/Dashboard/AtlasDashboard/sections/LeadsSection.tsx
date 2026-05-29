@@ -94,10 +94,6 @@ const STAGES = [
   { key: 'lost', label: 'Lost', color: 'bg-gray-400' },
 ] as const;
 
-// ── Forwarder Agent draft messages ────────────────────────────────────────────
-// Client-side equivalents of the server buildForwarderACK / buildRateQuote helpers.
-// Used by the dashboard to pre-fill the reply box — forwarder clicks "Send" when ready.
-
 // Normalize internal forwarder IDs to display names — never expose ADSO/Boxman in UI copy
 const FORWARDER_DISPLAY: Record<string, string> = {
   ADSO: 'Freight Forwarding Co.',
@@ -107,131 +103,6 @@ const FORWARDER_DISPLAY: Record<string, string> = {
 function displayName(raw?: string): string {
   if (!raw) return 'Freight Forwarding Co.';
   return FORWARDER_DISPLAY[raw] ?? raw;
-}
-
-function buildDraftIntro(lead: {
-  bookingForwarder?: string;
-  bookingRef?: string;
-  cargo?: string;
-  mode?: string;
-  origin?: string;
-  destination?: string;
-}): string {
-  const forwarder = displayName(lead.bookingForwarder);
-  const mode =
-    lead.mode === 'air' ? 'air' : lead.mode === 'sea' ? 'sea' : 'road';
-  const cold = /cold|pharma|2-8|temperature|vaccine|gdp/i.test(
-    lead.cargo ?? '',
-  );
-  return (
-    `🚛 *${forwarder}* · via Goods2Load\n\n` +
-    `Hi! We received your${cold ? ' cold-chain' : ''} ${mode} freight inquiry ` +
-    `(Ref: ${lead.bookingRef ?? ''}) through the Atlas network.\n\n` +
-    `We specialise in this lane and are preparing your rate quote right now. ` +
-    `Could you confirm the cargo weight and any special handling requirements?\n\n` +
-    `We'll send a full quote within the hour.\n\n` +
-    `_${forwarder} · Goods2Load Partner_`
-  );
-}
-
-function buildDraftRateQuote(lead: {
-  bookingForwarder?: string;
-  bookingRef?: string;
-  cargo?: string;
-  mode?: string;
-  origin?: string;
-  destination?: string;
-}): string {
-  const forwarder = displayName(lead.bookingForwarder);
-  const ref = lead.bookingRef ?? '';
-  const both = `${lead.origin ?? ''} ${lead.destination ?? ''}`.toLowerCase();
-
-  let min = 2000,
-    max = 2800,
-    transit = '4-6 days';
-  if (both.match(/uae|dubai|dxb/) && both.match(/iraq|baghdad|basra/)) {
-    min = 1600;
-    max = 2200;
-    transit = '3-5 days';
-  } else if (both.match(/uae|dubai/) && both.match(/saudi|riyadh|jeddah/)) {
-    min = 700;
-    max = 1200;
-    transit = '1-2 days';
-  } else if (both.match(/uae|dubai/) && both.match(/mumbai|india/)) {
-    min = 1000;
-    max = 1600;
-    transit = '2-4 days';
-  } else if (both.match(/uae|dubai/) && both.match(/amman|jordan/)) {
-    min = 1400;
-    max = 2000;
-    transit = '2-4 days';
-  }
-  if (lead.mode === 'air') {
-    min = Math.round(min * 2.8);
-    max = Math.round(max * 3.2);
-    transit = '24-48 hours';
-  }
-  if (lead.mode === 'sea') {
-    min = Math.round(min * 0.65);
-    max = Math.round(max * 0.75);
-    transit = '7-12 days';
-  }
-  const cold = /cold|pharma|2-8/i.test(lead.cargo ?? '');
-  if (cold) {
-    min += 300;
-    max += 550;
-  }
-  min = Math.round(min / 50) * 50;
-  max = Math.round(max / 50) * 50;
-
-  // GLEC v3.1 CO₂e estimate (kg per tonne)
-  const glecFactors = { road: 0.062, sea: 0.015, air: 0.57 };
-  const corridors: Record<
-    string,
-    { road?: number; sea?: number; air: number }
-  > = {
-    'iraq|baghdad|basra': { road: 1450, sea: 850, air: 2200 },
-    'saudi|riyadh|jeddah': { road: 880, air: 1000 },
-    'india|mumbai': { sea: 1900, air: 2200 },
-    'jordan|amman': { road: 2400, sea: 3100, air: 2600 },
-    'egypt|cairo': { road: 3600, sea: 3700, air: 3200 },
-  };
-  const mode = (lead.mode ?? 'road') as 'air' | 'sea' | 'road';
-  let distKm = mode === 'road' ? 2000 : mode === 'sea' ? 3000 : 2500;
-  let airKm = 2500;
-  for (const [destPat, c] of Object.entries(corridors)) {
-    if (new RegExp(destPat).test(both)) {
-      const d = mode === 'road' ? c.road : mode === 'sea' ? c.sea : c.air;
-      if (d) distKm = d;
-      airKm = c.air;
-      break;
-    }
-  }
-  let co2 = distKm * glecFactors[mode];
-  if (cold) co2 *= mode === 'road' ? 1.3 : mode === 'sea' ? 1.2 : 1.05;
-  const co2Kg = Math.round(co2);
-  const airCO2 = Math.round(airKm * glecFactors.air * (cold ? 1.05 : 1));
-  const co2Times = (airCO2 / co2Kg).toFixed(1);
-  const co2Line =
-    mode === 'air'
-      ? `🌱 *CO₂e:* ~${co2Kg.toLocaleString()} kg`
-      : `🌱 *CO₂e:* ~${co2Kg.toLocaleString()} kg _(✈️ air: ~${airCO2.toLocaleString()} kg · ${co2Times}× more)_`;
-
-  const modeIcon = mode === 'air' ? '✈️' : mode === 'sea' ? '🚢' : '🚛';
-  const coldLabel = cold ? ' · Cold Chain 2–8°C' : '';
-  const origin = lead.origin ?? 'Origin';
-  const dest = lead.destination ?? 'Destination';
-
-  return (
-    `📋 *Rate Quote — ${ref}*\n\n` +
-    `${modeIcon} *${origin} → ${dest}*${coldLabel}\n` +
-    `*Estimated Rate:* $${min.toLocaleString()}–$${max.toLocaleString()} USD\n` +
-    `*Transit:* ${transit}\n` +
-    `${co2Line}\n` +
-    `*Forwarder:* ${forwarder}\n\n` +
-    `Reply *YES* to confirm, or ask any questions — our team is standing by.\n\n` +
-    `_Rate Quote · ${forwarder} · Goods2Load_`
-  );
 }
 
 // ── Lead detail panel ─────────────────────────────────────────────────────────
@@ -253,9 +124,6 @@ function LeadDetail({
   };
   onClose: () => void;
 }) {
-  const [replying, setReplying] = useState(false);
-  const [replyText, setReplyText] = useState('');
-  const [replySent, setReplySent] = useState(false);
   const [trackInput, setTrackInput] = useState('');
   const [trackResult, setTrackResult] = useState<string | null>(null);
   const [tracking, setTracking] = useState(false);
@@ -282,24 +150,6 @@ function LeadDetail({
       );
     } finally {
       setTracking(false);
-    }
-  }
-
-  async function sendReply() {
-    if (!replyText.trim() || !lead.rawPhone) return;
-    setReplying(true);
-    try {
-      await fetch('/api/reply-wa', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ to: lead.rawPhone, message: replyText }),
-      });
-      setReplySent(true);
-      setReplyText('');
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setReplying(false);
     }
   }
 
@@ -493,57 +343,16 @@ function LeadDetail({
           </div>
         )}
 
-        {/* WhatsApp conversation */}
+        {/* Momentum status */}
         {lead.momentumSent && (
-          <div className="border-b border-border">
-            <div className="px-5 py-3 bg-gray-50 border-b border-border">
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wider">
-                Momentum Agent — responded in {lead.momentumTime}
-              </p>
-            </div>
-            <div className="bg-[#e5ddd5] p-4 space-y-2.5">
-              {/* Shipper message */}
-              <div className="flex justify-start">
-                <div className="bg-white rounded-xl rounded-tl-sm px-3 py-2.5 max-w-[85%] shadow-sm">
-                  <p className="text-[11px] text-black leading-relaxed">
-                    {lead.cargo.split('—')[0].trim()}. {lead.origin} →{' '}
-                    {lead.destination}.
-                    {lead.weight ? ` Approx ${lead.weight}.` : ''} How quickly
-                    can you quote?
-                  </p>
-                  <p className="text-[9px] text-gray-400 text-right mt-1">
-                    {lead.time}
-                  </p>
-                </div>
-              </div>
-              {/* Agent reply */}
-              <div className="flex justify-end">
-                <div className="bg-[#dcf8c6] rounded-xl rounded-tr-sm px-3 py-2.5 max-w-[85%] shadow-sm">
-                  <p className="text-[9px] font-semibold text-green-800 mb-1">
-                    Momentum · Freight Forwarding Co.
-                  </p>
-                  <p className="text-[11px] text-black leading-relaxed">
-                    {lead.momentumMessage}
-                  </p>
-                  <div className="flex items-center justify-end gap-1 mt-1">
-                    <p className="text-[9px] text-gray-400">
-                      {lead.momentumTime}
-                    </p>
-                    <span className="text-[#4FC3F7] text-[10px]">✓✓</span>
-                  </div>
-                </div>
-              </div>
-              {/* Shipper reply */}
-              {lead.shipperReply && (
-                <div className="flex justify-start">
-                  <div className="bg-white rounded-xl rounded-tl-sm px-3 py-2.5 max-w-[85%] shadow-sm">
-                    <p className="text-[11px] text-black leading-relaxed">
-                      {lead.shipperReply}
-                    </p>
-                  </div>
-                </div>
-              )}
-            </div>
+          <div className="px-5 py-3 border-b border-border flex items-center gap-2">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 shrink-0" />
+            <span className="text-[11px] text-green-700 font-medium">
+              Momentum replied in {lead.momentumTime}
+            </span>
+            <span className="text-[10px] text-muted-foreground">
+              · View full conversation in WhatsApp tab
+            </span>
           </div>
         )}
 
@@ -562,80 +371,6 @@ function LeadDetail({
 
         {/* Actions */}
         <div className="px-5 py-4 border-t border-border space-y-3">
-          {/* Forwarder Agent pre-drafted messages — only for confirmed bookings */}
-          {lead.isBooking && lead.rawPhone && (
-            <div className="space-y-2">
-              <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide">
-                Forwarder Agent — send to cargo owner
-              </p>
-              {/* Introduction card */}
-              <button
-                onClick={() => setReplyText(buildDraftIntro(lead))}
-                className="w-full text-left p-3 rounded-lg border border-[#25D366]/40 bg-[#e8f8ef] hover:bg-[#d4f2e0] transition-colors group"
-              >
-                <p className="text-[10px] font-bold text-[#128C7E] mb-1 flex items-center gap-1.5">
-                  <MessageCircle size={10} strokeWidth={2.5} />
-                  Send Introduction
-                </p>
-                <p className="text-[10px] text-gray-600 line-clamp-2">
-                  Introduce {displayName(lead.bookingForwarder)}, acknowledge
-                  the booking ref, ask for cargo details.
-                </p>
-              </button>
-              {/* Rate Quote card */}
-              <button
-                onClick={() => setReplyText(buildDraftRateQuote(lead))}
-                className="w-full text-left p-3 rounded-lg border border-primaryOrange/30 bg-orange-50 hover:bg-orange-100 transition-colors group"
-              >
-                <p className="text-[10px] font-bold text-primaryOrange mb-1 flex items-center gap-1.5">
-                  <span className="text-[10px]">📋</span>
-                  Send Rate Quote
-                </p>
-                <p className="text-[10px] text-gray-600 line-clamp-2">
-                  Pre-computed rate estimate for {lead.origin} →{' '}
-                  {lead.destination} · {lead.mode}. Click to review, then send.
-                </p>
-              </button>
-            </div>
-          )}
-
-          {/* Reply box for live WhatsApp leads (bookings + regular) */}
-          {lead.isLive && lead.rawPhone && (
-            <div className="space-y-2">
-              {replySent && (
-                <p className="text-[10px] text-green-600 font-semibold flex items-center gap-1">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-500 inline-block" />
-                  Reply sent via WhatsApp
-                </p>
-              )}
-              <div className="flex gap-2">
-                <textarea
-                  value={replyText}
-                  onChange={(e) => setReplyText(e.target.value)}
-                  onKeyDown={(e) =>
-                    e.key === 'Enter' &&
-                    e.shiftKey === false &&
-                    (e.preventDefault(), sendReply())
-                  }
-                  placeholder={
-                    lead.isBooking
-                      ? 'Click a card above to pre-fill, then review and send…'
-                      : 'Type reply to cargo owner…'
-                  }
-                  rows={replyText.length > 80 ? 4 : 2}
-                  className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-[#25D366]/50 focus:outline-none focus:ring-1 focus:ring-[#25D366] bg-gray-50 resize-none"
-                />
-                <button
-                  onClick={sendReply}
-                  disabled={replying || !replyText.trim()}
-                  className="flex items-center gap-1.5 border border-[#25D366] bg-[#25D366] text-white text-[11px] font-semibold px-3 py-2 rounded-lg hover:opacity-90 transition-opacity disabled:opacity-40 self-end"
-                >
-                  <MessageCircle size={12} strokeWidth={2} />
-                  {replying ? '…' : 'Send'}
-                </button>
-              </div>
-            </div>
-          )}
           {/* Maersk Layer 3 Track & Trace — available on all leads */}
           <div className="space-y-1.5">
             <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
@@ -672,13 +407,30 @@ function LeadDetail({
           </div>
 
           <div className="flex gap-2 pb-6">
-            <button className="flex-1 bg-primaryOrange text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity">
-              Generate proforma
-            </button>
-            {!lead.isLive && (
-              <button className="flex items-center gap-1.5 border border-[#25D366] text-[#25D366] text-[12px] font-semibold px-4 py-2.5 rounded-lg hover:bg-green-50 transition-colors">
+            {lead.channel === 'whatsapp' && (
+              <a
+                href={`https://wa.me/${(lead.rawPhone ?? '971505574291').replace(/\D/g, '')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 flex items-center justify-center gap-1.5 border border-[#25D366] bg-[#25D366] text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity"
+              >
                 <MessageCircle size={13} strokeWidth={2} />
-                Reply via WhatsApp
+                Open in WhatsApp
+              </a>
+            )}
+            {lead.channel === 'email' && (
+              <a
+                href={`mailto:?subject=Rate quote — ${lead.origin} → ${lead.destination}`}
+                className="flex-1 flex items-center justify-center gap-1.5 border border-blue-400 text-blue-600 text-[12px] font-semibold py-2.5 rounded-lg hover:bg-blue-50 transition-colors"
+              >
+                <Mail size={13} strokeWidth={2} />
+                Open in Email
+              </a>
+            )}
+            {lead.channel === 'g2l' && (
+              <button className="flex-1 flex items-center justify-center gap-1.5 border border-primaryOrange/40 text-primaryOrange text-[12px] font-semibold py-2.5 rounded-lg hover:bg-primaryOrange/5 transition-colors">
+                <Globe size={13} strokeWidth={2} />
+                Reply via G2L
               </button>
             )}
           </div>
