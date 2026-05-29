@@ -13,7 +13,92 @@ import {
   TrendingUp,
   Trophy,
   Truck,
+  Zap,
 } from 'lucide-react';
+
+// ── Carrier connections widget ─────────────────────────────────────────────────
+
+interface CarrierStatus {
+  id: string;
+  name: string;
+  mode: string;
+  status: 'live' | 'ready';
+}
+
+function CarrierConnectionsWidget() {
+  const [carriers, setCarriers] = useState<CarrierStatus[]>([]);
+  const [liveCount, setLiveCount] = useState(0);
+
+  useEffect(() => {
+    fetch('/api/carriers/rates?forwarder=ADSO')
+      .then((r) => r.json())
+      .then((d) => {
+        setCarriers(d.carriers ?? []);
+        setLiveCount(d.live_count ?? 0);
+      })
+      .catch(() => {});
+  }, []);
+
+  const modeIcon = (mode: string) => {
+    if (mode === 'air') return <Plane size={10} className="shrink-0" />;
+    if (mode === 'sea') return <Ship size={10} className="shrink-0" />;
+    return <Truck size={10} className="shrink-0" />;
+  };
+
+  const modeColor = (mode: string) => {
+    if (mode === 'air') return 'text-blue-500';
+    if (mode === 'sea') return 'text-cyan-500';
+    return 'text-amber-500';
+  };
+
+  return (
+    <div className="bg-white rounded-xl border border-border p-5">
+      <div className="flex items-center justify-between mb-3">
+        <h3 className="text-[11px] font-semibold text-black uppercase tracking-wider">
+          Carrier Connections
+        </h3>
+        <div className="flex items-center gap-1.5">
+          {liveCount > 0 ? (
+            <span className="flex items-center gap-1 text-[10px] font-semibold text-green-600 bg-green-50 border border-green-200 px-2 py-0.5 rounded-full">
+              <span className="w-1 h-1 rounded-full bg-green-500 animate-pulse" />
+              {liveCount} live
+            </span>
+          ) : null}
+          <span className="text-[10px] text-muted-foreground">
+            {carriers.length} contracts
+          </span>
+        </div>
+      </div>
+      <div className="space-y-2">
+        {carriers.length === 0 && (
+          <p className="text-[11px] text-muted-foreground">Loading…</p>
+        )}
+        {carriers.map((c) => (
+          <div key={c.id} className="flex items-center gap-2">
+            <span className={modeColor(c.mode)}>{modeIcon(c.mode)}</span>
+            <span className="text-[11px] text-black flex-1 font-medium">
+              {c.name}
+            </span>
+            {c.status === 'live' ? (
+              <span className="flex items-center gap-1 text-[9px] font-bold text-green-600 bg-green-50 px-1.5 py-0.5 rounded-full border border-green-200">
+                <Zap size={8} />
+                Live
+              </span>
+            ) : (
+              <span className="text-[9px] text-muted-foreground bg-gray-50 px-1.5 py-0.5 rounded-full border border-border">
+                Ready
+              </span>
+            )}
+          </div>
+        ))}
+      </div>
+      <p className="text-[9px] text-muted-foreground mt-3 leading-relaxed">
+        Momentum queries carrier APIs for live spot rates and transit times on
+        every quote. Add API key in Vercel env to activate any carrier.
+      </p>
+    </div>
+  );
+}
 
 function StatCard({
   Icon,
@@ -282,6 +367,7 @@ export default function OverviewSection() {
             </div>
           </div>
         </div>
+        <CarrierConnectionsWidget />
         {newLeads.length > 0 && (
           <div className="rounded-xl border border-primaryOrange/30 bg-primaryOrange/5 px-5 py-4">
             <div className="flex items-center gap-2 mb-2">
