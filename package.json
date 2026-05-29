@@ -11,7 +11,10 @@
     "lint": "next lint",
     "format": "prettier --write \"**/*.js\" \"**/*.tsx\" \"**/*.ts\" \"**/*.json\" \"**/*.css\"",
     "prepare": "husky",
-    "sitemap": "node generate-sitemap.js"
+    "sitemap": "node generate-sitemap.js",
+    "eval": "node scripts/eval/run-eval.mjs",
+    "eval:prod": "node scripts/eval/run-eval.mjs --url https://atlas.goods2load.com",
+    "eval:json": "node scripts/eval/run-eval.mjs --json"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
