@@ -1,0 +1,20 @@
+name: Deploy Atlas → Vercel (atlas.goods2load.com)
+
+on:
+  push:
+    branches: [atlas]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm install -g vercel@latest
+
+      - name: Deploy to Vercel Production
+        run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: team_tKRfMfEuDlB9XZeqozDlY4zB
+          VERCEL_PROJECT_ID: prj_aQv2KtsTBMIT3qSt4an1unxlgeiM
