@@ -12,7 +12,7 @@ import ProfileSection from './sections/ProfileSection';
 import WhatsAppForwarderSection from './sections/WhatsAppForwarderSection';
 import GoogleIcon from '@/assets/icons/google-icon.svg';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import {
   BarChart3,
@@ -210,11 +210,19 @@ export default function AtlasDashboard() {
   const [user, setUser] = useState<string | null>(null);
   const [hydrated, setHydrated] = useState(false);
 
-  // Live lead count from API — polled every 20 s
+  // Live lead count from API — polled every 3 s for real-time demo feel
   const [liveLeadCount, setLiveLeadCount] = useState(0);
   // "Last seen" counts — badges reset to 0 when user visits the section
   const [seenLeadCount, setSeenLeadCount] = useState(0);
   const [seenAlertCount, setSeenAlertCount] = useState(0);
+  // Toast notification when a new live lead arrives
+  const [toast, setToast] = useState<{
+    from: string;
+    route: string;
+    value: string;
+  } | null>(null);
+  const prevLiveCountRef = useRef(-1); // -1 = not yet initialised (skip first-load toast)
+  const toastTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   // Read from sessionStorage after mount (avoids SSR mismatch)
   useEffect(() => {
@@ -223,21 +231,54 @@ export default function AtlasDashboard() {
     setHydrated(true);
   }, []);
 
-  // Poll live leads so badge stays current
+  // Poll /api/a2a every 3 s — badge count + toast on new arrivals
   useEffect(() => {
     if (!hydrated || !user) return;
     async function fetchLive() {
       try {
-        const r = await fetch(`/api/agent/leads?forwarder=${DEMO_COMPANY}`);
+        const r = await fetch(`/api/a2a?forwarder=${DEMO_COMPANY}`);
         const d = await r.json();
-        setLiveLeadCount((d.leads ?? []).length);
+        const leads: {
+          from?: string;
+          origin?: string;
+          destination?: string;
+        }[] = d.leads ?? [];
+        const bookings: {
+          phone?: string;
+          origin?: string;
+          destination?: string;
+          reference?: string;
+        }[] = d.bookings ?? [];
+        const total = leads.length + bookings.length;
+        setLiveLeadCount(total);
+
+        // Fire toast + auto-switch on new arrivals (skip first load)
+        if (total > prevLiveCountRef.current && prevLiveCountRef.current >= 0) {
+          const newest = bookings[0] ?? leads[0];
+          if (newest) {
+            const from = bookings[0]
+              ? `Booking ${bookings[0].reference ?? ''}`
+              : (leads[0]?.from ?? 'New inquiry');
+            const route = `${newest.origin ?? ''} → ${newest.destination ?? ''}`;
+            if (toastTimer.current) clearTimeout(toastTimer.current);
+            setToast({ from, route, value: '' });
+            toastTimer.current = setTimeout(() => setToast(null), 5000);
+            // Auto-navigate to leads so dashboard lights up immediately
+            setSection('leads');
+            setSeenLeadCount(0); // re-show badge until they look at it
+          }
+        }
+        prevLiveCountRef.current = total;
       } catch {
         /* silent — badge just shows demo count */
       }
     }
     fetchLive();
-    const t = setInterval(fetchLive, 20_000);
-    return () => clearInterval(t);
+    const t = setInterval(fetchLive, 3_000);
+    return () => {
+      clearInterval(t);
+      if (toastTimer.current) clearTimeout(toastTimer.current);
+    };
   }, [hydrated, user]);
 
   // Computed badge values — clear to 0 when section is visited
@@ -264,6 +305,33 @@ export default function AtlasDashboard() {
 
   return (
     <div className="flex h-screen bg-[#f5f4f3] overflow-hidden font-poppins">
+      {/* ── Live lead toast notification ── */}
+      {toast && (
+        <div className="fixed top-4 right-4 z-50 bg-[#0d0d1a] border border-primaryOrange/40 text-white rounded-xl px-4 py-3.5 shadow-2xl flex items-center gap-3 max-w-[280px] animate-in">
+          <div className="shrink-0 flex flex-col items-center gap-1">
+            <div className="w-7 h-7 rounded-full bg-primaryOrange flex items-center justify-center">
+              <span className="text-[9px] font-bold text-white">M</span>
+            </div>
+            <span className="w-1.5 h-1.5 rounded-full bg-primaryOrange animate-pulse" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p className="text-[9px] font-bold text-primaryOrange uppercase tracking-widest mb-0.5">
+              New live lead
+            </p>
+            <p className="text-[12px] font-semibold text-white leading-tight truncate">
+              {toast.from}
+            </p>
+            <p className="text-[10px] text-white/60 mt-0.5">{toast.route}</p>
+          </div>
+          <button
+            onClick={() => setToast(null)}
+            className="text-white/30 hover:text-white text-xl leading-none shrink-0 transition-colors"
+          >
+            ×
+          </button>
+        </div>
+      )}
+
       {/* ── Internal sidebar ── */}
       <div className="hidden md:flex flex-col w-[220px] shrink-0 bg-white border-r border-border h-full">
         {/* Company header */}

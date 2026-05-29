@@ -864,8 +864,9 @@ export default function LeadsSection({
   const [liveLeads, setLiveLeads] = useState<LiveLead[]>([]);
   const [bookingCount, setBookingCount] = useState(0);
   const pollRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const prevLiveCountRef = useRef(-1); // tracks previous total for auto-open detection
 
-  // Poll /api/a2a?forwarder=X every 20s
+  // Poll /api/a2a?forwarder=X every 3s for real-time demo
   useEffect(() => {
     async function fetchLive() {
       try {
@@ -935,6 +936,15 @@ export default function LeadsSection({
           }),
         );
 
+        const total = bookings.length + leads.length;
+
+        // Auto-open the newest lead when a new one arrives
+        if (total > prevLiveCountRef.current && prevLiveCountRef.current >= 0) {
+          const newest = bookings[0] ?? leads[0];
+          if (newest) setActiveLead(newest);
+        }
+        prevLiveCountRef.current = total;
+
         setLiveLeads([...bookings, ...leads]);
         setBookingCount(bookings.length);
       } catch {
@@ -942,7 +952,7 @@ export default function LeadsSection({
       }
     }
     fetchLive();
-    pollRef.current = setInterval(fetchLive, 20_000);
+    pollRef.current = setInterval(fetchLive, 3_000);
     return () => {
       if (pollRef.current) clearInterval(pollRef.current);
     };

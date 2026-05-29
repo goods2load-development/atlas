@@ -142,7 +142,7 @@ export const DEMO_LEADS: DemoLead[] = [
     momentumSent: true,
     momentumTime: '38 seconds after request',
     momentumMessage:
-      "Hi Wolfgang, this is Boxman Global in Dubai. Automotive freight including DG class 9 from Frankfurt is one of our core lanes — we handle Aston Martin's UAE logistics. We're checking current rates now. What's your target budget per kg?",
+      "Hi Wolfgang, this is Freight Forwarding Co. in Dubai. Automotive freight including DG class 9 from Frankfurt is one of our core lanes — we handle Aston Martin's UAE logistics. We're checking current rates now. What's your target budget per kg?",
     value: '~$3,840',
   },
   {
@@ -170,7 +170,7 @@ export const DEMO_LEADS: DemoLead[] = [
     momentumSent: true,
     momentumTime: '52 seconds after request',
     momentumMessage:
-      'Hi Priya, Boxman Global here. We handle cold chain pharma freight between Mumbai and Dubai regularly — GDP-compliant handling, +2/+8°C guaranteed. Can you confirm the commodity and HS code?',
+      'Hi Priya, Freight Forwarding Co. here. We handle cold chain pharma freight between Mumbai and Dubai regularly — GDP-compliant handling, +2/+8°C guaranteed. Can you confirm the commodity and HS code?',
     shipperReply:
       "Yes, it's vaccines. HS code 3002.20. We need delivery by Thursday.",
     value: '~$1,530',
@@ -200,7 +200,7 @@ export const DEMO_LEADS: DemoLead[] = [
     momentumSent: true,
     momentumTime: '1 min 12 sec after request',
     momentumMessage:
-      'Hi Chen, Boxman Global here. We run regular FCL services from Shenzhen and Guangzhou to Jebel Ali — typically 18–22 days transit. Market rates are currently around $1,800–2,400/TEU. Is that in line with your budget?',
+      'Hi Chen, Freight Forwarding Co. here. We run regular FCL services from Shenzhen and Guangzhou to Jebel Ali — typically 18–22 days transit. Market rates are currently around $1,800–2,400/TEU. Is that in line with your budget?',
     value: '~$4,200',
   },
   {
@@ -228,7 +228,7 @@ export const DEMO_LEADS: DemoLead[] = [
     momentumSent: true,
     momentumTime: '2 min 05 sec after request',
     momentumMessage:
-      'Hi Sara, Boxman Global here. Exhibition logistics for GITEX is something we do every year — we know the DWTC loading bays well. We can have a truck in Abu Dhabi tomorrow morning. Sending proforma now.',
+      'Hi Sara, Freight Forwarding Co. here. Exhibition logistics for GITEX is something we do every year — we know the DWTC loading bays well. We can have a truck in Abu Dhabi tomorrow morning. Sending proforma now.',
     value: '~$260',
   },
   {
