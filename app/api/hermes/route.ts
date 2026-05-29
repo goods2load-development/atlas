@@ -4,6 +4,8 @@
  * Twilio sandbox: +1 415 523 8886 / join alive-look
  * Webhook URL:    https://atlas.goods2load.com/api/hermes
  */
+import { createLogger, newTraceId } from '@/lib/logger';
+
 import { NextRequest, NextResponse } from 'next/server';
 import twilio from 'twilio';
 
@@ -327,21 +329,24 @@ function formatReply(
 }
 
 export async function POST(req: NextRequest) {
+  const traceId = newTraceId();
+  const log = createLogger('hermes', traceId);
+
   const raw = await req.text();
   const params = new URLSearchParams(raw);
 
   const from = params.get('From') ?? '';
   const message = params.get('Body')?.trim() ?? '';
 
-  console.log('[Hermes] incoming', { from, message: message.slice(0, 50) });
-  console.log('[Hermes] config', {
-    hasSid: !!ACCOUNT_SID,
-    hasToken: !!AUTH_TOKEN,
-    from: FROM,
-    atlasUrl: ATLAS_URL,
+  log.info('inbound', {
+    from_suffix: from.slice(-4),
+    msg_len: message.length,
+    has_sid: !!ACCOUNT_SID,
+    atlas_url: !!ATLAS_URL,
   });
 
   if (!from.startsWith('whatsapp:') || !message) {
+    log.warn('skipped', { reason: 'not_whatsapp_or_empty' });
     return new NextResponse(EMPTY_TWIML, {
       headers: { 'Content-Type': 'text/xml' },
     });
@@ -353,6 +358,7 @@ export async function POST(req: NextRequest) {
   const twoProv = extractTwoProviders(message);
   if (twoProv) {
     const [provA, provB] = twoProv;
+    log.info('booking_two_providers', { providers: [provA, provB] });
     const baseUrl = process.env.NEXTAUTH_URL ?? 'https://atlas.goods2load.com';
     for (const prov of [provA, provB]) {
       const confirmation = makeBookingConfirmation(prov);
@@ -381,6 +387,7 @@ export async function POST(req: NextRequest) {
   if (detectBookingIntent(message)) {
     const provider = extractProviderName(message);
     if (provider) {
+      log.info('booking_single_provider', { provider });
       const confirmation = makeBookingConfirmation(provider);
       await send(from, confirmation);
 
@@ -420,7 +427,7 @@ export async function POST(req: NextRequest) {
   const comparison = detectCompare(message);
   if (comparison) {
     const { a, b } = comparison;
-    console.log('[Hermes] compare intent', a, 'vs', b);
+    log.info('compare_intent', { a, b });
 
     // Send thinking ack
     await send(from, `🔍 Comparing *${a}* vs *${b}*…`).catch(() => {});
@@ -477,21 +484,26 @@ export async function POST(req: NextRequest) {
 
   // ── Greeting: respond with welcome, don't run the pipeline ──────────────
   if (isGreeting(message)) {
+    log.info('greeting_detected');
     await send(from, WELCOME_MESSAGE);
+    log.done({ intent: 'greeting' });
     return new NextResponse(EMPTY_TWIML, {
       headers: { 'Content-Type': 'text/xml' },
     });
   }
 
+  log.info('freight_query', { msg_preview: message.slice(0, 60) });
+
   // Step 1 — send "searching" immediately
   try {
+    const t0 = Date.now();
     const sid = await send(
       from,
       "🔍 Atlas is searching the Goods2Load network… I'll reply in a moment.",
     );
-    console.log('[Hermes] ack sent', sid);
+    log.step('ack_sent', Date.now() - t0, { sid });
   } catch (err) {
-    console.error('[Hermes] ack send failed:', err);
+    log.error('ack_send_failed', { err: String(err).slice(0, 200) });
     // Return error in TwiML so we can debug via Twilio logs
     return new NextResponse(
       `<?xml version="1.0" encoding="UTF-8"?><Response><Message>Hermes error: ${String(err)}</Message></Response>`,
@@ -503,6 +515,7 @@ export async function POST(req: NextRequest) {
   try {
     if (!ATLAS_URL) throw new Error('ATLAS_API_URL not set');
 
+    const t0 = Date.now();
     const res = await fetch(`${ATLAS_URL}/chat`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -516,17 +529,23 @@ export async function POST(req: NextRequest) {
 
     if (!res.ok) throw new Error(`Atlas ${res.status}`);
     const data = (await res.json()) as Record<string, unknown>;
-    console.log('[Hermes] atlas ok, sending results');
+    const candidates =
+      ((data.shortlist as Record<string, unknown>)?.candidates as unknown[])
+        ?.length ?? 0;
+    log.step('atlas_pipeline', Date.now() - t0, { candidates });
 
     const [summary, shortlist] = formatReply(data, message);
+    const t1 = Date.now();
     await send(from, summary);
     if (shortlist) await send(from, shortlist);
+    log.step('reply_sent', Date.now() - t1, { has_shortlist: !!shortlist });
+    log.done({ intent: 'freight_query', candidates });
     // NOTE: Forwarder Agent (Layer 2) is NOT triggered here.
     // It only activates on explicit booking intent ("Book with X") below.
     // Sending an unsolicited ACK from a forwarder after the shortlist
     // is premature — the cargo owner needs space to ask questions first.
   } catch (err) {
-    console.error('[Hermes] pipeline error:', err);
+    log.error('pipeline_error', { err: String(err).slice(0, 200) });
     await send(from, `⚠️ Sorry — Atlas had trouble: ${String(err)}`).catch(
       () => {},
     );

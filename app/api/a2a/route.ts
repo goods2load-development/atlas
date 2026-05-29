@@ -14,6 +14,8 @@
  *
  * Storage: Twilio message history is the source of truth.
  */
+import { createLogger, newTraceId } from '@/lib/logger';
+
 import { NextRequest, NextResponse } from 'next/server';
 import twilio from 'twilio';
 
@@ -445,16 +447,23 @@ async function sendWhatsApp(to: string, body: string): Promise<void> {
 // ── GET — forwarder lead feed ──────────────────────────────────────────────────
 
 export async function GET(req: NextRequest) {
+  const traceId = newTraceId();
+  const log = createLogger('a2a_get', traceId);
   const { searchParams } = new URL(req.url);
   const forwarder = searchParams.get('forwarder')?.trim() ?? '';
 
+  log.info('request_received', { forwarder: forwarder || 'all' });
+
   if (!ACCOUNT_SID || !AUTH_TOKEN) {
+    log.warn('twilio_not_configured');
     return NextResponse.json({ leads: [], bookings: [] });
   }
 
   try {
     const client = twilio(ACCOUNT_SID, AUTH_TOKEN);
+    const t0 = Date.now();
     const all = await client.messages.list({ limit: 200 });
+    log.step('twilio_fetch', Date.now() - t0, { total_msgs: all.length });
     all.sort(
       (a, b) =>
         new Date(a.dateCreated).getTime() - new Date(b.dateCreated).getTime(),
@@ -574,6 +583,7 @@ export async function GET(req: NextRequest) {
         new Date(a.receivedAtIso as string).getTime(),
     );
 
+    log.done({ leads: leads.length, bookings: bookings.length });
     return NextResponse.json({
       forwarder: forwarder || 'all',
       leads,
@@ -581,7 +591,7 @@ export async function GET(req: NextRequest) {
       total: leads.length + bookings.length,
     });
   } catch (err) {
-    console.error('[a2a GET]', err);
+    log.error('twilio_error', { err: String(err).slice(0, 200) });
     return NextResponse.json({ leads: [], bookings: [], error: String(err) });
   }
 }
@@ -589,12 +599,17 @@ export async function GET(req: NextRequest) {
 // ── POST — A2A task handler (A2A2A Forwarder Agent) ──────────────────────────
 
 export async function POST(req: NextRequest) {
+  const traceId = newTraceId();
+  const log = createLogger('a2a', traceId);
+
   try {
     const body = await req.json();
 
     // A2A protocol: task with message parts
     const taskId = body?.id ?? `task-${Date.now()}`;
     const message = body?.message?.parts?.[0]?.text ?? body?.message ?? '';
+
+    log.info('task_received', { task_id: taskId, type: body?.type ?? 'match' });
 
     // ── Layer 2: Forwarder Agent — lead ACK ───────────────────────────────
     // Triggered by Atlas (Layer 1) after it sends top-3 to cargo owner.
@@ -608,23 +623,27 @@ export async function POST(req: NextRequest) {
       const topForwarder = forwarders?.[0]?.name ?? 'Freight Forwarding Co.';
       const route = parseRoute(cargo ?? '');
 
-      console.log(
-        '[ForwarderAgent] lead_notification from',
-        topForwarder,
-        '→',
-        clientPhone,
-      );
+      log.step('lead_ack_start', 0, {
+        forwarder: topForwarder,
+        forwarder_count: forwarders?.length ?? 0,
+        phone: clientPhone ? clientPhone.slice(-4) : null, // last 4 digits only
+        route: `${route.origin}→${route.destination}`,
+      });
 
       try {
+        const t0 = Date.now();
         await sendWhatsApp(
           clientPhone,
           buildForwarderACK(topForwarder, cargo ?? '', route),
         );
-        console.log('[ForwarderAgent] ACK sent to', clientPhone);
+        log.step('whatsapp_ack_sent', Date.now() - t0, {
+          forwarder: topForwarder,
+        });
       } catch (e) {
-        console.error('[ForwarderAgent] ACK failed', e);
+        log.error('whatsapp_ack_failed', { err: String(e).slice(0, 200) });
       }
 
+      log.done({ type: 'lead_notification', forwarder: topForwarder });
       return NextResponse.json({
         id: taskId,
         status: { state: 'completed' },
@@ -646,14 +665,11 @@ export async function POST(req: NextRequest) {
         clientPhone: string;
       };
 
-      console.log(
-        '[ForwarderAgent] booking_notification',
+      log.step('booking_start', 0, {
         reference,
-        '→',
         forwarder,
-        '→',
-        clientPhone,
-      );
+        phone: clientPhone ? clientPhone.slice(-4) : null,
+      });
 
       // ── Layer 3: Maersk Carrier Agent call ───────────────────────────────
       // Atlas (L1) → Forwarder Agent (L2) → Maersk Carrier Agent (L3)
@@ -676,20 +692,30 @@ export async function POST(req: NextRequest) {
       );
 
       // Fire Layer 3 — non-blocking, falls back gracefully
+      const t0 = Date.now();
       const maerskSchedule = await fetchMaerskCarrierData(
         route.origin,
         route.destination,
         mode,
       );
-      console.log(
-        '[MaerskAgent →]',
-        maerskSchedule.source,
-        maerskSchedule.transitDays,
-      );
-      console.log(
-        '[ForwarderAgent] booking received — dashboard action required for',
+      log.step('maersk_l3', Date.now() - t0, {
+        source: maerskSchedule.source,
+        transit: maerskSchedule.transitDays,
+        mode,
+      });
+      log.step('rate_calculated', 0, {
+        rate_min: rateData.min,
+        rate_max: rateData.max,
+        co2_kg: co2Kg,
+        cold_chain: rateData.isColdChain,
         reference,
-      );
+      });
+      log.done({
+        type: 'booking_notification',
+        reference,
+        forwarder,
+        co2_kg: co2Kg,
+      });
 
       return NextResponse.json({
         id: taskId,

@@ -1,3 +1,5 @@
+import { createLogger, newTraceId } from '@/lib/logger';
+
 import { NextRequest, NextResponse } from 'next/server';
 
 import type {
@@ -98,22 +100,35 @@ function mapCandidate(
 
 // ── Route handler ─────────────────────────────────────────────────────────────
 export async function POST(req: NextRequest) {
+  const traceId = newTraceId();
+  const log = createLogger('agent', traceId);
+
   let body: AgentRequest;
   try {
     body = await req.json();
   } catch {
+    log.error('parse_error', { reason: 'invalid_json' });
     return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
   }
 
   if (!Array.isArray(body.messages) || body.messages.length === 0) {
+    log.error('parse_error', { reason: 'messages_empty' });
     return NextResponse.json({ error: 'messages[] required' }, { status: 400 });
   }
 
   const latestMessage = body.messages[body.messages.length - 1].content;
   const detectedLang = detectLanguage(latestMessage);
 
+  log.info('request_received', {
+    msg_len: latestMessage.length,
+    turn: body.messages.length,
+    lang: detectedLang ?? 'English',
+    session_id: body.session_id ?? null,
+  });
+
   // Preview mode
   if (!ATLAS_URL) {
+    log.warn('preview_mode', { atlas_url_set: false });
     return NextResponse.json<AgentResponse>({
       reply:
         "I'm running in preview mode — the Atlas matching engine isn't connected yet.",
@@ -121,6 +136,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
+    const t0 = Date.now();
     const controller = new AbortController();
     const timeout = setTimeout(() => controller.abort(), 55_000); // 55 s — just under maxDuration
     const res = await fetch(`${ATLAS_URL}/chat`, {
@@ -134,10 +150,15 @@ export async function POST(req: NextRequest) {
       signal: controller.signal,
     });
     clearTimeout(timeout);
+    const atlasMs = Date.now() - t0;
 
     if (!res.ok) {
       const detail = await res.text();
-      console.error('Atlas error', res.status, detail);
+      log.error('atlas_error', {
+        status: res.status,
+        detail: detail.slice(0, 200),
+        atlas_ms: atlasMs,
+      });
       return NextResponse.json(
         { error: 'Matching engine error' },
         { status: 502 },
@@ -145,6 +166,11 @@ export async function POST(req: NextRequest) {
     }
 
     const atlas = await res.json();
+    log.step('atlas_pipeline', atlasMs, {
+      session_id: atlas.session_id,
+      candidates: atlas.shortlist?.candidates?.length ?? 0,
+      rag_hints: atlas.debug?.rag_forwarder_hints?.length ?? 0,
+    });
 
     const candidates: MatchedProvider[] = (
       atlas.shortlist?.candidates ?? []
@@ -156,12 +182,23 @@ export async function POST(req: NextRequest) {
 
     // Translate reply + recommendation only — two small, independent calls.
     // Provider card text stays in English. Falls back silently on any error.
+    const t1 = Date.now();
     const [reply, recommendation] = detectedLang
       ? await Promise.all([
           translate(rawReply, detectedLang),
           rawReco ? translate(rawReco, detectedLang) : Promise.resolve(''),
         ])
       : [rawReply, rawReco];
+
+    if (detectedLang) {
+      log.step('translate', Date.now() - t1, { lang: detectedLang });
+    }
+
+    log.done({
+      providers: candidates.length,
+      lang: detectedLang ?? 'English',
+      reply_len: reply.length,
+    });
 
     return NextResponse.json<AgentResponse>({
       reply,
@@ -173,7 +210,10 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (err) {
-    console.error('Agent route failure', err);
+    const isTimeout = (err as Error)?.name === 'AbortError';
+    log.error(isTimeout ? 'atlas_timeout' : 'internal_error', {
+      err: (err as Error)?.message?.slice(0, 200),
+    });
     return NextResponse.json({ error: 'Internal error' }, { status: 500 });
   }
 }
