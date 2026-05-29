@@ -577,42 +577,40 @@ function LeadDetail({
             </div>
           </div>
         )}
-        {/* Maersk Layer 3 Track & Trace */}
-        {lead.isBooking && (
-          <div className="space-y-1.5">
-            <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
-              <span className="text-[11px]">⚓</span>
-              Maersk Track & Trace · Layer 3 Carrier Agent
-            </p>
-            <div className="flex gap-2">
-              <input
-                type="text"
-                value={trackInput}
-                onChange={(e) => setTrackInput(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && trackShipment()}
-                placeholder="Container / B/L number…"
-                className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-blue-200 focus:outline-none focus:ring-1 focus:ring-blue-400 bg-blue-50/50"
-              />
-              <button
-                onClick={trackShipment}
-                disabled={tracking || !trackInput.trim()}
-                className="text-[11px] font-semibold px-3 py-2 rounded-lg border border-blue-400 text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors disabled:opacity-40"
-              >
-                {tracking ? '…' : 'Track'}
-              </button>
-            </div>
-            {trackResult && (
-              <p className="text-[10px] text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-200">
-                {trackResult}
-              </p>
-            )}
-            {!process.env.NEXT_PUBLIC_MAERSK_ACTIVE && (
-              <p className="text-[9px] text-muted-foreground italic">
-                Add MAERSK_API_KEY to Vercel env for live tracking data
-              </p>
-            )}
+        {/* Maersk Layer 3 Track & Trace — available on all leads */}
+        <div className="space-y-1.5">
+          <p className="text-[10px] font-semibold text-muted-foreground uppercase tracking-wide flex items-center gap-1.5">
+            <span className="text-[11px]">⚓</span>
+            Maersk Track & Trace · Layer 3 Carrier Agent
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={trackInput}
+              onChange={(e) => setTrackInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && trackShipment()}
+              placeholder="Container / B/L number…"
+              className="flex-1 text-[11px] px-3 py-2 rounded-lg border border-blue-200 focus:outline-none focus:ring-1 focus:ring-blue-400 bg-blue-50/50"
+            />
+            <button
+              onClick={trackShipment}
+              disabled={tracking || !trackInput.trim()}
+              className="text-[11px] font-semibold px-3 py-2 rounded-lg border border-blue-400 text-blue-600 bg-blue-50 hover:bg-blue-100 transition-colors disabled:opacity-40"
+            >
+              {tracking ? '…' : 'Track'}
+            </button>
           </div>
-        )}
+          {trackResult && (
+            <p className="text-[10px] text-blue-700 bg-blue-50 px-2.5 py-1.5 rounded-lg border border-blue-200">
+              {trackResult}
+            </p>
+          )}
+          {!process.env.NEXT_PUBLIC_MAERSK_ACTIVE && (
+            <p className="text-[9px] text-muted-foreground italic">
+              Add MAERSK_API_KEY to Vercel env for live tracking data
+            </p>
+          )}
+        </div>
 
         <div className="flex gap-2">
           <button className="flex-1 bg-primaryOrange text-white text-[12px] font-semibold py-2.5 rounded-lg hover:opacity-90 transition-opacity">
@@ -890,7 +888,43 @@ export default function LeadsSection({
     };
   }, [forwarder]);
 
-  const allLeads: LiveLead[] = [...liveLeads, ...DEMO_LEADS];
+  // Demo booking — always visible so judges / forwarders see the full booking panel,
+  // pre-drafted cards, and Track & Trace widget even without live WhatsApp bookings.
+  const DEMO_BOOKING: LiveLead = {
+    id: 'demo-booking-001',
+    channel: 'whatsapp',
+    status: 'new',
+    from: 'WhatsApp +971 *** 4291',
+    company: '✅ CONFIRMED — Ref: G2L-20260529-DEMO',
+    country: 'UAE',
+    flag: '✅',
+    cargo: 'Cold chain pharma 2–8°C GDP certified — Dubai → Baghdad',
+    mode: 'road',
+    weight: '1,000 kg',
+    origin: 'Dubai (DXB)',
+    destination: 'Baghdad (BGW)',
+    time: 'Today',
+    matchScore: 95,
+    winProbability: 95,
+    matchReasons: [
+      'Cargo owner confirmed booking',
+      'Reference: G2L-20260529-DEMO',
+      'Action required: send introduction',
+    ],
+    value: '~$2,100',
+    isLive: true,
+    isBooking: true,
+    bookingRef: 'G2L-20260529-DEMO',
+    bookingForwarder: 'Freight Forwarding Co.',
+    rawPhone: '+971505574291',
+  };
+
+  const allLeads: LiveLead[] = [
+    // Live bookings + leads first, then demo booking, then static demo leads
+    ...liveLeads,
+    ...(liveLeads.some((l) => l.isBooking) ? [] : [DEMO_BOOKING]),
+    ...DEMO_LEADS,
+  ];
 
   const filtered =
     filterMode === 'all'
