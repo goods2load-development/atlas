@@ -188,12 +188,12 @@ const DEMO_NEW_LEADS = DEMO_LEADS.filter((l) => l.status === 'new').length;
 const DEMO_ACTIVE_ALERTS = 3;
 
 const NAV: { id: Section; label: string; Icon: React.ElementType }[] = [
-  { id: 'overview', label: 'Overview', Icon: BarChart3 },
   { id: 'leads', label: 'Leads', Icon: Inbox },
+  { id: 'whatsapp', label: 'WhatsApp', Icon: MessageCircle },
+  { id: 'overview', label: 'Overview', Icon: BarChart3 },
   { id: 'alerts', label: 'Lane Alerts', Icon: Bell },
   { id: 'intelligence', label: 'Intelligence', Icon: Brain },
   { id: 'calendar', label: 'Calendar', Icon: Calendar },
-  { id: 'whatsapp', label: 'WhatsApp', Icon: MessageCircle },
   { id: 'profile', label: 'Profile & Trust', Icon: ShieldCheck },
 ];
 
