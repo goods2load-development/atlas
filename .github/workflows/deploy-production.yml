@@ -12,7 +12,27 @@ env:
   IMAGE_NAME: gcr.io/${{ vars.PROJECT_ID || 'goods2load-oauth' }}/goods2load-frontend
 
 jobs:
+  safety-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Block deploy if Atlas redirect is present
+        run: |
+          echo "🔒 Safety check: scanning next.config.mjs for Atlas redirects..."
+          if grep -q "destination.*['\"]\/agent['\"]" next.config.mjs; then
+            echo "❌ BLOCKED: next.config.mjs contains a redirect to /agent."
+            echo "   This would expose atlas.goods2load.com on the production domain."
+            echo "   Remove the redirect before merging to main."
+            exit 1
+          fi
+          if grep -q "source.*['\"]\/['\"].*destination.*agent\|\/agent" next.config.mjs; then
+            echo "❌ BLOCKED: root path redirect to /agent detected."
+            exit 1
+          fi
+          echo "✅ No Atlas redirects found. Safe to deploy."
+
   build-and-push:
+    needs: safety-check
     runs-on: ubuntu-latest
     outputs:
       image-tag: ${{ steps.meta.outputs.tags }}
