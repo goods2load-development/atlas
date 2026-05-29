@@ -1,0 +1,249 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 680" width="900" height="680" font-family="Arial, Helvetica, sans-serif">
+
+  <!-- Background -->
+  <rect width="900" height="680" fill="#f8f9fc" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" font-size="18" font-weight="bold" fill="#0d0d1a">Goods2Load Atlas — A2A2A Architecture</text>
+  <text x="450" y="58" text-anchor="middle" font-size="11" fill="#6b7280">Layer 1 (Atlas Router) → Layer 2 (Momentum Forwarder Agent) → Layer 3 (Carrier Agents)</text>
+
+  <!-- ═══════════════ INPUTS (left column) ═══════════════ -->
+
+  <!-- Cargo Owner box -->
+  <rect x="30" y="90" width="140" height="64" rx="10" fill="#fff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="100" y="115" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d0d1a">Cargo Owner</text>
+  <text x="100" y="132" text-anchor="middle" font-size="10" fill="#6b7280">Web Chat · atlas.goods2load.com</text>
+  <text x="100" y="146" text-anchor="middle" font-size="10" fill="#6b7280">8 languages supported</text>
+
+  <!-- WhatsApp box -->
+  <rect x="30" y="200" width="140" height="64" rx="10" fill="#fff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="100" y="222" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d0d1a">WhatsApp</text>
+  <text x="100" y="239" text-anchor="middle" font-size="10" fill="#6b7280">Twilio Sandbox</text>
+  <text x="100" y="253" text-anchor="middle" font-size="10" fill="#25D366">Hermes Webhook · /api/hermes</text>
+
+  <!-- Forwarder Dashboard box -->
+  <rect x="30" y="310" width="140" height="64" rx="10" fill="#fff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="100" y="332" text-anchor="middle" font-size="12" font-weight="bold" fill="#0d0d1a">Forwarder</text>
+  <text x="100" y="349" text-anchor="middle" font-size="10" fill="#6b7280">Atlas Dashboard</text>
+  <text x="100" y="363" text-anchor="middle" font-size="10" fill="#FF6720">Momentum · /api/a2a</text>
+
+  <!-- ═══════════════ LAYER 1: Atlas ═══════════════ -->
+
+  <rect x="215" y="75" width="200" height="315" rx="12" fill="#fff7ed" stroke="#FF6720" stroke-width="2"/>
+  <!-- Layer label -->
+  <rect x="215" y="75" width="200" height="30" rx="12" fill="#FF6720"/>
+  <rect x="215" y="93" width="200" height="12" fill="#FF6720"/> <!-- bottom corners fill -->
+  <text x="315" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Layer 1 · Atlas Router</text>
+
+  <!-- Next.js API -->
+  <rect x="230" y="118" width="170" height="48" rx="8" fill="#fff" stroke="#fdba74" stroke-width="1"/>
+  <text x="315" y="138" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Next.js Edge API</text>
+  <text x="315" y="153" text-anchor="middle" font-size="9" fill="#6b7280">/api/agent · detect lang · translate</text>
+
+  <!-- Arrow down -->
+  <line x1="315" y1="167" x2="315" y2="185" stroke="#fdba74" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Atlas Python FastAPI -->
+  <rect x="230" y="185" width="170" height="100" rx="8" fill="#fff" stroke="#fdba74" stroke-width="1"/>
+  <text x="315" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Atlas Pipeline (Python)</text>
+  <line x1="240" y1="212" x2="390" y2="212" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="315" y="228" text-anchor="middle" font-size="9" fill="#6b7280">C1 · Intent parser</text>
+  <text x="315" y="242" text-anchor="middle" font-size="9" fill="#6b7280">C1.5 · RAG forwarder hints</text>
+  <text x="315" y="256" text-anchor="middle" font-size="9" fill="#6b7280">C2 · Pool filter (geo, mode, DG)</text>
+  <text x="315" y="270" text-anchor="middle" font-size="9" fill="#6b7280">C3–C4 · Score + enrich</text>
+  <text x="315" y="284" text-anchor="middle" font-size="9" fill="#FF6720" font-weight="bold">C5 · Rank → top 5 providers</text>
+
+  <!-- Arrow down -->
+  <line x1="315" y1="286" x2="315" y2="304" stroke="#fdba74" stroke-width="2" marker-end="url(#arrowOrange)"/>
+
+  <!-- Response -->
+  <rect x="230" y="304" width="170" height="70" rx="8" fill="#fff" stroke="#fdba74" stroke-width="1"/>
+  <text x="315" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Response Card</text>
+  <text x="315" y="340" text-anchor="middle" font-size="9" fill="#6b7280">5 matched providers</text>
+  <text x="315" y="354" text-anchor="middle" font-size="9" fill="#6b7280">match_rationale · strengths</text>
+  <text x="315" y="368" text-anchor="middle" font-size="9" fill="#6b7280">recommendation_summary</text>
+
+  <!-- ═══════════════ LAYER 2: Momentum ═══════════════ -->
+
+  <rect x="460" y="75" width="200" height="315" rx="12" fill="#f0fdf4" stroke="#22c55e" stroke-width="2"/>
+  <!-- Layer label -->
+  <rect x="460" y="75" width="200" height="30" rx="12" fill="#22c55e"/>
+  <rect x="460" y="93" width="200" height="12" fill="#22c55e"/>
+  <text x="560" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Layer 2 · Momentum Agent</text>
+
+  <!-- A2A Receiver -->
+  <rect x="475" y="118" width="170" height="48" rx="8" fill="#fff" stroke="#86efac" stroke-width="1"/>
+  <text x="560" y="138" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">A2A Protocol Endpoint</text>
+  <text x="560" y="153" text-anchor="middle" font-size="9" fill="#6b7280">/api/a2a · JSON-RPC 2.0</text>
+
+  <line x1="560" y1="167" x2="560" y2="185" stroke="#86efac" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Forwarder Agent logic -->
+  <rect x="475" y="185" width="170" height="100" rx="8" fill="#fff" stroke="#86efac" stroke-width="1"/>
+  <text x="560" y="205" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Forwarder Logic</text>
+  <line x1="485" y1="212" x2="635" y2="212" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="560" y="228" text-anchor="middle" font-size="9" fill="#6b7280">Parse lead notification</text>
+  <text x="560" y="242" text-anchor="middle" font-size="9" fill="#6b7280">ACK → cargo owner (WhatsApp)</text>
+  <text x="560" y="256" text-anchor="middle" font-size="9" fill="#6b7280">Request rate from L3 carriers</text>
+  <text x="560" y="270" text-anchor="middle" font-size="9" fill="#6b7280">GLEC v3.1 CO₂e calculation</text>
+  <text x="560" y="284" text-anchor="middle" font-size="9" fill="#22c55e" font-weight="bold">Rate quote → cargo owner</text>
+
+  <line x1="560" y1="286" x2="560" y2="304" stroke="#86efac" stroke-width="2" marker-end="url(#arrowGreen)"/>
+
+  <!-- Atlas Dashboard -->
+  <rect x="475" y="304" width="170" height="70" rx="8" fill="#fff" stroke="#86efac" stroke-width="1"/>
+  <text x="560" y="324" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Atlas Dashboard</text>
+  <text x="560" y="340" text-anchor="middle" font-size="9" fill="#6b7280">Live pipeline · Leads · WhatsApp</text>
+  <text x="560" y="354" text-anchor="middle" font-size="9" fill="#6b7280">Proforma builder · Rate quotes</text>
+  <text x="560" y="368" text-anchor="middle" font-size="9" fill="#6b7280">Maersk Track &amp; Trace</text>
+
+  <!-- ═══════════════ LAYER 3: Carriers ═══════════════ -->
+
+  <rect x="705" y="75" width="175" height="315" rx="12" fill="#eff6ff" stroke="#3b82f6" stroke-width="2"/>
+  <!-- Layer label -->
+  <rect x="705" y="75" width="175" height="30" rx="12" fill="#3b82f6"/>
+  <rect x="705" y="93" width="175" height="12" fill="#3b82f6"/>
+  <text x="792" y="96" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Layer 3 · Carrier Agents</text>
+
+  <!-- Maersk -->
+  <rect x="718" y="118" width="148" height="60" rx="8" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="792" y="138" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Maersk Agent</text>
+  <text x="792" y="153" text-anchor="middle" font-size="9" fill="#6b7280">/api/maersk-track</text>
+  <text x="792" y="167" text-anchor="middle" font-size="9" fill="#3b82f6">Live vessel tracking</text>
+
+  <!-- MSC -->
+  <rect x="718" y="192" width="148" height="48" rx="8" fill="#fff" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4"/>
+  <text x="792" y="212" text-anchor="middle" font-size="11" font-weight="bold" fill="#9ca3af">MSC Agent</text>
+  <text x="792" y="228" text-anchor="middle" font-size="9" fill="#9ca3af">Coming soon</text>
+
+  <!-- Emirates SkyCargo -->
+  <rect x="718" y="254" width="148" height="48" rx="8" fill="#fff" stroke="#93c5fd" stroke-width="1" stroke-dasharray="4"/>
+  <text x="792" y="274" text-anchor="middle" font-size="11" font-weight="bold" fill="#9ca3af">Emirates SkyCargo</text>
+  <text x="792" y="290" text-anchor="middle" font-size="9" fill="#9ca3af">Coming soon</text>
+
+  <!-- Carrier Registry -->
+  <rect x="718" y="316" width="148" height="58" rx="8" fill="#fff" stroke="#93c5fd" stroke-width="1"/>
+  <text x="792" y="336" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Carrier Registry</text>
+  <text x="792" y="351" text-anchor="middle" font-size="9" fill="#6b7280">lib/carriers/registry.ts</text>
+  <text x="792" y="365" text-anchor="middle" font-size="9" fill="#3b82f6">Pluggable carrier contracts</text>
+
+  <!-- ═══════════════ DATA LAYER ═══════════════ -->
+
+  <rect x="215" y="430" width="665" height="95" rx="12" fill="#fafafa" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="547" y="453" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Data Layer</text>
+  <line x1="225" y1="460" x2="870" y2="460" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Data boxes -->
+  <rect x="230" y="468" width="130" height="45" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="295" y="487" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d0d1a">Forwarder DB</text>
+  <text x="295" y="501" text-anchor="middle" font-size="9" fill="#6b7280">Verified providers</text>
+  <text x="295" y="513" text-anchor="middle" font-size="9" fill="#6b7280">Google ratings · certs</text>
+
+  <rect x="375" y="468" width="130" height="45" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="440" y="487" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d0d1a">RAG Knowledge</text>
+  <text x="440" y="501" text-anchor="middle" font-size="9" fill="#6b7280">Historical matches</text>
+  <text x="440" y="513" text-anchor="middle" font-size="9" fill="#6b7280">Route corridor hints</text>
+
+  <rect x="520" y="468" width="130" height="45" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="585" y="487" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d0d1a">GLEC v3.1</text>
+  <text x="585" y="501" text-anchor="middle" font-size="9" fill="#6b7280">CO₂e emission factors</text>
+  <text x="585" y="513" text-anchor="middle" font-size="9" fill="#6b7280">Air/Sea/Road</text>
+
+  <rect x="665" y="468" width="130" height="45" rx="6" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="730" y="487" text-anchor="middle" font-size="10" font-weight="bold" fill="#0d0d1a">Twilio (WhatsApp)</text>
+  <text x="730" y="501" text-anchor="middle" font-size="9" fill="#6b7280">Message history</text>
+  <text x="730" y="513" text-anchor="middle" font-size="9" fill="#6b7280">Source of truth</text>
+
+  <!-- ═══════════════ EVAL METRICS ═══════════════ -->
+
+  <rect x="30" y="430" width="170" height="95" rx="12" fill="#fdf4ff" stroke="#a855f7" stroke-width="1.5"/>
+  <text x="115" y="453" text-anchor="middle" font-size="11" font-weight="bold" fill="#7e22ce">Eval Harness</text>
+  <line x1="40" y1="460" x2="190" y2="460" stroke="#d8b4fe" stroke-width="1"/>
+  <text x="115" y="476" text-anchor="middle" font-size="10" fill="#6b7280">50 queries · 6 categories</text>
+  <text x="115" y="491" text-anchor="middle" font-size="10" fill="#22c55e" font-weight="bold">100% pass rate</text>
+  <text x="115" y="506" text-anchor="middle" font-size="10" fill="#6b7280">p90: 33s · avg 5 matches</text>
+  <text x="115" y="519" text-anchor="middle" font-size="10" fill="#a855f7">8 languages tested ✓</text>
+
+  <!-- ═══════════════ FLOW LEGEND ═══════════════ -->
+
+  <rect x="30" y="555" width="840" height="108" rx="12" fill="#fff" stroke="#e5e7eb" stroke-width="1.5"/>
+  <text x="450" y="577" text-anchor="middle" font-size="11" font-weight="bold" fill="#0d0d1a">Request Flow</text>
+
+  <!-- Flow steps -->
+  <text x="50" y="600" font-size="9" fill="#0d0d1a" font-weight="bold">① Cargo owner</text>
+  <text x="50" y="614" font-size="9" fill="#6b7280">sends freight query</text>
+  <text x="50" y="628" font-size="9" fill="#6b7280">via web or WhatsApp</text>
+
+  <text x="175" y="600" font-size="9" fill="#0d0d1a" font-weight="bold">② Atlas (L1)</text>
+  <text x="175" y="614" font-size="9" fill="#6b7280">detects language</text>
+  <text x="175" y="628" font-size="9" fill="#6b7280">runs C1→C5 pipeline</text>
+  <text x="175" y="642" font-size="9" fill="#6b7280">returns top 5 matches</text>
+
+  <text x="310" y="600" font-size="9" fill="#0d0d1a" font-weight="bold">③ Momentum (L2)</text>
+  <text x="310" y="614" font-size="9" fill="#6b7280">receives A2A lead</text>
+  <text x="310" y="628" font-size="9" fill="#6b7280">ACKs cargo owner</text>
+  <text x="310" y="642" font-size="9" fill="#6b7280">sends proforma quote</text>
+
+  <text x="460" y="600" font-size="9" fill="#0d0d1a" font-weight="bold">④ Maersk (L3)</text>
+  <text x="460" y="614" font-size="9" fill="#6b7280">queries live vessel</text>
+  <text x="460" y="628" font-size="9" fill="#6b7280">data + corridor rates</text>
+  <text x="460" y="642" font-size="9" fill="#6b7280">returns to L2</text>
+
+  <text x="600" y="600" font-size="9" fill="#0d0d1a" font-weight="bold">⑤ CO₂e</text>
+  <text x="600" y="614" font-size="9" fill="#6b7280">GLEC v3.1 factors</text>
+  <text x="600" y="628" font-size="9" fill="#6b7280">included in every</text>
+  <text x="600" y="642" font-size="9" fill="#6b7280">rate quote</text>
+
+  <text x="720" y="600" font-size="9" fill="#0d0d1a" font-weight="bold">⑥ Dashboard</text>
+  <text x="720" y="614" font-size="9" fill="#6b7280">forwarder sees leads,</text>
+  <text x="720" y="628" font-size="9" fill="#6b7280">messages, proforma,</text>
+  <text x="720" y="642" font-size="9" fill="#6b7280">tracking — in 1 UI</text>
+
+  <!-- Step connector arrows -->
+  <line x1="162" y1="618" x2="172" y2="618" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="297" y1="618" x2="307" y2="618" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="447" y1="618" x2="457" y2="618" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="590" y1="618" x2="597" y2="618" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <line x1="708" y1="618" x2="717" y2="618" stroke="#d1d5db" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+
+  <!-- ═══════════════ ARROWS (main flow) ═══════════════ -->
+
+  <!-- Cargo Owner → L1 -->
+  <line x1="170" y1="122" x2="213" y2="122" stroke="#FF6720" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+  <!-- WhatsApp → L1 (via hermes) -->
+  <line x1="170" y1="232" x2="200" y2="232" stroke="#25D366" stroke-width="1.5" stroke-dasharray="4"/>
+  <line x1="200" y1="232" x2="200" y2="165" stroke="#25D366" stroke-width="1.5" stroke-dasharray="4"/>
+  <line x1="200" y1="165" x2="213" y2="165" stroke="#25D366" stroke-width="1.5" stroke-dasharray="4" marker-end="url(#arrowGreen)"/>
+  <!-- Forwarder → L2 -->
+  <line x1="170" y1="342" x2="456" y2="342" stroke="#FF6720" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+  <!-- L1 → L2 (A2A) -->
+  <line x1="415" y1="230" x2="458" y2="230" stroke="#22c55e" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#arrowGreen)"/>
+  <text x="436" y="224" text-anchor="middle" font-size="8" fill="#22c55e">A2A</text>
+
+  <!-- L2 → L3 (A2A) -->
+  <line x1="660" y1="230" x2="703" y2="230" stroke="#3b82f6" stroke-width="2" stroke-dasharray="6 3" marker-end="url(#arrowBlue)"/>
+  <text x="681" y="224" text-anchor="middle" font-size="8" fill="#3b82f6">A2A</text>
+
+  <!-- L1 → Data layer -->
+  <line x1="315" y1="390" x2="315" y2="428" stroke="#fdba74" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+  <!-- L2 → Data layer -->
+  <line x1="560" y1="390" x2="560" y2="428" stroke="#86efac" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+  <!-- ═══════════════ ARROW MARKERS ═══════════════ -->
+  <defs>
+    <marker id="arrowOrange" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#FF6720"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#22c55e"/>
+    </marker>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#3b82f6"/>
+    </marker>
+    <marker id="arrowGray" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#d1d5db"/>
+    </marker>
+  </defs>
+
+</svg>
