@@ -460,7 +460,7 @@ function LeadDetail({
               <div className="flex justify-end">
                 <div className="bg-[#dcf8c6] rounded-xl rounded-tr-sm px-3 py-2.5 max-w-[85%] shadow-sm">
                   <p className="text-[9px] font-semibold text-green-800 mb-1">
-                    Atlas · Boxman Global
+                    Atlas · Freight Forwarding Co.
                   </p>
                   <p className="text-[11px] text-black leading-relaxed">
                     {lead.momentumMessage}

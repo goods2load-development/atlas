@@ -76,7 +76,7 @@ function PipelineBar() {
         </span>
         <span className="flex items-center gap-1.5 text-[11px] text-green-400">
           <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
-          Processing for Boxman
+          Processing for Freight Forwarding Co.
         </span>
       </div>
       <div className="flex items-center">
@@ -181,7 +181,7 @@ const ACTIVITY = [
   {
     dot: 'bg-primaryOrange',
     label: 'C2 Match',
-    text: 'Boxman ranked #1 for pharma cold chain BOM→DXB request',
+    text: 'Freight Forwarding Co. ranked #1 for pharma cold chain BOM→DXB request',
     time: '1 hr ago',
   },
   {
@@ -199,7 +199,7 @@ const ACTIVITY = [
   {
     dot: 'bg-blue-400',
     label: 'C4 Enrich',
-    text: 'Boxman profile enriched with Aston Martin client signal',
+    text: 'Freight Forwarding Co. profile enriched with Aston Martin client signal',
     time: '1 day ago',
   },
 ];
@@ -212,7 +212,7 @@ export default function OverviewSection() {
       <div className="px-6 pt-6 pb-4 border-b border-border">
         <h2 className="text-lg font-bold text-black">Overview</h2>
         <p className="text-[12px] text-muted-foreground">
-          Boxman Global Logistics · Dubai ·{' '}
+          Freight Forwarding Co. · Dubai ·{' '}
           {new Date().toLocaleDateString('en-GB', {
             weekday: 'long',
             day: 'numeric',
